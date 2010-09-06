@@ -1,0 +1,480 @@
+XCOMM 
+XCOMM (c) Copyright 1989, 1990, 1991, 1992, 1993 OPEN SOFTWARE FOUNDATION, INC. 
+XCOMM ALL RIGHTS RESERVED 
+XCOMM 
+XCOMM 
+XCOMM Motif Release 1.2.5
+XCOMM @OSF_COPYRIGHT@
+XCOMM 
+XCOMM HISTORY
+XCOMM 
+XCOMM   $XConsortium: Imakefile /main/cde1_maint/6 1995/10/21 16:29:48 drk $
+XCOMM	$Sun: @(#)Imakefile	1.26 00/01/20 SMI $
+#define DoNormalLib	NormalLibXm
+#define DoSharedLib	SharedLibXm
+#define DoDebugLib	DebugLibXm
+#define DoProfileLib	ProfileLibXm
+#define LargePICTable   YES
+
+#include <Threads.tmpl>
+
+#ifdef RsArchitecture
+REQUIREDLIBS = -lXt -lX11
+#endif
+
+#ifndef UseLocalRegex
+# define UseLocalRegex  NO
+#endif
+
+#if UseLocalRegex
+REGEX_DEFINES = -DUSE_LOCAL_REGEX
+#else
+REGEX_DEFINES =
+#endif
+
+DEPEND_DEFINES = $(REGEX_DEFINES)
+
+#define IHaveSubdirs
+#define PassCDebugFlags 'CDEBUGFLAGS=$(CDEBUGFLAGS)'
+
+     SUBDIRS = bindings util
+    INCLUDES = -I. -I.. -I$(MINCLUDESRC)
+INSTALLFLAGS = $(INSTINCFLAGS)
+    LINTLIBS = $(LINTXLIB) $(LINTXTOOL)
+SRCH_DEFINES = -DLIBDIR=\"$(LIBDIR)\" -DINCDIR=\"$(INCDIR)\"
+BINDINGS_DEF = -DXMBINDDIR_FALLBACK=\"$(USRLIBDIR)/Xm/bindings\"
+
+/* Added to retain libXm.so.3 from CDE1.2 */
+     SOXMREV = 4
+
+/*** Begin Non-OSF stuff ***/
+
+/* Commenting out the following will remove CDE specific
+ * visuals and behavior
+ * Notes : To use size of XmString as in OSF/Motif 1.2.2.
+ *	   Add the flag -DXM_STRINGS_1_2_2_STATE
+ */
+CDE_DEFINES =	-DUSE_COLOR_OBJECT $(MOTIF_MSG_DEF)		\
+		-DCDE_RESOURCES -DCDE_VISUAL -DCDE_MENU_BTN	\
+		-DCDE_COLOR_CALC -DCDE_FILESB -DCDE_TAB		\
+		-DCDE_BIND -DCDE_INTEGRATE -DCDE_DRAG_ICON	\
+		-DCDE_NO_DRAG_FROM_LABELS
+
+#if defined(HPArchitecture)
+#if OSMajorVersion > 9
+MOTIF_MSG_DEF = -DI18N_MSG
+#else
+MOTIF_MSG_DEF =
+#endif
+EXTRA_CCOPTIONS = +ESlit
+DEFINES =	-DHP_MOTIF					\
+		-DUSE_COLOR_OBJECT -DXT_HAS_TRANS_FIX		\
+		-DCDE_FILESB -DCDE_MENU_BTN -DCDE_RESOURCES	\
+		-DCDE_TAB -DCDE_BIND  -DCDE_INTEGRATE		\
+		-DCDE_VISUAL -DI18N_MSG -DCDE_DRAG_ICON		\
+		-DCDE_NO_DRAG_FROM_LABELS -DCDE_COLOR_CALC
+#endif
+
+#if defined(SunArchitecture)
+EXPORTLISTGEN 	= $(MWIDGETTOOLS)/exportlistgen
+EXTRA_CCOPTIONS = -xF -dalign
+DEFINES 	= -DNO_ALLOCA			\
+		-DUSE_COLOR_OBJECT -DXT_HAS_TRANS_FIX		\
+		-DCDE_FILESB -DCDE_MENU_BTN -DCDE_RESOURCES	\
+		-DCDE_TAB -DCDE_BIND -DCDE_INTEGRATE		\
+		-DCDE_VISUAL -DI18N_MSG -DCDE_DRAG_ICON		\
+		-DCDE_NO_DRAG_FROM_LABELS -DCDE_COLOR_CALC	\
+		-DSUN_MOTIF -DSUN_SDT_COLOR_OBJECT_CACHE	\
+		-DSUN_MOTIF_PERF -DCTL_MFONT -DSUN_TBR          \
+		-DIC_PER_SHELL -DSUN_CTL -DENABLE_URLS -DSUPPORT_ZERO_WIDTH
+EXTRA_DEFINES 	= -D_REENTRANT
+64BIT_CC_FLAG	= -Xa
+REQUIREDLIBS	= $(ALL_LIBPATH) -lXext -lXt -lX11 -lc -ldl
+
+/*
+ * Override the definition LD for Sun
+ */
+#if defined(REORDER_PROFILED)
+	C++ = CC -pg $(BBAFLAGS)
+	CC = cc -xpg $(BBAFLAGS)
+	LD = cc
+REQUIREDLIBS = $(ALL_LIBPATH) -lXt -lX11 -L/usr/dt/lib -lmcount
+#else
+	  LD = $(PRISTINELINKCC)
+#endif
+#endif
+
+#if defined(USLArchitecture)
+MOTIF_MSG_DEF	= -DI18N_MSG
+VENDOR_DEFINES	= -DNOVELL_MOTIF	 -DNO_REGCOMP		\
+		-DNOT_SUPPORT_READDIR_R  -DNEED_STRCASECMP	\
+		-DHAS_WIDECHAR_FUNCTIONS -DSUPPORT_ZERO_WIDTH
+#endif
+
+#if defined(UXPArchitecture)
+DEFINES	=	-DNO_REGCOMP -DNEED_STRCASECMP			\
+		-DUSE_COLOR_OBJECT -DNOT_SUPPORT_READDIR_R 	\
+		-DXT_HAS_TRANS_FIX 				\
+		-DCDE_FILESB -DCDE_MENU_BTN -DCDE_RESOURCES	\
+		-DCDE_TAB -DCDE_BIND -DCDE_INTEGRATE		\
+		-DCDE_VISUAL -DCDE_COLOR_CALC -DCDE_DRAG_ICON	\
+		-DCDE_NO_DRAG_FROM_LABELS 			\
+		-DI18N_MSG					\
+		-DNOVELL_MOTIF
+#endif
+
+#if defined(RsArchitecture)
+DEFINES	=	-DIBM_MOTIF 					\
+		-DUSE_COLOR_OBJECT				\
+		-UXT_HAS_TRANS_FIX				\
+		-DCDE_FILESB -DCDE_MENU_BTN -DCDE_RESOURCES	\
+		-DCDE_TAB -DCDE_BIND -DCDE_INTEGRATE		\
+		-DCDE_VISUAL -DCDE_DRAG_ICON -DCDE_COLOR_CALC	\
+		-DIC_PER_SHELL -DI18N_MSG			\
+		-DCDE_NO_DRAG_FROM_LABELS
+#endif
+
+#if defined(SCOArchitecture)
+DEFINES	=	-DNO_REGCOMP -DUSE_COLOR_OBJECT			\
+		-DXT_HAS_TRANS_FIX				\
+		-DCDE_FILESB -DCDE_MENU_BTN -DCDE_RESOURCES	\
+		-DCDE_TAB -DCDE_BIND -DCDE_INTEGRATE		\
+		-DCDE_VISUAL -DCDE_DRAG_ICON -DCDE_COLOR_CALC	\
+		-DCDE_NO_DRAG_FROM_LABELS			\
+		-DI18N_MSG
+#endif
+
+/*** End Non-OSF stuff ***/
+
+HEADERS = ArrowB.h	ArrowBG.h	ArrowBGP.h	ArrowBP.h	\
+	BulletinB.h	BulletinBP.h	CacheP.h	CascadeB.h	\
+        CascadeBG.h	CascadeBGP.h	CascadeBP.h	Command.h	\
+        CommandP.h	CutPaste.h	DialogS.h			\
+        DialogSP.h	DialogSEP.h	DragC.h		DragCP.h	\
+        DragDrop.h	DragIcon.h	DragIconP.h	DragOverS.h	\
+        DragOverSP.h	DropTransP.h	DropSMgr.h	DropSMgrP.h	\
+        DropTrans.h	DrawingA.h	DrawingAP.h	DrawnB.h 	\
+        DrawnBP.h	FileSB.h	FileSBP.h	Form.h		\
+        FormP.h		Frame.h		FrameP.h	Label.h		\
+        LabelG.h	LabelGP.h	LabelP.h	List.h		\
+        ListP.h		MainW.h		MainWP.h	MenuShell.h	\
+        MenuShellP.h	MessageB.h	MessageBP.h	PanedW.h 	\
+        PanedWP.h	PushB.h		PushBG.h	PushBGP.h 	\
+        PushBP.h	RCLayoutP.h	RowColumn.h	RowColumnP.h 	\
+        SashP.h		Scale.h		ScaleP.h	ScrollBar.h 	\
+        ScrollBarP.h	ScrolledW.h	ScrolledWP.h	SelectioB.h 	\
+        SelectioBP.h	SeparatoG.h	SeparatoGP.h	Separator.h 	\
+        SeparatorP.h	TextF.h		TextFP.h	TextFSelP.h 	\
+        TextSelP.h	Text.h		TextInP.h	TextOutP.h 	\
+        TextP.h		TextStrSoP.h	ToggleB.h	ToggleBG.h 	\
+        ToggleBGP.h	ToggleBP.h	Xm.h		XmP.h 		\
+        BaseClassP.h	ManagerP.h	PrimitiveP.h	GadgetP.h	\
+        XmStrDefs.h	VaSimpleP.h	VirtKeys.h	VirtKeysP.h 	\
+        ExtObjectP.h	Display.h	DisplayP.h	Screen.h 	\
+        ScreenP.h	ShellEP.h	VendorS.h	VendorSP.h 	\
+        VendorSEP.h	DesktopP.h	AtomMgr.h	Protocols.h	\
+        ProtocolsP.h	MwmUtil.h	TransltnsP.h 	RepType.h	\
+        XmosP.h		Xmos_r.h	DrawP.h		TearOffP.h 	\
+        TearOffBP.h	MenuUtilP.h	MenuT.h		XmAll.h 	\
+        TraitP.h	SpinB.h		SpinBP.h	SSpinB.h 	\
+        SSpinBP.h 							\
+        Container.h     ContainerP.h    IconG.h         IconGP.h 	\
+        Notebook.h      NotebookP.h     ContItemT.h     ContainerT.h 	\
+        RCMenuP.h       ClipWindowP.h   TransferT.h 			\
+        Transfer.h      AccTextT.h      NavigatorT.h    IconFileP.h	\
+        ScrollFrameT.h  GrabShell.h     GrabShellP.h    ComboBox.h 	\
+        ComboBoxP.h     XmIm.h          IconFile.h      AccColorT.h	\
+        ActivatableT.h  JoinSideT.h     SpecRenderT.h 			\
+        CareVisualT.h   DialogSavvyT.h  TransferP.h     TakesDefT.h	\
+        ColorP.h	Primitive.h	Manager.h			\
+        Gadget.h        LayoutT.h       IconH.h         IconHP.h	\
+        UnitTypeT.h     TxtPropCv.h     MenuProcP.h     MenuStateP.h	\
+        ColorObjP.h     TravConT.h      UnhighlightT.h  PointInT.h 	\
+        XpmP.h		XmXOC.h         XmTBR.h
+
+HEADERS2 = $(HEADERS) ImageCachI.h XpmI.h GeoUtilsI.h BitmapsI.h	\
+	ColorObj.h ImageCachIObso.h _DtHashPObso.h BulletinBI.h
+
+SRCS1 = ArrowB.c	ArrowBG.c	BulletinB.c	CallbackI.c	\
+        CascadeB.c	CascadeBG.c	Command.c	CutPaste.c	\
+        Dest.c		DialogS.c	DialogSE.c	DragBS.c	\
+        DragC.c		DragOverS.c	DragICC.c	DragIcon.c	\
+        DragUnder.c	DrawingA.c	DrawnB.c	DropSMgr.c	\
+        DropSMgrI.c	DropTrans.c	ExtObject.c	FileSB.c	\
+        Form.c		Frame.c		Gadget.c	GadgetUtil.c	\
+        GeoUtils.c	ImageCache.c	Label.c		LabelG.c	\
+        List.c		MainW.c		MapEvents.c	MenuShell.c	\
+        MenuUtil.c	MessageB.c	PanedW.c	PushB.c		\
+        PushBG.c	ReadImage.c	Region.c	ResConvert.c	\
+        ResInd.c	RowColumn.c	Sash.c				\
+        Scale.c		ScrollBar.c	ScrolledW.c	SelectioB.c	\
+        SeparatoG.c	Separator.c	Simple.c	Text.c		\
+        TextIn.c	TextOut.c	TextStrSo.c	TextSel.c	\
+        ToggleB.c	ToggleBG.c	TrackLoc.c	UniqueEvnt.c	\
+        VaSimple.c	VirtKeys.c	XmString.c	ResEncod.c	\
+        XmStrDefs.c	TextF.c		TextFSel.c	AtomMgr.c 	\
+        Cache.c		Protocols.c	Primitive.c	Manager.c 	\
+        Traversal.c	TravAct.c	TraversalI.c	BaseClass.c
+
+SRCS2 = Desktop.c	Messages.c	Transltns.c	RepType.c	\
+        Xmos.c		Draw.c		TearOff.c	TearOffB.c	\
+        XmIm.c		GMUtils.c	Display.c	Screen.c	\
+        ShellE.c	VendorS.c	VendorSE.c	RCMenu.c	\
+        RCLayout.c	GetPixData.c	RCPopup.c	Trait.c		\
+        Synthetic.c	XmFontList.c	ClipWindow.c	Transfer.c	\
+        Hash.c		ScrollFrameT.c	sharedlib.c			\
+        XmTabList.c	Resolve.c	XmStringFunc.c	XmXOC.c		\
+        XmRenderT.c	PixConv.c	Color.c		Xm.c		\
+        CareVisualT.c	Direction.c	XmStringObso.c	XmStringGet.c	\
+        IsMwmRun.c	MenuProc.c	MenuState.c	TextFind.c	\
+        TextFunc.c	ColorObj.c	IconFile.c	RCHook.c	\
+        GetRes.c	BBUtil.c	ChColor.c	ColObjFunc.c	\
+        DrTog.c		DrArrow.c	DrPoly.c	DrHiDash.c	\
+        ValTime.c	FocusAct.c	CvtUnit.c	ScalTics.c	\
+        ScroVis.c	WidGet.c	regexp.c        XmTBR.c
+
+OBSO_SRCS = Obso1_2.c ObsoStr.c ObsoXme.c Obso2_0.c
+
+XPM_SRCS = \
+        XpmAttrib.c	XpmCrIFrDat.c	XpmInfo.c	XpmWrFFrDat.c	\
+	Xpmmisc.c	XpmCrBufFrI.c	XpmCrIFrP.c	XpmRdFToBuf.c	\
+	XpmWrFFrI.c	Xpmparse.c 	XpmCrBufFrP.c	XpmCrPFrBuf.c	\
+	XpmRdFToDat.c	XpmWrFFrP.c	Xpmrgb.c	XpmCrDatFrI.c	\
+	XpmCrPFrDat.c	XpmRdFToI.c	Xpmcreate.c	Xpmscan.c	\
+        XpmCrDatFrP.c	XpmCrPFrI.c	XpmRdFToP.c	Xpmdata.c	\
+        XpmCrIFrBuf.c	XpmImage.c	XpmWrFFrBuf.c	Xpmhashtab.c	\
+	XpmMiscObso.c	XpmDataObso.c	XpmCrIFDatObso.c XpmRdFObso.c	\
+	XpmParseObso.c	XpmCreateObso.c XpmCrDatFIObso.c XpmCrDatFPObso.c \
+	ImageCachObso.c DtHashObso.c
+
+#if UseLocalRegex
+REGEX_SRCS = regexp.c
+#else
+REGEX_SRCS = /**/
+#endif
+
+#ifdef NoNewWid
+NEW_WID_SRCS = /**/
+#else
+NEW_WID_SRCS =	IconH.c		Container.c	IconG.c		\
+		Notebook.c	ComboBox.c	GrabShell.c	\
+		SpinB.c		SSpinB.c	TxtPropCv.c	\
+		XmStringSeg.c	TranslNew.c
+#endif
+
+OBJS1 = ArrowB.o	ArrowBG.o	BulletinB.o	CallbackI.o	\
+        CascadeB.o	CascadeBG.o	Command.o	CutPaste.o	\
+        Dest.o		DialogS.o	DialogSE.o	DragBS.o 	\
+        DragC.o		DragOverS.o	DragICC.o	DragIcon.o 	\
+        DragUnder.o	DrawingA.o	DrawnB.o	DropSMgr.o 	\
+        DropSMgrI.o	DropTrans.o	ExtObject.o	FileSB.o 	\
+        Form.o		Frame.o		Gadget.o	GadgetUtil.o 	\
+        GeoUtils.o	ImageCache.o	Label.o		LabelG.o 	\
+        List.o		MainW.o		MapEvents.o	MenuShell.o 	\
+        MenuUtil.o	MessageB.o	PanedW.o	PushB.o 	\
+        PushBG.o	ReadImage.o	Region.o	ResConvert.o 	\
+        ResInd.o	RowColumn.o	Sash.o				\
+        Scale.o		ScrollBar.o	ScrolledW.o	SelectioB.o 	\
+        SeparatoG.o	Separator.o	Simple.o	Text.o 		\
+        TextIn.o	TextOut.o	TextStrSo.o	TextSel.o	\
+        ToggleB.o	ToggleBG.o	TrackLoc.o	UniqueEvnt.o 	\
+        VaSimple.o	VirtKeys.o	XmString.o	ResEncod.o	\
+        XmStrDefs.o	TextF.o		TextFSel.o	AtomMgr.o 	\
+        Cache.o		Protocols.o	Primitive.o	Manager.o 	\
+        Traversal.o	TravAct.o	TraversalI.o	BaseClass.o
+
+OBJS2 = Desktop.o	Messages.o	Transltns.o	RepType.o	\
+        Xmos.o		Draw.o		TearOff.o	TearOffB.o 	\
+        XmIm.o		GMUtils.o	Display.o	Screen.o 	\
+        ShellE.o	VendorS.o	VendorSE.o	RCMenu.o  	\
+        RCLayout.o	GetPixData.o	RCPopup.o	Trait.o  	\
+        Synthetic.o	XmFontList.o	ClipWindow.o	Transfer.o 	\
+        Hash.o		ScrollFrameT.o					\
+        XmTabList.o	Resolve.o	XmStringFunc.o	XmXOC.o		\
+        XmRenderT.o	PixConv.o	Color.o		Xm.o 		\
+        CareVisualT.o	Direction.o	XmStringObso.o	XmStringGet.o	\
+        IsMwmRun.o	MenuProc.o	MenuState.o	TextFind.o 	\
+        TextFunc.o	ColorObj.o	IconFile.o	RCHook.o 	\
+        GetRes.o	BBUtil.o	ChColor.o	ColObjFunc.o 	\
+        DrTog.o		DrArrow.o	DrPoly.o	DrHiDash.o 	\
+        ValTime.o	FocusAct.o	CvtUnit.o	ScalTics.o 	\
+        ScroVis.o	WidGet.o	regexp.o        XmTBR.o
+
+OBSO_OBJS = Obso1_2.o ObsoStr.o ObsoXme.o Obso2_0.o
+
+XPM_OBJS = \
+	XpmAttrib.o	XpmCrIFrDat.o	XpmInfo.o	XpmWrFFrDat.o	\
+	Xpmmisc.o	XpmCrBufFrI.o	XpmCrIFrP.o	XpmRdFToBuf.o	\
+	XpmWrFFrI.o	Xpmparse.o	XpmCrBufFrP.o	XpmCrPFrBuf.o	\
+	XpmRdFToDat.o	XpmWrFFrP.o	Xpmrgb.o	XpmCrDatFrI.o	\
+	XpmCrPFrDat.o	XpmRdFToI.o	Xpmcreate.o	Xpmscan.o	\
+	XpmCrDatFrP.o	XpmCrPFrI.o	XpmRdFToP.o	Xpmdata.o	\
+	XpmCrIFrBuf.o	XpmImage.o	XpmWrFFrBuf.o	Xpmhashtab.o	\
+	XpmMiscObso.o	XpmDataObso.o	XpmCrIFDatObso.o XpmRdFObso.o	\
+	XpmParseObso.o	XpmCreateObso.o	XpmCrDatFIObso.o XpmCrDatFPObso.o \
+	ImageCachObso.o DtHashObso.o
+
+#if UseLocalRegex
+REGEX_OBJS = regexp.o
+#else
+REGEX_OBJS = /**/
+#endif
+
+#ifdef NoNewWid
+NEW_WID_OBJS = /**/
+#else
+NEW_WID_OBJS =	IconH.o		Container.o	IconG.o		\
+		Notebook.o	ComboBox.o	GrabShell.o	\
+		SpinB.o		SSpinB.o	TxtPropCv.o	\
+		XmStringSeg.o	TranslNew.o  
+#endif
+
+/*
+ * Stuff to generate Xm.cat, XmMsgI.h, Xm.msg, XmMsgCatI.h
+ */
+all:: XmMsgCatI.h Xm.cat
+
+XmMsgCatI.h:
+	$(RM) XmMsgI.h XmMsgCatI.h Xm.cat
+	$(MKMSGTOOL) -Xm $(MWIDGETSRC)/Messages.c
+	$(MV) Xm.msg Xm1.msg
+	$(MKCATTOOL) XmMsgCatI.h Xm1.msg > Xm.msg
+	$(RM) Xm1.msg
+
+Xm.cat:XmMsgCatI.h
+	$(RM) Xm.cat
+	$(GENCAT) Xm.cat $(MWIDGETSRC)/Xm.msg
+
+includes:: Xm.cat XmMsgCatI.h
+depend:: Xm.cat XmMsgCatI.h
+clean::
+	$(RM) Xm.cat XmMsgCatI.h XmMsgI.h
+
+SRCS3	= $(OBSO_SRCS) $(XPM_SRCS) $(REGEX_SRCS) $(NEW_WID_SRCS)
+OBJS3	= $(OBSO_OBJS) $(XPM_OBJS) $(REGEX_OBJS) $(NEW_WID_OBJS)
+
+SRCS = $(SRCS1) $(SRCS2) $(SRCS3)
+OBJS = $(OBJS1) $(OBJS2) $(OBJS3)
+
+#if SharedDataSeparation
+UNSHAREDOBJS = XmStrDefs.o sharedlib.o
+#endif
+
+#include <Library.tmpl>
+
+LibraryObjectRule()
+
+SpecialLibObjectRule(XpmRdFToBuf.o,,$(64BIT_CC_FLAG))
+SpecialLibObjectRule(Xmos.o,,$(SRCH_DEFINES) $(REGEX_DEFINES))
+SpecialLibObjectRule(VirtKeys.o,,$(BINDINGS_DEF))
+
+#if DoSharedLib && SharedDataSeparation
+SpecialObjectRule(sharedlib.o,,$(SHLIBDEF))
+#endif
+
+#ifdef RsArchitecture
+/*
+ * These rules turn off optimization
+ * on the IBM side.
+ */
+SpecialLibObjectRule(Draw.o,/**/,-qoptimize=1)
+SpecialLibObjectRule(TextF.o,/**/,-qoptimize=1)
+SpecialLibObjectRule(XmString.o,/**/,-qoptimize=1)
+#endif
+
+STRINGSABIOPTIONS = -intelabi
+STRINGS_FILES = XmStrDefs.c XmStrDefs.h
+STRINGS_TMPLS = XmStrDefs.ct XmStrDefs.ht
+
+$(STRINGS_FILES): xmstring.list $(STRINGS_TMPLS)
+	$(RM) $(STRINGS_FILES)
+	$(MKXMSTRTOOL) $(STRINGSABIOPTIONS) < xmstring.list > XmStrDefs.c
+
+all:: $(STRINGS_FILES)
+
+includes:: $(STRINGS_FILES)
+
+depend:: $(STRINGS_FILES)
+
+clean::
+	$(RM) $(STRINGS_FILES)
+
+/* For install of developer's build environment */
+LOCAL_BINSTALL_LIBDEST = lib
+LOCAL_BINSTALL_INCLUDEDEST = include/Xm
+LOCAL_BINSTALL_DTINCLUDEDEST = include/Dt
+
+#if DoSharedLib
+#if DoNormalLib
+SharedLibraryTarget(Xm,$(SOXMREV),$(OBJS),shared,..)
+#else
+SharedLibraryTarget(Xm,$(SOXMREV),$(OBJS),.,.)
+#endif
+SharedLibraryBuildInstall(Xm,$(SOXMREV),$(LOCAL_BINSTALL_LIBDEST))
+InstallSharedLibrary(Xm,$(SOXMREV),$(USRLIBDIR))
+#ifdef DEBUGTREE
+#if DoNormalLib
+SharedLibraryTarget(Xm_d,$(SOXMREV),$(OBJS),shared,..)
+#else
+SharedLibraryTarget(Xm_d,$(SOXMREV),$(OBJS),.,.)
+#endif
+SharedLibraryBuildInstall(Xm_d,$(SOXMREV),$(LOCAL_BINSTALL_LIBDEST))
+InstallSharedLibrary(Xm_d,$(SOXMREV),$(USRLIBDIR))
+#endif
+#endif
+#if DoNormalLib
+NormalLibraryTarget(Xm,$(OBJS))
+NormalLibraryBuildInstall(Xm,$(LOCAL_BINSTALL_LIBDEST))
+InstallLibrary(Xm,$(USRLIBDIR))
+#endif
+#if DoProfileLib
+ProfiledLibraryTarget(Xm,$(OBJS))
+InstallLibrary(Xm_p,$(USRLIBDIR))
+#endif
+#if DoDebugLib
+DebuggedLibraryTarget(Xm,$(OBJS))
+InstallLibrary(Xm_d,$(USRLIBDIR))
+#endif
+
+LintLibraryTarget(Xm,$(SRCS))
+InstallLintLibrary(Xm,$(LINTLIBDIR))
+
+BuildIncludes($(HEADERS2),Xm,..)
+
+/*
+ * For build installation on system 
+ */
+
+/* 
+ * These Motif Internal Headers should NOT be used, but %$#@
+ */
+includes:: XmMsgI.h
+
+DependTarget()
+
+NormalLintTarget($(SRCS))
+
+clean::
+	$(RM) XmMsgI.h Xm.cat
+
+#ifdef UseVista
+VistaMapRule(libXm.M,libXm.a)
+#endif
+
+/*
+ * Certain architectures have a bug that produces
+ * a bad shared library if Obsolete.o is included.
+ */
+
+#if SharedLibXm && defined(BugAffectingSharedXm)
+Obso1_2.o:
+	_DebuggedObjCompile($(_NOOP_))
+	_ProfiledObjCompile($(_NOOP_))
+	$(MV) Obso1_2.c Obso1_2.c~
+	echo "static char _obs_str[] =\"Obso1_2.c not supported\";" > Obso1_2.c
+	_SharedObjCompile($(_NOOP_))
+	$(MV) Obso1_2.c~ Obso1_2.c
+	_NormalObjCompile($(_NOOP_))
+#endif
+
+LinkFileList(includes,Xm.ad,$(BUILDLOCDIR),$(BUILDINCTOP)/$(CURRENT_DIR))

@@ -1,0 +1,7 @@
+/*
+#ifdef aix
+# define UseExportLists YES
+#else
+# define UseExportLists NO
+#endif
+*/
