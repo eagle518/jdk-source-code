@@ -1,0 +1,73 @@
+<html>
+<head>
+<title>javax.management.openmbean package</title>
+<!--
+ @(#)package.html	1.13 04/01/27
+ 
+ Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+ SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+-->
+</head>
+<body bgcolor="white">
+
+    <p>Provides the open data types and Open MBean descriptor classes.
+      An <em>Open MBean</em> is an MBean where the types of attributes
+      and of operation parameters and return values are built using a
+      small set of predefined Java classes.  Open MBeans facilitate
+      operation with remote management programs that do not necessarily
+      have access to application-specific types, including non-Java
+      programs.</p>
+
+    <p>Every MBean has an {@link javax.management.MBeanInfo
+      MBeanInfo} with information about the MBean itself, and its
+      attributes, operations, constructors, and notifications.  In an
+      Open MBean, this <code>MBeanInfo</code> implements the {@link
+      javax.management.openmbean.OpenMBeanInfo OpenMBeanInfo}
+      interface, usually by being an instance of {@link
+      javax.management.openmbean.OpenMBeanInfoSupport
+      OpenMBeanInfoSupport}.</p>
+
+    <p>The attribute information returned by {@link
+      javax.management.MBeanInfo#getAttributes()
+      MBeanInfo.getAttributes} for an Open MBean is an array of
+      objects implementing {@link
+      javax.management.openmbean.OpenMBeanAttributeInfo
+      OpenMBeanAttributeInfo}, usually instances of {@link
+      javax.management.openmbean.OpenMBeanAttributeInfoSupport
+      OpenMBeanAttributeInfoSupport}.  In addition to the usual
+      information about attributes, an
+      <code>OpenMBeanAttributeInfo</code> specifies the {@link
+      javax.management.openmbean.OpenType OpenType} of the attribute.
+      The possible <code>OpenType</code> values are predefined, which
+      is what ensures that remote managers will understand them.</p>
+
+    <p>Similar remarks apply to the parameter types of operations and
+      constructors, and to the return types of operations.</p>
+
+    <p>There is a distinction between an attribute's Java language
+      type, as returned by {@link
+      javax.management.MBeanAttributeInfo#getType() getType()}, and
+      its <code>OpenType</code>, as returned by {@link
+      javax.management.openmbean.OpenMBeanAttributeInfo#getOpenType()
+      getOpenType()}.  For example, if the Java language type is
+      <code>java.lang.String</code>, the <code>OpenType</code> will be
+      {@link javax.management.openmbean.SimpleType#STRING
+      SimpleType.String}.  If the Java language type is {@link
+      javax.management.openmbean.CompositeData}, the
+      <code>OpenType</code> will be a {@link
+      javax.management.openmbean.CompositeType CompositeType} that
+      describes the items in the <code>CompositeData</code> instances
+      for the attribute.</p>
+
+    <h2><a name="spec">Package Specification</a></h2>
+
+    <ul>
+      <li><a href="http://java.sun.com/products/JavaManagement/download.html">
+	  Specification of the JMX API, version 1.2</a>
+    </ul>
+
+    @since 1.5
+    @since.unbundled JMX 1.1
+
+</BODY>
+</HTML>

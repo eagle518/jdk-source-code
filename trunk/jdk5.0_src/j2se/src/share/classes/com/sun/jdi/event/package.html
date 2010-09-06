@@ -1,0 +1,30 @@
+<html>
+<head>
+    <title>com.sun.jdi.event description</title>
+<!--
+ @(#)package.html	1.7 03/12/19
+ 
+ Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+ SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+-->
+</head>
+<body bgcolor="white">
+This package defines JDI events and event processing.
+An {@link com.sun.jdi.event.Event} is always a member of an 
+{@link com.sun.jdi.event.EventSet}, which
+is retrieved from the {@link com.sun.jdi.event.EventQueue}. 
+Examples of Events include
+{@link com.sun.jdi.event.BreakpointEvent "breakpoints events"}, 
+{@link com.sun.jdi.event.ThreadStartEvent "thread creation events"} and 
+{@link com.sun.jdi.event.VMDeathEvent "virtual machine death event"}. 
+With the exception
+of termination events, all events received must be requested with an
+{@link com.sun.jdi.request.EventRequest "EventRequest"}.  The 
+{@link com.sun.jdi.request} package defines event requests and event
+request management.
+<p>
+Methods may be added to the interfaces in the JDI packages in future 
+releases. Existing packages may be renamed if the JDI becomes a standard 
+extension.
+  </body>
+</html>

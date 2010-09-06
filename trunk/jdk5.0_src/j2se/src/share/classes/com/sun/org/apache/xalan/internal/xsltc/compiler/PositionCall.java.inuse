@@ -1,0 +1,97 @@
+/*
+ * @(#)$Id: PositionCall.java.inuse,v 1.1 2001/04/17 18:51:43 sboag Exp $
+ *
+ * Copyright 2000-2001 Sun Microsystems, Inc. All Rights Reserved.
+ * 
+ * This software is the proprietary information of Sun Microsystems, Inc.  
+ * Use is subject to license terms.
+ * 
+ * @author Jacek Ambroziak
+ * @author Santiago Pericas-Geertsen
+ * @author Morten Jorgensen
+ *
+ */
+
+package com.sun.xslt.compiler;
+
+import com.sun.xslt.compiler.util.Type;
+import de.fub.bytecode.generic.*;
+import com.sun.xslt.compiler.util.*;
+
+final class PositionCall extends FunctionCall {
+
+    private int _type = -1;
+
+    public PositionCall(QName fname) {
+	super(fname);
+    }
+
+    public PositionCall(QName fname, int type) {
+	this(fname);
+	_type = type;
+    }
+
+    public void translate(ClassGenerator classGen, MethodGenerator methodGen) {
+
+	final InstructionList il = methodGen.getInstructionList();
+
+	// If we're a part of an expression's preficate we want to know what
+	// type of node we want to be looking for
+	if (getParent() instanceof Expression) {
+	    if (getParent().getParent() instanceof Predicate) {
+		Predicate pred = (Predicate)getParent().getParent();
+		_type = pred.getPosType();
+	    }
+	}
+
+
+	if (methodGen instanceof CompareGenerator) {
+	    il.append(((CompareGenerator)methodGen).loadCurrentNode());
+	}
+	else if (methodGen instanceof TestGenerator) {
+	    il.append(new ILOAD(POSITION_INDEX));
+	}
+/*************GTM 
+// this was the original code block that calls getPosition() 
+// I replaced this block with next else if block (see **)
+	else if (_type == -1) {
+	    final ConstantPoolGen cpg = classGen.getConstantPool();
+	    final int getPosition = cpg.addInterfaceMethodref(NODE_ITERATOR,
+							      "getPosition", 
+							      "()I");
+	    il.append(methodGen.loadIterator());
+	    il.append(new INVOKEINTERFACE(getPosition, 1));
+	}
+********************/
+	else if (_type == -1 ) {
+//GTM ** this is the block I added to call position() via getTypedPosition
+// to get this to work needed to hardcode PUSH(cpg, 7) which will produce
+// bipush 7,  instead of iconst_m1.
+	    final ConstantPoolGen cpg = classGen.getConstantPool();
+	    final String DOM_CLASS = classGen.getDOMClass();
+	    // public int getTypedPosition(NodeIterator iterator, int type) {
+	    final int pos = cpg.addMethodref(DOM_CLASS,
+					     "getTypedPosition",
+					     "("+NODE_ITERATOR_SIG+"II)I");
+	    il.append(methodGen.loadDOM());
+	    il.append(methodGen.loadIterator());
+	    //GTM il.append(new PUSH(cpg, _type)); // this make iconst_m1
+	    il.append(new PUSH(cpg, 7));    // GTM HARD CODED FOR TESTING ONLY
+	    il.append(methodGen.loadCurrentNode());
+	    il.append(new INVOKEVIRTUAL(pos));
+	}
+	else {
+	    final ConstantPoolGen cpg = classGen.getConstantPool();
+	    final String DOM_CLASS = classGen.getDOMClass();
+	    // public int getTypedPosition(NodeIterator iterator, int type) {
+	    final int pos = cpg.addMethodref(DOM_CLASS,
+					     "getTypedPosition",
+					     "("+NODE_ITERATOR_SIG+"II)I");
+	    il.append(methodGen.loadDOM());
+	    il.append(methodGen.loadIterator());
+	    il.append(new PUSH(cpg, _type));
+	    il.append(methodGen.loadCurrentNode());
+	    il.append(new INVOKEVIRTUAL(pos));
+	}
+    }
+}

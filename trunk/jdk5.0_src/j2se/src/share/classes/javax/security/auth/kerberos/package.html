@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<!--
+ @(#)package.html	1.6 03/12/19
+ 
+ Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+ SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+-->
+
+</head>
+<body bgcolor="white">
+
+    This package contains utility classes related to the Kerberos network
+    authentication protocol. They do not provide much Kerberos support
+    themselves.<p>
+
+    The Kerberos network authentication protocol is defined in 
+    <a href=http://www.ietf.org/rfc/rfc1510.txt>RFC 1510</a>. The Java 2
+    platform contains support for the client side of Kerberos via the 
+    {@link org.ietf.jgss} package. There might also be 
+    a login module that implements
+    {@link javax.security.auth.spi.LoginModule LoginModule} to authenticate 
+    Kerberos principals.<p>
+
+    You can provide the name of your default realm and Key Distribution
+    Center (KDC) host for that realm using the system properties
+    java.security.krb5.realm and java.security.krb5.kdc. Alternatively, you 
+    can provide an MIT style configuration file called krb5.conf in
+    &lt;java-home&gt;/lib/security. If you place this file elsewhere, you can
+    indicate that location via the system property java.security.krb5.conf.<p>
+<!--
+<h2>Package Specification</h2>
+
+##### FILL IN ANY SPECS NEEDED BY JAVA COMPATIBILITY KIT #####
+<ul>
+  <li><a href="">##### REFER TO ANY FRAMEMAKER SPECIFICATION HERE #####</a>
+</ul>
+
+<h2>Related Documentation</h2>
+
+For overviews, tutorials, examples, guides, and tool documentation, please see:
+<ul>
+  <li><a href="">##### REFER TO NON-SPEC DOCUMENTATION HERE #####</a>
+</ul>
+
+-->
+
+@since JDK1.4
+</body>
+</html>

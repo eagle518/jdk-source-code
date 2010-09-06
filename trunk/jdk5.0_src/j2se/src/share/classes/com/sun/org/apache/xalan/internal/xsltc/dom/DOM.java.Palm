@@ -1,0 +1,1182 @@
+/*
+ * @(#)$Id: DOM.java.Palm,v 1.1 2001/04/17 18:52:28 sboag Exp $
+ *
+ * Copyright 2000 Sun Microsystems, Inc. All Rights Reserved.
+ * 
+ * This software is the proprietary information of Sun Microsystems, Inc.  
+ * Use is subject to license terms.
+ * 
+ * @author Jacek Ambroziak
+ * @author Santiago Pericas-Geertsen
+ *
+ */
+
+package com.sun.xslt.dom;
+
+import java.util.Hashtable;
+import java.util.Vector;
+import org.xml.sax.*;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Document;
+import com.sun.xslt.util.IntegerArray;
+import com.sun.xslt.compiler.Axis;
+
+public class DOM {
+	// NO_TYPE is an indication from NodeTest
+	// that no testing is needed and a pure version
+	// of iterators should be used
+    public final static int  NO_TYPE                = -1;
+    public final static int  FIRST_TYPE             = 0;
+	
+    public final static int  ROOT                   = 0;
+    public final static int  TEXT                   = 1;
+    public final static int  ELEMENT                = 2;
+	public final static int  PROCESSING_INSTRUCTION = 3;
+	public final static int  COMMENT                = 4;
+	
+    public final static int  NTYPES                 = 5;
+
+	// 0 is reserved for NodeIterator.END
+    public final static int NULL     = 0;
+	// index of root node
+    public final static int ROOTNODE = 1;
+    
+	// empty String for null attribute values
+    private final static String EMPTYSTRING = "";
+	// empty iter to be returned when eg there are no children
+    private final static NodeIterator EMPTYITERATOR =
+		new NodeIterator() {
+				public NodeIterator setStartNode(int node) { return this; }
+				public int next() {
+					return NULL;
+				}
+			};
+
+	private static final AttributeList EmptyAttributes =
+		new AttributeList() {
+				public int getLength() { return 0; }
+				public String getName(int i) { return null; }
+				public String getType(int i) { return null; }
+				public String getValue(int i) { return null; }
+				public String getType(String name) { return null; }
+				public String getValue(String name) { return null; }
+			};
+	/*
+	 * document tree representation data structures
+	 */
+	
+    protected byte[]   _type;
+    protected int[]    _parent;
+    protected int[]    _nextSibling;
+    protected int[]    _offsetOrChild;
+    protected int[]    _lengthOrAttr;
+    protected char[]   _text;
+    protected String[] _namesArray;
+
+	/*
+	 * Support for access/navigation through org.w3c.dom API
+	 */
+
+	public Node makeNode(int index) {
+		return new NodeImpl(index);
+	}
+
+	private final class NotSupportedException extends DOMException {
+		public NotSupportedException() {
+			super(NOT_SUPPORTED_ERR, "modification not supported");
+		}
+	} // end of NotSupportedException
+	
+	private static NodeList EmptyNodeList;
+	private static NamedNodeMap EmptyNamedNodeMap;
+	
+	private NodeList getEmptyNodeList() {
+		return EmptyNodeList != null
+			? EmptyNodeList
+			: (EmptyNodeList = new NodeListImpl(new int[0]));
+	}
+
+	private NamedNodeMap getEmptyNamedNodeMap() {
+		return EmptyNamedNodeMap != null
+			? EmptyNamedNodeMap
+			: (EmptyNamedNodeMap = new NamedNodeMapImpl(new int[0]));
+	}
+
+	private final class NodeListImpl implements NodeList {
+		private final int[] _nodes;
+
+		public NodeListImpl(int[] nodes) {
+			_nodes = nodes;
+		}
+		
+		public int getLength() {
+			return _nodes.length;
+		}
+		
+		public Node item(int index) {
+			return makeNode(_nodes[index]);
+		}
+	} // end of NodeListImpl
+
+		
+	private final class NamedNodeMapImpl implements NamedNodeMap {
+		private final int[] _nodes;
+		
+		public NamedNodeMapImpl(int[] nodes) {
+			_nodes = nodes;
+		}
+		
+		public int getLength() {
+			return _nodes.length;
+		}
+		
+		public Node getNamedItem(String name) {
+			for (int i = 0; i < _nodes.length; i++)
+				if (name.equals(getNodeName(_nodes[i])))
+					return makeNode(_nodes[i]);
+			return null;
+		}
+		
+		public Node item(int index) {
+			return makeNode(_nodes[index]);
+		}
+		
+		public Node removeNamedItem(String name) {
+			throw new NotSupportedException();
+		}
+		
+		public Node setNamedItem(Node node) {
+			throw new NotSupportedException();
+		}
+	} // end of NamedNodeMapImpl
+	
+	private final class NodeImpl implements Node {
+		private final int _index;
+
+		public NodeImpl(int index) {
+			_index = index;
+		}
+
+		public short getNodeType() {
+			switch (_type[_index]) {
+			case ROOT:
+				return Node.DOCUMENT_NODE;
+			case TEXT:
+				return Node.TEXT_NODE;
+			case PROCESSING_INSTRUCTION:
+				return Node.PROCESSING_INSTRUCTION_NODE;
+			case COMMENT:
+				return Node.COMMENT_NODE;
+			default:
+				return _parent[_index] == -1
+					? Node.ATTRIBUTE_NODE
+					: Node.ELEMENT_NODE;
+			}
+		}
+		
+		public Node getParentNode() {
+			final int parent = getParent(_index);
+			return parent > NULL ? makeNode(parent) : null;
+		}
+		
+		public Node appendChild(Node node) throws DOMException {
+			throw new NotSupportedException();
+		}
+		
+		public Node cloneNode(boolean deep) {
+			// it can be supported if need be
+			// with and additional field to signify
+			// whether it is a deep or shallow clone
+			throw new NotSupportedException();
+		}
+		
+		public NamedNodeMap getAttributes() {
+			if (getNodeType() == Node.ELEMENT_NODE) {
+				int attribute = _lengthOrAttr[_index];
+				if (attribute != NULL) {
+					final IntegerArray attributes = new IntegerArray(4);
+					do {
+						attributes.add(attribute);
+					}
+					while ((attribute = _nextSibling[attribute]) != 0);
+					return new NamedNodeMapImpl(attributes.toIntArray());
+				}
+				else
+					return getEmptyNamedNodeMap();
+			}
+			else
+				return null;
+		}
+		
+		public NodeList getChildNodes() {
+			if (hasChildNodes()) {
+				final IntegerArray children = new IntegerArray(8);
+				int child = _offsetOrChild[_index];
+				do {
+					children.add(child);
+				}
+				while ((child = _nextSibling[child]) != 0);
+				return new NodeListImpl(children.toIntArray());
+			}
+			else
+				return getEmptyNodeList();
+		}
+		
+		public Node getFirstChild() {
+			return hasChildNodes()
+				? makeNode(_offsetOrChild[_index])
+				: null;
+		}
+		
+		public Node getLastChild() {
+			return hasChildNodes()
+				? makeNode(lastChild(_index))
+				: null;
+		}
+		
+		public Node getNextSibling() {
+			final int next = _nextSibling[_index];
+			return next != 0 ? makeNode(next) : null;
+		}
+		
+		public String getNodeName() {
+			return DOM.this.getNodeName(_index);
+		}
+		
+		public String getNodeValue() throws DOMException {
+			return DOM.this.getNodeValue(_index);
+		}
+		
+		public Document getOwnerDocument() {
+			return null;
+		}
+		
+		public Node getPreviousSibling() {
+			int node = _parent[_index];
+			if (node > NULL) {
+				int prev = -1;
+				node = _offsetOrChild[node];
+				while (node != _index)
+					node = _nextSibling[prev = node];
+				if (prev != -1)
+					return makeNode(prev);
+			}
+			return null;
+		}
+		
+		public boolean hasChildNodes() {
+			switch (getNodeType()) {
+			case Node.ELEMENT_NODE:
+			case Node.DOCUMENT_NODE:
+				return _offsetOrChild[_index] != 0;
+			default:
+				return false;
+			}
+		}
+		
+		public Node insertBefore(Node n1, Node n2) throws DOMException {
+			throw new NotSupportedException();
+		}
+		
+		public Node removeChild(Node n) throws DOMException {
+			throw new NotSupportedException();
+		}
+		
+		public Node replaceChild(Node n1, Node n2) throws DOMException {
+			throw new NotSupportedException();
+		}
+		
+		public void setNodeValue(String s) throws DOMException {
+			throw new NotSupportedException();
+		}
+	} // end of NodeImpl
+
+	public Filter getTypeFilter(int type) {
+		return new TypeFilter(type);
+	}
+
+	// single copy of ElementFilter
+	private Filter _elementFilter;
+
+	public Filter getElementFilter() {
+		return _elementFilter != null
+			? _elementFilter
+			: (_elementFilter = new Filter() {
+					public boolean test(int node) {
+						return _type[node] >= NTYPES && _parent[node] != -1;
+					}
+				});
+	}
+
+	private final class TypeFilter implements Filter {
+		private final int _nodeType;
+		
+		public TypeFilter(int type) {
+			_nodeType = type;
+		}
+		
+		public boolean test(int node) {
+			return _type[node] == _nodeType;
+		}
+	} // end of TypeFilter
+    
+    private final class ChildrenIterator implements NodeIterator {
+		// child to return next
+		private int _currentChild;
+	
+		public NodeIterator setStartNode(int element) {
+			_currentChild = _offsetOrChild[element];
+			return this;
+		}
+
+		public int next() {
+			final int node;
+			_currentChild = _nextSibling[node = _currentChild];
+			return node;
+		}
+    } // end of ChildrenIterator
+
+
+    private final class ParentIterator implements NodeIterator {
+		// candidate parent node
+		private int _node;
+	
+		public NodeIterator setStartNode(int node) {
+			_node = _parent[node];
+			return this;
+		}
+
+		public int next() {
+			int result = _node;
+			_node = NULL;
+			return result > NULL ? result : NULL;
+		}
+    } // end of ParentIterator
+
+
+	/** This iterator generates children of a start node
+		that are of a particular (generalized) type.
+		The functionality can be easily achieved by filtering
+		but it is used often enough to deserve a dedicated class
+	*/
+    private final class TypedChildrenIterator implements NodeIterator {
+		private final int _nodeType;
+		// node to consider next
+		private int _currentChild;
+	
+		public TypedChildrenIterator(int nodeType) {
+			_nodeType = nodeType;
+		}
+
+		public NodeIterator setStartNode(int element) {
+			_currentChild = _offsetOrChild[element];
+			return this;
+		}
+
+		public int next() {
+			for (int node = _currentChild;
+				 node != END;
+				 node = _nextSibling[node])
+				if (_type[node] == _nodeType) {
+					_currentChild = _nextSibling[node];
+					return node;
+				}
+			
+			return END;
+		}
+    } // end of TypedChildrenIterator
+
+
+	/**************************************************************
+	 * iterates through following siblings of argument node
+	 */
+    private final class FollowingSiblingIterator implements NodeIterator {
+		private int _node;
+	
+		public NodeIterator setStartNode(int node) {
+			_node = node;
+			return this;
+		}
+		
+		public int next() {
+			return _node = _nextSibling[_node];
+		}
+    } // end of FollowingSiblingIterator
+
+    private final class AttributeIterator implements NodeIterator {
+		private int _attribute;
+	
+		public NodeIterator setStartNode(int node) {
+			_attribute = _lengthOrAttr[node];
+			return this;
+		}
+		
+		public int next() {
+			final int node;
+			_attribute = _nextSibling[node = _attribute];
+			return node;
+		}
+    } // end of AttributeIterator
+
+    private final class TypedAttributeIterator implements NodeIterator {
+		private final int _nodeType;
+		private int _attribute;
+	
+		public TypedAttributeIterator(int nodeType) {
+			_nodeType = nodeType;
+		}
+		
+		public NodeIterator setStartNode(int node) {
+			for (node = _lengthOrAttr[node];
+				 node != NULL && _type[node] != _nodeType;
+				 node = _nextSibling[node])
+				;
+			_attribute = node;
+			return this;
+		}
+		
+		public int next() {
+			final int node = _attribute;
+			_attribute = NULL;
+			return node;
+		}
+    } // end of AttributeIterator
+
+	/**************************************************************
+	 * iterates through preceding siblings of argument node
+	 */
+    private final class PrecedingSiblingIterator implements NodeIterator {
+		private int _start;
+		private int _node;
+	
+		public NodeIterator setStartNode(int node) {
+			_node = _offsetOrChild[_parent[_start = node]];
+			return this;
+		}
+		
+		public int next() {
+			return _node == _start ? NULL : (_node = _nextSibling[_node]);
+		}
+    } // end of PrecedingSiblingIterator
+
+
+	/**************************************************************
+	 * iterates through preceding nodes of argument node
+	 */
+    private final class PrecedingIterator implements NodeIterator {
+		private int _limit;
+		//  _node precedes search for next
+		private int _node;
+	
+		public NodeIterator setStartNode(int node) {
+			_limit = leftmostDescendant(node);
+			_node = leftmostDescendant(_parent[node]) - 1;
+			return this;
+		}
+		
+		public int next() {
+			// one after either ROOTNODE or previous returned
+			int node = _node + 1;
+			while (node < _limit && _parent[node] == 0)
+				++node;
+			// iteration stops when at _start or at non-attribute
+			return node == _limit ? NULL : (_node = node);
+		}
+    } // end of PrecedingIterator
+
+
+    private class FollowingIterator implements NodeIterator {
+		//  _node precedes search for next
+		protected int _node;
+		
+		public NodeIterator setStartNode(int node) {
+			// find rightmost descendant (or self)
+			int current;
+			while ((node = lastChild(current = node)) != 0)
+				;
+			_node = current;
+			// _node precedes possible following(node) nodes
+			return this;
+		}
+		
+		public int next() {
+			final int limit = _parent.length;
+			int node = _node + 1;
+			while (node < limit && _parent[node] == -1)
+				++node;
+			// iteration stops when at end or at non-attribute
+			return node == limit ? NULL : (_node = node);
+		}
+	} // end of FollowingIterator
+	
+    private final class TypedFollowingIterator extends FollowingIterator {
+		private final int _nodeType;
+
+		public TypedFollowingIterator(int type) {
+			_nodeType = type;
+		}
+		
+		public int next() {
+			final int limit = _parent.length;
+			int node = _node + 1;
+			final int type = _nodeType;
+			// skipping attributes and nodes not of desired type
+			while (node < limit && (_parent[node] == -1 || _type[node] != type))
+				++node;
+			// iteration stops when at end or at non-attribute
+			return node == limit ? NULL : (_node = node);
+		}
+	} // end of TypedFollowingIterator
+	
+	private final class AncestorIterator implements NodeIterator {
+		// ancestors in reverse document order
+		private final IntegerArray _nodes = new IntegerArray(8);
+		// (diminishing) index of node to return next
+		private int _index;
+		
+		public NodeIterator setStartNode(int node) {
+			_nodes.clear();
+			// up to and including ROOT
+			while ((node = _parent[node]) > NULL)
+				_nodes.add(node);
+			// nodes will be read back from the array
+			// set _index at last node (if any)
+			_index = _nodes.cardinality() - 1;
+			return this;
+		}
+		
+		public int next() {
+			return _index >= 0 ? _nodes.at(_index--) : NULL;
+		}
+	} // end of AncestorIterator
+	
+	private final class TypedAncestorIterator implements NodeIterator {
+		private final int _nodeType;
+		// ancestors in reverse document order
+		private final IntegerArray _nodes = new IntegerArray(8);
+		// (diminishing) index of node to return next
+		private int _index;
+		
+		public TypedAncestorIterator(int type) {
+			_nodeType = type;
+		}
+
+		public NodeIterator setStartNode(int node) {
+			_nodes.clear();
+			// up to and including ROOT
+			while ((node = _parent[node]) > NULL)
+				if (_type[node] == _nodeType)
+					_nodes.add(node);
+			// nodes will be read back from the array
+			// set _index at last node (if any)
+			_index = _nodes.cardinality() - 1;
+			return this;
+		}
+		
+		public int next() {
+			return _index >= 0 ? _nodes.at(_index--) : NULL;
+		}
+	} // end of TypedAncestorIterator
+
+
+    private class DescendantIterator implements NodeIterator {
+		//  _node precedes search for next
+		protected int _node;
+		// first node outside descendant range
+		protected int _limit;
+		
+		public NodeIterator setStartNode(int node) {
+			// no descendents if no children
+			if (_offsetOrChild[_node = node] == 0)
+				// set _limit to match next()'s criteria for end
+				_limit = node + 1;
+			// find leftmost descendant of next sibling
+			else if ((node = _nextSibling[node]) == 0)
+				// no next sibling, array end is the limit
+				_limit = _parent.length;
+			else
+				_limit = leftmostDescendant(node);
+			return this;
+		}
+
+		public int next() {
+			final int limit = _limit;
+			int node = _node + 1; // start search w/ next
+			while (node < limit && _parent[node] == -1)
+				++node;
+			// iteration stops when at end or at non-attribute
+			return node == limit ? NULL : (_node = node);
+		}
+	} // end of DescendantIterator
+
+	private final class TypedDescendantIterator extends DescendantIterator {
+		private final int _nodeType;
+		
+		public TypedDescendantIterator(int type) {
+			_nodeType = type;
+		}
+		
+		public int next() {
+			final int limit = _limit;
+			int node = _node + 1; // start search w/ next
+			final int type = _nodeType;
+			// while condition == which nodes to skip
+			while (node < limit && (_parent[node] == -1 || _type[node] != type))
+				++node;
+			// iteration stops when at end or at non-attribute w/ desired type
+			return node == limit ? NULL : (_node = node);
+		}
+	} // end of TypedDescendantIterator
+
+	private int leftmostDescendant(int node) {
+		int current;
+		while (_type[current = node] >= NTYPES 
+			   && (node = _offsetOrChild[node]) != 0)
+			;
+		return current;
+	}
+
+	/** returns index of last child or 0 if no children */
+	private int lastChild(int node) {
+		int child;
+		if ((child = _offsetOrChild[node]) != 0) {
+			while ((child = _nextSibling[node = child]) != 0)
+				;
+			return node;
+		}
+		else
+			return 0;
+	}
+	
+	/** returns singleton iterator containg the document root */
+	public NodeIterator getIterator() {
+		return new SingletonIterator(ROOTNODE);
+	}
+
+    public int getType(final int node) {
+		return _type[node];
+    }
+
+    public byte[] getTypeArray() {
+		return _type;
+    }
+
+    public String getNodeValue(final int node) {
+		switch(_type[node]) {
+			//!!! needs more types
+		case ROOT:
+			return getNodeValue(_offsetOrChild[node]);
+		case TEXT:
+			return makeStringValue(node);
+		default:
+			return _parent[node] != -1
+				? getElementValue(node) // element string value
+				: makeStringValue(node); // attribute value
+		}
+    }
+
+    public int getParent(final int node) {
+		return _parent[node];
+    }
+
+    /** get mapping from dom types to external types */
+    public byte[] getMapping(String[] names) {
+		final int namesLength = names.length;
+		final int mappingLength = _namesArray.length + NTYPES;
+		final byte[] result = new byte[mappingLength];
+	
+		// primitive types map to themselves
+		for (int i = 0; i < NTYPES; i++) {
+			result[i] = (byte)i;
+		}
+		// extended types initialized to "beyond caller's types"
+		// unknown (some) element
+		for (int i = NTYPES; i < mappingLength; i++) {
+			result[i] = ELEMENT;
+		}
+		// actual mapping of caller requested names
+		for (int i = 0; i < namesLength; i++) {
+			final int gType = getGeneralizedType(names[i]);
+			result[gType != -1 ? gType : ELEMENT] = (byte)(i + NTYPES);
+		}
+		return result;
+    }
+
+    /** get mapping from external types to dom types */
+    public byte[] getReverseMapping(String[] names) {
+		final byte[] result = new byte[names.length + NTYPES];
+		// primitive types map to themselves
+		for (int i = 0; i < NTYPES; i++) {
+			result[i] = (byte)i;
+		}
+		// caller's types map into appropriate dom types
+		for (int i = 0; i < names.length; i++) {
+			result[i + NTYPES] = (byte)getGeneralizedType(names[i]);
+		}
+		return result;
+    }
+    
+    /** utility function to returned external type of a node */
+    public int getMappedType(final int node, final byte[] mapping) {
+		return mapping[_type[node]];
+    }
+
+	public DOM() {
+		this(8 * 1024);
+	}
+
+    public DOM(int size) {
+		_type          = new byte[size];
+		_parent        = new int[size];
+		_nextSibling   = new int[size];
+		_offsetOrChild = new int[size];
+		_lengthOrAttr  = new int[size];
+		_text          = new char[8*size];
+		// _namesArray will be allocated at endDocument
+    }
+
+    public void print(int node, int level) {
+		switch(_type[node]) {
+		case ROOT:
+			print(_offsetOrChild[node], level);
+			break;
+		case TEXT:
+			System.out.print(makeStringValue(node));
+			break;
+		case PROCESSING_INSTRUCTION:
+		case COMMENT:
+			System.out.println("***PI/CMT***");
+			break;
+		default:		// element
+			final String name = getNodeName(node);
+			System.out.print("<" + name);
+			for (int a = _lengthOrAttr[node]; a != NULL; a = _nextSibling[a])
+				System.out.print("\n" + getNodeName(a) + "=\"" + makeStringValue(a) + "\"");
+			System.out.print('>');
+			for (int child = _offsetOrChild[node]; child != NULL; child = _nextSibling[child])
+				print(child, level + 1);
+			System.out.println("</" + name + '>');
+			break;
+		}
+    }
+
+    /** applies to named nodes (attributes & elements) */
+    public String getNodeName(final int node) {
+		return _namesArray[_type[node] - NTYPES];
+    }
+
+    private String makeStringValue(final int node) {
+		return new String(_text, _offsetOrChild[node], _lengthOrAttr[node]);
+    }
+
+    public int getGeneralizedType(final String name) {
+		for (int i = 0; i < _namesArray.length; i++)
+			if (name.equals(_namesArray[i]))
+				return i + NTYPES;
+		return -1;
+    }
+
+    public String getAttributeValue(final int node,
+									final int eType,
+									final byte[] reverseMapping) {
+		return getAttributeValue(node, reverseMapping[eType]);
+    }
+    
+    public String getAttributeValue(final int node, final int gType) {
+		for (int attr = _lengthOrAttr[node];
+			 attr != NULL;
+			 attr = _nextSibling[attr])
+			if (_type[attr] == gType)
+				return makeStringValue(attr);
+		return EMPTYSTRING;
+    }
+
+    public boolean hasAttribute(final int node, final int gType) {
+		for (int attr = _lengthOrAttr[node];
+			 attr != NULL;
+			 attr = _nextSibling[attr])
+			if (_type[attr] == gType)
+				return true;
+		return false;
+    }
+
+    public NodeIterator getChildren(final int element) {
+		return _offsetOrChild[element] == 0
+			? EMPTYITERATOR		// to avoid creation of Iterator object
+			: (new ChildrenIterator()).setStartNode(element);
+    }
+
+    public NodeIterator getTypedChildren(int type) {
+		return new TypedChildrenIterator(type);
+    }
+
+	public NodeIterator getAncestorIterator() {
+		return new AncestorIterator();
+    }
+
+	public NodeIterator getChildrenIterator() {
+		return new ChildrenIterator();
+    }
+
+	public NodeIterator getParentIterator() {
+		return new ParentIterator();
+    }
+
+	public NodeIterator getDescendantIterator() {
+		return new DescendantIterator();
+    }
+
+	public NodeIterator getPrecedingIterator() {
+		return new PrecedingIterator();
+    }
+
+	public NodeIterator getFollowingIterator() {
+		return new FollowingIterator();
+    }
+
+	public NodeIterator getPrecedingSiblingIterator() {
+		return new PrecedingSiblingIterator();
+    }
+
+	public NodeIterator getFollowingSiblingIterator() {
+		return new FollowingSiblingIterator();
+    }
+
+	public NodeIterator getAxisIterator(final int axis) {
+		switch (axis) {
+		case Axis.SELF:
+			return new SingletonIterator();
+		case Axis.CHILD:
+			return new ChildrenIterator();
+		case Axis.PARENT:
+			return new ParentIterator();
+		case Axis.ANCESTOR:
+			return new AncestorIterator();
+		case Axis.ATTRIBUTE:
+			return new AttributeIterator();
+		case Axis.DESCENDANT:
+			return new DescendantIterator();
+		case Axis.FOLLOWING:
+			return new FollowingIterator();
+		case Axis.PRECEDING:
+			return new PrecedingIterator();
+		case Axis.FOLLOWINGSIBLING:
+			return new FollowingSiblingIterator();
+		case Axis.PRECEDINGSIBLING:
+			return new PrecedingSiblingIterator();
+		default:
+			return EMPTYITERATOR;
+		}
+	}
+
+	public NodeIterator getTypedAxisIterator(final int axis, final int type) {
+		//!! finish these types or implement by filtering
+		switch (axis) {
+		case Axis.SELF:
+			return new SingletonIterator();
+		case Axis.CHILD:
+			return new TypedChildrenIterator(type);
+		case Axis.PARENT:
+			return new ParentIterator();
+		case Axis.ANCESTOR:
+			return new TypedAncestorIterator(type);
+		case Axis.ATTRIBUTE:
+			return new TypedAttributeIterator(type);
+		case Axis.DESCENDANT:
+			return new TypedDescendantIterator(type);
+		case Axis.FOLLOWING:
+			return new TypedFollowingIterator(type);
+		case Axis.PRECEDING:
+			return new PrecedingIterator();
+		case Axis.FOLLOWINGSIBLING:
+			return new FollowingSiblingIterator();
+		case Axis.PRECEDINGSIBLING:
+			return new PrecedingSiblingIterator();
+		default:
+			return EMPTYITERATOR;
+		}
+	}
+
+    public void characters(final int textNode, HandlerBase handler)
+		throws SAXException {
+		handler.characters(_text,
+						   _offsetOrChild[textNode],
+						   _lengthOrAttr[textNode]);
+    }
+
+	public void copy(final int node, HandlerBase handler)
+		throws SAXException {
+		switch(_type[node]) {
+		case ROOT:
+			handler.startDocument();
+			copy(_offsetOrChild[node], handler);
+			handler.endDocument();
+			break;
+			//!!! TODO other types
+		case PROCESSING_INSTRUCTION:
+		case COMMENT:
+			break;
+		case TEXT:
+			handler.characters(_text,
+							   _offsetOrChild[node],
+							   _lengthOrAttr[node]);
+			break;
+		default:		// element
+			final String name = getNodeName(node);
+			handler.startElement(name, null);
+			/*
+			  for (int attr = _lengthOrAttr[node];
+			  attr != NULL;
+			  attr = _nextSibling[attr])
+			  System.out.print("\n" + getNodeName(attr) + "=\"" + makeStringValue(attr) + "\"");
+			*/
+			for (int child = _offsetOrChild[node];
+				 child != NULL;
+				 child = _nextSibling[child])
+				copy(child, handler);
+			handler.endElement(name);
+			break;
+		}
+	}
+
+	//!!! need to split into start/end
+	public void shallowCopy(final int node, HandlerBase handler)
+		throws SAXException {
+		switch(_type[node]) {
+		case ROOT:
+			// do nothing
+			break;
+		case PROCESSING_INSTRUCTION:
+		case COMMENT:
+			// !!! implement
+			break;
+		case TEXT:
+			handler.characters(_text,
+							   _offsetOrChild[node],
+							   _lengthOrAttr[node]);
+			break;
+		default:		// element
+			if (_parent[node] != -1) {
+				final String name = getNodeName(node);
+				//!!! not always empty
+				handler.startElement(name, EmptyAttributes);
+				handler.endElement(name);
+			}
+			//!!! do attributes
+			
+			break;
+			
+		}
+	}
+
+    public String getElementValue(final int element) {
+		StringBuffer buffer = new StringBuffer();
+		stringValueAux(buffer, element);
+		return buffer.toString();
+    }
+
+    private void stringValueAux(StringBuffer buffer, final int element) {
+		for (int child = _offsetOrChild[element];
+			 child != NULL;
+			 child = _nextSibling[child])
+			switch (_type[child]) {
+			case TEXT:
+				buffer.append(_text, _offsetOrChild[child], _lengthOrAttr[child]);
+				break;
+			case PROCESSING_INSTRUCTION:
+			case COMMENT:
+				break;
+				
+				// !!! at the moment default can only be an element
+			default:
+				stringValueAux(buffer, child);
+			}
+    }
+
+    public HandlerBase getBuilder() {
+		return new DOMBuilder();
+    }
+
+    private final class DOMBuilder extends HandlerBase {
+		private final static int REUSABLE_TEXT_SIZE = 32;
+		private Hashtable _shortTexts           = null;
+
+		private Hashtable _names                = null;
+		private Vector    _nameVector           = null;
+		private int       _nextNameNo           = NTYPES;
+		private int[]     _parentStack          = new int[64];
+		private int[]     _previousSiblingStack = new int[64];
+		private int       _sp;
+		private int       _baseOffset           = 0;
+		private int       _currentOffset        = 0;
+		private int       _currentNode          = 0;
+	
+		private byte internName(String name) {
+			Integer obj = (Integer)_names.get(name);
+			if (obj == null) {
+				_names.put(name, obj = new Integer(_nextNameNo++));
+				_nameVector.addElement(name);
+			}
+			return (byte)obj.intValue();
+		}
+	
+		private int nextNode() {
+			final int index = _currentNode++;
+			if (index == _type.length)
+				resizeArrays(_type.length * 2, index);
+			return index;
+		}
+
+		private void resizeTextArray(final int newSize) {
+			char[] newText = new char[newSize];
+			System.arraycopy(_text, 0, newText, 0, _currentOffset);
+			_text = newText;
+		}
+	
+		private void resizeArrays(final int newSize, final int length) {
+			byte[] newType = new byte[newSize];
+			System.arraycopy(_type, 0, newType, 0, length);
+			_type = newType;
+			int[] newParent = new int[newSize];
+			System.arraycopy(_parent, 0, newParent, 0, length);
+			_parent = newParent;
+			int[] newNextSibling = new int[newSize];
+			System.arraycopy(_nextSibling, 0, newNextSibling, 0, length);
+			_nextSibling = newNextSibling;
+			int[] newOffsetOrChild = new int[newSize];
+			System.arraycopy(_offsetOrChild, 0, newOffsetOrChild, 0, length);
+			_offsetOrChild = newOffsetOrChild;
+			int[] newLengthOrAttr = new int[newSize];
+			System.arraycopy(_lengthOrAttr, 0, newLengthOrAttr, 0, length);
+			_lengthOrAttr = newLengthOrAttr;
+		}
+
+		private void linkChildren(final int node) {
+			_parent[node] = _parentStack[_sp];
+			if (_previousSiblingStack[_sp] != 0) // current not first child
+				_nextSibling[_previousSiblingStack[_sp]] = node;
+			else
+				_offsetOrChild[_parentStack[_sp]] = node;
+			_previousSiblingStack[_sp] = node;
+		}
+
+		private void maybeCreateTextNode() {
+			if (_currentOffset > _baseOffset) {
+				final int node = nextNode();
+				_type[node] = TEXT;
+				linkChildren(node);
+				storeTextRef(node);
+			}
+		}
+
+		private void storeTextRef(final int node) {
+			final int length = _currentOffset - _baseOffset;
+			if (length <= REUSABLE_TEXT_SIZE) {
+				final String string = new String(_text, _baseOffset, length);
+				final Integer indexObj = (Integer)_shortTexts.get(string);
+				if (indexObj != null) {
+					final int index = indexObj.intValue();
+					// reuse previous string reference
+					//    System.out.println("reused: " + string);
+					_offsetOrChild[node] = _offsetOrChild[index];
+					_lengthOrAttr[node]  = _lengthOrAttr[index];
+					// step back current
+					_currentOffset = _baseOffset;
+					// we are done
+					return;
+				}
+				else
+					_shortTexts.put(string, new Integer(node));
+			}
+			_offsetOrChild[node] = _baseOffset;
+			_lengthOrAttr[node] = length;
+			// advance base to current
+			_baseOffset = _currentOffset;
+		}
+	
+		public void startDocument() {
+			_shortTexts     = new Hashtable();
+			_names          = new Hashtable();
+			_nameVector     = new Vector();
+			_sp             = 0;
+			_parentStack[0] = ROOTNODE;	// root
+			_currentNode    = ROOTNODE + 1;
+		}
+
+		public void endDocument() {
+			final int namesSize = _nameVector.size();
+			_shortTexts = null;
+			_names = null;
+			_namesArray = new String[namesSize];
+			/* java1 doesn't have toArray
+			   _nameVector.toArray(_namesArray); */
+			for (int i = 0; i < namesSize; i++)
+				_namesArray[i] = (String)_nameVector.elementAt(i);
+			_nameVector = null;
+			// reduce arrays' sizes
+			resizeTextArray(_currentOffset);
+			resizeArrays(_currentNode, _currentNode);
+			// System.out.println("current node = " + _currentNode);
+			// System.out.println("current offset = " + _currentOffset);
+		}
+	
+		public void startElement(String name, AttributeList attList) {
+			maybeCreateTextNode();
+			final int node = nextNode();
+			_type[node] = internName(name);
+			linkChildren(node);
+			_parentStack[++_sp] = node;
+			if (attList != null && attList.getLength() > 0) {
+				int attrNode = makeAttributeNode(attList, 0);
+				_lengthOrAttr[node] = attrNode;	// first attr
+				for (int i = 1; i < attList.getLength(); i++) {
+					int attrNode2 = makeAttributeNode(attList, i);
+					_nextSibling[attrNode] = attrNode2;
+					attrNode = attrNode2;
+				}
+			}
+		}
+	
+		private int makeAttributeNode(AttributeList attList, int i) {
+			final int node = nextNode();
+			_type[node] = internName(attList.getName(i));
+			_parent[node] = -1;
+			characters(attList.getValue(i));
+			storeTextRef(node);
+			return node;
+		}
+	
+		public void endElement(String elementName) {
+			maybeCreateTextNode();
+			_previousSiblingStack[_sp--] = 0; // reset
+		}
+
+		public void processingInstruction(String target, String data) {
+			maybeCreateTextNode();
+			final int node = nextNode();
+			_type[node] = PROCESSING_INSTRUCTION;
+			linkChildren(node);
+			characters(target + ' ' + data);
+			storeTextRef(node);
+		}
+		
+		public void characters(final String string) {
+			final int length = string.length();
+			if (_currentOffset + length > _text.length)
+				resizeTextArray(_text.length * 2);
+			string.getChars(0, length, _text, _currentOffset);
+			_currentOffset += length;
+		}
+
+		// can accumulate text from consecutive calls
+		public void characters(char[] ch, int start, int length) {
+			if (_currentOffset + length > _text.length)
+				resizeTextArray(_text.length * 2);
+			System.arraycopy(ch, start, _text, _currentOffset, length);
+			_currentOffset += length;
+		}
+    } // end of DOMBuilder
+}

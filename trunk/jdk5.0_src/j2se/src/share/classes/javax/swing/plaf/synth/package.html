@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<!--
+ @(#)package.html	1.18 04/06/18
+ 
+ Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+ SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+-->
+</head>
+<body bgcolor="white">
+    <p>
+      Synth is a skinnable look and feel in which all painting is
+      delegated. Synth does not provide a default look. In
+      order to use Synth you need to specify a
+      <a href="doc-files/synthFileFormat.html">file</a>, or 
+      provide a {@link
+      javax.swing.plaf.synth.SynthStyleFactory}. Both 
+      configuration options require an 
+      understanding of the synth architecture, which is described
+      below, as well as an understanding of Swing's architecture.
+    </p>
+    <p>
+      
+
+    <h2>Synth</h2>
+    <p>
+      Each {@link javax.swing.plaf.ComponentUI} implementation in Synth associates
+      itself with one {@link
+      javax.swing.plaf.synth.SynthStyle} per {@link
+      javax.swing.plaf.synth.Region}, most
+      <code>Components</code> only have one <code>Region</code> and
+      therefor only one <code>SynthStyle</code>.
+      <code>SynthStyle</code>
+      is used to access all style related properties: fonts, colors
+      and other <code>Component</code> properties. In addition
+      <code>SynthStyle</code>s are used to obtain 
+      {@link javax.swing.plaf.synth.SynthPainter}s for painting the background, border,
+      focus and other portions of a <code>Component</code>. The <code>ComponentUI</code>s obtain
+      <code>SynthStyle</code>s from a
+      {@link javax.swing.plaf.synth.SynthStyleFactory}.
+      A <code>SynthStyleFactory</code>
+      can be provided directly by way of 
+      {@link javax.swing.plaf.synth.SynthLookAndFeel#setStyleFactory(javax.swing.plaf.synth.SynthStyleFactory)},
+      or indirectly by way of
+      {@link javax.swing.plaf.synth.SynthLookAndFeel#load}. The
+      following example uses the <code>SynthLookAndFeel.load()</code>
+      method to configure a <code>SynthLookAndFeel</code> and sets it
+      as the current look and feel:
+    </p>
+    <div class="example">
+      <pre>
+  SynthLookAndFeel laf = new SynthLookAndFeel();
+  laf.load(MyClass.class.getResourceAsStream("laf.xml"), MyClass.class);
+  UIManager.setLookAndFeel(laf);
+      </pre>
+    </div>
+    <p>
+      Many <code>JComponent</code>s are broken down into smaller
+      pieces and identified by the type safe enumeration in
+      {@link javax.swing.plaf.synth.Region}. For example, a <code>JTabbedPane</code>
+      consists of a <code>Region</code> for the
+      <code>JTabbedPane</code> ({@link
+      javax.swing.plaf.synth.Region#TABBED_PANE}), the content
+      area ({@link
+      javax.swing.plaf.synth.Region#TABBED_PANE_CONTENT}), the
+      area behind the tabs ({@link
+      javax.swing.plaf.synth.Region#TABBED_PANE_TAB_AREA}), and the
+      tabs ({@link
+      javax.swing.plaf.synth.Region#TABBED_PANE_TAB}). Each
+      <code>Region</code> of each
+      <code>JComponent</code> will have a
+      <code>SynthStyle</code>. This allows 
+      you to customize individual pieces of each region of each
+      <code>JComponent</code>.
+    <p>
+      Many of the Synth methods take a {@link javax.swing.plaf.synth.SynthContext}. This 
+      is used to provide information about the current
+      <code>Component</code> and includes: the
+      {@link javax.swing.plaf.synth.SynthStyle} associated with the current
+      {@link javax.swing.plaf.synth.Region}, the state of the <code>Component</code>
+      as a bitmask (refer to {@link
+      javax.swing.plaf.synth.SynthConstants} for the valid
+      states), and a {@link javax.swing.plaf.synth.Region} identifying the portion of 
+      the <code>Component</code> being painted.
+    <p>
+      All text rendering by non-<code>JTextComponent</code>s is
+      delegated to a {@link
+      javax.swing.plaf.synth.SynthGraphicsUtils}, which is
+      obtained using the {@link javax.swing.plaf.synth.SynthStyle} method
+      {@link javax.swing.plaf.synth.SynthStyle#getGraphicsUtils}. You can
+      customize text rendering 
+      by supplying your own {@link javax.swing.plaf.synth.SynthGraphicsUtils}.
+
+    </p>
+    <p>
+      Unless otherwise specified null is not a legal value to any of
+      the methods defined in the synth package and if passed in will
+      result in a <code>NullPointerException</code>.
+  </body>
+</html>

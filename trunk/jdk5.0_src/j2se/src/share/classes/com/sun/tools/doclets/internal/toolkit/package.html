@@ -1,0 +1,36 @@
+<html>
+<head>
+<title>com.sun.tools.doclets.internal.toolkit package</title>
+<!--
+ @(#)package.html	1.6 03/12/19
+ 
+ Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+ SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+-->
+</head>
+<body bgcolor="white">
+
+        Contains the base classes that make up a doclet.  Doclets that reuse
+        the functionality provided by the toolkit should have the following
+        characteristics:
+        <ul>
+            <li> 
+                The main driver class should extend 
+                {@link com.sun.tools.doclets.internal.toolkit.AbstractDoclet}.
+            </li>
+            <li> 
+                The doclet configuration class should extend 
+                {@link com.sun.tools.doclets.internal.toolkit.Configuration}.
+            </li>
+            <li> 
+                The doclet should have a writer factory that implements
+                {@link com.sun.tools.doclets.internal.toolkit.WriterFactory}.  
+                This class constructs writers that write doclet specific output.
+            </li>
+            <li> 
+                The doclet should have a taglet writer that extends
+                {@link com.sun.tools.doclets.internal.toolkit.taglets.TagletWriter}. 
+                 This writer determines how to output each given tag.
+            </li>
+    </body>
+</html>

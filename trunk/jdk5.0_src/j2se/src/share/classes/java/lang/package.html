@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<!--
+ @(#)package.html	1.13 03/12/19
+ 
+ Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+ SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+-->
+
+</head>
+<body bgcolor="white">
+
+Provides classes that are fundamental to the design of the Java
+programming language. The most important classes are <code>Object</code>,
+which is the root of the class hierarchy, and <code>Class</code>, instances of
+which represent classes at run time.
+<p>
+Frequently it is necessary to represent a value of primitive type as
+if it were an object. The wrapper classes <code>Boolean</code>,
+<code>Character</code>, <code>Integer</code>, <code>Long</code>, <code>Float</code>, and
+<code>Double</code> serve this purpose. An object of type <code>Double</code>,
+for example, contains a field whose type is double, representing that
+value in such a way that a reference to it can be stored in a variable
+of reference type. These classes also provide a number of methods for
+converting among primitive values, as well as supporting such
+standard methods as equals and hashCode.  The <code>Void</code> class is a
+non-instantiable class that holds a reference to a <code>Class</code> object
+represening the primitive type void.
+<p>
+The class <code>Math</code> provides commonly used mathematical functions such
+as sine, cosine, and square root. The classes <code>String</code> and
+<code>StringBuffer</code> similarly provide commonly used operations on
+character strings.
+<p>
+Classes <code>ClassLoader</code>, <code>Process</code>, <code>Runtime</code>,
+<code>SecurityManager</code>, and <code>System</code> provide "system operations"
+that manage the dynamic loading of classes, creation of external processes,
+host environment inquiries such as the time of day, and enforcement of
+security policies.
+<p>
+Class <code>Throwable</code> encompasses objects that may be thrown by the
+throw statement (&sect;14.16). Subclasses of <code>Throwable</code> represent errors
+and exceptions.
+<p>
+<h2>Package Specification</h2>
+
+
+<a name="charenc"></a>
+<h3>Character Encodings</h3>
+
+The specification of the {@link java.nio.charset.Charset
+java.nio.charset.Charset} class describes the naming conventions for character
+encodings as well as the set of standard encodings that must be supported by
+every implementation of the Java platform.
+
+
+<!--
+<ul>
+  <li><a href="">##### REFER TO ANY FRAMEMAKER SPECIFICATION HERE #####</a>
+</ul>
+
+<h2>Related Documentation</h2>
+
+For overviews, tutorials, examples, guides, and tool documentation, please see:
+<ul>
+  <li><a href="">##### REFER TO NON-SPEC DOCUMENTATION HERE #####</a>
+</ul>
+-->
+
+@since JDK1.0
+</body>
+</html>

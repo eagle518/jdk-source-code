@@ -1,0 +1,49 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.5 [en] (WinNT; I) [Netscape]">
+   <title>package</title>
+<!--
+ @(#)package.html	1.12 03/12/19
+ 
+ Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+ SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+-->
+</head>
+<body bgcolor="#FFFFFF">
+The CORBA_2_3 package defines additions to existing CORBA interfaces
+in the Java 2 Standard Edition.&nbsp;&nbsp; These changes occurred in recent
+revisions to the CORBA API defined by the OMG.&nbsp; The new methods were
+added to&nbsp; interfaces derived from the corresponding interfaces in
+the CORBA package.&nbsp; This provides backward compatibility and avoids
+breaking the JCK tests.
+
+<H3>Package Specification</H3>
+ 
+<P>For a precise list of supported sections of official specifications with which 
+the Java 2 Platform, Standard Edition, v.1.4 ORB complies, see <A 
+HREF="../CORBA/doc-files/compliance.html">Official Specifications for CORBA 
+support in J2SE 1.4</A>.
+<P>
+<a name="unimpl"></a>
+The following methods in the abstract class 
+<code>org.omg.CORBA_2_3.ORB</code> are unimplemented:
+<UL>
+  <code>
+  <LI>public org.omg.CORBA.portable.ValueFactory 
+  <b>register_value_factory(String id, org.omg.CORBA.portable.ValueFactory 
+factory)</b>
+  <LI>public void <b>unregister_value_factory(String id)</b>
+  <LI>public org.omg.CORBA.portable.ValueFactory 
+  <b>lookup_value_factory(String id)</b>
+  <LI>public org.omg.CORBA.Object <b>get_value_def(String repid)</b>
+  <LI>public void <b>set_delegate(java.lang.Object wrapper)</b>
+  </code>
+</UL>
+@since JDK 1.3
+<br>
+@serial exclude
+
+</body>
+</html>
