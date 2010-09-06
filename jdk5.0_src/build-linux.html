@@ -1,0 +1,446 @@
+<html><head>
+    <!-- @(#)build-linux.html	1.41 04/10/15 -->
+    <title>Linux Build Instructions</title>
+  </head>
+  <body bgcolor="#ffffff">
+    
+    <!-- ------------------------------------------------------ -->
+    
+  <TABLE BORDER="0" WIDTH="100%">
+  <TR>
+  <TD WIDTH=40>
+  <IMG SRC="javalogo52x88.gif" ALT="Java" BORDER=0 WIDTH=52 HEIGHT=88>
+  </TD>
+    
+  <TD ALIGN=CENTER>
+  <center><h1>
+    Linux Build Instructions
+  </h1>
+  <h2>
+    Java<sup><font size=-2>TM</font></sup> 2 Platform Standard Edition, v5.0 fcs
+  <br>
+  </h2></center>
+  </TD>
+    
+  <TD ALIGN=RIGHT VALIGN=TOP>
+  <FONT SIZE="-1"><a href=build.html>Build Overview</a></FONT> 
+  </TD>
+  </TR>
+    
+  </TABLE>
+    
+  <HR SIZE=3 NOSHADE>
+    
+    <!-- ------------------------------------------------------ -->
+    
+    <h2>Contents</h2>
+    <ul>
+      <li><a href="#intro">Introduction</a></li>
+      <li><a href="#setup">Linux System Setup</a></li>
+      <li><a href="#buildtools">Linux Build Tools and Libraries Setup</a></li>
+      <li><a href="#environmentvariables">Linux Build Environment Variables</a></li>
+      <li><a href="#build">Linux Build</a></li>
+    </ul>
+    
+    <!-- ------------------------------------------------------ -->
+    
+  <a name="intro">
+  <h2>Introduction</h2></a>
+  <blockquote>
+    This README file contains build instructions for the 
+    Java<sup><font size=-2>TM</font></sup> 2 Platform 
+    Standard Edition, v5.0 (JDK 5.0) Community Source Release.  Building the 
+    source code for the JDK requires a high level of technical 
+    expertise.  Sun provides the source code primarily for 
+    technical experts who want to conduct research, port the platform 
+    to new operating systems and hardware, or add enhancements that 
+    require access to platform internals.  If you are not a technical 
+    professional in one of these categories, this release is probably 
+    not for you.  
+  </blockquote>
+    
+    <!-- ------------------------------------------------------ -->
+    
+    <a name="setup">
+    <h2>Linux System Setup</h2></a>
+    <blockquote>
+      The official build platform for the JDK 5.0 is Redhat
+      Enterprise Advanced Server 2.1. Formerly known as Redhat Advanced Server 2.1.
+      <p>
+	The minimum recommended hardware for building the Linux version 
+	is a Pentium class processor or better, at least 256 MB 
+	of RAM, and approximately 1.5 GB of free disk space.
+      <p>
+        Itanium 64-BIT-ONLY: The official build platform for the itanium 64-bit version of JDK 5.0 is
+        Redhat Enterprise Advanced Server 2.1 -  64Bit Edition. The minimum recommended hardware 
+        for building the Linux-ia64 version is a Itanium 2 class processor, at least 1 GB of RAM, 
+        and approximately 4 GB of free disk space.
+
+      <p>
+        AMD 64-BIT-ONLY: The official build platform for the amd 64-bit version of JDK 5.0 is
+        Suse 8 Enterprise Server -  AMD64Bit Edition. The minimum recommended hardware 
+        for building the Linux-amd64 version is a AMD opteron class processor, at least 512 MB of RAM, 
+        and approximately 4 GB of free disk space.
+
+      <p>
+	The build uses the tools contained in <tt>/bin</tt> and 
+	<tt>/usr/bin</tt> of a standard installation of the 
+	Linux operating environment. You should ensure that these directories 
+	are on your <tt>PATH</tt>.
+    </blockquote>
+      
+      <a name="buildtools">
+    <h2>Linux Build Tools and Libraries Setup</h2></a>
+    <blockquote>
+      Once the Linux OS is set up, you will need to install additional tools and libraries
+      for building the JDK.
+    </blockquote>
+
+	<a name="binutils">
+    <h4>Binutils  (32-bit build only) </h4></a>
+    <blockquote>
+      The binutils package 2.11.93.0.2-11 or later is required. You can obtain binutils package 2.11.93.0.2-11
+      from <a href="http://www.redhat.com">Redhat web site </a>. You need to remove the default binutils package
+      shipped with Redhat Enterprise Advanced Server 2.1 and install the required binutils package 2.11.93.0.2-11 
+      or later into the default location.
+    <p>
+    </blockquote>
+      
+	<a name="gcc">
+    <h4>GCC Compiler</h4></a>
+    <blockquote>
+      A GNU gcc compiler version 3.2.2 is required or gcc 3.2.1-7 
+      built with the latest binutils package, version 2.13. This requirement 
+      is needed due to the presence of gcc assembler bugs in early versions. 
+      You need to remove the default compiler shipped with 
+      Redhat Enterprise Advanced Server 2.1 which is 2.96. However if you have a new video card driver, 
+      like Geforce 4 it is best to use the same compiler as the kernel was used to build the new module,
+      so either build the modules now or rebuild the kernel using gcc 3.x.
+      <p>
+      Itanium 64-BIT-ONLY:
+      The GNU gcc compiler version 2.96 is required.  This compiler is shipped with Red Hat 
+	    Enterprise Advanced Server 2.1.
+      <p>
+      AMD 64-BIT-ONLY:
+      The GNU gcc compiler version 3.2.2 is required.  This compiler is shipped with SuSE 8
+	    Enterprise Server (SLES). 
+      <p>
+      The compiler resides in the <tt>/usr/bin</tt> directory. If the compiler resides in a different
+	    directory on your machine, then set <tt>ALT_COMPILER_PATH</tt> to point to the location of 
+	    the GCC compiler binaries. The GCC compiler binaries must also be in the <tt>PATH</tt>.
+    <p>
+    </blockquote>
+    <a NAME="GCC29"></a>
+    <h4>
+      OJI Plug-in library Compiled with GCC 2.9 (32-bit build only)</h4>
+
+    <blockquote>To support Mozilla compiled with GCC egcs 2.91.66 on Linux platform,
+      you need to build OJI Plug-in library using GNU gcc/g++ compiler version egcs 2.91.66.
+      <p>Case i: Using a single build system
+        <br>In this case, both default GCC 3.2 and GCC egcs 2.91.66 are made
+        to co-exist in the same build machine. Information on GCC egcs 2.91.66, including download
+        sites, is available on the <a href="http://gcc.gnu.org">GNU Gcc web site</a> 
+        set <tt>ALT_GCC29_COMPILER_PATH </tt>to point to the location
+        of GCC egcs 2.91.66 binary. If the GCC egcs 2.91.66 compiler resides in the 
+        <tt>/localtools/usr/bin</tt> directory then you must set <tt>ALT_GCC29_COMPILER_PATH</tt> to 
+        <tt>/localtools/usr/</tt>.
+      <p>Case ii: Using two build systems
+        <br>In this case, you need to build the OJI&nbsp;Plug-in library with GCC egcs 2.91.66
+        first before you start your primary linux-i586 build. You can build the OJI Plug-in 
+        library on another system where GCC egcs 2.91.66 comes as the default compiler such 
+        as RH 6.1. You can follow the guidelines below:</p>
+       <ul>
+           <li>Set up <a href=#mozilla>Mozilla headers</a></li>
+           <li>Set up J2SE and Deploy workspaces</li>
+           <li>cd into deploy/make/plugin/adapter directory.
+           <li>Start the OJI Plug-in library compiled with GCC egcs 2.91.66 build with the command<br>
+               &nbsp;&nbsp;&nbsp;&nbsp;<code>make all </code></li>
+           <li>The libjavaplugin_oji.so library will be in the $(OUTPUTDIR)/plugin/i386/ns7-gcc29
+                   directory.<br>
+        </li>
+        </ul>
+        <p>After successfully building the library, copy it to the
+        primary build system and set <tt>ALT_GCC29_PLUGIN_LIB_PATH </tt>to
+        point to the location of that library.</p>
+      </blockquote><dt>
+
+      <a name="bootdir">
+    <h4>Bootstrap JDK</h4></a>
+    <blockquote>
+      You will need access to a JDK 1.4.2 for Linux installation. The 1.4.2 binaries can be downloaded
+      from Sun's <a href="http://java.sun.com/j2se/1.4.2/download.html">JDK 1.4.2</a> download site.
+      Set <tt>ALT_BOOTDIR</tt> to point to the location of the bootstrap JDK installation.
+    </blockquote>
+      
+      <a name="gnumake">
+    <h4>GNU Make</h4></a>
+  <blockquote>
+      GNU make version 3.78.1 or later is required to build the JDK.
+      Information on GNU make, including download sites,
+      is available on the <a href="http://www.gnu.org/software/make/make.html">GNU Make web site</a>.
+      For convenience, place the GNU make binary in the <tt>PATH</tt>.
+  </blockquote>
+     
+      <a name="devtools">
+     <h4>zip</h4>
+    <blockquote>
+      The build requires <code>zip</code> version 2.2 (November 3rd 1997) or later.
+-->
+  Set <tt>ALT_DEVTOOLS_PATH</tt> to point to the location of this binary.
+      Information on zip, including download sites,
+      is available on the <a href="http://www.info-zip.org">info-zip web site</a>.
+  </blockquote>
+
+
+      <a name="motif">
+    <h4>Motif 2.1</h4></a>
+    <blockquote>
+    Motif version 2.1 headers and libraries are required for building the Linux
+    JDK.  (Motif 2.2 headers will not work.)
+          <p>
+          As a convenience, the source bundles include an archive
+          of motif workspace that incorporate a number of JDK-related
+          bug fixes. Target <code> <a href="#build">gnumake scsl </a></code> would automatically take care about
+          building our motif workspace and generate motif headers and libraries and
+          use them when it required in the build.
+
+                <pre>
+         +- $(OUTPUTDIR)/
+            +- motif/           (Automatically ALT_MOTIF_DIR set to this directory.)
+               +- include/
+               +- lib/
+                </pre>
+    </blockquote>
+
+    <p>
+
+      <a name="mozilla">
+    <h4>Mozilla Headers (32-bit build only)</h4>
+  <blockquote>
+          Mozilla headers are required for building Java Plug-in.  <a
+          href=http://wwws.sun.com/software/java2/download.html>Download</a>
+          and unpack the headers into a directory similar to the one
+          shown below, and set the <tt>ALT_MOZILLA_PATH</tt>
+          environment variable to the absolute path of the top-level
+          directory.
+
+    <pre>
+      +- devtools/          (set ALT_MOZILLA_PATH to this level)
+         +- share/
+            +- plugin/
+               +- mozilla_headers_ns7/
+    </pre>
+    The name of the top-level directory is 
+    not significant; it is not required to be named <tt>devtools</tt>.
+   </blockquote>
+<p>    
+      
+      <a name="cacerts">
+    <h4>cacerts</h4>
+    <blockquote>
+      A certificates file named "cacerts" represents a system-wide keystore 
+      with CA certificates. In JDK and JRE binary bundles, the "cacerts"
+      file contains root CA certificates from several public CAs (e.g., VeriSign,
+      Thawte, and Baltimore). 
+      <p>      
+	The source bundles contain a cacerts file without CA root certificates. 
+	JDK builders will need to secure permission from each public CA and
+	include the certificates into their own custom cacerts file. Failure to
+	provide a populated cacerts file will result in verification of a
+	certificate chain during runtime.
+      <p>      
+	The <tt>ALT_CACERTS_FILE</tt> should be set to point to the location of 
+	the populated cacerts file.</font>
+    </blockquote>
+    <p>
+      
+      <a name="alsa">
+    <h4>ALSA (i586, amd64) </h4>
+    <blockquote>
+      <a href="http://www.alsa-project.org" target="_blank">Advanced Linux Sound 
+	Architecture</a> version 0.9.1 or later is required for building the 
+      JDK.
+      <p>
+	Most modern Linux distributions ship with ALSA. On rpm-based systems,
+	you can see if ALSA is installed by running this command:
+	<pre>
+         rpm -qa | grep alsa</pre>
+      Both <code>alsa</code> and <code>alsa-devel</code> packages are needed.
+      <p>
+	If your distribution does not come with ALSA, you can install 
+	pre-built ALSA rpm packages, for example 
+	from <a href="http://www.freshrpms.net/" target="_blank">Fresh RPMs</a>. 
+	Make sure that you do not link to the static library (<tt>libasound.a</tt>),
+	by verifying that the dynamic library (<tt>libasound.so</tt>) is correctly 
+	installed in <tt>/usr/lib</tt>.
+      <p>
+	If you are unable to find a pre-built ALSA package,
+	you need to build it from the source distribution:
+	Download driver and library source tarballs from <a 
+	  href="http://www.alsa-project.org" target="_blank">ALSA's 
+	  homepage</a>. As root, execute the following commands (you may need to 
+	adapt the version number):<br>
+      <pre>
+      $ tar xjf alsa-driver-0.9.1.tar.bz2
+      $ cd alsa-driver-0.9.1
+      $ ./configure
+      $ make install
+      $ cd ..
+      $ tar xjf alsa-lib-0.9.1.tar.bz2
+      $ cd alsa-lib-0.9.1
+      $ ./configure
+      $ make install</pre>
+
+      Should one of the above steps fail, refer to the documentation on ALSA's
+      home page. Note that this is a minimum install that enables building the 
+      JDK platform. To actually use ALSA sound drivers, more steps are necessary
+      as outlined in the documentation on ALSA's homepage.<br>
+
+      ALSA can be uninstalled by executing <tt>make uninstall</tt> first in the 
+      <code>alsa-lib-0.9.1</code> directory and then in 
+      <code>alsa-driver-0.9.1</code>.
+      <p>
+    </blockquote>
+
+    <a name=environmentvariables>
+    <h2>Linux Build Environment Variables</h2></a>
+    <blockquote>
+      This section describes environment variables that you can set to 
+      influence various aspects of the build.  Some of these variables 
+      are mentioned specifically in the setup and build instructions 
+      above.  Others you may set at your discretion.
+      <p>
+	Environment variables may be set in the shell environment
+	or on the GNU make command line.
+      <p>
+      <dl>
+	<p><dt><tt>PATH</tt>
+	<dd>Set the <code>PATH</code> to contain:
+         <ul>
+            <li>The location of the GNU make binary</li>
+            <li>The location of the GCC compiler binaries
+		(usually /usr/bin, but see <tt>ALT_COMPILER_PATH</tt>)</li>
+	    <li><tt>/usr/bin</tt></li>
+	    <li><tt>/bin</tt></li>
+	  </ul>
+	  <p>
+	    
+	  <p><dt><tt>ALT_BOOTDIR</tt>
+	<dd>The location of the JDK 1.4.2 bootstrap installation.
+
+	  <p><dt><tt>ALT_OUTPUTDIR</tt>
+	<dd>An override for specifying
+	  the (absolute) path of where the build output is to go. 
+
+	  <a name="unixcommand">
+	  <p><dt><tt>ALT_UNIXCOMMAND_PATH</tt>
+	<dd>An override for specifying where the Unix <tt>/bin</tt> commands 
+	  are located. You usually do not need to set this variable: the default
+	  location is <tt>/bin</tt>.
+	  
+	  <p><dt><tt>ALT_USRBIN_PATH</tt>
+	<dd>An override for specifying where the Unix <tt>/usr/bin</tt> commands
+	  are located. You usually do not need to set this variable: the default
+	  location is <tt>/usr/bin</tt>)
+	  
+	  <p><dt><tt>ALT_COMPILER_PATH</tt>
+	<dd>An override for specifying the location of the GCC compiler.
+	  See <a href="#gcc">GCC Compiler</a> for details.
+
+      <p><dt><tt>ALT_GCC29_COMPILER_PATH</tt>
+    <dd>An override for specifying the location of the GCC 2.9 compiler. See <a href="#gcc">OJI Plug-in library Compiled with GCC 2.9
+      </a> for details.
+          
+      <p><dt><tt>ALT_GCC29_PLUGIN_LIB_PATH</tt>
+     <dd>An override for specifying the location of the OJI Plug-in library compiled with GCC 2.9.
+      See <a href="#gcc">OJI Plug-in library Compiled with GCC 2.9
+      </a> for details.
+      
+
+	  <p><dt><tt>ALT_DEVTOOLS_PATH</tt>
+	<dd>The location of the gnumake binary.
+	  See <a href="#gnumake">gnumake</a> for details.
+
+         <p><dt><tt>ALT_CACERTS_FILE</tt>
+        <dd>The location of the <tt>cacerts</tt> file.
+          See <a href="#cacerts">cacerts file</a> for details.
+	  
+	  <p><dt><tt>ALT_MOTIF_DIR</tt>
+	<dd>The location of the Motif 2.1 headers and libraries. 
+	  See <a href="#motif">Motif 2.1</a> for details.
+	  
+	  <p><dt><tt>ALT_MOZILLA_PATH</tt>
+	<dd>The location of the Mozilla headers.
+	  See <a href="#mozilla">Mozilla Headers</a> for details.
+	  
+<!-- ARCH_DATA_MODEL need not be set, and if set has only one valid value
+     at this time.  No need to document it.
+	  <p><dt><tt>ARCH_DATA_MODEL</tt> 
+	<dd>The <tt>ARCH_DATA_MODEL</tt> variable is used to specify...
+-->
+	  
+	  <p><dt><tt>MILESTONE</tt> 
+	<dd>The milestone name for the build (<i>e.g.</i> "beta").
+	  
+	  <p><dt><tt>BUILD_NUMBER</tt> 
+	<dd>The build number for the build (<i>e.g.</i> "b27").
+
+      </dl>
+    </blockquote>
+
+
+
+    <a name="build">
+    <h2>Linux Build</h2></a>
+      <ol>
+	<li>cd into the <tt>control/make</tt> directory.</li>
+	
+	<li>Start the build with the command:<br>
+	  &nbsp;&nbsp;&nbsp;&nbsp;<code>make scsl [ALT_OUTPUTDIR=directory-name-for-output] [MILESTONE=<i>milestone_name</i>] [BUILD_NUMBER=<i>build_number</i>] [other "ALT_" overrides]</code></li>
+      <p>
+	
+      </ol>
+      <blockquote>
+      Please be sure to use the GNU version of <tt>make</tt>. 
+      </blockquote>
+    
+    <!-- ====================================================== -->
+    
+    <HR SIZE=3 NOSHADE>
+<table width=100%>
+<tr>
+<td valign=top>
+    <FONT SIZE=-2>
+Copyright  2004 Sun Microsystems, Inc., 4150 Network Circle, Santa Clara, 
+California 95054, U.S.A. All rights reserved.
+    </FONT>
+</td>
+<td>    
+    <P ALIGN=RIGHT>
+      <IMG SRC="sunlogo64x30.gif" ALT="Sun" BORDER=0 WIDTH=64 HEIGHT=30>
+    </P>
+</td>
+</table>
+    
+    
+    <pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </pre>
+    
+  </BODY>
+</HTML>
+

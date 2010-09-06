@@ -1,0 +1,482 @@
+<html><head>
+    <!-- @(#)build-solaris.html	1.40 04/10/15 -->
+    <title>Solaris Build Instructions</title>
+  </head>
+  <body bgcolor="#ffffff">
+    
+    <!-- ------------------------------------------------------ -->
+    
+  <TABLE BORDER="0" WIDTH="100%">
+  <TR>
+  <TD WIDTH=40>
+  <IMG SRC="javalogo52x88.gif" ALT="Java" BORDER=0 WIDTH=52 HEIGHT=88>
+  </TD>
+    
+  <TD ALIGN=CENTER>
+  <center><h1>
+    Solaris Build Instructions
+  </h1>
+  <h2>
+    Java<sup><font size=-2>TM</font></sup> 2 Platform Standard Edition, v5.0 fcs
+  <br>
+  </h2></center>
+  </TD>
+    
+  <TD ALIGN=RIGHT VALIGN=TOP>
+  <FONT SIZE="-1"><a href=build.html>Build Overview</a></FONT> 
+  </TD>
+  </TR>
+    
+  </TABLE>
+    
+  <HR SIZE=3 NOSHADE>
+    
+    <!-- ------------------------------------------------------ -->
+    
+    <h2>Contents</h2>
+    <ul>
+      <li><a href="#intro">Introduction</a></li>
+      <li><a href="#setup">Solaris System Setup</a></li>
+      <li><a href="#buildtools">Solaris Build Tools and Libraries Setup</a></li>
+      <li><a href="#environmentvariables">Solaris Build Environment Variables</a></li>
+      <li><a href="#build">Solaris Build</a></li>
+    </ul>
+    
+    <!-- ------------------------------------------------------ -->
+    
+  <a name="intro">
+  <h2>Introduction</h2></a>
+  <blockquote>
+    This README file contains build instructions for the 
+    Java<sup><font size=-2>TM</font></sup> 2 Platform 
+    Standard Edition, v5.0 (JDK 5.0) Community Source Release.  Building the 
+    source code for the JDK requires a high level of technical 
+    expertise.  Sun provides the source code primarily for 
+    technical experts who want to conduct research, port the platform 
+    to new operating systems and hardware, or add enhancements that 
+    require access to platform internals.  If you are not a technical 
+    professional in one of these categories, this release is probably 
+    not for you.  
+  </blockquote>
+    
+    <!-- ------------------------------------------------------ -->
+    
+    <a name="setup">
+    <h2>Solaris System Setup</h2></a>
+    <blockquote>
+      The official build platform for the 32-bit version of JDK 5.0 is 
+      Solaris 8.
+      <p>
+	The minimum recommended hardware for building the Solaris-SPARC version 
+	is an UltraSPARC with 512 MB of RAM. For building the Solaris-x86 
+	version, a Pentium class processor or better and at least 128 MB 
+	of RAM are recommended. 
+	Approximately 1.4 GB of free disk space is needed for a 32-bit build.
+      <p>
+	64-BIT-ONLY: The official build platform for the 64-bit version of 
+	JDK 5.0 is a 64-bit installation of Solaris 8 on SPARC. You may run 
+	the command "isainfo -v" to verify that you have a 64-bit installation.
+	An additional 7 GB of free disk space is needed for a 64-bit build.
+      <p>
+	The build uses the tools contained in <tt>/usr/ccs/bin</tt> and 
+	<tt>/usr/bin</tt> of a standard developer or full installation of the 
+	Solaris operating environment.
+      <p>
+	Minimum patch revisions are given in the tables below, though later 
+	patch revisions are expected to work also.  Patches may be downloaded
+	from the <a href="http://java.sun.com/j2se/1.5.0/download.html#patches">
+	JDK download page</a>.
+	You should ensure 
+	that the latest patch cluster for your version of the Solaris 
+	operating environment has been installed prior to installing these 
+	patches.  The
+	<a href="http://sunsolve.sun.com/pub-cgi/show.pl?target=patches/J2SE">
+	JDK patch clusters</a> are available for download on the
+	SunSolve web site.
+       <p>
+	The term "required" means the patch is required for non-international build.
+	
+    </blockquote>
+    <p>
+      <center>
+<b>Patches for Building on Solaris 5.8</b><br>
+<blockquote>
+<table border=1 column=3 cellpadding=3>
+<tr>
+<th>SPARC patch</th><th>x86 patch</th><th>Req/Opt</th><th>Description</ht></tr>
+<tr><td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=109147&toDocument=yes">109147-24</a></td> <td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=109148&toDocument=yes">109148-24</a></td> <td>Required</td> <td>Linker patch </td></tr>
+<tr><td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=108652&toDocument=yes">108652-66</a></td> <td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=108653&toDocument=yes">108653-55</a></td> <td>Required</td> <td>Xserver patch </td></tr>
+<tr><td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=108940&toDocument=yes">108940-52</a></td> <td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=108941&toDocument=yes">108941-52</a></td> <td>Required</td> <td>Motif 2.1 patch </td></tr>
+<tr><td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=108989&toDocument=yes">108989-02</a></td> <td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=108990&toDocument=yes">108990-02</a></td> <td>Required</td> <td>Accounting patch </td></tr>
+<tr><td>none</td> <td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=111307&toDocument=yes">111307-04</a></td> <td>Required</td> <td>boot.bin, bootconf.exe, bootenv.rc and nbp patch </td></tr>
+<tr><td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=111310&toDocument=yes">111310-01</a></td> <td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=111311&toDocument=yes">111311-01</a></td> <td>Required</td> <td>libhcpagent.so.l patch </td></tr>
+<tr><td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=112396&toDocument=yes">112396-02</a></td> <td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=112397&toDocument=yes">112397-02</a></td> <td>Required</td> <td>fgrep patch </td></tr>
+<tr><td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=108987&toDocument=yes">108987-13</a></td> <td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=108988&toDocument=yes">108988-13</a></td> <td>Required</td> <td>patchadd, patchrm patch </td></tr>
+<tr><td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=111111&toDocument=yes">111111-03</a></td> <td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=111112&toDocument=yes">111112-03</a></td> <td>Required</td> <td>nawk patch </td></tr>
+<tr><td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=108528&toDocument=yes">108528-20</a></td> <td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=108529&toDocument=yes">108529-20</a></td> <td>Required</td> <td>Kernel update </td></tr>
+<tr><td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=108993&toDocument=yes">108993-18</a></td> <td>none</td> <td>Required</td> <td>LDAP2 Patch </td></tr>
+<tr><td>none</td> <td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=110400&toDocument=yes">110400-01</a></td> <td>Required</td> <td>RBAC Feature patch </td></tr>
+<tr><td>none</td> <td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=111024&toDocument=yes">111024-02</a></td> <td>Required</td> <td>/kernel/fs/mntfs patch </td></tr>
+<tr><td>none</td> <td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=108994&toDocument=yes">108994-18</a></td> <td>Required</td> <td>LDAP2 patch </td></tr>
+<tr><td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=109147&toDocument=yes">109147-23</a></td> <td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=109148&toDocument=yes">109148-23</a></td> <td>Required</td> <td>linker patch </td></tr>
+<tr><td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=111308&toDocument=yes">111308-03</a></td> <td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=111309&toDocument=yes">111309-03</a></td> <td>Required</td> <td>Performance for apps using memory alloc </td></tr>
+</table>
+</blockquote>
+<p>
+    </center>
+      
+      <a name="buildtools">
+    <h2>Solaris Build Tools and Libraries Setup</h2></a>
+  <blockquote>
+      Once the Solaris OS is set up, you will need to install additional tools and libraries
+      for building the JDK.
+  </blockquote>
+      
+	<a name="sun-compiler">
+    <h4>Sun ONE Studio Compilers</h4></a>
+  <blockquote>
+      Sun ONE Studio 8, Compiler Collection (containing version 5.5 of the C and C++
+      compilers) is required, with patches as defined below.
+      You may 
+      <a href="http://access1.sun.com/forte/"> download </a> these
+      compilers with a free 30-day "Try and Buy" license.
+      A permanent license may be obtained from the
+      <a href="http://wwws.sun.com/software/sundev/suncc/index.html"> 
+      Sun ONE Studio Developer Tools web site</a>.
+     <p>
+      Set <tt>ALT_COMPILER_PATH</tt> to point to the location of the compiler
+      binaries, and place this location in the <tt>PATH</tt>.
+	These patches are available for download on the
+	<a href="http://sunsolve.sun.com/pub-cgi/show.pl?target=patches/patch-access">SunSolve web site</a>.
+  </blockquote>
+    <p>
+<center>
+<b>Compiler Patches for Building on Solaris </b><br>
+<blockquote>
+<table border=1 column=3 cellpadding=3>
+<tr>
+<th>SPARC patch</th><th>x86 patch</th><th>Req/Opt</th><th>Description</ht></tr>
+<tr><td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=109505&toDocument=yes">109505-06</a></td> <td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=109502&toDocument=yes">109502-03</a></td> <td>Required</td> <td>For C 5.0, C++ 5.0 </td></tr>
+<tr><td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=109513&toDocument=yes">109513-05</a></td> <td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=109514&toDocument=yes">109514-03</a></td> <td>Required</td> <td>For Forte Development 6 C compiler </td></tr>
+<tr><td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=109508&toDocument=yes">109508-03</a></td> <td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=109509&toDocument=yes">109509-03</a></td> <td>Required</td> <td>For Forte Development 6 update 1 C++ compiler </td></tr>
+<tr><td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=109510&toDocument=yes">109510-03</a></td> <td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=109511&toDocument=yes">109511-03</a></td> <td>Required</td> <td>For Forte 6.1 Debugger </td></tr>
+<tr><td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=109516&toDocument=yes">109516-02</a></td> <td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=109517&toDocument=yes">109517-02</a></td> <td>Required</td> <td>For Forte 6.1 Performance Analyzer </td></tr>
+<tr><td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=110480&toDocument=yes">110480-01</a></td> <td><a href="http://sunsolve.central.sun.com/search/advsearch.do?collection=PATCH&type=collections&max=50&language=en&queryKey5=110481&toDocument=yes">110481-01</a></td> <td>Required</td> <td>For Forte TeamWare </td></tr>
+</table>
+</blockquote>
+<p>
+</center>
+    <p>
+      
+      
+      <a name="bootdir">
+    <h4>Bootstrap JDK</h4></a>
+  <blockquote>
+      You will need access to a JDK 1.4.2 for Solaris installation. The 1.4.2 binaries can be downloaded
+      from Sun's <a href="http://java.sun.com/j2se/1.4.2/download.html">JDK 1.4.2</a> download site.
+      Set <tt>ALT_BOOTDIR</tt> to point to the location of the bootstrap JDK
+installation.  The installation instructions for the bootstrap JDK 
+include a list of <a href="http://java.sun.com/j2se/1.5.0/download.html#patches">required and recommended patches</a> that are needed at runtime. 
+The subset of these patches that are required for building JDK are 
+listed in the <a href="#setup">System Setup</a> section above.  However, 
+all the runtime patches should be installed to ensure proper behavior 
+of all JDK functionality after the build is completed.
+    <p>
+  </blockquote>
+      
+      <a name="gnumake">
+    <h4>GNU Make</h4></a>
+  <blockquote>
+      GNU make version 3.78.1 or later is required to build the JDK.
+      Information on GNU make, including download sites,
+      is available on the <a href="http://www.gnu.org/software/make/make.html">GNU Make web site</a>.
+      For convenience, place the GNU make binary in the <tt>PATH</tt>.
+   </blockquote>
+     
+      
+      <a name="motif">
+    <h4>Motif 2.1</h4></a>
+  <blockquote>
+    Motif version 2.1 headers and libraries are required
+    for building the JDK.
+    <p>
+      Create a Motif library and header area that contains 
+      header files and libraries for Motif 2.1. Use the 
+      <tt>ALT_MOTIF_DIR</tt> environment variable to point to absolute path of 
+      the Motif directory. The top level of the directory must contain 
+      directory named <tt>motif21</tt>,
+      which must have subdirectories <tt>include</tt> and <tt>lib</tt> 
+      with contents as shown here:
+    <pre>
+         +- motif_area/  (set ALT_MOTIF_DIR to this level)                 
+            +- motif21/
+               +- include/
+               |  +- Xm/  (from /usr/include/Xm)
+               |     +- &lt;many files&gt;
+               |    
+               +- lib/    (from /usr/dt/lib/) 
+                  +- libXm.so (symbolic link to libXm.so.4)
+                  +- libXm.so.4
+                  +- sparcv9/    (64-bit Motif library)
+                     +- libXm.so (symbolic link to libXm.so.4)
+                     +- libXm.so.4
+    </pre>
+    In the example above, the name of the top-level directory is 
+    not significant; it is not required to be named <tt>motif_area</tt>.
+  </blockquote>
+    <p>
+      
+      
+      <a name="jdbcodbc">
+    <h4>JDBC-ODBC Bridge</h4>
+  <blockquote>
+      The DataDirect Connect ODBC 2.11 driver is needed for building the 
+      JDBC-ODBC Bridge.
+      A copy of the driver is on the Desktop 1.1.1 Solaris
+      CD-ROM, which is part of older Solaris distributions. 
+    <p>
+      Set up the following directory structure for the ODBC
+      driver, and set the <tt>ALT_ODBCDIR</tt> environment variable to 
+      point to it.
+      <pre>
+       +- odbc/            (set ALT_ODBCDIR to this level)
+          +- ISLIodbc/
+             +- 2.11/       
+                +- odbc files and directories (lib/, include/, etc.)
+      </pre>
+      On SPARC systems you may use the DataDirect ODBC 3.7 driver in
+      place of the 2.11 driver:
+      use the directory structure above (including the <tt>2.11</tt>
+      directory) if doing so.
+    <p>
+      An alternative to using a DataDirect driver is to build a dummy
+      driver of your own.  Create and then "cd" to the directory
+      <tt>$ALT_ODBCDIR/ISLIodbc/2.11/lib</tt>, copy over the source file
+      <tt>j2se/make/sun/jdbc/dummyodbc.c</tt>,
+      and then compile as follows using the Sun ONE Studio 8 C compiler:
+      <pre>
+        cc -G -h libodbc.so -o libodbc.so dummyodbc.c
+        cc -G -h libodbcinst.so -o libodbcinst.so dummyodbc.c
+      </pre>
+  </blockquote>
+    <p>
+      
+      
+      <a name="devtools">
+    <h4>zip</h4>
+  <blockquote>
+    The build requires <code>zip</code> version 2.2 (November 3rd 1997) or later.
+<!--  %%% unzipsfx is required for bundles only.
+  and <code>unzipsfx</code> version  5.12 of 28 August 1994. 
+-->
+  Set <tt>ALT_DEVTOOLS_PATH</tt> to point to the location of this binary.
+      Information on zip, including download sites,
+      is available on the <a href="http://www.info-zip.org">info-zip web site</a>.
+  </blockquote>
+    <p>
+          
+      <a name="cacerts">
+    <h4>cacerts</h4>
+    <blockquote>
+      A certificates file named "cacerts" represents a system-wide keystore 
+      with CA certificates. In JDK and JRE binary bundles, the "cacerts"
+      file contains root CA certificates from several public CAs (e.g., VeriSign,
+      Thawte, and Baltimore). 
+      <p>      
+	The source bundles contain a cacerts file without CA root certificates. 
+	JDK builders will need to secure permission from each public CA and
+	include the certificates into their own custom cacerts file. Failure to
+	provide a populated cacerts file will result in verification of a
+	certificate chain during runtime.
+      <p>      
+	The <tt>ALT_CACERTS_FILE</tt> should be set to point to the location of 
+	the populated cacerts file.</font>
+    </blockquote>
+    <p>
+      <a name="gcc">
+    <h4>GNU C Compiler (32-bit build only)</h4>
+  <blockquote>
+    GNU gcc version 2.95.2 is required for building the Plug-in.
+    The source code for gcc is available from
+    <a href="http://www.gnu.org/software/gcc/">
+      http://www.gnu.org/software/gcc/</a>,
+    and some pre-built binaries are available from
+    <a href="http://sunfreeware.com/"> sunfreeware.com</a>.
+    Set <tt>ALT_GCC_COMPILER_PATH</tt> to point to the location of the gcc binary.
+  </blockquote>
+    <p>
+      
+      <a name="mozilla">
+    <h4>Mozilla Headers (32-bit build only)</h4>
+  <blockquote>
+          Mozilla headers are required for building Java Plug-in.  <a
+          href=http://wwws.sun.com/software/java2/download.html>Download</a>
+          and unpack the headers into a directory similar to the one
+          shown below, and set the <tt>ALT_MOZILLA_PATH</tt>
+          environment variable to the absolute path of the top-level
+          directory.
+
+    <pre>
+      +- devtools/          (set ALT_MOZILLA_PATH to this level)
+         +- share/
+            +- plugin/
+               +- mozilla_headers_ns7/
+    </pre>
+    The name of the top-level directory is 
+    not significant; it is not required to be named <tt>devtools</tt>.
+  </blockquote>
+    <p>
+
+
+    <a name=environmentvariables>
+    <h2>Solaris Build Environment Variables</h2></a>
+    <blockquote>
+      This section describes environment variables that you can set to 
+      influence various aspects of the build.  Some of these variables 
+      are mentioned specifically in the setup and build instructions 
+      above.  Others you may set at your discretion.
+      <p>
+	Environment variables may be set in the shell environment
+	or on the GNU make command line.
+      <p>
+      <dl>
+	<p><dt><tt>PATH</tt>
+	<dd>Set the <code>PATH</code> to contain:
+	  <ul>
+	    <li>The location of the GNU make binary</li>
+	    <li>The location of the Sun ONE Studio 8 Compilers (<code>ALT_COMPILER_PATH</code>)</li>
+	    <li><code>/usr/bin</code></li>
+	  </ul>
+	  <p>
+	    
+	  <p><dt><tt>ALT_BOOTDIR</tt>
+	<dd>The location of the JDK 1.4.2 bootstrap installation.
+	  
+	  <p><dt><tt>ALT_OUTPUTDIR</tt>
+	<dd>An override for specifying
+	  the (absolute) path of where the build output is to go. 
+	  
+	  <a name="unixcommand">
+	  <p><dt><tt>ALT_UNIXCOMMAND_PATH</tt>
+	<dd>An override for specifying where the Unix command set 
+	  are located. You usually do not need to set this variable: the default
+	  location is <tt>/usr/bin</tt>.
+	  
+	  <a name="ccs">
+	  <p><dt><tt>ALT_UNIXCCS_PATH</tt>
+	<dd>An override for specifying where the Unix CCS command set 
+	  are located. You usually do not need to set this variable: the default
+	  location is <tt>/usr/ccs/bin</tt>
+	  
+	  <p><dt><tt>ALT_COMPILER_PATH</tt>
+	<dd>The location of the Sun ONE Studio 8 compilers and tools.
+	  See <a href="#sun-compiler">Sun ONE Studio Compilers</a> for details.
+	  
+	  <p><dt><tt>ALT_DEVTOOLS_PATH</tt>
+	<dd>The location of the <tt>zip</tt> binary.
+	  See <a href="#devtools">zip</a> for details.
+	  
+	  <p><dt><tt>ALT_CACERTS_FILE</tt>
+	<dd>The location of the <tt>cacerts</tt> file.
+	  See <a href="#cacerts">cacerts file</a> for details.
+
+	  <p><dt><tt>ALT_MOTIF_DIR</tt>
+	<dd>The location of the Motif 2.1
+	  headers and libraries.
+	  See <a href="#motif">Motif 2.1</a> for details.
+
+	  <p><dt><tt>ALT_MOZILLA_PATH</tt>
+	<dd>The location of the Mozilla headers.
+          See <a href="#mozilla">Mozilla Headers</a> for details.
+	  
+	  <p><dt><tt>ALT_ODBCDIR</tt>
+	<dd>The location of the ODBC driver.
+	  See <a href="#jdbcodbc">JDBC-ODBC Bridge</a> for details.
+	  
+	  <p><dt><tt>ALT_GCC_COMPILER_PATH</tt> (32-bit build only)
+	<dd>The location of the GNU C compiler and tools,
+	  for building the Plug-in.
+	  See <a href="#gcc">GNU C Compiler</a> for details.
+	  
+	  <a name="data_model">
+	  <p><dt><tt>ARCH_DATA_MODEL</tt> 
+	<dd>The <tt>ARCH_DATA_MODEL</tt> variable is used to specify whether
+	  the build is to generate 32-bit or 64-bit binaries. 
+	  The Solaris build supports either 32-bit or, on SPARC platforms only,
+	  64-bit builds.  Leave <tt>ARCH_DATA_MODEL</tt>
+	  unset or set to <tt>32</tt> for generating 32-bit binaries, or set
+	  to <tt>64</tt> for generating 64-bit binaries.
+	  
+	  <p><dt><tt>MILESTONE</tt> 
+	<dd>The milestone name for the build (<i>e.g.</i> "beta").
+	  
+	  <p><dt><tt>BUILD_NUMBER</tt> 
+	<dd>The build number for the build (<i>e.g.</i> "b27").
+
+      </dl>
+    </blockquote>
+
+
+
+    <a name="build">
+    <h2>Solaris Build</h2></a>
+      <ol>
+	<li>cd into the <tt>control/make</tt> directory.</li>
+	
+	<li>Start the build with the command:<br>
+	  &nbsp;&nbsp;&nbsp;&nbsp;<code>make scsl [ARCH_DATA_MODEL=<i>32 or 64</i>]  [ALT_OUTPUTDIR=directory-name-for-output] [MILESTONE=<i>milestone_name</i>] [BUILD_NUMBER=<i>build_number</i>] [other "ALT_" overrides]</code></li>
+	
+      </ol>
+
+      <blockquote>
+    Please be sure to use the GNU version of <tt>make</tt>. 
+      </blockquote>
+
+      <blockquote>
+    64-BIT-ONLY:  Before 64-bit binaries can be used,
+    they must be merged with the binaries from a separate 32-bit build.
+    The merged binaries may then be used in either 32-bit or 64-bit mode,
+    with the selection occurring at runtime.
+      </blockquote>
+    
+    <!-- ====================================================== -->
+    
+    <HR SIZE=3 NOSHADE>
+<table width=100%>
+<tr>
+<td valign=top>
+    <FONT SIZE=-2>
+Copyright  2004 Sun Microsystems, Inc., 4150 Network Circle, Santa Clara, 
+California 95054, U.S.A. All rights reserved.
+    </FONT>
+</td>
+<td>    
+    <P ALIGN=RIGHT>
+      <IMG SRC="sunlogo64x30.gif" ALT="Sun" BORDER=0 WIDTH=64 HEIGHT=30>
+    </P>
+</td>
+</table>
+
+    
+    
+    <pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </pre>
+    
+  </BODY>
+</HTML>
+
