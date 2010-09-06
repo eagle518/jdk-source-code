@@ -1,0 +1,44 @@
+#
+# @(#)Defs-solaris.gmk	1.21 04/01/12
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+# these are specific to Solaris
+
+include $(CONTROL_TOPDIR)/make/common/Defs-solaris.gmk
+
+BUNDLE_SUFFIX  = .zip
+HEAD           = $(UNIXCOMMAND_PATH)head
+LD             = $(UNIXCCS_PATH)ld
+JUMP_EXE       = $(BIN_DIR)/javaws$(SUFFIX)
+JUMP_EXE_DBG   = $(BIN_DIR_DBG)/javaws$(DBG_SUFFIX)
+CLASSPATH_SEP  = $(CLASSPATH_SEPARATOR)
+PATH_SEP       = /
+JPEGDIR        = $(JAVAWS_TOPDIR)/src/javaws/solaris/jpeg
+LIBS           = -lX11 -lsocket -lnsl -lw -ldl
+LINK_FLAGS     = -xildoff
+MD_SRC         = $(JAVAWS_TOPDIR)/src/javaws/solaris
+
+C_FLAGS_COMMON = $(C_FLAGS_JPDA) -I$(SHARE_SRC)/native -I$(MD_SRC)/native \
+	-I$(SHARE_SRC)/native/jpeg -I$(GENHDIR) -DSOLARIS
+CC_FLAGS_COMMON = $(CC_FLAGS_JPDA) -I$(JAVAWS_BOOTDIR)/include \
+	-I$(JAVAWS_BOOTDIR)/include/solaris -I$(SHARE_SRC)/native \
+	-I$(MD_SRC)/native -I$(SHARE_SRC)/native/jpeg -I$(GENHDIR) -DSOLARIS
+LINK_FLAGS_COMMON = -xildoff
+
+C_FLAGS_OPT = -xO2
+CC_FLAGS_OPT = -xO2
+C_FLAGS_DBG = -g -D_DEBUG
+CC_FLAGS_DBG = -g -D_DEBUG
+
+ifdef JPDA
+   C_FLAGS_JPDA  = -DJPDA=$(JPDA)
+   CC_FLAGS_JPDA = -DJPDA=$(JPDA)
+endif
+
+PLATFORM_SRC   = $(JAVAWS_TOPDIR)/src/javaws/solaris
+UNIX_SHARE_SRC = $(JAVAWS_TOPDIR)/src/javaws/unix
+
+JAVAWS_SUBSTITUTE_VERSIONS = $(CAT)

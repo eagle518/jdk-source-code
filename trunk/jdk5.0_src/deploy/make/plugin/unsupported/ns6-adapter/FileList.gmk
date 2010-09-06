@@ -1,0 +1,16 @@
+FILES_cpp = \
+            adaptercommon.cpp \
+            NSGetFactory.cpp \
+            CFDMonitor.cpp \
+            CFactory.cpp \
+            CFactory_ISupports.cpp \
+            CFactory_IFactory.cpp \
+            CFactory_IPlugin.cpp \
+            CFactory_IJVMPlugin.cpp \
+            CFactory_IJVMConsole.cpp \
+            CPluginInstance.cpp \
+            CPluginInstance_ISupports.cpp \
+            CPluginInstance_IEgo.cpp \
+            CPluginInstance_IJavaInstanceCB.cpp \
+            CPluginInstance_IJVMPluginInstance.cpp \
+            CPluginInstance_IPluginInstance.cpp

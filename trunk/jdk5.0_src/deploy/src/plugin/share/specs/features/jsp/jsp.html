@@ -1,0 +1,260 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0078)http://javaweb.eng/~stanleyh/java-plugin/docs/features/debugging/debugging.htm -->
+<!-- saved from url=(0062)http://webwork.eng/products/plugin/1.3/docs/appletcaching.html --><!-- Copyright 1998 Sun Microsystems, Inc. All Rights Reserved. --><!-- "@(#)index.html	1.32 99/08/27 Sun Microsystems" --><HTML><HEAD><TITLE>Deploying
+applets in Java Plug-in with JSP</TITLE>
+<META content="text/html; charset=iso-8859-1" http-equiv=Content-Type><!-------------------------------><!--      ABOUT THIS HTML      --><!-------------------------------><!-- FOLLOW THESE COMMENTS FOR --><!--   INFORMATION ABOUT THE   --><!-- STRUCTURE OF OUR TEMPLATES--><!-------------------------------><!-------------------------------><!--   INSERT YOUR TITLE HERE  --><!------------BEGIN-TITLE--------><!-------------END-TITLE---------><!--        END OF TITLE       --><!------------------------------->
+<META content="Microsoft FrontPage 4.0" name=GENERATOR></HEAD>
+<BODY bgColor=#ffffff text=#000000><!-- begin main page table -->
+<TABLE border=0 cellPadding=0 cellSpacing=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=top width=157><!-------------------------------><!--  SERVER SIDE INCLUDE FOR  --><!--  NAVIGATION MENU AT LEFT  --><!-------------------------------><!-- Begin Navbar Segment -->
+      <TABLE border=0>
+        <TBODY>
+        <TR vAlign=top>
+          <TD width=155><IMG alt="" height=20 src="jsp_files/pixel.gif" 
+            width=20> <A href="http://webwork.eng/"><IMG 
+            alt="Java Technology Home Page" border=0 height=88 
+            src="jsp_files/javalogo52x88.gif" width=52></A><BR>
+            <TABLE border=0 cellPadding=3 cellSpacing=0 width=157><!-- the following spacer ensures that the --><!--   table is at least 157 pixels wide   -->
+              <TBODY>
+              <TR>
+                <TD></TD></TR><!-- tab categories -->
+              <TR>
+                <TD></TD>
+                <TD><A href="http://webwork.eng/products/"><IMG 
+                  alt="Downloads, APIs, Documentation" border=0 height=15 
+                  src="jsp_files/side.tab.products.gif" width=130></A></TD></TR>
+              <TR>
+                <TD></TD>
+                <TD><A href="http://webwork.eng/jdc/"><IMG 
+                  alt="Java Developer Connection" border=0 height=15 
+                  src="jsp_files/side.tab.developer.gif" width=130></A></TD></TR>
+              <TR>
+                <TD></TD>
+                <TD><A href="http://webwork.eng/infodocs/"><IMG 
+                  alt="Docs, Tutorials, Tech Articles, Training" border=0 
+                  height=15 src="jsp_files/side.tab.docs.gif" 
+              width=130></A></TD></TR>
+              <TR>
+                <TD></TD>
+                <TD><A href="http://webwork.eng/support/"><IMG 
+                  alt="Online Support" border=0 height=15 
+                  src="jsp_files/side.tab.support.gif" width=130></A></TD></TR>
+              <TR>
+                <TD></TD>
+                <TD><A href="http://webwork.eng/community/"><IMG 
+                  alt="Community Discussion" border=0 height=15 
+                  src="jsp_files/side.tab.community.gif" width=130></A></TD></TR>
+              <TR>
+                <TD></TD>
+                <TD><A href="http://webwork.eng/industry"><IMG 
+                  alt="News &amp; Events from Everywhere" border=0 height=15 
+                  src="jsp_files/side.tab.news.gif" width=130></A></TD></TR>
+              <TR>
+                <TD></TD>
+                <TD><A href="http://webwork.eng/solutions/"><IMG 
+                  alt="Products from Everywhere" border=0 height=15 
+                  src="jsp_files/side.tab.solutions.gif" width=130></A></TD></TR>
+              <TR>
+                <TD></TD>
+                <TD><A href="http://webwork.eng/casestudies/"><IMG 
+                  alt="How Java Technology is Used Worldwide" border=0 height=15 
+                  src="jsp_files/side.tab.case.gif" width=130></A></TD></TR>
+              <TR>
+                <TD></TD>
+                <TD></TD></TR></TBODY></TABLE>
+            <P></P></TD></TR></TBODY></TABLE><!-- End Navbar Segment --></TD>
+    <TD vAlign=top width=452><!--  begin header table -->
+      <TABLE border=0 width=452><!-------------------------------><!--  SERVER SIDE INCLUDE FOR  --><!--  HEADER AT TOP OF PAGE    --><!-------------------------------><!-- Begin Header Segment -->
+        <TBODY>
+        <TR>
+          <TD>
+            <FORM action=http://search.java.sun.com/query.html method=get><INPUT 
+            name=col type=hidden value=jsun> <INPUT name=pw type=hidden 
+            value=100%> <INPUT name=ws type=hidden value=0> <INPUT name=nh 
+            type=hidden value=10> 
+            <TABLE border=0 cellPadding=0 cellSpacing=0 width="100%">
+              <TBODY>
+              <TR>
+                <TD align=right><IMG alt="" height=14 
+                  src="jsp_files/stripelt.gif" width=6></TD>
+                <TD width="100%">
+                  <TABLE border=0 cellPadding=0 cellSpacing=0 width="100%">
+                    <TBODY>
+                    <TR>
+                      <TD bgColor=#cc9966 width="100%"><IMG alt="" height=2 
+                        src="jsp_files/pixel.gif" width=1></TD></TR>
+                    <TR>
+                      <TD><IMG alt="" height=2 src="jsp_files/pixel.gif" 
+                        width=1></TD></TR>
+                    <TR>
+                      <TD bgColor=#cc9966><IMG alt="" height=2 
+                        src="jsp_files/pixel.gif" width=1></TD></TR>
+                    <TR>
+                      <TD><IMG alt="" height=2 src="jsp_files/pixel.gif" 
+                        width=1></TD></TR>
+                    <TR>
+                      <TD bgColor=#cc9966><IMG alt="" height=2 
+                        src="jsp_files/pixel.gif" width=1></TD></TR>
+                    <TR>
+                      <TD><IMG alt="" height=2 src="jsp_files/pixel.gif" 
+                        width=1></TD></TR>
+                    <TR>
+                      <TD bgColor=#cc9966><IMG alt="" height=2 
+                        src="jsp_files/pixel.gif" 
+width=1></TD></TR></TBODY></TABLE></TD>
+                <TD align=left><IMG alt="" height=14 
+                  src="jsp_files/stripert.gif" width=6></TD>
+                <TD>
+                  <TABLE border=0 cellPadding=0 cellSpacing=0>
+                    <TBODY>
+                    <TR>
+                      <TD vAlign=center><A href="http://webwork.eng/a-z/"><IMG 
+                        alt="A-Z Index" border=0 height=11 
+                        src="jsp_files/azindex.gif" width=72></A></TD>
+                      <TD vAlign=center><FONT face=Helvetica size=1><INPUT 
+                        maxLength=2033 name=qt size=15></FONT></TD>
+                      <TD vAlign=center><INPUT alt="Search the Site" border=0 
+                        height=14 name=search src="jsp_files/search.button.gif" 
+                        type=image value=search 
+              width=55></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></FORM>
+            <P>
+            <TABLE border=0 cellPadding=0 cellSpacing=0 width="100%">
+              <TBODY>
+              <TR vAlign=top>
+                <TD width="100%"><IMG height=18 src="jsp_files/pixel.gif" 
+                  width=20></TD>
+                <TD align=right rowSpan=3 width=152><A 
+                  href="http://webwork.eng/"><IMG 
+                  alt="The Source for Java Technology" border=0 height=42 
+                  src="jsp_files/thesourceforjava.gif" width=389></A></TD></TR>
+              <TR vAlign=top>
+                <TD bgColor=#cc9966 height=1 width="100%"><IMG height=1 
+                  src="jsp_files/pixel.gif" width=1></TD></TR>
+              <TR vAlign=top>
+                <TD width="100%"><IMG height=20 src="jsp_files/pixel.gif" 
+                  width=20></TD>
+                <TD align=right></TD></TR></TBODY></TABLE></P></TD></TR><!-- End Header Segment --><!-- breadcrumb trail -->
+        <TR>
+          <TD align=right height=25 vAlign=top></TD></TR>
+        <TR>
+          <TD>
+            <P></P></TD></TR>
+        <TR>
+          <TD align=right colSpan=2><!-- page headline --><!-------------------------------><!--EDIT THE PAGE HEADLINE HERE--><!------------BEGIN-HEADLINE-----><FONT 
+            size=+2><B>Deploying applets in Java Plug-in with Java Server Pages
+            (JSP)</B></FONT><BR><!-------------END-HEADLINE------><!--    END OF PAGE HEADLINE   --><!-------------------------------></TD></TR></TBODY></TABLE><!-- Begin Page Data --><!-------------------------------><!--  EDIT PAGE CONTENT HERE   --><!------------BEGIN-CONTENT------><!-------------END-CONTENT------->
+      <P>Java Server Pages (JSP) is a technology for generating dynamic content
+      in web server or application server. Since Java Server Pages Specification
+      1.0, it provides support for generating proper Java Plug-in HTML tags.
+      This document provides an overview of the JSP support for Java Plug-in and
+      how it should could be used for deploying applets in Java Plug-in.<h3>&lt;jsp:plugin&gt;</h3>
+      <P>An element <i>&lt;jsp:plugin&gt;</i> was added into JSP specification
+      &quot;<i>to enable a JSP page author to generate HTML that contains the
+      appropriate client browser dependent constructs (OBJECT or EMBED) that
+      will result in the download of the Java Plug-in Software (if required) and
+      subsequent execution of the Applet</i>&quot; (JSP Specification 1.1, Page
+      70).&nbsp;<P>When the JSP is executed, this <i>&lt;jsp:plugin&gt;</i> tag
+      is replaced by either an <i>&lt;OBJECT&gt;</i> or <i>&lt;EMBED&gt;</i>
+      tag, accordingly to the requested browser's user agent, following the Java
+      Plug-in HTML Specification.&nbsp;<P>For example, an applet may be
+      specified as follows in JSP:
+      <pre><font color="#0000FF">&lt;jsp:plugin type=applet code=&quot;Molecule&quot; codebase=&quot;/html&quot; &gt;
+     &lt;jsp:params&gt;
+          &lt;jsp:param name=&quot;molecule&quot; value=&quot;molecules/benzene.mol&quot;/&gt;     
+     &lt;/jsp:params&gt;
+     &lt;jsp:fallback&gt;
+             &lt;p&gt; unable to start plug-in &lt;/p&gt;
+     &lt;/jsp:fallback&gt;
+&lt;/jsp:plugin&gt;</font></pre>
+      <P>In the above example, the attributes of the <i>&lt;jsp:plugin&gt;</i>
+      tag provide configuration data for the applet itself. The <i>&lt;jsp:param&gt;</i>
+      elements indicate the parameters to the applet. The <i>&lt;jsp:fallback&gt;</i>
+      element indicates the content to be used by the browser if Java Plug-in
+      fails to start.<P>Depending on the browser connecting to this JSP page,
+      the web server may generate either <i>EMBED/OBJECT</i> tag, according to
+      the browser's user agent.<P>For example, if Netscape Navigator is used to
+      connect this JSP page, the following <i>EMBED</i> tag will be emitted:<pre><font color="#800000">&lt;EMBED type=&quot;application/x-java-applet&quot; code=&quot;Molecule&quot; codebase=&quot;/html&quot; 
+	molecule=&quot;molecules/benzene.mol&quot;&gt;
+&lt;NOEMBED&gt;
+     &lt;p&gt; unable to start plug-in &lt;/p&gt;
+&lt;/NOEMBED&gt;</font></pre>
+      <P>For more information about the <i>&lt;jsp:plugin&gt;</i> tag, please
+      consult the <a href="http://java.sun.com/products/jsp/">Java Server Pages
+      Specification</a> for more details.<h3>Deploying Java Plug-in through JSP</h3>
+      <P>JSP provides an alternative way for deploying applets through Java
+      Plug-in, without converting the HTML pages through HTML Converter. Because
+      of the dynamic nature of JSP, developers will be able to generate HTML
+      page on-the-fly that take advantages of Java Plug-in much easier than
+      before.<P>Although <i>&lt;jsp:plugin&gt;</i> tag support is part of the
+      JSP specification, various web server or application server vendors may
+      provide different implementations and different level of controls over
+      this feature. For further information, please contact your server vendors. 
+      <TABLE border=0 width=452>
+        <TBODY>
+        <TR>
+          <TD align=right vAlign=top>
+            <P></P></TD></TR></TBODY></TABLE></TD></TR>
+  <TR>
+    <TD vAlign=top width=157></TD>
+    <TD vAlign=top width=452></TD></TR></TBODY></TABLE><!-- Footer table --><!-------------------------------><!--  SERVER SIDE INCLUDE FOR  --><!--  FOOTER AT BOTTOM OF PAGE --><!-------------------------------><!-- Begin Footer Segment --><BR 
+clear=all>
+<TABLE border=0 cellPadding=0 cellSpacing=5 width="100%">
+  <TBODY>
+  <TR>
+    <TD vAlign=top>
+      <P align=center><FONT color=#999999 size=-1>[ This page was updated: 
+      02-Dec-99 ]</FONT></P></TD></TR>
+  <TR>
+    <TD bgColor=#cccccc><SPACER TYPE="BLOCK" HEIGHT="1" WIDTH="1"></TD></TR>
+  <TR>
+    <TD>
+      <CENTER><FONT size=-1><A href="http://webwork.eng/products/">Products 
+      &amp; APIs</A> | <A href="http://webwork.eng/jdc/">Developer 
+      Connection</A> | <A href="http://webwork.eng/infodocs/">Docs &amp; 
+      Training</A> | <A href="http://webwork.eng/support/">Support</A><BR><A 
+      href="http://webwork.eng/community/">Community Discussion</A> | <A 
+      href="http://webwork.eng/industry/">Industry News</A> | <A 
+      href="http://webwork.eng/solutions/">Solutions Marketplace</A> | <A 
+      href="http://webwork.eng/casestudies/">Case Studies</A> 
+  </FONT></CENTER></TD></TR>
+  <TR>
+    <TD bgColor=#cccccc><SPACER TYPE="BLOCK" HEIGHT="1" WIDTH="1"></TD></TR>
+  <TR>
+    <TD align=middle><FONT size=-2><A 
+      href="http://webwork.eng/docs/glossary.html">Glossary</A> - <A 
+      href="http://webwork.eng/applets/">Applets</A> - <A 
+      href="http://webwork.eng/docs/books/tutorial/">Tutorial</A> - <A 
+      href="http://webwork.eng/jobs/">Employment</A> - <A 
+      href="http://webwork.eng/nav/business/">Business &amp; Licensing</A> - <A 
+      href="http://webwork.eng/javastore/">Java Store</A> - <A 
+      href="http://webwork.eng/casestudies/">Java in the Real World</A> 
+    </FONT></TD></TR>
+  <TR>
+    <TD>
+      <CENTER><FONT size=-2><A 
+      href="http://webwork.eng/cgi-bin/feedback.pl">Feedback</A> | <A 
+      href="http://www.dynamicdiagrams.net/mapa/cgi-bin/help.tcl?db=javasoft&amp;dest=http://java.sun.com/">Map</A> 
+      | <A href="http://webwork.eng/a-z/index.html">A-Z Index</A> 
+      </FONT></CENTER>
+      <P></P></TD></TR>
+  <TR>
+    <TD>
+      <TABLE border=0 cellPadding=0 cellSpacing=0 width="100%">
+        <TBODY>
+        <TR>
+          <TD width="50%"><FONT size=-2>For more information on Java 
+            technology<BR>and other software from Sun Microsystems, 
+            call:<BR></FONT><FONT size=-1>(800) 786-7638<BR></FONT><FONT 
+            size=-2>Outside the U.S. and Canada, dial your country's <A 
+            href="http://www.att.com/business_traveler/attdirecttollfree/">AT&amp;T&nbsp;Direct&nbsp;Access&nbsp;Number</A> 
+            first.<BR></FONT></TD>
+          <TD align=right width="50%"><A href="http://www.sun.com/"><IMG 
+            alt="Sun Microsystems, Inc." border=0 height=30 
+            src="jsp_files/lgsun.gif" width=64></A><BR><FONT size=-2>Copyright ?            1995-2000 <A href="http://www.sun.com/">Sun Microsystems, 
+            Inc.</A><BR>All Rights Reserved. <A 
+            href="http://www.sun.com/share/text/termsofuse.html">Terms of 
+            Use</A>. <A 
+            href="http://www.sun.com/privacy">Privacy&nbsp;Policy</A>. 
+        </FONT></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE><!-- End Footer Segment --></BODY></HTML>

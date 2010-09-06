@@ -1,0 +1,447 @@
+FILES_java = \
+	sun/plugin/cache/FileType.java \
+	sun/plugin/cache/FileVersion.java \
+	sun/plugin/cache/JarCacheTable.java \
+	sun/plugin/cache/JarCacheTableSorter.java \
+	sun/plugin/cache/JarCacheTableModel.java \
+	sun/plugin/cache/JarCacheTableColumn.java \
+	sun/plugin/cache/JarCacheTableColumnModel.java \
+	sun/plugin/cache/JarCacheEntry.java \
+	sun/plugin/cache/JarCacheUtil.java \
+	sun/plugin/cache/JarCacheViewer.java \
+	sun/plugin/cache/JarCacheVersionException.java \
+	sun/plugin/cache/Cache.java \
+	sun/plugin/cache/JarCache.java \
+	sun/plugin/cache/FileCache.java \
+	sun/plugin/cache/CachedJarLoader.java \
+	sun/plugin/cache/CachedFileLoader.java \
+	sun/plugin/cache/CleanupThread.java \
+	sun/plugin/cache/CacheFile.java \
+	sun/plugin/cache/CachedFile.java \
+	sun/plugin/cache/CachedJarFile.java \
+	sun/plugin/cache/PluginCacheHandler.java \
+	\
+	sun/plugin/security/ActivatorSecurityManager.java \
+	sun/plugin/security/PluginClassLoader.java \
+	sun/plugin/util/PluginConfig.java \
+	sun/plugin/util/UserProfile.java \
+	sun/plugin/util/Trace.java \
+	sun/plugin/util/TraceFilter.java \
+	sun/plugin/util/ProgressMonitor.java \
+	sun/plugin/util/GrayBoxPainter.java \
+	sun/plugin/util/GrayBoxPanel.java \
+	sun/plugin/util/AnimationPanel.java \
+	sun/plugin/util/URLUtil.java \
+	sun/plugin/util/PluginSysUtil.java \
+	sun/plugin/util/PluginConsoleController.java \
+	\
+	sun/plugin/AppletViewer.java \
+	sun/plugin/PluginURLJarFileCallBack.java \
+	sun/plugin/AppletStatusListener.java \
+	sun/plugin/ClassLoaderInfo.java \
+	sun/plugin/PluginURLJarFileCallBack.java \
+	\
+	sun/plugin/resources/ResourceHandler.java \
+	\
+	sun/plugin/javascript/JSObject.java \
+	sun/plugin/javascript/JSContext.java \
+	sun/plugin/javascript/JSClassLoader.java \
+	sun/plugin/javascript/JSInvoke.java \
+	sun/plugin/javascript/ReflectUtil.java \
+	\
+	sun/plugin/javascript/navig/Navigator.java \
+	sun/plugin/javascript/navig/Document.java \
+	sun/plugin/javascript/navig/Window.java \
+	sun/plugin/javascript/navig/History.java \
+	sun/plugin/javascript/navig/URL.java \
+	sun/plugin/javascript/navig/Location.java \
+	sun/plugin/javascript/navig/Link.java \
+	sun/plugin/javascript/navig/LinkArray.java \
+	sun/plugin/javascript/navig/Array.java \
+	sun/plugin/javascript/navig/Form.java \
+	sun/plugin/javascript/navig/FormArray.java \
+	sun/plugin/javascript/navig/Element.java \
+	sun/plugin/javascript/navig/ElementArray.java \
+	sun/plugin/javascript/navig/Anchor.java \
+	sun/plugin/javascript/navig/AnchorArray.java \
+	sun/plugin/javascript/navig/Option.java \
+	sun/plugin/javascript/navig/OptionArray.java \
+	sun/plugin/javascript/navig/Image.java \
+	sun/plugin/javascript/navig/ImageArray.java \
+	sun/plugin/javascript/navig/FrameArray.java \
+	sun/plugin/javascript/navig/JSType.java \
+	sun/plugin/javascript/navig/JSObjectResolver.java \
+	sun/plugin/javascript/navig/JSObjectFactory.java \
+	\
+	sun/plugin/javascript/navig4/Navigator.java \
+	sun/plugin/javascript/navig4/Document.java \
+	sun/plugin/javascript/navig4/Window.java \
+	sun/plugin/javascript/navig4/Link.java \
+	sun/plugin/javascript/navig4/Anchor.java \
+	sun/plugin/javascript/navig4/Layer.java \
+	sun/plugin/javascript/navig4/LayerArray.java \
+	sun/plugin/javascript/navig4/UIBar.java \
+	sun/plugin/javascript/navig4/JSObjectFactory.java \
+	\
+	sun/plugin/liveconnect/SecureInvocation.java \
+	sun/plugin/liveconnect/JavaScriptPermission.java \
+	sun/plugin/liveconnect/SecurityContextHelper.java \
+	sun/plugin/liveconnect/LiveConnect.java \
+	sun/plugin/liveconnect/ReplaceMethod.java \
+	\
+	sun/plugin/extension/ExtensionInstallationImpl.java \
+	sun/plugin/extension/ExtensionInstaller.java \
+	sun/plugin/extension/RawExtensionInstaller.java \
+	sun/plugin/extension/NativeExtensionInstaller.java \
+	sun/plugin/extension/JavaExtensionInstaller.java \
+	sun/plugin/extension/ExtensionUtils.java \
+	\
+	sun/plugin/services/BrowserService.java \
+	sun/plugin/services/PlatformService.java \
+	\
+	sun/plugin/dom/exception/HierarchyRequestException.java \
+	sun/plugin/dom/exception/InvalidAccessException.java \
+	sun/plugin/dom/exception/InvalidStateException.java \
+	sun/plugin/dom/exception/NoModificationAllowedException.java \
+	sun/plugin/dom/exception/PluginNotSupportedException.java \
+	sun/plugin/dom/exception/BrowserNotSupportedException.java \
+	sun/plugin/dom/exception/WrongDocumentException.java \
+	\
+	sun/plugin/dom/DOMObject.java \
+	sun/plugin/dom/DOMObjectTypeHelper.java \
+	sun/plugin/dom/DOMObjectHelper.java \
+	sun/plugin/dom/DOMImplementation.java \
+	sun/plugin/dom/DOMServiceProvider.java \
+	sun/plugin/dom/DOMObjectFactory.java \
+	sun/plugin/dom/DOMService.java \
+	\
+	sun/plugin/dom/core/Attr.java \
+	sun/plugin/dom/core/CharacterData.java \
+	sun/plugin/dom/core/Comment.java \
+	sun/plugin/dom/core/Document.java \
+	sun/plugin/dom/core/DocumentFragment.java \
+	sun/plugin/dom/core/Element.java \
+	sun/plugin/dom/core/Node.java \
+	sun/plugin/dom/core/Text.java \
+	\
+	sun/plugin/dom/views/AbstractView.java \
+	\
+	sun/plugin/dom/html/HTMLElement.java \
+	sun/plugin/dom/html/HTMLDocument.java \
+	sun/plugin/dom/html/HTMLCollection.java \
+	sun/plugin/dom/html/HTMLHtmlElement.java \
+	sun/plugin/dom/html/HTMLImageElement.java \
+	sun/plugin/dom/html/HTMLAnchorElement.java \
+	sun/plugin/dom/html/HTMLObjectElement.java \
+	sun/plugin/dom/html/HTMLFormElement.java \
+	sun/plugin/dom/html/HTMLInputElement.java \
+	sun/plugin/dom/html/HTMLSelectElement.java \
+	sun/plugin/dom/html/HTMLTextAreaElement.java \
+	sun/plugin/dom/html/HTMLBodyElement.java \
+	sun/plugin/dom/html/HTMLAppletElement.java \
+	sun/plugin/dom/html/HTMLConstants.java \
+	sun/plugin/dom/html/HTMLAreaElement.java \
+	sun/plugin/dom/html/HTMLBaseElement.java \
+	sun/plugin/dom/html/HTMLBaseFontElement.java \
+	sun/plugin/dom/html/HTMLBRElement.java \
+	sun/plugin/dom/html/HTMLButtonElement.java \
+	sun/plugin/dom/html/HTMLDirectoryElement.java \
+	sun/plugin/dom/html/HTMLDivElement.java \
+	sun/plugin/dom/html/HTMLDListElement.java \
+	sun/plugin/dom/html/HTMLFieldSetElement.java \
+	sun/plugin/dom/html/HTMLFontElement.java \
+	sun/plugin/dom/html/HTMLFrameElement.java \
+	sun/plugin/dom/html/HTMLFrameSetElement.java \
+	sun/plugin/dom/html/HTMLHeadElement.java \
+	sun/plugin/dom/html/HTMLHeadingElement.java \
+	sun/plugin/dom/html/HTMLHRElement.java \
+	sun/plugin/dom/html/HTMLIFrameElement.java \
+	sun/plugin/dom/html/HTMLIsIndexElement.java \
+	sun/plugin/dom/html/HTMLLabelElement.java \
+	sun/plugin/dom/html/HTMLLegendElement.java \
+	sun/plugin/dom/html/HTMLLIElement.java \
+	sun/plugin/dom/html/HTMLMapElement.java \
+	sun/plugin/dom/html/HTMLMenuElement.java \
+	sun/plugin/dom/html/HTMLMetaElement.java \
+	sun/plugin/dom/html/HTMLModElement.java \
+	sun/plugin/dom/html/HTMLOListElement.java \
+	sun/plugin/dom/html/HTMLOptGroupElement.java \
+	sun/plugin/dom/html/HTMLOptionElement.java \
+	sun/plugin/dom/html/HTMLParamElement.java \
+	sun/plugin/dom/html/HTMLParagraphElement.java \
+	sun/plugin/dom/html/HTMLPreElement.java \
+	sun/plugin/dom/html/HTMLQuoteElement.java \
+	sun/plugin/dom/html/HTMLScriptElement.java \
+	sun/plugin/dom/html/HTMLStyleElement.java \
+	sun/plugin/dom/html/HTMLTableCaptionElement.java \
+	sun/plugin/dom/html/HTMLTableCellElement.java \
+	sun/plugin/dom/html/HTMLTableColElement.java \
+	sun/plugin/dom/html/HTMLTableElement.java \
+	sun/plugin/dom/html/HTMLTableRowElement.java \
+	sun/plugin/dom/html/HTMLTableSectionElement.java \
+	sun/plugin/dom/html/HTMLTitleElement.java \
+	sun/plugin/dom/html/HTMLUListElement.java \
+	sun/plugin/dom/html/ns4/NS4DOMObject.java \
+	sun/plugin/dom/html/ns4/HTMLFormCollection.java \
+	sun/plugin/dom/html/ns4/HTMLAppletCollection.java \
+	sun/plugin/dom/html/ns4/HTMLImageCollection.java \
+	sun/plugin/dom/html/ns4/HTMLAnchorCollection.java \
+	sun/plugin/dom/html/common/HTMLCollection.java \
+	\
+	sun/plugin/dom/stylesheets/StyleSheet.java \
+	sun/plugin/dom/stylesheets/StyleSheetList.java \
+	sun/plugin/dom/stylesheets/MediaList.java \
+	\
+	sun/plugin/dom/css/CSSStyleDeclaration.java \
+	sun/plugin/dom/css/CSSStyleSheet.java \
+	sun/plugin/dom/css/CSSRule.java \
+	sun/plugin/dom/css/CSSStyleRule.java \
+	sun/plugin/dom/css/CSSUnknownRule.java \
+	sun/plugin/dom/css/CSSRuleList.java \
+	sun/plugin/dom/css/ViewCSS.java \
+	sun/plugin/dom/css/CSSImportRule.java \
+	sun/plugin/dom/css/CSSConstants.java \
+	sun/plugin/dom/css/CSSCharsetRule.java \
+	sun/plugin/dom/css/CSSPageRule.java \
+	sun/plugin/dom/css/CSSFontFaceRule.java \
+	sun/plugin/dom/css/CSSMediaRule.java \
+	sun/plugin/dom/css/CSSValue.java \
+	sun/plugin/dom/css/CSSValueList.java \
+	sun/plugin/dom/css/CSSPrimitiveValue.java \
+	sun/plugin/dom/css/Rect.java \
+	sun/plugin/dom/css/RGBColor.java \
+	\
+	sun/plugin/viewer/LifeCycleManager.java \
+	sun/plugin/viewer/AppletPanelCache.java \
+	\
+	sun/plugin/viewer/context/PluginAppletContext.java \
+	sun/plugin/viewer/context/PluginBeansContext.java \
+	sun/plugin/viewer/context/DefaultPluginAppletContext.java \
+	sun/plugin/viewer/context/NetscapeAppletContext.java \
+	sun/plugin/viewer/context/AppletImageFactory.java \
+	sun/plugin/viewer/context/AppletAudioClipFactory.java \
+	\
+	sun/plugin/net/cookie/Netscape4CookieHandler.java \
+	\
+	sun/plugin/net/proxy/PluginProxyInfo.java \
+	sun/plugin/net/proxy/PluginProxyServiceProvider.java \
+	sun/plugin/net/proxy/PluginAutoProxyHandler.java \
+	sun/plugin/net/protocol/jar/Handler.java \
+	sun/plugin/net/protocol/jar/CachedJarURLConnection.java \
+	\
+	netscape/javascript/JSObject.java \
+	netscape/javascript/JSUtil.java \
+	netscape/javascript/JSException.java \
+	\
+	netscape/security/ForbiddenTargetException.java \
+	netscape/security/UserDialogHelper.java \
+	netscape/security/Principal.java \
+	netscape/security/Privilege.java \
+	netscape/security/PrivilegeManager.java \
+	netscape/security/PrivilegeTable.java \
+	netscape/security/Target.java \
+	netscape/security/ParameterizedTarget.java \
+	netscape/security/UserTarget.java \
+	sun/plugin/net/protocol/http/HttpUtils.java 
+
+
+FILES_java_windows = \
+	sun/plugin/security/Broken11ClassFixer.java \
+	sun/plugin/security/StripClassFile.java \
+	sun/plugin/security/JDK11ClassFileTransformer.java \
+	\
+	sun/plugin/util/EventMulticaster.java \
+	\
+	sun/plugin/BeansApplet.java \
+	sun/plugin/AppletObjectInputStream.java \
+	sun/plugin/BeansViewer.java \
+	sun/plugin/WJcovUtil.java  \
+	\
+	sun/plugin/javascript/ocx/JSObject.java \
+	\
+	sun/plugin/viewer/WNetscapePluginContext.java \
+	sun/plugin/viewer/WNetscapePluginObject.java \
+	sun/plugin/viewer/IExplorerPluginContext.java \
+	sun/plugin/viewer/IExplorerPluginObject.java \
+	sun/plugin/viewer/AxBridgeContext.java \
+	sun/plugin/viewer/AxBridgeObject.java \
+	\
+	sun/plugin/com/Dispatch.java \
+	sun/plugin/com/DispatchImpl.java \
+	sun/plugin/com/BeanDispatchImpl.java \
+	sun/plugin/com/Dispatcher.java \
+	sun/plugin/com/WrapperJSObject.java \
+	sun/plugin/com/MethodDispatcher.java \
+	sun/plugin/com/PropertySetDispatcher.java \
+	sun/plugin/com/PropertyGetDispatcher.java \
+	sun/plugin/com/JavaClass.java \
+	sun/plugin/com/NullString.java \
+	sun/plugin/com/TypeConverter.java \
+	sun/plugin/com/Utils.java \
+	sun/plugin/com/ParameterListCorrelator.java \
+	sun/plugin/com/DispatchClient.java \
+	sun/plugin/com/BeanClass.java \
+	sun/plugin/com/Packager.java \
+	sun/plugin/com/BeanCustomizer.java \
+	\
+	sun/plugin/com/event/ListenerProxy.java \
+	sun/plugin/com/event/COMEventListener.java \
+	sun/plugin/com/event/COMEventHandler.java \
+
+
+FILES_java_w3cdom = \
+	org/w3c/dom/Attr.java \
+	org/w3c/dom/CDATASection.java \
+	org/w3c/dom/CharacterData.java \
+	org/w3c/dom/Comment.java \
+	org/w3c/dom/Document.java \
+	org/w3c/dom/DocumentFragment.java \
+	org/w3c/dom/DocumentType.java \
+	org/w3c/dom/DOMException.java \
+	org/w3c/dom/DOMImplementation.java \
+	org/w3c/dom/Element.java \
+	org/w3c/dom/Entity.java \
+	org/w3c/dom/EntityReference.java \
+	org/w3c/dom/NamedNodeMap.java \
+	org/w3c/dom/Node.java \
+	org/w3c/dom/NodeList.java \
+	org/w3c/dom/Notation.java \
+	org/w3c/dom/ProcessingInstruction.java \
+	org/w3c/dom/Text.java \
+	org/w3c/dom/html/HTMLAnchorElement.java \
+	org/w3c/dom/html/HTMLAppletElement.java \
+	org/w3c/dom/html/HTMLAreaElement.java \
+	org/w3c/dom/html/HTMLBaseElement.java \
+	org/w3c/dom/html/HTMLBaseFontElement.java \
+	org/w3c/dom/html/HTMLBlockquoteElement.java \
+	org/w3c/dom/html/HTMLBodyElement.java \
+	org/w3c/dom/html/HTMLBRElement.java \
+	org/w3c/dom/html/HTMLButtonElement.java \
+	org/w3c/dom/html/HTMLCollection.java \
+	org/w3c/dom/html/HTMLDirectoryElement.java \
+	org/w3c/dom/html/HTMLDivElement.java \
+	org/w3c/dom/html/HTMLDListElement.java \
+	org/w3c/dom/html/HTMLDocument.java \
+	org/w3c/dom/html/HTMLElement.java \
+	org/w3c/dom/html/HTMLFieldSetElement.java \
+	org/w3c/dom/html/HTMLFontElement.java \
+	org/w3c/dom/html/HTMLFormElement.java \
+	org/w3c/dom/html/HTMLFrameElement.java \
+	org/w3c/dom/html/HTMLFrameSetElement.java \
+	org/w3c/dom/html/HTMLHeadElement.java \
+	org/w3c/dom/html/HTMLHeadingElement.java \
+	org/w3c/dom/html/HTMLHRElement.java \
+	org/w3c/dom/html/HTMLHtmlElement.java \
+	org/w3c/dom/html/HTMLIFrameElement.java \
+	org/w3c/dom/html/HTMLImageElement.java \
+	org/w3c/dom/html/HTMLInputElement.java \
+	org/w3c/dom/html/HTMLIsIndexElement.java \
+	org/w3c/dom/html/HTMLLabelElement.java \
+	org/w3c/dom/html/HTMLLegendElement.java \
+	org/w3c/dom/html/HTMLLIElement.java \
+	org/w3c/dom/html/HTMLLinkElement.java \
+	org/w3c/dom/html/HTMLMapElement.java \
+	org/w3c/dom/html/HTMLMenuElement.java \
+	org/w3c/dom/html/HTMLMetaElement.java \
+	org/w3c/dom/html/HTMLModElement.java \
+	org/w3c/dom/html/HTMLObjectElement.java \
+	org/w3c/dom/html/HTMLOListElement.java \
+	org/w3c/dom/html/HTMLOptGroupElement.java \
+	org/w3c/dom/html/HTMLOptionElement.java \
+	org/w3c/dom/html/HTMLParagraphElement.java \
+	org/w3c/dom/html/HTMLParamElement.java \
+	org/w3c/dom/html/HTMLPreElement.java \
+	org/w3c/dom/html/HTMLQuoteElement.java \
+	org/w3c/dom/html/HTMLScriptElement.java \
+	org/w3c/dom/html/HTMLSelectElement.java \
+	org/w3c/dom/html/HTMLStyleElement.java \
+	org/w3c/dom/html/HTMLTableCaptionElement.java \
+	org/w3c/dom/html/HTMLTableCellElement.java \
+	org/w3c/dom/html/HTMLTableColElement.java \
+	org/w3c/dom/html/HTMLTableElement.java \
+	org/w3c/dom/html/HTMLTableSectionElement.java \
+	org/w3c/dom/html/HTMLTableRowElement.java \
+	org/w3c/dom/html/HTMLTextAreaElement.java \
+	org/w3c/dom/html/HTMLTitleElement.java \
+	org/w3c/dom/html/HTMLUListElement.java 
+
+FILES_java_unix = \
+	sun/plugin/services/MNetscape4BrowserService.java \
+	sun/plugin/services/MNetscape6BrowserService.java \
+	sun/plugin/services/MNetscape6BrowserAuthenticator.java \
+	sun/plugin/services/MPlatformService.java \
+	\
+	sun/plugin/viewer/MNetscapePluginObject.java \
+	sun/plugin/viewer/context/MNetscape6AppletContext.java \
+	sun/plugin/viewer/frame/MNetscapeEmbeddedFrame.java \
+	sun/plugin/viewer/frame/XNetscapeEmbeddedFrame.java \
+	\
+	sun/plugin/net/cookie/MNetscape6CookieHandler.java \
+	sun/plugin/net/proxy/MNetscape6BrowserProxyHandler.java
+
+
+ifeq ($(PLATFORM),windows)
+  FILES_java += $(FILES_java_windows)
+else
+  FILES_java += $(FILES_java_unix)
+endif
+
+
+RESOURCE_BUNDLE_java= \
+        sun/plugin/resources/Activator.java
+
+FILES_java += $(RESOURCE_BUNDLE_java)
+
+FILES_export = \
+	sun/plugin/javascript/navig5/JSObject.java \
+	sun/plugin/javascript/navig/JSObject.java \
+	sun/plugin/JavaRunTime.java \
+	sun/plugin/liveconnect/JavaScriptProtectionDomain.java 
+
+FILES_export_unix = \
+	sun/plugin/navig/motif/Plugin.java \
+	sun/plugin/navig/motif/Worker.java \
+	sun/plugin/navig/motif/AThread.java \
+	sun/plugin/navig/motif/OJIPlugin.java \
+	sun/plugin/services/MNetscape6BrowserAuthenticator.java \
+	sun/plugin/viewer/MNetscapePluginContext.java \
+	sun/plugin/viewer/MNetscapePluginObject.java
+
+FILES_export_windows = \
+	sun/plugin/viewer/IExplorerAppletStatusListener.java \
+	sun/plugin/viewer/AxBridgeObject.java \
+	sun/plugin/viewer/WNetscapePluginObject.java \
+	sun/plugin/viewer/frame/WNetscapeEmbeddedFrame.java \
+	sun/plugin/viewer/frame/IExplorerEmbeddedFrame.java \
+	sun/plugin/viewer/frame/AxBridgeEmbeddedFrame.java \
+	\
+	sun/plugin/viewer/context/IExplorerAppletContext.java \
+	sun/plugin/viewer/context/WNetscape6AppletContext.java \
+	\
+	sun/plugin/net/cookie/WNetscape6CookieHandler.java \
+	\
+	sun/plugin/net/proxy/WNetscape6BrowserProxyHandler.java \
+	\
+	sun/plugin/services/AxBridgeBrowserService.java \
+	sun/plugin/services/WIExplorerBrowserService.java \
+	sun/plugin/services/WNetscape4BrowserService.java \
+	sun/plugin/services/WNetscape6BrowserAuthenticator.java \
+	sun/plugin/services/WNetscape6BrowserService.java \
+	sun/plugin/services/WPlatformService.java \
+	\
+	sun/plugin/com/event/COMEventHandler.java \
+	sun/plugin/com/DispatchImpl.java 
+
+ifeq ($(PLATFORM),windows)
+  FILES_export += $(FILES_export_windows)
+else
+  FILES_export += $(FILES_export_unix)
+endif
+
+FILES_export2 = sun/awt/EmbeddedFrame.java 
+
+LOCALE_SUFFIXES = $(PLUGIN_LOCALES)
+
+FILES_java += $(foreach file,$(RESOURCE_BUNDLE_java),$(foreach locale,$(LOCALE_SUFFIXES),$(basename $(file))_$(locale).java))
+
+

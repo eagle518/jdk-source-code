@@ -1,0 +1,436 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Engineering Specification Template</title>
+</head>
+  <body bgcolor="white">
+
+<h2>Registration Engineering Specification </h2>
+
+<p> </p>
+
+<h4> RFE:&nbsp; &nbsp;4504750 Improve usability of Plug-in security warning dialog box<!-- Replace BUGID with the RFE bugtraq ID and remove these comments...
+
+   <a target=new href=http://andorra1.sfbay:8080/cgi-bin/ws.exe/bugtraq/jdk/bug.hts?bugid_value=BUGID>BUGID</a>
+
+-->
+
+<p>Author: &nbsp;Dennis Gu<br>
+  Date: 24 April 2002        </p>
+ </h4>
+
+<p><br>
+
+<table width="100%" cellspacing="0" cellpadding="3" border="0">
+    <tbody>
+     <tr>
+      <td bgcolor="wheat">
+      <h3>1  Project Description</h3>
+       </td>
+    </tr>
+
+  </tbody>
+</table>
+   </p>
+
+<p>  </p>
+
+<h4> 1.1 Overview</h4>
+ <!-- Description of the project/problem -->  When the Java Plugin 1.3 or 1.4
+ encounters a certificate in a JAR file signature that it does not recognize,
+ it pops up a "Java Plug-in Security Warning" dialog. The dialog display a lot of
+ information about the certificate. It is very important for the user to understand
+ this dialog box and the information inside dialog box. If the user responds
+ incorrectly, they could be granting full permissions to malicious code.
+ We decide to make this dialog as clear as possible.
+ <br>
+ <br>
+ Here are the items we have changed for this RFE:<br>
+
+ 1. The options "Grant Session" and "Deny" has been changed to the
+ "Yes" and "No" buttons. Because "Do you want trust ..." is a yes or no question.<br>
+<br>
+ 2. The questions in the dialog box will be<br>
+ "Do you want to trust the signed applet distributed by ... ?"<br>
+<br>
+ 3. Click on "More Details" button will pop up a certificate dialog box. This dialog
+ box has detail information about the certificate which signed this applet.<br>
+<br>
+
+
+<h4> 1.2 Project Dependencies </h4>
+N/A
+   <!-- Describe any dependencies on other projects -->
+<h4> 1.3 OS and Browser Compatibility and Interpretability</h4>
+ This feature will be available on all platforms and browsers. <br>
+   <!-- Describe any compatibility or interoperability issues.  Is this
+     project a cross platform solution, or does it only affect certain
+     platforms/browsers?  Is this compatible with earlier and future
+     releases? -->
+
+<p>   </p>
+
+<h4> 1.4 Performance and Scalability</h4>
+ Performance should not be a gating factor, since we only change the UI of this
+ security dialog box.
+<h4> 1.5 Security</h4>
+ This is related to the security dialog box. The changes will make the user clearly
+ understand what they are trying to do. <br>
+   <!-- Describe any security related issues. -->
+<p>   </p>
+
+<h4> 1.6 Internationalization (I18N) / Localization (L10N) </h4>
+   <!-- Describe any internationalization and/or localization requirements. -->
+   The text in the security dialog box will be internationalized and localized.<br>
+
+<h4> 1.7 Packaging</h4>
+ The way the solution is to be delivered should be simple.<br>
+   <!-- Describe any special packaging requirements or installer changes. -->
+
+<p>   </p>
+
+<h4> 1.8 Usability </h4>
+N/A
+   <!-- Describe any usability enhancements or concerns for target
+     users or audience. -->
+
+<p>   </p>
+
+<h4> 1.9 Quality </h4>
+
+<p>  </p>
+
+<h5> 1.9.1 Unit or Functional Tests to be Delivered </h5>
+   <!-- Describe any Unit or Functional tests to be delivered by engineering
+     for this project. -->
+
+<p>   </p>
+
+<h5> 1.9.2 Additional Testing Notes </h5>
+   <!-- Describe recommended testing approaches and any special requirements
+     to completely certify and test the project. -->
+
+<p>  <br>
+ <br>
+
+<table width="100%" cellspacing="0" cellpadding="3" border="0">
+    <tbody>
+     <tr>
+      <td bgcolor="wheat">
+      <h3>2  Technical Description</h3>
+       </td>
+    </tr>
+
+  </tbody>
+</table>
+   </p>
+
+<p>   </p>
+
+<h4> 2.1 Architecture</h4>
+
+ All the changes are based on the existed architecture to display the dialog
+ box, which is in the DialogFactory.java. Some resource file has been changed
+ to display the new texts and button names in the security dialog box. We also
+ redesign the Certificate dialog using Swing to make it looks better. The font
+ of the text in the security dialog box has been changed too.
+<br>
+
+   <!-- List and describe any new or changed exported interfaces
+     or APIs. -->
+
+<p>   </p>
+
+<h4>2.2 Exported Interfaces/API</h4>
+N/A
+<h4> 2.3 Imported Interfaces/API </h4>
+N/A
+   <!-- List and describe any new or changed imported interfaces
+     or APIs which are of significance to note. -->
+
+<p>   </p>
+
+<h4> 2.4 User Interface</h4>
+<p align="center" color=#000000>
+<img src="sec_dialog.gif"  border="0">
+<br>
+<img src="cert_dialog.gif"  border="0">
+
+ <!-- Describe the user interface of this project, if any.  Include
+     screen shots or diagrams where helpful. -->
+
+<p>  <br>
+
+<table width="100%" cellspacing="0" cellpadding="3" border="0">
+    <tbody>
+     <tr>
+      <td bgcolor="wheat">
+      <h3>3  Marketing</h3>
+       </td>
+    </tr>
+
+  </tbody>
+</table>
+   </p>
+
+<p>   </p>
+
+<h4> 3.1 Justification </h4>
+   <!-- Why is this project important to Sun? -->
+<p>   </p>
+
+<h4> 3.2 Customer Request </h4>
+   <!-- Which customers are asking for this project? -->
+<p>   </p>
+
+<h4> 3.3 Competitive Analysis </h4>
+   <!-- Discuss tradeoffs between this project and relevant
+     alternatives. Why will the target audience prefer this
+     product over the competition?  The contents of this
+     section may be replaced by a pointer to the appropriate
+     section of the MRD, if it provides the required
+     information. -->
+
+<p>  <br>
+ <br>
+
+<table width="100%" cellspacing="0" cellpadding="3" border="0">
+    <tbody>
+     <tr>
+      <td bgcolor="wheat">
+      <h3>4  Management and Planning</h3>
+       </td>
+    </tr>
+
+  </tbody>
+</table>
+   </p>
+
+<p>   </p>
+
+<h4> 4.1 Scope/Priority </h4>
+   <!-- What is the size of this effort?  Small, Medium, Large.
+     What is the priority?  1, 2, 3. -->
+
+<p>   </p>
+
+<h4> 4.2 Target Release </h4>
+   <!-- Which specific release will be tartgeted for this project work. -->
+
+<p>   </p>
+
+<h4> 4.3 Resources </h4>
+
+<p>   </p>
+
+<h5> 4.3.1 Development </h5>
+      <!-- Number of developers required, or assigned developers -->
+
+<p>       </p>
+
+<h5> 4.3.2 Quality Assurance/Testing </h5>
+       <!-- Number of test engineers required to develop tests, or
+     assigned test engineers -->
+
+<p>      </p>
+
+<h5> 4.3.3 Documentation </h5>
+      <!-- Number of writers required, or assigned writers -->
+<p>      </p>
+
+<h5> 4.3.4 Technical Support </h5>
+   <!-- Background knowledge required to support this feature. -->
+<p>   </p>
+
+<h5> 4.3.4 Special Hardware/Software </h5>
+   <!-- List any special hardware/software required to complete
+     this project. -->
+
+<p>   </p>
+
+<h4> 4.4 Schedule </h4>
+   <!-- Detailed schedule for project, including engineering work,
+     testing, documentation, integration and release. -->
+
+<p>  </p>
+
+<center>
+<table cellpadding="0" cellspacing="1" bgcolor="white" border="0">
+     <tbody>
+     <tr>
+      <td>
+      <table cellspacing="1" cellpadding="10" bgcolor="wheat" border="1">
+           <tbody>
+           <tr align="Center">
+            <th bgcolor="#666699" width="75"><font color="white">Start Date</font></th>
+            <th bgcolor="#666699" width="75"><font color="white">End Date</font></th>
+            <th bgcolor="#666699" width="250"><font color="white">Activity</font></th>
+            <th bgcolor="#666699" width="50"><font color="white">Owner</font></th>
+            <th bgcolor="#666699" width="50"><font color="white">Status</font></th>
+          </tr>
+           <tr>
+            <td>&nbsp;04.18.2002</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;Initial draft</td>
+            <td>&nbsp;dgu</td>
+             <!-- Change the foreground/background colors for this cell to reflect
+               the status.  For example...
+
+               <td bgcolor=green align=center><font color=white>04/16/2001</font></td>
+            -->
+             <td>&nbsp;started</td>
+          </tr>
+
+        </tbody>
+      </table>
+      </td>
+    </tr>
+
+  </tbody>
+</table>
+
+<table cellspacing="5" border="0">
+     <tbody>
+     <tr>
+      <td bgcolor="green" width="50">&nbsp;</td>
+      <td bgcolor="lightgreen" width="50">&nbsp;</td>
+      <td bgcolor="wheat" width="50">&nbsp;</td>
+      <td bgcolor="yellow" width="50">&nbsp;</td>
+      <td bgcolor="red" width="50">&nbsp;</td>
+    </tr>
+     <tr align="Center">
+      <td>Complete</td>
+      <td>Started</td>
+      <td>Not Started</td>
+      <td>Difficulties</td>
+      <td>Trouble</td>
+    </tr>
+
+  </tbody>
+</table>
+   </center>
+   <br>
+ <br>
+
+<table width="100%" cellspacing="0" cellpadding="3" border="0">
+    <tbody>
+     <tr>
+      <td bgcolor="wheat">
+      <h3>Appendices (as needed, suggestions below)</h3>
+       </td>
+    </tr>
+
+  </tbody>
+</table>
+
+<p>   </p>
+
+<h4> A. Background Information</h4>
+
+<p>   </p>
+
+<h4> B. Interface Specifications </h4>
+
+<p>   </p>
+
+<h4> C. Notes and Additional Details </h4>
+
+<p>   </p>
+
+<h4> D. Miscellaneous </h4>
+
+<p>   </p>
+
+<h4> E. Tracking </h4>
+
+<p>   </p>
+
+<h5> E.1  Final Webrev </h5>
+
+<p>   </p>
+
+<h5> E.2  Bugtraq </h5>
+   <!-- All related Bugtraq RFEs, Bugs, and EOUs.. -->
+<center>
+<table cellpadding="0" cellspacing="1" bgcolor="white" border="0">
+     <tbody>
+     <tr>
+      <td>
+      <table cellspacing="1" cellpadding="10" bgcolor="wheat" border="1">
+           <tbody>
+           <tr align="Center">
+            <th bgcolor="#666699" width="50"><font color="white">Bugid</font></th>
+            <th bgcolor="#666699" width="10"><font color="white">P</font></th>
+            <th bgcolor="#666699" width="10"><font color="white">S</font></th>
+            <th bgcolor="#666699" width="25"><font color="white">Subcategory</font></th>
+            <th bgcolor="#666699" width="25"><font color="white">Type</font></th>
+            <th bgcolor="#666699" width="20"><font color="white">Engineer</font></th>
+            <th bgcolor="#666699" width="300"><font color="white">Synopsis</font></th>
+          </tr>
+           <tr>
+            <td>&nbsp;4504750</td>
+            <td>&nbsp;3</td>
+            <td>&nbsp;4</td>
+            <td>&nbsp;plugin</td>
+            <td>&nbsp;RFE</td>
+            <td>&nbsp;Dennis Gu</td>
+            <td>&nbsp;Improve usability of plug-in security warning dialog</td>
+          </tr>
+
+        </tbody>
+      </table>
+      </td>
+    </tr>
+
+  </tbody>
+</table>
+   </center>
+
+<p>  <br>
+ <br>
+
+<table width="100%" cellspacing="0" cellpadding="3" border="0">
+    <tbody>
+     <tr>
+      <td bgcolor="wheat">
+      <h3>Revision History</h3>
+       </td>
+    </tr>
+
+  </tbody>
+</table>
+   </p>
+
+<p>  </p>
+
+<center>
+<table cellpadding="0" cellspacing="1" bgcolor="white" border="0">
+     <tbody>
+     <tr>
+      <td>
+      <table cellspacing="1" cellpadding="10" bgcolor="wheat" border="1">
+           <tbody>
+           <tr align="Center">
+            <th bgcolor="#666699" width="50"><font color="white">Date</font></th>
+            <th bgcolor="#666699" width="10"><font color="white">Version</font></th>
+            <th bgcolor="#666699" width="50"><font color="white">Author</font></th>
+            <th bgcolor="#666699" width="400"><font color="white">Description</font></th>
+          </tr>
+           <tr>
+            <td>&nbsp;04.24.2002</td>
+            <td>0.1</td>
+            <td>&nbsp;dgu</td>
+            <td>&nbsp;Initial draft</td>
+          </tr>
+
+        </tbody>
+      </table>
+      </td>
+    </tr>
+
+  </tbody>
+</table>
+   </center>
+
+</body>
+</html>

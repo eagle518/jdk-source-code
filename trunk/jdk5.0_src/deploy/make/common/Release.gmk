@@ -1,0 +1,445 @@
+#
+# @(#)Release.gmk	1.65 04/01/29
+# 
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+# Release makefile, release targets
+
+sample:
+	$(MAKE) RELEASE_BUILD=1 I18N=1 jaws-sample
+
+installer:
+	$(MAKE) I18N=1 all
+
+installer-all: installer-us installer-int
+
+installer-us:
+	$(MAKE) RELEASE_BUILD=1 all
+
+installer-int:
+	$(MAKE) RELEASE_BUILD=1 I18N=1 all
+
+# Signing targets
+ifdef WINDOWS
+signexe-us:
+	$(MAKE) RELEASE_BUILD=1 signexe
+
+signexe-int:
+	$(MAKE) RELEASE_BUILD=1 I18N=1 signexe
+
+jinstall-us:
+	$(MAKE) RELEASE_BUILD=1 jinstall
+
+jinstall-int:
+	$(MAKE) RELEASE_BUILD=1 I18N=1 jinstall
+endif
+
+# We only support 32 bit targets currently.  If anything other than 32 bit
+# build is requested, just exit normally.
+
+clobber: clean-us clean-int
+
+clean-debug:
+	$(MAKE) VARIANT=DBG clean
+
+clean-us:
+	$(MAKE) RELEASE_BUILD=1 VARIANT=OPT clean
+	$(MAKE) RELEASE_BUILD=1 VARIANT=DBG clean
+
+clean-int:
+	$(MAKE) RELEASE_BUILD=1 I18N=1 VARIANT=OPT clean
+	$(MAKE) RELEASE_BUILD=1 I18N=1 VARIANT=DBG clean
+
+
+# absolute directory names: note, these must exist prior to build 
+# time - they are created in the main Makefile.
+ifndef USING_CYGWIN
+   ABS_BUILDDIR := $(shell $(CD) $(DEPLOY_BUILDDIR); $(PWD))
+   ABS_BINDIR   := $(shell $(CD) $(BINDIR); $(PWD))
+   ABS_LIBDIR   := $(shell $(CD) $(LIBDIR); $(PWD))
+   ABS_TMPDIR   := $(shell $(CD) $(TMPDIR); $(PWD))
+   ABS_HTMLCONVERTER   := $(shell $(CD) $(BINDIR); $(PWD))/HtmlConverter$(EXE_SUFFIX)
+else
+   ABS_BUILDDIR := $(shell $(CYGPATH) -w -a $(DEPLOY_BUILDDIR))
+   ABS_BINDIR   := $(shell $(CYGPATH) -w -a $(BINDIR))
+   ABS_TMPDIR   := $(shell $(CYGPATH) -w -a $(TMPDIR))
+   ABS_LIBDIR   := $(shell $(CYGPATH) -w -a $(LIBDIR))
+   ABS_HTMLCONVERTER   := $(shell $(CYGPATH) -w -a $(BIDDIR)/HtmlConverter$(EXE_SUFFIX))
+endif
+
+# This is the cached Temporary image which would be used for the plugin images.
+TMP_DEPLOY_IMAGE_DIR := $(OUTPUTDIR)/tmp/deploy/deploy-image
+TMP_DEPLOY_DEBUG_IMAGE_DIR := $(OUTPUTDIR)/tmp/deploy/deploy-debug-image
+
+#
+# Targets.
+#
+deploy-images rebase-dlls images-clobber ::
+	@$(ECHO) ">>>Making "$@" @ `$(DATE)` ..."; 
+
+deploy-images:: deploy-jre-image deploy-jdk-image deploy-jdk-debug-image
+
+# The following get removed from the SDK image.
+NOTJDKTOOLS = \
+	java_vm \
+	jinstall
+
+# The following get removed from the JRE after the bulk-copy of BINDIR...
+NOTJRETOOLS = \
+	HtmlConverter$(EXE_SUFFIX) \
+	jinstall$(EXE_SUFFIX) \
+	packager$(EXE_SUFFIX) \
+	beanreg.dll
+
+# The following get removed from the JRE after the bulk-copy of LIBDIR...
+NOTJRELIBS = \
+	htmlconverter.jar
+
+DEMODIR = $(OUTPUTDIR)/demo
+
+PLUGIN_DEMO_SRC=$(J2SE_TOPDIR)/src/share
+
+#
+###### RULES 
+
+#
+# Rebase DLLs.
+#
+rebase-dlls:: $(TMPDIR)
+  ifeq ($(BUILD_PLUGIN), true)
+	$(FIND) $(BINDIR) -type f -name '?(*.$(LIBRARY_SUFFIX)|*.ocx)' -print | \
+		$(GREP) -v $(DBG_SUFFIX) | \
+	$(GREP) -v msvcrt.dll > $(TMPDIR)/rebase.input
+	if [ -n "`$(LS) $(OUTPUTDIR)/plugin`" ]; then \
+	     $(FIND) $(OUTPUTDIR)/plugin -type f -name '?(*.$(LIBRARY_SUFFIX)|*.cpl)' -print | \
+	     $(GREP) -v $(DBG_SUFFIX) | \
+	     $(GREP) -v msvcrt.dll >> $(TMPDIR)/rebase.input; \
+	fi
+	$(REBASE) -b $(REBASE_ADDR) -R $(BINDIR) -G $(TMPDIR)/rebase.input
+  endif
+
+######################################################
+# Deploy-JRE Image
+######################################################
+ifeq ($(PLATFORM), windows)
+deploy-jre-image:: rebase-dlls 
+endif
+
+deploy-jre-image::
+	$(MKDIR) -p $(JRE_IMAGE_DIR)
+	$(RM) -r $(TMP_DEPLOY_IMAGE_DIR)
+	$(MKDIR) -p $(TMP_DEPLOY_IMAGE_DIR)
+  ifneq ($(PLATFORM), windows)
+	@#
+	@# Copy the plugin binaries into the JRE image directory, if they exist...
+	@#
+	if [ -d $(OUTPUTDIR)/plugin ]; then \
+	    $(MKDIR) $(TMP_DEPLOY_IMAGE_DIR)/plugin; \
+	    $(CD) $(OUTPUTDIR)/plugin; \
+	    $(TAR) cf - `$(FIND) . -type f | $(GREP) -v '_g'` | \
+	    ($(CD) $(TMP_DEPLOY_IMAGE_DIR)/plugin; $(TAR) xf -); \
+	fi
+	@#
+	@# Copy plugin desktop file into the JRE image directory, if they exist...
+	@#
+	if [ -d $(OUTPUTDIR)/plugin/desktop ]; then \
+	    $(MKDIR) -p $(TMP_DEPLOY_IMAGE_DIR)/plugin/desktop; \
+	    $(CP) -r -f $(OUTPUTDIR)/plugin/desktop $(TMP_DEPLOY_IMAGE_DIR)/plugin; \
+	fi
+	@#
+	@# Copy the ControlPanel script into the JRE image directory, if it exists...
+	@#
+	if [ -f $(OUTPUTDIR)/bin/ControlPanel ]; then \
+	    $(MKDIR) -p $(TMP_DEPLOY_IMAGE_DIR)/bin; \
+	    $(CP) $(OUTPUTDIR)/bin/ControlPanel $(TMP_DEPLOY_IMAGE_DIR)/bin/.; \
+	fi
+	@#
+	@# Copy the java_vm executable into the JRE image directory, if it exists...
+	@#
+	if [ -f $(OUTPUTDIR)/bin/java_vm ]; then \
+	    $(MKDIR) -p $(TMP_DEPLOY_IMAGE_DIR)/bin; \
+	    $(CP) $(OUTPUTDIR)/bin/java_vm $(TMP_DEPLOY_IMAGE_DIR)/bin/.; \
+	fi
+	@#
+	@# Copy the JNI entry points into the JRE image directory, if it exists...
+	@#
+	if [ -f $(OUTPUTDIR)/lib/$(LIBARCH)/libjavaplugin_jni.so ]; then \
+	    $(MKDIR) -p $(TMP_DEPLOY_IMAGE_DIR)/lib/$(LIBARCH); \
+	    $(CP) $(OUTPUTDIR)/lib/$(LIBARCH)/libjavaplugin_jni.so $(TMP_DEPLOY_IMAGE_DIR)/lib/$(LIBARCH)/.; \
+	fi
+
+	@#
+	@# Copy the common Netscape code into the JRE image directory, if it exists...
+	@#
+	if [ -f $(OUTPUTDIR)/lib/$(LIBARCH)/libjavaplugin_nscp.so ]; then \
+	    $(MKDIR) -p $(TMP_DEPLOY_IMAGE_DIR)/lib/$(LIBARCH); \
+	    $(CP) $(OUTPUTDIR)/lib/$(LIBARCH)/libjavaplugin_nscp.so $(TMP_DEPLOY_IMAGE_DIR)/lib/$(LIBARCH)/.; \
+	fi
+	if [ -f $(OUTPUTDIR)/lib/$(LIBARCH)/libjavaplugin_nscp_gcc29.so ]; then \
+	    $(MKDIR) -p $(TMP_DEPLOY_IMAGE_DIR)/lib/$(LIBARCH); \
+	    $(CP) $(OUTPUTDIR)/lib/$(LIBARCH)/libjavaplugin_nscp_gcc29.so $(TMP_DEPLOY_IMAGE_DIR)/lib/$(LIBARCH)/.; \
+	fi
+	@#
+	@# Copy the script L10N message files into the JRE image directory
+	@#
+	if [ -d $(LIBDIR) ]; then \
+	    $(MKDIR) -p $(TMP_DEPLOY_IMAGE_DIR)/lib; \
+	    $(CD) $(LIBDIR); \
+	    $(TAR) cf - `$(FIND) . -name 'sunw_java_plugin.mo' -print` | \
+	    ($(CD) $(TMP_DEPLOY_IMAGE_DIR)/lib; $(TAR) xf -); \
+	fi
+	@# Now take care of the deploy common so
+	if [ -f $(DEPLOY_COMMON_SO) ]; then \
+	   $(CP) $(DEPLOY_COMMON_SO) $(TMP_DEPLOY_IMAGE_DIR)/lib/$(LIBARCH)/; \
+	fi
+  else # PLATFORM
+     ifeq ($(BUILD_PLUGIN), true)
+	@#
+	@# Copy the plugin binaries into the temp plugin image directory, if they exist...
+	@#
+	$(MKDIR) -p $(TMP_DEPLOY_IMAGE_DIR)/bin
+	$(CP) $(BINDIR)/np* $(TMP_DEPLOY_IMAGE_DIR)/bin
+	$(CP) $(BINDIR)/jpi* $(TMP_DEPLOY_IMAGE_DIR)/bin
+	$(CP) $(BINDIR)/ju* $(TMP_DEPLOY_IMAGE_DIR)/bin
+	$(CP) $(BINDIR)/javacpl* $(TMP_DEPLOY_IMAGE_DIR)/bin
+	$(CP) $(BINDIR)/RegUtils.dll $(TMP_DEPLOY_IMAGE_DIR)/bin
+	$(CP) $(BINDIR)/ax* $(TMP_DEPLOY_IMAGE_DIR)/bin;
+	$(CP) $(BINDIR)/eula.dll $(TMP_DEPLOY_IMAGE_DIR)/bin;
+	$(RM) $(TMP_DEPLOY_IMAGE_DIR)/bin/*_g*
+	@# Now take care of the deploy common dll
+	if [ -f $(DEPLOY_COMMON_DLL) ]; then \
+	   $(CP) $(DEPLOY_COMMON_DLL) $(TMP_DEPLOY_IMAGE_DIR)/bin/; \
+	fi	
+     endif
+  endif # PLATFORM
+     ifeq ($(BUILD_PLUGIN), true)
+	$(MKDIR) -p $(TMP_DEPLOY_IMAGE_DIR)/lib
+	$(CP) $(LIBDIR)/plugin.jar $(TMP_DEPLOY_IMAGE_DIR)/lib
+	@#
+	@# Remove tools that should not be part of JRE.
+	@#
+	for t in $(NOTJRETOOLS) ; do \
+	    $(RM) $(TMP_DEPLOY_IMAGE_DIR)/bin$(ISA_DIR)/$$t ; \
+	done ;
+	@#
+	@# Remove libs that should not be part of JRE.
+	@#
+	for l in $(NOTJRELIBS) ; do \
+	    $(RM) $(TMP_DEPLOY_IMAGE_DIR)/lib/$$l ; \
+	done ;
+     endif
+	@# Now take care of the javaws-image
+	$(MKDIR) -p $(TMP_DEPLOY_IMAGE_DIR)/lib
+	$(MKDIR) -p $(TMP_DEPLOY_IMAGE_DIR)/bin
+	$(CP) -Rf $(IMAGE_DIR)/lib/javaws.jar $(TMP_DEPLOY_IMAGE_DIR)/lib
+	$(CP) -Rf $(IMAGE_DIR)/lib/javaws $(TMP_DEPLOY_IMAGE_DIR)/lib
+	$(CP) -Rf $(IMAGE_DIR)/lib/security $(TMP_DEPLOY_IMAGE_DIR)/lib
+  ifneq ($(PLATFORM), windows)
+	$(CP) -Rf $(IMAGE_DIR)/lib/images $(TMP_DEPLOY_IMAGE_DIR)/lib
+
+	if [ -r $(IMAGE_DIR) ]; then \
+	  $(CP) -Rf $(IMAGE_DIR)/bin $(TMP_DEPLOY_IMAGE_DIR); \
+	  $(MKDIR) -p $(TMP_DEPLOY_IMAGE_DIR)/javaws; \
+ 	  $(LN) -sf ../bin/javaws $(TMP_DEPLOY_IMAGE_DIR)/javaws/javaws ; \
+	fi
+  else # PLATFORM
+	if [ -r $(IMAGE_DIR) ]; then \
+	  $(CP) -Rf $(IMAGE_DIR)/bin/*.exe $(TMP_DEPLOY_IMAGE_DIR)/bin; \
+	  $(CP) -Rf $(IMAGE_DIR)/bin/*.dll $(TMP_DEPLOY_IMAGE_DIR)/bin; \
+	fi
+  endif
+	@# Now take care of the deploy common jar
+	if [ -f $(DEPLOY_COMMON_JAR) ]; then \
+	  $(CP) $(DEPLOY_COMMON_JAR) $(TMP_DEPLOY_IMAGE_DIR)/lib/; \
+	fi
+	@# Now copy plugin image into the jre image
+	$(CD) $(TMP_DEPLOY_IMAGE_DIR) ; $(FIND) . -depth -print | $(CPIO) -pdum $(JRE_IMAGE_DIR)
+	@# all done with plugin image
+
+######################################################
+# plugin-JDK Image
+######################################################
+deploy-jdk-image::
+	@#
+	@# Grab tmp-plugin-jre.
+	@#
+	$(MKDIR) -p $(JDK_IMAGE_DIR)/jre
+	$(CD) $(TMP_DEPLOY_IMAGE_DIR) ; $(FIND) . -depth -print | $(CPIO) -pdum $(JDK_IMAGE_DIR)/jre
+	@#
+	$(MKDIR) -p $(JDK_IMAGE_DIR)/bin
+	if [ -r $(BINDIR)/HtmlConverter$(EXE_SUFFIX) ]; then \
+	    $(CP) $(BINDIR)/HtmlConverter$(EXE_SUFFIX) $(JDK_IMAGE_DIR)/bin; \
+	fi
+	if [ -r $(IMAGE_DIR)/bin/javaws$(EXE_SUFFIX) ]; then \
+	    $(CP) $(IMAGE_DIR)/bin/javaws$(EXE_SUFFIX) $(JDK_IMAGE_DIR)/bin; \
+	fi
+	if [ -r $(BINDIR)/ControlPanel ]; then \
+	    $(CP) $(BINDIR)/ControlPanel $(JDK_IMAGE_DIR)/bin; \
+	fi
+	$(MKDIR) -p $(JDK_IMAGE_DIR)/lib
+	if [ -r $(LIBDIR)/htmlconverter.jar ]; then \
+	    $(CP) $(LIBDIR)/htmlconverter.jar $(JDK_IMAGE_DIR)/lib; \
+	fi
+	$(MKDIR) -p $(JDK_IMAGE_DIR)/bin
+	if [ -r $(BINDIR)/packager$(EXE_SUFFIX) ]; then \
+	    $(CP) $(BINDIR)/packager$(EXE_SUFFIX) $(JDK_IMAGE_DIR)/bin; \
+	fi
+	$(MKDIR) -p $(JDK_IMAGE_DIR)/bin
+	if [ -r $(BINDIR)/beanreg.dll ]; then \
+	    $(CP) $(BINDIR)/beanreg.dll $(JDK_IMAGE_DIR)/bin; \
+	fi
+	@#
+	@# Plugin demos for web browsers
+	@#
+	$(RM) -r $(DEMODIR)/plugin; \
+	for demos in applets jfc; do \
+	    $(MKDIR) -p $(DEMODIR)/plugin/$${demos}; \
+	    $(CP) -r $(DEMODIR)/$${demos} $(DEMODIR)/plugin; \
+	    $(CHMOD) -R +w $(DEMODIR)/plugin; \
+	    $(ABS_HTMLCONVERTER) \
+	        -source $(DEMODIR)/plugin/$${demos} \
+	        -subdirs; \
+	        $(RM) -r $(DEMODIR)/plugin/$${demos}_BAK; \
+	done; \
+	$(SED) 's/VERSION/$(JDK_MAJOR_VERSION).$(JDK_MINOR_VERSION).$(JDK_MICRO_VERSION)/g' $(PLUGIN_DEMO_SRC)/demo/applets.html > $(DEMODIR)/applets.html; \
+	$(CP) $(DEMODIR)/applets.html $(DEMODIR)/plugin/applets.html; \
+	$(MKDIR) -p $(JDK_IMAGE_DIR)/demo
+	$(CP) $(DEMODIR)/applets.html $(JDK_IMAGE_DIR)/demo
+	$(CP) -r -f $(DEMODIR)/plugin $(JDK_IMAGE_DIR)/demo
+	@# Javaws sample
+	$(CP) -r -f $(IMAGE_DIR)/sample $(JDK_IMAGE_DIR)
+	@# Done with the JDK
+
+
+######################################################
+# plugin-JDK Debug Image
+######################################################
+deploy-jdk-debug-image::
+	$(MKDIR) -p $(JDK_DEBUG_IMAGE_DIR)
+	$(RM) -r $(TMP_DEPLOY_DEBUG_IMAGE_DIR)
+	$(MKDIR) -p $(TMP_DEPLOY_DEBUG_IMAGE_DIR)
+	$(MKDIR) -p $(TMP_DEPLOY_DEBUG_IMAGE_DIR)/bin
+	$(MKDIR) -p $(TMP_DEPLOY_DEBUG_IMAGE_DIR)/lib
+  ifneq ($(PLATFORM), windows)
+	@#
+	@# Copy the plugin binaries into the JRE debug image directory, if they exist...
+	@#
+	if [ -n "`$(LS) $(OUTPUTDIR)/plugin`" ]; then \
+	    $(MKDIR) $(TMP_DEPLOY_DEBUG_IMAGE_DIR)/plugin; \
+	    $(CD) $(OUTPUTDIR)/plugin; \
+	    $(TAR) cf - `$(FIND) . -type f | $(GREP) '_g'` | \
+	    ($(CD) $(TMP_DEPLOY_DEBUG_IMAGE_DIR)/plugin; $(TAR) xf -); \
+	fi
+	
+	@# Copy the plugin library as well
+	$(MKDIR) -p $(TMP_DEPLOY_DEBUG_IMAGE_DIR)/lib/$(LIBARCH);
+
+	if [ -f $(OUTPUTDIR)/lib/$(LIBARCH)/libjavaplugin_jni$(DBG_SUFFIX).so ]; then \
+	    $(CP) $(OUTPUTDIR)/lib/$(LIBARCH)/libjavaplugin_jni$(DBG_SUFFIX).so $(TMP_DEPLOY_DEBUG_IMAGE_DIR)/lib/$(LIBARCH)/.; \
+	fi
+
+	if [ -f $(OUTPUTDIR)/lib/$(LIBARCH)/libjavaplugin_nscp$(DBG_SUFFIX).so ]; then \
+	    $(CP) $(OUTPUTDIR)/lib/$(LIBARCH)/libjavaplugin_nscp$(DBG_SUFFIX).so $(TMP_DEPLOY_DEBUG_IMAGE_DIR)/lib/$(LIBARCH)/.; \
+	fi
+
+	@# For Linux platform
+	if [ -f $(OUTPUTDIR)/lib/$(LIBARCH)/libjavaplugin_nscp_gcc29$(DBG_SUFFIX).so ]; then \
+	    $(CP) $(OUTPUTDIR)/lib/$(LIBARCH)/libjavaplugin_nscp_gcc29$(DBG_SUFFIX).so $(TMP_DEPLOY_DEBUG_IMAGE_DIR)/lib/$(LIBARCH)/.; \
+	fi
+	
+	@# Copy the java_vm_g 
+	$(CP) $(BINDIR)/java_vm$(DBG_SUFFIX) $(TMP_DEPLOY_DEBUG_IMAGE_DIR)/bin;
+
+	@# take care of libdeploy_g.so
+	if [ -f $(DEPLOY_COMMON_SO_DBG) ]; then \
+	   $(CP) $(DEPLOY_COMMON_SO_DBG) $(TMP_DEPLOY_DEBUG_IMAGE_DIR)/lib/$(LIBARCH)/; \
+	fi
+	@# take care of javaws_g
+	if [ -f $(IMAGE_DIR)$(DBG_SUFFIX)/bin/javaws$(DBG_SUFFIX) ]; then \
+	  $(CP) $(IMAGE_DIR)$(DBG_SUFFIX)/bin/javaws$(DBG_SUFFIX) $(TMP_DEPLOY_DEBUG_IMAGE_DIR)/bin/; \
+	fi
+  else # PLATFORM     	
+     ifeq ($(BUILD_PLUGIN), true)
+	@#
+	@# Copy the plugin binaries into the temp plugin debug image directory, if they exist...
+	@#
+	$(CP) $(BINDIR)/np*_g* $(TMP_DEPLOY_DEBUG_IMAGE_DIR)/bin;
+	$(CP) $(BINDIR)/jp*_g* $(TMP_DEPLOY_DEBUG_IMAGE_DIR)/bin;
+	$(CP) $(BINDIR)/ju*_g* $(TMP_DEPLOY_DEBUG_IMAGE_DIR)/bin;
+	$(CP) $(BINDIR)/Reg*_g* $(TMP_DEPLOY_DEBUG_IMAGE_DIR)/bin;
+	$(CP) $(BINDIR)/ax*_g* $(TMP_DEPLOY_DEBUG_IMAGE_DIR)/bin;
+	$(CP) $(BINDIR)/eula*_g* $(TMP_DEPLOY_DEBUG_IMAGE_DIR)/bin;
+    endif
+	@# take care of deploy_g.dll
+	if [ -f $(DEPLOY_COMMON_DLL_DBG) ]; then \
+	  $(CP) $(DEPLOY_COMMON_DLL_DBG) $(TMP_DEPLOY_DEBUG_IMAGE_DIR)/bin/; \
+	fi
+	@# take care of javaws_g.exe
+	if [ -f $(IMAGE_DIR)$(DBG_SUFFIX)/bin/javaws$(DBG_SUFFIX).exe ]; then \
+	  $(CP) $(IMAGE_DIR)$(DBG_SUFFIX)/bin/javaws$(DBG_SUFFIX).exe $(TMP_DEPLOY_DEBUG_IMAGE_DIR)/bin/; \
+	fi
+  endif # PLATFORM
+     ifeq ($(BUILD_PLUGIN), true)
+	$(CP) $(LIBDIR)/plugin$(DBG_SUFFIX).jar $(TMP_DEPLOY_DEBUG_IMAGE_DIR)/lib
+
+	@# Now take care of the debug deploy common jar
+	if [ -f $(DEPLOY_COMMON_DBG_JAR) ]; then \
+	  $(CP) $(DEPLOY_COMMON_DBG_JAR) $(TMP_DEPLOY_DEBUG_IMAGE_DIR)/lib/; \
+	fi
+     endif
+	@# Now take care of the debug javaws jar
+	if [ -f $(IMAGE_DIR)$(DBG_SUFFIX)/lib/javaws$(DBG_SUFFIX).jar ]; then \
+	  $(CP) $(IMAGE_DIR)$(DBG_SUFFIX)/lib/javaws$(DBG_SUFFIX).jar $(TMP_DEPLOY_DEBUG_IMAGE_DIR)/lib/; \
+	fi
+	@#
+	@# Grab tmp-plugin-jre.
+	@#
+	$(MKDIR) -p $(JDK_DEBUG_IMAGE_DIR)/jre
+	$(CD) $(TMP_DEPLOY_DEBUG_IMAGE_DIR) ; $(FIND) . -depth -print | $(CPIO) -pdum $(JDK_DEBUG_IMAGE_DIR)/jre
+	@#
+	$(MKDIR) -p $(JDK_DEBUG_IMAGE_DIR)/bin
+	if [ -r $(BINDIR)/HtmlConverter$(DBG_SUFFIX).exe ]; then \
+	    $(CP) $(BINDIR)/HtmlConverter$(DBG_SUFFIX).exe $(JDK_DEBUG_IMAGE_DIR)/bin; \
+	fi
+	if [ -r $(BINDIR)/javaws$(DBG_SUFFIX).exe ]; then \
+	    $(CP) $(BINDIR)/javaws$(DBG_SUFFIX).exe $(JDK_DEBUG_IMAGE_DIR)/bin; \
+	fi
+	$(MKDIR) -p $(JDK_DEBUG_IMAGE_DIR)/lib
+	if [ -r $(LIBDIR)/htmlconverter$(DBG_SUFFIX).jar ]; then \
+	    $(CP) $(LIBDIR)/htmlconverter$(DBG_SUFFIX).jar $(JDK_DEBUG_IMAGE_DIR)/lib; \
+	fi
+	$(MKDIR) -p $(JDK_DEBUG_IMAGE_DIR)/bin
+	if [ -r $(BINDIR)/packager$(DBG_SUFFIX).exe ]; then \
+	    $(CP) $(BINDIR)/packager$(DBG_SUFFIX).exe $(JDK_DEBUG_IMAGE_DIR)/bin; \
+	fi
+	$(MKDIR) -p $(JDK_DEBUG_IMAGE_DIR)/bin
+	if [ -r $(BINDIR)/beanreg$(DBG_SUFFIX).dll ]; then \
+	    $(CP) $(BINDIR)/beanreg$(DBG_SUFFIX).dll $(JDK_DEBUG_IMAGE_DIR)/bin; \
+	fi
+
+
+######################################################
+# clobber
+######################################################
+deploy-images-clobber::
+	$(RM) $(TMPDIR)/tmp.jar
+	$(RM) -r $(JDK_IMAGE_DIR)/demo/applets
+	$(RM) -r $(JDK_IMAGE_DIR)/demo/plugin
+	$(RM) -r $(JDK_IMAGE_DIR)/sample/jnlp
+ifeq ($(PLATFORM), linux)
+	$(RM) -r $(OUTPUTDIR)/$(ARCH)
+endif
+ifeq ($(PLATFORM), windows)
+	$(RM) $(TMPDIR)/rebase.input
+endif
+	$(RM) -r $(TMP_DEPLOY_IMAGE_DIR)
+	$(RM) -r $(TMP_DEPLOY_DEBUG_IMAGE_DIR)
+
+deploy-images rebase-dlls deploy-images-clobber::
+	@$(ECHO) ">>>Finished making "$@" @ `$(DATE)` ..."; 
+
+.PHONY: jinstall-int jinstall-us signexe-int signexe-us installer-int installer-us \
+installer-all installer sample rebase-dlls pack-jars \
+deploy-jre-image deploy-jdk-image deploy-jdk-debug-image deploy-images-clobber

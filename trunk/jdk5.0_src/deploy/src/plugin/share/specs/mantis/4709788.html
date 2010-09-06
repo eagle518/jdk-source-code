@@ -1,0 +1,435 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
+	<TITLE>Engineering Specification Template</TITLE>
+	<META NAME="GENERATOR" CONTENT="StarOffice/5.2 (Win32)">
+	<META NAME="CREATED" CONTENT="20020815;13421350">
+	<META NAME="CHANGEDBY" CONTENT=" ">
+	<META NAME="CHANGED" CONTENT="20020815;14312393">
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<H2>Avoid Multiple Proxy/Web Server Authentication Engineering
+Specification 
+</H2>
+<H4>RFE: 4709788: Avoid Multiple Proxy/Web Server Authentication<!-- Replace BUGID with the RFE bugtraq ID and remove these comments...
+
+   <a target=new href=http://andorra1.sfbay:8080/cgi-bin/ws.exe/bugtraq/jdk/bug.hts?bugid_value=BUGIDBUGID</a
+
+ -->
+</H4>
+<H4>Author: Zhengyu Gu<BR>Date: 8/14/2002</H4>
+<P STYLE="margin-bottom: 0in"><BR>
+</P>
+<TABLE WIDTH=100% BORDER=0 CELLPADDING=3 CELLSPACING=0>
+	<TR>
+		<TD BGCOLOR="#f5deb3">
+			<H3>1 Project Description</H3>
+		</TD>
+	</TR>
+</TABLE>
+<H4>1.1 Overview 
+</H4>
+<P>The goal of this RFE is to resolve multiple Proxy/Web Server
+authentication while running Java Applet.</P>
+<P>Since Java Plug-in 1.4.0, Plug-in no longer relys on browser to
+provide networking capability, and implements all networking function
+by utilizing Java networking classes. The benefit of this approach is
+to eliminate browser depend code, have one code base to with all
+browsers. As a drawback of the approach, if the browser needs to go
+through a password protected proxy server, or run an applet on
+password protected web server, double authentication will result.</P>
+<P>When browser try to load a HTML page that contains Applet through
+a password protected proxy server, or the HTML page is located on a
+password protected web server, browser will be challenged to
+authenticate against the proxy server or web server. Once the browser
+finished loading and start Java plug-in, plug-in will have to open
+its own connection through the proxy, or to the web server to fetch
+applet classes. Since the plugin has no knowledge of the result of
+browser's authentication result, it will be challenged to
+re-authenticate aginst the proxy server or web server again.</P>
+<P>This is annoying side effect, since customers do not understand
+why they need to authenticate multiple time. The REF is filed to
+eliminate the second authentication from plugin side.  
+</P>
+<H4><!-- Description of the project/problem -->1.2 Project
+Dependencies 
+</H4>
+<H4 STYLE="font-weight: medium">Netscape 7 and Mozilla implementation
+depends on Netscape's upcoming API.</H4>
+<H4><!-- Describe any dependencies on other projects -->1.3 OS and
+Browser Compatibility and Interoperability 
+</H4>
+<P>The problem exists on all Oss and browsers. But the REF only
+targets Internet Explorer and Netscape 7 or later.</P>
+<H4><!-- Describe any compatibility or interoperability issues.  Is this
+     project a cross platform solution, or does it only affect certain
+     platforms/browsers?  Is this compatible with earlier and future
+     releases? -->1.4
+Performance and Scalability 
+</H4>
+<P>NA</P>
+<H4><!-- Describe the performance goals and measurements.  Describe any 
+     scalability limits and potential bottlenecks. -->1.5
+Security</H4>
+<H4><SPAN STYLE="font-weight: medium">NA</SPAN> 
+</H4>
+<H4><!-- Describe any security related issues. -->1.6
+Internationalization (I18N) / Localization (L10N)</H4>
+<H4><SPAN STYLE="font-weight: medium">NA</SPAN> 
+</H4>
+<H4><!-- Describe any internationalization and/or localization requirements. -->1.7
+Packaging 
+</H4>
+<P>NA</P>
+<H4><!-- Describe any special packaging requirements or installer changes. -->1.8
+Usability 
+</H4>
+<H4 STYLE="font-weight: medium">The REF will make plugin more
+friendly.<!-- Describe any usability enhancements or concerns for target
+     users or audience. --></H4>
+<H4>1.9 Quality 
+</H4>
+<H5>1.9.1 Unit or Functional Tests to be Delivered 
+</H5>
+<H5><!-- Describe any Unit or Functional tests to be delivered by engineering
+     for this project. -->1.9.2
+Additional Testing Notes 
+</H5>
+<P><!-- Describe recommended testing approaches and any special requirements
+     to completely certify and test the project. --></P>
+<TABLE WIDTH=100% BORDER=0 CELLPADDING=3 CELLSPACING=0>
+	<TR>
+		<TD BGCOLOR="#f5deb3">
+			<H3>2 Technical Description</H3>
+		</TD>
+	</TR>
+</TABLE>
+<H4>2.1 Architecture 
+</H4>
+<P><B>Internet Explorer:</B></P>
+<P>Upon the success of chanellege, Internet Explorer will store the
+username/password along with the server/security realm that
+authenticate against in to its undocumented registery based storage,
+called protected store. Windows exposes the COM interfaces that allow
+applications to access the protected store. We take advantage of
+those interfaces, to get the username/password that stored in the
+protected store when plugin need to authenticate against the
+proxy/web server. 
+</P>
+<P>When ever plugin receives authentication request from networking
+code through PluginAuthenticator class, it asks BrowserService for
+BrowserAuthenticator. In this case, a WIExplorerBrowserAuthenticator
+will be returned, then it passes the server, authenication scheme and
+security realm information to the WIExplorerBrowserAuthenticator.
+WIExplorerBrowserAuthenticator then calls into native code to
+retrieve username/password pair by using &quot;server/security realm&quot;
+as key. 
+</P>
+<P>If the username/password pair is found, plugin will use them to
+re-authenticate against proxy/web server. But it is transparent to
+user, so user will not see the prompt for authenication. If the
+username/password pair is not found, the second authenication request
+dialog will be prompted.</P>
+<P><B>Netscape 7 and later:</B></P>
+<P>It depends on upcoming Netscape APIs. 
+</P>
+<H4><!-- Describe the basic architecture of the project. Enumerate and
+     briefly describe the major components and the basic technical
+     approach chosen for the project. Where relevant, discuss major
+     tradeoffs or rejected approaches. -->2.2
+Exported Interfaces/API 
+</H4>
+<H4><!-- List and describe any new or changed exported interfaces
+     or APIs. -->2.3
+Imported Interfaces/API 
+</H4>
+<H4><!-- List and describe any new or changed imported interfaces
+     or APIs which are of significance to note. -->2.4
+User Interface 
+</H4>
+<P><!-- Describe the user interface of this project, if any.  Include
+     screen shots or diagrams where helpful. --></P>
+<TABLE WIDTH=100% BORDER=0 CELLPADDING=3 CELLSPACING=0>
+	<TR>
+		<TD BGCOLOR="#f5deb3">
+			<H3>3 Marketing</H3>
+		</TD>
+	</TR>
+</TABLE>
+<H4>3.1 Justification 
+</H4>
+<H4><!-- Why is this project important to Sun? -->3.2 Customer
+Request 
+</H4>
+<H4><!-- Which customers are asking for this project? -->3.3
+Competitive Analysis 
+</H4>
+<P><!-- Discuss tradeoffs between this project and relevant 
+     alternatives. Why will the target audience prefer this
+     product over the competition?  The contents of this
+     section may be replaced by a pointer to the appropriate
+     section of the MRD, if it provides the required
+     information. --></P>
+<TABLE WIDTH=100% BORDER=0 CELLPADDING=3 CELLSPACING=0>
+	<TR>
+		<TD BGCOLOR="#f5deb3">
+			<H3>4 Management and Planning</H3>
+		</TD>
+	</TR>
+</TABLE>
+<H4>4.1 Scope/Priority 
+</H4>
+<H4><!-- What is the size of this effort?  Small, Medium, Large.
+     What is the priority?  1, 2, 3. -->4.2
+Target Release</H4>
+<H4><SPAN STYLE="font-weight: medium">Mantis</SPAN> 
+</H4>
+<H4><!-- Which specific release will be tartgeted for this project work. -->4.3
+Resources 
+</H4>
+<H5>4.3.1 Development 
+</H5>
+<P>Zhengyu Gu</P>
+<H5><!-- Number of developers required, or assigned developers -->4.3.2
+Quality Assurance/Testing 
+</H5>
+<H5><!-- Number of test engineers required to develop tests, or
+     assigned test engineers -->4.3.3
+Documentation 
+</H5>
+<H5><!-- Number of writers required, or assigned writers -->4.3.4
+Technical Support 
+</H5>
+<H5><!-- Background knowledge required to support this feature. -->4.3.4
+Special Hardware/Software 
+</H5>
+<H4><!-- List any special hardware/software required to complete
+     this project. -->4.4
+Schedule 
+</H4>
+<CENTER>
+	<TABLE WIDTH=610 BORDER=1 CELLPADDING=10 CELLSPACING=3 FRAME=ABOVE BGCOLOR="#ffffff">
+		<COL WIDTH=75>
+		<COL WIDTH=73>
+		<COL WIDTH=248>
+		<COL WIDTH=48>
+		<COL WIDTH=48>
+		<TR BGCOLOR="#f5deb3">
+			<TH WIDTH=75 BGCOLOR="#666699">
+				<P ALIGN=CENTER><FONT COLOR="#ffffff"><!-- Detailed schedule for project, including engineering work,
+     testing, documentation, integration and release. -->Start
+				Date</FONT></P>
+			</TH>
+			<TH WIDTH=73 BGCOLOR="#666699">
+				<P ALIGN=CENTER><FONT COLOR="#ffffff">End Date</FONT></P>
+			</TH>
+			<TH WIDTH=248 BGCOLOR="#666699">
+				<P ALIGN=CENTER><FONT COLOR="#ffffff">Activity</FONT></P>
+			</TH>
+			<TH WIDTH=48 BGCOLOR="#666699">
+				<P ALIGN=CENTER><FONT COLOR="#ffffff">Owner</FONT></P>
+			</TH>
+			<TH WIDTH=48 BGCOLOR="#666699">
+				<P ALIGN=CENTER><FONT COLOR="#ffffff">Status</FONT></P>
+			</TH>
+		</TR>
+		<TR BGCOLOR="#f5deb3">
+			<TD WIDTH=75>
+				<P>&nbsp;07/08/02</P>
+			</TD>
+			<TD WIDTH=73>
+				<P>&nbsp;</P>
+			</TD>
+			<TD WIDTH=248>
+				<P>&nbsp;</P>
+			</TD>
+			<TD WIDTH=48>
+				<P>&nbsp;<!-- Change the foreground/background colors for this cell to reflect
+               the status.  For example...
+
+               <td bgcolor=green align=center<font color=white04/16/2001</font</td
+ --></P>
+			</TD>
+			<TD WIDTH=48>
+				<P>&nbsp;</P>
+			</TD>
+		</TR>
+		<TR>
+			<TD COLSPAN=5 WIDTH=584></TD>
+		</TR>
+	</TABLE>
+</CENTER>
+<CENTER>
+	<TABLE BORDER=0 CELLPADDING=2 CELLSPACING=5>
+		<TR>
+			<TD WIDTH=50 BGCOLOR="#008000">
+				<P>&nbsp;</P>
+			</TD>
+			<TD WIDTH=50 BGCOLOR="#90ee90">
+				<P>&nbsp;</P>
+			</TD>
+			<TD WIDTH=50 BGCOLOR="#f5deb3">
+				<P>&nbsp;</P>
+			</TD>
+			<TD WIDTH=50 BGCOLOR="#ffff00">
+				<P>&nbsp;</P>
+			</TD>
+			<TD WIDTH=50 BGCOLOR="#ff0000">
+				<P>&nbsp;</P>
+			</TD>
+		</TR>
+		<TR>
+			<TD>
+				<P ALIGN=CENTER>Complete</P>
+			</TD>
+			<TD>
+				<P ALIGN=CENTER>Started</P>
+			</TD>
+			<TD>
+				<P ALIGN=CENTER>Not Started</P>
+			</TD>
+			<TD>
+				<P ALIGN=CENTER>Difficulties</P>
+			</TD>
+			<TD>
+				<P ALIGN=CENTER>Trouble</P>
+			</TD>
+		</TR>
+	</TABLE>
+</CENTER>
+<P><BR><BR>
+</P>
+<TABLE WIDTH=100% BORDER=0 CELLPADDING=3 CELLSPACING=0>
+	<TR>
+		<TD BGCOLOR="#f5deb3">
+			<H3>Appendices (as needed, suggestions below)</H3>
+		</TD>
+	</TR>
+</TABLE>
+<H4>A. Background Information 
+</H4>
+<H4>B. Interface Specifications 
+</H4>
+<H4>C. Notes and Additional Details 
+</H4>
+<H4>D. Miscellaneous 
+</H4>
+<H4>E. Tracking 
+</H4>
+<H5>E.1 Final Webrev 
+</H5>
+<H5>E.2 Bugtraq 
+</H5>
+<CENTER>
+	<TABLE WIDTH=716 BORDER=1 CELLPADDING=10 CELLSPACING=3 FRAME=ABOVE BGCOLOR="#ffffff">
+		<COL WIDTH=50>
+		<COL WIDTH=11>
+		<COL WIDTH=11>
+		<COL WIDTH=85>
+		<COL WIDTH=36>
+		<COL WIDTH=62>
+		<COL WIDTH=298>
+		<TR BGCOLOR="#f5deb3">
+			<TH WIDTH=50 BGCOLOR="#666699">
+				<P ALIGN=CENTER><FONT COLOR="#ffffff"><!-- All related Bugtraq RFEs, Bugs, and EOUs.. -->Bugid</FONT></P>
+			</TH>
+			<TH WIDTH=11 BGCOLOR="#666699">
+				<P ALIGN=CENTER><FONT COLOR="#ffffff">P</FONT></P>
+			</TH>
+			<TH WIDTH=11 BGCOLOR="#666699">
+				<P ALIGN=CENTER><FONT COLOR="#ffffff">S</FONT></P>
+			</TH>
+			<TH WIDTH=85 BGCOLOR="#666699">
+				<P ALIGN=CENTER><FONT COLOR="#ffffff">Subcategory</FONT></P>
+			</TH>
+			<TH WIDTH=36 BGCOLOR="#666699">
+				<P ALIGN=CENTER><FONT COLOR="#ffffff">Type</FONT></P>
+			</TH>
+			<TH WIDTH=62 BGCOLOR="#666699">
+				<P ALIGN=CENTER><FONT COLOR="#ffffff">Engineer</FONT></P>
+			</TH>
+			<TH WIDTH=298 BGCOLOR="#666699">
+				<P ALIGN=CENTER><FONT COLOR="#ffffff">Synopsis</FONT></P>
+			</TH>
+		</TR>
+		<TR BGCOLOR="#f5deb3">
+			<TD WIDTH=50>
+				<P>&nbsp;</P>
+			</TD>
+			<TD WIDTH=11>
+				<P>&nbsp;</P>
+			</TD>
+			<TD WIDTH=11>
+				<P>&nbsp;</P>
+			</TD>
+			<TD WIDTH=85>
+				<P>&nbsp;</P>
+			</TD>
+			<TD WIDTH=36>
+				<P>&nbsp;</P>
+			</TD>
+			<TD WIDTH=62>
+				<P>&nbsp;</P>
+			</TD>
+			<TD WIDTH=298>
+				<P>&nbsp;</P>
+			</TD>
+		</TR>
+		<TR>
+			<TD COLSPAN=7 WIDTH=690></TD>
+		</TR>
+	</TABLE>
+</CENTER>
+<P><BR><BR>
+</P>
+<TABLE WIDTH=100% BORDER=0 CELLPADDING=3 CELLSPACING=0>
+	<TR>
+		<TD BGCOLOR="#f5deb3">
+			<H3>Revision History</H3>
+		</TD>
+	</TR>
+</TABLE>
+<CENTER>
+	<TABLE WIDTH=645 BORDER=1 CELLPADDING=10 CELLSPACING=3 FRAME=ABOVE BGCOLOR="#ffffff">
+		<COL WIDTH=50>
+		<COL WIDTH=54>
+		<COL WIDTH=48>
+		<COL WIDTH=398>
+		<TR BGCOLOR="#f5deb3">
+			<TH WIDTH=50 BGCOLOR="#666699">
+				<P ALIGN=CENTER><FONT COLOR="#ffffff">Date</FONT></P>
+			</TH>
+			<TH WIDTH=54 BGCOLOR="#666699">
+				<P ALIGN=CENTER><FONT COLOR="#ffffff">Version</FONT></P>
+			</TH>
+			<TH WIDTH=48 BGCOLOR="#666699">
+				<P ALIGN=CENTER><FONT COLOR="#ffffff">Author</FONT></P>
+			</TH>
+			<TH WIDTH=398 BGCOLOR="#666699">
+				<P ALIGN=CENTER><FONT COLOR="#ffffff">Description</FONT></P>
+			</TH>
+		</TR>
+		<TR BGCOLOR="#f5deb3">
+			<TD WIDTH=50>
+				<P>&nbsp;</P>
+			</TD>
+			<TD WIDTH=54>
+				<P>&nbsp;</P>
+			</TD>
+			<TD WIDTH=48>
+				<P>&nbsp;</P>
+			</TD>
+			<TD WIDTH=398>
+				<P>&nbsp;</P>
+			</TD>
+		</TR>
+		<TR>
+			<TD COLSPAN=4 WIDTH=619></TD>
+		</TR>
+	</TABLE>
+</CENTER>
+<P><BR><BR>
+</P>
+</BODY>
+</HTML>

@@ -1,0 +1,15 @@
+FILES_cpp = StdAfx.cpp \
+	    CNSAdapter_JavaPlugin.cpp \
+	    CNSAdapter_JVMManager.cpp \
+	    CNSAdapter_Liveconnect.cpp \
+	    CNSAdapter_PluginInstancePeer.cpp \
+	    CNSAdapter_PluginManager.cpp \
+	    CNSAdapter_SecureJNIEnv.cpp \
+	    CNSAdapter_SecurityContext.cpp \
+	    CNSAdapter_SecurityContextPeer.cpp \
+	    CNSAdapter_JavaPluginFactory.cpp \
+	    CNS6Adapter_JavaPluginFactory.cpp \
+	    CNS6Adapter_Observer.cpp \
+	    CNS6Adapter_ObserverService.cpp \
+	    CNS6Adapter_PluginServiceProvider.cpp
+

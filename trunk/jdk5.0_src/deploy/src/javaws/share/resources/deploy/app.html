@@ -1,0 +1,34 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Java Web Start Application</title>
+  </head>
+
+  <body>
+      <h1>Java Web Start Application</h1>
+<p>
+<p>
+<SCRIPT LANGUAGE="JavaScript" SRC="javaws.js"></SCRIPT>
+<SCRIPT LANGUAGE="VBScript" SRC="javaws.vbs"></SCRIPT>
+
+     <SCRIPT LANGUAGE="JavaScript">
+	  <!-- Following line will create an application link that will
+               redirect to the manual download page at java.sun.com
+               if Java Web Start is not installed
+	  launchLink("icon.jpg", "application.jnlp");
+	  -->
+	  <!-- Following will redirect to AutoInstall page if not installed
+	  launchAILink("icon.jpg", "application.jnlp", "needdownload.html");
+	  -->
+	  <!-- Following will redirect to AutoInstall page if latest
+	       version is not installed
+	  -->
+	  launchAILink2("icon.jpg", "application.jnlp", "needdownload.html");
+     </SCRIPT>
+      <hr>
+<!-- Created: Thu Sep 20 15:41:38 EDT 2001 -->
+<!-- hhmts start -->
+Last modified: Tue Feb 26 15:20:34 EST 
+<!-- hhmts end -->
+  </body>
+</html>

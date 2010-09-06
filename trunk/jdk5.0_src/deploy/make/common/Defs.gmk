@@ -1,0 +1,194 @@
+#
+# @(#)Defs.gmk	1.59 04/02/03
+# 
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+ifndef CONTROL_TOPDIR
+
+ifndef CONTROL_TOPDIR_NAME
+CONTROL_TOPDIR_NAME=control
+endif #CONTROL_TOPDIR_NAME
+
+CONTROL_TOPDIR=$(DEPLOY_TOPDIR)/../$(CONTROL_TOPDIR_NAME)
+
+ifdef ALT_TOPDIR
+CONTROL_TOPDIR=$(ALT_TOPDIR)/$(CONTROL_TOPDIR_NAME)
+endif #ALT_TOPDIR
+
+ifdef ALT_CONTROL_TOPDIR
+CONTROL_TOPDIR=$(ALT_CONTROL_TOPDIR)
+endif #ALT_CONTROL_TOPDIR
+
+endif #CONTROL_TOPDIR
+
+
+ifndef J2SE_TOPDIR
+
+ifndef J2SE_TOPDIR_NAME
+J2SE_TOPDIR_NAME=j2se
+endif #J2SE_TOPDIR_NAME
+
+J2SE_TOPDIR=$(DEPLOY_TOPDIR)/../$(J2SE_TOPDIR_NAME)
+
+ifdef ALT_TOPDIR
+J2SE_TOPDIR=$(ALT_TOPDIR)/$(J2SE_TOPDIR_NAME)
+endif #ALT_TOPDIR
+
+ifdef ALT_J2SE_TOPDIR
+J2SE_TOPDIR=$(ALT_J2SE_TOPDIR)
+endif #ALT_J2SE_TOPDIR
+
+endif #J2SE_TOPDIR
+
+
+#
+# Set JAVAWS_BOOTDIR: Use ALT_JAVAWS_BOOTDIR if it's set, otherwise use the
+# default from BOOTDIR.
+#
+
+BUILDDIR := $(CONTROL_TOPDIR)/make
+include $(CONTROL_TOPDIR)/make/common/Platform.gmk
+include $(CONTROL_TOPDIR)/make/common/Defs.gmk
+
+# Set the default to be the just built jdk
+JAVAWS_BOOTDIR = $(OUTPUTDIR)
+ifdef ALT_JAVAWS_BOOTDIR
+  JAVAWS_BOOTDIR = $(subst \,/,$(ALT_JAVAWS_BOOTDIR))
+endif # ALT_JAVAWS_BOOTDIR
+export JAVAWS_BOOTDIR
+
+JAVAWS_VERSION  = $(JDK_VERSION)
+
+DEPLOY_WIN32_SRC = $(DEPLOY_TOPDIR)/src/plugin/win32
+
+ifeq ($(PLATFORM), windows)
+  BUILD_PLUGIN := $(shell if [ -r $(DEPLOY_WIN32_SRC) ]; then \
+                            $(ECHO) true; \
+                          else \
+                            $(ECHO) false; \
+                          fi)
+else 
+  BUILD_PLUGIN := true
+endif 
+
+ifneq ($(MILESTONE),fcs)
+BUILD_ID     = $(MILESTONE)-$(BUILD_NUMBER)
+else
+BUILD_ID     = $(BUILD_NUMBER)
+endif
+
+JAVAWS_UNDERSCORE_VERSION = $(JDK_UNDERSCORE_VERSION)
+
+
+JAVAWSNAME     = "Java\(TM\) Web Start"
+JAVAWSNAMEVAR  = JAVAWS_NAME
+IDURL          = "http://java.sun.com/products/javawebstart"
+BINDIR_12      = $(JAVAWS_BOOTDIR)/bin/
+LIBDIR_12      = $(JAVAWS_BOOTDIR)/lib/
+JAVAC          = $(BINDIR_12)javac -source 1.2 -target 1.2 $(OTHER_JAVACFLAGS)
+JAR            = $(BINDIR_12)jar
+JAVA_BOOT      = $(BINDIR_12)java
+JAVA           = $(JAVA_BOOT)
+JAVADOC        = $(BINDIR_12)javadoc
+CLASSDIR       = $(OUTPUTDIR)/tmp/deploy/javaws/jawsClasses
+CLASSDIR_DBG   = $(OUTPUTDIR)/tmp/deploy/javaws$(DBG_SUFFIX)/jawsClasses$(DBG_SUFFIX)
+CLASSDESTDIR   = $(CLASSDIR)/$(JMKDIR)
+CLASSDESTDIR_DBG = $(CLASSDIR_DBG)/$(JMKDIR)
+GENSRCBASE     = $(OUTPUTDIR)/tmp/deploy/javaws/jawsgensrc
+GENSRCDIR      = $(GENSRCBASE)/classes
+GENHDIR        = $(GENSRCBASE)/headers
+JARDIFF_DESTDIR= $(OUTPUTDIR)/tmp/deploy/javaws/jardiffClasses
+SERVLET_DESTDIR= $(OUTPUTDIR)/tmp/deploy/javaws/servletClasses
+JARDIFF_DEMO_DESTDIR= $(OUTPUTDIR)/tmp/deploy/javaws/demoJardiffClasses
+SERVLET_DEMO_DESTDIR= $(OUTPUTDIR)/tmp/deploy/javaws/demoServletClasses
+JAVAWSDEMODIR = $(OUTPUTDIR)/tmp/deploy/javaws/sample/jnlp
+SERVLET_OUTDIR = $(JAVAWSDEMODIR)/servlet
+SERVLET_OUTDIR_SRC = $(SERVLET_OUTDIR)/src
+JAVADOCDIR     = $(OUTPUTDIR)/tmp/deploy/javaws/javadoc
+JAVADOCSRC     = $(JAVAWS_TOPDIR)/src/javaws/share/resources/javadoc
+SHARE_SRC      = $(JAVAWS_TOPDIR)/src/javaws/share
+SAMPLE_SRC = $(SHARE_SRC)/sample
+RESOURCE_SRC   = $(JAVAWS_TOPDIR)/src/javaws/share/resources
+JAVAC_CLASSPATH= $(CLASSDESTDIR)$(CLASSPATH_SEP)$(SHARE_SRC)/classes$(CLASSPATH_SEP)$(PLATFORM_SRC)/classes$(CLASSPATH_SEP)$(UNIX_SHARE_SRC)/classes$(CLASSPATH_SEP)$(GENSRCDIR)$(CLASSPATH_SEP)$(DEPLOYCLASSDESTDIR)
+JAVAC_CLASSPATH_DBG= $(CLASSDESTDIR_DBG)$(CLASSPATH_SEP)$(SHARE_SRC)/classes$(CLASSPATH_SEP)$(PLATFORM_SRC)/classes$(CLASSPATH_SEP)$(UNIX_SHARE_SRC)/classes$(CLASSPATH_SEP)$(GENSRCDIR)$(CLASSPATH_SEP)$(DEPLOYDBGCLASSDESTDIR)
+JAVAC_CMD      = $(JAVAC) $(JDEBUG_OPTION) -classpath "$(JAVAC_CLASSPATH)" -d $(CLASSDESTDIR)
+JAVAC_CMD_DBG  = $(JAVAC) -g -deprecation $(JDEBUG_OPTION) -classpath "$(JAVAC_CLASSPATH_DBG)" -d $(CLASSDESTDIR_DBG)
+SERVLET_SRC    = $(SAMPLE_SRC)/servlet/src
+SERVLET_CLASSPATH = $(SERVLET_SRC)/classes$(CLASSPATH_SEP)$(DEPLOY_BUILDDIR)/common/lib/jaxp-1_0_1.jar$(CLASSPATH_SEP)$(DEPLOY_BUILDDIR)/common/lib/parser.jar$(CLASSPATH_SEP)$(DEPLOY_BUILDDIR)/common/lib/servlet-2_2.jar
+JARDIFF_CLASSPATH = $(SERVLET_SRC)/classes
+OBJDIR         = $(OUTPUTDIR)/tmp/deploy/javaws/jawsobj$(SUFFIX)
+OBJDIR_DBG     = $(OUTPUTDIR)/tmp/deploy/javaws$(DBG_SUFFIX)/jawsobj$(DBG_SUFFIX)
+SERVLET_JAR    = $(SERVLET_OUTDIR)/jnlp-servlet.jar
+JUMP_JAR       = $(LIB_DIR)/javaws.jar
+JUMP_JAR_DBG   = $(LIB_DIR_DBG)/javaws$(DBG_SUFFIX).jar
+JUMP_JAR_TAG   = $(PROTO_DIR)/javaws.jtg
+JNLP_API_JAR   = $(LIB_DIR)/jnlp.jar
+JARDIFF_JAR    = $(SERVLET_OUTDIR)/jardiff.jar
+
+LIB_DIR			= $(PROTO_DIR)/lib
+LIB_DIR_DBG		= $(PROTO_DIR_DBG)/lib
+LIB_SECURITY_DIR	= $(LIB_DIR)/security
+LIB_JAVAWS_DIR		= $(LIB_DIR)/javaws
+LIB_ICONS_DIR		= $(LIB_DIR)/images/icons
+BIN_DIR			= $(PROTO_DIR)/bin
+BIN_DIR_DBG		= $(PROTO_DIR_DBG)/bin
+
+ZIP            = $(ZIPEXE)
+TMPDIR         = $(OUTPUTDIR)/tmp/deploy
+
+SUFFIX         = $($(VARIANT)_SUFFIX)
+OPT_SUFFIX     =
+DBG_SUFFIX     = _g
+
+C_FLAGS = $(C_FLAGS_COMMON) $(C_FLAGS_$(VARIANT))
+C_DBG_FLAGS = $(C_FLAGS_COMMON) $(C_FLAGS_DBG)
+CC_FLAGS = $(CC_FLAGS_COMMON) $(CC_FLAGS_$(VARIANT))
+CC_DBG_FLAGS = $(CC_FLAGS_COMMON) $(CC_FLAGS_DBG)
+LINK_FLAGS = $(LINK_FLAGS_COMMON) $(LINK_FLAGS_$(VARIANT))
+LINK_DBG_FLAGS = $(LINK_FLAGS_COMMON) $(LINK_FLAGS_DBG)
+
+
+SAMPLES=\
+	CORBA \
+	Extinstaller \
+	Libinstaller \
+	RAFSample \
+	webpad \
+	lib
+
+ifdef I18N
+I18N_PARAM=-i
+else
+I18N_PARAM=
+endif
+
+PROTO_DIR = $(OUTPUTDIR)/tmp/deploy/javaws
+
+PROTO_DIR_DBG = $(PROTO_DIR)$(DBG_SUFFIX)
+
+IMAGE_DIR=$(PROTO_DIR)
+ifdef ALT_JAVAWS_IMAGE_DIR
+   IMAGE_DIR = $(subst \,/,$(ALT_JAVAWS_IMAGE_DIR))
+endif
+export IMAGE_DIR
+
+BUNDLE_DIR=$(BIN_BUNDLEDIR)
+
+SHORTNAME_PREFIX = $(JAVAWS_UNDERSCORE_VERSION)-$(MILESTONE)
+BIN_BUNDLE_PREFIX = $(SHORTNAME_PREFIX)-bin-$(BUILD_NUMBER)
+
+DEV_BUNDLE_NAME = javaws-$(BIN_BUNDLE_PREFIX)$(I18N_PARAM)-dev-$(BUNDLE_DATE).zip
+
+DOC_BUNDLE_NAME = jnlp-$(SHORTNAME_PREFIX)-doc-$(BUILD_NUMBER)-$(BUNDLE_DATE).zip
+
+PLUGIN_LOCALES = de es fr it ja ko sv zh_CN zh_TW zh_HK
+
+#Define and create l10n tmp directory for deploy
+DEPLOY_L10N_TMP_OUTPUTDIR=$(TMPDIR)/l10n
+dummy := $(shell $(MKDIR) -p $(DEPLOY_L10N_TMP_OUTPUTDIR))
+
+include $(DEPLOY_BUILDDIR)/common/Defs-$(PLATFORM).gmk
+include $(DEPLOY_TOPDIR)/make/plugin/common/Defs-$(PLATFORM).gmk
+

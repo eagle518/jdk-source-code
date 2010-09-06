@@ -1,0 +1,305 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0050)http://javaweb.eng/~dochez/proposals/registry.html -->
+<HTML><HEAD>
+<META content="text/html; charset=iso-8859-1" http-equiv=Content-Type>
+<META content="MSHTML 5.00.2314.1000" name=GENERATOR></HEAD>
+<BODY>
+<HR width="100%">
+
+<CENTER><B><FONT size=+3>JRE Registry Keys proposal</FONT></B> 
+<P><FONT size=+2>Draft - 3/10/99 -</FONT> <BR><FONT 
+size=+2>Jerome.Dochez@eng</FONT> <BR>
+<HR width="100%">
+</CENTER>
+<P><BR><BR><BR><BR><BR><BR><BR>
+<P>send feedback to dochez@eng 
+<P><B><U><FONT size=+3>Introduction</FONT></U></B> 
+<BLOCKQUOTE>In the current JRE and JDK releases, the registry keys are always 
+  overwriting themselves which makes impossible for third parties or the Java 
+  Plug-in to load a particular JRE it requires. IBM in particular requested to 
+  support several 1.1.x JREs on the same machine. Since this problem of multiple 
+  JRE's is unlikely to go away in the future (regressions and customer 
+  practices) we need to define a set of registry keys that should be defined to 
+  support multiple version installed JREs. 
+  <P>The goals of such a proposal is : 
+  <UL>
+    <LI>Backward compatible <BR>The new keys must be backward compatible so 
+    applications relying on the old schemes still can load the JRE (and 
+    preferably the most recent one) 
+    <LI>Ensure version independence <BR>Applications that do not require a 
+    particular version should be able to load the latest JRE without knowing its 
+    version number. 
+    <LI>Ensure version dependence <BR>Application that require a specific 
+    version should be able to see if their favorite version is installed and use 
+    it.</LI></UL>The following proposal is concentrating on the new Java 2 
+  Platform naming scheme. The solution describes only the Java 2 Runtime 
+  Environment keys. It is left to the imagination of the reader what these keys 
+  will look like for the Java 2 SDK.</BLOCKQUOTE><B><U><FONT size=+3>Current JRE 
+Keys</FONT></U></B> 
+<BLOCKQUOTE>The current registry keys installed with the JRE 1.2 are as follow 
+  : 
+  <P>HKEY_LOCAL_MACHINE\ <BR>&nbsp;&nbsp;&nbsp; JavaSoft\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Java Runtime Environment\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  CurrentVersion = "1.2" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.1\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  JavaHome="c:\Program Files\JavaSoft\JRE\1.1" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  MinorVersion="1.1.7B" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.2\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  JavaHome="c:\Program Files\JavaSoft\JRE\1.2.1" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  MinorVersion="1.2.1" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  RuntimeLib="c:\Program Files\JavaSoft\JRE\1.2.1\bin\jvm.dll" 
+  <P>All Java Runtime Environment minor versions (1.2.x) uses the major version 
+  (1.2) key overwriting the previous minor version location 
+information.</P></BLOCKQUOTE><B><U><FONT size=+3>Proposed Java 2 Runtime 
+Environment keys</FONT></U></B> 
+<BLOCKQUOTE>In order to insure multiple minor version support, I propose to 
+  implement the following registry keys 
+  <P>HKEY_LOCAL_MACHINE\ <BR>&nbsp;&nbsp;&nbsp; Sun Microsystems\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Java Runtime Environment\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  CurrentVersion = "1.3" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  1.2\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  MinorVersion="1.2.1" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  1.2\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  JavaHome="c:\Program Files\Sun Microsystems\JRE\1.2" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  RuntimeLib="c:\Program Files\Sun Microsystems\JRE\1.2\bin\jvm.dll" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  1.2.1\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  JavaHome="c:\Program Files\Sun Microsystems\JRE\1.2.1" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  RuntimeLib="c:\Program Files\Sun Microsystems\JRE\1.2.1\bin\jvm.dll" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  1.3\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  MinorVersion="1.3.2" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  1.3\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  JavaHome="c:\Program Files\Sun Microsystems\JRE\1.3.2" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  RuntimeLib="c:\Program Files\Sun Microsystems\JRE\1.3.2\bin\jvm.dll" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  1.3.1\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  JavaHome="c:\Program Files\Sun Microsystems\JRE\1.3.1" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  RuntimeLib="c:\Program Files\Sun Microsystems\JRE\1.3.1\bin\jvm.dll" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  1.3.2\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  JavaHome="c:\Program Files\Sun Microsystems\JRE\1.3.2" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  RuntimeLib="c:\Program Files\Sun Microsystems\JRE\1.3.2\bin\jvm.dll" 
+  <P>Please note that the company name has been changed from "JavaSoft" to "Sun 
+  Microsystems". The product name remains Java Runtime Environment. 
+  <P><B>Issue</B>: Should we use Java 2 Runtime Environment ? It is absolutely 
+  necessary for the name to be independent of the product versioning. When Java 
+  3 Platform is released we cannot change the product keys to Java 3 Runtime 
+  Environment. This is why I propose to keep Java Runtime Environment. Please 
+  note that this information is never accessed by the user but only by some 
+  developers.</P></BLOCKQUOTE><B><U><FONT size=+3>Registry Keys Update 
+rules</FONT></U></B> 
+<BLOCKQUOTE>Now, let's look in detail at the keys installed by one particular 
+  Java 2 Runtime Environment installation: 
+  <P>HKEY_LOCAL_MACHINE\ <BR>&nbsp;&nbsp;&nbsp; Sun Microsystems\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Java Runtime Environment\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  <U>CurrentVersion = "1.2"</U> 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  1.2\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  <U>MinorVersion="1.2.1"</U> 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  1.2\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  JavaHome="c:\Program Files\Sun Microsystems\JRE\1.2" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  RuntimeLib="c:\Program Files\Sun Microsystems\JRE\1.2\bin\jvm.dll" 
+  <P>The underlined keys are the keys which are optionally installed. When a 
+  Java 2 Runtime Environment installation is about to register its keys, it 
+  should check if a previously installed higher version is not already installed 
+  and subsequently should never downgrade the current version number. 
+  <P><B><U>Example:</U></B> On my machine I have Java 2 Runtime Environment, 
+  Standard Edition 1.3 installed, my registry looks like : 
+  <P>HKEY_LOCAL_MACHINE\ <BR>&nbsp;&nbsp;&nbsp; Sun Microsystems\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Java Runtime Environment\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  CurrentVersion = "1.3" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  1.3\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  1.3\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  JavaHome="c:\Program Files\Sun Microsystems\JRE\1.3" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  RuntimeLib="c:\Program Files\Sun Microsystems\JRE\1.3\bin\jvm.dll" 
+  <P>Now I install Java 2 Runtime Environment, Standard Edition 1.2.2, my 
+  registry should be updated to 
+  <P>HKEY_LOCAL_MACHINE\ <BR>&nbsp;&nbsp;&nbsp; Sun Microsystems\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Java Runtime Environment\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  CurrentVersion = "1.3" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.2\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  MinorVersion="1.2.2" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  1.2.2\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  JavaHome="c:\Program Files\Sun Microsystems\JRE\1.2.2" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  RuntimeLib="c:\Program Files\Sun Microsystems\JRE\1.2.2\bin\jvm.dll" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  1.3\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  MinorVersion="1.3" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  1.3\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  JavaHome="c:\Program Files\Sun Microsystems\JRE\1.3" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  RuntimeLib="c:\Program Files\Sun Microsystems\JRE\1.3\bin\jvm.dll" <BR>&nbsp; 
+  <P>Now I install Java 2 Runtime Environment, Standard Edition 1.2.1, the 
+  registry should be updated to 
+  <P>HKEY_LOCAL_MACHINE\ <BR>&nbsp;&nbsp;&nbsp; Sun Microsystems\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Java Runtime 
+  Environement\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  CurrentVersion = "1.3" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.2\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  MinorVersion="1.2.2" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  1.2.1\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  JavaHome="c:\Program Files\Sun Microsystems\JRE\1.2.1" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  RuntimeLib="c:\Program Files\Sun Microsystems\JRE\1.2.1\bin\jvm.dll" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  1.2.2\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  JavaHome="c:\Program Files\Sun Microsystems\JRE\1.2.2" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  RuntimeLib="c:\Program Files\Sun Microsystems\JRE\1.2.2\bin\jvm.dll" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  1.3\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  MinorVersion="1.3" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  1.3\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  JavaHome="c:\Program Files\Sun Microsystems\JRE\1.3" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  RuntimeLib="c:\Program Files\Sun Microsystems\JRE\1.3\bin\jvm.dll" 
+  <P>Now I install Java 2 Runtime Environment. Standard Edition 1.3.1, the 
+  registry should be updated to 
+  <P>HKEY_LOCAL_MACHINE\ <BR>&nbsp;&nbsp;&nbsp; Sun Microsystems\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Java Runtime Environment\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  CurrentVersion = "1.3" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.2\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  MinorVersion="1.2.2" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  1.2.1\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  JavaHome="c:\Program Files\Sun Microsystems\JRE\1.2.1" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  RuntimeLib="c:\Program Files\Sun Microsystems\JRE\1.2.1\bin\jvm.dll" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  1.2.2\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  JavaHome="c:\Program Files\Sun Microsystems\JRE\1.2.2" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  RuntimeLib="c:\Program Files\Sun Microsystems\JRE\1.2.2\bin\jvm.dll" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  1.3\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  MinorVersion="1.3.1" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  1.3\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  JavaHome="c:\Program Files\Sun Microsystems\JRE\1.3" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  RuntimeLib="c:\Program Files\Sun Microsystems\JRE\1.3\bin\jvm.dll" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  1.3.1\ 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  JavaHome="c:\Program Files\Sun Microsystems\JRE\1.3.1" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  RuntimeLib="c:\Program Files\Sun 
+Microsystems\JRE\1.3.1\bin\jvm.dll"</P></BLOCKQUOTE><B><U><FONT size=+3>Registry 
+Keys extraction</FONT></U></B> 
+<BLOCKQUOTE>Let's look at the steps an application should take to get the 
+  appropriate Java 2 Runtime Environment. 
+  <P><B>Scenario 1 :</B> The application wants the latest Java 2 Runtime 
+  Environment. 
+  <P>The Application should get the current major version from : 
+  <BR>HKEY_LOCAL_MACHINE\Sun Microsystems\Java Runtime 
+  Environment\CurrentVersion 
+  <P>The Application should then get the current minor version from : 
+  <BR>HKEY_LOCAL_MACHINE\Sun Microsystems\Java Runtime 
+  Environment\X.X\MinorVersion 
+  <P>And then should open the keys at : <BR>HKEY_LOCAL_MACHINE\Sun 
+  Microsystems\Java Runtime Environment\X.X\Y.Y.Y 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  JavaHome="c:\Program Files\Sun Microsystems\JRE\Y.Y.Y" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  RuntimeLib="c:\Program Files\Sun Microsystems\JRE\Y.Y.Y\bin\jvm.dll" 
+  <P><B>Scenario 2 :</B> The application require a major version (1.2) but would 
+  like to use the latest minor version available. 
+  <P>The Application should get the current minor version from : 
+  <BR>HKEY_LOCAL_MACHINE\Sun Microsystems\Java Runtime 
+  Environment\1.2\MinorVersion 
+  <P>And then should open the keys at : <BR>HKEY_LOCAL_MACHINE\Sun 
+  Microsystems\Java Runtime Environment\1.2\Y.Y.Y 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  JavaHome="c:\Program Files\Sun Microsystems\JRE\Y.Y.Y" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  RuntimeLib="c:\Program Files\Sun Microsystems\JRE\Y.Y.Y\bin\jvm.dll" 
+  <P><B>Scenario 3 : </B>The application require the Java 2 Runtime Environment 
+  Standard Edition 1.2.2 
+  <P>The application should open the keys at : <BR>HKEY_LOCAL_MACHINE\Sun 
+  Microsystems\Java Runtime Environement\1.2\1.2.2 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  JavaHome="c:\Program Files\Sun Microsystems\JRE\1.2.2" 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  RuntimeLib="c:\Program Files\Sun 
+Microsystems\JRE\1.2.2\bin\jvm.dll"</P></BLOCKQUOTE><B><U><FONT 
+size=+3>Compatibility</FONT></U></B> 
+<BLOCKQUOTE>It is very clear from this proposal that the new keys are 
+  incompatible with the JRE 1.1 and JRE 1.2 keys. Applications that relied on 
+  this keys will not be able to load Java 2 Runtime Environment from the "old 
+  keys". The main incompatibility is the company name change from JavaSoft to 
+  Sun Microsystems. Since this key is the root of all other keys, only that 
+  break all efforts to remain compatible. 
+  <P>I would advise that at least for the Java 2 Runtime Environment Standard 
+  Edition 1.2 maintenance releases we register both keys (old + new) to start 
+  providing version independent hooks for the future and remain compatible for 
+  applications relying on the old keys. <BR>&nbsp;</P></BLOCKQUOTE><B><U><FONT 
+size=+3>Command line impact</FONT></U></B> 
+<BLOCKQUOTE>I would advocate to update the java.exe to be able to a least 
+  start any minor version Java 2 Runtime Environment. Since all installations 
+  install the java.exe in the shared system directory, the java.exe will by 
+  default trigger the last installed JRE. 
+  <P><B>Issue:</B> Should we update the java.exe with the older version when 
+  installing a JRE ? Probably not. 
+  <P>It would be very useful to add an option to the java.exe command to take 
+  the desired minor version. The same java.exe could be invoked using the 
+  following commands : <BR>&nbsp;&nbsp;&nbsp; java.exe -Xversion="1.2.1" 
+  com.sun.foo.Bar ---&gt; uses Java 2 Runtime Environment 1.2.1 
+  <BR>&nbsp;&nbsp;&nbsp; java.exe -Xversion="1.2.3" com.sun.foo.Bar ---&gt; uses 
+  Java 2 Runtime Environment 1.2.3 
+  <P>We could even extend it to support multiple major version for maximum 
+  flexibility.</P></BLOCKQUOTE></BODY></HTML>

@@ -1,0 +1,379 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.76C-CCK-MCD  [en] (X11; U; SunOS 5.8 sun4u) [Netscape]">
+   <title>Engineering Specification Template</title>
+</head>
+<body bgcolor="#FFFFFF">
+
+<h2>
+<font size=+1>Passing command-line option</font> <font size=+1>to JVM</font>
+Engineering Specification</h2>
+
+<h4>
+RFE: 4523267</h4>
+Author:Xiaobin Lu
+<br>Date: Feb 1, 2002
+<br>&nbsp;
+<br>&nbsp;
+<table BORDER=0 CELLSPACING=0 CELLPADDING=3 WIDTH="100%" >
+<tr>
+<td BGCOLOR="#F5DEB3">
+<h3>
+1 Project Description</h3>
+</td>
+</tr>
+</table>
+
+<h4>
+1.1 Overview</h4>
+To make some other applications (e.g Internet Browsers) to have the ability
+to change JRE settings easily, this RFE provides a command-line utility
+to do it.
+<h4>
+1.2 Project Dependencies</h4>
+N/A
+<h4>
+1.3 OS and Browser Compatibility and Interoperability</h4>
+This feature will be available for all supported platforms.
+<h4>
+1.4 Performance and Scalability</h4>
+N/A
+<h4>
+1.5 Security</h4>
+N/A
+<h4>
+1.6 Internationalization (I18N) / Localization (L10N)</h4>
+N/A
+<h4>
+1.7 Packaging</h4>
+N/A
+<h4>
+1.8 Usability</h4>
+This feature enhances the usability of JRE/JPI in terms of tracing and
+debugging.
+<h4>
+1.9 Quality</h4>
+
+<h5>
+1.9.1 Unit or Functional Tests to be Delivered</h5>
+&nbsp;
+<h5>
+1.9.2 Additional Testing Notes</h5>
+It is simple to testing this. Following the "User Interface" section for
+requirement of testing across different platforms. Then start up any browser
+interested, open Java console to dump out system property "javaplugin.vm.options"
+to see whether the option you set is there or not.
+<br>&nbsp;
+<br>&nbsp;
+<table BORDER=0 CELLSPACING=0 CELLPADDING=3 WIDTH="100%" >
+<tr>
+<td BGCOLOR="#F5DEB3">
+<h3>
+2 Technical Description</h3>
+</td>
+</tr>
+</table>
+
+<h4>
+2.1 Architecture</h4>
+The approach using in this RFE is to call Windows API GetEnviromentVariable
+or C runtime library getenv to get _JAVA_OPTIONS variable. If this enviroment
+variable is set, we ignore whatever the JRE parameters specified by the
+user through control panel.
+<p>In order to make the debugging process easier, we also dump out all
+the vm options to the system properties "javaplugin.vm.options" before
+JVM actually get start up.
+<p>It is worth to mention that to prevent the user accidentally from setting
+up _JAVA_OPTION more than 2048 characters (in Windows platform), we will
+take NULL jre parameter to pass to JVM.
+<br>&nbsp;
+<h4>
+2.2 Exported Interfaces/API</h4>
+N/A
+<h4>
+2.3 Imported Interfaces/API</h4>
+N/A
+<h4>
+2.4 User Interface</h4>
+For Windows NT/2000 users, the user needs to use MSDOS command console
+to set _JAVA_OPTIONS.
+<p>The following is a snapshot of the command console.
+<br>set _JAVA_OPTIONS=-verbose -Djavaplugin.cache.diabled=true
+<p>For Windows 9X user, since the DOS command bundled with Windows does
+not provide a utility which lets you set a variable containning "=" sign.
+So some special techniques need to be used.
+<p>The following batch file actually does the work for the user to set
+_JAVA_OPTIONS to "-verbose -Djavaplugin.cache.diabled=true". To set the
+option you need, you may provide an argument which is your value to _JAVA_OPTION
+to the batch file and replace the batch file "<b>-verbose -Djavaplugin.cache.disabled=true"&nbsp;
+</b>with&nbsp;<b> "%1".</b>
+<p>------Cut and Paste from here------
+<br>&nbsp;@ECHO OFF
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SET _JAVA_OPTIONS=
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SET OP=%PROMPT%
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ECHO.PROMPT xx_JAVA_OPTIONS=<b>-verbose
+-Djavaplugin.cache.disabled=true</b>>%TEMP%.\P.BAT
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ECHO.EXIT|%COMSPEC%/kPROMPT
+e108 0$_w$_q|debug %TEMP%.\P.BAT>NUL
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; FOR %%C IN (CALL DEL)
+DO %%C %TEMP%.\P.BAT
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SET PROMPT=%OP%
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ECHO. Your variable
+is: %_JAVA_OPTIONS%
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :: Clean up
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SET OP=
+<br>-----End cut and paste--------------
+<p>For Unix users, the user just uses any prefered shell to specify the
+enviroment variable. For example if using C shell:
+<br>setenv _JAVA_OPTIONS "-verbose -Djavaplugin.cache.disabled=true".
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<table BORDER=0 CELLSPACING=0 CELLPADDING=3 WIDTH="100%" >
+<tr>
+<td BGCOLOR="#F5DEB3">
+<h3>
+3 Marketing</h3>
+</td>
+</tr>
+</table>
+
+<h4>
+3.1 Justification</h4>
+This RFE was originated from SAS who has an IDE for debugging applets inside
+the browser. The issue is that they can't debug applets through JPI out
+of the box because we don't run the JRE in debug mode by default. As a
+result, they need a way to change the runtime parameter settings for JPI
+on-the-fly. However, there are several problems:
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - When they launch the browser
+through IDE, they can't determine which version of JPI will be launched
+in the browser eventually.
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - The filename of the JPI property
+file for Control Panel is not well documented.
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - They want to affect the JRE
+settings only for a particular browser session, but not all of them.
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - They want to have the ability
+to change JRE settings easily.
+<p>So having an easier way to change JRE settings is necessary.
+<h4>
+3.2 Customer Request</h4>
+&nbsp;
+<h4>
+3.3 Competitive Analysis</h4>
+Using command-line option to pass JVM start up option seems to be the best
+way to resolve this.
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<table BORDER=0 CELLSPACING=0 CELLPADDING=3 WIDTH="100%" >
+<tr>
+<td BGCOLOR="#F5DEB3">
+<h3>
+4 Management and Planning</h3>
+</td>
+</tr>
+</table>
+
+<h4>
+4.1 Scope/Priority</h4>
+P3
+<h4>
+4.2 Target Release</h4>
+Hopper
+<h4>
+4.3 Resources</h4>
+
+<h5>
+4.3.1 Development</h5>
+
+<h5>
+4.3.2 Quality Assurance/Testing</h5>
+
+<h5>
+4.3.3 Documentation</h5>
+
+<h5>
+4.3.4 Technical Support</h5>
+
+<h5>
+4.3.4 Special Hardware/Software</h5>
+
+<h4>
+4.4 Schedule</h4>
+
+<center><table BORDER=0 CELLPADDING=0 BGCOLOR="#FFFFFF" NOSAVE >
+<tr NOSAVE>
+<td NOSAVE>&nbsp;
+<table BORDER CELLPADDING=10 BGCOLOR="#F5DEB3" >
+<tr ALIGN=CENTER>
+<th WIDTH="75" BGCOLOR="#666699"><font color="#FFFFFF">Start Date</font></th>
+
+<th WIDTH="75" BGCOLOR="#666699"><font color="#FFFFFF">End Date</font></th>
+
+<th WIDTH="250" BGCOLOR="#666699"><font color="#FFFFFF">Activity</font></th>
+
+<th WIDTH="50" BGCOLOR="#666699"><font color="#FFFFFF">Owner</font></th>
+
+<th WIDTH="50" BGCOLOR="#666699"><font color="#FFFFFF">Status</font></th>
+</tr>
+
+<tr>
+<td>&nbsp;1/10/2002</td>
+
+<td>&nbsp;2/10/2002</td>
+
+<td>&nbsp;</td>
+
+<td><b>Xiaobin Lu</b>&nbsp;</td>
+
+<td BGCOLOR="#90EE90">&nbsp;</td>
+
+<td>&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+</table></center>
+
+<center><table BORDER=0 CELLSPACING=5 >
+<tr>
+<td WIDTH="50" BGCOLOR="#008000">&nbsp;</td>
+
+<td WIDTH="50" BGCOLOR="#90EE90">&nbsp;</td>
+
+<td WIDTH="50" BGCOLOR="#F5DEB3">&nbsp;</td>
+
+<td WIDTH="50" BGCOLOR="#FFFF00">&nbsp;</td>
+
+<td WIDTH="50" BGCOLOR="#FF0000">&nbsp;</td>
+</tr>
+
+<tr ALIGN=CENTER>
+<td>Complete</td>
+
+<td>Started</td>
+
+<td>Not Started</td>
+
+<td>Difficulties</td>
+
+<td>Trouble</td>
+</tr>
+</table></center>
+
+<br>&nbsp;
+<table BORDER=0 CELLSPACING=0 CELLPADDING=3 WIDTH="100%" >
+<tr>
+<td BGCOLOR="#F5DEB3">
+<h3>
+Appendices (as needed, suggestions below)</h3>
+</td>
+</tr>
+</table>
+
+<h4>
+A. Background Information</h4>
+
+<h4>
+B. Interface Specifications</h4>
+
+<h4>
+C. Notes and Additional Details</h4>
+The enviroment variable setting will replace the JRE parameters specified
+in the control panel. The java interpreter program "java" also recognize
+this option.
+<h4>
+D. Miscellaneous</h4>
+
+<h4>
+E. Tracking</h4>
+
+<h5>
+E.1 Final Webrev</h5>
+
+<h5>
+E.2 Bugtraq</h5>
+<!-- All related Bugtraq RFEs, Bugs, and EOUs.. -->
+<center><table BORDER=0 CELLPADDING=0 BGCOLOR="#FFFFFF" >
+<tr>
+<td>
+<table BORDER CELLPADDING=10 BGCOLOR="#F5DEB3" >
+<tr ALIGN=CENTER>
+<th WIDTH="50" BGCOLOR="#666699"><font color="#FFFFFF">Bugid</font></th>
+
+<th WIDTH="10" BGCOLOR="#666699"><font color="#FFFFFF">P</font></th>
+
+<th WIDTH="10" BGCOLOR="#666699"><font color="#FFFFFF">S</font></th>
+
+<th WIDTH="25" BGCOLOR="#666699"><font color="#FFFFFF">Subcategory</font></th>
+
+<th WIDTH="25" BGCOLOR="#666699"><font color="#FFFFFF">Type</font></th>
+
+<th WIDTH="20" BGCOLOR="#666699"><font color="#FFFFFF">Engineer</font></th>
+
+<th WIDTH="300" BGCOLOR="#666699"><font color="#FFFFFF">Synopsis</font></th>
+</tr>
+
+<tr>
+<td>&nbsp;</td>
+
+<td>&nbsp;</td>
+
+<td>&nbsp;</td>
+
+<td>&nbsp;</td>
+
+<td>&nbsp;</td>
+
+<td>&nbsp;</td>
+
+<td>&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+</table></center>
+
+<br>&nbsp;
+<br>&nbsp;
+<table BORDER=0 CELLSPACING=0 CELLPADDING=3 WIDTH="100%" >
+<tr>
+<td BGCOLOR="#F5DEB3">
+<h3>
+Revision History</h3>
+</td>
+</tr>
+</table>
+
+<center><table BORDER=0 CELLPADDING=0 BGCOLOR="#FFFFFF" >
+<tr>
+<td>
+<table BORDER CELLPADDING=10 BGCOLOR="#F5DEB3" >
+<tr ALIGN=CENTER>
+<th WIDTH="50" BGCOLOR="#666699"><font color="#FFFFFF">Date</font></th>
+
+<th WIDTH="10" BGCOLOR="#666699"><font color="#FFFFFF">Version</font></th>
+
+<th WIDTH="50" BGCOLOR="#666699"><font color="#FFFFFF">Author</font></th>
+
+<th WIDTH="400" BGCOLOR="#666699"><font color="#FFFFFF">Description</font></th>
+</tr>
+
+<tr>
+<td>&nbsp;</td>
+
+<td>&nbsp;</td>
+
+<td>&nbsp;</td>
+
+<td>&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+</table></center>
+
+</body>
+</html>

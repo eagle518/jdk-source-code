@@ -1,0 +1,118 @@
+#
+# @(#)DeployRules.gmk	1.15 03/06/19
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+DEPLOYOBJDIR = $(OUTPUTDIR)/tmp/deploy/deployObj
+DEPLOYOBJDIR_DBG = $(OUTPUTDIR)/tmp/deploy/deployObj$(DBG_SUFFIX)
+DEPLOYCLASSDESTDIR = $(OUTPUTDIR)/tmp/deploy/deployClasses
+DEPLOYDBGCLASSDESTDIR = $(OUTPUTDIR)/tmp/deploy/deployClasses$(DBG_SUFFIX)
+DEPLOY_SHARE_SRC = $(DEPLOY_TOPDIR)/src/common/share
+COMMON_LIB_DIR = $(OUTPUTDIR)/tmp/deploy/common/lib
+COMMON_BIN_DIR = $(OUTPUTDIR)/tmp/deploy/common/bin
+COMMON_LIB_DIR_DBG = $(OUTPUTDIR)/tmp/deploy/common$(DBG_SUFFIX)/lib
+COMMON_BIN_DIR_DBG = $(OUTPUTDIR)/tmp/deploy/common$(DBG_SUFFIX)/bin
+DEPLOY_COMMON_JAR = $(COMMON_LIB_DIR)/deploy.jar
+DEPLOY_COMMON_DBG_JAR = $(COMMON_LIB_DIR_DBG)/deploy$(DBG_SUFFIX).jar
+DEPLOY_OUTPUT_JAR = $(OUTPUTDIR)/lib/deploy.jar
+DEPLOY_OUTPUT_DBG_JAR =  $(OUTPUTDIR)/lib/deploy$(DBG_SUFFIX).jar
+DEPLOY_JAR_CLASSPATH = $(DEPLOYCLASSDESTDIR)$(CLASSPATH_SEPARATOR)$(DEPLOY_SHARE_SRC)/classes$(CLASSPATH_SEPARATOR)$(DEPLOY_PLATFORM_SRC)/classes
+DEPLOY_DBG_JAR_CLASSPATH = $(DEPLOYDBGCLASSDESTDIR)$(CLASSPATH_SEPARATOR)$(DEPLOY_SHARE_SRC)/classes$(CLASSPATH_SEPARATOR)$(DEPLOY_PLATFORM_SRC)/classes
+DEPLOYCLASSHDRDIR = $(OUTPUTDIR)/tmp/deploy/deployClassHeaders
+COMMONCLASSDESTDIR = "$(OUTPUTDIR)/classes$(CLASSPATH_SEPARATOR)$(CLASSDIR)$(CLASSPATH_SEPARATOR)$(DEPLOYCLASSDESTDIR)"
+
+DEPLOY_FILES = $(DEPLOY_COMMON_FILES)
+
+ifeq ($(PLATFORM), windows)
+   DEPLOY_FILES += $(DEPLOY_WINDOWS_FILES) 
+   DEPLOY_PLATFORM_SRC = $(DEPLOY_TOPDIR)/src/common/windows
+else
+   DEPLOY_FILES += $(DEPLOY_SOLARIS_FILES) 
+   DEPLOY_PLATFORM_SRC = $(DEPLOY_TOPDIR)/src/common/unix
+endif
+
+JAVAC_DBG = $(JAVAC) -g -deprecation
+
+# Java files for Deploy common jar file
+FILES_java_deploy_common = $(DEPLOY_FILES)
+FILES_class_deploy_common = $(FILES_java_deploy_common:%.java=$(DEPLOYCLASSDESTDIR)/%.class)
+FILES_debug_class_deploy_common = $(FILES_java_deploy_common:%.java=$(DEPLOYDBGCLASSDESTDIR)/%.class)
+
+$(DEPLOYCLASSDESTDIR)/%.class: $(DEPLOY_SHARE_SRC)/classes/%.java
+	$(JAVAC) -classpath "$(DEPLOY_JAR_CLASSPATH)" -d $(DEPLOYCLASSDESTDIR) $?
+
+$(DEPLOYCLASSDESTDIR)/%.class: $(DEPLOY_PLATFORM_SRC)/classes/%.java
+	$(JAVAC) -classpath "$(DEPLOY_JAR_CLASSPATH)" -d $(DEPLOYCLASSDESTDIR) $?
+
+$(DEPLOYDBGCLASSDESTDIR)/%.class: $(DEPLOY_SHARE_SRC)/classes/%.java
+	$(JAVAC_DBG) -classpath "$(DEPLOY_DBG_JAR_CLASSPATH)" -d $(DEPLOYDBGCLASSDESTDIR) $?
+
+$(DEPLOYDBGCLASSDESTDIR)/%.class: $(DEPLOY_PLATFORM_SRC)/classes/%.java
+	$(JAVAC_DBG) -classpath "$(DEPLOY_DBG_JAR_CLASSPATH)" -d $(DEPLOYDBGCLASSDESTDIR) $?
+
+# Redirect zh_HK java files to tmp directory which created from zh_TW
+$(DEPLOYCLASSDESTDIR)/%_zh_HK.class: $(DEPLOY_L10N_TMP_OUTPUTDIR)/%_zh_HK.java
+	$(JAVAC) -classpath "$(DEPLOY_JAR_CLASSPATH)" -d $(DEPLOYCLASSDESTDIR) $?
+
+$(DEPLOYDBGCLASSDESTDIR)/%_zh_HK.class: $(DEPLOY_L10N_TMP_OUTPUTDIR)/%_zh_HK.java
+	$(JAVAC_DBG) -classpath "$(DEPLOY_DBG_JAR_CLASSPATH)" -d $(DEPLOYDBGCLASSDESTDIR) $?
+
+#
+# Running Javah to generate stuff into CClassHeaders.
+#
+ifdef FILES_export
+CLASSES.export  = $(subst /,.,$(FILES_export:%.java=%))
+CLASSES.export += $(subst /,.,$(FILES_export2:%.java=%))
+CLASSES.export += $(subst /,.,$(FILES_export3:%.java=%))
+CLASSES_export  = $(FILES_export:%.java=$(DEPLOYCLASSDESTDIR)/%.class)
+
+#
+# 64-bit builds require a larger thread stack size.
+#
+ifeq ($(ARCH_DATA_MODEL), 32)
+  STACKSIZE	= 768
+else
+  STACKSIZE	= 1024
+endif
+STACKSIZEFLAG	= -XX:ThreadStackSize=$(STACKSIZE)
+JAVAHFLAGS	+= -J$(STACKSIZEFLAG)
+JAVAH           =$(OUTPUTDIR)/bin/javah
+
+deployclassheaders: $(DEPLOYOBJDIR)/.class.headers.$(ARCH)
+
+$(DEPLOYOBJDIR)/.class.headers.$(ARCH) : $(CLASSES_export)
+	$(JAVAH) $(JAVAHFLAGS) -bootclasspath $(COMMONCLASSDESTDIR) -d $(DEPLOYCLASSHDRDIR)/ \
+		$(CLASSES.export)
+	-$(TOUCH) $@
+deployclassheaders.clean:
+	$(RM) -r $(DEPLOYCLASSHDRDIR) $(OPT_OBJDIR)/.class.headers.$(ARCH) $(DBG_OBJDIR)/.class.headers.$(ARCH)
+else # FILES_export
+deployclassheaders deployclassheaders.clean: 
+	@$(TRUE)
+endif # FILES_export
+
+deploy-jar-mkdir:
+	$(MKDIR) -p $(COMMON_LIB_DIR) $(COMMON_LIB_DIR_DBG) $(DEPLOYCLASSDESTDIR) $(DEPLOYDBGCLASSDESTDIR) $(DEPLOYCLASSHDRDIR)
+
+deploy-jar:sanity-comprehensive deploy-jar-mkdir deploy-native $(FILES_class_deploy_common) $(FILES_debug_class_deploy_common) deployclassheaders
+	@$(ECHO) "Building deploy.jar ... "
+	@for i in $(DEPLOYCLASSDESTDIR) $(DEPLOYDBGCLASSDESTDIR); do \
+	  $(MKDIR) -p $$i/com/sun/deploy/resources/image; \
+	  $(MKDIR) -p $$i/com/sun/deploy/panel; \
+	  $(RM) $$i/com/sun/deploy/resources/image/*.*; \
+	  $(RM) $$i/com/sun/deploy/panel/*.xml; \
+	  $(RM) $$i/com/sun/deploy/panel/*.dtd; \
+	  $(CP) $(DEPLOY_SHARE_SRC)/classes/com/sun/deploy/resources/image/*.* $$i/com/sun/deploy/resources/image; \
+	  $(CP) $(DEPLOY_SHARE_SRC)/classes/com/sun/deploy/panel/*.xml $$i/com/sun/deploy/panel; \
+	  $(CP) $(DEPLOY_SHARE_SRC)/classes/com/sun/deploy/panel/*.dtd $$i/com/sun/deploy/panel; \
+	done
+
+	$(JAR) cf $(DEPLOY_COMMON_JAR) -C "$(DEPLOYCLASSDESTDIR)" com/sun/deploy
+	$(JAR) cf $(DEPLOY_COMMON_DBG_JAR) -C "$(DEPLOYDBGCLASSDESTDIR)" com/sun/deploy
+
+	$(CP) $(DEPLOY_COMMON_JAR) $(DEPLOY_OUTPUT_JAR) 
+	$(CP) $(DEPLOY_COMMON_DBG_JAR) $(DEPLOY_OUTPUT_DBG_JAR)
+	
+	@$(ECHO) "Finish building deploy.jar ... "

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- <!DOCTYPE java-control-panel SYSTEM "settings.xml_java-control-panel.dtd"> -->
+
+<!-- Created by Administrator on February 10, 2003, 10:49 PM -->
+
+<java-control-panel version="1.0">
+    <advanced-settings>
+        <label text="deployment.console.debugging">
+            <checkbox propertyName="deployment.trace" checked="false"/>
+            <checkbox propertyName="deployment.log" checked="false"/>  
+            <checkbox propertyName="deployment.javapi.lifecycle.exception" checked="false"/>
+ <!--       <checkbox propertyName="deployment.control.panel.log" checked="false"/>      -->
+        </label>
+        <label text="deployment.console.startup.mode">
+            <radiogroup propertyName="deployment.console.startup.mode" checked="HIDE">
+                <rButton text="SHOW"/>
+                <rButton text="HIDE"/>
+                <rButton text="DISABLE"/>
+            </radiogroup>
+        </label>
+
+<!-- Options below should be displayed for Windows platform only.  -->
+       <platform text="windows">
+            <label text="deployment.browsers.applet.tag">
+                <checkbox propertyName="deployment.browser.vm.iexplorer" checked="true"/>
+                <checkbox propertyName="deployment.browser.vm.mozilla" checked="true"/> 
+            </label>
+        </platform>
+
+        <platform text="windows, gnome">
+            <label text="deployment.javaws.shortcut">
+                <radiogroup propertyName="deployment.javaws.shortcut"  checked="ASK_IF_HINTED">
+                    <rButton text="ALWAYS"/>
+                    <rButton text="ALWAYS_IF_HINTED"/>
+                    <rButton text="ASK_USER"/>
+                    <rButton text="ASK_IF_HINTED"/>
+                    <rButton text="NEVER"/>
+                </radiogroup>
+            </label>
+        </platform>
+    <platform text="windows, gnome">
+         <label text="deployment.javaws.associations">
+                <radiogroup propertyName="deployment.javaws.associations"  checked="ASK_USER">
+                    <rButton text="ASK_USER"/>
+                    <rButton text="REPLACE_ASK"/>
+                    <rButton text="NEW_ONLY"/>
+                    <rButton text="NEVER"/>
+                </radiogroup>
+            </label>
+    </platform>
+        <label text="deployment.security.settings">
+            <checkbox propertyName="deployment.security.askgrantdialog.show" checked="true"/>
+            <checkbox propertyName="deployment.security.askgrantdialog.notinca" checked="true"/>
+            <checkbox propertyName="deployment.security.browser.keystore.use" checked="true"/>
+            <checkbox propertyName="deployment.security.notinca.warning" checked="true"/>
+            <checkbox propertyName="deployment.security.expired.warning" checked="true"/>
+            <checkbox propertyName="deployment.security.jsse.hostmismatch.warning" checked="true"/>
+            <checkbox propertyName="deployment.security.sandbox.awtwarningwindow" checked="true"/>
+            <checkbox propertyName="deployment.security.sandbox.jnlp.enhanced" checked="true"/>
+        </label>   
+
+        <platform text="windows">
+            <label text="deployment.misc.label">
+                <checkbox propertyName="deployment.system.tray.icon" checked="true" />
+            </label>
+        </platform>
+ 
+        <platform text="SunOS, Linux">
+            <label text="deployment.browser.default">
+                <textField propertyName="deployment.browser.path" />
+            </label>
+        </platform>
+
+    </advanced-settings>
+</java-control-panel>
+	

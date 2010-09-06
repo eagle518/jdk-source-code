@@ -1,0 +1,19 @@
+DLL_c = \
+	 stdafx.cpp \
+	 dllmain.cpp \
+         config.cpp \
+	 registry.cpp \
+	 security.cpp \
+	 cookie.cpp \
+	 jscriptengine.cpp \
+	 proxy.cpp \
+	 auth.cpp \
+	 WinRegistryWrapper.cpp
+
+DLL_rc = version.rc
+
+SO_c = \
+	config.c
+
+SO_GNOME_C = \
+	GnomeVfsWrapper.c

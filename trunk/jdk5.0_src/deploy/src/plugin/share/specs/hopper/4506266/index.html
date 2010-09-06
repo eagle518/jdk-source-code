@@ -1,0 +1,589 @@
+<html>
+<head><title>Splash screen support in Java Plug-in</title></head>
+<body bgcolor=white>
+
+<h2>
+Splash screen support in Java Plug-in Engineering Specification
+</h2>
+<p>
+<h4>
+RFE:
+<a target=new href=http://andorra1.sfbay:8080/cgi-bin/ws.exe/bugtraq/jdk/bug.hts?bugid_value=4506266>4506266</a>
+
+<p>
+Author: Margarita Fisher
+<br>
+Date:   March 22, 2002    
+</h4>
+
+<p><br>
+
+<table width=100% cellspacing=0 cellpadding=3 border=0>
+  <tr>
+    <td bgcolor=wheat><h3>1  Project Description</td>
+  </tr>
+</table>
+
+<p>
+
+<h4>
+1.1 Overview
+</h4>
+
+<!-- Description of the project/problem -->
+The gray box needs to be customizable.  Java Plug-in started a while ago with a plain gray box for the applet.  In later versions the gray box was updated to display debugging messages to provide some sort of feedback to the users that applet is loading and not hanging. 
+<p>
+In the latest release of Java Plug-in we added progress bar to display applet download progress; tags to specify background/foreground and progress bar colors; tag to provide a custom message instead of usual debugging=confusing messages.  
+<p>
+Every one of these changes has its own group of supporters.  Latest updates to the gray box overwrite legacy behavior and this causes complaints from users that got used to the old gray box behavior and liked it.
+<p>
+We need to make gray box more customizable and give it some default behavior that would be acceptable to regular users and would not change from one release to the next.
+
+<p>
+
+<h4>
+1.2 Project Dependencies
+</h4>
+
+N/A
+
+<h4>
+1.3 OS and Browser Compatibility and Interoperability 
+</h4>
+
+This feature will be available on all platforms and browsers.  Older versions of plug-in will not recognize these options.
+
+<h4>
+1.4 Performance and Scalability
+</h4>
+
+N/A
+
+<h4>
+1.5 Security
+</h4>
+
+N/A
+
+<h4>
+1.6 Internationalization (I18N) / Localization (L10N)
+</h4>
+
+N/A
+
+<h4>
+1.7 Packaging
+</h4>
+
+N/A
+
+<h4>
+1.8 Usability
+</h4>
+
+Plug-in documentation will have to be updated with explanations on new features and some examples on how to use them.
+Developers would have to use special html tags to enable non-default features for the gray box.
+
+<h4>
+1.9 Quality
+</h4>
+
+<p>
+
+<h5>
+1.9.1 Unit or Functional Tests to be Delivered
+</h5>
+
+<!-- Describe any Unit or Functional tests to be delivered by engineering
+     for this project. -->
+Several test cases will have to be created to test default behavior of the gray box as well as special test cases to test new features.   
+
+<h5>
+1.9.2 Additional Testing Notes
+</h5>
+
+<!-- Describe recommended testing approaches and any special requirements
+     to completely certify and test the project. -->
+Make test cases to test default behavior for situations when something goes wrong (i.e. image file not found, applet does not load, etc.)
+
+<br><br>
+
+<table width=100% cellspacing=0 cellpadding=3 border=0>
+  <tr>
+    <td bgcolor=wheat><h3>2  Technical Description</td>
+  </tr>
+</table>
+
+<p>
+
+
+<h4>
+2.1 Architecture
+</h4>
+
+<!-- Describe the basic architecture of the project. Enumerate and
+     briefly describe the major components and the basic technical
+     approach chosen for the project. Where relevant, discuss major
+     tradeoffs or rejected approaches. -->
+There are three states that the JPI's "Gray Box" can be in:
+<br>
+* downloading Java code
+<br>
+* running Java code
+<br>
+* failing to run Java code
+<p>
+1. Downloading Java code
+<br>
+By default, we want to provide a simple yet informative feedback to the consumer users that content is being retrieved for them. In all cases, JPI's Gray Box will not provide a border to delineate the area occupied by the Java content. (A border might clash with the content when it gets loaded and begins rendering.) 
+<p>
+
+1.1 Default
+<br>
+A small animated graphic will be placed in the upper left corner. This graphic will be 24x24 and be 6 pixels from the top and left sides of the area. If the whole area occupied by JPI is less than 36x36, display nothing for feedback.  The graphic will be provided later by UE. 
+<br>
+The status bar will display "Loading Java content..." when mouse points at the gray box area.
+<p>
+
+1.2  Custom image
+<br>
+The developer also has the option of providing a custom graphic. Special tag for the image is: 
+<br>
+        IMAGE = "my_image.gif"
+<br>
+If a custom graphic is provided, it should be the same size as the area JPI occupies. If these sizes do not match, the graphic will be placed in the upper left corner of the area specified for JPI. If it's too big, part of it gets chopped off. If it's too small, there's some extra white space around it. If it fits perfectly, great.
+<br>
+The image file should be either GIF or JPG file format.  It should reside in the same directory where other resources for the applet are residing, i.e. if there is a "CODEBASE" provided, this image file should be in the codebase directory.  The image file for the splash screen should not be in a jar file with other resources for the plug-in, since we want to display it while downloading resources for the applet. 
+<br>
+The status bar will display "Loading Java content..." when mouse points at the gray box area.
+<p>
+
+1.3  Progress bar
+<br>
+The developer can also request that a progress bar be provided instead of the default animated graphic. This progress bar will horizontally fill the area except for 6 pixels on the right and left. Place the text "Loading Java content..." above the progress bar and left aligned with it. Progress bar is purple by default.
+<br>
+Special tag to turn the progress bar ON:
+<br>
+        PROGRESSBAR = "true"
+<br>
+Once again, the status bar displays "Loading Java content..." when mouse points at the gray box.
+<p>
+
+1.4  Applet text message.
+<br>
+The developer can also customize the text. If a new text string is provided, it is utilized for the progress bar, and status bar.
+<br>
+HTML tag to specify message string:
+<br>
+        BOXMESSAGE = "Message string here." 
+<p>
+
+1.5  Custom colors for gray box.
+<br>
+The developer can provide custom foreground, background and progress bar colors. By default, the foreground and background colors are obtained from the HTML page occupied by the JPI.
+<br>
+HTML tag to specify background color:  BOXBGCOLOR = "153, 153, 204"
+<br>
+HTML tag to specify foreground color:  BOXFGCOLOR = "red"
+<br>
+HTML tag to specify progress color:    PROGRESSCOLOR = "33FF33"
+<br>
+Note:  Three color tags above are shown using different available formats that are supported by plug-in.  See usability document on color specifications.
+<p>
+
+The precedence order for these variables is:
+<br>
+1) If no parameters are provided, the default visualization is used.
+<br>
+2) If a custom graphic is provided, the "custom graphic" situation is used.
+<br>
+3) If a progress bar is asked for, the progress bar is displayed with the default text and color.
+<br>
+4) If custom text is provided, the progress bar is displayed with the custom text.
+<br>
+Custom colors can be provided for any situation. (For some situations, it is a bit unclear what these colors would affect.)
+<p>
+<p>
+
+2.  Failure
+<br>
+In the event that the code does not download or run cleanly, the JPI's Gray Box should display error information similar to other web content/media types.
+<br>
+The area occupied by the JPI will have a single pixel border (using the foreground color). A small "broken" graphic will occupy the upper left corner of the space (as it is defined above for the default case). Remove the current test string from the status bar and provide no new text string. 
+<br>
+Right mouse button click on the applet's area will popup a menu with an option to open Java Console.
+<p>
+
+
+<h4>
+2.2 Exported Interfaces/API
+</h4>
+
+<!-- List and describe any new or changed exported interfaces
+     or APIs. -->
+
+N/A
+
+<h4>
+2.3 Imported Interfaces/API
+</h4>
+
+<!-- List and describe any new or changed imported interfaces
+     or APIs which are of significance to note. -->
+
+N/A
+
+<h4>
+2.4 User Interface
+</h4>
+
+<!-- Describe the user interface of this project, if any.  Include
+     screen shots or diagrams where helpful. -->
+
+<p>
+
+<br><br>
+
+
+<table width=100% cellspacing=0 cellpadding=3 border=0>
+  <tr>
+    <td bgcolor=wheat><h3>3  Marketing</td>
+  </tr>
+</table>
+
+<p>
+
+
+<h4>
+3.1 Justification
+</h4>
+
+<!-- Why is this project important to Sun? -->
+
+<p>
+
+
+<h4>
+3.2 Customer Request
+</h4>
+
+<!-- Which customers are asking for this project? -->
+We have more then 100 votes for this feature from different customers.
+
+<h4>
+3.3 Competitive Analysis
+</h4>
+
+<!-- Discuss tradeoffs between this project and relevant 
+     alternatives. Why will the target audience prefer this
+     product over the competition?  The contents of this
+     section may be replaced by a pointer to the appropriate
+     section of the MRD, if it provides the required
+     information. -->
+
+This feature will make Java Plug-in more user-friendly.
+
+<br><br>
+
+<table width=100% cellspacing=0 cellpadding=3 border=0>
+  <tr>
+    <td bgcolor=wheat><h3>4  Management and Planning</td>
+  </tr>
+</table>
+
+<p>
+
+
+<h4>
+4.1 Scope/Priority
+</h4>
+
+<!-- What is the size of this effort?  Small, Medium, Large.
+     What is the priority?  1, 2, 3. -->
+
+<p>
+Size of this effort?  Small[] Medium[X] Large[]
+<p>
+What is the priority? 1[X] 2[] 3[]
+
+<h4>
+4.2 Target Release
+</h4>
+
+<!-- Which specific release will be tartgeted for this project work. -->
+<p>
+Hopper
+
+<h4>
+4.3 Resources
+</h4>
+   
+<p>
+
+
+<h5>
+4.3.1 Development
+</h5>
+   
+<!-- Number of developers required, or assigned developers -->
+   
+<p>
+Margarita Fisher
+    
+<h5>
+4.3.2 Quality Assurance/Testing
+</h5>
+    
+<!-- Number of test engineers required to develop tests, or
+     assigned test engineers -->
+   
+<p>
+To be determined.
+   
+<h5>
+4.3.3 Documentation
+</h5>
+   
+<!-- Number of writers required, or assigned writers -->
+   
+<p>
+
+   
+<h5>
+4.3.4 Technical Support
+</h5>
+
+<!-- Background knowledge required to support this feature. -->
+
+<p>
+
+
+<h5>
+4.3.4 Special Hardware/Software
+</h5>
+
+<!-- List any special hardware/software required to complete
+     this project. -->
+
+<p>
+
+
+<h4>
+4.4 Schedule
+</h4>
+
+<!-- Detailed schedule for project, including engineering work,
+     testing, documentation, integration and release. -->
+
+<p>
+
+<center>
+
+<table cellpadding=0 cellspacing=1 bgcolor=white border=0>
+
+  <tr>
+    <td>
+      <table cellspacing=1 cellpadding=10 bgcolor=wheat border=1>
+
+        <tr align=center>
+          <th bgcolor=#666699 width=75><font color=white>Start Date</font></th>
+          <th bgcolor=#666699 width=75><font color=white>End Date</font></th>
+          <th bgcolor=#666699 width=250><font color=white>Activity</font></th>
+          <th bgcolor=#666699 width=50><font color=white>Owner</font></th>
+          <th bgcolor=#666699 width=50><font color=white>Status</font></th>
+        </tr>
+
+        <tr>
+          <td>&nbsp</td>
+          <td>&nbsp</td>
+          <td>&nbsp</td>
+          <td>&nbsp</td>
+
+          <!-- Change the foreground/background colors for this cell to reflect
+               the status.  For example...
+
+               <td bgcolor=green align=center><font color=white>04/16/2001</font></td>
+            -->
+
+          <td>&nbsp</td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+
+</table>
+
+<table cellspacing=5 border=0>
+
+  <tr>
+    <td bgcolor=green width=50>&nbsp</td>
+    <td bgcolor=lightgreen width=50>&nbsp</td>
+    <td bgcolor=wheat width=50>&nbsp</td>
+    <td bgcolor=yellow width=50>&nbsp</td>
+    <td bgcolor=red width=50>&nbsp</td>
+  </tr>
+
+  <tr align=center>
+    <td>Complete</td>
+    <td>Started</td>
+    <td>Not Started</td>
+    <td>Difficulties</td>
+    <td>Trouble</td>
+  </tr>
+
+</table>
+
+</center>
+
+<br><br>
+
+
+<table width=100% cellspacing=0 cellpadding=3 border=0>
+  <tr>
+    <td bgcolor=wheat><h3>Appendices (as needed, suggestions below)</td>
+  </tr>
+</table>
+
+<p>
+
+
+<h4>
+A. Background Information
+</h4>
+
+<p>
+
+
+<h4>
+B. Interface Specifications
+</h4>
+
+<p>
+
+
+<h4>
+C. Notes and Additional Details
+</h4>
+
+<p>
+
+
+<h4>
+D. Miscellaneous
+</h4>
+
+<p>
+
+
+<h4>
+E. Tracking
+</h4>
+
+<p>
+
+
+<h5>
+E.1  Final Webrev
+</h5>
+
+<p>
+
+
+<h5>
+E.2  Bugtraq
+</h5>
+
+<!-- All related Bugtraq RFEs, Bugs, and EOUs.. -->
+
+<center>
+
+<table cellpadding=0 cellspacing=1 bgcolor=white border=0>
+
+  <tr>
+    <td>
+      <table cellspacing=1 cellpadding=10 bgcolor=wheat border=1>
+
+        <tr align=center>
+          <th bgcolor=#666699 width=50><font color=white>Bugid</font></th>
+          <th bgcolor=#666699 width=10><font color=white>P</font></th>
+          <th bgcolor=#666699 width=10><font color=white>S</font></th>
+          <th bgcolor=#666699 width=25><font color=white>Subcategory</font></th>
+          <th bgcolor=#666699 width=25><font color=white>Type</font></th>
+          <th bgcolor=#666699 width=20><font color=white>Engineer</font></th>
+          <th bgcolor=#666699 width=300><font color=white>Synopsis</font></th>
+        </tr>
+
+        <tr>
+          <td><a target=new href=http://andorra1.sfbay:8080/cgi-bin/ws.exe/bugtraq/jdk/bug.hts?bugid_value=4506266>4506266</a>&nbsp</td>
+          <td>4&nbsp</td>
+          <td>5&nbsp</td>
+          <td>misc&nbsp</td>
+          <td>rfe&nbsp</td>
+          <td>mfisher&nbsp</td>
+          <td>RFE: Splash screen support in Java Plug-in&nbsp</td>
+        </tr>
+
+        <tr>
+          <td><a target=new href=http://andorra1.sfbay:8080/cgi-bin/ws.exe/bugtraq/jdk/bug.hts?bugid_value=4640438>4640438</a>&nbsp</td>
+          <td>5&nbsp</td>
+          <td>3&nbsp</td>
+          <td>other&nbsp</td>
+          <td>rfe&nbsp</td>
+          <td>mfisher&nbsp</td>
+          <td>RFE: Make grey loading box for Applets customizable&nbsp</td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+
+</table>
+
+</center>
+
+<p>
+
+<br><br>
+
+<table width=100% cellspacing=0 cellpadding=3 border=0>
+  <tr>
+    <td bgcolor=wheat><h3>Revision History</td>
+  </tr>
+</table>
+
+<p>
+
+<center>
+
+<table cellpadding=0 cellspacing=1 bgcolor=white border=0>
+
+  <tr>
+    <td>
+      <table cellspacing=1 cellpadding=10 bgcolor=wheat border=1>
+
+        <tr align=center>
+          <th bgcolor=#666699 width=50><font color=white>Date</font></th>
+          <th bgcolor=#666699 width=10><font color=white>Version</font></th>
+          <th bgcolor=#666699 width=50><font color=white>Author</font></th>
+          <th bgcolor=#666699 width=400><font color=white>Description</font></th>
+        </tr>
+
+        <tr>
+          <td>03/22/2002&nbsp</td>
+          <td>1.0&nbsp</td>
+          <td>Margarita Fisher&nbsp</td>
+          <td>Initial draft&nbsp</td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+
+</table>
+
+</center>
+
+</body>
+</html>
+

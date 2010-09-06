@@ -1,0 +1,65 @@
+PRODUCT = deploy/plugin
+
+include $(PLUGIN_TOP)/make/plugin/common/Defs.gmk
+include $(PLUGIN_TOP)/make/plugin/common/Plugin.gmk
+
+CLASSDIR = $(TMPDIR)/classes$(SUFFIX)
+CLASSDIR_g = $(TMPDIR)/classes$(DBG_SUFFIX) # For clobber target
+
+JAVASRCDIR = $(PLUGIN_TOP)/src/plugin/share/classes
+
+PLUGIN_JARFILE = $(LIBDIR)/plugin$(SUFFIX).jar
+PLUGIN_JARFILE_g = $(LIBDIR)/plugin$(DBG_SUFFIX).jar #For clobber target
+
+ifeq ($(PLATFORM), windows)
+  PLUGIN_PLATFORM_SRC := $(PLUGIN_TOP)/src/plugin/win32
+  VERSION_SRC   := $(PLUGIN_TOP)/src/plugin/win32/common/PluginVersion.hpp
+  VERSION_DEST  := $(TMPDIR)/PluginVersion.h
+
+  RSC = rc.exe
+
+  ifeq ($(VARIANT), DBG)
+    CPPFLAGS1 = -MTd -W3 -Od -GX -Gm -GZ -Zi -ZI -D_DEBUG -Fd"$(OBJDIR)\debug" 
+    LFLAGS = -nologo -map -mapinfo:exports -mapinfo:lines -incremental:no -machine:I386 -debug -pdbtype:sept -opt:noref
+    RSCFLAGS = -l 0x409 -r -d _DEBUG
+  else
+    CPPFLAGS1 = -MD -W3 -Ox -Os -GX -Zi -DNDEBUG -Fd"$(OBJDIR)\release" 
+    LFLAGS = -nologo -map -mapinfo:exports -mapinfo:lines -incremental:no -machine:I386 -debug -pdbtype:sept -opt:ref 
+    RSCFLAGS = -l 0x409 -r -d NDEBUG 
+  endif
+  CPPFLAGS= $(patsubst %,-I%,$(CPPINCPATH)) $(patsubst %,-I%,$(subst $(CLASSPATH_SEPARATOR), ,$(VPATH.h))) -nologo $(CPPFLAGS1) -DXP_WIN -DXP_PC -D_MBCS -D_ATL_STATIC_REGISTRY -DWIN32 -D_WINDOWS -c -Fm$(OBJDIR) $(EXTRA_CPPFLAGS)
+  CXXFLAGS:=
+else
+
+  ifeq ($(VARIANT), DBG)
+    CPPFLAGS1 = -DDEBUG_VERSION
+  else
+    CPPFLAGS1 = 
+  endif
+
+
+ifeq ($(PLATFORM), solaris)
+  PLUGIN_PLATFORM_SRC := $(PLUGIN_TOP)/src/plugin/solaris
+endif
+
+ifeq ($(PLATFORM), linux)
+  PLUGIN_PLATFORM_SRC := $(PLUGIN_TOP)/src/plugin/solaris
+OTHER_LDFLAGS = -L/usr/X11R6/lib
+endif
+
+LDFLAGS_COMMON = 
+
+ifdef JDK_UPDATE_VERSION
+UVSUFFIX = _$(JDK_UPDATE_VERSION)
+endif
+
+CPPFLAGS = $(patsubst %,-I%,$(CPPINCPATH)) $(patsubst %,-I%,$(subst $(CLASSPATH_SEPARATOR), ,$(VPATH.h))) $(CPPFLAGS1) -D_GNU_SOURCE -DXP_UNIX -DNO_XEMBED_MOZILLA -DSVR4 -DPLUGIN_NODOTVERSION=\"$(JDK_MAJOR_VERSION)$(JDK_MINOR_VERSION)$(JDK_MICRO_VERSION)$(UVSUFFIX)\" -DPLUGIN_VERSION=\"$(JDK_VERSION)\" -DVERSION=\"$(FULL_VERSION)\" -DRELEASE=\"$(RELEASE)\" -DARCH=\"$(ARCH)\" -DLIBARCH=\"$(LIBARCH)\" $(EXTRA_CPPFLAGS)
+
+endif
+ifeq ($(MILESTONE), rc)
+  CPPFLAGS += -DFCSRCBUILD
+endif
+ifeq ($(MILESTONE), fcs)
+  CPPFLAGS += -DFCSRCBUILD
+endif
+

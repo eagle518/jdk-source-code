@@ -1,0 +1,56 @@
+#
+# @(#)Defs-windows.gmk	1.11 04/10/19
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# Uses default JDK for build
+
+# Default MOZILLA_DRIVE to M: and allow override.
+MOZILLA_DRIVE = M
+ifdef ALT_MOZILLA_DRIVE
+  MOZILLA_DRIVE = $(ALT_MOZILLA_DRIVE)
+endif
+
+# Default MOZILLA_PATH and allow override.
+MOZILLA_PATH = $(MOZILLA_DRIVE):\devtools
+ifdef ALT_MOZILLA_PATH
+  MOZILLA_PATH = $(subst \\,\,$(subst \,/,$(ALT_MOZILLA_PATH)))
+endif
+
+# Default Mozilla Headers and Libs directories
+MOZILLA_HEADERS_PATH=$(MOZILLA_PATH)\share\plugin
+ifdef ALT_MOZILLA_HEADERS_PATH
+  MOZILLA_HEADERS_PATH=$(ALT_MOZILLA_HEADERS_PATH)
+endif
+
+DEPLOY_MSSDK=$(MSSDK)
+ifdef ALT_PLUGIN_MSSDK
+  DEPLOY_MSSDK=$(subst \\,\,$(subst \,/,$(ALT_PLUGIN_MSSDK)))
+endif
+
+LIBRARY_SUFFIX = dll
+LIB_SUFFIX     = lib
+
+# fix for 5043602: windows-i586 deploy build have some linker warning.
+# we want to use our own resource file in plugin
+LOCAL_RESOURCE_FILE=true
+
+
+# Base address for dll relocation.  Above the recommended 0x60000000 to allow
+# larger heaps.
+REBASE_ADDR = 0x6D000000
+
+# CAB file locations
+#
+ifdef ALT_JRE_CAB_URL
+JRE_CAB_URL=$(ALT_JRE_CAB_URL)
+else
+JRE_CAB_URL=http://java.sun.com/webapps/download/GetFile/$(FULL_VERSION)/$(PLATFORM)-$(ARCH)-jre
+endif
+
+ifdef ALT_SDK_CAB_URL
+SDK_CAB_URL=$(ALT_SDK_CAB_URL)
+else
+SDK_CAB_URL=http://java.sun.com/webapps/download/GetFile/$(FULL_VERSION)/$(PLATFORM)-$(ARCH)-sdk
+endif

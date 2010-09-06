@@ -1,0 +1,310 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <title>Java(TM) Web Start Release Notes</title>
+</head>
+<body bgcolor="#FFFFFF">
+&nbsp;
+<table BORDER=0 WIDTH="100%" >
+<tr>
+<td WIDTH="40"><img SRC="javalogo52x88.gif" ALT="Java" BORDER=0 height=88 width=52></td>
+
+<td ALIGN=CENTER>
+<h1>
+Release Notes</h1>
+
+<h2>
+Java<sup><font size=-2>TM</font></sup> Web Start Technology</h2>
+
+<h3>
+Version 1.2</h3>
+</td>
+
+<td ALIGN=RIGHT VALIGN=TOP WIDTH="40">
+&nbsp;
+</td>
+</tr>
+</table>
+<h2>Contents</h2>
+<blockquote>
+This document describes the new features, enhancements, and bug fixes  
+that were made for this release of Java<sup><font size=-2>TM</font></sup>  
+Web Start software.
+<p>
+<dl>
+<dt><a href="#jnlp"><b>JNLP Specification Conformance</b></a>
+<dt><a href="#enhancements"><b>Enhancements</b></a>
+<dd><a href="#autoinstall">"One-click" Automatic 
+Installation (Microsoft Windows only)</a><br>
+<a href="#splash">Customizable Splash Screens</a><br>
+<a href="#encodings">Support for Non-UTF-8 Encodings</a><br>
+<a href="#sample">Sample Code</a>
+<dt><a href="#bugfixes"><b>Bug Fixes</b></a>
+</dl>
+<p>Please send comments and feedback to 
+<a href="mailto:javawebstart-feedback@sun.com">javawebstart-feedback@sun.com</a>.
+</blockquote>
+
+
+<a name=jnlp><h2>JNLP Specification Conformance</h2></a>
+
+<blockquote>This release conforms to the Java<sup><font size=-2> TM</font></sup>
+Network Launching Protocol &amp; API (JNLP) Specification, v1.0.1. 
+This specification is 
+<a href="http://java.sun.com/products/javawebstart/download-spec.html">available 
+for download</a>.
+</blockquote>
+
+<a name="enhancements"><h2>Enhancements</h2></a>
+<blockquote>
+The Java Web Start 1.2 product contains the following new features 
+and enhancements as compared with previous versions.
+
+<a name="autoinstall">
+<h3>"One-Click" Auto Installation (Microsoft Windows platforms only)</h3>
+</a>
+This feature has been added in order to improve the experience of those users 
+who do not have Java Web Start already installed when they encounter a Java 
+Web Start application.  This enhancement is designed to make the Java Web 
+Start installation as transparent as possible to the end user.
+<p>
+Prior to implementation of this feature, developers could use some 
+JavaScript in their web pages to detect whether a user already had 
+Java Web Start installed.  If not, the JavaScript could provide a link 
+by which the user could go to a download page for Java Web Start. 
+Users who needed Java Web Start would need to go through several 
+mouse clicks and web pages in order to access and download Java Web 
+Start and, finally, the application.
+<p>
+
+With the new auto installation feature, users who don't have Java 
+Web Start will be prompted to download Java Web Start from  
+java.sun.com.  They will click through one security dialog box, 
+which will automatically initiate a download of either Java Web Start alone 
+or Java Web Start plus Java Runtime Environment 1.4.1, depending on 
+how the developer has set up the application's web page.
+<p>
+When the download is complete, Java Web Start (and the Java Runtime 
+Environment, if it was downloaded) will be automatically installed on 
+the user's machine, and then Java Web Start will launch the application.
+<p>
+<blockquote>
+<hr>
+<em>Note</em> -- This feature is available only for Microsoft Windows 
+platforms. The cab files and scripts on java.sun.com necessary for full 
+implementation of this feature will not be available until the final release 
+of Java Web Start 1.2 and J2SE<sup><font size="-2">TM</font></sup> 1.4.1.
+<hr>
+</blockquote>
+<p>
+For more information about the auto-installation feature, see the 
+<a href="developersguide.html#autoinstall">Developer's Guide</a>. 
+
+<a name="splash">
+<h3>Customizable Splash Screens</h3></a>
+
+Java Web Start 1.2 provides the ability to customize the "splash" screen 
+that appears when launching an application.  By default, the following 
+image will appear when launching an application using Java Web Start.
+<blockquote>
+<img src="miniSplash.jpg">
+</blockquote> 
+Developers may use alternative images for an application by adding an 
+<tt>icon</tt> element with a <tt>kind="splash"</tt> attribute to 
+the application's JNLP file.  For example, the following element 
+would indicate that the image contained in the file <tt>MyIcon.gif</tt> 
+should be displayed as a "splash" image during application launch.
+<blockquote><pre>
+&lt;icon kind="splash" href="MyIcon.gif"/&gt;
+</pre></blockquote>
+<p>
+Splash image files can be either GIF or JPEG format. 
+As with all icon elements, the <tt>href</tt> attribute for a splash image 
+can be either an absolute or relative URL.  If relative, it is relative to 
+the URL specified in the JNLP file's <tt>codebase</tt> element.
+
+<p>
+If the JNLP file does not contain an <tt>icon</tt> tag with a <tt>kind="splash"</tt> 
+attribute, but does contain another <tt>icon</tt> tag, Java Web Start will 
+display a splash screen consisting of the image specified by the <tt>icon</tt> 
+element on the left and the application's title and vendor on the right.  
+The title and vendor are taken from the <tt>title</tt> and <tt>vendor</tt> tags 
+in the JNLP file.  Here is an example splash screen of this sort for the Draw 
+application demo.
+<blockquote>
+<img src="splash.gif">
+</blockquote>
+<p>
+If the JNLP file does not contain any <tt>icon</tt> tags, the splash image  
+will consist of the application's title and vendor, as taken from the JNLP file.
+<p>
+Splash images will be surrounded by a border defined by Java Web Start.
+<p>
+The first time an application is launched following the addition or modification
+of the <tt>icon</tt> element in the JNLP file, the old splash image will 
+still be displayed.  The new splash image will appear on the second and 
+subsequent launches of the application.
+
+            
+<a name="encodings">  
+<h3>Support for Non-UTF-8 Encodings</h3></a>
+
+Beginning with version 1.2, Java Web Start can parse JNLP files that are 
+encoded in UTF-8, UTF-16, and other encodings supported by the 
+J2SE<sup><font size="-2">TM</font></sup> platform. In previous releases 
+of Java Web Start, only UTF-8 encoding was supported.
+<p>
+Specify a non-UTF-8 encoding in the XML prolog of the JNLP file.  
+For example, the following line indicates that the JNLP file will be 
+encoded in UTF-16.
+<blockquote><pre>
+&lt;?xml version="1.0" encoding="utf-16"?&gt;
+</pre></blockquote>
+The XML prolog itself must be UTF-8 encoded. 
+<p>
+See the <a href="http://java.sun.com/j2se/1.4/docs/guide/intl/encoding.doc.html">J2SE documentation</a> for a list of encodings supported by the J2SE platform, and 
+now supported in JNLP files.
+
+                
+<a name=sample>   
+<h3>Sample Code</h3></a>
+
+A JNLP Client, such as the Application Launcher included with the Java Web Start 
+product, makes a set of services available to applications that it launches. 
+The applications can access the services through the JNLP API.  The specification 
+for the JNLP API is provided in the <tt>javadoc</tt> directory of the JNLP 
+Developer's Pack.  (See the <a href="http://java.sun.com/products/javawebstart/developers.html">Developer's Section</a> of the Java Web Start web site.)
+<p>
+Several sample applications that use the JNLP API are provided with Java Web Start 
+1.2 Developer Pack.  Each includes a readme file that summarizes what is contained 
+in the sample, source files for the application, and jar files with libraries 
+and resources required to build, run, and deploy the application. 
+<p>
+The samples are:
+<dl>
+<dt>WebPad</dt>
+<dd>This is a simple word processing application that allows users to create, open,
+modify, save and print files. The WebPad application uses JNLP API extensively to 
+access resources locally when running in the untrusted execution environment.</dd>
+<p>
+<dt>Random Access File Sample
+<dd>
+This sample demonstrates features of the <tt>JNLPRandomAccessFile</tt> interface 
+of the JNLP API. The user picks up a file that is opened as a random file for both 
+writing and reading.
+
+<p>
+<dt>Extension Installer Sample
+<dd>This sample using the <tt>ExtensionInstallerService</tt> feature of the 
+JNLP API installs a native shared library to the client machine and informs the 
+JNLP Client of a directory where it should search for native libraries.
+<p>
+<dt>Library (native) Installation
+<dd>
+This sample uses the <tt>&lt;nativelib&gt;</tt> element in the resources section 
+of a JNLP file to install a native shared library on the client machine.
+
+<p>
+<dt>CORBA Sample
+<dd>
+The purpose of this sample is to demostrate how CORBA applications can be 
+deployed using Java Web Start. It includes a very simple "Hello World" 
+application using RMI-IIOP.
+</dl>
+</blockquote>
+
+<a name="bugfixes"><h2>Bug Fixes</h2></a>
+<blockquote>
+Developers can access the Java Developer Connection<sup><font size="-2">SM</font></sup> 
+<a href="http://developer.java.sun.com/developer/bugParade/">Bug Parade 
+database</a> and vote for fixing those bugs that significantly affect their 
+products and projects. 
+The following is a complete list of all bugs that have been 
+fixed in this release of the Java Web Start software that had at 
+least one vote on Bug Parade.  Each bug ID in the table is a link to the 
+corresponding bug report on the Java Developer Connection web site.
+<p>
+
+<table border="1">
+<tr bgcolor="lightgrey">
+<th>Bug ID</th><th>No. of votes</th><th>Synopsis</th>
+<tr>   <td><A HREF="http://developer.java.sun.com/developer/bugParade/bugs/4393950.html">4393950</A> <td>28 votes              <td>request to allow codebase to be specified with an HTTPS location.
+<tr>   <td> <A HREF="http://developer.java.sun.com/developer/bugParade/bugs/4474021.html">4474021</A> <td>11 votes        <td>JNLP version based protocol fails with war files
+ <tr>
+<td><A HREF="http://developer.java.sun.com/developer/bugParade/bugs/4476448.html">4476448</A>  <td>10 votes          <td>There is a bug when finding updates on passworded servers  
+<tr>    <td><A HREF="http://developer.java.sun.com/developer/bugParade/bugs/4510364.html">4510364</A>  <td>7 votes              <td>Memoryleak in Java Web Start     
+<tr>    <td><A HREF="http://developer.java.sun.com/developer/bugParade/bugs/4473369.html">4473369</A> <td> 4 votes    <td>forceUpdate:true && jnlp:installer-desc == ENDLESS_LOOP    
+
+<tr> <td><a href="http://developer.java.sun.com/developer/bugParade/bugs/4502223.html">4502223</A> <td>4 votes    <td>Application Manager's shortcut icon is ugly     
+<tr>  <td><A HREF="http://developer.java.sun.com/developer/bugParade/bugs/4393792.html">4393792</A> <td>3 votes    <td>Downloading new version of running app fails                                     
+                      
+<tr>   <td> <A HREF="http://developer.java.sun.com/developer/bugParade/bugs/4474870.html">4474870</A>  <td>3 votes            <td>Windows installer won't recognize Java 1.3.1 fcs as usable jre.                  
+<tr>     <td><A HREF="http://developer.java.sun.com/developer/bugParade/bugs/4626716.html">4626716</A> <td>2 votes            <td>Autoinstall (Windows CAB-based internet component download) for JavaWS           
+                                 
+<tr>     <td><A HREF="http://developer.java.sun.com/developer/bugParade/bugs/4459387.html">4459387</A> <td>2 votes              <td>Unsigned application .... error for signed jar specified in component extension  
+ <tr>
+<td><A HREF="http://developer.java.sun.com/developer/bugParade/bugs/4474861.html">4474861</A>  <td>2 votes          <td>cached ico files are not purged or updated.                                 
+
+</table>
+</blockquote>
+
+<HR>
+<table width="100%">
+<tr valign=top>
+<td><small>Please send comments and feedback to 
+<a href="mailto:javawebstart-feedback@sun.com">javawebstart-feedback@sun.com</a>.</small></td>
+<td align="right">
+<small>
+Copyright &copy; 2002, <a href="http://www.sun.com">Sun Microsystems, Inc.</a>
+<br>
+All rights reserved.</small></td>
+</table>
+
+<pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</body>
+</html>

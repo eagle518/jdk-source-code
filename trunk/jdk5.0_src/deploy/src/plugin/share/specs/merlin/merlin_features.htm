@@ -1,0 +1,223 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Java Plug</title>
+</head>
+
+<body>
+
+<h1 align="center"><b>Java Plug-in Proposed Features for Merlin</b></h1>
+<p align="center">By <a href="mailto:stanley.ho@eng.sun.com">Stanley Man-Kit Ho</a></p>
+<hr>
+<h3>Introduction</h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Java Plug-in is part of the
+client-side Java deployment strategy of the Merlin release. To broaden the usage
+of Java on the client side, several new features are proposed in the Java
+Plug-in in the Merlin release:</p>
+<ul>
+  <li>Open JVM Integration (OJI) support for enabling applets running inside
+    the upcoming Netscape 6 using Java 2 as the native JVM.
+  </li>
+</ul>
+<ul>
+  <li>Applet usability support for enhancing user experience of using applets
+    through Java Plug-in.<br>
+  </li>
+  <li>Common DOM API support for enabling applets communicate more directly with
+    the browser's document object model in Internet Explorer 5.0 and Netscape
+    6.0.
+  </li>
+</ul>
+<ul>
+  <li>Client-side Java installation guideline for enabling various version of
+    Java Development Kit (JDK)/Java Runtime Environment (JRE) to coexist with
+    each other, and providing a deterministic way for application installer to
+    locate the JDK/JRE on the machine.
+  </li>
+</ul>
+<p>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; With the above features, applets and
+applications on the client-sides will be much more friendly and usable to the
+users.</p>
+<p>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; </p>
+<h3>Open JVM Integration (OJI)</h3>
+<p>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; OJI is a jointed effort between
+Netscape and Sun Microsystems, Inc. to develop a set of APIs that enables
+third-party vendors to plug in their JRE as the native Java environment in the
+upcoming Netscape 6.0 product. OJI will enable the following features:</p>
+<ul>
+  <li>APPLET / EMBED / OBJECT tag support<br>
+  </li>
+</ul>
+<ul>
+  <li>Java and JavaScript bi-directional communication (LiveConnect)<br>
+  </li>
+</ul>
+<ul>
+  <li>RSA signed applet verification through Netscape 6.0 certificate store.<br>
+  </li>
+</ul>
+<ul>
+  <li>Various browser integration<br>
+    <br>
+    -&nbsp; Enable/Disable Java Console through Netscape 6.0 menu<br>
+    -&nbsp; Enable/Disable Java through Netscape 6.0 menu<br>
+    -&nbsp; Applet lifecycle<br>
+    -&nbsp; Proxy configuration support<br>
+    -&nbsp; Cookie support<br>
+    -&nbsp; HTTPS support<br>
+    -&nbsp; Automatic download if JRE not present<br>
+ </li>
+</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OJI will allow Java 2 to be used
+as Netscape 6.0 native JVM through Java Plug-in, and it will match every
+features in the existing native JVM in IE 3/4/5 and NS 3/4. Since Netscape
+6.0 will be distributed with Java 2 to millions to users, OJI will enable Java 2
+to compete head-to-head with native JVM in IE and older version of Navigator. In
+Merlin, OJI will be supported in Java Plug-in on Win32, Solaris and Linux.</p>
+<p>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; </p>
+<h3>Applet Usability Improvement</h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Applet usability improvement is a
+set of enhancement to various features Java Plug-in features. The enhancement
+will be mainly in the user interface area, including:</p>
+<ul>
+  <li>Increases response time of the browsers during Java 2 startup by loading
+    JVM asynchronously.<br>
+  </li>
+</ul>
+<ul>
+  <li>Provides progress feedback when applets are downloaded.<br>
+  </li>
+</ul>
+<ul>
+  <li>Adds or improves messages in the error dialog while error occurs in Java
+    Plug-in, including RSA signed applet verification, optional package
+    installation, etc.<br>
+  </li>
+</ul>
+<ul>
+  <li>Enables Java Console to be re-opened by introducing icons in the taskbar
+    in Win32, and by introducing &quot;Java Plug-in Console&quot; menu item in
+    IE.</li>
+</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Applet usability improvement will
+allow Java Plug-in to be more developer and user friendly when deploying
+applets. In Merlin, applet usability improvement will be supported in Java
+Plug-in on Win32, Solaris and Linux.</p>
+<p>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; </p>
+<h3>Common DOM API </h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Common DOM API is a set of new
+Java APIs for applets to access the browser document object model (DOM) much
+easier in Internet Explorer 5.0 and Netscape 6.0. The APIs will be based on the
+W3C DOM Level 1 Specification. While the W3C specification defines interfaces
+for various DOM objects, it does not define how to obtain the DOM objects in the
+first place. Therefore, certain Java APIs will be introduced in the
+com.sun.browser namespaces to expose the DOM objects. </p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Full support for W3C DOM Level 1
+is expected in Java Plug-in on Win32 (IE &amp; NS) and on Solaris in Merlin. </p>
+<h3>&nbsp;</h3>
+<h3>Client-side Java Installation Guideline</h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Client-side Java installation
+guideline is a set of suggestions to various JVM vendors, developers, and
+installer companies to support an unified client-side Java&nbsp; experience. The
+guideline provides suggestions for the following:&nbsp;</p>
+<ul>
+  <li>How JDK/JRE should be installed in user machine, including installation
+    location, registry key settings, etc., so JDK/JRE from various vendors
+    installed in the same machine will not step over each other. This is
+    particularly important when installing minor-version of JDK/JRE, or the same
+    version of JDK/JRE from different vendors. Also, installer companies will be
+    able to build installer that could locate the JDK/JRE much easier, without
+    performing a brute-force search in the file system.<br>
+  </li>
+</ul>
+<ul>
+  <li>How Java applications and applets should be installed in user machine,
+    including installation location, registry key settings, desktop
+    icons/shortcuts, etc. Users will be able to launch various Java applications
+    and Java applets in an unified way, even these applications and applets are
+    installed through different installers.&nbsp;&nbsp;<br>
+  </li>
+</ul>
+<ul>
+  <li>How Java applications and applets should be uninstalled in user machine,
+    so these applications and applets installed through different installer
+    would be uninstalled in an unified way.</li>
+</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; By following this guideline, JDK/JRE,
+Java applications and applets would be installed in a deterministic and unified
+way on each platform, instead of installed randomly . This guideline is not
+intended to be the same on various platforms; rather, each platform will be
+treated as unique, and different guidelines will be suggested. In Merlin, we
+will provide client-side Java installation guideline for Win32, Solaris and
+Linux.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Optional: In an ideal situation,
+this guideline will be adapted by installer companies like InstallShield and
+ZeroG, so developers using these installers will be able to install Java
+applications and applets that conform to the guideline. Otherwise, developers
+will have to take care of a lot of details like generating registry key settings
+during installation.
+</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; To ease the effort to build the installer
+that follows this guideline, we will provide a set of client-side Java
+installation APIs (native/Java) to the installer companies, if necessary. The purpose of these APIs
+is for allowing Java applications and applets to be installed in its native
+platform, by following the guideline. These APIs will take care of things like creating icon on the desktop, providing
+un-installation or others, so developers may call these APIs from their
+installers to install/uninstall Java applications and applets, without rewriting
+these logics in their installation scripts every time. All the installation details will be ultimately controlled and encapsulated in these APIs, and we
+will be sure that all the Java applications and applets will be installed/uninstalled uniformly within the native platform.
+</p>
+<p>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; </p>
+<h3>Conclusion</h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OJI, applet usability improvement,
+Common DOM API, and client-side Java installation guideline are four new features in Java
+Plug-in in the Merlin release. However, we will continue to enhance existing
+Java Plug-in features like RSA signed applet support, sticky applet support and
+others, to make client-side Java much easier to use for end-users in Merlin.</p>
+<hr>
+<p align="center"><i>If there is any comment, please send it to <a href="mailto:stanley.ho@eng.sun.com">stanley.ho@eng.sun.com</a>.</i></p>
+<hr>
+<h3>Revision History<br>
+</h3>
+<table border="1" width="100%">
+  <tr>
+    <td width="25%" bgcolor="#0000FF" align="center"><font color="#FFFF00">Revision</font></td>
+    <td width="25%" bgcolor="#0000FF" align="center"><font color="#FFFF00">Modification
+      Date</font></td>
+    <td width="25%" bgcolor="#0000FF" align="center"><font color="#FFFF00">Author(s)</font></td>
+  </tr>
+  <tr>
+    <td width="25%" align="center">First Draft</td>
+    <td width="25%" align="center">03/03/2000</td>
+    <td width="25%" align="center">Stanley Ho</td>
+  </tr>
+  <tr>
+    <td width="25%" align="center">Second Draft</td>
+    <td width="25%" align="center">07/05/2000</td>
+    <td width="25%" align="center">Stanley Ho</td>
+  </tr>
+  <tr>
+    <td width="25%" align="center">&nbsp;</td>
+    <td width="25%" align="center">&nbsp;</td>
+    <td width="25%" align="center">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="25%" align="center">&nbsp;</td>
+    <td width="25%" align="center">&nbsp;</td>
+    <td width="25%" align="center">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="25%" align="center">&nbsp;</td>
+    <td width="25%" align="center">&nbsp;</td>
+    <td width="25%" align="center">&nbsp;</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+
+</body>
+
+</html>

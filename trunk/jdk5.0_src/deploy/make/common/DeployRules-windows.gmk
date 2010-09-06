@@ -1,0 +1,54 @@
+#
+# @(#)DeployRules-windows.gmk	1.10 04/05/05
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+deploy-native: deploy-dll
+
+DEPLOY_COMMON_DLL = $(COMMON_BIN_DIR)/deploy.dll
+DEPLOY_OUTPUT_LIB = $(OUTPUTDIR)/bin/deploy.dll
+
+DEPLOY_COMMON_DLL_DBG = $(COMMON_BIN_DIR_DBG)/deploy$(DBG_SUFFIX).dll
+DEPLOY_OUTPUT_LIB_DBG = $(OUTPUTDIR)/bin/deploy$(DBG_SUFFIX).dll
+
+DLL_o = $(DLL_c:%.cpp=$(DEPLOYOBJDIR)/%.o) $(DLL_res)
+DLL_o_DBG = $(DLL_c:%.cpp=$(DEPLOYOBJDIR_DBG)/%.o) $(DLL_res)
+DLL_res = $(DLL_rc:%.rc=$(DEPLOYOBJDIR)/%.res)
+
+$(DEPLOYOBJDIR)/%.res: $(DEPLOY_PLATFORM_SRC)/native/%.rc
+	$(RSC) $(RC_FLAGS) -l 0x409 -r -d NDEBUG -fo$@ $<
+
+$(DEPLOYOBJDIR)/%.o: $(DEPLOY_PLATFORM_SRC)/native/%.cpp
+	$(CC) /I$(DEPLOYOBJDIR) /I$(BOOTDIR)/include /I$(BOOTDIR)/include/win32 -c -Fo$@ $?
+
+$(DEPLOYOBJDIR_DBG)/%.o: $(DEPLOY_PLATFORM_SRC)/native/%.cpp
+	$(CC) /I$(DEPLOYOBJDIR_DBG) /I$(BOOTDIR)/include /I$(BOOTDIR)/include/win32 -c -MTd -GZ -Zi -ZI -D_DEBUG -Fo$@ $?
+
+$(DEPLOY_COMMON_DLL): $(DLL_o) $(DLL_o_DBG)
+	$(LINK) /machine:I386 /DLL $(DLL_o) /OUT:$(DEPLOY_COMMON_DLL) wsock32.lib \
+	wininet.lib urlmon.lib ws2_32.lib \
+	kernel32.lib user32.lib gdi32.lib winspool.lib \
+	comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib \
+	uuid.lib odbc32.lib odbccp32.lib $(DEPLOYOBJDIR)/crypt32.lib $(LINK_FLAGS)
+	$(LINK) /DEBUG /machine:I386 /DLL $(DLL_o_DBG) /OUT:$(DEPLOY_COMMON_DLL_DBG) wsock32.lib \
+	wininet.lib urlmon.lib ws2_32.lib \
+	kernel32.lib user32.lib gdi32.lib winspool.lib \
+	comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib \
+	uuid.lib odbc32.lib odbccp32.lib $(DEPLOYOBJDIR_DBG)/crypt32.lib $(LINK_FLAGS)
+	
+
+deploy-copy-files:
+	$(CP) $(DEPLOY_MSSDK)/include/BaseTsd.h $(DEPLOYOBJDIR)/BaseTsd.h ; \
+	$(CP) $(DEPLOY_MSSDK)/include/Wincrypt.h $(DEPLOYOBJDIR)/Wincrypt.h ; \
+	$(CP) $(DEPLOY_MSSDK)/lib/crypt32.lib $(DEPLOYOBJDIR)/crypt32.lib
+	$(CP) $(DEPLOY_MSSDK)/include/BaseTsd.h $(DEPLOYOBJDIR_DBG)/BaseTsd.h ; \
+	$(CP) $(DEPLOY_MSSDK)/include/Wincrypt.h $(DEPLOYOBJDIR_DBG)/Wincrypt.h ; \
+	$(CP) $(DEPLOY_MSSDK)/lib/crypt32.lib $(DEPLOYOBJDIR_DBG)/crypt32.lib 
+	
+deploy-dll: deploy-dll-mkdir deploy-copy-files $(DEPLOY_COMMON_DLL)
+	$(CP) $(DEPLOY_COMMON_DLL) $(DEPLOY_OUTPUT_LIB)
+	$(CP) $(DEPLOY_COMMON_DLL_DBG) $(DEPLOY_OUTPUT_LIB_DBG)
+
+deploy-dll-mkdir:
+	$(MKDIR) -p $(DEPLOYOBJDIR) $(DEPLOYOBJDIR_DBG) $(COMMON_BIN_DIR) $(COMMON_BIN_DIR_DBG)

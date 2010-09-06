@@ -1,0 +1,98 @@
+#
+# @(#)Plugin.gmk	1.55 02/04/04
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# Makefile for building Java Plug-in. To be included into the top level
+# GNU makefile.
+#
+
+# Windows and Solaris Plugin build differ in many ways, including on how
+# they are built. All directories passed to the Plugin build must be 
+# absolute paths. 
+
+#
+# PLUGIN_BOOTSTRAP_JDK   is used to identify the JDK to build the plugin.
+#
+# PLUGIN_OUTPUT_DIR      is used to identify the plugin binary output dir.
+#
+# PLUGIN_MAKE            is used to identify the make command used.
+#
+
+ifeq ($(PLATFORM), windows)
+  PLUGIN_MAKE             = MFLAGS= MAKEFLAGS= $(MAKE)
+  COMMAND_PATH            := $(subst /,\,$(shell $(CD) $(UNIXCOMMAND_PATH); $(PWD)))
+  MOZILLA_HEADERS_PATH    := $(subst /,\,$(MOZILLA_HEADERS_PATH))
+  ifndef USING_CYGWIN
+    PLUGIN_BOOTSTRAP_JDK  = $(subst /,\,$(ABS_OUTPUTDIR))
+    PLUGIN_OUTPUT_DIR     := $(subst /,\,$(ABS_OUTPUTDIR))
+    PLUGIN_SHAREDIR	  := $(subst /,\,$(shell $(CD) $(PLUGIN_TOP)/src/plugin/share; $(PWD)))
+  else
+    PLUGIN_BOOTSTRAP_JDK  = $(ABS_OUTPUTDIR)
+    PLUGIN_OUTPUT_DIR     := $(ABS_OUTPUTDIR)
+    PLUGIN_SHAREDIR	  := $(shell $(CYGPATH) -w -a $(PLUGIN_TOP)/src/plugin/share)
+  endif
+  ifdef JDK_UPDATE_VERSION
+    CONVERT_JDK_UPDATE_VER := $(shell $(ECHO) $(JDK_UPDATE_VERSION) | $(TR) "abcde" "12345")
+    CAB_CHAR1 := $(shell $(ECHO) $(CONVERT_JDK_UPDATE_VER) | $(NAWK) '{print substr($$1, 1, 1);}')
+    CAB_CHAR2 := $(shell $(ECHO) $(CONVERT_JDK_UPDATE_VER) | $(NAWK) '{print substr($$1, 2, 1);}')
+    CAB_CHAR3 := $(shell $(ECHO) $(CONVERT_JDK_UPDATE_VER) | $(NAWK) '{print substr($$1, 3, 1);}')
+    TMP_CLSID_CHAR := $(shell $(ECHO) $(JDK_UPDATE_VERSION) | $(TR) "abcde" "BCDEF")
+    CONVERT_CLSID_CHAR := $(shell $(ECHO) $(TMP_CLSID_CHAR) | $(NAWK) '{print substr($$1, 3, 1);}')
+    ifeq ($(CAB_CHAR3),)
+      CAB_CHAR3 := 0
+      CONVERT_CLSID_CHAR := A
+    endif
+    ifeq ($(CAB_CHAR1), 0)
+      PLUGIN_CAB_VERSION := $(CAB_CHAR2)$(CAB_CHAR3)
+    else
+      PLUGIN_CAB_VERSION := $(CAB_CHAR1)$(CAB_CHAR2)$(CAB_CHAR3)
+    endif
+  else
+    PLUGIN_CAB_VERSION := 0
+    CONVERT_CLSID_CHAR := A
+    CAB_CHAR1 := 0
+    CAB_CHAR2 := 0
+  endif
+else # PLATFORM
+  PLUGIN_BOOTSTRAP_JDK    = $(ABS_OUTPUTDIR)
+  PLUGIN_OUTPUT_DIR       = $(ABS_OUTPUTDIR)
+  PLUGIN_MAKE             = $(MAKE) 
+endif # PLATFORM
+
+PLUGIN_RELEASE       = $(JDK_MAJOR_VERSION).$(JDK_MINOR_VERSION).$(JDK_MICRO_VERSION)
+PLUGIN_VERSION       = $(subst .,,$(PLUGIN_RELEASE))
+PLUGIN_SUBDIRS       = plugin
+
+plugin: plugin-all
+
+plugin-all:: sanity-plugin post-sanity-plugin
+
+#
+# Plug-in.
+#
+plugin-all plugin-source-bundle:: 
+	dir=$(PLUGIN_TOP)/make/plugin; \
+	target=$(subst plugin-,,$@); \
+	if [ -r $$dir ] ; then \
+		$(ECHO) ">>>Recursively making "$$dir" "$$target" @ `$(DATE)` ..."; \
+		($(CD) $$dir; $(MAKE) $$target \
+		       RELEASE="$(RELEASE)" \
+		       ALT_OUTPUTDIR="$(ABS_OUTPUTDIR)" \
+		       FULL_VERSION="$(FULL_VERSION)" \
+		       PLUGIN_CAB_VERSION="$(PLUGIN_CAB_VERSION)" \
+                       CAB_CHAR1="$(CAB_CHAR1)" \
+                       CAB_CHAR2="$(CAB_CHAR2)" \
+                       CONVERT_CLSID_CHAR="$(CONVERT_CLSID_CHAR)" \
+		       ) || exit 1; \
+		$(ECHO) "<<<Finished Recursively making "$$dir" "$$target" @ `$(DATE)` ..."; \
+	else \
+	    	$(ECHO) ">>>WARNING: unable to build "$$dir" "$$target" @ `$(DATE)` ..."; \
+        fi;
+
+.PHONY: plugin plugin-all plugin-source-bundle 
+
+.PHONY: plugin plugin-all plugin-source-bundle converter-clobber converter-all

@@ -1,0 +1,325 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Applet Usability Enhancement in Java Plug</title>
+</head>
+
+<body>
+
+<h1 align="center"><br>
+Applet Usability Enhancement in Java Plug-in for Merlin</h1>
+<hr>
+<h3>Introduction</h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This document outlines the applet
+usability enhancements that has been planned in Java Plug-in for Merlin release.
+The main goal of this enhancement is to make Java Plug-in much easier to be used
+during applet development stage and applet deployment stage. The enhancement
+includes the following:</p>
+<ol>
+  <li>Unified error and warning dialog</li>
+  <li>Enhanced error condition handling</li>
+  <li>Enhanced Java Plug-in tracing</li>
+  <li>Java Console enhancement</li>
+  <li>Applet progress status</li>
+  <li>Modal dialog enhancement</li>
+  <li>Non-blocking browser UI during Java Plug-in startup (optional)</li>
+  <li>Java Plug-in Control Panel Help (optional)</li>
+  <li>Option to delete Cached Files<br>
+  </li>
+</ol>
+<h3>Unified error and warning dialog</h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This enhancement will unify the
+look-and-feel of all the error and warning dialogs that will be displayed
+directly from Java Plug-in, so the developers and users will be able to
+distinguish the error and warning much easier. A simple infrastructure will be
+provided for creating these dialogs in a unified way. For example,</p>
+<code>
+<p>&nbsp;&nbsp;&nbsp; public class com.sun.plugin.usability.DialogFactory<br>
+&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public static int
+showConfirmDialog(Object message, String title);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public static String
+showInputDialog(Object message, String title);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public static void
+showExceptionDialog(Object message, String title);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public static void
+ShowMessageDialog(Object message, String title);<br>
+&nbsp;&nbsp;&nbsp; }</code><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; By using<i> com.sun.plugin.usability.DialogFactory</i>, we will be able to
+ensure all error and warning dialogs provides similar look-and-feel. Although
+Java Plug-in is the mechanism for making the JRE running inside the browser, the
+users should only know they are running Java, not the Java Plug-in. Therefore,
+icon displayed inside the warning and error dialogs should either be a Sun logo
+or a Java logo, but NOT a Java Plug-in logo. Also, to make the dialog much
+easier to port on various platforms, the dialog should be written in Swing. This
+enhancement applies to both Win32 and Unix plug-in.
+</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; All the general dialogs in Java
+Plug-in will leverage this unified framework, including:
+</p>
+<ol>
+  <li>Print dialog when applet tries to print</li>
+  <li>Prompt user to login a protected directory</li>
+  <li>Prompt user to accept the RSA signed applet</li>
+  <li>Prompt user to accept downloading optional package installer from the
+    applet</li>
+  <li>Prompt user to accept the RSA signed optional package installer</li>
+  <li>Prompt user for HTML Installation</li>
+  <li>Prompt user for waiting Java optional package installer to exit</li>
+  <li>Prompt user for waiting native optional package installer to exit</li>
+</ol>
+<p>&nbsp;</p>
+<h3>Enhanced error condition handling</h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Currently, when Java Plug-in encounters
+errors, most of them will fail silently, and it makes debugging and deploying
+applets quite a challenge to most developer. This enhancement provide much more
+information when errors are encountered in Java Plug-in. Since it is impossible
+to handle every error conditions, we will only provide additional error
+condition handling in the most critical or most likely encountered cases:</p>
+<ol>
+  <li>RSA signed applet verification
+    <ul>
+      <li>Invalid certificate
+    chain</li>
+      <li>Expired certificate chain</li>
+      <li>Expired certificate chain, ignore warning</li>
+      <li>Unable to access root CA store</li>
+      <li>Unable to access permanent plug-in certificate store</li>
+      <li>General certificate verification error<br>
+      </li>
+    </ul>
+  </li>
+  <li>Java Optional Package Installation
+    <ul>
+      <li>Unable to install optional package installer provider in the JRE</li>
+      <li>Unable to download installer JAR from URL specified in the applet's
+        MANIFEST</li>
+      <li>Unsigned installer JAR</li>
+      <li>Invalid certificate chain in installer JAR</li>
+      <li>Expired certificate chain in installer JAR</li>
+      <li>Expired certificate chain in installer JAR, ignore warning</li>
+      <li>Unable to launch installer (Java/native)</li>
+      <li>Unable to copy raw installer into the JRE<br>
+      </li>
+    </ul>
+  </li>
+  <li>Applet Caching
+    <ul>
+      <li>Invalid EMBED/OBJECT parameters specified in HTML page</li>
+      <li>Unable to download non-exist JAR file</li>
+      <li>Unable to access/update cache table file<br>
+      </li>
+    </ul>
+  </li>
+  <li>HTML Installation
+    <ul>
+      <li>Invalid EMBED/OBJECT parameters specified in HTML page</li>
+      <li>Invalid format in <i>applet_html_version</i></li>
+      <li>Unable to access/update version table file&nbsp;</li>
+      <li>Unable to generate local HTML page<br>
+      </li>
+    </ul>
+  </li>
+  <li>Proxy support
+    <ul>
+      <li>Unable to download JS file when auto-proxy is enabled</li>
+      <li>Unable to evaluate proxy setting from JS file when auto-proxy is
+        enabled<br>
+      </li>
+    </ul>
+  </li>
+  <li>Java Plug-in Control Panel
+    <ul>
+      <li>Unable to apply changes to the registry, the properties file, and the
+        plug-in certificate store<br>
+      </li>
+    </ul>
+  </li>
+</ol>
+<p>By providing additional error condition handling, developers and users will
+be able to nail down the errors much easier. This enhancement applies to both
+Win32 and Unix plug-in.<br>
+</p>
+<h3>Java Plug-in Exception Handling</h3>
+<p>&nbsp;&nbsp;&nbsp; Right now, whenever an user Applet throws an exception,
+one should have Java Console open to view the stack trace. In order to allow the
+user to view the exception details even when the Java Console is not opened,
+Java Plug-in is enhanced to show up a dialog box with all the exception details
+whenever there is an exception in the user Applet's init(), start(), stop() and
+destroy() methods. This feature is enabled by default. However, it can be turned
+off by unchecking the &quot;Show Exception Dialog Box&quot; check box in the
+Basic Tab of the Java Plug-in Control Panel. <br>
+</p>
+<h3>Enhanced Java Plug-in Tracing</h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tracing in Java Plug-in may be
+turned on by enabling the property <i>javaplugin.trace</i>. However, it will
+turn on all the tracing facilities inside Java Plug-in, and the messages will
+very likely flood the Java Console. Therefore, a&nbsp; more fine-grained tracing
+control is needed. A new property <i>javaplugin.trace.option</i> will be
+introduced as the tracing enhancement. This property may contain the following
+values:</p>
+<ul>
+  <li><i>all</i> - turn on all tracing</li>
+  <li><i>net</i> - turn on networking related tracing</li>
+  <li><i>security</i> - turn on security related tracing</li>
+  <li><i>ext</i> - turn on extension related tracing</li>
+</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This enhancement will allow us to
+introduce more fine-grained tracing into Java Plug-in, and make debugging Java
+Plug-in and applets much easier. This enhancement applies to both Win32 and Unix
+plug-in.<br>
+</p>
+<h3>&nbsp;Java Console Enhancement</h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Several enhancements will be
+introduced in the Java Console:</p>
+<ol>
+  <li>Swing-based Java Console - Java Console was implemented using AWT.
+    However, when lots of messages are displayed, it usually flood the Console
+    window, and the native AWT widget was not able to handle the task. As a
+    result, only the first couple hundreds line of the messages are displayed in
+    the Java Console, and the rest are cut out. Converting the Java Console to
+    Swing will eliminate this limitation.<br>
+  </li>
+  <li>Debugging support - Java Console provides a simple way to show <i>System.out</i>
+    and <i>System.err</i>, so developers will be able to debug their applets<i>.</i>
+    However, debugging applets normally requires much more than <i>System.out</i>
+    and <i>System.err.</i> This enhancement will provide the following options
+    in the Java Console:<br>
+    <br>
+    <i>- Run finalizers<br>
+    - Trigger garbage collecter<br>
+    - Display memory usage<br>
+    - Display thread list<br>
+    - Clear the console window<br>
+    - Display the available debug options<br>
+    - Quite the console<br>
+    <br>
+    </i>These options are provided in the form of accelerator keys which are
+    accepted in Java Console.<br>
+  </li>
+  <li>Task bar integration - this enhancement is for both Internet Explorer and
+    Netscape Navigator. It will provide an icon in the Windows taskbar when Java
+    Plug-in is running. When this icon is clicked, Java Console will be opened.
+    This allow user to be able to open and close the Java Console multiple times
+    within the same browser session in different browsers. Also, one can use the
+    taskbar icon to check the plug-in version.</li>
+</ol>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Enhancements #1 and #2
+applies to both Win32 and Unix plug-in. However, #3 only applies to Win32
+plug-in.<br>
+</p>
+<h3>Applet Progress Status</h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This enhancement will provide
+applet specific progress status in the applet's window. Progress status will
+include the following information:</p>
+<ul>
+  <li>Applet running status(e.g. its init() method is being called)</li>
+  <li>Plug-in JAR caching being done</li>
+  <li>JAR being downloaded or is it using plug-in JAR cache</li>
+  <li>Security being handled(e.g. validity of certificates)</li>
+  <li>Resources (e.g. image) being downloaded</li>
+  <li>Java Optional Packages being installed</li>
+  <li>HTML installation being done</li>
+  <li>Applet Installation being downloaded</li>
+</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Since the progress status will be
+shown inside the applet's window in a non-blocking fashion, the browser UI will
+be more responsive, and the user will be able to read the HTML page while the
+applet is loading. Also, user will be able to determine the applet loading
+progress without using the Java Console. This enhancement applies to both Win32
+and Unix plug-in. <br>
+</p>
+<h3>Modal dialog enhancement</h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Although modal dialog has been
+supported in Java Plug-in for a long time, it has been a big problem because the
+users will still be able to click on the applet window even if a modal dialog
+has been popup. This enhancement will take advantage of the modal dialog hook
+introduced by the AWT team to provide true modal dialog support. This
+enhancement applies only to Win32 plug-in.</p>
+<h3><br>
+Non-blocking browser UI during JVM startup (optional)</h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Currently, when Java Plug-in is
+loaded into the browser, the browser UI may block for couple seconds because the
+JVM is loaded in the main browser UI thread. Users are prevented to do anything
+with the browser during this period because the entire browser is blocked.
+Enhancement will be introduced to resolve this blocking problem by starting up
+the JVM in a separate thread, so browser UI will be more responsive. This
+enhancement applies to only Win32 plug-in, because Unix plug-in always startup
+the JVM in a separate process. However, it will only be implemented only if time
+and resources are allowed.<br>
+</p>
+<h3>Java Plug-in Control Panel Help (optional)</h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Various settings of Java Plug-in
+may be controlled through Java Plug-in Control Panel. However, users sometimes
+find it difficult to use the control panel because of lack of help information.
+This enhancement will introduce a help button in Java Plug-in Control Panel.
+When the button is clicked, it will try to launch a browser to display the
+online help HTML page at <i>java.sun.com</i>, or HTML help page that bundled
+with Java Plug-in. This enhancement applies to both Win32 and Unix plug-in.
+However, it will only be implemented only if time and resources are allowed.<br>
+</p>
+<h3>Option to delete Cached Files</h3>
+&nbsp;&nbsp;&nbsp; JAR and HTML caching features in Merlin allows the user to
+cache the files locally in order to avoid the redundant downloads and also to
+run the applet offline. Since user might want to delete the cached files
+sometime or the other, we have provided an option to delete the cached files
+from the Java Plug-in control panel. User can delete the HTML and JAR files by
+clicking the buttons &quot;Clear HTML Cache&quot; and &quot;Clear JAR
+Cache&quot; respectively in the Cache tab of&nbsp; the Java Plug-in control
+panel.<br>
+<h3>Conclusion</h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The above outlines all the applet
+usability enhancements that are planned in Java Plug-in for Merlin release.
+Hopefully, this will make Java Plug-in much easier to be used by users and
+developers.</p>
+<h3><br>
+Changes history</h3>
+<div align="center">
+  <center>
+  <table border="1" width="565">
+    <tr>
+      <td width="94" bgcolor="#0000FF"><font color="#FFFF00"><b>Date</b></font></td>
+      <td width="289" bgcolor="#0000FF"><font color="#FFFF00"><b>Action</b></font></td>
+      <td width="160" bgcolor="#0000FF"><font color="#FFFF00"><b>Author(s)</b></font></td>
+    </tr>
+    <tr>
+      <td width="94">04/12/2000</td>
+      <td width="289">Applet Usability Enhancement Draft 1</td>
+      <td width="160"><a href="mailto:stanley.ho@eng.sun.com">Stanley Ho</a></td>
+    </tr>
+    <tr>
+      <td width="94">07/07/2000</td>
+      <td width="289">Added sections Java Plug-in Exception handling and Option
+        to delete Cached Files</td>
+      <td width="160">Devananda J.</td>
+    </tr>
+    <tr>
+      <td width="94">07/31/2000</td>
+      <td width="289">Updated the document</td>
+      <td width="160">Devananda J.</td>
+    </tr>
+    <tr>
+      <td width="94">07/31/2000</td>
+      <td width="289">Updated &quot;Enhanced error condition handling&quot;
+        section</td>
+      <td width="160"><a href="mailto:stanley.ho@eng.sun.com">Stanley Ho</a></td>
+    </tr>
+    <tr>
+      <td width="94">08/02/2000</td>
+      <td width="289">Added cases in &quot;Unified error and warning
+        dialog&quot; section</td>
+      <td width="160"><a href="mailto:stanley.ho@eng.sun.com">Stanley Ho</a></td>
+    </tr>
+  </table>
+  </center>
+</div>
+<hr>
+<p>&nbsp;</p>
+
+</body>
+
+</html>

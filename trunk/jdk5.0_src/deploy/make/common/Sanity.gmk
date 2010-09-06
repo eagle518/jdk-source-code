@@ -1,0 +1,898 @@
+#
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# @(#)Sanity.gmk	1.31 04/06/08
+#
+# Settings and rules to validate the J2SE build environment.
+
+# MIN_FREE_DISK is determined by running 'du -sk' on a fully built workspace.
+
+ifeq ($(PLATFORM), solaris)
+  REQ_OS_VERSION = 5.8
+  FREE_SPACE := $(shell $(DF) -b $(ABS_OUTPUTDIR) | $(NAWK) '{if ($$2 != "avail") print $$2;}')
+  CC_VER := $(shell $(CC) -V 2>&1 | $(NAWK) '{ for (i=3; i<NF; i++) if ($$i=="C") {print $$++i; exit 0} }')
+  SOLARIS_MAJOR_VERSION := $(word 1, $(subst ., ,$(OS_VERSION)))
+  SOLARIS_MINOR_VERSION := $(word 2, $(subst ., ,$(OS_VERSION)))
+  REQ_SOLARIS_MAJOR_VERSION := $(word 1, $(subst ., ,$(REQ_OS_VERSION)))
+  REQ_SOLARIS_MINOR_VERSION := $(word 2, $(subst ., ,$(REQ_OS_VERSION)))
+  MIN_FREE_DISK=130000
+endif
+
+ifeq ($(PLATFORM), linux)
+  MIN_FREE_DISK=146000
+  FREE_SPACE := $(shell $(DF) --sync -kP $(ABS_OUTPUTDIR) | $(NAWK) '{if ($$4 != "Available") print $$4;}')
+  CC_VER := $(shell $(CC) -dumpversion | $(SED) 's/egcs-//')
+  SUN_COMP_VER := $(shell $(CC) --verbose 2>&1 )
+  RH_VERSION := $(shell $(NAWK) '{ print $$5; }' /etc/redhat-release )
+  ifeq ($(ARCH_DATA_MODEL), 32)
+    RH_VERSION := $(shell $(NAWK) '{ print $$4" "$$5; }' /etc/redhat-release )
+    REQUIRED_RH_VER = Advanced Server
+    REQUIRED_RH_FULLVER = Advanced Server release 2.1AS
+    REQUIRED_OS_VER = 2.4.*
+    REQUIRED_GCC_VER = 3.2.1*
+    REQUIRED_GCC_VER_INT = 3.2.1-7a
+  else
+    REQUIRED_RH_VER = 7.2
+    REQUIRED_OS_VER = 2.4.*
+    REQUIRED_GCC_VER = 2.9[56789].*
+  endif
+endif
+
+ifeq ($(PLATFORM), windows)
+  OS := $(shell $(UNAME))
+  MIN_FREE_DISK=50000
+  FREE_SPACE := $(shell $(DF) -kP $(ABS_OUTPUTDIR) | $(NAWK) '{if ($$4 != "Available") print $$4;}')
+  TEMP_FREE_SPACE := $(shell $(DF) -kP C:/TEMP | $(NAWK) '{if ($$4 != "Available") print $$4;}')
+  WINDOWS_VERSION := $(shell $(DEPLOY_BUILDDIR)/common/tools/winver/winver.exe)
+  ifeq ($(ARCH_DATA_MODEL), 32)
+    COMPILER_NAME="Visual C++ 6.0 Professional + VC6-SP 3"
+    CC_VER := $(shell $(CC) 2>&1 | $(HEAD) -n 1 | $(NAWK) '{print $$8}')
+    CC_TYPE := $(shell $(CC) 2>&1 | $(HEAD) -n 1 | $(NAWK) '{print $$5}')
+    REQUIRED_CCTYPE = Optimizing
+    REQUIRED_CCVER = 12.00.8168
+    REQUIRED_LINKVER = 6.00.8447
+  else
+    COMPILER_NAME="Microsoft Platform SDK - November 2001 Edition"
+    CC_VER := $(shell $(CC) 2>&1 | $(HEAD) -n 1 | $(NAWK) '{print $$7}')
+    REQUIRED_CCVER = 13.00.9337.7
+    REQUIRED_LINKVER = 7.00.9337.7
+  endif
+  LINK_VER := $(shell $(LINK) | $(HEAD) -n 1 | $(NAWK) '{print $$6}')
+endif
+
+JAVA_VERSION := $(shell $(JAVAWS_BOOTDIR)/bin/java$(EXE_SUFFIX) -version 2>&1  | $(NAWK) -F'"' '{ print $$2 }')
+
+INSTALL_PATCHES_FILE = $(TMPDIR)/installed.patches
+
+.PHONY: pre-sanity settings sanity sanity-base post-sanity-all sanity-all insane os_version classpath java_home ld_library_path ld_library_path_64 ld_options ld_run_path makeflags alt_outputdir outputdir alt_bootdir devtools_path compiler_path unixcommand_path usrbin_path unixccs_path odbcdir msdevtools_path mssdk_path compiler sanity-plugin post-sanity-plugin
+
+# EXTERNALSANITYCONTROL means that this j2se workspace build is being controlled by
+# the control workspace, and that workspace is managing what is done to the sanity
+# check files, and this sanity check run is only appending to those files.
+pre-sanity: 
+ifndef EXTERNALSANITYCONTROL
+	@$(RM) $(ERROR_FILE) $(WARNING_FILE) $(MESSAGE_FILE)
+endif
+
+sanity-base: $(OUTPUTDIR) $(TMPDIR) pre-sanity settings insane make os_version makeflags alt_outputdir outputdir devtools_path compiler_path unixcommand_path usrbin_path unixccs_path msdevtools_path mssdk_path compiler
+
+sanity-plugin: sanity-base gcc-compiler mozilla 
+
+######################################################
+# Check the Solaris GNU c++ compiler for solaris plugin
+######################################################
+gcc-compiler:
+ifeq ($(PLATFORM), solaris)
+    @if [ -r $(GCC_COMPILER_PATH) ]; then \
+	  if [ ! "$(GCC_VER)" = 2.95.2 ]; then \
+	    $(ECHO) "ERROR: The Solaris GCC compiler version must be 2.95.2. \n" \
+	      "      You are using the following compiler version: $(GCC_VER) \n" \
+	      "      The compiler was obtained from the following location: \n" \
+	      "          $(GCC_COMPILER_PATH) \n" \
+	      "      Please change your compiler. \n" \
+	      "" >> $(ERROR_FILE) ; \
+    fi \
+	else \
+	  $(ECHO) "ERROR: You do not have a valid GCC_COMPILER_PATH setting. \n" \
+	    "      Please check your access to \n" \
+	    "          $(GCC_COMPILER_PATH) \n" \
+	    "      and/or check your value of ALT_GCC_COMPILER_PATH. \n" \
+	    "      This will affect you if you build the plugin target. \n" \
+	    "" >> $(ERROR_FILE) ; \
+	fi
+endif
+
+ifeq ($(PLATFORM), linux)
+  ifdef ALT_GCC29_PLUGIN_LIB_PATH
+	@if [ ! -r $(ALT_GCC29_PLUGIN_LIB_PATH)/libjavaplugin_oji.so ]; then \
+	    $(ECHO) "Error: You do not have a valid ALT_GCC29_PLUGIN_LIB_PATH setting. \n" \
+		        " Please check your access to \n" \
+		        " $(ALT_GCC29_PLUGIN_LIB_PATH)/libjavaplugin_oji.so \n" \
+		        " This will affect you if you build the plugin target, specifically for gcc 2.9 version of OJI plugin library. \n" \
+		        "" >> $(ERROR_FILE) ; \
+	fi
+  else
+	@if [ ! -r $(GCC29_COMPILER_PATH) ]; then \
+	    $(ECHO) "ERROR: You do not have a valid GCC29_COMPILER_PATH setting. \n" \
+	    	    " Please check your access to \n" \
+	    	    " $(GCC29_COMPILER_PATH) \n" \
+	    	    " and/or check your value of ALT_GCC29_COMPILER_PATH. \n" \
+	    	    " This will affect you if you build the plugin target. \n" \
+	    	    "" >> $(ERROR_FILE) ; \
+	fi
+  endif
+endif
+
+######################################################
+# MOZILLA_PATH, MOZILLA_HEADERS must be valid
+######################################################
+mozilla:
+ifeq ($(ARCH_DATA_MODEL), 32)
+  ifdef ALT_MOZILLA_PATH
+	@if [ `$(ECHO) $(subst \,/,$(ALT_MOZILLA_PATH)) | $(EGREP) -ci '^([a-z]:)?/'` -ne 1 ]; then \
+	  $(ECHO) "ERROR: ALT_MOZILLA_PATH must be an Absolute Path Name, \n" \
+	    "      not a Relative Path Name. \n" \
+	    "      The current value of ALT_MOZILLA_PATH is \n" \
+	    "          $(ALT_MOZILLA_PATH) \n" \
+	    "      Please fix this and continue your build. \n" \
+	    "" >> $(ERROR_FILE) ; \
+	fi
+  endif
+  ifdef ALT_MOZILLA_HEADERS_PATH
+	@if [ `$(ECHO) $(subst \,/,$(ALT_MOZILLA_HEADERS_PATH)) | $(EGREP) -ci '^([a-z]:)?/'` -ne 1 ]; then \
+	  $(ECHO) "ERROR: ALT_MOZILLA_HEADERS_PATH must be an Absolute Path Name, \n" \
+	    "      not a Relative Path Name. \n" \
+	    "      The current value of ALT_MOZILLA_HEADERS_PATH is \n" \
+	    "          $(ALT_MOZILLA_HEADERS_PATH) \n" \
+	    "      Please fix this and continue your build. \n" \
+	    "" >> $(ERROR_FILE) ; \
+	fi
+  endif
+	@#
+	@# MOZILLA_HEADERS_PATH must be valid....
+	@#
+  ifeq ($(PLATFORM), windows)
+	@if [ ! -r $(subst \,/,$(MOZILLA_HEADERS_PATH))/mozilla_headers_ns7.win32/bool.h ]; then \
+	  $(ECHO) "ERROR: You do not have access to valid Mozilla header files. \n" \
+	    "      Please check your access to \n" \
+	    "          $(subst \,/,$(MOZILLA_HEADERS_PATH))/mozilla_headers_ns7.win32/bool.h \n" \
+	    "      and/or check your value of ALT_MOZILLA_PATH, ALT_MOZILLA_HEADERS_PATH, \n" \
+	    "	   and on Windows, ALT_MOZILLA_DRIVE. \n" \
+	    "" >> $(ERROR_FILE) ; \
+	fi
+  else
+	@if [ ! -r $(subst \,/,$(MOZILLA_HEADERS_PATH))/mozilla_headers_ns7/bool.h ]; then \
+	  $(ECHO) "ERROR: You do not have access to valid Mozilla header files. \n" \
+	    "      Please check your access to \n" \
+	    "          $(subst \,/,$(MOZILLA_HEADERS_PATH))/mozilla_headers_ns7/bool.h \n" \
+	    "      and/or check your value of ALT_MOZILLA_PATH, ALT_MOZILLA_HEADERS_PATH, \n" \
+	    "" >> $(ERROR_FILE) ; \
+	fi
+  endif
+endif
+
+# The rules sanity-* have a one-to-one correspondence with the major targets
+# Each sanity-* rule should have no body to ensure that the post-sanity-* is the
+# last rule executed. The pre-sanity rule should be the first dependency. This design 
+# expects the execution of pre-sanity only once per gnumake command invocation, 
+# thus, info written to ERROR_FILE and/or WARNING_FILE will not be removed by subsequent
+# targets in the same 'gnumake' command line.
+
+# sanity-all:: sanity-base classpath java_home variant ld_library_path ld_library_path_64 ld_options ld_run_path alt_bootdir bootdir
+sanity-all:: sanity-base classpath java_home ld_library_path ld_library_path_64 ld_options ld_run_path alt_bootdir sanity-javaws
+
+# This is for running without a control ws
+sanity-comprehensive:: sanity-all post-sanity
+
+# invoked by control ws build
+sanity:: sanity-javaws-all
+
+ifeq ($(BUILD_PLUGIN), true)
+  sanity:: sanity-plugin 
+endif
+
+sanity :: post-sanity
+
+sanity-javaws-all:: $(OUTPUTDIR) $(TMPDIR) pre-sanity settings insane \
+alt_outputdir outputdir alt_bootdir sanity-javaws
+
+sanity-javaws::
+
+# this should be the last rule in any target's sanity rule.
+post-sanity post-sanity-all:
+ifndef EXTERNALSANITYCONTROL
+	@if [ -r $(MESSAGE_FILE) ]; then \
+	  $(CAT) $(MESSAGE_FILE) ; \
+	fi
+	@if [ -r $(WARNING_FILE) ]; then \
+	  $(CAT) $(WARNING_FILE) ; \
+	fi
+	@if [ "x$(INSANE)" != x ]; then \
+	  $(ECHO) "INSANE mode requested. \n" \
+	    "Sanity will not force a build termination, even with errors.\n" \
+	    "" >> $(ERROR_FILE); \
+	fi
+	@if [ -r $(ERROR_FILE) ]; then \
+	  if [ "x$(INSANE)" = x ]; then \
+	    $(ECHO) "Exiting because of the above error(s). \n" \
+	      "">> $(ERROR_FILE); \
+	  fi ; \
+	  $(CAT) $(ERROR_FILE) ; \
+	  if [ "x$(INSANE)" = x ]; then \
+	    exit 1 ; \
+	  fi ; \
+	fi
+ifdef PEDANTIC
+	@if [ -r $(WARNING_FILE) ]; then \
+	  $(ECHO) "PEDANTIC mode requested. \n" \
+	    "Exiting because of the above warning(s). \n" \
+	    "" >> $(ERROR_FILE); \
+	  $(CAT) $(ERROR_FILE) ; \
+	  exit 1 ; \
+	fi
+endif # PEDANTIC
+	@if [ ! -r $(ERROR_FILE) ]; then \
+	  $(ECHO) "Sanity check passed." ; \
+	fi
+endif #  EXTERNALSANITYCONTROL
+
+######################################################
+# check for INSANE variable
+######################################################
+insane:
+ifdef INSANE
+	@$(ECHO) "WARNING: You are building in 'INSANE' mode. You \n" \
+	   "        should not use this mode, and in fact, \n" \
+	   "        it may be removed at any time. If you \n" \
+	   "        have build problems as a result of using \n" \
+	   "        INSANE mode, then you should not expect \n" \
+	   "        assistance from anyone with the problems \n" \
+	   "        or consequences you experience. \n" \
+	   "" >> $(WARNING_FILE)
+endif
+######################################################
+# check for GNU Make version
+######################################################
+make:
+	@if [ `$(MAKE) -version | $(HEAD) -n 1 | $(NAWK) '{ print $$4; }' | $(EGREP) -c '3.7[89].1,'` -ne 1 ]; then \
+	  $(ECHO) "WARNING: The version of make being used does not match \n" \
+	    "      the expected version for this platform. \n" \
+	    "      The version of make found was ->`$(MAKE) -version | $(HEAD) -n 1 | $(NAWK) '{ print $$4; }'`<- \n" \
+	    "      The version expected matches the pattern ->3.7[89].1,<-. \n" \
+	    "" >> $(WARNING_FILE) ; \
+	fi
+
+######################################################
+# dump out the variable settings...
+######################################################
+settings:: 
+	@$(ECHO) "Bootstrap Settings:" >> $(MESSAGE_FILE)
+	@$(ECHO) "   JAVAWS_BOOTDIR = $(JAVAWS_BOOTDIR) " >> $(MESSAGE_FILE)
+	@$(ECHO) "   BOOTSTRAP J2SDK VERSION: $(shell $(JAVA_BOOT) -version 2>&1  | $(NAWK) -F'"' '{ print $$2 }')" >> $(MESSAGE_FILE)
+	@$(ECHO) "   OUTPUTDIR = $(ABS_OUTPUTDIR) " >> $(MESSAGE_FILE)
+	@#
+	@$(ECHO) >> $(MESSAGE_FILE)
+	@$(ECHO) "Build Tool Settings:" >> $(MESSAGE_FILE)
+	@$(ECHO) "   UNIXCOMMAND_PATH = $(UNIXCOMMAND_PATH) " >> $(MESSAGE_FILE)
+	@$(ECHO) "   COMPILER_PATH = $(COMPILER_PATH) " >> $(MESSAGE_FILE)
+	@$(ECHO) "   DEVTOOLS_PATH = $(DEVTOOLS_PATH) " >> $(MESSAGE_FILE)
+ifeq ($(PLATFORM), solaris)
+	@$(ECHO) "   UNIXCCS_PATH = $(UNIXCCS_PATH) " >> $(MESSAGE_FILE)
+endif
+ifeq ($(PLATFORM), linux)
+	@$(ECHO) "   USRBIN_PATH = $(USRBIN_PATH) " >> $(MESSAGE_FILE)
+	@$(ECHO) "   GCC29_COMPILER_PATH = $(GCC29_COMPILER_PATH) " >> $(MESSAGE_FILE)	
+endif
+ifeq ($(PLATFORM), windows)
+	@$(ECHO) "   MOZILLA_DRIVE = $(MOZILLA_DRIVE) " >> $(MESSAGE_FILE)
+	@$(ECHO) "   MSDEVTOOLS_PATH = $(MSDEVTOOLS_PATH) " >> $(MESSAGE_FILE)
+	@$(ECHO) "   DEPLOY_MSSDK = $(DEPLOY_MSSDK) " >> $(MESSAGE_FILE)
+endif
+	@$(ECHO) "   MOZILLA_PATH = $(MOZILLA_PATH) " >> $(MESSAGE_FILE)
+	@$(ECHO) "   MOZILLA_HEADERS_PATH = $(MOZILLA_HEADERS_PATH) " >> $(MESSAGE_FILE)
+	@$(ECHO) "   CC_VER = $(CC_VER) " >> $(MESSAGE_FILE)
+ifeq ($(PLATFORM), windows)
+	@$(ECHO) "   LINK_VER = $(LINK_VER) " >> $(MESSAGE_FILE)
+endif
+	@$(ECHO) "   PATH = $(PATH) " >> $(MESSAGE_FILE)
+ifeq ($(PLATFORM), windows)
+	@$(ECHO) " " >> $(MESSAGE_FILE)
+endif
+	@$(ECHO) >> $(MESSAGE_FILE)
+	@$(ECHO) "Build Directives:" >> $(MESSAGE_FILE)
+	@$(ECHO) "   PEDANTIC = $(PEDANTIC) " >> $(MESSAGE_FILE)
+	@$(ECHO) "   INSANE = $(INSANE) " >> $(MESSAGE_FILE)
+	@#
+	@$(ECHO)  >> $(MESSAGE_FILE)
+	@$(ECHO) "Build Platform Settings:" >> $(MESSAGE_FILE)
+	@$(ECHO) "   PLATFORM = $(PLATFORM) " >> $(MESSAGE_FILE)
+	@$(ECHO) "   ARCH = $(ARCH) " >> $(MESSAGE_FILE)
+	@$(ECHO) "   LIBARCH = $(LIBARCH) " >> $(MESSAGE_FILE)
+	@$(ECHO) "   ARCH_FAMILY = $(ARCH_FAMILY) " >> $(MESSAGE_FILE)
+	@$(ECHO) "   ARCH_DATA_MODEL = $(ARCH_DATA_MODEL) " >> $(MESSAGE_FILE)
+ifeq ($(PLATFORM), windows)
+	@$(ECHO) "   PROCESSOR_ARCHITECTURE = $(word 1, $(PROCESSOR_IDENTIFIER)) " >> $(MESSAGE_FILE)
+endif
+ifeq ($(PLATFORM), linux)
+	@$(ECHO) "   RH_VERSION = $(RH_VERSION) " >> $(MESSAGE_FILE)
+endif
+	@$(ECHO) "   OS_VERSION = $(OS_VERSION) " >> $(MESSAGE_FILE)
+ifeq ($(PLATFORM), windows)
+	@$(ECHO) "   WINDOWS_VERSION = $(WINDOWS_VERSION) " >> $(MESSAGE_FILE)
+	@$(ECHO) "   TEMP_FREE_SPACE = $(TEMP_FREE_SPACE) " >> $(MESSAGE_FILE)
+endif
+	@$(ECHO) "   FREE_SPACE = $(FREE_SPACE) " >> $(MESSAGE_FILE)
+	@$(ECHO)  >> $(MESSAGE_FILE)
+	@$(ECHO) "GNU Make Settings:" >> $(MESSAGE_FILE)
+	@$(ECHO) "   MAKE = $(MAKE) " >> $(MESSAGE_FILE)
+	@$(ECHO) "   MAKE VERSION = `$(MAKE) -version | $(HEAD) -n 1 | $(NAWK) '{ print $$4; }'` " >> $(MESSAGE_FILE)
+	@$(ECHO) "   MAKECMDGOALS = $(MAKECMDGOALS) " >> $(MESSAGE_FILE)
+	@$(ECHO) "   MAKEFLAGS = $(MAKEFLAGS) " >> $(MESSAGE_FILE)
+	@$(ECHO) "   SHELL = $(SHELL) " >> $(MESSAGE_FILE)
+	@#
+	@$(ECHO)  >> $(MESSAGE_FILE)
+	@$(ECHO) "Target Build Versions:" >> $(MESSAGE_FILE)
+	@$(ECHO) "   JAVAWS_VERSION = $(JAVAWS_VERSION) " >> $(MESSAGE_FILE)
+	@$(ECHO) "   MILESTONE = $(MILESTONE) " >> $(MESSAGE_FILE)
+	@$(ECHO) "   BUILD_NUMBER = $(BUILD_NUMBER) " >> $(MESSAGE_FILE)
+	@#
+	@$(ECHO)  >> $(MESSAGE_FILE)
+	@$#
+
+######################################################
+# Check the OS version
+######################################################
+os_version: 
+ifeq ($(PLATFORM), windows)
+	@if [ "$(ARCH_DATA_MODEL)" = 32 ]; then \
+	  if [ ! "$(OS)" = Windows_NT -a ! "$(OS)" = CYGWIN_NT-4.0 ]; then \
+	    $(ECHO) "WARNING: You are building on an unsupported Windows Platform. \n" \
+	      "        The supported platform for 32-bit windows builds is Windows \n" \
+	      "        Professional 2000 with Service Pack 2. \n" \
+	      "        The build will proceed assuming that you are running a \n" \
+	      "        variant of a windows OS. \n" \
+	      "" >> $(WARNING_FILE) ; \
+	  fi; \
+	  if [ ! "x$(WINDOWS_VERSION)" = "x5 0 Service Pack 2" ]; then \
+	    $(ECHO) "WARNING: You are using an unsupported version of Windows 2000. \n" \
+	      "        The supported version is Windows Professional 2000 5 with Service Pack 2. \n" \
+	      "        You appear to be using : $(WINDOWS_VERSION) \n" \
+	      "" >> $(WARNING_FILE) ; \
+	  fi; \
+	else \
+	  if [ "$(ARCH_DATA_MODEL)" = 64 ]; then \
+	    if [ ! "$(OS)" = Windows_NT ]; then \
+	    $(ECHO) "WARNING: You are building on an unsupported Windows Platform. \n" \
+	      "        The supported platform for 64-bit windows builds is Windows Server 2003.\n" \
+	      "        The build will proceed assuming that you are running a \n" \
+	      "        variant of a 64-bit Windows OS. \n" \
+              "   $(OS) \n" \
+	        "" >> $(WARNING_FILE) ; \
+	    fi; \
+	    if [ ! "x$(WINDOWS_VERSION)" = "x5 0 " -a ! "x$(WINDOWS_VERSION)" = "x5 1 " \
+		-a ! "x$(WINDOWS_VERSION)" = "x5 2 " ]; then \
+	      $(ECHO) "WARNING: You are using an unsupported version of Windows Server 2003. \n" \
+	        "        The supported version is Windows Server 2003. \n" \
+	        "        You appear to be using : $(WINDOWS_VERSION) \n" \
+	        "" >> $(WARNING_FILE) ; \
+	    fi; \
+	  else \
+	    $(ECHO) "ERROR: Your Windows installation is not valid for building a \n" \
+	      "      J2SDK of the type you are requesting. \n" \
+	      "      You are using an ARCH_DATA_MODEL value of $(ARCH_DATA_MODEL). \n" \
+	      "      Please check your setting for ARCH_DATA_MODEL and start your build again. \n" \
+	      "" >> $(ERROR_FILE) ; \
+	  fi; \
+	fi
+endif
+ifeq ($(PLATFORM), linux)
+	@if [ -r /etc/redhat-release ]; then \
+	  if [ `$(ECHO) $(RH_VERSION) | $(EGREP) -c '$(REQUIRED_RH_VER)'` -ne 1 ]; then \
+	    $(ECHO) "WARNING: You are using an unsupported release of Linux. \n" \
+	      "        The supported version is Red Hat Linux release $(REQUIRED_RH_FULLVER). \n" \
+	      "        Your release is version $(RH_VERSION) \n" \
+	      "" >> $(WARNING_FILE) ; \
+	  fi; \
+	else \
+	    $(ECHO) "WARNING: You are building on an unsupported brand of Linux. \n" \
+	      "        The supported version is Red Hat Linux release $(REQUIRED_RH_VER). \n" \
+	      "" >> $(WARNING_FILE) ; \
+	fi
+	@if [ `$(ECHO) $(OS_VERSION) | $(EGREP) -c '$(REQUIRED_OS_VER)'` -ne 1 ]; then \
+	  $(ECHO) "WARNING: You are using an unsupported kernel version of Linux. \n" \
+	    "        The supported kernel version is $(REQUIRED_OS_VER). \n" \
+	    "        Your kernel version is $(OS_VERSION) \n" \
+	    "" >> $(WARNING_FILE) ; \
+	fi
+	@if [ "$(ARCH_DATA_MODEL)" != 32 -a "$(ARCH_DATA_MODEL)" != 64 ]; then \
+	    $(ECHO) "ERROR: Your Linux installation is not valid for building a \n" \
+	      "      J2SDK of the type you are requesting. \n" \
+	      "      You are using an ARCH_DATA_MODEL value of $(ARCH_DATA_MODEL). \n" \
+	      "      Please check your setting for ARCH_DATA_MODEL and start your build again. \n" \
+	      "" >> $(ERROR_FILE) ; \
+	fi
+endif
+ifeq ($(PLATFORM), solaris)
+	@if [ "x`$(ECHO) $(subst .,,$(OS_VERSION))`" = x ]; then \
+	  $(ECHO) "ERROR: Cannot determine the version of Solaris are you running. \n" \
+	    "      The build requires Solaris $(REQ_OS_VERSION) or higher. \n" \
+	    "" >> $(ERROR_FILE) ; \
+	fi
+	  @if [ $(SOLARIS_MAJOR_VERSION) -ne $(REQ_SOLARIS_MAJOR_VERSION) -o $(SOLARIS_MINOR_VERSION) -lt $(REQ_SOLARIS_MINOR_VERSION) ]; then \
+	    $(ECHO) "WARNING: Your Solaris installation is not valid for building a \n" \
+	      "      the J2SDK. You must be using Solaris $(REQ_OS_VERSION) or greater. \n" \
+	      "      Your release is $(OS_VERSION) \n" \
+	      "" >> $(WARNING_FILE) ; \
+	  else \
+	    if [ `$(ECHO) $(OS_VERSION) | $(EGREP) -c '$(REQ_OS_VERSION)'` -ne 1 ]; then \
+	      $(ECHO) "WARNING: You are using an unsupported version of Solaris. \n" \
+	        "        The supported version of Solaris for J2SDK builds is version Solaris $(REQ_OS_VERSION). \n" \
+	        "        Your release is version $(OS_VERSION) \n" \
+	        "" >> $(WARNING_FILE) ; \
+	    fi; \
+	  fi;
+	@if [ "$(ARCH_DATA_MODEL)" != 32 -a "$(ARCH_DATA_MODEL)" != 64 ]; then \
+	    $(ECHO) "ERROR: Your Solaris installation is not valid for building a \n" \
+	      "      J2SDK of the type you are requesting. \n" \
+	      "      You are using an ARCH_DATA_MODEL value of $(ARCH_DATA_MODEL). \n" \
+	      "      Please check your setting for ARCH_DATA_MODEL and start your build again. \n" \
+	      "" >> $(ERROR_FILE) ; \
+	fi
+endif # PLATFORM
+
+######################################################
+# CLASSPATH cannot be set, unless you are insane.
+######################################################
+classpath:
+ifdef CLASSPATH
+	@$(ECHO) "ERROR: Your CLASSPATH environment variable is set.  This will \n" \
+	   "      most likely cause the build to fail.  Please unset it \n" \
+	   "      and start your build again. \n" \
+	   "" >> $(ERROR_FILE)
+endif
+
+######################################################
+# JAVA_HOME cannot be set, unless you are insane.
+#
+# javah_g (and java_g) fail if using Kestrel-Solaris as the
+# bootstrap JDK:
+#
+#    There was an error trying to initialize the HPI library.
+#    Please check your installation, HotSpot does not work correctly
+#    when installed in the JDK 1.2 Solaris Production Release, or
+#    with any JDK 1.1.x release.
+#    Could not create the Java virtual machine.
+######################################################
+java_home:
+ifdef JAVA_HOME
+	@$(ECHO) "ERROR: Your JAVA_HOME environment variable is set.  This will \n" \
+	   "      most likely cause the build to fail.  Please unset it \n" \
+	   "      and start your build again. \n" \
+	   "" >> $(ERROR_FILE)
+endif
+
+######################################################
+# LD_LIBRARY_PATH should not be set, unless you are insane.
+######################################################
+ld_library_path:
+ifdef LD_LIBRARY_PATH
+	@$(ECHO) "ERROR: Your LD_LIBRARY_PATH environment variable is set.  This may \n" \
+	   "      produce binaries binaries incorrectly.  Please unset it \n" \
+	   "      and start your build again. \n" \
+	   "" >> $(ERROR_FILE)
+endif
+
+######################################################
+# LD_LIBRARY_PATH_64 should not be set, unless you are insane.
+######################################################
+ld_library_path_64:
+ifdef LD_LIBRARY_PATH_64
+	@$(ECHO) "ERROR: Your LD_LIBRARY_PATH_64 environment variable is set.  This may \n" \
+	   "      produce binaries binaries incorrectly.  Please unset it \n" \
+	   "      and start your build again. \n" \
+	   "" >> $(ERROR_FILE)
+endif
+
+######################################################
+# LD_OPTIONS should not be set, unless you are insane.
+######################################################
+ld_options:
+ifdef LD_OPTIONS
+	@$(ECHO) "ERROR: Your LD_OPTIONS environment variable is set.  This may \n" \
+	   "      produce binaries binaries incorrectly.  Please unset it \n" \
+	   "      and start your build again. \n" \
+	   "" >> $(ERROR_FILE)
+endif
+
+######################################################
+# LD_RUN_PATH should not be set, unless you are insane.
+######################################################
+ld_run_path:
+ifdef LD_RUN_PATH
+	@$(ECHO) "ERROR: Your LD_RUN_PATH environment variable is set.  This may \n" \
+	   "      produce binaries binaries incorrectly.  Please unset it \n" \
+	   "      produce binaries binaries incorrectly.  Please unset it \n" \
+	   "      and start your build again. \n" \
+	   "" >> $(ERROR_FILE)
+endif
+
+######################################################
+# MAKEFLAGS cannot be set, unless you are insane.
+######################################################
+makeflags:
+ifdef MAKEFLAGS
+	@#
+	@# it is unacceptable to have the-e or --environment-overrides value in MAKEFLAGS
+	@#
+	@if [ `$(ECHO) $(MAKEFLAGS) | $(EGREP) -c '(^| )(e|--environment-overrides)( |$$)'` -ne 0 ]; then \
+	  $(ECHO) "ERROR: Either the build was started with the flag -e or \n" \
+	    "      --environment-overrides, or the MAKEFLAGS environment \n" \
+	    "      variable has this value set.  This will cause any \n" \
+	    "      environment variables you have defined to override \n" \
+	    "      the values defined by the makefiles. This practice is \n" \
+	    "      not recommemded by the authors of GNU Make, and \n" \
+	    "      will lead to an improper build. \n" \
+	    "      Please fix and restart the build. \n" \
+	    "" >> $(ERROR_FILE) ; \
+	fi
+	@#
+	@# it is unacceptable to havethe -i or --ignore-errors value in MAKEFLAGS
+	@#
+	@if [ `$(ECHO) $(MAKEFLAGS) | $(EGREP) -c '(^| )(i|--ignore-errors)( |$$)'` -ne 0 ]; then \
+	  $(ECHO) "ERROR: Either the build was started with the flag -i or \n" \
+	    "      --ignore-errors, or the MAKEFLAGS environment \n" \
+	    "      variable has this value set. 1111 You will be unable \n" \
+	    "      to determine if the build is broken or not. \n" \
+	    "      Please fix and restart the build. \n" \
+	    "" >> $(ERROR_FILE) ; \
+	fi
+	@#
+	@# it is unacceptable to have the -I or --include-dir value in MAKEFLAGS
+	@#
+	@if [ `$(ECHO) $(MAKEFLAGS) | $(EGREP) -c '(^| )(I|--include-dir)( |$$)'` -ne 0 ]; then \
+	  $(ECHO) "ERROR: Either the build was started with the flag -I or \n" \
+	    "      --include-dir, or the MAKEFLAGS environment \n" \
+	    "      variable has this value set.  This will render your \n" \
+	    "      build questionable as not all the rules and depenencies \n" \
+	    "      are captured by the build. \n" \
+	    "      Please fix and restart the build. \n" \
+	    "" >> $(ERROR_FILE) ; \
+	fi
+	@#
+	@# it is unacceptable to have the -k or --keep-going value in MAKEFLAGS:
+	@#
+	@if [ `$(ECHO) $(MAKEFLAGS) | $(EGREP) -c '(^| )(k|--keep-going)( |$$)'` -ne 0 ]; then \
+	  $(ECHO) "ERROR: Either the build was started with the flag -k or \n" \
+	    "      --keep-going, or the MAKEFLAGS environment \n" \
+	    "      variable has this value set. 222 You will be unable \n" \
+	    "      to determine if the build is broken or not. \n" \
+	    "      Please fix and restart the build.  \n" \
+	    "" >> $(ERROR_FILE) ; \
+	fi
+	@#
+	@# it is unacceptable to have the -o or --assume-old or --old-filevalue in MAKEFLAGS:
+	@# Note - this rule never gets invoked because it is processed out
+	@#        in GNU Make startup
+	@#
+	@if [ `$(ECHO) $(MAKEFLAGS) | $(EGREP) -c '(^| )(o|--assume-old|--old-file)( |$$)'` -ne 0 ]; then \
+	  $(ECHO) "ERROR: Either the build was started with the flag -o or \n" \
+	    "      --assume-old or --old-file, or the MAKEFLAGS environment \n" \
+	    "      variable has this value set.  This could prevent the \n" \
+	    "      build from executing rules it should, thus rendering a \n" \
+	    "      questionable result. \n" \
+	    "      Please fix and restart the build. \n" \
+	    "" >> $(ERROR_FILE) ; \
+	fi
+	@#
+	@# it is unacceptable to have the -r or --nobuiltin-rules value in MAKEFLAGS
+	@#
+	@if [ `$(ECHO) $(MAKEFLAGS) | $(EGREP) -c '(^| )(r|--no-builtin-rules)( |$$)'` -ne 0 ]; then \
+	  $(ECHO) "ERROR: Either the build was started with the flag -r or \n" \
+	    "      --no-builtin-rules, or the MAKEFLAGS environment \n" \
+	    "      variable has this value set.  This may break the build \n" \
+	    "      by not allowing builtin rules that may be required. \n" \
+	    "      Please fix and restart the build. \n" \
+	    "" >> $(ERROR_FILE) ; \
+	fi
+	@#
+	@# it is unacceptable to have the -t or --touch value in MAKEFLAGS
+	@# Note - this rule never gets invoked because it is processed out
+	@#        in GNU Make startup
+	@#
+	@if [ `$(ECHO) $(MAKEFLAGS) | $(EGREP) -c '(^| )(t|--touch)( |$$)'` -ne 0 ]; then \
+	  $(ECHO) "ERROR: Either the build was started with the flag -t or \n" \
+	    "      --touch, or the MAKEFLAGS environment \n" \
+	    "      variable has this value set.  This will leave the \n" \
+	    "      build in a unclear state and could lead to not executing \n" \
+	    "      rules which should be executed. \n" \
+	    "      Please fix and restart the build. \n" \
+	    "" >> $(ERROR_FILE) ; \
+	fi
+endif
+
+######################################################
+# if specified, ALT_OUTPUTDIR must point to non-relative path if set
+######################################################
+alt_outputdir:
+ifdef ALT_OUTPUTDIR
+	@if [ `$(ECHO) $(subst \,/,$(ALT_OUTPUTDIR)) | $(EGREP) -ci '^([a-z]:)?/'` -ne 1 ]; then \
+	  $(ECHO) "ERROR: ALT_OUTPUTDIR must be an Absolute Path Name, \n" \
+	    "      not a Relitive Path Name. \n" \
+	    "" >> $(ERROR_FILE) ; \
+	fi
+  ifeq ($(PLATFORM), windows)
+	@if [ `$(ECHO) $(subst \,/,$(ALT_OUTPUTDIR)) | $(EGREP) -ci '^([a-z]:)'` -ne 1 ]; then \
+	  $(ECHO) "ERROR: On windows, ALT_OUTPUTDIR must contain the drive letter. \n" \
+	    "" >> $(ERROR_FILE) ; \
+	fi
+  endif
+endif
+
+######################################################
+# OUTPUTDIR tests
+######################################################
+outputdir:
+	@#
+	@# OUTPUTDIR must be a directory...
+	@#
+	@if [ ! -d $(OUTPUTDIR) ]; then \
+	  $(ECHO) "ERROR: OUTPUTDIR must be an existing directory. The current \n" \
+	    "      value of OUTPUTDIR is \n" \
+	    "          $(OUTPUTDIR) \n" \
+	    "      Please check your value of ALT_OUTPUTDIR. \n" \
+	    "" >> $(ERROR_FILE) ; \
+	fi
+	@#
+	@# OUTPUTDIR must be writeable by user...
+	@#
+	@if [ ! -w $(OUTPUTDIR) ]; then \
+	  $(ECHO) "ERROR: You must have write permissions to OUTPUTDIR. The \n" \
+	    "      current value of OUTPUTDIR is \n" \
+	    "          $(OUTPUTDIR) \n" \
+	    "      Either obtain these permissions or set ALT_OUTPUTDIR. \n" \
+	    "" >> $(ERROR_FILE) ; \
+	fi
+	@#
+	@# OUTPUTDIR must have enough free space...
+	@#
+	@if [ -d $(OUTPUTDIR) -a $(FREE_SPACE) -lt $(MIN_FREE_DISK) ]; then \
+	  $(ECHO) "WARNING: You may not have enough free space in your OUTPUTDIR. The \n" \
+	    "        current value of OUTPUTDIR is \n" \
+	    "            $(OUTPUTDIR) \n" \
+	    "        You need "$(MIN_FREE_DISK)" bytes free on this device to build \n" \
+	    "        and it appears that only "$(FREE_SPACE)" bytes are free. \n" \
+	    "        Either obtain more space or set ALT_OUTPUTDIR to a larger disk. \n" \
+	    "" >> $(WARNING_FILE) ; \
+	fi
+
+######################################################
+# if specified, ALT_JAVAWS_BOOTDIR must point to non-relative path if set
+######################################################
+alt_bootdir:
+ifdef ALT_JAVAWS_BOOTDIR
+	@if [ `$(ECHO) $(subst \,/,$(ALT_JAVAWS_BOOTDIR)) | $(EGREP) -ci '^([a-z]:)?/'` -ne 1 ]; then \
+	  $(ECHO) "ERROR: ALT_JAVAWS_BOOTDIR must be an Absolute Path Name, \n" \
+	    "      not a Relitive Path Name. \n" \
+	    "      The current value of ALT_JAVAWS_BOOTDIR is \n" \
+	    "          $(ALT_JAVAWS_BOOTDIR) \n" \
+	    "      Please fix this and continue your build. \n" \
+	    "" >> $(ERROR_FILE) ; \
+	fi
+endif
+
+
+######################################################
+# Check for existence of DEVTOOLS_PATH
+######################################################
+devtools_path:
+	@if [ ! -r $(DEVTOOLS_PATH) ]; then \
+	  $(ECHO) "ERROR: You do not have a valid DEVTOOLS_PATH setting. \n" \
+	    "      Please check your access to \n" \
+	    "          $(DEVTOOLS_PATH) \n" \
+	    "      and/or check your value of ALT_DEVTOOLS_PATH. \n" \
+	    "" >> $(ERROR_FILE) ; \
+	fi
+
+######################################################
+# Check for existence of COMPILER_PATH
+######################################################
+compiler_path:
+	@if [ -z "$(COMPILER_PATH)" ]; then \
+	  $(ECHO) "WARNING: Your COMPILER_PATH setting is empty.\n" \
+	    "        It is recommended to set COMPILER_PATH.\n" \
+	    "" >> $(WARNING_FILE) ; \
+	fi
+	@if [ ! -r $(COMPILER_PATH) ]; then \
+	  $(ECHO) "ERROR: You do not have a valid COMPILER_PATH setting. \n" \
+	    "      Please check your access to \n" \
+	    "          $(COMPILER_PATH) \n" \
+	    "      and/or check your value of ALT_COMPILER_PATH. \n" \
+	    "" >> $(ERROR_FILE) ; \
+	fi
+
+######################################################
+# Check for existence of UNIXCOMMAND_PATH
+######################################################
+unixcommand_path:
+	@if [ ! -r $(UNIXCOMMAND_PATH) ]; then \
+	  $(ECHO) "ERROR: You do not have a valid UNIXCOMMAND_PATH setting. \n" \
+	    "      Please check your access to \n" \
+	    "          $(UNIXCOMMAND_PATH) \n" \
+	    "      and/or check your value of ALT_UNIXCOMMAND_PATH. \n" \
+	    "" >> $(ERROR_FILE) ; \
+	fi
+
+  ######################################################
+  # Check for existence of USRBIN_PATH on linux
+  ######################################################
+usrbin_path:
+ifeq ($(PLATFORM), linux)
+	@if [ ! -r $(USRBIN_PATH) ]; then \
+	    $(ECHO) "ERROR: You do not have a valid USRBIN_PATH setting. \n" \
+	      "      Please check your access to \n" \
+	      "          $(USRBIN_PATH)  \n" \
+	      "      and/or check your value of ALT_USRBIN_PATH. \n" \
+	      "" >> $(ERROR_FILE) ; \
+	  fi
+endif
+
+  ######################################################
+  # Check for existence of UNIXCCS_PATH on solaris
+  ######################################################
+unixccs_path:
+ifeq ($(PLATFORM), solaris)
+	@if [ ! -r $(UNIXCCS_PATH) ]; then \
+	  $(ECHO) "ERROR: You do not have a valid UNIXCCS_PATH setting. \n" \
+	    "      Please check your access to \n" \
+	    "          $(UNIXCCS_PATH) \n" \
+	    "      and/or check your value of ALT_UNIXCCS_PATH. \n" \
+	    "" >> $(ERROR_FILE) ; \
+	  fi
+endif
+
+######################################################
+# Check for existence of MSDEVTOOLS_PATH on windows
+######################################################
+msdevtools_path:
+ifeq ($(PLATFORM), windows)
+	@if [ -z "$(MSDEVTOOLS_PATH)" ]; then \
+	  $(ECHO) "WARNING: Your MSDEVTOOLS_PATH setting is empty.\n" \
+	    "        It is recommended to set MSDEVTOOLS_PATH.\n" \
+	    "" >> $(WARNING_FILE) ; \
+	fi
+	@if [ ! -r $(MSDEVTOOLS_PATH) ]; then \
+	  $(ECHO) "ERROR: You do not have a valid MSDEVTOOLS_PATH setting. \n" \
+	    "      Please check your access to \n" \
+	    "          $(MSDEVTOOLS_PATH) \n" \
+	    "      and/or check your value of ALT_MSDEVTOOLS_PATH. \n" \
+	    "" >> $(ERROR_FILE) ; \
+	fi
+endif
+
+
+######################################################
+# Check for existence of DEPLOY_MSSDK on windows
+######################################################
+mssdk_path:
+ifeq ($(PLATFORM), windows)
+	@if [ -z "$(DEPLOY_MSSDK)" ]; then \
+	  $(ECHO) "WARNING: Your DEPLOY_MSSDK setting is empty.\n" \
+	    "        It is recommended to set DEPLOY_MSSDK.\n" \
+	    "" >> $(WARNING_FILE) ; \
+	fi
+	@if [ ! -r "$(DEPLOY_MSSDK)" ]; then \
+	  $(ECHO) "ERROR: You do not have a valid DEPLOY_MSSDK setting. \n" \
+	    "      Please check your access to \n" \
+	    "          $(DEPLOY_MSSDK) \n" \
+	    "      and/or check your value of ALT_PLUGIN_MSSDK. \n" \
+	    "" >> $(ERROR_FILE) ; \
+	fi
+endif
+
+######################################################
+# Check the compiler version(s)
+######################################################
+compiler:
+ifeq ($(PLATFORM), windows)
+  ifeq ($(ARCH_DATA_MODEL), 32)
+	@#
+	@# Check windows compiler type
+	@#
+	@if [ ! "x$(CC_TYPE)" = "x$(REQUIRED_CCTYPE)" ]; then \
+	  $(ECHO) "ERROR: To build Java 2 SDK 1.4 you need : \n" \
+	    "      $(COMPILER_NAME) - cl.exe type \"$(REQUIRED_CCTYPE)\" \n" \
+	    "      You are using Compiler type \"$(CC_TYPE)\"  \n" \
+	    "      Please install the required version of Visual C++ and start your build again. \n" \
+	    "" >> $(ERROR_FILE) ; \
+	fi
+  endif
+	@#
+	@# Check the version of Visual C++ cl.exe by parsing off the version number from the banner
+	@#
+	@if [ ! "x$(CC_VER)" = "x$(REQUIRED_CCVER)" ]; then \
+	  $(ECHO) "ERROR: To build Java 2 SDK 1.4 you need : \n" \
+	    "      $(COMPILER_NAME) - cl.exe version \"$(REQUIRED_CCVER)\" \n" \
+	    "      You are using Compiler version \"$(CC_VER)\"  \n" \
+	    "      Please install the required version of Visual C++ and start your build again. \n" \
+	    "" >> $(ERROR_FILE) ; \
+	fi
+	@#
+	@# Check the version of Visual C++ link.exe by parsing off the version number from the banner
+	@#
+	@if [ ! "x$(LINK_VER)" = "x$(REQUIRED_LINKVER)" ]; then \
+	  $(ECHO) "ERROR: To build Java 2 SDK 1.4 you need : \n" \
+	    "      $(COMPILER_NAME) - link.exe version \"$(REQUIRED_LINKVER)\" \n" \
+	    "      You are using Linker version \"$(LINK_VER)\" \n" \
+	    "      Please install the required version of Visual C++ and start your build again. \n" \
+	    "" >> $(ERROR_FILE) ; \
+	fi
+endif # PLATFORM
+ifeq ($(PLATFORM), solaris)
+	@#
+	@# On Solaris we need version 5.5 of the compilers (which is part
+	@# of Sun ONE Studio 8, Compiler Collection
+	@#
+	@if [ -r $(CC) ]; then \
+	  if [ "$(CC_VER)" != 5.5 ]; then \
+	    $(ECHO) "ERROR: The Solaris compiler version must be 5.5. \n" \
+	      "      You are using the following compiler version: $(CC_VER) \n" \
+	      "      The compiler was obtained from the following location: \n" \
+	      "          $(COMPILER_PATH) \n" \
+	      "      Please change your compiler. \n" \
+	      "" >> $(ERROR_FILE) ; \
+	  fi \
+	else \
+	  $(ECHO) "ERROR: There is no Solaris C compiler at the location: \n" \
+	    "      $(COMPILER_PATH) \n" \
+	    "" >> $(ERROR_FILE) ; \
+	fi
+endif
+ifeq ($(PLATFORM), linux)
+	@#
+	@# check gcc version
+	@#
+        ifeq ($(ARCH_DATA_MODEL), 32)
+	  @if [ -r $(CC) ]; then \
+            if [ `$(ECHO) $(CC_VER) | $(EGREP) -c '$(REQUIRED_GCC_VER)'` -ne 1 ]; then \
+              $(ECHO) "ERROR: The Linux GCC compiler must be version $(REQUIRED_GCC_VER). \n" \
+              "		You are using the following compiler version: $(CC_VER) \n" \
+              "		The compiler was obtained from the following location: \n" \
+	      "		 $(COMPILER_PATH) \n" \
+	      "		Please change your compiler. \n" \
+	      "" >> $(ERROR_FILE) ; \
+            else \
+              if [ `$(ECHO) '$(SUN_COMP_VER)' | $(EGREP) -c 'cxa_atexit'` -eq 1 ] && [ `$(ECHO) $(CC_VER) | $(EGREP) -c '$(REQUIRED_GCC_VER_INT)'` -ne 1 ];  then \
+            	$(ECHO) "ERROR: The Linux GCC compiler must be version $(REQUIRED_GCC_VER_INT). \n" \
+            	"	You are using the following compiler version: $(CC_VER) \n" \
+            	"	The compiler was obtained from the following location: \n" \
+	    	"	   $(COMPILER_PATH) \n" \
+	    	"	Please change your compiler. \n" \
+	    	"" >> $(ERROR_FILE) ; \
+              fi \
+            fi \
+          else \
+	    $(ECHO) "ERROR: There is no GNU CC compiler at the location: \n" \
+	    "		$(COMPILER_PATH) \n" \
+	    "" >> $(ERROR_FILE) ; \
+          fi
+        else # don't use tabs
+	  @if [ -r $(CC) ]; then \
+            if [ `$(ECHO) $(CC_VER) | $(EGREP) -c '$(REQUIRED_GCC_VER)'` -ne 1 ]; then \
+              $(ECHO) "ERROR: The Linux GCC compiler must be version $(REQUIRED_GCC_VER). \n" \
+              "		You are using the following compiler version: $(CC_VER) \n" \
+              "		The compiler was obtained from the following location: \n" \
+	      "		  $(COMPILER_PATH) \n" \
+	      "		Please change your compiler. \n" \
+	      "" >> $(ERROR_FILE) ; \
+            fi \
+          else \
+	    $(ECHO) "ERROR: There is no GNU CC compiler at the location: \n" \
+	      "		$(COMPILER_PATH) \n" \
+	      "" >> $(ERROR_FILE) ; \
+          fi
+        endif # DATA_MODEL
+endif # PLATFORM

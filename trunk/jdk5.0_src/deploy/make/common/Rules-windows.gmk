@@ -1,0 +1,77 @@
+#
+# @(#)Rules-windows.gmk	1.27 04/01/13
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# these are specific to Windows
+
+FILES_java = $(JDK_1_2_FILES) $(WINDOWS_FILES)
+
+PLATFORM_SRC   = $(JAVAWS_TOPDIR)/src/javaws/win32
+WINRESDIR      = $(DEPLOY_BUILDDIR)/javaws/windows/resources
+
+SUBDIRS=activex
+
+all optimized debug clean::
+	@for i in $(SUBDIRS) ; do \
+	    $(ECHO) ">>>Recursively making "$$i" "$@" @ `$(DATE)` ..."; \
+	    $(CD) $$i; $(MAKE) $(MAKEOVERRIDES) $@ || exit 1; $(CD) ..; \
+	    $(ECHO) "<<<Finished Recursively making "$$i" "$@" @ `$(DATE)`."; \
+	done
+
+$(GENRGS):
+	@$(MKDIR) -p $(@D)
+	$(CAT) $(FILES_GENRGS) | $(JAVAWS_SUBSTITUTE_VERSIONS) > $@
+
+$(OBJDIR)/%.o: $(PLATFORM_SRC)/native/%.cpp
+	$(MKDIR) -p $(@D)
+	$(CC) /I$(JAVAWS_BOOTDIR)/include /I$(JAVAWS_BOOTDIR)/include/win32 -c -Fo$@ $?
+
+# for javaws.exe and javaws_g.exe
+$(ts_JUMP_EXE): $(FILES_o) $(FILES_o_DBG) FRC
+	$(MKDIR) -p $(BIN_DIR) $(BIN_DIR_DBG)
+	$(LINK) $(LINK_FLAGS) $(FILES_o) \
+		/out:$(JUMP_EXE)
+	$(LINK) $(LINK_DBG_FLAGS) $(FILES_o_DBG) \
+		/out:$(JUMP_EXE_DBG)
+	@$(MKDIR) -p $(@D)
+	@$(TOUCH) $@
+
+$(OBJDIR)/%.o: $(SHARE_SRC)/native/%.c
+	$(CC) $(C_FLAGS) -c -Fo$@ $?
+
+$(OBJDIR_DBG)/%.o: $(SHARE_SRC)/native/%.c
+	$(MKDIR) -p $(@D)
+	$(CC) $(C_DBG_FLAGS) -c -Fo$@ $?
+
+$(JPDA_OBJDIR)/%.o: $(SHARE_SRC)/native/%.c
+	@$(MKDIR) -p $(@D)
+	$(CC) $(C_FLAGS) -c -Fo$@ $?
+
+$(OBJDIR)/%.o: $(PLATFORM_SRC)/native/%.c
+	$(CC) $(C_FLAGS) -c -Fo$@ $?
+
+$(OBJDIR_DBG)/%.o: $(PLATFORM_SRC)/native/%.c
+	$(CC) $(C_DBG_FLAGS) -c -Fo$@ $?
+
+$(OBJDIR)/%.o: $(SHARE_SRC)/native/jpeg/%.c
+	$(CC) $(C_FLAGS) -c -Fo$@ $?
+
+$(OBJDIR_DBG)/%.o: $(SHARE_SRC)/native/jpeg/%.c
+	$(CC) $(C_DBG_FLAGS) -c -Fo$@ $?
+
+proto-platform::
+	$(MKDIR) -p $(LIB_SECURITY_DIR) $(LIB_JAVAWS_DIR)
+	$(CP) -f $(JAVAWS_TOPDIR)/src/javaws/share/config/javaws.policy $(LIB_SECURITY_DIR)
+	$(CP) -f $(DEPLOY_COMMON_JAR) $(LIB_DIR)
+	$(CP) -f $(DEPLOY_COMMON_DLL) $(BIN_DIR)
+
+$(JUMP_JAR_TAG):
+	$(TOUCH) $(JUMP_JAR_TAG)
+
+dev-platform:
+
+FRC:
+.PHONY: installer clean dev-platform \
+proto-platform optimized debug

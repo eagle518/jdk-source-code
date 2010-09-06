@@ -1,0 +1,66 @@
+#
+# @(#)FILES_c.gmk	1.21 03/12/19
+# 
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+LAUNCHER_c = $(TARGDIR)launcher.c
+
+ifdef JPDA
+   JPDA_c = $(TARGDIR)jpda.c
+else
+   JPDA_c =
+endif
+
+FILES_less2_c =                       \
+        $(TARGDIR)launcher_md.c       \
+        $(TARGDIR)configurationFile.c \
+        $(TARGDIR)launchFile.c        \
+        $(TARGDIR)xmlparser.c         \
+        $(TARGDIR)propertyParser.c    \
+        $(TARGDIR)versionId.c         \
+        $(TARGDIR)secure.c            \
+        $(TARGDIR)system.c            \
+        $(TARGDIR)system_md.c         \
+        $(TARGDIR)splash_md.c         \
+        $(TARGDIR)msgString.c         \
+	$(TARGDIR)splashFile.c        \
+	$(TARGDIR)util.c
+
+JPEG_c =$(TARGDIR)jdapimin.c \
+        $(TARGDIR)jdinput.c  \
+        $(TARGDIR)jcomapi.c  \
+        $(TARGDIR)jutils.c   \
+        $(TARGDIR)jcmarker.c \
+        $(TARGDIR)jmemmgr.c  \
+        $(TARGDIR)jmemnobs.c \
+        $(TARGDIR)jdmarker.c \
+        $(TARGDIR)jdapistd.c \
+        $(TARGDIR)jerror.c   \
+        $(TARGDIR)jdmaster.c \
+        $(TARGDIR)jdpostct.c \
+        $(TARGDIR)jdmainct.c \
+        $(TARGDIR)jquant2.c  \
+        $(TARGDIR)jdcolor.c  \
+        $(TARGDIR)jdsample.c \
+        $(TARGDIR)jdphuff.c  \
+        $(TARGDIR)jdhuff.c   \
+        $(TARGDIR)jquant1.c  \
+        $(TARGDIR)jdcoefct.c \
+        $(TARGDIR)jddctmgr.c \
+        $(TARGDIR)jidctred.c \
+        $(TARGDIR)jidctfst.c \
+        $(TARGDIR)jidctflt.c \
+        $(TARGDIR)jidctint.c \
+        $(TARGDIR)jdmerge.c 
+
+FILES_c = $(LAUNCHER_c) $(JPDA_c) $(FILES_less2_c) $(JPEG_c)
+
+FILES_GENH = $(SHARE_SRC)/native/version/jawsversion.h
+GENH = $(FILES_GENH:$(SHARE_SRC)/native/version/%.h=$(GENHDIR)/%.h)
+
+ifeq ($(PLATFORM),windows)
+   FILES_GENRGS = $(PLATFORM_SRC)/activex/isInstalled_pre.rgs
+   GENRGS = $(FILES_GENRGS:$(PLATFORM_SRC)/activex/%_pre.rgs=$(GENHDIR)/%.rgs)
+endif

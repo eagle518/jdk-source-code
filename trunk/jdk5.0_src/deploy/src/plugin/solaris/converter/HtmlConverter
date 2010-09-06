@@ -1,0 +1,62 @@
+#!/bin/sh
+#
+#  Copyright 2000-2001 Sun Microsystems, Inc. All rights reserved.
+#  Copyright 2000-2001 Sun Microsystems, Inc. Tous droits réservés.
+#
+# This software is the proprietary information of Sun Microsystems, Inc.
+# Use is subject to license terms.
+#
+
+#
+# @(#)HtmlConverter	1.3 04/18/02
+#
+# Startup script for the HTML Converter
+#
+
+PRG=$0
+BINDIR=`dirname $0`
+BINDIR=`cd $BINDIR; pwd`
+
+
+# Test if HtmlConverter is a link
+# SGI use -l
+
+OS=`uname -s`
+
+if [ "${OS}" = "Linux" ]
+then
+    LINKTEST="-L"
+else
+    LINKTEST="-h"
+fi
+
+if [ "${LINKTEST}" "${PRG}" ]
+then
+	{
+	# Follow the link
+	LINK=`ls -ld "${PRG}" | awk '{print $NF}'`
+	# See if it is an absolute or relative path.
+	CHAR=`expr "${LINK}" : '\(.\).*'`
+	if [ "${CHAR}" = "/" ]
+	then
+		{
+		BINDIR=`dirname "${LINK}"`
+		BINDIR=`cd "${BINDIR}"; pwd`
+		}
+	else
+		{
+		BINDIR=`dirname "${BINDIR}/${LINK}"`
+		BINDIR=`cd "${BINDIR}"; pwd`
+		}
+	fi
+	}
+fi
+
+# Test path for jar file
+if [ ! -f "${BINDIR}/../lib/htmlconverter.jar" ]
+then
+	exit 2
+fi
+
+# Execute the converter
+${BINDIR}/java -jar ${BINDIR}/../lib/htmlconverter.jar $*

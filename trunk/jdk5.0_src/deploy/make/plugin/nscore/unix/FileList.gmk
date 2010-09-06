@@ -1,0 +1,19 @@
+FILES_c = utils.c
+
+FILES_cpp = JavaPluginFactory5.cpp \
+	    QueueRunnable.cpp \
+            CSecureJNIEnv.cpp \
+            JavaPluginInstance5.cpp \
+	    ProxySupport5.cpp \
+            JavaVM5.cpp \
+            CSecurityContext.cpp \
+            remotejni.cpp \
+	    JSObject.cpp \
+            util5.cpp \
+            CJavaConsole.cpp \
+            CookieSupport.cpp \
+            PluginPrint.cpp \
+            CReadBuffer.cpp \
+            CWriteBuffer.cpp \
+	    CNetscapeStream.cpp \
+	    CJavaStream.cpp

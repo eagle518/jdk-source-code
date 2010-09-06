@@ -1,0 +1,67 @@
+#
+# @(#)Resources.gmk	1.10 04/04/14
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+# generates zh_HK java file from zh_TW java file
+
+define create-hk-java-file
+@if [ ! -f $@ -o -w $@ ]; then \
+	dirname=`$(DIRNAME) $@`; \
+	if [ ! -d $${dirname} ]; then \
+		$(MKDIR) -p $${dirname}; \
+	fi; \
+	$(CAT) $< | $(SED) -e '/class/s/_zh_TW/_zh_HK/' > $@; \
+	$(CHMOD) 777 $@; \
+fi
+endef
+
+define create-hk-properties-file
+@dirname=`$(DIRNAME) $@`; \
+if [ ! -d $${dirname} ]; then \
+     $(MKDIR) -p $${dirname}; \
+fi; \
+$(CP) $< $@; \
+$(CHMOD) 777 $@
+endef
+
+# need by src/javaws/share directory which defined in common/Rules.gmk
+$(DEPLOY_L10N_TMP_OUTPUTDIR)/%_zh_HK.java: $(SHARE_SRC)/classes/%_zh_TW.java
+	$(create-hk-java-file)
+
+$(DEPLOY_L10N_TMP_OUTPUTDIR)/%_zh_HK.java: $(PLATFORM_SRC)/classes/%_zh_TW.java
+	$(create-hk-java-file)
+
+$(DEPLOY_L10N_TMP_OUTPUTDIR)/%_zh_HK.java: $(UNIX_SHARE_SRC)/classes/%_zh_TW.java
+	$(create-hk-java-file)
+
+# need by src/common/share/classes directory which defined in common/DeployRules.gmk
+$(DEPLOY_L10N_TMP_OUTPUTDIR)/%_zh_HK.java: $(DEPLOY_SHARE_SRC)/classes/%_zh_TW.java
+	$(create-hk-java-file)
+
+$(DEPLOY_L10N_TMP_OUTPUTDIR)/%_zh_HK.java: $(DEPLOY_PLATFORM_SRC)/classes/%_zh_TW.java
+	$(create-hk-java-file)
+
+# need by sun/plugin/resources/*_zh_HK.java which define in plugin/java/Makefile
+$(DEPLOY_L10N_TMP_OUTPUTDIR)/%_zh_HK.java: $(JAVASRCDIR)/%_zh_TW.java
+	$(create-hk-java-file)
+
+$(DEPLOY_L10N_TMP_OUTPUTDIR)/%_zh_HK.java: $(PLUGIN_PLATFORM_SRC)/classes/%_zh_TW.java
+	$(create-hk-java-file)
+
+# need by converter/sun/plugin/converter/resources/*_zh_HK.java 
+# which defined in plugin/converter/Makefile
+$(DEPLOY_L10N_TMP_OUTPUTDIR)/%_zh_HK.java: $(CONVERTER_SRC)/share/converter/%_zh_TW.java
+	$(create-hk-java-file)
+
+# need by properties which defined in common/Rules.gmk
+$(DEPLOY_L10N_TMP_OUTPUTDIR)/%_zh_HK.properties: $(SHARE_SRC)/classes/%_zh_TW.properties
+	$(create-hk-properties-file)
+
+$(DEPLOY_L10N_TMP_OUTPUTDIR)/%_zh_HK.properties: $(SHARE_SRC)/native/%_zh_TW.properties
+	$(create-hk-properties-file)
+
+$(DEPLOY_L10N_TMP_OUTPUTDIR)/%_zh_HK.properties: $(SHARE_SRC)/sample/servlet/src/classes/%_zh_TW.properties
+	$(create-hk-properties-file)

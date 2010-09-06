@@ -1,0 +1,32 @@
+#
+# @(#)converter.gmk	1.13 03/12/19
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# @(#)converter.gmk	1.13 12/19/03
+#
+# Other source files for the HTML converter
+#
+
+TEMPLATES =	templates/nsonly.tpl \
+		templates/default.tpl \
+		templates/extend.tpl \
+		templates/ieonly.tpl
+
+IMAGES =	images/duke.gif \
+		images/background.gif
+
+MISC =		readme.txt \
+		Readme.html
+
+LOCALE_SUFFIXES = \
+                $(PLUGIN_LOCALES)
+
+FILES_other =	$(TEMPLATES) $(IMAGES) $(MISC) 
+
+MANIFEST =	MANIFEST.MF
+
+SCRIPTS +=	$(BINDIR)/HtmlConverter$(EXE_SUFFIX)

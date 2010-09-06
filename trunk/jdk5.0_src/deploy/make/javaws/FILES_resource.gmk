@@ -1,0 +1,33 @@
+#
+# @(#)FILES_resource.gmk	1.39 03/10/21
+# 
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+FILES_rc = \
+	$(TARGDIR)resource.rc
+
+RESOURCES =
+
+RESOURCES_JARDIFF_UNBUNDLED_US = \
+	$(RESOURCES_JARDIFF:$(CLASSDESTDIR)/%=$(JARDIFF_DESTDIR)/%) 
+
+RESOURCES_JARDIFF_UNBUNDLED_INT = \
+	$(RESOURCES_JARDIFF_UNBUNDLED_US) \
+	$(RESOURCES_JARDIFF_I18N_DEV:$(I18NDESTDIR)/%=$(JARDIFF_DESTDIR)/%) 
+
+RESOURCES_JARDIFF_UNBUNDLED_ALL = $(RESOURCES_JARDIFF_UNBUNDLED_INT)
+
+RESOURCES_JARDIFF = \
+	$(CLASSDESTDIR)/com/sun/javaws/jardiff/resources/strings.properties
+
+RESOURCES_JARDIFF_I18N_DEV = \
+	$(I18NDESTDIR)/com/sun/javaws/jardiff/resources/strings_ja.properties 
+
+RESOURCES_DEMO_JARDIFF = \
+	$(JARDIFF_DEMO_DESTDIR)/jnlp/sample/jardiff/resources/strings.properties
+
+RESOURCES_DEMO_SERVLET = \
+	$(SERVLET_DEMO_DESTDIR)/jnlp/sample/servlet/resources/strings.properties 
+
