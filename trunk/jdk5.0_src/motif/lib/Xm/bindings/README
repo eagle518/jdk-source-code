@@ -1,0 +1,22 @@
+
+This directory contains Motif virtual bindings files.
+
+The file xmbind.alias maps an X server vendor name, and optional vendor
+release number, to a file containing the virtual bindings suitable for
+the vendor's keyboard.
+
+xmbind.alias can be modified to contain a user's per-vendor preferences,
+and should be placed in the user's home directory.
+
+A system wide xmbind.alias should be placed in /usr/lib/Xm/bindings, or
+in a directory specified by the environment variable XMBINDDIR.
+
+The vendor bindings files can be used to create user bindings files
+in the home directory. They can also be used to create a .motifbind
+file in the home directory, however, this method is not as flexible
+as using xmbind.alias, since it is not sensitive to the vendor, and
+therefore the keyboard type, of the X server.
+
+
+These examples are provided, as is, only as a service to the vendors
+and users.

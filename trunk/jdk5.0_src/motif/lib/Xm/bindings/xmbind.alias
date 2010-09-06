@@ -1,0 +1,37 @@
+!
+! bindings alias file
+!
+! format:
+!    "<ServerVendor(display)>[<space><VendorRelease(display)>]"  bindings_file
+!
+
+"Acorn Computers Ltd"				acorn
+"Apollo Computer Inc."				apollo
+"DECWINDOWS DigitalEquipmentCorp."		dec
+"DECWINDOWS DigitalEquipmentCorporation UWS2.2"	dec
+"Data General Corporation  Rev 04"		dg_AViiON
+"Double Click Imaging, Inc. KeyX"		doubleclick
+"Hewlett-Packard Company"			hp
+! "Hitachi?"					hitachi
+"International Business Machines"		ibm
+"Intergraph Corporation"			intergraph
+! "Intergraph Corporation ?"			intergraph17
+"Megatek Corporation"				megatek
+"Motorola Inc. (Microcomputer Division) "	motorola
+! "NCR?"					ncr_at
+! "NCR?"					ncr_vt
+"Silicon Graphics Inc."				sgi
+"Silicon Graphics"				sgi
+"Siemens Nixdorf Informationssysteme AG"	siemens_wx200
+"Siemens Munich by SP-4's Hacker Crew"		siemens_wx200
+"Siemens Munich (SP-4's hacker-clan)"		siemens_9733
+"Sony Corporation"				sony
+! sun:    for Displays with Type-4/Type-5 keyboards
+! sun_at: for Displays with PC AT style keyboards
+"Sun Microsystems, Inc."			sun
+! "Sun Microsystems, Inc."			sun_at
+"X11/NeWS - Sun Microsystems Inc."		sun
+"Tektronix, Inc."				tek
+! Entry for XFree86 users
+"The XFree86 Project, Inc"			sun_at
+

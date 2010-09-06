@@ -1,0 +1,67 @@
+XCOMM $XConsortium: Imakefile /main/cde_main/3 1996/04/21 18:55:02 drk $
+#if UseCCMakeDepend
+MDEP_PROG = makedepend
+#endif
+
+#ifdef ExportListGenSource
+EXPORTLISTGEN = exportlistgen
+#endif
+
+
+L10N_TOOLS =	ProgramTargetName(makestrs)	\
+		ProgramTargetName(mkmsgcat)	\
+		ProgramTargetName(mkcatdefs)
+
+CPP_TOOLS =	xmkmf $(MDEP_PROG) mergelib 
+
+PROGRAMS = $(CPP_TOOLS) $(L10N_TOOLS) $(EXPORTLISTGEN)
+
+DEPLIBS =
+#ifndef Win32Architecture
+  EXTRA_LIBRARIES =
+#endif
+
+XCOMM Some compilers generate fatal errors if an -L directory does
+XCOMM not exist.  Since BUILDLIBDIR may not exist yet suppress its use.
+         LDPRELIB =
+        LDPRELIBS =
+
+all:: $(PROGRAMS)
+
+includes:: $(L10N_TOOLS)
+
+#ifdef ExportListGenSource
+CppScriptTarget(exportlistgen,ExportListGenSource,-DCXXFILT=$(CXXFILT),)
+InstallNamedProg(exportlistgen,exportlistgen,$(BINDIR))
+#endif
+
+CppScriptTarget(xmkmf,xmkmf.cpp,-DCONFIGDIRSPEC='"'"-I$(CONFIGDIR)"'"',$(ICONFIGFILES))
+CppScriptTarget(makedepend,mdepend.cpp,-DPREPROC='"'"$(PREPROCESSCMD)"'"',$(ICONFIGFILES))
+CppScriptTarget(mergelib,mergelib.cpp,"-DARCMD=$(AR)" "-DRANLIB=$(RANLIB)",$(ICONFIGFILES))
+
+#if HasSymLinks
+#if CrossCompiling
+SimpleHostProgramTarget(lndir)
+#else
+SimpleProgramTarget(lndir)
+#endif
+#endif
+
+NormalProgramTarget(makestrs,makestrs.o,,,)
+NormalProgramTarget(mkmsgcat,mkmsgcat.o,,,)
+NormalProgramTarget(mkcatdefs,mkcatdefs.o,,,)
+
+InstallNamedProg(xmkmf,xmkmf,$(BINDIR))
+InstallManPage(xmkmf,$(MANDIR))
+InstallNamedProg(mkdirhier.sh,mkdirhier,$(BINDIR))
+InstallManPage(mkdirhier,$(MANDIR))
+#if UseCCMakeDepend
+InstallNamedProg(makedepend,makedepend,$(BINDIR))
+#endif
+#if SystemV || SystemV4
+InstallNamedProg(bsdinst.sh,bsdinst,$(BINDIR))
+#endif
+InstallNamedProg(mergelib,mergelib,$(BINDIR))
+
+InstallNamedProg(makeg.sh,makeg,$(BINDIR))
+InstallManPage(makeg,$(MANDIR))
