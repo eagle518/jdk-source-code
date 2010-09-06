@@ -1,0 +1,23 @@
+/*
+ * @(#)GIOP.idl	1.0 00/05/21
+ *
+ */
+
+#include "IOP.idl"
+
+module messages { 
+
+        typedef short AddressingDisposition;
+        const short KeyAddr = 0;
+        const short ProfileAddr = 1;
+        const short ReferenceAddr = 2;
+        struct IORAddressingInfo {
+                unsigned long selected_profile_index;
+                IOP::IOR ior;
+        };
+        union TargetAddress switch (AddressingDisposition) {
+                case KeyAddr: sequence <octet> object_key;
+                case ProfileAddr: IOP::TaggedProfile profile;
+                case ReferenceAddr: IORAddressingInfo ior;
+        };
+};

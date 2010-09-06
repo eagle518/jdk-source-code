@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<!--
+ @(#)package.html	1.2 03/12/19
+ 
+ Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+ SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+-->
+
+</head>
+<body bgcolor="white">
+<P> Provides method implementations with 
+ access to the identity of the object on which the 
+ method was invoked. The <code>Current</code> package
+ supports servants that implement multiple objects, 
+ but can be used within the context of POA-dispatched 
+ method invocations on any servant. To provide location 
+ transparency, ORBs are required to support use of 
+ <code>Current</code> in the context of both locally and remotely 
+ invoked operations. An instance of <code>Current</code> can be 
+ obtained by the application by issuing the 
+ <code>CORBA::ORB::resolve_initial_references("POACurrent")</code> 
+ operation. Thereafter, it can be used within the 
+ context of a method dispatched by the POA to obtain 
+ the <code>POA</code> and <code>ObjectId</code> that identify the object on 
+ which that operation was invoked.
+
+<H3>Package Specification</H3>
+ 
+<P>For a precise list of supported sections of official specifications with which 
+the Java 2 Platform, Standard Edition, v.1.4 ORB complies, see <A 
+HREF="../../CORBA/doc-files/compliance.html">Official Specifications for CORBA 
+support in J2SE 1.4</A>.
+<p>
+@since 1.4
+<br>
+@serial exclude
+</body>
+</html>

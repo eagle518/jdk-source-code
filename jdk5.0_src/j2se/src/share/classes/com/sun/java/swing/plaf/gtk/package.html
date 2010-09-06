@@ -1,0 +1,60 @@
+<html>
+<head>
+<title>GTK Look And Feel</title>
+<!--
+ @(#)package.html	1.5 03/12/19
+ 
+ Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+ SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+-->
+</head>
+<body bgcolor="white">
+
+    <h1>GTK Look And Feel</h1>
+
+    <p>
+      This package provides the GTK Look and Feel, which is
+      implemented on top of the <a href="../synth">Synth Look and Feel</a>.
+    <p>
+      Rather than having a unique class per <a
+href="../synth/Region.html">Region</a> handle the painting, <a
+href="GTKPainter.html">GTKPainter</a> handles ALL
+      painting. GTKPainter delegates all its painting calls to a <a
+href="GTKEngine.html">GTKEngine</a>, which has methods mirroring <a
+href="http://www.gtk.org">GTK's</a> <a
+href="http://developer.gnome.org/doc/API/2.0/gtk/gtkstyle.html">gtkstyleclass</a>.
+    <p>
+      GTK resource files offer the ability to specify properties that
+      will be matched based on object hierarchy. For example,
+      GtkWidget allows for specifying the size of the focus rectangle
+      through such a property, which can be specified in a resource
+      file using the following convention:
+<pre>
+  GtkWidget::focus-line-width=10
+</pre>
+    <p>
+      <a href="GTKStyle.html">GTKStyle</a> offers support for such
+      properties using the <a
+href="GTKStyle.html#getClassSpecificValue">getClassSpecificValue</a>
+      method or one of its variants, which takes a Region that
+      will be mapped to the correspoding Gtk widget and then matched
+      based on Gtk's object hierarchy. Certain Synth style properties
+      are mapped to the appropriate GTK class specific property were
+      appropriate. GTKStyle also contains a static Map of the synth
+      specific property values that resembles what was previously in
+      the defaults table.
+    <p>
+      <a href="GTKStyleFactory.html">GTKStyleFactory</a> subclasses <a
+href="../synth/DefaultSynthStyleFactory.html">DefaultSynthStyleFactory</a>
+      and adds support for GTK specific style
+      matching. GTKStyleFactory also maintains a mapping between the
+      synth name space and gtk's name space.
+
+    <hr>
+    <address><a href="mailto:sky@eng.sun.com">Scott Violet</a></address>
+<!-- Created: Thu Sep  5 10:39:50 PDT 2002 -->
+<!-- hhmts start -->
+Last modified: Thu Sep  5 11:07:30 PDT 2002
+<!-- hhmts end -->
+  </body>
+</html>

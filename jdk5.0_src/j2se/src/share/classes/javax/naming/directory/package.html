@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<!--
+ @(#)package.html	1.7 04/06/28
+ 
+ Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+ SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+-->
+</head>
+<body bgcolor="white">
+
+Extends the <tt>javax.naming</tt> package to provide functionality
+for accessing directory services.
+
+<p>
+This package defines the directory operations of the Java Naming and
+Directory Interface<font size=-2><sup>TM</sup></font> (JNDI). &nbsp;
+JNDI provides naming and directory functionality to applications
+written in the Java programming language.  It is designed to be
+independent of any specific naming or directory service
+implementation.  Thus a variety of services--new, emerging, and
+already deployed ones--can be accessed in a common way.
+
+<p>
+This package allows applications to retrieve and update attributes
+associated with objects stored in a directory, and to search for
+objects using specified attributes.
+
+<h4>The Directory Context</h4>
+
+The <tt>DirContext</tt>
+interface represents a <em>directory context</em>.
+It defines methods for examining and updating attributes associated with a
+<em>directory object</em>, or <em>directory entry</em> as it is sometimes
+called.
+<p>
+You use	<tt>getAttributes()</tt> to retrieve the attributes 
+associated with a directory object (for which you supply the name).
+Attributes are modified using <tt>modifyAttributes()</tt>. 
+You can add, replace, or remove attributes and/or attribute values
+using this operation.
+<p>
+<tt>DirContext</tt> also behaves as a naming context
+by extending the <tt>Context</tt> interface in the <tt>javax.naming</tt> package.
+This means that any directory object can also provide
+a naming context. 
+For example, the directory object for a person might contain
+the attributes of that person, and at the same time provide
+a context for naming objects relative to that person
+such as his printers and home directory.
+
+<h4>Searches</h4>
+<tt>DirContext</tt> contains methods for 
+performing content-based searching of the directory.
+In the simplest and most common form of usage, the application
+specifies a set of attributes--possibly with specific 
+values--to match, and submits this attribute set, to the 
+<tt>search()</tt> method.
+There are other overloaded forms of <tt>search()</tt>
+that support more sophisticated <em>search filters</em>.
+
+<h2>Package Specification</h2>
+
+The following documents can be found at the 
+<a href=http://java.sun.com/products/jndi>Java technology web site</a>:
+
+<ul>
+  <li><a href="http://java.sun.com/j2se/1.5/pdf/jndi.ps">JNDI API
+Document (Postscript)</a>
+  <li><a href="http://java.sun.com/j2se/1.5/pdf/jndi.pdf">JNDI API
+Document (PDF)</a>
+</ul>
+
+<h2>Related Documentation</h2>
+
+For a tutorial, examples, and overview, please see:
+<ul>
+  <li><a href="http://java.sun.com/products/jndi/tutorial">The JNDI Tutorial</a>
+  <li><a href="http://java.sun.com/products/jndi/examples.html">Examples</a>
+  <li><a href="http://java.sun.com/j2se/1.5/pdf/jndiexecsumm.ps">
+Executive Summary (Postscript)</a>
+  <li><a href="http://java.sun.com/j2se/1.5/pdf/jndiexecsumm.pdf">
+Executive Summary (PDF)</a>
+</ul>
+
+@since 1.3
+
+</body>
+</html>

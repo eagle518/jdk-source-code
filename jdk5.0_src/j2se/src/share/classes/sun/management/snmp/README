@@ -1,0 +1,149 @@
+#------------------------------------------------------------------------
+# Root Directory for JVM Management MIB Instrumentation sources
+#------------------------------------------------------------------------
+# 
+# AdaptorBootstrap.java: The class that will be called by the JVM in order
+#                to launch the SNMP Daemon at startup
+# 
+# jvmmib/*.java: Classes generated for tiger SNMP Runtime by mibgen, using
+#                mibgen Tiger Resource File (mibgen.properties.tiger)
+# 
+# jvminstr/*.java: Classes that customize the mibgen generated classes, in
+#                order to provide the JVM Management MIB instrumentation.
+# 
+# util/*.java: Utility classes used by the instrumentation, with no specific
+#                ties to the JVM Management MIB
+# 
+# JVM-MANAGEMENT-MIB.mib: the MIB file that was used to generate the
+#                the jvmmib/*.java classes. This file is archived here
+#                for traceability/maintainability.
+# 
+# rfc2287.txt, rfc2564.txt, mib_core.txt: standard MIB definitions needed
+#                to compile JVM-MANAGEMENT-MIB.mib. These files are archived 
+#                here for traceability/maintainability.
+# 
+# mibgen.properties.tiger: mibgen Tiger Resource File - used to generate code
+#                targeted at Tiger SNMP Runtime (default for mibgen is to
+#                generate code at JDMK SNMP Runtime).
+#
+#------------------------------------------------------------------------
+# 
+# To regenerate the files in jvmmib/ (if the JVM-MANAGEMENT-MIB.mib is 
+# updated) use the following script:
+#
+
+
+#------------------------------------------------------------------------
+#!/bin/ksh
+
+#-----------------------
+# UPDATE THE PATHS BELOW
+#-----------------------
+
+# Where is JDMK 5.1?
+#
+JDMK_HOME=${JDMK_HOME:=@JDMK-5-1-INSTALL-DIR@}
+
+# Where's java ? - 1.4 or later
+#
+JAVA_HOME=${JAVA_HOME:=/bin/java}
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+# The following paths should be OK provided you run the script
+# in this directory.
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+# Where are the MIB files? (JVM-MANAGEMENT-MIB.mib, rfc2287.txt, 
+#                           rfc2564.txt, mib_core.txt)
+MIBS=${MIBS:=.}
+
+# Where is mibgen Resource File for Tiger ?
+#
+TIGER_RESOURCE_FILE=${TIGER_RESOURCE_FILE:=./mibgen.properties.tiger}
+
+# Where to put generated files?
+#
+MIBGEN_PARSED_DIR=${MIBGEN_PARSED_DIR:=./jvmmib}
+
+#---------------------------------------------
+# You shouldn't need to change anything below.
+#---------------------------------------------
+
+# JAR containing mibgen (jdmktk.jar)
+#
+JDMK_LIB=$JDMK_HOME/lib
+MIBGEN_JAR=$JDMK_LIB/jdmktk.jar
+
+# Set PATH
+PATH=$JAVA_HOME/bin:$PATH
+export PATH
+
+# checkout any .java file under SCCS in $1
+checkout() {
+    if [ $# -lt 1 ] ;
+    then 
+      echo "No directory specified."	
+      return 1
+    fi
+    typeset dir=$1
+    typeset here=`pwd`
+    ( cd  $dir 
+    for f in $(ls *.java) ;do
+      if [ -r SCCS/s.$f ] && [ ! -r SCCS/p.$f ] ; then
+         echo "checking out $f"
+         sccs edit $f > /dev/null
+      fi
+    done
+    cd $here )
+}
+
+# This function generates code from JSR 163 MIB for Tiger RT
+#
+jvmmibgen() {
+    # Checkout files if needed
+    (checkout $MIBGEN_PARSED_DIR)
+
+    # Call mibgen
+    java -Dcom.sun.jdmk.tools.mibgen.config.store=$MIBGEN_PARSED_DIR/mibgen.properties \
+         -Dcom.sun.jdmk.tools.mibgen.config.file=$TIGER_RESOURCE_FILE \
+         -classpath $MIBGEN_JAR \
+	com.sun.jdmk.tools.MibGen -d $MIBGEN_PARSED_DIR \
+        -tp sun.management.snmp.jvmmib -desc -mc "$@" \
+	$MIBS/JVM-MANAGEMENT-MIB.mib \
+        $MIBS/mib_core.txt  \
+	$MIBS/rfc2287.txt \
+	$MIBS/rfc2564.txt
+}
+
+# Check we have everything
+#
+
+if [ ! -r $TIGER_RESOURCE_FILE ] ; then
+	echo "Tiger Resource File not found: $TIGER_RESOURCE_FILE"
+	exit 1
+fi
+
+if [ ! -r $MIBGEN_JAR ] ; then
+	echo "mibgen not found (JDMK TK Jar): $MIBGEN_JAR"
+	exit 2
+fi
+
+if [ ! -r $MIBS/JVM-MANAGEMENT-MIB.mib ] ; then
+	echo "JVM Management MIB file not found: $MIBS/JVM-MANAGEMENT-MIB.mib"
+        exit 3
+fi
+
+for f in mib_core.txt rfc2287.txt rfc2564.txt ; do
+	if [ ! -r $MIBS/$f ] ; then
+		echo "MIB file not found: $MIBS/$f"
+		exit 4
+        fi
+done
+
+# Call the jvmmibgen function
+#
+jvmmibgen
+
+#----------------------------------------------------------------------------
+
+

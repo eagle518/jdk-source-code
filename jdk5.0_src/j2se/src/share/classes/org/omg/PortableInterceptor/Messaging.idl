@@ -1,0 +1,24 @@
+/*
+ * @(#)Messaging.idl	1.4 01/03/23
+ *
+ */
+
+#ifndef _MESSAGING_IDL_
+#define _MESSAGING_IDL_
+
+#pragma prefix "omg.org"
+
+module Messaging {
+
+  /** Synchronization scope */
+  typedef short SyncScope;
+
+  /**
+   * Constant, defined in the Messaging spec, to define how far the 
+   * request shall progress before control is returned to the client.
+   */
+  const SyncScope SYNC_WITH_TRANSPORT = 1;
+};
+
+#endif // _MESSAGING_IDL_
+

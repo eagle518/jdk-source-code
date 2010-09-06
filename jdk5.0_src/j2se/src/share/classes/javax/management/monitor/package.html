@@ -1,0 +1,103 @@
+<html>
+<head>
+<title>javax.management.monitor package</title>
+<!--
+ @(#)package.html	4.11 04/01/27
+ 
+ Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+ SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+-->
+</head>
+<body bgcolor="white">
+      <p>Provides the definition of the monitor classes.  A Monitor is
+      an MBean that periodically observes the value of an attribute in
+      one or more other MBeans.  If the attribute meets a certain
+      condition, the Monitor emits a {@link
+      javax.management.monitor.MonitorNotification
+      MonitorNotification}.</p>
+
+      <p>The exact behavior of monitors is detailed in the
+	<a href="#spec">JMX Specification</a>.  What follows is a
+	summary.</p>
+
+      <p>There are three kinds of Monitors:</p>
+
+      <ul>
+	<li>
+
+	  <p>A {@link javax.management.monitor.CounterMonitor
+	    CounterMonitor} observes attributes of integer
+	    type.  The attributes are assumed to be non-negative, and
+	    monotonically increasing except for a possible
+	    <em>roll-over</em> at a specified <em>modulus</em>.  Each
+	    observed attribute has an associated <em>threshold</em>
+	    value.  A notification is sent when the attribute exceeds
+	    its threshold.</p>
+	  
+	  <p>An <em>offset</em> value can be specified.  When an
+	    observed value exceeds its threshold, the threshold is
+	    incremented by the offset, or by a multiple of the offset
+	    sufficient to make the threshold greater than the new
+	    observed value.</p>
+
+	  <p>A <code>CounterMonitor</code> can operate in
+	    <em>difference mode</em>.  In this mode, the value
+	    compared against the threshold is the difference between
+	    two successive observations of an attribute.</p>
+	  
+	</li>
+	<li>
+
+	  <p>A {@link javax.management.monitor.GaugeMonitor
+	    GaugeMonitor} observes attributes of numerical type.  Each
+	    observed attribute has an associated <em>high
+	      threshold</em> and <em>low threshold</em>.</p>
+
+	  <p>When an observed attribute crosses the high threshold, if
+	    the <em>notify high</em> flag is true, then a notification
+	    is sent.  Subsequent crossings of the high threshold value
+	    will not trigger further notifications until the gauge value
+	    becomes less than or equal to the low threshold.</p>
+
+	  <p>When an observed attribute crosses the low threshold, if
+	    the <em>notify low</em> flag is true, then a notification
+	    is sent.  Subsequent crossings of the low threshold value
+	    will not trigger further notifications until the gauge
+	    value becomes greater than or equal to the high
+	    threshold.</p>
+
+	  <p>Typically, only one of the notify high and notify low
+	    flags is set.  The other threshold is used to provide a
+	    <em>hysteresis</em> mechanism to avoid the repeated
+	    triggering of notifications when an attribute makes small
+	    oscillations around the threshold value.</p>
+
+	  <p>A <code>GaugeMonitor</code> can operate in <em>difference
+	      mode</em>.  In this mode, the value compared against the
+	    high and low thresholds is the difference between two
+	    successive observations of an attribute.</p>
+
+	</li>
+	<li>
+
+	  <p>A {@link javax.management.monitor.StringMonitor
+	    StringMonitor} observes attributes of type
+	    <code>String</code>.  A notification is sent when an
+	    observed attribute becomes equal and/or not equal to a
+	    given string.</p>
+
+	</li>
+      </ul>
+
+      <h2><a name="spec">Package Specification</a></h2>
+
+	<ul>
+	  <li><a href="http://java.sun.com/products/JavaManagement/download.html">
+	    Specification of the JMX API, version 1.2</a>
+	  (Chapter 9, <em>Monitoring</em>)
+	</ul>
+
+      @since 1.5
+
+</BODY>
+</HTML>
