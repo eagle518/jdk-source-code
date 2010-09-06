@@ -1,0 +1,13 @@
+#
+# @(#)mapfile-vers-CORE	1.1 03/07/29 14:47:44
+#
+
+# 
+# Copyright 1999-2002 Sun Microsystems, Inc.  All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL.  Use is subject to license terms.
+
+# Define public interface.
+
+SUNWprivate_1.1 {
+        global:
+};

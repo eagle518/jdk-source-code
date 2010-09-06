@@ -1,0 +1,9 @@
+// @(#)includeDB_coreonly	1.3 04/07/29 16:36:23
+// 
+// Copyright 2004 Sun Microsystems, Inc.  All rights reserved.
+// SUN PROPRIETARY/CONFIDENTIAL.  Use is subject to license terms.
+// 
+
+// NOTE: DO NOT CHANGE THIS COPYRIGHT TO NEW STYLE - IT WILL BREAK makeDeps!
+
+globals.hpp                             globals_core.hpp

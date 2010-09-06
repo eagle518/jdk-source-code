@@ -1,0 +1,101 @@
+// @(#)includeDB_gc_shared	1.13 04/07/29 16:36:17
+// 
+// Copyright 2004 Sun Microsystems, Inc.  All rights reserved.
+// SUN PROPRIETARY/CONFIDENTIAL.  Use is subject to license terms.
+// 
+
+// NOTE: DO NOT CHANGE THIS COPYRIGHT TO NEW STYLE - IT WILL BREAK makeDeps!
+
+ageTable.cpp                            ageTable.hpp
+ageTable.cpp				collectorPolicy.hpp
+ageTable.cpp                            copy.hpp
+ageTable.cpp                            resourceArea.hpp
+ageTable.cpp                            sharedHeap.hpp
+
+ageTable.hpp                            markOop.hpp
+ageTable.hpp                            oop.hpp
+ageTable.hpp                            perfData.hpp
+
+collectorCounters.cpp                   collectorCounters.hpp
+collectorCounters.cpp                   resourceArea.hpp
+
+collectorCounters.hpp                   perfData.hpp
+
+cSpaceCounters.cpp                      resourceArea.hpp
+cSpaceCounters.cpp                      cSpaceCounters.hpp
+
+cSpaceCounters.hpp                      space.inline.hpp
+cSpaceCounters.hpp                      perfData.hpp
+cSpaceCounters.hpp                      generationCounters.hpp
+
+gcPolicyCounters.cpp                    resourceArea.hpp
+gcPolicyCounters.cpp                    gcPolicyCounters.hpp
+
+gcPolicyCounters.hpp                    perfData.hpp
+
+gcStats.cpp				gcStats.hpp
+gcStats.cpp				gcUtil.hpp
+
+gcStats.hpp				gcUtil.hpp
+
+gcUtil.cpp                              gcUtil.hpp
+
+gcUtil.hpp                              allocation.hpp
+gcUtil.hpp                              debug.hpp
+gcUtil.hpp                              globalDefinitions.hpp
+
+generationCounters.cpp                  generationCounters.hpp
+generationCounters.cpp                  resourceArea.hpp
+
+generationCounters.hpp                  perfData.hpp
+generationCounters.hpp                  virtualspace.hpp
+
+gSpaceCounters.cpp                      generation.hpp
+gSpaceCounters.cpp                      resourceArea.hpp
+gSpaceCounters.cpp                      gSpaceCounters.hpp
+
+gSpaceCounters.hpp                      generation.hpp
+gSpaceCounters.hpp                      perfData.hpp
+gSpaceCounters.hpp                      generationCounters.hpp
+
+immutableSpace.cpp                      immutableSpace.hpp
+immutableSpace.cpp                      oop.inline.hpp
+immutableSpace.cpp                      universe.hpp
+
+immutableSpace.hpp                      iterator.hpp
+
+isGCActiveMark.hpp                      parallelScavengeHeap.hpp
+
+liveRange.hpp                           copy.hpp
+liveRange.hpp                           memRegion.hpp
+
+markSweep.cpp                           collectedHeap.inline.hpp
+markSweep.cpp                           markSweep.inline.hpp
+markSweep.cpp                           oop.inline.hpp
+
+markSweep.hpp                           growableArray.hpp
+markSweep.hpp                           jvmpi.hpp
+markSweep.hpp                           markOop.hpp
+markSweep.hpp                           oop.hpp
+markSweep.hpp                           timer.hpp
+markSweep.hpp                           universe.hpp
+
+markSweep.inline.hpp                    collectedHeap.hpp
+markSweep.inline.hpp                    markSweep.hpp
+
+mutableSpace.cpp                        mutableSpace.hpp
+mutableSpace.cpp                        oop.inline.hpp
+mutableSpace.cpp                        safepoint.hpp
+mutableSpace.cpp                        thread.hpp
+
+mutableSpace.hpp                        immutableSpace.hpp
+mutableSpace.hpp                        memRegion.hpp
+mutableSpace.hpp                        copy.hpp
+
+spaceCounters.cpp                       resourceArea.hpp
+spaceCounters.cpp                       spaceCounters.hpp
+
+spaceCounters.hpp                       immutableSpace.hpp
+spaceCounters.hpp                       mutableSpace.hpp
+spaceCounters.hpp                       perfData.hpp
+spaceCounters.hpp                       generationCounters.hpp

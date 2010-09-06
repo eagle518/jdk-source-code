@@ -1,0 +1,30 @@
+#
+# @(#)mapfile-vers-nonproduct	1.4 01/11/27 19:30:19
+#
+
+# 
+# Copyright 1999-2002 Sun Microsystems, Inc.  All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL.  Use is subject to license terms.
+
+# Define public interface.
+
+SUNWprivate_1.1 {
+        global:
+		# Old reflection routines
+		# These do not need to be present in the product build in JDK 1.4
+		# but their code has not been removed yet because there will not
+		# be a substantial code savings until JVM_InvokeMethod and
+		# JVM_NewInstanceFromConstructor can also be removed; see
+		# reflectionCompat.hpp.
+		JVM_GetClassConstructor;
+		JVM_GetClassConstructors;
+		JVM_GetClassField;
+		JVM_GetClassFields;
+		JVM_GetClassMethod;
+		JVM_GetClassMethods;
+		JVM_GetField;
+		JVM_GetPrimitiveField;
+		JVM_NewInstance;
+		JVM_SetField;
+		JVM_SetPrimitiveField;
+};

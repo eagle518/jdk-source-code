@@ -1,0 +1,774 @@
+// @(#)includeDB_ci	1.82 04/07/29 16:36:18
+//
+// Copyright 2004 Sun Microsystems, Inc.  All rights reserved.
+// SUN PROPRIETARY/CONFIDENTIAL.  Use is subject to license terms.
+// 
+
+abstractCompiler.hpp                    compilerInterface.hpp
+
+ciArray.cpp                             ciArray.hpp
+ciArray.cpp                             ciKlass.hpp
+ciArray.cpp                             ciUtilities.hpp
+
+ciArray.hpp                             arrayOop.hpp
+ciArray.hpp                             ciObject.hpp
+ciArray.hpp                             objArrayOop.hpp
+ciArray.hpp                             typeArrayOop.hpp
+
+ciArrayKlass.cpp                        ciArrayKlass.hpp
+ciArrayKlass.cpp                        ciTypeArrayKlass.hpp
+ciArrayKlass.cpp                        ciObjArrayKlass.hpp
+ciArrayKlass.cpp                        ciUtilities.hpp
+
+ciArrayKlass.hpp                        ciKlass.hpp
+
+ciArrayKlassKlass.hpp                   ciKlassKlass.hpp
+
+ciCallProfile.hpp                       ciClassList.hpp
+
+ciConstant.cpp                          allocation.hpp
+ciConstant.cpp                          allocation.inline.hpp
+ciConstant.cpp                          ciConstant.hpp
+ciConstant.cpp                          ciUtilities.hpp
+
+ciConstant.hpp                          ciClassList.hpp
+ciConstant.hpp                          ciNullObject.hpp
+
+ciConstantPoolCache.cpp                 allocation.hpp
+ciConstantPoolCache.cpp                 allocation.inline.hpp
+ciConstantPoolCache.cpp                 ciConstantPoolCache.hpp
+ciConstantPoolCache.cpp                 ciUtilities.hpp
+
+ciConstantPoolCache.hpp                 growableArray.hpp
+ciConstantPoolCache.hpp                 resourceArea.hpp
+
+ciEnv.cpp                               allocation.inline.hpp
+ciEnv.cpp                               ciConstant.hpp
+ciEnv.cpp                               ciEnv.hpp
+ciEnv.cpp                               ciField.hpp
+ciEnv.cpp                               ciInstance.hpp
+ciEnv.cpp                               ciInstanceKlassKlass.hpp
+ciEnv.cpp                               ciInstanceKlass.hpp
+ciEnv.cpp                               ciMethod.hpp
+ciEnv.cpp                               ciNullObject.hpp
+ciEnv.cpp                               ciObjArrayKlassKlass.hpp
+ciEnv.cpp                               ciTypeArrayKlassKlass.hpp
+ciEnv.cpp                               ciUtilities.hpp
+ciEnv.cpp                               collectedHeap.inline.hpp
+ciEnv.cpp                               compileBroker.hpp
+ciEnv.cpp                               compileLog.hpp
+ciEnv.cpp                               init.hpp
+ciEnv.cpp				jvmtiExport.hpp
+ciEnv.cpp                               jvmpi.hpp
+ciEnv.cpp                               jvmpi.inline.hpp
+ciEnv.cpp                               linkResolver.hpp
+ciEnv.cpp                               objArrayKlass.hpp
+ciEnv.cpp                               reflection.hpp
+ciEnv.cpp                               oop.hpp
+ciEnv.cpp                               oop.inline.hpp
+ciEnv.cpp                               oop.inline2.hpp
+ciEnv.cpp                               scopeDesc.hpp
+ciEnv.cpp                               systemDictionary.hpp
+ciEnv.cpp                               vmSymbols.hpp
+ciEnv.cpp                               universe.inline.hpp
+
+ciEnv.hpp                               ciClassList.hpp
+ciEnv.hpp                               ciObjectFactory.hpp
+ciEnv.hpp                               debugInfoRec.hpp
+ciEnv.hpp                               exceptionHandlerTable.hpp
+ciEnv.hpp                               jvmpi.hpp
+ciEnv.hpp                               oopMap.hpp
+ciEnv.hpp                               thread.hpp
+
+ciExceptionHandler.cpp                  ciExceptionHandler.hpp
+ciExceptionHandler.cpp                  ciUtilities.hpp
+
+ciExceptionHandler.hpp                  ciClassList.hpp
+ciExceptionHandler.hpp                  ciInstanceKlass.hpp
+
+ciField.cpp                             collectedHeap.inline.hpp
+ciField.cpp                             ciField.hpp
+ciField.cpp                             ciInstanceKlass.hpp
+ciField.cpp                             ciUtilities.hpp
+ciField.cpp                             fieldDescriptor.hpp
+ciField.cpp                             linkResolver.hpp
+ciField.cpp                             oop.inline.hpp
+ciField.cpp                             oop.inline2.hpp
+ciField.cpp                             systemDictionary.hpp
+ciField.cpp                             universe.inline.hpp
+
+ciField.hpp                             ciClassList.hpp
+ciField.hpp                             ciConstant.hpp
+ciField.hpp                             ciFlags.hpp
+
+ciFlags.cpp                             ciFlags.hpp
+
+ciFlags.hpp                             accessFlags.hpp
+ciFlags.hpp                             allocation.hpp
+ciFlags.hpp                             ciClassList.hpp
+ciFlags.hpp                             jvm.h
+
+ciInstance.cpp                          ciInstance.hpp
+ciInstance.cpp                          ciInstanceKlass.hpp
+ciInstance.cpp                          ciUtilities.hpp
+ciInstance.cpp                          systemDictionary.hpp
+ciInstance.cpp                          oop.inline.hpp
+
+ciInstance.hpp                          ciObject.hpp
+ciInstance.hpp                          instanceOop.hpp
+
+ciInstanceKlass.cpp                     allocation.hpp
+ciInstanceKlass.cpp                     allocation.inline.hpp
+ciInstanceKlass.cpp                     ciField.hpp
+ciInstanceKlass.cpp                     ciInstance.hpp
+ciInstanceKlass.cpp                     ciInstanceKlass.hpp
+ciInstanceKlass.cpp                     ciUtilities.hpp
+ciInstanceKlass.cpp                     fieldDescriptor.hpp
+ciInstanceKlass.cpp                     systemDictionary.hpp
+ciInstanceKlass.cpp                     oop.inline.hpp
+
+ciInstanceKlass.hpp                     ciConstantPoolCache.hpp
+ciInstanceKlass.hpp                     ciFlags.hpp
+ciInstanceKlass.hpp                     ciInstanceKlassKlass.hpp
+ciInstanceKlass.hpp                     ciKlass.hpp
+ciInstanceKlass.hpp                     ciSymbol.hpp
+
+ciInstanceKlassKlass.cpp                ciInstanceKlassKlass.hpp
+ciInstanceKlassKlass.cpp                ciUtilities.hpp
+
+ciInstanceKlassKlass.hpp                ciKlassKlass.hpp
+
+ciKlass.cpp                             ciKlass.hpp
+ciKlass.cpp                             ciSymbol.hpp
+ciKlass.cpp                             ciUtilities.hpp
+ciKlass.cpp                             oop.inline.hpp
+
+ciKlass.hpp                             klassOop.hpp
+ciKlass.hpp                             ciType.hpp
+
+ciKlassKlass.cpp                        ciKlassKlass.hpp
+ciKlassKlass.cpp                        ciUtilities.hpp
+
+ciKlassKlass.hpp                        ciKlass.hpp
+ciKlassKlass.hpp                        ciSymbol.hpp
+
+ciMethod.cpp                            allocation.inline.hpp
+ciMethod.cpp                            resourceArea.hpp
+ciMethod.cpp                            cha.hpp
+ciMethod.cpp                            ciCallProfile.hpp
+ciMethod.cpp                            ciExceptionHandler.hpp
+ciMethod.cpp                            ciInstanceKlass.hpp
+ciMethod.cpp                            ciMethod.hpp
+ciMethod.cpp                            ciMethodData.hpp
+ciMethod.cpp                            ciMethodKlass.hpp
+ciMethod.cpp                            ciOopMap.hpp
+ciMethod.cpp                            ciSymbol.hpp
+ciMethod.cpp                            ciUtilities.hpp
+ciMethod.cpp                            compilerOracle.hpp
+ciMethod.cpp                            generateOopMap.hpp
+ciMethod.cpp                            interpreter.hpp
+ciMethod.cpp                            linkResolver.hpp
+ciMethod.cpp                            nativeLookup.hpp
+ciMethod.cpp                            oop.inline.hpp
+
+ciMethod.hpp                            bitMap.hpp
+ciMethod.hpp                            ciFlags.hpp
+ciMethod.hpp                            ciInstanceKlass.hpp
+ciMethod.hpp                            ciObject.hpp
+ciMethod.hpp                            ciSignature.hpp
+
+ciMethodData.cpp                        allocation.inline.hpp
+ciMethodData.cpp                        ciMethodData.hpp
+ciMethodData.cpp                        ciUtilities.hpp
+ciMethodData.cpp                        copy.hpp
+ciMethodData.cpp                        deoptimization.hpp
+ciMethodData.cpp                        resourceArea.hpp
+
+ciMethodData.hpp                        ciClassList.hpp
+ciMethodData.hpp                        ciKlass.hpp
+ciMethodData.hpp                        ciObject.hpp
+ciMethodData.hpp                        ciUtilities.hpp
+ciMethodData.hpp                        methodDataOop.hpp
+ciMethodData.hpp                        oop.inline.hpp
+
+ciMethodKlass.cpp                       ciMethodKlass.hpp
+ciMethodKlass.cpp                       ciUtilities.hpp
+
+ciMethodKlass.hpp                       ciKlass.hpp
+ciMethodKlass.hpp                       ciSymbol.hpp
+
+ciNullObject.cpp                        ciNullObject.hpp
+ciNullObject.hpp                        ciUtilities.hpp
+
+ciNullObject.hpp                        ciClassList.hpp
+ciNullObject.hpp                        ciObject.hpp
+
+ciObjArray.hpp                          ciArray.hpp
+ciObjArray.hpp                          ciClassList.hpp
+ciObjArray.hpp                          objArrayOop.hpp
+
+ciObjArrayKlass.cpp                     ciInstanceKlass.hpp
+ciObjArrayKlass.cpp                     ciObjArrayKlass.hpp
+ciObjArrayKlass.cpp                     ciObjArrayKlassKlass.hpp
+ciObjArrayKlass.cpp                     ciSymbol.hpp
+ciObjArrayKlass.cpp                     ciUtilities.hpp
+ciObjArrayKlass.cpp                     objArrayKlass.hpp
+
+ciObjArrayKlass.hpp                     ciArrayKlass.hpp
+
+ciObjArrayKlassKlass.cpp                ciObjArrayKlassKlass.hpp
+ciObjArrayKlassKlass.cpp                ciUtilities.hpp
+
+ciObjArrayKlassKlass.hpp                ciArrayKlassKlass.hpp
+
+ciObject.cpp                            collectedHeap.inline.hpp
+ciObject.cpp                            ciObject.hpp
+ciObject.cpp                            ciUtilities.hpp
+ciObject.cpp                            oop.inline2.hpp
+
+ciObject.hpp                            allocation.hpp
+ciObject.hpp                            handles.hpp
+ciObject.hpp                            jniHandles.hpp
+ciObject.hpp                            ciClassList.hpp
+
+ciObjectFactory.cpp                     allocation.inline.hpp
+ciObjectFactory.cpp                     ciMethod.hpp
+ciObjectFactory.cpp                     ciMethodData.hpp
+ciObjectFactory.cpp                     ciMethodKlass.hpp
+ciObjectFactory.cpp                     ciNullObject.hpp
+ciObjectFactory.cpp                     ciObjArray.hpp
+ciObjectFactory.cpp                     ciObjArrayKlass.hpp
+ciObjectFactory.cpp                     ciObjArrayKlassKlass.hpp
+ciObjectFactory.cpp                     ciObjectFactory.hpp
+ciObjectFactory.cpp                     ciInstance.hpp
+ciObjectFactory.cpp                     ciInstanceKlass.hpp
+ciObjectFactory.cpp                     ciInstanceKlassKlass.hpp
+ciObjectFactory.cpp                     ciSymbol.hpp
+ciObjectFactory.cpp                     ciSymbolKlass.hpp
+ciObjectFactory.cpp                     ciTypeArray.hpp
+ciObjectFactory.cpp                     ciTypeArrayKlass.hpp
+ciObjectFactory.cpp                     ciTypeArrayKlassKlass.hpp
+ciObjectFactory.cpp                     ciUtilities.hpp
+ciObjectFactory.cpp                     collectedHeap.inline.hpp
+ciObjectFactory.cpp                     fieldType.hpp
+ciObjectFactory.cpp                     oop.inline.hpp
+ciObjectFactory.cpp                     oop.inline2.hpp
+ciObjectFactory.cpp                     systemDictionary.hpp
+
+ciObjectFactory.hpp                     ciClassList.hpp
+ciObjectFactory.hpp                     ciObject.hpp
+ciObjectFactory.hpp                     growableArray.hpp
+
+ciOopMap.cpp                            ciOopMap.hpp
+ciOopMap.cpp                            debugInfoRec.hpp
+
+ciOopMap.hpp                            array.hpp
+ciOopMap.hpp                            ciMethod.hpp
+ciOopMap.hpp                            generateOopMap.hpp
+
+ciType.cpp                              ciType.hpp
+ciType.cpp                              ciUtilities.hpp
+ciType.cpp                              oop.inline.hpp
+ciType.cpp                              systemDictionary.hpp
+
+ciType.hpp                              klassOop.hpp
+ciType.hpp                              ciObject.hpp
+
+ciSignature.cpp                         allocation.inline.hpp
+ciSignature.cpp                         ciSignature.hpp
+ciSignature.cpp                         ciUtilities.hpp
+ciSignature.cpp                         oop.hpp
+ciSignature.cpp                         oop.inline.hpp
+ciSignature.cpp                         signature.hpp
+
+ciSignature.hpp                         ciClassList.hpp
+ciSignature.hpp                         ciSymbol.hpp
+ciSignature.hpp                         globalDefinitions.hpp
+ciSignature.hpp                         growableArray.hpp
+
+ciStreams.cpp                           ciConstant.hpp
+ciStreams.cpp                           ciField.hpp
+ciStreams.cpp                           ciStreams.hpp
+ciStreams.cpp                           ciUtilities.hpp
+
+ciStreams.hpp                           ciClassList.hpp
+ciStreams.hpp                           ciExceptionHandler.hpp
+ciStreams.hpp                           ciInstanceKlass.hpp
+ciStreams.hpp                           ciMethod.hpp
+
+ciSymbol.cpp                            ciSymbol.hpp
+ciSymbol.cpp                            ciUtilities.hpp
+
+ciSymbol.hpp                            ciObject.hpp
+ciSymbol.hpp                            ciObjectFactory.hpp
+ciSymbol.hpp                            symbolOop.hpp
+ciSymbol.hpp                            vmSymbols.hpp
+
+ciSymbolKlass.cpp                       ciSymbolKlass.hpp
+ciSymbolKlass.cpp                       ciUtilities.hpp
+
+ciSymbolKlass.hpp                       ciKlass.hpp
+ciSymbolKlass.hpp                       ciSymbol.hpp
+
+ciTypeArray.hpp                         ciArray.hpp
+ciTypeArray.hpp                         ciClassList.hpp
+ciTypeArray.hpp                         typeArrayOop.hpp
+
+ciTypeArrayKlass.cpp                    ciTypeArrayKlass.hpp
+ciTypeArrayKlass.cpp                    ciUtilities.hpp
+
+ciTypeArrayKlass.hpp                    ciArrayKlass.hpp
+
+ciTypeArrayKlassKlass.cpp               ciTypeArrayKlassKlass.hpp
+ciTypeArrayKlassKlass.cpp               ciUtilities.hpp
+
+ciTypeArrayKlassKlass.hpp               ciArrayKlassKlass.hpp
+
+ciUtilities.cpp                         ciUtilities.hpp
+
+ciUtilities.hpp                         ciEnv.hpp
+ciUtilities.hpp                         interfaceSupport.hpp
+
+compileBroker.cpp                       allocation.inline.hpp
+compileBroker.cpp                       arguments.hpp
+compileBroker.cpp                       compilationPolicy.hpp
+compileBroker.cpp                       compileBroker.hpp
+compileBroker.cpp                       compileLog.hpp
+compileBroker.cpp                       compilerOracle.hpp
+compileBroker.cpp                       init.hpp
+compileBroker.cpp                       interfaceSupport.hpp
+compileBroker.cpp                       javaCalls.hpp
+compileBroker.cpp                       jvmpi.hpp
+compileBroker.cpp                       jvmpi.inline.hpp
+compileBroker.cpp                       linkResolver.hpp
+compileBroker.cpp                       methodDataOop.hpp
+compileBroker.cpp                       methodOop.hpp
+compileBroker.cpp                       nativeLookup.hpp
+compileBroker.cpp                       oop.inline.hpp
+compileBroker.cpp                       os.hpp
+compileBroker.cpp                       systemDictionary.hpp
+compileBroker.cpp                       vmSymbols.hpp
+
+compileBroker.hpp                       abstractCompiler.hpp
+compileBroker.hpp                       compilerInterface.hpp
+compileBroker.hpp                       perfData.hpp
+
+compileLog.cpp                          compileLog.hpp
+compileLog.cpp                          allocation.inline.hpp
+compileLog.cpp                          ciMethod.hpp
+compileLog.cpp                          methodOop.hpp
+compileLog.cpp                          mutexLocker.hpp
+compileLog.cpp                          os.hpp
+
+compileLog.hpp                          xmlstream.hpp
+
+// (includeDB_compiler[12] add additional dependencies for compilation.?pp)
+
+compilerInterface.hpp                   ciEnv.hpp
+compilerInterface.hpp                   ciField.hpp
+compilerInterface.hpp                   ciConstant.hpp
+compilerInterface.hpp                   ciFlags.hpp
+compilerInterface.hpp                   ciExceptionHandler.hpp
+compilerInterface.hpp                   ciCallProfile.hpp
+compilerInterface.hpp                   ciSignature.hpp
+compilerInterface.hpp                   ciStreams.hpp
+compilerInterface.hpp                   ciObject.hpp
+compilerInterface.hpp                   ciNullObject.hpp
+compilerInterface.hpp                   ciInstance.hpp
+compilerInterface.hpp                   ciMethod.hpp
+compilerInterface.hpp                   ciSymbol.hpp
+compilerInterface.hpp                   ciArray.hpp
+compilerInterface.hpp                   ciObjArray.hpp
+compilerInterface.hpp                   ciTypeArray.hpp
+compilerInterface.hpp                   ciKlass.hpp
+compilerInterface.hpp                   ciInstanceKlass.hpp
+compilerInterface.hpp                   ciMethodKlass.hpp
+compilerInterface.hpp                   ciSymbolKlass.hpp
+compilerInterface.hpp                   ciArrayKlass.hpp
+compilerInterface.hpp                   ciObjArrayKlass.hpp
+compilerInterface.hpp                   ciTypeArrayKlass.hpp
+compilerInterface.hpp                   ciKlassKlass.hpp
+compilerInterface.hpp                   ciInstanceKlassKlass.hpp
+compilerInterface.hpp                   ciArrayKlassKlass.hpp
+compilerInterface.hpp                   ciObjArrayKlassKlass.hpp
+compilerInterface.hpp                   ciTypeArrayKlassKlass.hpp
+
+debugInfoRec.cpp                        debugInfoRec.hpp
+debugInfoRec.cpp                        pcDesc.hpp
+debugInfoRec.cpp                        scopeDesc.hpp
+
+debugInfoRec.hpp                        ciClassList.hpp
+debugInfoRec.hpp                        ciInstanceKlass.hpp
+debugInfoRec.hpp                        ciMethod.hpp
+debugInfoRec.hpp                        debugInfo.hpp
+debugInfoRec.hpp                        growableArray.hpp
+debugInfoRec.hpp                        location.hpp
+debugInfoRec.hpp                        oop.hpp
+debugInfoRec.hpp                        oopMap.hpp
+
+
+// includeDB_core dependents on includeDB_ci modules:
+
+classLoader.cpp                         compileBroker.hpp
+debug.cpp                               compileBroker.hpp
+exceptions.cpp                          compileBroker.hpp
+instanceKlass.cpp                       compileBroker.hpp
+javaCalls.cpp                           compileBroker.hpp
+linkResolver.cpp                        compileBroker.hpp
+markSweep.cpp                           compileBroker.hpp
+onStackReplacement.cpp                  compileBroker.hpp
+onStackReplacement.cpp                  sharedRuntime.hpp
+os_<os_family>.cpp                      compileBroker.hpp
+thread.cpp                              compileBroker.hpp
+ostream.cpp                             compileLog.hpp
+
+
+// VM components used in presence of compilers only
+
+cha.cpp                                 cha.hpp
+cha.cpp                                 instanceKlass.hpp
+cha.cpp                                 linkResolver.hpp
+cha.cpp                                 methodOop.hpp
+cha.cpp                                 oop.inline.hpp
+cha.cpp                                 systemDictionary.hpp
+cha.cpp                                 universe.inline.hpp
+
+cha.hpp                                 growableArray.hpp
+cha.hpp                                 handles.hpp
+cha.hpp                                 handles.inline.hpp
+cha.hpp                                 klassOop.hpp
+
+
+compilationPolicy.cpp                   compilationPolicy.hpp
+compilationPolicy.cpp                   compiledIC.hpp
+compilationPolicy.cpp                   compilerOracle.hpp
+compilationPolicy.cpp                   events.hpp
+compilationPolicy.cpp                   frame.hpp
+compilationPolicy.cpp                   globalDefinitions.hpp
+compilationPolicy.cpp                   handles.inline.hpp
+compilationPolicy.cpp                   interpreter_<arch>.hpp
+compilationPolicy.cpp                   methodDataOop.hpp
+compilationPolicy.cpp                   methodOop.hpp
+compilationPolicy.cpp                   nativeLookup.hpp
+compilationPolicy.cpp                   nmethod.hpp
+compilationPolicy.cpp                   oop.inline.hpp
+compilationPolicy.cpp                   rframe.hpp
+compilationPolicy.cpp                   stubRoutines.hpp
+compilationPolicy.cpp                   thread.hpp
+compilationPolicy.cpp                   timer.hpp
+compilationPolicy.cpp                   vframe.hpp
+compilationPolicy.cpp                   vm_operations.hpp
+
+compilationPolicy.hpp                   allocation.hpp
+compilationPolicy.hpp                   compileBroker.hpp
+compilationPolicy.hpp                   growableArray.hpp
+compilationPolicy.hpp                   nmethod.hpp
+compilationPolicy.hpp                   vm_operations.hpp
+
+
+compiledICHolderKlass.cpp               collectedHeap.hpp
+compiledICHolderKlass.cpp               collectedHeap.inline.hpp
+compiledICHolderKlass.cpp               compiledICHolderKlass.hpp
+compiledICHolderKlass.cpp               handles.inline.hpp
+compiledICHolderKlass.cpp               javaClasses.hpp
+compiledICHolderKlass.cpp               markSweep.hpp
+compiledICHolderKlass.cpp               oop.inline.hpp
+compiledICHolderKlass.cpp               oop.inline2.hpp
+compiledICHolderKlass.cpp               permGen.hpp
+compiledICHolderKlass.cpp               universe.inline.hpp
+
+compiledICHolderKlass.hpp               compiledICHolderOop.hpp
+compiledICHolderKlass.hpp               klass.hpp
+compiledICHolderKlass.hpp               methodOop.hpp
+
+
+compiledICHolderOop.cpp                 compiledICHolderOop.hpp
+
+compiledICHolderOop.hpp                 oop.hpp
+
+
+compilerOracle.cpp                      compilerOracle.hpp
+compilerOracle.cpp                      handles.inline.hpp
+compilerOracle.cpp                      jniHandles.hpp
+compilerOracle.cpp                      klass.hpp
+compilerOracle.cpp                      methodOop.hpp
+compilerOracle.cpp                      oop.hpp
+compilerOracle.cpp                      oop.inline.hpp
+compilerOracle.cpp                      symbolOop.hpp
+
+compilerOracle.hpp                      allocation.hpp
+compilerOracle.hpp                      oopsHierarchy.hpp
+
+
+debugInfo.cpp                           debugInfo.hpp
+debugInfo.cpp                           debugInfoRec.hpp
+debugInfo.cpp                           handles.inline.hpp
+debugInfo.cpp                           nmethod.hpp
+
+debugInfo.hpp                           compressedStream.hpp
+debugInfo.hpp                           growableArray.hpp
+debugInfo.hpp                           location.hpp
+debugInfo.hpp                           oopRecorder.hpp
+debugInfo.hpp                           stackValue.hpp
+
+dump.cpp                                methodDataOop.hpp
+
+forte.cpp                               pcDesc.hpp
+forte.cpp                               vframeArray.hpp
+
+frame.cpp                               methodDataOop.hpp
+
+icBuffer.cpp                            assembler_<arch>.inline.hpp
+icBuffer.cpp                            collectedHeap.inline.hpp
+icBuffer.cpp                            compiledIC.hpp
+icBuffer.cpp                            icBuffer.hpp
+icBuffer.cpp                            interpreter_<arch>.hpp
+icBuffer.cpp                            linkResolver.hpp
+icBuffer.cpp                            methodOop.hpp
+icBuffer.cpp                            mutexLocker.hpp
+icBuffer.cpp                            nmethod.hpp
+icBuffer.cpp                            oop.inline.hpp
+icBuffer.cpp                            oop.inline2.hpp
+icBuffer.cpp                            resourceArea.hpp
+icBuffer.cpp                            scopeDesc.hpp
+icBuffer.cpp                            stubRoutines.hpp
+icBuffer.cpp                            universe.inline.hpp
+
+icBuffer_<arch>.cpp                     assembler.hpp
+icBuffer_<arch>.cpp                     assembler_<arch>.inline.hpp
+icBuffer_<arch>.cpp                     bytecodes.hpp
+icBuffer_<arch>.cpp                     collectedHeap.inline.hpp
+icBuffer_<arch>.cpp                     icBuffer.hpp
+icBuffer_<arch>.cpp                     nativeInst_<arch>.hpp
+icBuffer_<arch>.cpp                     oop.inline.hpp
+icBuffer_<arch>.cpp                     oop.inline2.hpp
+icBuffer_<arch>.cpp                     resourceArea.hpp
+
+interp_masm_<arch>.cpp                  methodDataOop.hpp
+
+interpreter_<arch>.cpp                  deoptimization.hpp
+interpreter_<arch>.cpp                  jvmtiExport.hpp
+interpreter_<arch>.cpp                  methodDataOop.hpp
+
+interpreterRuntime.cpp                  deoptimization.hpp
+interpreterRuntime.cpp                  methodDataOop.hpp
+
+invocationCounter.cpp                   frame.hpp
+invocationCounter.cpp                   handles.inline.hpp
+invocationCounter.cpp                   invocationCounter.hpp
+
+invocationCounter.hpp                   allocation.hpp
+invocationCounter.hpp                   handles.hpp
+
+
+javaCalls.cpp                           compilationPolicy.hpp
+javaCalls.cpp                           nmethod.hpp
+
+java.cpp                                compileBroker.hpp
+java.cpp                                compilerOracle.hpp
+
+jvmtiEnvBase.cpp                        vframe_hp.hpp
+
+jvmtiEventController.cpp                vframe.hpp
+jvmtiEventController.cpp                vframe_hp.hpp
+
+jvmtiExport.cpp                         pcDesc.hpp
+jvmtiExport.cpp                         scopeDesc.hpp
+
+jvmtiImpl.cpp                           vframe_hp.hpp
+
+methodDataKlass.cpp                     collectedHeap.inline.hpp
+methodDataKlass.cpp                     gcLocker.hpp
+methodDataKlass.cpp                     handles.inline.hpp
+methodDataKlass.cpp                     klassOop.hpp
+methodDataKlass.cpp                     markSweep.hpp
+methodDataKlass.cpp                     methodDataKlass.hpp
+methodDataKlass.cpp                     methodDataOop.hpp
+methodDataKlass.cpp                     oop.inline.hpp
+methodDataKlass.cpp                     oop.inline2.hpp
+methodDataKlass.cpp                     psScavenge.inline.hpp
+methodDataKlass.cpp                     resourceArea.hpp
+methodDataKlass.cpp                     universe.inline.hpp
+
+methodDataKlass.hpp                     klass.hpp
+
+methodDataOop.cpp                       bytecode.hpp
+methodDataOop.cpp                       bytecodeStream.hpp
+methodDataOop.cpp                       deoptimization.hpp
+methodDataOop.cpp                       handles.inline.hpp
+methodDataOop.cpp                       linkResolver.hpp
+methodDataOop.cpp                       markSweep.hpp
+methodDataOop.cpp                       markSweep.inline.hpp
+methodDataOop.cpp                       methodDataOop.hpp
+methodDataOop.cpp                       oop.inline.hpp
+methodDataOop.cpp                       systemDictionary.hpp
+
+methodDataOop.hpp                       bytecodes.hpp
+methodDataOop.hpp                       oop.hpp
+methodDataOop.hpp                       universe.hpp
+
+methodKlass.cpp                         methodDataOop.hpp
+
+methodOop.cpp                           xmlstream.hpp
+
+management.cpp                          compileBroker.hpp
+
+oopFactory.cpp                          methodDataKlass.hpp
+
+pcDesc.cpp                              nmethod.hpp
+pcDesc.cpp                              pcDesc.hpp
+pcDesc.cpp                              resourceArea.hpp
+pcDesc.cpp                              scopeDesc.hpp
+
+pcDesc.hpp                              nmethod.hpp
+
+
+safepoint.cpp                           codeCache.hpp
+safepoint.cpp                           deoptimization.hpp
+safepoint.cpp                           icBuffer.hpp
+safepoint.cpp                           nmethod.hpp
+safepoint.cpp                           pcDesc.hpp
+safepoint.cpp                           scopeDesc.hpp
+safepoint.cpp                           sweeper.hpp
+safepoint.cpp                           recompilationMonitor.hpp
+
+safepoint.hpp                           threadCodeBuffer.hpp
+
+safepoint_<os_arch>.cpp                 assembler.hpp
+safepoint_<os_arch>.cpp                 assembler_<arch>.inline.hpp
+
+recompilationMonitor.cpp                allocation.inline.hpp
+recompilationMonitor.cpp                events.hpp
+recompilationMonitor.cpp                fprofiler.hpp
+recompilationMonitor.cpp                mutexLocker.hpp
+recompilationMonitor.cpp                recompilationMonitor.hpp
+recompilationMonitor.cpp                systemDictionary.hpp
+
+recompilationMonitor.hpp                allocation.hpp
+recompilationMonitor.hpp                os.hpp
+recompilationMonitor.hpp                task.hpp
+recompilationMonitor.hpp                timer.hpp
+
+
+rframe.cpp                              frame.inline.hpp
+rframe.cpp                              interpreter_<arch>.hpp
+rframe.cpp                              oop.inline.hpp
+rframe.cpp                              rframe.hpp
+rframe.cpp                              symbolOop.hpp
+rframe.cpp                              vframe.hpp
+rframe.cpp                              vframe_hp.hpp
+
+rframe.hpp                              allocation.hpp
+rframe.hpp                              frame.inline.hpp
+
+serialize.cpp                           compiledICHolderOop.hpp
+serialize.cpp                           methodDataOop.hpp
+
+sharedRuntime.cpp                       abstractCompiler.hpp
+sharedRuntime.cpp                       compiledIC.hpp
+sharedRuntime.cpp                       javaCalls.hpp
+sharedRuntime.cpp                       nativeInst_<arch>.hpp
+sharedRuntime.cpp                       vframeArray.hpp
+
+sharedRuntime.hpp                       vframe.hpp
+sharedRuntime.hpp                       linkResolver.hpp
+
+sharedRuntime_<arch>.cpp                sharedRuntime.hpp
+sharedRuntime_<arch>.cpp                onStackReplacement.hpp
+sharedRuntime_<arch>.cpp                assembler.hpp
+sharedRuntime_<arch>.cpp                assembler_<arch>.inline.hpp
+
+systemDictionary.cpp                    methodDataOop.hpp
+
+templateTable_<arch>.cpp                methodDataOop.hpp
+
+threadCodeBuffer.cpp                    allocation.inline.hpp
+threadCodeBuffer.cpp                    extendedPC.hpp
+threadCodeBuffer.cpp                    os.hpp
+threadCodeBuffer.cpp                    scopeDesc.hpp
+threadCodeBuffer.cpp                    thread.hpp
+threadCodeBuffer.cpp                    threadCodeBuffer.hpp
+threadCodeBuffer.cpp                    universe.inline.hpp
+
+threadCodeBuffer.hpp                    allocation.hpp
+threadCodeBuffer.hpp                    assembler.hpp
+threadCodeBuffer.hpp                    extendedPC.hpp
+threadCodeBuffer.hpp                    nmethod.hpp
+
+
+sweeper.cpp                             atomic.hpp
+sweeper.cpp                             codeCache.hpp
+sweeper.cpp                             events.hpp
+sweeper.cpp                             methodOop.hpp
+sweeper.cpp                             mutexLocker.hpp
+sweeper.cpp                             nmethod.hpp
+sweeper.cpp                             os.hpp
+sweeper.cpp                             resourceArea.hpp
+sweeper.cpp                             sweeper.hpp
+
+universe.cpp                            methodDataKlass.hpp
+
+vframe.cpp                              codeCache.hpp
+vframe.cpp                              debugInfoRec.hpp
+vframe.cpp                              nmethod.hpp
+vframe.cpp                              pcDesc.hpp
+vframe.cpp                              scopeDesc.hpp
+vframe.cpp                              systemDictionary.hpp
+vframe.cpp                              vframeArray.hpp
+vframe.cpp                              vframe_hp.hpp
+
+vframe.hpp                              location.hpp
+
+vframeArray.cpp                         allocation.inline.hpp
+vframeArray.cpp                         events.hpp
+vframeArray.cpp                         handles.inline.hpp
+vframeArray.cpp                         interpreter_<arch>.hpp
+vframeArray.cpp                         methodDataOop.hpp
+vframeArray.cpp                         monitorChunk.hpp
+vframeArray.cpp                         oop.inline.hpp
+vframeArray.cpp                         resourceArea.hpp
+vframeArray.cpp                         sharedRuntime.hpp
+vframeArray.cpp                         universe.inline.hpp
+vframeArray.cpp                         vframe.hpp
+vframeArray.cpp                         vframeArray.hpp
+vframeArray.cpp                         vframe_hp.hpp
+vframeArray.cpp                         vmSymbols.hpp
+
+vframeArray.hpp                         arrayOop.hpp
+vframeArray.hpp                         deoptimization.hpp
+vframeArray.hpp                         frame.inline.hpp
+vframeArray.hpp                         growableArray.hpp
+vframeArray.hpp                         monitorChunk.hpp
+
+vframe_hp.cpp                           codeCache.hpp
+vframe_hp.cpp                           debugInfoRec.hpp
+vframe_hp.cpp                           handles.inline.hpp
+vframe_hp.cpp                           instanceKlass.hpp
+vframe_hp.cpp                           interpreter_<arch>.hpp
+vframe_hp.cpp                           monitorChunk.hpp
+vframe_hp.cpp                           nmethod.hpp
+vframe_hp.cpp                           oop.inline.hpp
+vframe_hp.cpp                           oopMapCache.hpp
+vframe_hp.cpp                           pcDesc.hpp
+vframe_hp.cpp                           scopeDesc.hpp
+vframe_hp.cpp                           signature.hpp
+vframe_hp.cpp                           stubRoutines.hpp
+vframe_hp.cpp                           synchronizer.hpp
+vframe_hp.cpp                           vframeArray.hpp
+vframe_hp.cpp                           vframe_hp.hpp
+
+// vframe_hp.cpp                           sharedRuntime.hpp
+// vframe_hp.cpp                           methodDataOop.hpp
+
+vframe_hp.hpp                           vframe.hpp
+
+vmStructs.cpp                           compiledICHolderKlass.hpp
+vmStructs.cpp                           compiledICHolderOop.hpp
+vmStructs.cpp                           methodDataKlass.hpp
+vmStructs.cpp                           methodDataOop.hpp
+vmStructs.cpp                           nmethod.hpp
+vmStructs.cpp                           pcDesc.hpp
+
+xmlstream.cpp                           deoptimization.hpp
+xmlstream.cpp                           methodDataOop.hpp
+xmlstream.cpp                           nmethod.hpp
