@@ -1,0 +1,49 @@
+#
+# @(#)Makefile.master	1.39 04/06/10
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+# Establish common directories (all targets are build in subdirs).
+
+#These following variables are temporarily added until we merge to gnumake
+
+BASENAME       = $(UNIXCOMMAND_PATH)basename
+CD             = cd # intrinsic unix command
+CHMOD	       = $(UNIXCOMMAND_PATH)chmod
+CP	       = $(UNIXCOMMAND_PATH)cp
+CAT            = $(UNIXCOMMAND_PATH)cat
+ECHO           = $(UNIXCOMMAND_PATH)echo
+FIND           = $(UNIXCOMMAND_PATH)find
+GREP	       = $(UNIXCOMMAND_PATH)grep
+LS	       = $(UNIXCOMMAND_PATH)ls
+KSH	       = $(UNIXCOMMAND_PATH)ksh
+MKDIR	       = $(UNIXCOMMAND_PATH)mkdir
+NAWK	       = $(UNIXCOMMAND_PATH)nawk
+PKGMK	       = $(UNIXCOMMAND_PATH)pkgmk
+PWD	       = $(UNIXCOMMAND_PATH)pwd
+SED            = $(UNIXCOMMAND_PATH)sed
+SORT           = $(UNIXCOMMAND_PATH)sort
+TOUCH	       = $(UNIXCOMMAND_PATH)touch
+UNAME	       = $(UNIXCOMMAND_PATH)uname
+UNIQ           = $(UNIXCOMMAND_PATH)uniq
+
+ROOT_DIR=	$(TOPDIR)
+SRC_DIR=	$(ROOT_DIR)/src
+BUILD_DIR=	$(OUTPUTDIR)
+TMP_DIR=	$(BUILD_DIR)/tmp/pkgdefs
+
+PKG_ARCHIVE=	$(BUILD_DIR)/pkgarchive
+
+# if $(PKGDEST) is not empty then it should have '/' at the end
+PREFIX=		jdk
+REGISTRY_DIR=	jdk/
+INSTANCE_DIR=	instances/
+RELEASE_DIR=	$(PREFIX)$(RELEASE_NP)/ 
+PKGDEST=	$(REGISTRY_DIR)$(INSTANCE_DIR)$(RELEASE_DIR)
+
+# generated prototype file
+
+PACKAGE_TMP_DIR=$(TMP_DIR)/$(PACKAGE)
+PROTOTYPE=	$(PACKAGE_TMP_DIR)/prototype

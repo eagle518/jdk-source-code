@@ -1,0 +1,23 @@
+Property	Value
+s72	S0
+InstallShield	Property
+ActiveLanguage	1033
+Comments	
+CurrentMedia	singleexejre
+ISCompilerOption_Debug	1
+ISCompilerOption_IncludePath	
+ISCompilerOption_MaxErrors	50
+ISCompilerOption_MaxWarnings	50
+ISCompilerOption_OutputPath	<ISProjectDataFolder>
+ISCompilerOption_PreProcessor	
+ISCompilerOption_WarningLevel	3
+ISCompilerOption_WarningsAsErrors	1
+ISDialogLangID	
+MsiExecCmdLineOptions	
+MsiLogFile	
+OnUpgrade	1
+Owner	William Harnois, Stanley Ho, Kumar Srinivasan
+SccEnabled	0
+SccPath	
+SchemaVersion	753
+Type	MSI

@@ -1,0 +1,79 @@
+#
+# @(#)Binaries.gmk	1.10 02/09/30
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+# Makefile shared for windows and unix'es
+
+#
+# Generates a .tar file of all the contents in $(DOCSDIR), and
+# names it the after the last directory name in $(DOCSDIR). For
+# example, if $(DOCSDIR) is /home/you/ws/buildOuput/doc then
+# the tar file will be /home/you/ws/buildOuput/doc.tar
+# ... but then move the $(OUTPUTDIR)/doc.tar file to $(BIN_BUNDLEDIR)
+#
+DOCSDIR=$(OUTPUTDIR)/doc
+DOCSDIR_NAME = $(word $(words $(subst /, ,$(DOCSDIR))), $(subst /, ,$(DOCSDIR)))
+
+# docs-tar is not used on 64-bit solaris
+docs-tar:: $(BIN_BUNDLEDIR)
+ifndef SOLARIS64
+	if [ -r $(DOCSDIR) ]; then \
+	    ( $(CD) $(OUTPUTDIR) ; \
+		$(TAR) cf $(DOCSDIR_NAME).tar $(DOCSDIR_NAME) ) ; \
+	    $(MV) $(OUTPUTDIR)/$(DOCSDIR_NAME).tar $(BIN_BUNDLEDIR)/doc.tar ; \
+	fi
+endif
+
+######################################################
+# JRE Binaries
+######################################################
+binaries-jre:: $(BIN_BUNDLEDIR)
+	$(RM) -r $(BIN_BUNDLEDIR)/$(JRE_TEMPORARY_DIR)
+	$(MV) $(JRE_IMAGE_DIR) $(BIN_BUNDLEDIR)/$(JRE_TEMPORARY_DIR)
+	@# we need the name of each file in the tar to be a relative path
+	@# starting with something akin to 'jre1.4/...'
+	$(CD) $(BIN_BUNDLEDIR); \
+		$(TAR) cf $(JRE_BUNDLE_NAME).tar $(JRE_TEMPORARY_DIR) ;
+	$(MV) $(BIN_BUNDLEDIR)/$(JRE_TEMPORARY_DIR) $(JRE_IMAGE_DIR)
+
+######################################################
+# JDK Binaries
+######################################################
+binaries-jdk:: $(BIN_BUNDLEDIR)
+	$(RM) -r $(BIN_BUNDLEDIR)/$(JDK_TEMPORARY_DIR) $(TMPDIR)/SOURCES
+	$(MV) $(JDK_IMAGE_DIR) $(BIN_BUNDLEDIR)/$(JDK_TEMPORARY_DIR)
+	@# we need the name of each file in the tar to be a relative path
+	@# starting with something akin to 'jdk1.4/...'
+	$(CD) $(BIN_BUNDLEDIR); \
+		$(TAR) cf $(JDK_BUNDLE_NAME).tar $(JDK_TEMPORARY_DIR) ;
+	$(MV) $(BIN_BUNDLEDIR)/$(JDK_TEMPORARY_DIR) $(JDK_IMAGE_DIR)
+
+######################################################
+# JDK Debug Binaries
+######################################################
+binaries-jdk-debug:: $(BIN_BUNDLEDIR)
+	$(RM) -r $(BIN_BUNDLEDIR)/$(JDK_TEMPORARY_DIR)
+	$(MV) $(JDK_DEBUG_IMAGE_DIR) $(BIN_BUNDLEDIR)/$(JDK_TEMPORARY_DIR)
+	@# we need the name of each file in the tar to be a relative path
+	@# starting with something akin to 'jdk1.4/...'
+	$(CD) $(BIN_BUNDLEDIR); \
+		$(TAR) cf $(JDK_DEBUG_BUNDLE_NAME).tar $(JDK_TEMPORARY_DIR) ;
+	$(MV) $(BIN_BUNDLEDIR)/$(JDK_TEMPORARY_DIR) $(JDK_DEBUG_IMAGE_DIR)
+
+binaries-jre-clobber:
+	$(RM) -r $(BIN_BUNDLEDIR)/$(JRE_TEMPORARY_DIR)
+	$(RM) $(BIN_BUNDLEDIR)/$(JRE_BUNDLE_NAME).tar 
+
+binaries-jdk-clobber:
+	$(RM) -r $(BIN_BUNDLEDIR)/$(JDK_TEMPORARY_DIR) $(TMPDIR)/SOURCES
+	$(RM) $(BIN_BUNDLEDIR)/$(JDK_BUNDLE_NAME).tar 
+
+binaries-jdk-debug-clobber:
+	$(RM) -r $(BIN_BUNDLEDIR)/$(JDK_TEMPORARY_DIR)
+	$(RM) $(BIN_BUNDLEDIR)/$(JDK_DEBUG_BUNDLE_NAME).tar 
+
+FRC:
+.PHONY: docs-tar binaries-jre binaries-jdk binaries-jdk-debug binaries-jre-clobber binaries-jdk-clobber binaries-jdk-debug-clobber

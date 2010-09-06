@@ -1,0 +1,20 @@
+Dialog	HCentering	VCentering	Width	Height	Attributes	Title	Control_First	Control_Default	Control_Cancel	ISComments	TextStyle_	ISWindowStyle	ISResourceId
+s72	i2	i2	i2	i2	I4	L128	s50	S50	S50	S255	S72	I4	I4
+Dialog	Dialog
+CancelSetup	50	50	260	85	3	##IDS__IsCancelDlg_0##	No	No	No	Cancel		0	
+CustomSetup	50	50	374	266	35	##ID_STRING_CUSTOM_TITLE##	Tree	Next	Cancel	Custom Selection		0	
+FilesInUse	50	50	374	266	19	##IDS__IsFilesInUse_0##	Retry	Retry	Exit	Files in Use		0	
+InstallChangeFolder	50	50	374	266	3	##IDS__IsBrowseFolderDlg_0##	Tail	OK	Cancel	Browse		0	
+LicenseAgreement	50	50	374	266	2	##ID_STRING_LICENSE##	Agree	Next	Cancel	License Agreement		0	
+MaintenanceType	50	50	374	266	3	##ID_STRING_MAINT_TITLE##	RadioGroup	Next	Cancel	Change, Reinstall, Remove		0	
+OutOfSpace	50	50	374	266	3	##ID_STRING_DISKSPACE_TITLE##	Resume	Resume	Resume	Out Of Disk Space		0	
+Semicolon	50	50	374	266	3		PushButton1						
+SetupCompleteError	50	50	374	266	3	##IDS__IsFatalError_0##	Finish	Finish	Finish	Fatal Error		0	
+SetupCompleteSuccess	50	50	374	266	3	##ID_STRING_EXIT_TITLE##	OK	OK	OK	Exit		0	
+SetupError	50	10	270	110	65543	##IDS__IsErrorDlg_0##	ErrorText	O	C	Error		0	
+SetupInitialization	50	50	374	266	5	##IDS__IsInitDlg_0##	Cancel	Cancel	Cancel	Setup Initialization		0	
+SetupInterrupted	50	50	374	266	3	##IDS__IsUserExit_0##	Finish	Finish	Finish	User Exit		0	
+SetupProgress	50	50	374	266	5	##ID_STRING_PROGRESS_TITLE##	Back			Progress		0	
+Warning	50	50	374	266	3		PushButton2	PushButton2					
+MaintenanceWelcome	50	50	374	266	3	##ID_STRINGMAINTWEL_TITLE##	Next	Next	Cancel	Maintenance Welcome		0	
+pubjre	50	50	260	85	3	##IDS__IsCancelDlg_0##	No	No	No	Cancel		0	

@@ -1,0 +1,76 @@
+[PackageForTheWeb]
+Version=2.0
+
+[Options]
+Title=JavaPlug-in
+Company=Sun Microsystems, Inc
+CompanyEMail=
+BasePath=.
+ImportPath=
+UseRTF=0
+SaveFiles=0
+SubFolders=0
+ApplicationName=Java Plug-in #WEB_VERSION#
+Description=
+Comments=
+Notice=
+Version=#PLUGIN_VERSION#
+OutputSpec=#OUTPUTDIR#\jinstall-#PLUGIN_VERSION_FOR_FILE#-windows-i586.cab
+GUIDs=0
+Type=3
+Compress=1
+Sign=#SIGN_FLAG#
+Transfer=0
+Files=2
+
+[Engine]
+Setup=setup.exe
+
+[Web Page]
+Generate=1
+Template=
+MSClient=
+NClient=
+
+[Runtime]
+Welcome=
+License=
+Prompt=
+Password=
+DefaultPath=
+Language=
+WindowStyle=0
+Options=0
+Execute=
+CmdLine=
+
+[Extension]
+Server=
+Calls=0
+
+[Code Signing]
+CompanyURL=#HTTP_SERVER#/index.html
+SpecFile=a:\sun.spc
+KeyFile=a:\sun.pvk
+Method=0
+
+; ~~~~~~~~~~ File Section ~~~~~~~~~~~
+[SubFolders]
+Count=0
+
+[File 1]
+Name=#TMPDIR_FILESPEC#\jinstall-#PLUGIN_VERSION_FOR_FILE#.inf
+Path=#TMPDIR_DRIVE#
+Flags=1
+Disk=0bin
+
+[File 2]
+Name=#TMPDIR_FILESPEC#\jinstall.exe
+Path=#TMPDIR_DRIVE#
+Flags=65537
+Disk=0
+
+
+
+
+

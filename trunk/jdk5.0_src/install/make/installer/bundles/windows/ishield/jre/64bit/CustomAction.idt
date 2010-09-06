@@ -1,0 +1,13 @@
+Action	Type	Source	Target	ISComments
+s72	i2	S64	S0	S255
+CustomAction	Action
+charsets	34	bin	"[SUPPORTDIR]\launcher.exe" "[bin]\unpack200.exe" -r -v -l "[LOGFILE]" "[INSTALLDIR]\lib\charsets.pack" "[INSTALLDIR]\lib\charsets.jar"	
+ISSetupFilesCleanup	257	ISSetupFilesHelper	SFCleanupEx	
+ISSetupFilesExtract	257	ISSetupFilesHelper	SFStartupEx	
+jsse	34	bin	"[SUPPORTDIR]\launcher.exe" "[bin]\unpack200.exe" -r -v -l "[LOGFILE]" "[INSTALLDIR]\lib\jsse.pack" "[INSTALLDIR]\lib\jsse.jar"	
+localedata	34	bin	"[SUPPORTDIR]\launcher.exe" "[bin]\unpack200.exe" -r -v -l "[LOGFILE]" "[INSTALLDIR]\lib\ext\localedata.pack" "[INSTALLDIR]\lib\ext\localedata.jar"	
+rt	34	bin	"[SUPPORTDIR]\launcher.exe" "[bin]\unpack200.exe" -r -v -l "[LOGFILE]" "[INSTALLDIR]\lib\rt.pack" "[INSTALLDIR]\lib\rt.jar"	
+setAllUsersProfile2K	51	ALLUSERSPROFILE	[%ALLUSERSPROFILE]	
+SetAllUsersProfileNT	51	ALLUSERSPROFILE	[%SystemRoot]\Profiles\All Users	
+SetARPReadme	51	ARPREADME	[INSTALLDIR]README.txt	
+setUserProfileNT	51	USERPROFILE	[%USERPROFILE]	

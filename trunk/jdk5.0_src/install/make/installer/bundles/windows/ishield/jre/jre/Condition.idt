@@ -1,0 +1,5 @@
+Feature_	Level	Condition
+s38	i2	S255
+Condition	Feature_	Level
+other_onnonUS	0	INSTALLINTL=0
+other_US	0	INSTALLINTL=1

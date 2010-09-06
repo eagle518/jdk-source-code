@@ -1,0 +1,8 @@
+Registry	Root	Key	Name	Value	Component_	ISAttributes
+s72	i2	s255	S255	S0	s72	I4
+Registry	Registry
+Registry1	2	SOFTWARE\JavaSoft\Java Development Kit\[MAJOR].[MINOR].[MICRO]	MicroVersion	[MICRO]	NewComponent1	0
+Registry2	2	SOFTWARE\JavaSoft\Java Development Kit\[MAJOR].[MINOR].[MICRO]	JavaHome	[INSTALLDIR]	NewComponent1	0
+Registry3	2	SOFTWARE\JavaSoft\Java Development Kit	CurrentVersion	[MAJOR].[MINOR]	NewComponent1	0
+Registry4	2	SOFTWARE\JavaSoft\Java Development Kit\[MAJOR].[MINOR]	JavaHome	[INSTALLDIR]	NewComponent1	0
+Registry5	2	SOFTWARE\JavaSoft\Java Development Kit\[MAJOR].[MINOR]	MicroVersion	[MICRO]	NewComponent1	0

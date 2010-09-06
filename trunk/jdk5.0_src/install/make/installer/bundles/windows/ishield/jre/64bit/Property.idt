@@ -1,0 +1,73 @@
+Property	Value	ISComments
+s72	L0	S255
+Property	Property
+_IsMaintenance	Change	
+_IsSetupTypeMin	Typical	
+AgreeToLicense	No	
+ALLUSERS	1	
+ApplicationUsers	AllUsers	
+ARPCONTACT	##IDPROP_ARPCONTACT##	
+ARPHELPLINK	##IDPROP_ARPHELPLINK##	
+ARPNOREPAIR	1	
+ARPREADME	##IDPROP_ARPREADME##	
+ARPURLINFOABOUT	##IDPROP_ARPURLINFOABOUT##	
+ARPURLUPDATEINFO	##IDPROP_ARPURLUPDATEINFO##	
+Core	CORESPACETEXT	
+CUSTOM	0	
+DefaultUIFont	Tahoma8	
+description	0	
+DialogCaption	InstallShield for Windows Installer	
+DiskPrompt	[1]	
+Display_IsBitmapDlg	1	
+DisplayNameCustom	Custom	
+DisplayNameMinimal	Minimal	
+DisplayNameTypical	Typical	
+DWUSINTERVAL	30	
+ErrorDialog	SetupError	
+Extra	EXTRASPACETEXT	
+EULA	0	
+IE	0	
+InstallChoice	AR	
+INSTALLINTL	0	
+INSTALLLEVEL	100	
+ISSCRIPT_VERSION_MISSING	##IDS_ISSCRIPT_VERSION_MISSING##	
+ISSCRIPT_VERSION_OLD	##IDS_ISSCRIPT_VERSION_OLD##	
+ISVROOT_PORT_NO	0	
+ITANIUM		
+JAVAREBOOT	0	
+JAVATYPE	JRE	
+JAVAUPDATE	1	
+AUTOUPDATECHECK	1	
+JDK_VERSION	JDKVERSION	Version of JDK, including update version, passed in from Defs.gmk
+LOGFILE		
+MAJOR	MAJORVERSION	
+Manufacturer	##ID_STRING_COMPANY_NAME##	
+MICRO	MICROVERSION	
+MINOR	MINORVERSION	
+MOZILLA	0	
+NETSCAPE6	0	
+Other	OTHERSPACETEXT	
+PIDTemplate	12345<###-%%%%%%%>@@@@@	
+ProductCode	{6448F0A8-6813-11D6-A77B-00B0D0MAJORVERSIONMINORVERSIONMICROVERSIONCOMPUPDATEVERSION}	
+ProductID	none	
+ProductLanguage	1033	
+ProductName	J2SE Runtime Environment MINORVERSION.MICROVERSION	
+ProductVersion	THEFULLVERSION	
+ProgressType0	install	
+ProgressType1	Installing	
+ProgressType2	installed	
+ProgressType3	installs	
+RebootYesNo	Yes	
+Registration	No	
+ReinstallModeText	omus	
+SDKSILENT	0	
+SecureCustomProperties	INSTALLINTL	
+SEMICOLON	0	
+SetupType	Typical	
+SUCCESS	0	
+SYSTRAY	1	
+title	0	
+UPDATE		
+UpgradeCode	{6448F0A7-6813-11D6-A77B-00B0D0MAJORVERSIONMINORVERSIONMICROVERSIONCOMPUPDATEVERSION}	
+VALUEINSTALL		
+WEBSTARTICON	1	

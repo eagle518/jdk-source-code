@@ -1,0 +1,9 @@
+Component_	SourceFolder	IncludeFlags	IncludeFiles	ExcludeFiles	ISAttributes
+s72	s255	I2	S255	S255	I4
+ISDynamicFile	Component_	SourceFolder
+NewComponent1	<ISProjectFolder>\sdk-image\bin	4			2
+NewComponent2	<ISProjectFolder>\sdk-image\include	4			2
+NewComponent3	<ISProjectFolder>\sdk-image\jre	4			2
+NewComponent4	<ISProjectFolder>\sdk-image\lib	4			2
+NewComponent5	<ISProjectFolder>\sdk-image	4		src.zip	0
+NewComponent6	<ISProjectFolder>\sdk-image\demo	4			2

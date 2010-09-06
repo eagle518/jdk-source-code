@@ -1,0 +1,51 @@
+#!/bin/sh
+#
+# Copyright 2003 Sun Microsystems, Inc. All rights reserved.
+# Use is subject to license terms.
+#
+# pragma ident "@(#)postinstall	1.4 04/06/10 Sun Microsystems"
+#
+# The JRE package installs links outside of its BASEDIR from "utilities"
+# in /usr/bin, up to the /usr/java link which (in turn) points to the
+# default jvm. This script installs those links which are independent
+# of basedir.
+#
+
+#
+# Useful shell variables which include packaging command names to handle
+# the "relocatable root" senario.
+#
+if [ "$PKG_INSTALL_ROOT" != "" ]; then
+    INSTALLF="installf -R $PKG_INSTALL_ROOT"
+else
+    INSTALLF="installf"
+fi
+BIN_PATH="${BASEDIR}/bin"
+
+#
+# Shell routine to install the /usr/bin links. Note that we want to register
+# these as part of each package which uses them, so that they won't be
+# removed until the last Java is removed from the system (or the last Java
+# which has that particular component.
+#
+# Be sure to update the space file is you add to (or delete from) the list
+# of links created.
+#
+InstallLinks() {
+    BIN_FILES="javac javah jarsigner jar javap appletviewer \
+	       native2ascii rmic serialver jdb javadoc apt extcheck \
+	       idlj HtmlConverter"
+    $INSTALLF -c none $PKGINST $BIN_PATH d 0755 root bin
+    for file in $BIN_FILES; do
+	$INSTALLF -c none $PKGINST "$BIN_PATH/${file}=../java/bin/${file}" s
+    done
+}
+
+#
+# Main Processing
+#
+if [ -d ${BIN_PATH} ]; then
+    InstallLinks
+fi
+$INSTALLF -f $PKGINST
+exit 0

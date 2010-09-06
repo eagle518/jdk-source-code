@@ -1,0 +1,6 @@
+ISLinkerLibrary	Library	Order
+s72	s255	i4
+ISLinkerLibrary	ISLinkerLibrary
+_IfxObl	<ISProductFolder>\Script\ifx\Lib\ifx.obl	3
+_IsrtObl	<ISProductFolder>\Script\ISRT\Lib\isrt.obl	2
+_IswiObl	<ISProductFolder>\Script\ISWi\Lib\iswi.obl	1

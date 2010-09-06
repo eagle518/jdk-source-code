@@ -1,0 +1,54 @@
+Directory	Directory_Parent	DefaultDir	ISDescription	ISAttributes
+s72	S72	l255	S255	I4
+Directory	Directory
+AdminToolsFolder	TARGETDIR	.:Admint~1|AdminTools		0
+ALLUSERSPROFILE	TARGETDIR	.:ALLUSE~1|All Users		0
+AppDataFolder	TARGETDIR	.:APPLIC~1|Application Data		0
+BASE_IMAGES	UPDATEDIR	BASEIM~1|Base Images		0
+BIN	INSTALLDIR	bin		0
+CommonAppDataFolder	TARGETDIR	.:Common~1|CommonAppData		0
+CommonFiles64Folder	TARGETDIR	.:Common64		0
+CommonFilesFolder	TARGETDIR	.:Common		0
+DEMOS	INSTALLDIR	demo		0
+DesktopFolder	TARGETDIR	.:Desktop		3
+FavoritesFolder	TARGETDIR	.:FAVORI~1|Favorites		0
+FontsFolder	TARGETDIR	.:Fonts		0
+GlobalAssemblyCache	TARGETDIR	.:Global~1|GlobalAssemblyCache		0
+INCLUDE	INSTALLDIR	include		0
+JAVA	ProgramFiles64Folder	Java		0
+INSTALLDIR	JAVA	jdkTHEFULLVERSION		0
+INSTALLDIR_setup.exe	TARGETDIR	INSTALLDIR_setup.exe		0
+ISCommonFilesFolder	CommonFilesFolder	Instal~1|InstallShield		0
+ISUpdateServiceFolder	ISCommonFilesFolder	UPDATE~1|UpdateService		0
+ISYourCompanyDir	ProgramFilesFolder	YOURCO~1|Your Company Name		0
+ISYourProductDir	WindowsVolume	YOURPR~1|Your Product Name		0
+J2SDKBASEIMAGEFULLVERSION	BASE_IMAGES	JDK1~1|jdkBASEIMAGEFULLVERSION		0
+J2SDKPATCHFULLVERSION	J2SDKBASEIMAGEFULLVERSION	PATCH-~1|patch-jdkNEWIMAGEFULLVERSION		0
+J2SDKDIR	WindowsVolume	JDK1~1|jdkTHEFULLVERSION		0
+JAVADIR	CommonFilesFolder	Java		0
+JRE	INSTALLDIR	jre		0
+JRELIB	JRE	lib		0
+JRELIBEXT	JRELIB	ext		0
+LIB	INSTALLDIR	lib		0
+LocalAppDataFolder	TARGETDIR	.:LocalA~1|LocalAppData		0
+MyPicturesFolder	TARGETDIR	.:MyPict~1|MyPictures		0
+PersonalFolder	TARGETDIR	.:Personal		0
+PrimaryVolumePath	TARGETDIR	.:Primar~1|PrimaryVolumePath		0
+ProgramFiles64Folder	TARGETDIR	.:Prog64~1|Program Files 64		0
+ProgramFilesFolder	TARGETDIR	.:PROGRA~1|program files		0
+ProgramMenuFolder	TARGETDIR	.:Programs		3
+SendToFolder	TARGETDIR	.:SendTo		3
+SourceDir_DIR	TARGETDIR	SourceDir_DIR		0
+SourceDir_DIR1	TARGETDIR	SourceDir_DIR1		0
+StartMenuFolder	TARGETDIR	.:STARTM~1|Start Menu		3
+StartupFolder	TARGETDIR	.:StartUp		3
+System16Folder	TARGETDIR	.:System		0
+System64Folder	TARGETDIR	.:System64		0
+SystemFolder	TARGETDIR	.:System32		0
+TARGETDIR		SourceDir		0
+TempFolder	TARGETDIR	.:Temp		0
+TemplateFolder	TARGETDIR	.:ShellNew		0
+UPDATEDIR	JAVADIR	Update		0
+USERPROFILE	TARGETDIR	.:USERPR~1|UserProfile		0
+WindowsFolder	TARGETDIR	.:Windows		0
+WindowsVolume	TARGETDIR	.:WinRoot		0

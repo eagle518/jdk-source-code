@@ -1,0 +1,29 @@
+Action	Condition	Sequence	ISComments	ISAttributes
+s72	S255	I2	S255	I4
+InstallUISequence	Action
+AppSearch		25	AppSearch	
+CCPSearch	CCP_TEST	250	CCPSearch	
+CostFinalize		550	CostFinalize	
+CostInitialize		400	CostInitialize	
+ExecuteAction		825	ExecuteAction	
+FileCost		450	FileCost	
+FilesInUse	SDKREBOOT=1	570	Files in Use	
+FindRelatedProducts		150	FindRelatedProducts	
+ISInitAllUsers	VersionNT And NOT Installed	575	ISInitAllUsers	
+IsolateComponents		500	IsolateComponents	
+ISSetupFilesCleanup		826		
+ISSetupFilesExtract		3		
+LaunchConditions		50	LaunchConditions	
+LicenseAgreement	NOT Installed	556	License Agreement	
+MaintenanceWelcome	Installed And Not RESUME And Not Preselected And Not PATCH	750	MaintenanceWelcome	
+MigrateFeatureStates		600	MigrateFeatureStates	
+PatchWelcome	PATCH	625	Patch Panel	
+ResolveSource	Not Installed	525	ResolveSource	
+RMCCPSearch	Not CCP_SUCCESS And CCP_TEST	300	RMCCPSearch	
+SetupCompleteError		-3	SetupCompleteError	
+SetupCompleteSuccess		-1	SetupCompleteSuccess	
+SetupInitialization		100	SetupInitialization	
+SetupInterrupted		-2	SetupInterrupted	
+SetupProgress		800	SetupProgress	
+SetupResume	Installed And (RESUME Or Preselected) And Not PATCH	700	SetupResume	
+ValidateProductID		350	ValidateProductID	

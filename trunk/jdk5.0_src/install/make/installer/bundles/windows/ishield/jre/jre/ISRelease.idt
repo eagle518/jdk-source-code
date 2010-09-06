@@ -1,0 +1,7 @@
+ISRelease	ISProductConfiguration_	BuildLocation	PackageName	Type	SupportedLanguagesUI	MsiSourceType	ReleaseType	Platforms	SupportedLanguagesData	DefaultLanguage	SupportedOSs	DiskSize	DiskSizeUnit	DiskClusterSize	ReleaseFlags	DiskSpanning	SynchMsi	MediaLocation	URLLocation	DigitalURL	DigitalPVK	DigitalSPC	Password	VersionCopyright	Attributes	CDBrowser	DotNetBuildConfiguration	MsiCommandLine
+s72	s72	s255	s255	i4	s255	i4	i4	s72	S255	s6	i4	s50	i4	i4	S255	i4	S255	s255	S255	S255	S255	S255	S255	S255	i4	S255	S255	S255
+ISRelease	ISRelease	ISProductConfiguration_
+bundlewi	jre	<ISProjectDataFolder>	PackageName	1	2052,1028,1033,1036,1031,1040,1041,1042,1034,1053	2	1	Intel		1033	3	0	1	0		0		MediaLocation		http://					239629			
+iftw	jre	<ISProjectDataFolder>	PackageName	4	2052,1028,1033,1036,1031,1040,1041,1042,1034,1053	2	1	Intel		1033	3	0	1	0		0		MediaLocation		http://					206861			
+privatejre	jre	<ISProjectDataFolder>	PackageName	4	1033,1041	2	1	Intel		1033	3	0	1	0		0		MediaLocation		http://					206861			
+singlemsi	jre	<ISProjectDataFolder>	PackageName	4	2052,1028,1033,1036,1031,1040,1041,1042,1034,1053	2	1	Intel		1033	3	0	1	0		0		MediaLocation		http://					198669			

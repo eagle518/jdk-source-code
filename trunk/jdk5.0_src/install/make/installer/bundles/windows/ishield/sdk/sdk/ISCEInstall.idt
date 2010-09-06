@@ -1,0 +1,3 @@
+CEInstallKey	CEAppName	CEDesktopDir	CEIniFileKey	CECabs	CEIcoFile	DeleteMedia
+s255	s255	s255	s255	s0	s0	i2
+ISCEInstall	CEInstallKey

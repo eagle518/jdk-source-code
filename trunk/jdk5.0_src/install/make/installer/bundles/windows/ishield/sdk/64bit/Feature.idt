@@ -1,0 +1,6 @@
+Feature	Feature_Parent	Title	Description	Display	Level	Directory_	Attributes	ISReleaseFlags	ISComments	ISFeatureCabName
+s38	S38	L64	L255	I2	i2	S72	i2	S255	S255	S255
+Feature	Feature
+DemosFeature		##ID_STRING_DEMOS##	##ID_STRING_1##	4	1	INSTALLDIR	16			
+SourceFeature		##ID_STRING_SOURCES##	##ID_STRING_SOURCE2##	6	1	INSTALLDIR	16			
+ToolsFeature		##ID_STRING_TOOLS##	##ID_STRING_4##	2	1	INSTALLDIR	24			

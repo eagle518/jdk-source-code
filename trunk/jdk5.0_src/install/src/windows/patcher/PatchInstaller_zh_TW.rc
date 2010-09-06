@@ -1,0 +1,55 @@
+//Microsoft Developer Studio generated resource script.
+//
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_PROGRESS_DIALOG DIALOGEX 0, 0, 237, 160
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_MINIMIZEBOX | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Java(TM) Update"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "取消",IDCANCEL,180,142,50,14
+    CONTROL         "DownloadAnimate",IDC_UPDATE_ANIMATE,"SysAnimate32",ACS_AUTOPLAY,7,7,65,130
+    LTEXT           "Java(TM) 技術",IDC_STATIC,82,7,70,8
+    LTEXT           "Sun Microsystems, Inc.",IDC_STATIC,82,34,74,8
+    LTEXT           "Java(TM) Update 技術為用戶端提供最新的 Java(TM)。",
+                    IDC_STATIC,82,66,130,32
+    LTEXT           IDS_STATUS_UPDATING,IDC_PROGRESS_TEXT,82,113,135,9
+    CONTROL         "Progress1",IDC_PROGRESS_BAR,"msctls_progress32",
+                    PBS_SMOOTH,82,124,148,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_CAPTION_UPDATE	    "Java(TM) Update %s"
+    IDS_CAPTION_WARNING     "警告 - Java(TM) Update"
+    IDS_CAPTION_ERROR       "錯誤 - Java(TM) Update"
+    IDS_CAPTION_ABORT       "中斷 - Java(TM) Update"
+    IDS_CAPTION_CONFIRM     "需要確認 - Java(TM) Update"
+    IDS_CAPTION_SUCCEEDED   "成功 - Java(TM) Update"
+    IDS_STATUS_UPDATING	    "正在更新 Java(TM) ..."
+    IDS_STATUS_BACKINGUP    "正在備份原始檔案 ..."
+    IDS_STATUS_PROCESSING   "正在處理： %s"
+    IDS_STATUS_SEARCHING    "正在搜尋要更新的系統 ..."
+    IDS_OPTIONS             "用法： %s   [-s] 目錄"
+    IDS_ERROR_HANDLING      "無法處理錯誤碼 0x%x。"
+    IDS_ERROR_VM_RUNNING    "無法在此機器上安裝 Java Update，\n因為您選擇要進行安裝的目錄\n被鎖定。\n\n請關閉所有正在使用\n所選以進行安裝之目錄的\n瀏覽器或應用程式。"
+    IDS_ERROR_UPDATE	    "Java(TM) Update 無法將變更套用至系統。"
+    IDS_ERROR_VERSIONINFO   "Java(TM) Update 無法從目標目錄中取回版本資訊。"
+    IDS_ERROR_BASE_IMAGE_NOT_FOUND  "無法安裝 Java(TM) Update (%s)，因為無法找到基本影像 (%s)。"
+    IDS_ERROR_INSTALLED_NEWER_VERSION  "無法安裝 Java(TM) Update (%s)，因為此機器上已經安裝了較新的版本 (%s)。"
+    IDS_ERROR_INSTALLED_SAME_VERSION  "您已經在此機器上安裝了 Java(TM) Update (%s)。"
+    IDS_ERROR_UNINSTALL_WRONG_VERSION  "無法解除安裝 Java(TM) Update (%s)，因為目前的影像是不同的版本 (%s)。"
+    IDS_INSTALL_SUCCESS	    "已經在此機器上成功地安裝了 Java(TM) Update (%s)。"
+END

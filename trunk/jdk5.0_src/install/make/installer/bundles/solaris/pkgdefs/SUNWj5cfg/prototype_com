@@ -1,0 +1,29 @@
+#
+# @(#)prototype_com	1.2 04/06/10
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# This required package information file contains a list of package contents.
+# The 'pkgmk' command uses this file to identify the contents of a package
+# and their location on the development machine when building the package.
+# Can be created via a text editor or through use of the 'pkgproto' command.
+
+#!search <pathname pathname ...>	# where to find pkg objects
+#!include <filename>			# include another 'prototype' file
+#!default <mode> <owner> <group>	# default used if not specified on entry
+#!<param>=<value>			# puts parameter in pkg environment
+
+# packaging files
+i pkginfo
+i space
+i depend
+i copyright
+i postinstall
+
+# files and directories
+d none etc 0755 root sys
+d none etc/.java 0755 root bin
+d none etc/.java/.systemPrefs 0755 root bin
+e none etc/.java/.systemPrefs/.system.lock 0644 root bin
+e none etc/.java/.systemPrefs/.systemRootModFile 0644 root bin

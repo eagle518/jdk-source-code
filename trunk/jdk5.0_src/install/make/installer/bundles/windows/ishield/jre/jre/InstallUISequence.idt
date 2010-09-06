@@ -1,0 +1,31 @@
+Action	Condition	Sequence	ISComments	ISAttributes
+s72	S255	I2	S255	I4
+InstallUISequence	Action
+SetupCompleteError	SDKSILENT=0	-3	SetupCompleteError	
+SetupCompleteSuccess	SDKSILENT=0	-1	SetupCompleteSuccess	
+SetupInterrupted	SDKSILENT=0	-2	SetupInterrupted	
+ISSetupFilesExtract		3		
+IsIntlInstall		5		
+AppSearch		49	AppSearch	
+LaunchConditions		50	LaunchConditions	
+SetupInitialization		100	Setup Initialization	
+FindRelatedProducts		150	FindRelatedProducts	
+CCPSearch	CCP_TEST	250	CCPSearch	
+RMCCPSearch	Not CCP_SUCCESS And CCP_TEST	300	RMCCPSearch	
+ValidateProductID		350	ValidateProductID	
+CostInitialize		400	CostInitialize	
+FileCost		450	FileCost	
+IsolateComponents		500	IsolateComponents	
+ResolveSource	Not Installed	525	ResolveSource	
+CostFinalize		538	CostFinalize	
+SetARPReadme		539		
+IsMozillaInstalled	CUSTOM=0	569	Find out if Mozilla is installed on the system	
+IsIEInstalled	SDKSILENT=1	593	set it to 1	
+Warning	( (Version9X<410) Or ((Version9X=410) And (WindowsBuild<2222)) Or ((VersionNT=400) And (ServicePackLevel<5)) Or ((VersionNT=500) And (ServicePackLevel<2))) And (Not Installed) And SDKSILENT=0	653		
+LicenseAgreement	Not Installed And SDKSILENT=0	658	License Agreement	
+MigrateFeatureStates		662	MigrateFeatureStates	
+CustomSetup	SDKSILENT=1	699	Custom Selection	
+MaintenanceWelcome	Installed And SDKSILENT=0	737	Maintenance Welcome	
+SetupProgress		800	SetupProgress	
+ExecuteAction		850	ExecuteAction	
+ISSetupFilesCleanup		852		

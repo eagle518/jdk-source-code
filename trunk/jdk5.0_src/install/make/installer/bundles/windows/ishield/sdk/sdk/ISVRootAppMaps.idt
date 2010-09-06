@@ -1,0 +1,3 @@
+VRootKey	VRootAppMapKey	Extension	ExecPath	Verb	AppMapProps
+s255	s255	l50	l255	l255	i4
+ISVRootAppMaps	VRootKey	VRootAppMapKey

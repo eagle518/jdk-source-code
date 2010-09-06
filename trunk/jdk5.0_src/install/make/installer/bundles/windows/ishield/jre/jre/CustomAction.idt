@@ -1,0 +1,48 @@
+Action	Type	Source	Target	ISComments
+s72	i2	S64	S0	S255
+CustomAction	Action
+fontchecker	98	bin	javaw.exe -jar -cp "[J2REPATCHFULLVERSION]\FontChecker.jar" "[J2REPATCHFULLVERSION]\FontChecker.jar" -o "[fonts]\badfonts.txt" -w	check for bad fonts
+charsets	34	J2REPATCHFULLVERSION	"[J2REPATCHFULLVERSION]\launcher.exe" "[bin]\unpack200.exe" -r -v -l "[LOGFILE]" "[INSTALLDIR]\lib\charsets.pack" "[INSTALLDIR]\lib\charsets.jar"	
+getlogfile	17	RegUtils	MSIGetLogFileName	
+InstallJava	17	RegUtils	MSIInstallJava	
+IsIntlInstall	1	RegUtilsMSI	MSIInstallIntlJRE	
+IsIEInstalled	1	RegUtilsMSI	MSIIsIEInstalled	Is Internet Explorer Installed
+IsMozillaInstalled	1	RegUtilsMSI	MSIIsMozillaInstalled	Find out if Mozilla is installed on the system
+issemicolon	1	RegUtilsMSI	MSIIsINSTALLDIRValid	is there a semi colon in the installdir?
+ISSetupFilesCleanup	257	ISSetupFilesHelper	SFCleanupEx	
+ISSetupFilesExtract	257	ISSetupFilesHelper	SFStartupEx	
+javaws	34	J2REPATCHFULLVERSION	"[J2REPATCHFULLVERSION]\launcher.exe" "[bin]\unpack200.exe" -r -v -l "[LOGFILE]" "[INSTALLDIR]\lib\javaws.pack" "[INSTALLDIR]\lib\javaws.jar"	Unpack javaws jar file
+jaws	34	J2REPATCHFULLVERSION	"[J2REPATCHFULLVERSION]\launcher.exe" "[bin]\unpack200.exe" -r -v -l "[LOGFILE]" "[INSTALLDIR]\lib\plugin.pack" "[INSTALLDIR]\lib\plugin.jar"	
+jsse	34	J2REPATCHFULLVERSION	"[J2REPATCHFULLVERSION]\launcher.exe" "[bin]\unpack200.exe" -r -v -l "[LOGFILE]" "[INSTALLDIR]\lib\jsse.pack" "[INSTALLDIR]\lib\jsse.jar"	
+localedata	34	J2REPATCHFULLVERSION	"[J2REPATCHFULLVERSION]\launcher.exe" "[bin]\unpack200.exe" -r -v -l "[LOGFILE]" "[INSTALLDIR]\lib\ext\localedata.pack" "[INSTALLDIR]\lib\ext\localedata.jar"	
+patchjre	18	patchjre.exe	-s "[INSTALLDIR]"	
+rt	34	J2REPATCHFULLVERSION	"[J2REPATCHFULLVERSION]\launcher.exe" "[bin]\unpack200.exe" -r -v -l "[LOGFILE]" "[INSTALLDIR]\lib\rt.pack" "[INSTALLDIR]\lib\rt.jar"	
+deploy	34	J2REPATCHFULLVERSION	"[J2REPATCHFULLVERSION]\launcher.exe" "[bin]\unpack200.exe" -r -v -l "[LOGFILE]" "[INSTALLDIR]\lib\deploy.pack" "[INSTALLDIR]\lib\deploy.jar"	
+setAllUsersProfile2K	51	ALLUSERSPROFILE	[%ALLUSERSPROFILE]	
+SetAllUsersProfileNT	51	ALLUSERSPROFILE	[%SystemRoot]\Profiles\All Users	
+SetARPReadme	51	ARPREADME	[INSTALLDIR]README.txt	
+setUserProfileNT	51	USERPROFILE	[%USERPROFILE]	
+UninstallJRE	17	RegUtils	MSIUninstallJRE	
+unzipcore1	18	zipper.exe	"[J2REBASEIMAGEFULLVERSION]\core1.zip" "[INSTALLDIR]\" "[LOGFILE]"	
+unzipcore2	18	zipper.exe	"[J2REBASEIMAGEFULLVERSION]\core2.zip" "[INSTALLDIR]\" "[LOGFILE]"	
+unzipcore3	18	zipper.exe	"[J2REBASEIMAGEFULLVERSION]\core3.zip" "[INSTALLDIR]\" "[LOGFILE]"	
+unzipextra	18	zipper.exe	"[J2REBASEIMAGEFULLVERSION]\extra.zip" "[INSTALLDIR]\" "[LOGFILE]"	
+unzipother	18	zipper.exe	"[J2REBASEIMAGEFULLVERSION]\other.zip" "[INSTALLDIR]\" "[LOGFILE]"	
+needreboot	17	RegUtils	MSINeedReboot	do we need a reboot
+needrebootIEVM	17	RegUtils	MSIIsJavaVMInUse	do we need a reboot for IE
+SetIExplorer	51	IEXPLORER	1	
+SetREBOOT	51	REBOOT	Force	
+progressReset	17	RegUtils	CAProgressReset	
+progress1	17	RegUtils	CAProgress	
+progress2	17	RegUtils	CAProgress	
+progress3	17	RegUtils	CAProgress	
+progress4	17	RegUtils	CAProgress	
+progress5	17	RegUtils	CAProgress	
+progress6	17	RegUtils	CAProgress	
+progress7	17	RegUtils	CAProgress	
+progress8	17	RegUtils	CAProgress	
+progress9	17	RegUtils	CAProgress	
+progress10	17	RegUtils	CAProgress	
+progress11	17	RegUtils	CAProgress	
+progress12	17	RegUtils	CAProgress	
+sharedclassdata	98	bin	javaw.exe -Xshare:dump	generate shared class data

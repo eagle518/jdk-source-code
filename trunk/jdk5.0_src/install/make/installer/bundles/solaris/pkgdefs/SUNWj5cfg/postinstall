@@ -1,0 +1,93 @@
+#!/bin/sh
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# @(#)postinstall	1.10 04/06/10
+#=================================================
+# Used variables
+#-------------------------------------------------
+
+#
+# Make sure any new files created in /etc, which are not managed by installf, 
+# are created with a secure access mask.  Using chmod is problematice, since 
+# that would also change the rights of any existing file, and we are only 
+# interested in setting the rights for new files.
+#
+# The bug here is that these files should be managed by installf and hence
+# have explicit ownership and permissions.  However, since there is only
+# one user (root) under which this file can be executed, that enhancement
+# is left for the future.  Until then, the only consequence is that these
+# files won't be removed when they should be.
+#
+umask 022
+
+MIME_TYPE=application/x-java-jnlp-file
+LATEST_JAVAWS_PATH=/usr/bin/javaws
+
+#=================================================
+# Add Java Web Start entry to /etc/mailcap
+#     param - $1 - mailcap file
+#-------------------------------------------------
+UpdateMailcap() {
+    MAILCAP_FILE=$1
+
+    MC_COMMENT="# Java Web Start"
+    MC_TEXT=
+
+    if [ -w ${MAILCAP_FILE} ]; then
+        # Remove existing entry, if present
+        MC_TEXT=`grep -v "${MIME_TYPE}" ${MAILCAP_FILE} | \
+                 grep -v "${MC_COMMENT}"`
+    fi
+    # Add new entry
+    if [ -w `dirname ${MAILCAP_FILE}` ]; then
+        MC_TEXT="${MC_TEXT}\n${MC_COMMENT}"
+        MC_TEXT="${MC_TEXT}\n${MIME_TYPE}; $LATEST_JAVAWS_PATH %s"
+        echo "${MC_TEXT}" > ${MAILCAP_FILE}
+    else
+        echo "WARNING - cannot write to file:"
+        echo "       ${MAILCAP_FILE}"
+        echo "Check permissions."
+    fi
+}
+# End of UpdateMailcap
+
+#=================================================
+# Add Java Web Start entry to /etc/.mime.types
+#     param - $1 - mime file
+#-------------------------------------------------
+UpdateMimeTypes() {
+    MIME_FILE=$1
+
+    NS_COMMENT1="#--Netscape Communications Corporation MIME Information"
+    NS_COMMENT2="#Do not delete the above line. It is used to identify the file type."
+    NS_COMMENT3="#mime types added by Netscape Helper"
+    JNLP_ENTRY="type=${MIME_TYPE} desc=\"Java Web Start\" exts=\"jnlp\""
+
+    # Create the file if it does not exist
+    if [ ! -w ${MIME_FILE} ]; then
+        if [ -w `dirname ${MIME_FILE}` ]; then
+            echo "${NS_COMMENT1}"  > ${MIME_FILE}
+            echo "${NS_COMMENT2}" >> ${MIME_FILE}
+            echo "${NS_COMMENT3}" >> ${MIME_FILE}
+        else
+            echo "WARNING - cannot write to file:"
+            echo "       ${MIME_FILE}"
+            echo "Check permissions."
+            return
+        fi
+    fi
+    # Add the jnlp entry if it does not already exist.
+    if [ -z "`grep ${MIME_TYPE} ${MIME_FILE}`" ]; then
+        echo ${JNLP_ENTRY} >> ${MIME_FILE}
+    fi
+}
+# End of UpdateMimeTypes
+
+
+#=================================================
+# Roll it
+#-------------------------------------------------
+UpdateMailcap $PKG_INSTALL_ROOT/etc/mailcap
+UpdateMimeTypes $PKG_INSTALL_ROOT/etc/mime.types

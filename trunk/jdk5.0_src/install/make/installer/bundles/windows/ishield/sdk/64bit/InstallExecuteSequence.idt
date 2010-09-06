@@ -1,0 +1,81 @@
+Action	Condition	Sequence	ISComments	ISAttributes
+s72	S255	I2	S255	I4
+InstallExecuteSequence	Action
+AllocateRegistrySpace	NOT Installed	750	AllocateRegistrySpace	
+AppSearch		25	AppSearch	
+BindImage		2100	BindImage	
+CCPSearch	CCP_TEST	200	CCPSearch	
+charsets	&ToolsFeature=3	3148		
+CostFinalize		500	CostFinalize	
+CostInitialize		350	CostInitialize	
+CreateFolders		1850	CreateFolders	
+CreateShortcuts		2150	CreateShortcuts	
+DeleteServices	VersionNT	1000	DeleteServices	
+DuplicateFiles		2050	DuplicateFiles	
+FileCost		400	FileCost	
+FindRelatedProducts	NOT ISSETUPDRIVEN	100	FindRelatedProducts	
+InstallFiles		1950	InstallFiles	
+InstallFinalize		3142	InstallFinalize	
+InstallInitialize		700	InstallInitialize	
+InstallODBC		2600	InstallODBC	
+InstallServices	VersionNT	2750	InstallServices	
+InstallValidate		650	InstallValidate	
+ISInitAllUsers	VersionNT And NOT Installed	525	ISInitAllUsers	
+IsolateComponents		450	IsolateComponents	
+ISSetupFilesCleanup		3260		
+ISSetupFilesExtract		3		
+jsse	&ToolsFeature=3	3152		
+LaunchConditions		50	LaunchConditions	
+localedata	&ToolsFeature=3	3155		
+MigrateFeatureStates		600	MigrateFeatureStates	
+MoveFiles		1900	MoveFiles	
+MsiPublishAssemblies		3025	MsiPublishAssemblies	
+MsiUnpublishAssemblies		875	MsiUnpublishAssemblies	
+PatchFiles		2000	PatchFiles	
+ProcessComponents		800	ProcessComponents	
+PublishComponents		3000	PublishComponents	
+PublishFeatures		3050	PublishFeatures	
+PublishProduct		3100	PublishProduct	
+RegisterClassInfo		2200	RegisterClassInfo	
+RegisterComPlus		2700	RegisterComPlus	
+RegisterExtensionInfo		2250	RegisterExtensionInfo	
+RegisterFonts		2550	RegisterFonts	
+RegisterMIMEInfo		2350	RegisterMIMEInfo	
+RegisterProduct		2950	RegisterProduct	
+RegisterProgIdInfo		2300	RegisterProgIdInfo	
+RegisterTypeLibraries		2650	RegisterTypeLibraries	
+RegisterUser		2900	RegisterUser	
+RemoveDuplicateFiles		1700	RemoveDuplicateFiles	
+RemoveEnvironmentStrings		1650	RemoveEnvironmentStrings	
+RemoveExistingProducts		675	RemoveExistingProducts	
+RemoveFiles		1750	RemoveFiles	
+RemoveFolders		1800	RemoveFolders	
+RemoveIniValues		1550	RemoveIniValues	
+RemoveODBC		1200	RemoveODBC	
+RemoveRegistryValues		1300	RemoveRegistryValues	
+RemoveShortcuts		1600	RemoveShortcuts	
+RMCCPSearch	Not CCP_SUCCESS And CCP_TEST	250	RMCCPSearch	
+rt	&ToolsFeature=3	3154		
+ScheduleReboot	SDKREBOOT=1 AND (UILevel<>2)	3126	ScheduleReboot	
+SelfRegModules		2850	SelfRegModules	
+SelfUnregModules		1100	SelfUnregModules	
+setAllUsersProfile2K	VersionNT >= 500	330		
+SetAllUsersProfileNT	VersionNT = 400	320		
+SetODBCFolders		550	SetODBCFolders	
+setUserProfileNT	VersionNT	310		
+StartServices	VersionNT	2800	StartServices	
+StopServices	VersionNT	950	StopServices	
+tools	&ToolsFeature=3	3153		
+UnpublishComponents		850	UnpublishComponents	
+UnpublishFeatures		900	UnpublishFeatures	
+UnregisterClassInfo		1350	UnregisterClassInfo	
+UnregisterComPlus		1050	UnregisterComPlus	
+UnregisterExtensionInfo		1400	UnregisterExtensionInfo	
+UnregisterFonts		1250	UnregisterFonts	
+UnregisterMIMEInfo		1500	UnregisterMIMEInfo	
+UnregisterProgIdInfo		1450	UnregisterProgIdInfo	
+UnregisterTypeLibraries		1150	UnregisterTypeLibraries	
+ValidateProductID		300	ValidateProductID	
+WriteEnvironmentStrings		2500	WriteEnvironmentStrings	
+WriteIniValues		2450	WriteIniValues	
+WriteRegistryValues		2400	WriteRegistryValues	

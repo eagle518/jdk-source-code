@@ -1,0 +1,7 @@
+FileKey	Component_	FileName	DirProperty	InstallMode
+s72	s72	L255	s72	i2
+RemoveFile	FileKey
+FileKey1	ja150000	rt.jar	lib	2
+FileKey2	ja150000	charsets.jar	lib	2
+FileKey3	ja150000	jsse.jar	lib	2
+FileKey4	ja150000	localedata.jar	ext	2

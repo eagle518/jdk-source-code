@@ -1,0 +1,155 @@
+#
+# @(#)Bundles.gmk	1.10 02/09/30
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+# Makefile shared for the unix'es
+
+######################################################
+# JRE Bundles
+######################################################
+bundle-jre:
+	@# 
+	@# Generate self extracting tar file ...
+	@#
+	$(RM) -r $(OUTPUTDIR)/$(JRE_TEMPORARY_DIR) $(OUTPUTDIR)/$(JRE_BUNDLE_NAME).zip
+	$(MKDIR) -p $(OUTPUTDIR)/$(JRE_TEMPORARY_DIR)
+	$(CD) $(JRE_IMAGE_DIR) ; $(FIND) . | $(CPIO) -pdum $(ABS_OUTPUTDIR)/$(JRE_TEMPORARY_DIR)
+	for i in $(JRE_PACKED_JARS); do \
+	    if [ -f  $(OUTPUTDIR)/$(JRE_TEMPORARY_DIR)/$$i ]; then  \
+		$(RM)  $(OUTPUTDIR)/$(JRE_TEMPORARY_DIR)/$$i ; \
+		$(CP) $(PACKED_JRE_JARDIR)/`$(DIRNAME) $$i`/`$(BASENAME) $$i .jar`$(PACK_SUFFIX) \
+		    $(OUTPUTDIR)/$(JRE_TEMPORARY_DIR)/`$(DIRNAME) $$i` ; \
+	    fi ;\
+	done ;\
+	$(CD) $(OUTPUTDIR) ; \
+		$(ZIPEXE) -qryn nothing $(JRE_BUNDLE_NAME).zip $(JRE_TEMPORARY_DIR)
+	$(CAT) $(UNZIPSFX) $(OUTPUTDIR)/$(JRE_BUNDLE_NAME).zip > \
+		$(OUTPUTDIR)/$(JRE_BUNDLE_NAME).bin
+  ifeq ($(ARCH_DATA_MODEL), 64)
+	$(SFX2SH) $(OUTPUTDIR)/$(JRE_BUNDLE_NAME).bin \
+		  $(OUTPUTDIR)/tmp/jre/LICENSE \
+		  $(BIN_BUNDLEDIR)/$(JRE_BUNDLE_NAME).sh \
+		  $(JRE_NODOTVERSION) \
+		  $(OUTPUTDIR)/$(JRE_TEMPORARY_DIR) \
+		  "$(JRE_PACKED_JARS)" \
+		  $(PLATFORM) \
+		  $(ARCH_DATA_MODEL)
+  else
+	$(SFX2SH) $(OUTPUTDIR)/$(JRE_BUNDLE_NAME).bin \
+		  $(OUTPUTDIR)/$(JRE_TEMPORARY_DIR)/LICENSE \
+		  $(BIN_BUNDLEDIR)/$(JRE_BUNDLE_NAME).sh \
+		  $(JRE_NODOTVERSION) \
+		  $(OUTPUTDIR)/$(JRE_TEMPORARY_DIR) \
+		  "$(JRE_PACKED_JARS)" \
+		  $(PLATFORM) \
+		  $(ARCH_DATA_MODEL) \
+		  "" \
+		  $(JRE_JAVAWS)
+  endif
+	$(RM) $(OUTPUTDIR)/$(JRE_BUNDLE_NAME).bin $(OUTPUTDIR)/$(JRE_BUNDLE_NAME).zip
+
+######################################################
+# JDK Bundles
+######################################################
+bundle-jdk::
+	@# 
+	@# Generate the self-extracting tar files...
+	@#
+	$(RM) -r $(OUTPUTDIR)/$(JDK_TEMPORARY_DIR) $(OUTPUTDIR)/$(JDK_BUNDLE_NAME).zip
+	$(MKDIR) -p $(OUTPUTDIR)/$(JDK_TEMPORARY_DIR)
+	$(CD) $(JDK_IMAGE_DIR) ; $(FIND) . | $(CPIO) -pdum $(ABS_OUTPUTDIR)/$(JDK_TEMPORARY_DIR)
+	for i in $(JDK_PACKED_JARS); do \
+	    if [ -f  $(OUTPUTDIR)/$(JDK_TEMPORARY_DIR)/$$i ]; then  \
+		$(RM)  $(OUTPUTDIR)/$(JDK_TEMPORARY_DIR)/$$i ; \
+		$(CP) $(PACKED_JDK_JARDIR)/`$(DIRNAME) $$i`/`$(BASENAME) $$i .jar`$(PACK_SUFFIX) \
+		    $(OUTPUTDIR)/$(JDK_TEMPORARY_DIR)/`$(DIRNAME) $$i` ; \
+	    fi ;\
+	done ;\
+	$(CD) $(OUTPUTDIR) ; \
+		$(ZIPEXE) -qryn nothing $(JDK_BUNDLE_NAME).zip $(JDK_TEMPORARY_DIR)
+	$(CAT) $(UNZIPSFX) $(OUTPUTDIR)/$(JDK_BUNDLE_NAME).zip > \
+		$(OUTPUTDIR)/$(JDK_BUNDLE_NAME).bin
+  ifeq ($(ARCH_DATA_MODEL), 64)
+	$(SFX2SH) $(OUTPUTDIR)/$(JDK_BUNDLE_NAME).bin \
+		  $(OUTPUTDIR)/tmp/jdk/LICENSE \
+		  $(BIN_BUNDLEDIR)/$(JDK_BUNDLE_NAME).sh \
+		  $(JRE_NODOTVERSION) \
+		  $(OUTPUTDIR)/$(JDK_TEMPORARY_DIR) \
+		  "$(JDK_PACKED_JARS)" \
+		  $(PLATFORM) \
+		  $(ARCH_DATA_MODEL)
+  else
+	$(SFX2SH) $(OUTPUTDIR)/$(JDK_BUNDLE_NAME).bin \
+		  $(OUTPUTDIR)/$(JDK_TEMPORARY_DIR)/LICENSE \
+		  $(BIN_BUNDLEDIR)/$(JDK_BUNDLE_NAME).sh \
+		  $(JRE_NODOTVERSION) \
+		  $(OUTPUTDIR)/$(JDK_TEMPORARY_DIR) \
+		  "$(JDK_PACKED_JARS)" \
+		  $(PLATFORM) \
+		  $(ARCH_DATA_MODEL) \
+		  "" \
+		  $(JDK_JAVAWS)
+  endif
+	$(RM) $(OUTPUTDIR)/$(JDK_BUNDLE_NAME).bin $(OUTPUTDIR)/$(JDK_BUNDLE_NAME).zip
+
+######################################################
+# JDK Debug Bundles
+######################################################
+bundle-jdk-debug::
+#Ensure that PACKED_JARS="" since nothing is packed
+	$(RM) -r $(OUTPUTDIR)/$(JDK_TEMPORARY_DIR) \
+		$(OUTPUTDIR)/$(JDK_DEBUG_BUNDLE_NAME).zip
+	$(MKDIR) -p $(OUTPUTDIR)/$(JDK_TEMPORARY_DIR)
+	$(CD) $(JDK_DEBUG_IMAGE_DIR) ; $(FIND) . | $(CPIO) -pdum $(ABS_OUTPUTDIR)/$(JDK_TEMPORARY_DIR)
+	$(CD) $(OUTPUTDIR) ; \
+		$(ZIPEXE) -qryn nothing $(JDK_DEBUG_BUNDLE_NAME).zip \
+		$(JDK_TEMPORARY_DIR)
+	$(CAT) $(UNZIPSFX) $(OUTPUTDIR)/$(JDK_DEBUG_BUNDLE_NAME).zip > \
+		$(OUTPUTDIR)/$(JDK_DEBUG_BUNDLE_NAME).bin
+  ifeq ($(ARCH_DATA_MODEL), 64)
+	$(SFX2SH) $(OUTPUTDIR)/$(JDK_DEBUG_BUNDLE_NAME).bin \
+		  $(OUTPUTDIR)/tmp/jdk/LICENSE \
+		  $(BIN_BUNDLEDIR)/$(JDK_DEBUG_BUNDLE_NAME).sh \
+		  $(JRE_NODOTVERSION) \
+		  $(OUTPUTDIR)/$(JDK_TEMPORARY_DIR) \
+		  "" \
+		  $(PLATFORM) \
+		  $(ARCH_DATA_MODEL)
+  else
+	$(SFX2SH) $(OUTPUTDIR)/$(JDK_DEBUG_BUNDLE_NAME).bin \
+		  $(JDK_IMAGE_DIR)/LICENSE \
+		  $(BIN_BUNDLEDIR)/$(JDK_DEBUG_BUNDLE_NAME).sh \
+		  $(JRE_NODOTVERSION) \
+		  $(OUTPUTDIR)/$(JDK_TEMPORARY_DIR) \
+		  "" \
+		  $(PLATFORM) \
+		  $(ARCH_DATA_MODEL)
+  endif
+	$(RM) -r $(OUTPUTDIR)/$(JDK_TEMPORARY_DIR)
+	$(RM) $(OUTPUTDIR)/$(JDK_DEBUG_BUNDLE_NAME).bin \
+		$(OUTPUTDIR)/$(JDK_DEBUG_BUNDLE_NAME).zip
+
+bundle-jdk-debug-clobber:
+# debug bundles not built for windows (why not?)
+	$(RM) -r $(OUTPUTDIR)/$(JDK_TEMPORARY_DIR) \
+		$(OUTPUTDIR)/$(JDK_DEBUG_BUNDLE_NAME).zip
+	$(RM) $(JDK_DEBUG_BUNDLE_NAME).zip
+	$(RM) $(OUTPUTDIR)/$(JDK_DEBUG_BUNDLE_NAME).bin
+	$(RM) $(BIN_BUNDLEDIR)/$(JDK_DEBUG_BUNDLE_NAME).sh
+
+bundle-jre-clobber:
+	$(RM) -r $(OUTPUTDIR)/$(JRE_TEMPORARY_DIR) $(OUTPUTDIR)/$(JRE_BUNDLE_NAME).zip
+	$(RM) $(JRE_TEMPORARY_DIR)
+	$(RM) $(OUTPUTDIR)/$(JRE_BUNDLE_NAME).bin
+	$(RM) $(BIN_BUNDLEDIR)/$(JRE_BUNDLE_NAME).sh
+
+bundle-jdk-clobber:
+	$(RM) -r $(OUTPUTDIR)/$(JDK_TEMPORARY_DIR) $(OUTPUTDIR)/$(JDK_BUNDLE_NAME).zip
+	$(RM) $(OUTPUTDIR)/$(JDK_BUNDLE_NAME).bin
+	$(RM) $(BIN_BUNDLEDIR)/$(JDK_BUNDLE_NAME).sh
+
+FRC:
+.PHONY: bundle-jre bundle-jdk bundle-jdk-debug bundle-jdk-debug-clobber bundle-jre-clobber bundle-jdk-clobber

@@ -1,0 +1,33 @@
+#
+# @(#)depend	1.5 00/05/04
+#
+# Copyright 2000 Sun Microsystems, Inc. All rights reserved.
+# Copyright 2000 Sun Microsystems, Inc. Tous droits réservés.
+#
+# This software is the proprietary information of Sun Microsystems, Inc.
+# Use is subject to license terms.
+#
+
+#
+# This package information file defines software dependencies associated
+# with the pkg.  You can define three types of pkg dependencies with this file:
+#	 P indicates a prerequisite for installation
+#	 I indicates an incompatible package
+#	 R indicates a reverse dependency
+# <pkg.abbr> see pkginfo(4), PKG parameter
+# <name> see pkginfo(4), NAME parameter
+# <version> see pkginfo(4), VERSION parameter
+# <arch> see pkginfo(4), ARCH parameter
+# <type> <pkg.abbr> <name>
+# 	(<arch>)<version>
+# 	(<arch>)<version>
+# 	...
+# <type> <pkg.abbr> <name>
+# ...
+
+P SUNWcar	Core Architecture, (Root)
+P SUNWkvm	Core Architecture, (Kvm)
+P SUNWcsr	Core Solaris, (Root)
+P SUNWcsu	Core Solaris, (Usr)
+P SUNWcsd	Core Solaris Devices
+I SUNWjvthr	JDK 1.3 thread library

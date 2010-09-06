@@ -1,0 +1,55 @@
+//Microsoft Developer Studio generated resource script.
+//
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_PROGRESS_DIALOG DIALOGEX 0, 0, 237, 160
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_MINIMIZEBOX | WS_POPUP |
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Aggiornamento Java(TM)"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "Annulla",IDCANCEL,180,142,50,14
+    CONTROL         "DownloadAnimate",IDC_UPDATE_ANIMATE,"SysAnimate32",ACS_AUTOPLAY,7,7,65,130
+    LTEXT           "Tecnologia Java(TM)",IDC_STATIC,82,7,70,8
+    LTEXT           "Sun Microsystems, Inc.",IDC_STATIC,82,34,74,8
+    LTEXT           "La tecnologia di Aggiornamento Java(TM) consente di scaricare la versione Java(TM) più recente.",
+                    IDC_STATIC,82,66,130,32
+    LTEXT           IDS_STATUS_UPDATING,IDC_PROGRESS_TEXT,82,113,135,9
+    CONTROL         "Progress1",IDC_PROGRESS_BAR,"msctls_progress32",
+                    PBS_SMOOTH,82,124,148,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_CAPTION_UPDATE	    "Aggiornamento Java(TM) %s"
+    IDS_CAPTION_WARNING     "Avviso - Aggiornamento Java(TM)"
+    IDS_CAPTION_ERROR       "Errore - Aggiornamento Java(TM)"
+    IDS_CAPTION_ABORT       "Interrompi - Aggiornamento Java(TM)"
+    IDS_CAPTION_CONFIRM     "Conferma richiesta - Aggiornamento Java(TM)"
+    IDS_CAPTION_SUCCEEDED   "Esecuzione corretta - Aggiornamento Java(TM)"
+    IDS_STATUS_UPDATING	    "Aggiornamento Java(TM) in corso..."
+    IDS_STATUS_BACKINGUP    "Esecuzione backup dei file originali in corso ..."
+    IDS_STATUS_PROCESSING   "Elaborazione: %s"
+    IDS_STATUS_SEARCHING    "Ricerca sistema da aggiornare in corso..."
+    IDS_OPTIONS             "Utilizzo: %s   directory [-s]"
+    IDS_ERROR_HANDLING      "Impossibile gestire codice errore 0x%x."
+    IDS_ERROR_VM_RUNNING    "Non è possibile installare l'Aggiornamento Java\nsu questo sistema perché la directory selezionata\nper l'installazione è bloccata.\n\nChiudere tutti i browser o le applicazioni\nche utilizzano la directory selezionata\nper l'installazione."
+    IDS_ERROR_UPDATE	    "L'Aggiornamento Java(TM) non è in grado di applicare le modifiche al sistema."
+    IDS_ERROR_VERSIONINFO   "L'Aggiornamento Java(TM) non è in grado di recuperare le informazioni sulla versione dalla directory di destinazione."
+    IDS_ERROR_BASE_IMAGE_NOT_FOUND  "Impossibile installare l'Aggiornamento Java(TM) (%s) perché non è possibile posizionare l'immagine di base (%s)."
+    IDS_ERROR_INSTALLED_NEWER_VERSION  "Impossibile installare l'Aggiornamento Java(TM) (%s) perché è già presente una versione più aggiornata (%s) nel computer."
+    IDS_ERROR_INSTALLED_SAME_VERSION  "L'Aggiornamento Java(TM) (%s) è già installato nel computer in uso."
+    IDS_ERROR_UNINSTALL_WRONG_VERSION  "Impossibile disinstallare l'Aggiornamento Java(TM) (%s) perché è presente una versione diversa dell'immagine corrente (%s)."
+    IDS_INSTALL_SUCCESS	    "L'Aggiornamento Java(TM) (%s) installato nel computer in uso."
+END

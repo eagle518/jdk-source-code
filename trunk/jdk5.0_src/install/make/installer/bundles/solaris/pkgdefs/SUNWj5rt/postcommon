@@ -1,0 +1,382 @@
+#!/bin/sh
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# Use is subject to license terms.
+#
+# pragma ident "@(#)postcommon	1.11 04/06/10 Sun Microsystems"
+#
+# This file contains shell routines common to both the postinstall and
+# postremove scripts for the core j2se package (rt).  The postinsall and
+# postremove are built by concatinating the the specific portion to this
+# common portion.
+#
+# The following commands are defined as shell variable so that they can
+# be redefined (as below) to place this script in a mode such that it
+# will tell you what it would do, without actually modifying the system.
+# Only commands which modify the system should be so aliased.
+#
+INSTALLF="installf"
+RM="rm"
+LN="ln"
+CP="cp"
+MKDIR="mkdir"
+
+#
+# For development purposes, one might consider uncommenting the following
+# lines.  The result is a script which will tell you what it would do
+# without actually doing anything.
+#
+# INSTALLF="echo installf"
+# RM="echo rm"
+# LN="echo ln"
+# CP="echo cp"
+# MKDIR="echo mkdir"
+#
+
+if [ "$PKG_INSTALL_ROOT" != "" ]; then
+    INSTALLF="$INSTALLF -R ${PKG_INSTALL_ROOT}"
+fi
+
+PRODVERS=`echo ${SUNW_PRODVERS} | sed -e "s/\/.*//"`
+PRODVERS_NP=`echo ${PRODVERS} | sed -e "s/_.*//"`
+PREFIX="jdk"
+
+REGISTRY_DIR="jdk"
+REGISTRY_PATH="${BASEDIR}/${REGISTRY_DIR}"
+REGISTRY_ENTRY="${PREFIX}${PRODVERS}"
+REGISTRY_NAME="${REGISTRY_PATH}/${REGISTRY_ENTRY}"
+
+INSTALL_DIR="instances"
+INSTALL_PATH="${REGISTRY_PATH}/${INSTALL_DIR}"
+INSTALL_ENTRY="${PREFIX}${PRODVERS_NP}"
+INSTALL_NAME="${INSTALL_PATH}/${INSTALL_ENTRY}"
+
+J2SE_PATH="${BASEDIR}/j2se"
+JAVA_PATH="${BASEDIR}/java"
+BIN_PATH="${BASEDIR}/bin"
+BIN_JAVA="${BIN_PATH}/java"
+BIN_JAVAWS="${BIN_PATH}/javaws"
+
+JAVA_LINK_VALUE="${REGISTRY_DIR}/${REGISTRY_ENTRY}"
+
+JDK_ICONS="${INSTALL_NAME}/jre/lib/images/icons"
+SHARE_PATH="${BASEDIR}/share"
+SHARE_DEFAULT="${SHARE_PATH}/pixmaps"
+SHARE_HIGH_CONTRAST="${SHARE_PATH}/icons/HighContrast/48x48/apps"
+SHARE_HIGH_CONTRAST_INVERSE="${SHARE_PATH}/icons/HighContrastInverse/48x48/apps"
+SHARE_LOW_CONTRAST="${SHARE_PATH}/icons/LowContrast/48x48/apps"
+MIME_PATH="${SHARE_PATH}/gnome/mime-info"
+APPS_PATH="${SHARE_PATH}/gnome/application-registry"
+
+#
+# This is as it should be:
+#
+REL_JAVAWS="bin/javaws"
+
+#
+# As a transition, we also have this, which can completely go away when
+# 4954937 is fixed and fully disappears (only in internal 1.5 builds):
+#
+REL_JAVAWS_GOOFY="jre/bin/javaws"
+
+#
+# See PSARC/2003/091: 1.4.2 shipped with this "official" location for
+# javaws.  Until 1.4.2 is deader than a doornail, we need this extra
+# location.
+#
+REL_JAVAWS_OLD="jre/javaws/javaws"
+
+#
+# "Global variables" which (if set) reflect the minimum and maximum j2se
+# releases expected to be the default on the underlying host release of
+# Solaris.  These are fully expanded tuples.
+DEFAULT_MIN=
+DEFAULT_MAX=
+
+#
+# FollowLink ( link )
+#
+# Given a symbolic link, follow that link until it doesn't point a symbolic
+# link.  Sequences such as "/foo/../" and "/./" are simplified.
+#
+# Parameters:
+#  $1	link		Link name
+#
+FollowLink() {
+    link=$1
+    while [ -h $link ]; do
+        ls=`ls -l $link`
+        link=`dirname $link`/`echo $ls | cut -f 11 -d " "`
+        echo $link | grep "\/\.\/" 2>/dev/null >/dev/null
+        while [ $? = 0 ]; do
+            link=`echo $link | sed -e s"/\/\.\//\//g"`
+            echo $link | grep "\/\.\/" 2>/dev/null >/dev/null
+        done
+        echo $link | grep "[^\/]*\/\.\.\/" 2>/dev/null >/dev/null
+        while [ $? = 0 ]; do
+            link=`echo $link | sed -e s"/[^\/]*\/\.\.\///g"`
+            echo $link | grep "[^\/]*\/\.\." 2>/dev/null >/dev/null
+        done
+        link=`echo $link | sed -e "s/^\.\///g"`
+    done
+    echo "$link"
+    return 0
+}
+
+#
+# GetHostRelease ()
+#
+# The use of /var/sadm/system/admin/INST_RELEASE is allowed by PSARC/2001/472.
+# We fallback to the use of uname should this file not exist, but that may
+# give the wrong answer for diskless server installations.  Fortunately, the
+# absence of the INST_RELEASE file is a "should never happen" situation,
+# except for internal development where it happens all the time, but then
+# uname does yield the right answer.
+#
+# Unfortunately, the format of the VERSION identifier has changed over time
+# as "Solaris 2.X" became marketed as simply "Solaris X".  Hence we need
+# to allow for both the "2.X" and simply "X" forms.
+#
+# This returns the simple "X" that is the Minor release by the taxonomy.
+#
+GetHostRelease() {
+    if [ -f $PKG_INSTALL_ROOT/var/sadm/system/admin/INST_RELEASE ]; then
+	ver=`grep '^VERSION=' \
+	  $PKG_INSTALL_ROOT/var/sadm/system/admin/INST_RELEASE`
+    else
+	ver=`uname -r`
+    fi
+    ver=`echo $ver | sed -e "s/[^0-9]*//" -e "s/[^0-9\.].*//"`
+    echo $ver | grep -s "[0-9]*\.[0-9]*" > /dev/null
+    if [ $? = 0 ]; then
+	ver=`echo $ver | sed -e "s/[0-9]*\.//"`
+    fi
+    echo $ver
+}
+
+#
+# ExpandPrefix ( release )
+# ExpandPrefixInfinity ( release )
+#
+# These two shell routines expand JVM release identifier prefixes to the
+# full, four element tuple.  ExpandPrefix zero extends as per JSR 56.
+# ExpandPrefixInfinity extends with essentially infinite values.
+#
+# Parameters:
+#   $1	release		Partial or complete release name tuple.
+#
+ExpandPrefix() {
+    echo $1 | sed -e "s/_/\./g" | \
+      awk '{FS="."; printf "%d.%d.%d_%.2d\n", $1, $2, $3, $4}'
+}
+
+ExpandPrefixInfinity() {
+    echo $1 | sed -e "s/_/\./g" | \
+      awk '{FS="."; \
+	if ($1 == "") major=9999; else major=$1; \
+	if ($2 == "") minor=9999; else minor=$2; \
+	if ($3 == "") micro=9999; else micro=$3; \
+	if ($4 == "") patch=9999; else patch=$4; \
+	printf "%d.%d.%d_%.2d\n", major, minor, micro, patch}'
+}
+
+#
+# GetDefaultRange ()
+#
+# Determines the range of J2se releases acceptable as the default on the
+# host version of Solaris.
+#
+GetDefaultRange() {
+    if [ -f $PKG_INSTALL_ROOT/etc/default/default_java ]; then
+	. $PKG_INSTALL_ROOT/etc/default/default_java
+    elif [ -f $PKG_INSTALL_ROOT/var/sadm/system/admin/default_java ]; then
+    	. $PKG_INSTALL_ROOT/var/sadm/system/admin/default_java
+    fi
+    if [ "$DEFAULT_MIN" = "" ]; then
+	release=`GetHostRelease`
+	case $release in
+	    5 | 6 | 7 )
+		DEFAULT_MIN=1.1
+		;;
+	    8 )
+		DEFAULT_MIN=1.2
+		;;
+	    9 )
+		DEFAULT_MIN=1.4
+		;;
+	    10 )
+		DEFAULT_MIN=1.5
+		;;
+	    * )
+		;;
+	esac
+    fi
+    if [ "$DEFAULT_MAX" = "" ]; then
+	DEFAULT_MAX=$DEFAULT_MIN
+    fi
+    DEFAULT_MIN=`ExpandPrefix $DEFAULT_MIN`
+    DEFAULT_MAX=`ExpandPrefixInfinity $DEFAULT_MAX`
+    return 0
+}
+
+#
+# GetRel ( filename )
+#
+# A little utility routine to strip viable prefixes from release names.
+# Note that this only works for release names by Sun convention, not the
+# whole, generalized JSR 56 name set.
+#
+# The current and legacy prefixes are:
+#	jdk (default for these packages)
+#	jre
+#	j2re
+#	j2sdk
+#
+# Parameters:
+#   $1	filename	Filesystem filename
+#
+# Returns:
+#	Version portion of the file name.
+#
+GetRel() {
+    if [ "`echo $1 | cut -c 1-3`" = "jdk" ]; then
+	echo $1 | cut -c 4-
+    elif [ "`echo $1 | cut -c 1-3`" = "jre" ]; then
+	echo $1 | cut -c 4-
+    elif [ "`echo $1 | cut -c 1-4`" = "j2re" ]; then
+	echo $1 | cut -c 5-
+    elif [ "`echo $1 | cut -c 1-5`" = "j2sdk" ]; then
+	echo $1 | cut -c 6-
+    else
+	echo $1
+    fi
+}
+
+#
+# GetMicro ( release )
+#
+# Extracts the Micro (dot-dot) version identifier from a Solaris JRE
+# release identifier.  This is the entire release identifier ('X.Y.Z',
+# not just 'Z'). Prefix specifications are zero extended.
+#
+# Parameters:
+#   $1	release		release identifier
+#
+# Returns:
+#	The Micro release portion of the release identifier.
+#
+GetMicro() {
+    echo `echo $1 | sed -e "s/[-_].*//" | \
+      awk '{FS="."; printf "%s.%s.%s", $1, $2, $3}'`
+}
+
+#
+# RelCmp ( rel1 rel2 )
+#
+# Styled as much as possible after strcmp, this routine returns one of the
+# strings "lt", "eq", or "gt" based on the relationship of the two release
+# version identifier strings passed as parameters. The sort is done only
+# on the first four fields (Major, Minor, Micro, Patch).  Internal identifiers
+# beyond that are ignored and releases differing only in the internal
+# identifier will compare as equal.
+#
+# Parameters:
+#   $1	rel1		Release identifier
+#   $2	rel2		Release identifier
+#
+# Returns:
+#	"lt", "eq", or "gt" based on the relationship of the two releases
+#
+RelCmp() {
+    r1=`echo $1 | sed -e "s/-.*//" -e "s/_/\./g"`
+    r2=`echo $2 | sed -e "s/-.*//" -e "s/_/\./g"`
+    if [ "$r1" = "$r2" ]; then
+	echo "eq"
+    else
+	lrel=`printf "%s\n%s\n" ${r1} ${r2} | \
+	      sort -t . -k 1,1n -k 2,2n -k 3,3n -k 4,4n | \
+	      head -1`
+
+	if [ "$r1" = "$lrel" ]; then
+	    echo "lt"
+	else
+	    echo "gt"
+	fi
+    fi
+}
+
+#
+# Select ( "least"|"greatest" list )
+#
+# From the list of file system objects passed in, return the "greatest"
+# or "least" depending upon the text flag passed in $1.  The ordering
+# is determined by the rules documented in JSR 56 (Appendix A).
+# However, this implementation is limited to identifiers which follow the
+# Sun conventions for release and directory naming.
+#
+# Parameters:
+#   $1	flag		"least"|"greatest" to control the selection.
+#   $2	list		List of potential file system identifiers.
+#
+# Returns:
+#	The selected file system identifier.
+#
+Select() {
+    if [ "$2" = "" ]; then
+	return
+    fi
+
+    tlist=
+    for dir in $2; do
+	rel=`GetRel $dir`
+	rel=`ExpandPrefix $rel | sed -e "s/[\._-]/ /g"`
+	tlist=`printf "%s %s\n%s" "${rel}" "${dir}" "${tlist}"`
+    done
+    if [ "$1" = "least" ]; then
+	printf "%s\n" "${tlist}" | \
+	    sort -k 1,1n -k 2,2n -k 3,3n -k 4,4n | \
+	    head -1 | \
+	    cut -d " " -f 5
+    else
+	printf "%s\n" "${tlist}" | \
+	    sort -k 1,1n -k 2,2n -k 3,3n -k 4,4n | \
+	    tail -1 | \
+	    cut -d " " -f 5
+    fi
+}
+
+#
+# InRange ( low_bound release high_bound )
+#
+# Determines if the release identifier ($2) lies between the low bound ($1)
+# and the high bound ($3) inclusive.  The release identifiers must be full
+# expanded tuples.
+#
+# Parameters:
+#   $1	low_bound	Lowbound of the release range (inclusive).
+#   $2	release		Release to be checked.
+#   $3	high_bound	Highbound of the release range (inclusive).
+#
+# Returns:
+#   0	(success) is the release identifier is in range.
+#   1	(failure) is the release identifier is out of range.
+#
+InRange() {
+    if [ "$2" = "" ]; then
+	return 1
+    fi
+
+    low=`echo "$1" | sed -e "s/[\._-]/ /g"`
+    rel=`echo "$2" | sed -e "s/[\._-]/ /g"`
+    hi=`echo "$3" | sed -e "s/[\._-]/ /g"`
+    mid=`echo "${low}\n${rel}\n${hi}" | \
+        sort -k 1,1n -k 2,2n -k 3,3n -k 4,4n | \
+        head -2 | \
+        tail -1`
+    mid=`echo $mid | awk '{FS=" "; printf "%d.%d.%d_%.2d\n", $1, $2, $3, $4}'`
+    if [ "$2" = "$mid" ]; then
+	return 0
+    else
+	return 1
+    fi
+}

@@ -1,0 +1,274 @@
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# # @(#)Defs.gmk	1.37 04/05/14
+#
+
+ifndef CONTROL_TOPDIR
+
+ifndef CONTROL_TOPDIR_NAME
+CONTROL_TOPDIR_NAME=control
+endif #CONTROL_TOPDIR_NAME
+
+CONTROL_TOPDIR=$(INSTALL_BUILDDIR)/../../$(CONTROL_TOPDIR_NAME)
+
+ifdef ALT_TOPDIR
+CONTROL_TOPDIR=$(ALT_TOPDIR)/$(CONTROL_TOPDIR_NAME)
+endif #ALT_TOPDIR
+
+ifdef ALT_CONTROL_TOPDIR
+CONTROL_TOPDIR=$(ALT_CONTROL_TOPDIR)
+endif #ALT_CONTROL_TOPDIR
+
+endif #CONTROL_TOPDIR
+
+ifndef J2SE_TOPDIR
+
+ifndef J2SE_TOPDIR_NAME
+J2SE_TOPDIR_NAME=j2se
+endif #J2SE_TOPDIR_NAME
+
+J2SE_TOPDIR=$(INSTALL_BUILDDIR)/../../$(J2SE_TOPDIR_NAME)
+
+ifdef ALT_TOPDIR
+J2SE_TOPDIR=$(ALT_TOPDIR)/$(J2SE_TOPDIR_NAME)
+endif #ALT_TOPDIR
+
+ifdef ALT_J2SE_TOPDIR
+J2SE_TOPDIR=$(ALT_J2SE_TOPDIR)
+endif #ALT_J2SE_TOPDIR
+
+endif #J2SE_TOPDIR
+
+# Define the generic JRE and JDK names.
+#
+# Note: the old J2SE names are still used in names for temporary directories
+# that are part of the build process (for example, j2re-image).  There is no
+# reason to risk changing these at this point in the Tiger release cycle, but
+# they should be changed in Dragonfly.
+JRE_NAME = jre
+JDK_NAME = jdk
+
+BUILDDIR := $(CONTROL_TOPDIR)/make
+include $(CONTROL_TOPDIR)/make/common/Platform.gmk
+include $(CONTROL_TOPDIR)/make/common/Defs.gmk
+include $(INSTALL_BUILDDIR)/common/Defs-$(PLATFORM).gmk
+
+SFX2SH		    = $(SH) $(INSTALL_BUILDDIR)/common/sfx2sh
+
+# The names of the JDK text files to be copied to the image dirs
+# These will be modified to have the platform specific EOL chars.
+JDK_SOURCE_DOCLIST = COPYRIGHT README.html
+
+# The names of the JDK text files to be copied to the image dirs
+# These will be modified to have the platform specific EOL chars,
+# and will be renamed to have their platform specific text extensions.
+JDK_NAMECHANGE_DOCLIST =
+
+# The base names of the license files 
+LICENSE_DOCLIST = LICENSE
+
+# BASE_IMAGE_ZIP=$(DEVTOOLS_DRIVE)/devtools/$(PLATFORM)/PATCH-BASE/latest
+ifdef ALT_BASE_IMAGE_JRE_ZIP
+BASE_IMAGE_JRE_ZIP=$(ALT_BASE_IMAGE_JRE_ZIP)
+endif
+ifdef ALT_BASE_IMAGE_SDK_ZIP
+BASE_IMAGE_SDK_ZIP=$(ALT_BASE_IMAGE_SDK_ZIP)
+endif
+
+STAGE_DIR=$(ABS_TEMP_DIR)/patch-staging
+
+BASE_STAGE_JRE_DIR=$(STAGE_DIR)/base-jre-image
+BASE_STAGE_SDK_DIR=$(STAGE_DIR)/base-sdk-image
+
+NEW_STAGE_JRE_DIR=$(STAGE_DIR)/new-jre-image
+NEW_STAGE_SDK_DIR=$(STAGE_DIR)/new-sdk-image
+
+BASE_IMAGE_JRE_DIR=$(ABS_OUTPUTDIR)/j2re-image
+ifdef ALT_BASE_IMAGE_JRE_ZIP
+BASE_IMAGE_JRE_DIR=$(BASE_STAGE_JRE_DIR)
+endif
+ifdef ALT_BASE_IMAGE_DIR
+BASE_IMAGE_JRE_DIR=$(ALT_BASE_IMAGE_DIR)/j2re-image
+endif
+
+NEW_IMAGE_JRE_DIR=$(ABS_OUTPUTDIR)/j2re-image
+ifdef ALT_NEW_IMAGE_DIR
+NEW_IMAGE_JRE_DIR=$(ALT_NEW_IMAGE_DIR)/j2re-image
+endif
+
+BASE_IMAGE_SDK_DIR=$(ABS_OUTPUTDIR)/j2sdk-image
+ifdef ALT_BASE_IMAGE_SDK_ZIP
+BASE_IMAGE_SDK_DIR=$(BASE_STAGE_SDK_DIR)
+endif
+ifdef ALT_BASE_IMAGE_DIR
+BASE_IMAGE_SDK_DIR=$(ALT_BASE_IMAGE_DIR)/j2sdk-image
+endif
+
+NEW_IMAGE_SDK_DIR=$(ABS_OUTPUTDIR)/j2sdk-image
+ifdef ALT_NEW_IMAGE_DIR
+NEW_IMAGE_SDK_DIR=$(ALT_NEW_IMAGE_DIR)/j2sdk-image
+endif
+
+JRE_IMAGE_DIR=$(ABS_OUTPUTDIR)/j2re-image
+JDK_IMAGE_DIR=$(ABS_OUTPUTDIR)/j2sdk-image
+JDK_DEBUG_IMAGE_DIR=$(ABS_OUTPUTDIR)/j2sdk-debug-image
+
+
+# CAB file locations
+#
+ifdef ALT_JRE_CAB_URL
+JRE_CAB_URL=$(ALT_JRE_CAB_URL)
+else
+JRE_CAB_URL=http://java.sun.com/webapps/download/GetFile/$(FULL_VERSION)/$(PLATFORM)-$(ARCH)
+endif
+
+ifdef ALT_SDK_CAB_URL
+SDK_CAB_URL=$(ALT_SDK_CAB_URL)
+else
+SDK_CAB_URL=http://java.sun.com/webapps/download/GetFile/$(FULL_VERSION)/$(PLATFORM)-$(ARCH)
+endif
+
+
+SUFFIX = $($(VARIANT)_SUFFIX)
+ifneq ($(ARCH_DATA_MODEL), 32)
+  OBJDIRNAME  = obj$(SUFFIX)$(ARCH_DATA_MODEL)
+  OBJDIR      = $(TMPDIR)/$(OBJDIRNAME)
+  DBG_OBJDIR  = $(TMPDIR)/obj$(DBG_SUFFIX)$(ARCH_DATA_MODEL)
+  OPT_OBJDIR  = $(TMPDIR)/obj$(OPT_SUFFIX)$(ARCH_DATA_MODEL)
+else
+  OBJDIRNAME  = obj$(SUFFIX)
+  OBJDIR      = $(TMPDIR)/$(OBJDIRNAME)
+  DBG_OBJDIR  = $(TMPDIR)/obj$(DBG_SUFFIX)
+  OPT_OBJDIR  = $(TMPDIR)/obj$(OPT_SUFFIX)
+endif
+
+ifeq ($(ARCH), sparcv9)
+  BINDIR      = $(OUTPUTDIR)/bin/$(ARCH)
+else
+  BINDIR      = $(OUTPUTDIR)/bin
+endif
+
+ifdef USE_ONLY_BOOTDIR_TOOLS
+  JAVA		= $(BOOTDIR)/bin/java
+  JAVAC		= $(BOOTDIR)/bin/javac
+else
+  JAVA=$(BINDIR)/java
+  JAVAC=$(BINDIR)/javac
+endif
+
+
+# Tool flags
+#
+CFLAGS          = $(CFLAGS_$(VARIANT)) $(CFLAGS_COMMON) $(OTHER_CFLAGS)
+CXXFLAGS        = $(CXXFLAGS_$(VARIANT)) $(CXXFLAGS_COMMON) $(OTHER_CXXFLAGS)
+LCFLAGS         = $(CFLAGS_$(VARIANT)) $(LCFLAGS_COMMON) $(OTHER_CFLAGS)
+CPPFLAGS        = $(CPPFLAGS_$(VARIANT)) $(CPPFLAGS_COMMON) $(OTHER_CPPFLAGS) \
+		  $(DEFINES) $(OPTIONS:%=-D%)
+LCPPFLAGS       = $(CPPFLAGS_$(VARIANT)) $(LCPPFLAGS_COMMON) \
+		  $(OTHER_CPPFLAGS) $(DEFINES) $(OPTIONS:%=-D%)
+LDFLAGS         = $(LDFLAGS_$(VARIANT)) $(LDFLAGS_COMMON) $(OTHER_LDFLAGS)
+LDLIBS          = $(OTHER_LDLIBS) $(LDLIBS_$(VARIANT)) $(LDLIBS_COMMON)
+
+
+
+
+#Patch Variables that we need are initialized here
+
+#Parse the fullversion.
+#Format: MAJ_NUM.MIN_NUM.MIC_NUM[_UPDATE_VERSION][-MILESTONE]-BUILD_NUMBER
+#RULE1: 
+#	MAJ,MIN,MIC are seperated by .
+#RULE2:
+#	The last -b specifies the BUILD_NUMBER
+#RULE3:
+#	UPDATE always preceded by _ (underscore)
+#RULE4:
+#	If there are more than 1 - then there is milestone preceded by the
+#	first dash
+
+
+NEW_IMAGE_FULLVERSION := $(shell $(NEW_IMAGE_JRE_DIR)/bin/java -fullversion 2>&1 | $(NAWK) -F'"' '{print $$2 }')
+DOT_NEW_IMAGE_FULLVERSION := $(shell $(ECHO) $(NEW_IMAGE_FULLVERSION) | $(TR) - . )
+_DOT_VERSION_STRING=$(shell $(ECHO) $(NEW_IMAGE_FULLVERSION) | $(CUT) -f1 -d\_  | $(CUT) -f1 -d\-)
+NEW_IMAGE_MAJOR_VERSION := $(shell $(ECHO) $(_DOT_VERSION_STRING) | $(CUT) -f1 -d.)
+NEW_IMAGE_MINOR_VERSION := $(shell $(ECHO) $(_DOT_VERSION_STRING) | $(CUT) -f2 -d.)
+NEW_IMAGE_MICRO_VERSION := $(shell $(ECHO) $(_DOT_VERSION_STRING) | $(CUT) -f3 -d.)
+NEW_IMAGE_UPDATE_VERSION := $(shell $(ECHO) $(NEW_IMAGE_FULLVERSION) | $(NAWK) -F_ '$$2 ~ /^[0-9]/ { split($$2,uv,"-") ; print uv[1] }')
+NEW_IMAGE_BUILD_NUMBER := $(shell $(ECHO) $(NEW_IMAGE_FULLVERSION) | $(NAWK) -F- '$$3 ~ /^b/ {print $$3} $$2 ~ /^b[0-9]/ {print $$2}')
+NEW_IMAGE_MILESTONE := $(shell $(ECHO) $(NEW_IMAGE_FULLVERSION) | $(NAWK) -F- '$$3 ~ /^b[0-9]/ {print $$2}')
+
+BASE_IMAGE_FULLVERSION := $(shell $(BASE_IMAGE_JRE_DIR)/bin/java -fullversion 2>&1 | $(NAWK) -F'"' '{print $$2 }')
+DOT_BASE_IMAGE_FULLVERSION := $(shell $(ECHO) $(BASE_IMAGE_FULLVERSION) | $(TR) - . )
+_DOT_VERSION_STRING=$(shell $(ECHO) $(BASE_IMAGE_FULLVERSION) | $(CUT) -f1 -d\_  | $(CUT) -f1 -d\-)
+BASE_IMAGE_MAJOR_VERSION := $(shell $(ECHO) $(_DOT_VERSION_STRING) | $(CUT) -f1 -d.)
+BASE_IMAGE_MINOR_VERSION := $(shell $(ECHO) $(_DOT_VERSION_STRING) | $(CUT) -f2 -d.)
+BASE_IMAGE_MICRO_VERSION := $(shell $(ECHO) $(_DOT_VERSION_STRING) | $(CUT) -f3 -d.)
+BASE_IMAGE_UPDATE_VERSION := $(shell $(ECHO) $(BASE_IMAGE_FULLVERSION) | $(NAWK) -F_ '$$2 ~ /^[0-9]/ { split($$2,uv,"-") ; print uv[1] }')
+BASE_IMAGE_BUILD_NUMBER := $(shell $(ECHO) $(BASE_IMAGE_FULLVERSION) | $(NAWK) -F- '$$3 ~ /^b/ {print $$3} $$2 ~ /^b[0-9]/ {print $$2}')
+BASE_IMAGE_MILESTONE := $(shell $(ECHO) $(BASE_IMAGE_FULLVERSION) | $(NAWK) -F- '$$3 ~ /^b[0-9]/ {print $$2}')
+
+ifdef BASE_IMAGE_UPDATE_VERSION
+    US_BASE_IMAGE_UPDATE_VERSION = _$(BASE_IMAGE_UPDATE_VERSION)
+endif
+
+ifdef NEW_IMAGE_UPDATE_VERSION
+   US_NEW_IMAGE_UPDATE_VERSION = _$(NEW_IMAGE_UPDATE_VERSION)
+   DASH_NEW_IMAGE_UPDATE_VERSION = -$(NEW_IMAGE_UPDATE_VERSION)
+endif
+
+PATCH_JRE_FILENAME = jupdate-$(JRE_NAME)$(NEW_IMAGE_MAJOR_VERSION)$(NEW_IMAGE_MINOR_VERSION)$(NEW_IMAGE_MICRO_VERSION)$(US_NEW_IMAGE_UPDATE_VERSION)-$(NEW_IMAGE_BUILD_NUMBER)
+PATCH_SDK_FILENAME = jupdate-$(JDK_NAME)$(NEW_IMAGE_MAJOR_VERSION)$(NEW_IMAGE_MINOR_VERSION)$(NEW_IMAGE_MICRO_VERSION)$(US_NEW_IMAGE_UPDATE_VERSION)-$(NEW_IMAGE_BUILD_NUMBER)
+
+PATCH_VERSION=$(NEW_IMAGE_MAJOR_VERSION)$(NEW_IMAGE_MINOR_VERSION)$(NEW_IMAGE_MICRO_VERSION)$(US_NEW_IMAGE_UPDATE_VERSION)-$(NEW_IMAGE_BUILD_NUMBER)
+
+BASE_IMAGE_VERSION=$(BASE_IMAGE_MAJOR_VERSION).$(BASE_IMAGE_MINOR_VERSION).$(BASE_IMAGE_MICRO_VERSION)$(US_BASE_IMAGE_UPDATE_VERSION)
+NEW_IMAGE_VERSION=$(NEW_IMAGE_MAJOR_VERSION).$(NEW_IMAGE_MINOR_VERSION).$(NEW_IMAGE_MICRO_VERSION)$(US_NEW_IMAGE_UPDATE_VERSION)
+
+
+PATCH_OUTPUTDIR=$(ABS_TEMP_DIR)/patchgen
+
+ifdef NEW_IMAGE_MILESTONE
+	DASH_NEW_IMAGE_MILESTONE=-$(NEW_IMAGE_MILESTONE)
+endif
+
+FINAL_JRE_TARGET=$(JRE_NAME)-$(JDK_UNDERSCORE_VERSION)$(DASH_NEW_IMAGE_MILESTONE)-$(NEW_IMAGE_BUILD_NUMBER)-$(PLATFORM)-$(ARCH)-update$(EXE_SUFFIX)
+FINAL_SDK_TARGET=$(JDK_NAME)-$(JDK_UNDERSCORE_VERSION)$(DASH_NEW_IMAGE_MILESTONE)-$(NEW_IMAGE_BUILD_NUMBER)-$(PLATFORM)-$(ARCH)-update$(EXE_SUFFIX)
+FINAL_STUB_TARGET=stub-$(JDK_UNDERSCORE_VERSION)$(DASH_NEW_IMAGE_MILESTONE)-$(NEW_IMAGE_BUILD_NUMBER)-$(PLATFORM)-$(ARCH)-update$(EXE_SUFFIX)
+
+# Bundle names
+BIN_BUNDLE_NAMEPART = $(JDK_UNDERSCORE_VERSION)-$(MILESTONE)-bin-$(BUILD_NUMBER)-$(PLATFORM)-$(ARCH)
+# The short bundle name is used externally
+ifneq ($(MILESTONE),fcs)
+BIN_SHORT_BUNDLE_NAMEPART = $(JDK_UNDERSCORE_VERSION)-$(MILESTONE)-$(PLATFORM)-$(ARCH)
+else
+BIN_SHORT_BUNDLE_NAMEPART = $(JDK_UNDERSCORE_VERSION)-$(PLATFORM)-$(ARCH)
+endif
+
+BUNDLE_DATE := $(shell $(DATE) '+%d_%b_%Y' | $(TR) "A-Z" "a-z")
+ifdef ALT_BUNDLE_DATE
+  BUNDLE_DATE := $(ALT_BUNDLE_DATE)
+endif
+
+###################################################################
+#
+# windows and linux platform tar filenames cannot have ":" in them, 
+# which FULL_VERSION
+# may have in its time value.
+###################################################################
+JDK_BUNDLE_NAME         = $(JDK_NAME)-$(BIN_BUNDLE_NAMEPART)-$(BUNDLE_DATE)
+JDK_DEBUG_BUNDLE_NAME   = $(JDK_NAME)-$(BIN_BUNDLE_NAMEPART)-debug-$(BUNDLE_DATE)
+JRE_BUNDLE_NAME         = $(JRE_NAME)-$(BIN_BUNDLE_NAMEPART)-$(BUNDLE_DATE)
+
+JDK_SHORT_BUNDLE_NAME   = $(JDK_NAME)-$(BIN_SHORT_BUNDLE_NAMEPART)
+JRE_SHORT_BUNDLE_NAME   = $(JRE_NAME)-$(BIN_SHORT_BUNDLE_NAMEPART)
+
+JRE_TEMPORARY_DIR      = $(JRE_NAME)$(JDK_VERSION)
+JDK_TEMPORARY_DIR      = $(JDK_NAME)$(JDK_VERSION)
+JRE_NODOTVERSION       = $(subst .,,$(JDK_VERSION))
+
+JRE_JAVAWS = bin/javaws
+JDK_JAVAWS = jre/bin/javaws
