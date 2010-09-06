@@ -1,0 +1,4 @@
+Signature	FileName	MinVersion	MaxVersion	MinSize	MaxSize	MinDate	MaxDate	Languages
+s72	s255	S20	S20	I4	I4	I4	I4	S255
+Signature	Signature
+NewSignature11	msvcrt.dll	6.0.8397.0						

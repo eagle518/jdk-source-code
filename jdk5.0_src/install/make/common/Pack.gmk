@@ -1,0 +1,75 @@
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# @(#)Pack.gmk	1.18 04/03/09
+#
+
+# Pack Variables we define.
+
+ifneq (,$(findstring Xjcov,$(OTHER_JAVACFLAGS)))
+   NO_PACK=true
+endif
+
+ifdef DEV_ONLY
+   NO_PACK=true
+endif
+
+CONFIG_FILE_ALL=pack.all.properties
+CONFIG_FILE_64 =pack.64.properties
+
+PACKOPTS += "--no-gzip"
+
+ifdef NO_PACK
+   PACKOPTS += "--effort=0" #Pass through the jar
+else
+   PACKOPTS += "--config-file=$(CONFIG_FILE_ALL)"
+ifeq ($(ARCH_DATA_MODEL), 64)
+   PACKOPTS += "--config-file=$(CONFIG_FILE_64)"
+endif
+endif #NO_PACK
+
+
+PACK_DIR	  =  $(ABS_OUTPUTDIR)/pack
+
+# JRE_PACKED_JARS are defined in each of the Platform variants
+
+JRE_PACKED_JARS	  = lib/rt.jar lib/jsse.jar lib/charsets.jar lib/ext/localedata.jar
+ifeq ($(ARCH_DATA_MODEL),32)
+   JRE_PACKED_JARS += lib/plugin.jar
+   JRE_PACKED_JARS += lib/javaws.jar
+   JRE_PACKED_JARS += lib/deploy.jar
+endif
+
+JDK_PACKED_JARS   =  lib/tools.jar $(addprefix jre/, $(JRE_PACKED_JARS))
+
+PACKED_JRE_JARDIR =  $(PACK_DIR)/pack-jre-jars
+PACKED_JDK_JARDIR =  $(PACK_DIR)/pack-jdk-jars
+
+
+PACK_SUFFIX = .pack
+ifeq ($(ARCH), sparc)
+  HEAP_SIZE = -Xmx512m
+else
+  HEAP_SIZE = -Xmx256m
+endif
+ifeq ($(ARCH_DATA_MODEL),64)
+   HEAP_SIZE = -Xmx1024m
+endif
+
+PACK_EXE   = $(ABS_OUTPUTDIR)/bin/pack200$(EXE_SUFFIX)
+UNPACK_EXE = $(ABS_OUTPUTDIR)/bin/unpack200$(EXE_SUFFIX)
+
+
+PACK_CMD = $(PACK_EXE) -J$(HEAP_SIZE) -J-esa -J-ea $(PACKOPTS)
+
+# Temporary workaround until 5010570 is fixed.
+ifeq ($(ARCH_DATA_MODEL), 64)
+  ifeq ($(PLATFORM), linux)
+    PACK_CMD = $(PACK_EXE) -J$(HEAP_SIZE) -J-XX:+UseSerialGC -J-esa -J-ea $(PACKOPTS)
+  endif
+endif 
+
+UNPACK_CMD = $(UNPACK_EXE) $(NATIVE_UNPACKOPTS)

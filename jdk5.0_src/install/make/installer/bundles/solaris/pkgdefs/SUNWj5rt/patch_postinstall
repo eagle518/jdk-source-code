@@ -1,0 +1,108 @@
+#!/usr/bin/sh
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# Use is subject to license terms.
+#
+# pragma ident "@(#)patch_postinstall	1.1 04/06/10 Sun Microsystems"
+#
+# This file is not part of the SUNWj5rt package but is to be integrated
+# into the patch_postinstall script for SUNWj5rt when SUNWj5rt is
+# contained in a patch. This script is invoked when a patch is rolled
+# back.  This addition to that script manipulates the same /usr/java and
+# /usr/jdk/jdk<version> symbolic links as the SUNWj5rt package scripts.
+# It needs to be delivered whenever it changes to the patch production
+# folk and needs to be first delivered when the 1.5.0_01 Update Release
+# is produced as a Solaris style patch.
+#
+# Don't be confused by the name.  This script is to be run at the time
+# a patch is rolled back (which sounds more like remove than install),
+# but it mimics the actions of the installation script for the version
+# being rolled back to.
+#
+# The script reverts the version number of the /usr/jdk/jdk<version>
+# symbolic link to correctly identify the version being reverted to
+# should the patch be rolled back. It also keeps the /usr/java
+# symbolic link consistent if the link in /usr/jdk being modified
+# was the target of the /usr/java symbolic link.
+#
+# This script assumes BASEDIR and SUNW_PRODVERS are in the environment...
+#
+
+#
+# The following commands are defined as shell variable so that they can
+# be redefined (as below) to place this script in a mode such that it
+# will tell you what it would do, without actually modifying the system.
+# Only commands which modify the system should be so aliased.
+#
+LN="ln"
+RM="rm"
+
+#
+# For development purposes, one might consider uncommenting the following
+# lines.  The result is a script which will tell you what it would do
+# without actually doing anything.
+#
+# LN="echo ln"
+# RM="echo rm"
+
+#
+# Locations and name definitions:
+#
+PRODVERS=`echo ${SUNW_PRODVERS} | sed -e "s/\/.*//"`
+PRODVERS_NP=`echo ${PRODVERS} | sed -e "s/_.*//"`
+
+PREFIX="jdk"
+
+REGISTRY_DIR="jdk"
+REGISTRY_PATH="${BASEDIR}/${REGISTRY_DIR}"
+REGISTRY_ENTRY="${PREFIX}${PRODVERS}"
+REGISTRY_NAME="${REGISTRY_PATH}/${REGISTRY_ENTRY}"
+
+INSTALL_DIR="instances"
+INSTALL_PATH="${REGISTRY_PATH}/${INSTALL_DIR}"
+INSTALL_ENTRY="${PREFIX}${PRODVERS_NP}"
+INSTALL_NAME="${INSTALL_PATH}/${INSTALL_ENTRY}"
+
+JAVA_PATH="${BASEDIR}/java"
+
+#
+# Determine the target of the /usr/java symbolic link.  If its either
+# non-existant or not a symbolic link, ignore it.
+#
+if [ -h ${JAVA_PATH} ]; then
+    ls=`ls -l ${JAVA_PATH}`
+    java_target=`echo $ls | cut -f 11 -d " "`
+else
+    java_target=""
+fi
+
+#
+# Find all symbolic links of the expected jdk<version> form which point
+# to the actual instance of the JVM being "rolled back".  Remove them
+# (all but one was a lie anyway). If you find one which was the target
+# of the /usr/java symbolic link, set it to the "correct" link which
+# will be created later.
+#
+for path in `ls -d ${REGISTRY_PATH}/${PREFIX}${PRODVERS_NP}*`; do
+    ls=`ls -l $path`
+    if [ -h $path ]; then
+	entry=`basename $path`
+	ls=`ls -l $path`
+	target=`echo $ls | cut -f 11 -d " "`
+	if [ "$target" = "${INSTALL_DIR}/${INSTALL_ENTRY}" ]; then
+	    ${RM} $path
+	    if [ "$java_target" = "${REGISTRY_DIR}/$entry" ]; then
+		${RM} ${JAVA_PATH}
+		${LN} -s ${REGISTRY_DIR}/${REGISTRY_ENTRY} ${JAVA_PATH}
+	    fi
+	fi
+    fi
+done
+
+#
+# This is later.  Create a symbolic link in /usr/jdk which correctly
+# identifies the version which now resides in the instances directory.
+#
+if [ ! -h ${REGISTRY_NAME} ]; then
+    ${LN} -s ${INSTALL_DIR}/${INSTALL_ENTRY} ${REGISTRY_NAME}
+fi

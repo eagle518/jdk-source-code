@@ -1,0 +1,5 @@
+Signature_	Root	Key	Name	Type
+s72	i2	s255	S255	I2
+RegLocator	Signature_
+NewSignature1	2	HARDWARE\DESCRIPTION\System\CentralProcessor\0	ProcessorNameString	2
+NewSignature2	2	SOFTWARE\JavaSoft\Java Runtime Environment\[ProductVersion]	JavaHome	2

@@ -1,0 +1,520 @@
+#!/bin/sh
+
+#     
+# @(#)sfx2sh	1.50 04/08/05
+# 
+# Copyright 2003 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# Tom Rodriguez
+#
+# Convert a self-extracting zip file into a shell script that requires
+# the LICENSE be read.
+#
+#
+# Usage:
+#        % sfx2sh <SFX_FILE> \
+#                 <LICENSE_FILE> \
+#                 <OUTPUT_FILE> \
+#                 <NODOTVERSION> \
+#                 <EXTRACT_ROOTDIR> \
+#                 <PACKED_JARS> \
+#                 <PLATFORM> \
+#                 <ARCH> \
+#                 <RPM flag> \           (optional)
+#                 <JAVAWS_BIN> \         (optional)
+#                 <LIBTHREAD_LOCATION>   (optional)
+#
+# IMAGE_DIR is required to compute the disk space requirments,
+# which is SIZE(IMAGE_DIR) + SIZE(INSTALL_IMAGE)  which should be sufficient for unpack
+# when the INSTALL_IMAGE is deleted right after the zip extraction 
+# LIBTHREAD_LOCATION is optional
+#
+
+PATH=/usr/bin:/bin
+data_file=$1
+license_file=$2
+out_file=$3
+javahome=`basename $5`
+platform=$7
+
+#Compute the disk space
+_jre_image_disk_space=`du -sk $5 | cut -f1`
+_data_file_size=`du -sk $1 | cut -f1`
+diskSpaceRequired=`expr $_jre_image_disk_space + $_data_file_size`
+
+# Note: be careful changing the date format. SCCS will substitute certain %<ch>%
+#       combinations.  The format here is tested to work.
+tmp_file=`date "+/tmp/install.%S$$%j%y%m%d%M\`expr $$ % 251\`%H.bin"`
+rm -f $tmp_file
+touch $tmp_file
+
+# emit the beginning of the script
+cat - > $tmp_file <<'EOF'
+#!/bin/sh
+PATH=/usr/bin:/bin
+umask 022
+EOF
+
+echo "NODOT_VERSION=$4" >> $tmp_file
+echo "javahome=$javahome" >> $tmp_file
+echo "platform=$platform" >> $tmp_file
+echo "PACKED_JARS=\"$6\"" >> $tmp_file
+echo "ARCH=$8" >> $tmp_file
+echo "LINUX_RPM=$9" >> $tmp_file
+if [ "$9" = "RPM" ]; then
+    echo "RPM_NAME=`basename $3 | sed 's|-rpm.sh|.rpm|'`" >> $tmp_file
+fi
+# Shift args by 9, so we can get args 10 & 11
+if [ $# -gt 9 ]; then
+  shift 9
+  echo "JAVAWS_BIN=$1" >> $tmp_file
+  echo "libthread_path=$2" >> $tmp_file
+else
+  echo "JAVAWS_BIN=" >> $tmp_file
+  echo "libthread_path=" >> $tmp_file
+fi
+echo "diskSpaceRequired=$diskSpaceRequired" >> $tmp_file
+echo "MIME_TYPE=application/x-java-jnlp-file" >> $tmp_file
+
+if [ "$platform" = "linux" ]; then
+    echo 'echo_args="-e "' >> $tmp_file
+    echo 'tail_args="-n "' >> $tmp_file
+else
+    echo 'echo_args=' >> $tmp_file
+    echo 'tail_args=' >> $tmp_file
+fi
+
+if [ -n "$license_file" ]; then
+    # emit the code the show the license file
+    echo 'more <<"EOF"' >> $tmp_file
+    cat $license_file >> $tmp_file
+    echo EOF >> $tmp_file
+
+    # emit the script to ask if they agree to the license
+    cat - >> $tmp_file <<'EOF'
+    agreed=
+    while [ -z "$agreed" ]; do
+        echo
+        echo "Do you agree to the above license terms? [yes or no] "
+        read reply leftover
+        case $reply in
+            y* | Y*)
+                agreed=1
+                ;;
+            n* | N*)
+                echo "If you don't agree to the license you can't install this software";
+                exit 1
+                ;;
+        esac
+    done
+EOF
+# the above EOF has to start in column 1 or the script won't work
+
+fi
+
+cat - >> $tmp_file <<'EOF'
+outname=install.sfx.$$
+diskSpace=`df -k . | tail ${tail_args}-1 | awk '{if ( $4 ~ /%/) { print $3 } else { print $4 } }'`
+if [ $diskSpace -lt $diskSpaceRequired ]; then
+    printf "You will need atleast %s kBytes of Disk Free\n" $diskSpaceRequired
+    printf "Please free up the required Disk Space and try again\n"
+    exit 3
+fi
+trap 'rm -f $outname; exit 1' HUP INT QUIT TERM
+echo "Unpacking..."
+tail ${tail_args}+_LINES_TO_STRIP_ $0 > $outname
+if [ -x /usr/bin/sum ]; then
+    echo "Checksumming..."
+
+    sum=`/usr/bin/sum $outname`
+    index=1
+    for s in $sum; do
+        case $index in
+            1)
+                sum1=$s;
+                index=2;
+                ;;
+            2)
+                sum2=$s;
+                index=3;
+                ;;
+        esac
+    done
+    if expr $sum1 != _SUM_1_ || expr $sum2 != _SUM_2_  ; then
+        echo "The download file appears to be corrupted.  Please refer"
+        echo "to the Troubleshooting section of the Installation"
+        echo "Instructions on the download page for more information."
+        echo "Please do not attempt to install this archive file."
+        exit 1
+    fi
+else
+    echo "Can't find /usr/bin/sum to do checksum.  Continuing anyway."
+fi
+chmod +x $outname
+echo "Extracting..."
+./$outname
+rm -f $outname #we dont need it anymore, so conserve disk space
+
+
+#=================================================
+# Add Java Web Start entry to /etc/mailcap
+#     param - $1 - mailcap file
+#-------------------------------------------------
+UpdateMailcap() {
+    MAILCAP_FILE=$1
+
+    MC_COMMENT="# Java Web Start"
+    MC_TEXT=
+
+    if [ -w ${MAILCAP_FILE} ]; then
+        # Remove existing entry, if present
+        MC_TEXT=`grep -v "${MIME_TYPE}" ${MAILCAP_FILE} | \
+                 grep -v "${MC_COMMENT}"`
+    fi
+    # Add new entry
+    if [ -w `dirname ${MAILCAP_FILE}` ]; then
+        MC_TEXT="${MC_TEXT}\n${MC_COMMENT}"
+        MC_TEXT="${MC_TEXT}\n${MIME_TYPE}; $LATEST_JAVAWS_PATH %s"
+        echo ${echo_args}"${MC_TEXT}" > ${MAILCAP_FILE}
+    else
+        echo "WARNING - cannot write to file:"
+        echo "       ${MAILCAP_FILE}"
+        echo "Check permissions."
+    fi
+}
+# End of UpdateMailcap
+
+#=================================================
+# Add Java Web Start entry to /etc/.mime.types
+#     param - $1 - mime file
+#-------------------------------------------------
+UpdateMimeTypes() {
+    MIME_FILE=$1
+
+    NS_COMMENT1="#--Netscape Communications Corporation MIME Information"
+    NS_COMMENT2="#Do not delete the above line. It is used to identify the file type."
+    NS_COMMENT3="#mime types added by Netscape Helper"
+    JNLP_ENTRY="type=${MIME_TYPE} desc=\"Java Web Start\" exts=\"jnlp\""
+
+    # Create the file if it does not exist
+    if [ ! -w ${MIME_FILE} ]; then
+        if [ -w `dirname ${MIME_FILE}` ]; then
+            echo "${NS_COMMENT1}"  > ${MIME_FILE}
+            echo "${NS_COMMENT2}" >> ${MIME_FILE}
+            echo "${NS_COMMENT3}" >> ${MIME_FILE}
+        else
+            echo "WARNING - cannot write to file:"
+            echo "       ${MIME_FILE}"
+            echo "Check permissions."
+            return
+        fi
+    fi
+    # Add the jnlp entry if it does not already exist.
+    if [ -z "`grep ${MIME_TYPE} ${MIME_FILE}`" ]; then
+        echo ${JNLP_ENTRY} >> ${MIME_FILE}
+    fi
+}
+# End of UpdateMimeTypes
+
+#=================================================
+# Get the location of the GNOME top directory.  This should either be the
+# directory specified in GNOMEDIR, or /usr.
+#
+# Given an input directory, determine if it appears to be a valid GNOME top
+# level directory.  If it is valid, then return the input; otherwise return
+# an empty string.
+#
+# Note: The user's home directory is always a valid location for the GNOME
+# association files.
+#
+#     param - $1 - gnome top dir
+#-------------------------------------------------
+GetGNOMETopDir() {
+    _gnome_dir=$1
+
+    if [ "${_gnome_dir}" != "${HOME}" -a \
+         ! \( -d ${_gnome_dir}/${APP_REGISTRY} -a \
+              -d ${_gnome_dir}/${MIME_INFO} \) ]; then
+
+        # This isn't the user's home directory, and one or both of the
+        # application directories are missing, but this could still be
+        # a valid.  If this directory contains bin/gnome* files,
+        # lib/libgnome* files, and a share directory, then assume it is
+        # a valid GNOME top level directory.
+        _gnomebin="`ls ${_gnome_dir}/bin/gnome* 2> /dev/null`"
+        _gnomelib="`ls ${_gnome_dir}/lib/libgnome* 2> /dev/null`"
+        if [ -z "${_gnomebin}" -o \
+             -z "${_gnomelib}" -o \
+             ! -d ${_gnome_dir}/${GNOME_SHARE} ]; then
+
+            # This doesn't seem to be a valid GNOME top level directory.
+            _gnome_dir=
+        fi
+    fi
+
+    echo ${_gnome_dir}
+}
+# End of GetGNOMETopDir
+
+#=================================================
+# Add an entry to GNOME application registry
+#     param - $1 - mime type     associated mime type
+#     param - $2 - extension     associated file extension
+#     param - $3 - name          used to name GNOME registry files
+#     param - $4 - command       what to invoke when launching file/mime type
+#     param - $5 - icon          base name of icon file
+#     param - $6 - icon ext      extension for icon file
+#     param - $7 - description   description for association
+#-------------------------------------------------
+AddGNOME() {
+    _mime_type=$1
+    _extension=$2
+    _name=$3
+    _command=$4
+    _icon=$5
+    _icon_ext=$6
+    _description=$7
+
+    if [ -n "${_mime_type}" -a \
+         -n "${_extension}" -a \
+         -n "${_name}" -a \
+         -n "${_command}" -a \
+         -n "${_icon}" -a \
+         -n "${_icon_ext}" ]; then
+
+        # check the GNOMEDIR environment variable to see if it points to a valid
+        # GNOME top level directory.
+        _gnome_dir=`GetGNOMETopDir ${GNOMEDIR}`
+        if [ -z "${_gnome_dir}" ]; then
+            # GNOMEDIR was invalid, so check in /usr
+            _gnome_dir=`GetGNOMETopDir ${GNOMEDIR_DEFAULT}`
+            if [ -z "${_gnome_dir}" ]; then
+                # GNOME doesn't seem to be installed
+                return 1
+            fi
+        fi
+
+        if [ -d $LATEST_JRE_PATH/lib/images/icons ]; then
+            # the various directories may need to be created if no themes
+            # have ever been installed before
+            mkdir -p ${_gnome_dir}/${BASE_ICONS}
+            mkdir -p ${_gnome_dir}/${HIGH_CONTRAST_ICONS}
+            mkdir -p ${_gnome_dir}/${HIGH_CONTRAST_INVERSE_ICONS}
+            mkdir -p ${_gnome_dir}/${LOW_CONTRAST_ICONS}
+
+            # copy the icons used on the GNOME desktop
+            cp -f $LATEST_JRE_PATH/lib/images/icons/${_icon}.${_icon_ext} \
+                  ${_gnome_dir}/${BASE_ICONS}/${_icon}.${_icon_ext}
+            cp -f $LATEST_JRE_PATH/lib/images/icons/${_icon}_HighContrast.${_icon_ext} \
+                  ${_gnome_dir}/${HIGH_CONTRAST_ICONS}/${_icon}.${_icon_ext}
+            cp -f $LATEST_JRE_PATH/lib/images/icons/${_icon}_HighContrastInverse.${_icon_ext} \
+                  ${_gnome_dir}/${HIGH_CONTRAST_INVERSE_ICONS}/${_icon}.${_icon_ext}
+            cp -f $LATEST_JRE_PATH/lib/images/icons/${_icon}_LowContrast.${_icon_ext} \
+                  ${_gnome_dir}/${LOW_CONTRAST_ICONS}/${_icon}.${_icon_ext}
+        fi
+
+        # since we are pretty certain this is a valid GNOME installation, create
+        # the required association directories in case they don't already exist.
+        mkdir -p ${_gnome_dir}/${MIME_INFO}
+        mkdir -p ${_gnome_dir}/${APP_REGISTRY}
+
+        GNOME_KEYS_FILE=${_gnome_dir}/${MIME_INFO}/${_name}.keys
+        GNOME_MIME_FILE=${_gnome_dir}/${MIME_INFO}/${_name}.mime
+        GNOME_APPS_FILE=${_gnome_dir}/${APP_REGISTRY}/${_name}.applications
+
+        # Create the keys file.
+        echo "${_mime_type}"                                           > $GNOME_KEYS_FILE
+        echo "        description=${_description}"                    >> $GNOME_KEYS_FILE
+        echo "        icon_filename=${_icon}"                         >> $GNOME_KEYS_FILE
+        echo "        default_action_type=application"                >> $GNOME_KEYS_FILE
+        echo "        default_application_id=${_name}"                >> $GNOME_KEYS_FILE
+        echo "        short_list_application_user_additions=${_name}" >> $GNOME_KEYS_FILE
+
+        # Create the mime file.
+        echo "${_mime_type}"               > $GNOME_MIME_FILE
+        echo "        ext: ${_extension}" >> $GNOME_MIME_FILE
+
+        # Create the apps file.
+        echo "${_name}"                               > $GNOME_APPS_FILE
+        echo "        command=${_command}"           >> $GNOME_APPS_FILE
+        echo "        name=${_name}"                 >> $GNOME_APPS_FILE
+        echo "        can_open_multiple_files=false" >> $GNOME_APPS_FILE
+        echo "        requires_terminal=false"       >> $GNOME_APPS_FILE
+        echo "        mime_types=${_mime_type}"      >> $GNOME_APPS_FILE
+    fi
+}
+# End of AddGNOME
+
+if [ -z "$LINUX_RPM" ]; then
+    UNPACK_EXE=$javahome/bin/unpack200
+    if [ -f $UNPACK_EXE ]; then
+        chmod +x $UNPACK_EXE 
+        packerror=""
+        for i in $PACKED_JARS; do
+            if [ -f $javahome/`dirname $i`/`basename $i .jar`.pack ]; then
+                printf "Creating %s\n" $javahome/$i
+                $UNPACK_EXE $javahome/`dirname $i`/`basename $i .jar`.pack $javahome/$i
+                if [ ! -f $javahome/$i ]; then
+                    printf "Failed to unpack jar files %s. Please refer\n" $i
+                    printf "to the Troubleshooting section of the Installation\n"
+                    printf "Instructions on the download page for more information.\n"
+                    packerror="1"
+                fi
+                rm -f $javahome/`dirname $i`/`basename $i .jar`.pack
+            fi
+        done
+        if [  "$packerror" = "1" ]; then 
+            printf "ERROR: Installation failed. Please refer to the Troubleshooting Section of\n"
+            printf "the Installation Instructions on the download page.\n"
+            if [ -d $javahome ]; then
+                /bin/rm -rf $javahome
+                exit 2
+            fi
+        fi
+    fi
+
+    if [ -n "$libthread_path" ] && [ -f "$libthread_path/`uname -r`/libthread.so.1" ]; then
+        echo "Making libthread links"
+        ln -s `uname -r`/libthread.so.1 $libthread_path/libthread.so.1
+        ln -s libthread.so.1 $libthread_path/libthread.so
+    fi
+
+    userid=`expr "\`id\`" : ".*uid=[0-9]*(\(.[0-9a-z]*\)) .*"`
+    if [ -f $HOME/.java/properties$NODOT_VERSION ]; then
+        if [ "$userid" = "root" ]; then
+            su $USER -c "mv -f $HOME/.java/properties$NODOT_VERSION $HOME/.java/_properties$NODOT_VERSION"
+        else
+            mv -f $HOME/.java/properties$NODOT_VERSION $HOME/.java/_properties$NODOT_VERSION
+        fi
+    fi
+
+    if [ -n "$javahome" ]; then
+        PREFS_LOCATION=$javahome
+        subdir=`echo $javahome "jre" | awk '{if ( index($1,"jdk") ) { print $2 } }'`
+        if [ "$subdir" = "jre" ]; then
+            PREFS_LOCATION=$PREFS_LOCATION/jre
+        fi
+        if [ "$userid" = "root" ]; then
+            PREFS_LOCATION=/etc/.java
+        fi
+        if [ ! -d $PREFS_LOCATION ]; then
+            mkdir -m 755 $PREFS_LOCATION
+        fi
+        if [ ! -d $PREFS_LOCATION/.systemPrefs ]; then
+            mkdir -m 755 $PREFS_LOCATION/.systemPrefs
+        fi
+        if [ ! -f $PREFS_LOCATION/.systemPrefs/.system.lock ]; then
+            touch $PREFS_LOCATION/.systemPrefs/.system.lock
+            chmod 644 $PREFS_LOCATION/.systemPrefs/.system.lock
+        fi
+        if [ ! -f $PREFS_LOCATION/.systemPrefs/.systemRootModFile ]; then
+            touch $PREFS_LOCATION/.systemPrefs/.systemRootModFile
+            chmod 644 $PREFS_LOCATION/.systemPrefs/.systemRootModFile
+        fi
+
+        # fix for: 4728032 - Install needs to generate shared class files(32bit only)
+        if [ x$ARCH = "x32" ]; then
+          $javahome/bin/java -client -Xshare:dump > /dev/null 2>&1
+        fi
+    fi
+
+    if [ -n "$JAVAWS_BIN" -a -z "$JAVAWS_PRIVATE" ]; then
+        FULLJAVAHOME=`cd $javahome; pwd`
+        LATEST_JAVAWS_PATH=$FULLJAVAHOME/$JAVAWS_BIN
+        LATEST_JRE_PATH=`dirname \`dirname $LATEST_JAVAWS_PATH\``
+
+        # Setup user level mime associations
+        UpdateMailcap "$HOME/.mailcap"
+        UpdateMimeTypes "$HOME/.mime.types"
+
+        if [ "$userid" = "root" ]; then
+            # Setup system level mime associations
+            UpdateMailcap "/etc/mailcap"
+            UpdateMimeTypes "/etc/mime.types"
+
+            GNOMEDIR_DEFAULT=/usr
+            if [ "$platform" = "solaris" ]; then
+                GNOME_SHARE=share/gnome
+            else
+                GNOME_SHARE=share
+            fi
+            MIME_INFO=${GNOME_SHARE}/mime-info
+            APP_REGISTRY=${GNOME_SHARE}/application-registry
+
+            BASE_ICONS=share/pixmaps
+            HIGH_CONTRAST_ICONS=share/icons/HighContrast/48x48/apps
+            HIGH_CONTRAST_INVERSE_ICONS=share/icons/HighContrastInverse/48x48/apps
+            LOW_CONTRAST_ICONS=share/icons/LowContrast/48x48/apps
+        else
+            GNOMEDIR=${HOME}
+            GNOMEDIR_DEFAULT=${HOME}
+            MIME_INFO=.gnome/mime-info
+            APP_REGISTRY=.gnome/application-info
+
+            BASE_ICONS=.icons/gnome/48x48/apps
+            HIGH_CONTRAST_ICONS=.icons/gnome/HighContrast/48x48/apps
+            HIGH_CONTRAST_INVERSE_ICONS=.icons/gnome/HighContrastInverse/48x48/apps
+            LOW_CONTRAST_ICONS=.icons/gnome/LowContrast/48x48/apps
+        fi
+
+        # Setup the GNOME associations
+        AddGNOME application/java-archive \
+                 jar \
+                 java-archive \
+                 "${LATEST_JRE_PATH}/bin/java -jar" \
+                 sun-java \
+                 png \
+                 "Java Archive"
+
+        AddGNOME ${MIME_TYPE} \
+                 jnlp \
+                 java-web-start \
+                 ${LATEST_JAVAWS_PATH} \
+                 sun-java \
+                 png \
+                 "Java Web Start Application"
+    fi
+fi
+
+if [ -n "$LINUX_RPM" ]; then
+    if [ "$1" = "-x" ]; then
+        echo "Extraction of RPM Done."
+    else
+        #  If rpm and the file exists then use rpm to install.
+        if [ -f `pwd`/$RPM_NAME ]; then
+            rpm -ivh `pwd`/$RPM_NAME
+        fi
+    fi
+fi
+echo " "
+echo "Done."
+exit 0
+EOF
+
+# count the number of lines in the file and rewrite it so that tail
+# strips the right amount off
+lines=`wc -l $tmp_file | awk '{ print $1 + 1; }'`
+sum=`/usr/bin/sum $data_file`
+index=1
+for s in $sum; do
+    case $index in
+        1)
+            sum1=$s;
+            index=2;
+            ;;
+        2)
+            sum2=$s;
+            index=3;
+            ;;
+    esac
+done
+
+sed -e "s/_LINES_TO_STRIP_/$lines/" -e "s/_SUM_1_/$sum1/" \
+    -e "s/_SUM_2_/$sum2/" $tmp_file  > $out_file
+
+cat $data_file >> $out_file
+chmod +x $out_file
+rm -f $tmp_file

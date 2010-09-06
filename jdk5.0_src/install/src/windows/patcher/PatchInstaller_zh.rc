@@ -1,0 +1,55 @@
+//Microsoft Developer Studio generated resource script.
+//
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_PROGRESS_DIALOG DIALOGEX 0, 0, 237, 160
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_MINIMIZEBOX | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Java(TM) Update"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "取消",IDCANCEL,180,142,50,14
+    CONTROL         "DownloadAnimate",IDC_UPDATE_ANIMATE,"SysAnimate32",ACS_AUTOPLAY,7,7,65,130
+    LTEXT           "Java(TM) 技术",IDC_STATIC,82,7,70,8
+    LTEXT           "Sun Microsystems, Inc.",IDC_STATIC,82,34,74,8
+    LTEXT           "Java(TM) Update 技术为客户带来了最新的 Java(TM)。",
+                    IDC_STATIC,82,66,130,32
+    LTEXT           IDS_STATUS_UPDATING,IDC_PROGRESS_TEXT,82,113,135,9
+    CONTROL         "Progress1",IDC_PROGRESS_BAR,"msctls_progress32",
+                    PBS_SMOOTH,82,124,148,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_CAPTION_UPDATE	    "Java(TM) Update %s"
+    IDS_CAPTION_WARNING     "警告 - Java(TM) Update"
+    IDS_CAPTION_ERROR       "错误 - Java(TM) Update"
+    IDS_CAPTION_ABORT       "终止 - Java(TM) Update"
+    IDS_CAPTION_CONFIRM     "需要确认 - Java(TM) Update"
+    IDS_CAPTION_SUCCEEDED   "成功 - Java(TM) Update"
+    IDS_STATUS_UPDATING	    "正在更新 Java(TM) ..."
+    IDS_STATUS_BACKINGUP    "正在备份原文件 ..."
+    IDS_STATUS_PROCESSING   "正在处理：%s"
+    IDS_STATUS_SEARCHING    "正在搜索要更新的系统 ..."
+    IDS_OPTIONS             "用法：%s   [-s] 目录"
+    IDS_ERROR_HANDLING      "无法处理错误代码 0x%x。"
+    IDS_ERROR_VM_RUNNING    "无法在此计算机上安装 Java Update\n因为选择的安装目录\n已被锁定。\n\n请关闭所有\n正在使用所选安装目录的\n浏览器或应用程序。"
+    IDS_ERROR_UPDATE	    "Java(TM) Update 无法将更改应用到系统。"
+    IDS_ERROR_VERSIONINFO   "Java(TM) Update 无法从目标目录中检索版本信息。"
+    IDS_ERROR_BASE_IMAGE_NOT_FOUND  "无法安装 Java(TM) Update (%s)，因为无法定位基本映像 (%s)。"
+    IDS_ERROR_INSTALLED_NEWER_VERSION  "无法安装 Java(TM) Update (%s)，因为此计算机上已安装新版本 (%s)。"
+    IDS_ERROR_INSTALLED_SAME_VERSION  "此计算机上已安装 Java(TM) Update (%s)。"
+    IDS_ERROR_UNINSTALL_WRONG_VERSION  "无法卸载 Java(TM) Update (%s)，当前映像是不同的版本 (%s)。"
+    IDS_INSTALL_SUCCESS	    "Java(TM) Update (%s) 已成功安装在本计算机上。"
+END

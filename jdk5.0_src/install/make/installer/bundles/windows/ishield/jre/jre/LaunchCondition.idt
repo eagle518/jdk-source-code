@@ -1,0 +1,7 @@
+Condition	Description
+s255	l255
+LaunchCondition	Condition
+(Not Installed) OR (DATABASE=OriginalDatabase)	##ID_STRING4##
+(Not ITANIUM="Itanium") AND (Not ITANIUM="Itanium 2")	##ID_STRING_64##
+PhysicalMemory>=32	##ID_STRING_RAM##
+Privileged 	##ID_STRING_PRIV##

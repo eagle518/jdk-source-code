@@ -1,0 +1,113 @@
+Action	Condition	Sequence	ISComments	ISAttributes
+s72	S255	I2	S255	I4
+InstallExecuteSequence	Action
+ISSetupFilesExtract		3		
+AppSearch		25	AppSearch	
+LaunchConditions		50	LaunchConditions	
+FindRelatedProducts	NOT ISSETUPDRIVEN	100	FindRelatedProducts	
+CCPSearch	CCP_TEST	200	CCPSearch	
+RMCCPSearch	Not CCP_SUCCESS And CCP_TEST	250	RMCCPSearch	
+ValidateProductID		300	ValidateProductID	
+setUserProfileNT	VersionNT	310		
+SetAllUsersProfileNT	VersionNT = 400	320		
+setAllUsersProfile2K	VersionNT >= 500	330		
+CostInitialize		350	CostInitialize	
+FileCost		400	FileCost	
+IsolateComponents		450	IsolateComponents	
+CostFinalize		500	CostFinalize	
+SetARPReadme		501		
+ISInitAllUsers	VersionNT And NOT Installed	525	ISInitAllUsers	
+SetODBCFolders		550	SetODBCFolders	
+MigrateFeatureStates		600	MigrateFeatureStates	
+InstallValidate		650	InstallValidate	
+RemoveExistingProducts		675	RemoveExistingProducts	
+InstallInitialize		700	InstallInitialize	
+AllocateRegistrySpace	NOT Installed	750	AllocateRegistrySpace	
+ProcessComponents		800	ProcessComponents	
+UnpublishComponents		850	UnpublishComponents	
+MsiUnpublishAssemblies		875	MsiUnpublishAssemblies	
+UnpublishFeatures		900	UnpublishFeatures	
+StopServices	VersionNT	950	StopServices	
+DeleteServices	VersionNT	1000	DeleteServices	
+UnregisterComPlus		1050	UnregisterComPlus	
+SelfUnregModules		1100	SelfUnregModules	
+UnregisterTypeLibraries		1150	UnregisterTypeLibraries	
+RemoveODBC		1200	RemoveODBC	
+UnregisterFonts		1250	UnregisterFonts	
+RemoveRegistryValues		1300	RemoveRegistryValues	
+UnregisterClassInfo		1350	UnregisterClassInfo	
+UnregisterExtensionInfo		1400	UnregisterExtensionInfo	
+UnregisterProgIdInfo		1450	UnregisterProgIdInfo	
+UnregisterMIMEInfo		1500	UnregisterMIMEInfo	
+RemoveIniValues		1550	RemoveIniValues	
+RemoveShortcuts		1600	RemoveShortcuts	
+RemoveEnvironmentStrings		1650	RemoveEnvironmentStrings	
+RemoveDuplicateFiles		1700	RemoveDuplicateFiles	
+RemoveFiles		1750	RemoveFiles	
+RemoveFolders		1800	RemoveFolders	
+CreateFolders		1850	CreateFolders	
+MoveFiles		1900	MoveFiles	
+InstallFiles		1950	InstallFiles	
+PatchFiles		2000	PatchFiles	
+DuplicateFiles		2050	DuplicateFiles	
+BindImage		2100	BindImage	
+CreateShortcuts		2150	CreateShortcuts	
+RegisterClassInfo		2200	RegisterClassInfo	
+RegisterExtensionInfo		2250	RegisterExtensionInfo	
+RegisterProgIdInfo		2300	RegisterProgIdInfo	
+RegisterMIMEInfo		2350	RegisterMIMEInfo	
+WriteRegistryValues		2400	WriteRegistryValues	
+WriteIniValues		2450	WriteIniValues	
+WriteEnvironmentStrings		2500	WriteEnvironmentStrings	
+RegisterFonts		2550	RegisterFonts	
+InstallODBC		2600	InstallODBC	
+RegisterTypeLibraries		2650	RegisterTypeLibraries	
+RegisterComPlus		2700	RegisterComPlus	
+InstallServices	VersionNT	2750	InstallServices	
+StartServices	VersionNT	2800	StartServices	
+SelfRegModules		2850	SelfRegModules	
+RegisterUser		2900	RegisterUser	
+RegisterProduct		2950	RegisterProduct	
+PublishComponents		3000	PublishComponents	
+MsiPublishAssemblies		3025	MsiPublishAssemblies	
+PublishFeatures		3050	PublishFeatures	
+PublishProduct		3100	PublishProduct	
+uninstallsdk	REMOVE	3110		
+InstallFinalize		3126	InstallFinalize	
+getlogfile	NOT REMOVE	3127		
+progressReset	(&ToolsFeature=3 Or &SourceFeature=3 Or &DemosFeature=3)	3128		
+unziptools	&ToolsFeature=3	3129		
+unzipcore1	&ToolsFeature=3	3130		
+unzipcore2	&ToolsFeature=3	3131		
+unzipcore3	&ToolsFeature=3	3132		
+unzipextra	&ToolsFeature=3	3133		
+unzipother	&ToolsFeature=3	3134		
+progress1	(&ToolsFeature=3 Or &SourceFeature=3 Or &DemosFeature=3)	3145		
+charsets	&ToolsFeature=3	3147		
+progress2	(&ToolsFeature=3 Or &SourceFeature=3 Or &DemosFeature=3)	3148		
+javaws	&ToolsFeature=3	3149	Unpack javaws.jar file	
+deploy	&ToolsFeature=3	3150	Unpack deploy.jar file	
+progress3	(&ToolsFeature=3 Or &SourceFeature=3 Or &DemosFeature=3)	3151		
+jaws	&ToolsFeature=3	3152		
+progress4	(&ToolsFeature=3 Or &SourceFeature=3 Or &DemosFeature=3)	3153		
+jsse	&ToolsFeature=3	3154		
+progress5	(&ToolsFeature=3 Or &SourceFeature=3 Or &DemosFeature=3)	3155		
+tools	&ToolsFeature=3	3156		
+progress6	(&ToolsFeature=3 Or &SourceFeature=3 Or &DemosFeature=3)	3157		
+rt	&ToolsFeature=3	3158		
+progress7	(&ToolsFeature=3 Or &SourceFeature=3 Or &DemosFeature=3)	3159		
+localedata	&ToolsFeature=3	3160		
+progress8	(&ToolsFeature=3 Or &SourceFeature=3 Or &DemosFeature=3)	3161		
+removepackfiles	&ToolsFeature=3	3162		
+progress9	(&ToolsFeature=3 Or &SourceFeature=3 Or &DemosFeature=3)	3163		
+unzipdemos	&DemosFeature=3	3164		
+progress10	(&ToolsFeature=3 Or &SourceFeature=3 Or &DemosFeature=3)	3165		
+copysrczip	&SourceFeature=3	3166		
+progress11	(&ToolsFeature=3 Or &SourceFeature=3 Or &DemosFeature=3)	3167		
+patchsdk	&ToolsFeature=3 Or &SourceFeature=3 Or &DemosFeature=3	3246		
+progress12	(&ToolsFeature=3 Or &SourceFeature=3 Or &DemosFeature=3)	3247		
+InstallJava	NOT Installed	3248		
+sharedclassdata	NOT Installed And VersionNT	3249		
+needreboot	NOT REMOVE	3250	do we need a reboot	
+SetREBOOT	(REBOOT <> Suppress) And (JAVAREBOOT=1) AND (UILevel<>2)	3251	ScheduleReboot	
+ISSetupFilesCleanup		3260		

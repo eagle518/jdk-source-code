@@ -1,0 +1,11 @@
+Property	Order	Value	X	Y	Width	Height	Text	Help
+s72	i2	s64	i2	i2	i2	i2	L64	L50
+RadioButton	Property	Order
+_IsMaintenance	1	Change	0	7	290	14	##IDS__IsMaintenanceDlg_8##	
+_IsMaintenance	3	Remove	0	91	290	14	##IDS__IsMaintenanceDlg_10##	
+_IsSetupTypeMin	1	Typical	0	0	264	14	##IDS__IsSetupTypeMinDlg_11##	
+_IsSetupTypeMin	2	Custom	0	60	264	14	##IDS__IsSetupTypeMinDlg_12##	
+AgreeToLicense	1	No	0	15	295	15	##IDS__AgreeToLicense_0##	
+AgreeToLicense	2	Yes	0	0	295	15	##IDS__AgreeToLicense_1##	
+ApplicationUsers	1	AllUsers	1	7	290	14	##IDS__IsRegisterUserDlg_14##	
+ApplicationUsers	2	OnlyCurrentUser	1	23	290	14	##IDS__IsRegisterUserDlg_15##	

@@ -1,0 +1,72 @@
+//Microsoft Developer Studio generated resource script.
+//
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_PROGRESS_DIALOG DIALOGEX 0, 0, 237, 160
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_MINIMIZEBOX | WS_POPUP |
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Java(TM)-Update"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "Abbrechen",IDCANCEL,180,142,50,14
+    CONTROL         "DownloadAnimate",IDC_UPDATE_ANIMATE,"SysAnimate32",
+                    ACS_AUTOPLAY,7,7,65,130
+    LTEXT           "Java(TM)-Technologie",IDC_STATIC,82,7,81,8
+    LTEXT           "Sun Microsystems, Inc.",IDC_STATIC,82,34,79,8
+    LTEXT           "Java(TM)-Update-Technologie stellt die neueste Version von Java(TM) für Clients bereit.",
+                    IDC_STATIC,82,66,130,32
+    LTEXT           "",IDC_PROGRESS_TEXT,82,113,135,9
+    CONTROL         "Progress1",IDC_PROGRESS_BAR,"msctls_progress32",
+                    PBS_SMOOTH,82,124,148,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_CAPTION_UPDATE      "Java(TM)-Update %s"
+    IDS_CAPTION_WARNING     "Warnung - Java(TM)-Update"
+    IDS_CAPTION_ERROR       "Fehler - Java(TM)-Update"
+    IDS_CAPTION_ABORT       "Abbruch  - Java(TM)-Update"
+    IDS_CAPTION_CONFIRM     "Bestätigung erforderlich - Java(TM)-Update"
+END
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_CAPTION_SUCCEEDED   "Erfolgreich - Java(TM)-Update"
+    IDS_ERROR_UPDATE        "Java(TM)-Update kann die Änderungen nicht auf Ihr System übertragen."
+END
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_ERROR_VM_RUNNING    "Java Update kann nicht auf diesem Rechner\ninstalliert werden, da das ausgewähl te\nVerzeichnis gesperrt ist.\n\nSchließen Sie alle Browser oder Anwendungen,\ndie auf das zur Installation ausgewählte\nVerzeichnis zugreifen."
+    IDS_STATUS_PROCESSING   "Verarbeitung: %s"
+    IDS_STATUS_SEARCHING    "Durchsuchen des zu aktualisierenden Systems ..."
+    IDS_STATUS_UPDATING     "Aktualisieren von Java(TM) ..."
+    IDS_STATUS_BACKINGUP    "Sichern der ursprünglichen Dateien ..."
+END
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_ERROR_HANDLING      "Der Fehlercode 0x%x kann nicht verarbeitet werden."
+    IDS_OPTIONS             "Verwendung: %s   [-s] Verzeichnis"
+    IDS_ERROR_VERSIONINFO   "Java(TM)-Update kann keine Versionsinformationen aus dem Zielverzeichnis auslesen."
+    IDS_ERROR_BASE_IMAGE_NOT_FOUND "Java(TM)-Update (%s) kann nicht installiert werden, weil das Basis-Image (%s) nicht gefunden werden kann."
+    IDS_ERROR_INSTALLED_SAME_VERSION "Java(TM)-Update (%s) ist bereits auf diesem Rechner installiert."
+    IDS_ERROR_INSTALLED_NEWER_VERSION "Java(TM)-Update (%s) kann nicht installiert werden, weil auf diesem Rechner bereits eine neuere Version (%s) installiert ist."
+    IDS_ERROR_UNINSTALL_WRONG_VERSION  "Java(TM)-Update (%s) kann nicht deinstalliert werden, weil das aktuelle Image eine andere Version (%s) aufweist."
+END
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_INSTALL_SUCCESS     "Java(TM)-Update (%s) wurde erfolgreich auf diesem Rechner installiert."
+END

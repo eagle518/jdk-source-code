@@ -1,0 +1,4 @@
+File	Component_	FileName	FileSize	Version	Language	Attributes	Sequence	ISBuildSourcePath	ISAttributes
+s72	s72	s255	i4	S72	S20	I2	i2	S255	I4
+File	File
+src.zip	NewComponent7	src.zip	0				1	<ISProjectFolder>\sdk-image\src.zip	1

@@ -1,0 +1,80 @@
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# @(#)Defs-solaris.gmk	1.11 04/06/30
+# Makefile to specify compiler flags for programs and libraries
+# targeted to Windows builds.  Should not contain any rules.
+
+
+include $(CONTROL_TOPDIR)/make/common/Defs-solaris.gmk
+
+# We need printf!
+PRINTF	       = $(UNIXCOMMAND_PATH)printf
+SOLARIS_MAKE   = $(UNIXCCS_PATH)make 
+
+LIBTHREAD_PKG_LOC=pkgdefs/SUNWjvthr
+MANDIR=$(TOPDIR)/src/solaris/doc/sun/man/sman1
+JA_MANDIR=$(TOPDIR)/src/solaris/doc/sun/man/sman1
+DEST_MAN_PATH = man/sman1
+
+# 
+# Solaris pkgdefs
+#
+PKGDEFS_SUBDIRS = \
+	SUNWj5dev \
+	SUNWj5man \
+	SUNWj5dmo \
+	SUNWj5dbg \
+	SUNWj5jmp \
+	SUNWj5rt
+
+JRE_MAN_PAGES = \
+	java.1		\
+	keytool.1	\
+	rmid.1		\
+	rmiregistry.1	\
+	tnameserv.1     \
+	servertool.1    \
+	orbd.1          \
+	policytool.1   \
+	pack200.1	\
+	unpack200.1
+
+ifeq ($(ARCH_DATA_MODEL),32)
+  JRE_MAN_PAGES += javaws.1
+endif
+
+ifeq ($(PLATFORM), linux)
+  JRE_MAN_PAGES += \
+        kinit.1         \
+        klist.1         \
+        ktab.1 
+endif
+
+JDK_MAN_PAGES = \
+	$(JRE_MAN_PAGES) \
+	appletviewer.1 \
+        apt.1 \
+	extcheck.1 \
+	jar.1 \
+	jarsigner.1 \
+	javac.1 \
+	javadoc.1 \
+	javah.1 \
+	javap.1 \
+        jconsole.1 \
+	jdb.1 \
+        jinfo.1 \
+        jmap.1 \
+        jps.1 \
+        jsadebugd.1 \
+        jstack.1 \
+        jstat.1 \
+        jstatd.1 \
+	native2ascii.1 \
+	rmic.1 \
+	serialver.1 \
+	idlj.1
+
+PKGDEFS_REMNANTFILES = copyright pkginfo depend action *.tmp .make.state

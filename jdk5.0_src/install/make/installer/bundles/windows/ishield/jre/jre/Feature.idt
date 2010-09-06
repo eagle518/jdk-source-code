@@ -1,0 +1,7 @@
+Feature	Feature_Parent	Title	Description	Display	Level	Directory_	Attributes	ISReleaseFlags	ISComments	ISFeatureCabName
+s38	S38	L64	L255	I2	i2	S72	i2	S255	S255	S255
+Feature	Feature
+extra		##ID_STRING3##	##ID_STRING8##	17	1	INSTALLDIR	20			
+jrecore		##ID_STRING_WESTERN##	##ID_STRING2##	1	1	INSTALLDIR	24			
+other_onnonUS		##ID_STRING_OTHER##	##ID_STRING1##	15	1	INSTALLDIR	16			
+other_US		##ID_STRING_OTHER##	##ID_STRING1##	12	1	INSTALLDIR	20			

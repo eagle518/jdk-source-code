@@ -1,0 +1,4 @@
+Registry	Root	Key	Name	Value	Component_	ISAttributes
+s72	i2	s255	S255	S0	s72	I4
+Registry	Registry
+Registry2	2	Software\Microsoft\Windows\CurrentVersion\Uninstall\[ProductCode]	DisplayIcon	[INSTALLDIR]\jre\bin\javaws.exe	szMAJORVERSIONMINORVERSIONMICROVERSIONCOMPUPDATEVERSION	0

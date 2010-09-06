@@ -1,0 +1,32 @@
+Action	Condition	Sequence	ISComments	ISAttributes
+s72	S255	I2	S255	I4
+InstallUISequence	Action
+SetupCompleteError		-3	SetupCompleteError	
+SetupInterrupted		-2	SetupInterrupted	
+SetupCompleteSuccess		-1	SetupCompleteSuccess	
+ISSetupFilesExtract		3		
+AppSearch		25	AppSearch	
+LaunchConditions		50	LaunchConditions	
+Warning	( (Version9X<410) Or ((Version9X=410) And (WindowsBuild<2222)) Or ((VersionNT=400) And (ServicePackLevel<5)) Or ((VersionNT=500) And (ServicePackLevel<2))) And (Not Installed)	555		
+SetupInitialization		100	SetupInitialization	
+FindRelatedProducts		150	FindRelatedProducts	
+CCPSearch	CCP_TEST	250	CCPSearch	
+RMCCPSearch	Not CCP_SUCCESS And CCP_TEST	300	RMCCPSearch	
+ValidateProductID		350	ValidateProductID	
+CostInitialize		400	CostInitialize	
+FileCost		450	FileCost	
+IsolateComponents		500	IsolateComponents	
+ResolveSource	Not Installed	525	ResolveSource	
+CostFinalize		550	CostFinalize	
+LicenseAgreement	NOT Installed	556	License Agreement	
+SetARPReadme		561		
+ISInitAllUsers	VersionNT And NOT Installed	575	ISInitAllUsers	
+MigrateFeatureStates		600	MigrateFeatureStates	
+MaintenanceWelcome	Installed And Not RESUME And Not Preselected And Not PATCH	750	MaintenanceWelcome	
+SetupProgress		800	SetupProgress	
+ExecuteAction		825	ExecuteAction	
+pubjre	(JREINSTALLED<>"0") And (&PublicjreFeature=3)	827	Cancel	
+uninstallpublicjre	UNINSTALLJRE=1	829		
+installpublicjre	((JREINSTALLED="0") Or (UNINSTALLJRE=1)) And (&PublicjreFeature=3) And (SystemLanguageID<>1041)	831		
+installpublicjrejapan	((JREINSTALLED="0") Or (UNINSTALLJRE=1)) And (&PublicjreFeature=3) And (SystemLanguageID=1041)	833		
+ISSetupFilesCleanup		835		

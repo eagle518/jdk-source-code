@@ -1,0 +1,237 @@
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+# @(#)Defs-windows.gmk	1.26 04/02/13
+# Makefile to specify compiler flags for programs and libraries
+# targeted to Windows builds.  Should not contain any rules.
+
+
+override CC_VERSION = msvc
+include $(CONTROL_TOPDIR)/make/common/Defs-windows.gmk
+
+# Tools only used by the Ishield jre and jdk makefiles:
+PRINTF	       = $(UNIXCOMMAND_PATH)printf.exe
+FMT = $(UNIXCOMMAND_PATH)fmt.exe
+WSCRIPT = $(DEVTOOLS_PATH)wscript.exe
+
+# CC compiler object code output directive flag value
+CC_OBJECT_OUTPUT_FLAG = -Fo
+
+# PLATFORM_SRC may be set by .../ext/*/build/.../Defs.gmk
+ifndef PLATFORM_SRC
+  PLATFORM_SRC  = $(TOPDIR)/src/windows
+endif # PLATFORM_SRC
+
+# C Compiler flag definitions
+# Note: gcc not yet supported on windows.
+CFLAGS_COMMON   = -nologo -Zi -GX
+ifeq ($(ARCH_DATA_MODEL), 32)
+  CFLAGS_OPT	= -MD -O1 -GA
+else
+  CFLAGS_OPT	= -MD -O1 -GA
+endif
+CFLAGS_DBG      = -MTd -Od -Gm -ZI
+
+LDEBUG = -debug
+
+ifeq ($(VTUNE_SUPPORT), true)
+  OTHER_CFLAGS = -Z7 -Ox 
+  LDEBUG += -pdb:NONE
+endif
+
+BASELFLAGS = -nologo -map:$(OBJDIR)/$(@F).map -opt:REF
+ifeq ($(ARCH_DATA_MODEL), 64)
+  BASEFLAGS += /machine=IA64 
+endif
+LFLAGS = $(BASELFLAGS) $(LDEBUG) $(EXTRA_LFLAGS)
+
+COMPILER_WARNING_LEVEL=3
+CPPFLAGS_COMMON = -W$(COMPILER_WARNING_LEVEL) -DWIN32 -DIAL -D_X86_ -Dx86 -D_LITTLE_ENDIAN \
+-DWIN32_LEAN_AND_MEAN -Fd$(OBJDIR)/ -Fe$(OBJDIR)/ -Fm$(OBJDIR)/ 
+ifeq ($(ARCH_DATA_MODEL), 64)
+  CPPFLAGS_COMMON += -Wp64 
+endif
+# Treat compiler warnings as errors, unless building in INSANE mode.
+ifndef INSANE
+  CFLAGS_COMMON += -WX
+endif
+CPPFLAGS_OPT    = -D NDEBUG
+CPPFLAGS_DBG    = -D DEBUG
+
+REBASE_ADDR = 0x6D000000
+
+CXXFLAGS_COMMON = $(CFLAGS_COMMON)
+CXXFLAGS_OPT    = $(CFLAGS_OPT)
+CXXFLAGS_DBG    = $(CFLAGS_DBG)
+
+
+
+WIN32LIBS = comctl32.lib kernel32.lib user32.lib gdi32.lib \
+	    winspool.lib comdlg32.lib advapi32.lib shell32.lib \
+	    ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib	
+
+LDFLAGS_COMMON  = -subsystem:windows -machine:I386 \
+		  -pdb:"$(OBJDIR)/$(patsubst %.exe,%.pdb,$(TARGET))" \
+		  -implib:"$(OBJDIR)/$(patsubst %.exe,%.lib,$(TARGET))" \
+		  -MAP:"$(OBJDIR)/$(patsubst %.exe,%.map,$(TARGET))" \
+		  -out:"$(OBJDIR)/$(TARGET)" $(WIN32LIBS)
+
+
+
+LDFLAGS_OPT     = -incremental:no
+LDFLAGS_DBG     = -debug -pdb:NONE 
+
+LINK_OUTPUT_FLAG = -out:
+
+ifneq ($(LIBRARY),fdlibm)
+  EXTRA_LIBS += advapi32.lib
+endif
+
+#
+# Different "levels" of optimization.
+#
+ifeq ($(CC_VERSION),msvc)
+   CC_HIGHER_OPT = -xO4
+   CC_LOWER_OPT  = -xO2
+else # CC_VERSION
+# not supported, but left for historical reference...
+   CC_HIGHER_OPT = -O2
+   CC_LOWER_OPT  = -O2
+endif
+
+ifeq ($(CC_VERSION), msvc)
+  CC_DEPEND        = -FD
+  CC_DEPEND_FILTER = 
+else # CC_VERSION
+# not supported, but left for historical reference...
+  CC_DEPEND        = -MM
+  CC_DEPEND_FILTER = $(SED) -e 's!$*\.$(OBJECT_SUFFIX)!$(dir $@)&!g'
+endif # CC_VERSION
+
+#PATCH Variables are defined here
+RTPATCH_DIR = "c:/Progra~1/pocketsoft/rtpatch"
+# Allow the user to override the default value...
+ifdef ALT_RTPATCH_DIR
+  RTPATCH_DIR = $(ALT_RTPATCH_DIR)
+endif
+
+ifeq ($(ARCH_DATA_MODEL), 32)
+  ISHIELDDIR="C:/Program Files/InstallShield/Developer"
+else
+  ISHIELDDIR=C:/PROGRA~2/InstallShield/Devel~2
+endif
+
+ifdef ALT_ISHIELDDIR
+  ISHIELDDIR=$(ALT_ISHIELDDIR)
+endif
+
+TMPISHIELD_DIR = $(TEMP_DIR)/ishield
+
+#determine whether the installed ishield product is full or standalone
+BUILDER = $(shell \
+    if [ -r $(ISHIELDDIR)/SAAuto.dll ]; then \
+      $(ECHO) $(ISHIELDDIR)/IsSaBld.exe ; \
+    else \
+      $(ECHO) $(ISHIELDDIR)/System/ISCmdBld.exe ; \
+    fi)
+
+AUTO_LAYER=$(shell \
+    if [ -r $(ISHIELDDIR)/SAAuto.dll ]; then \
+      $(ECHO) "SAAuto8SP2" ; \
+    else \
+      $(ECHO) "ISWiAutomation" ; \
+    fi)
+SED_AUTOMATION_LAYER = $(SED) -e 's%LAYER%$(AUTO_LAYER)%g'
+
+SIGNER=$(shell \
+    if [ -r $(ISHIELDDIR)/SAAuto.dll ]; then \
+      $(ECHO) "$(ISHIELDDIR)/signcode.exe" ; \
+    else \
+      $(ECHO) "$(ISHIELDDIR)/System/signcode.exe" ; \
+    fi)
+FULL_SIGNER=$(SIGNER) /spc a:\sun.spc /v a:\sun.pvk -t http://timestamp.verisign.com/scripts/timstamp.dll
+
+ifeq ($(ARCH_DATA_MODEL), 32)
+    IPFW = "C:/Program Files/InstallShield/PackageForTheWeb 3"
+else
+    IPFW = C:/PROGRA~2/InstallShield/PACKAG~1
+endif
+
+ifdef ALT_IPFW
+  IPFW =$(ALT_IPFW)
+endif
+
+ifndef HTTPSERVER
+  HTTPSERVER=http://java.sun.com
+endif
+
+ifndef SIGN_FLAG
+  SIGN_FLAG=0
+endif
+
+ifndef JDK_UPDATE_VERSION
+  JDK_UPDATE_ISHIELD_VERSION=000
+else
+  #If the update string is not 3 characters (01a), then add an additional "0" for the cab name
+  UPDATELENGTH=$(shell ($(ECHO) "${JDK_UPDATE_VERSION}" | $(NAWK) '{print length($$0);}'))
+  ifeq ($(UPDATELENGTH), 2)
+    JDK_UPDATE_ISHIELD_VERSION=$(JDK_UPDATE_VERSION)0
+  else
+    JDK_UPDATE_ISHIELD_VERSION=$(JDK_UPDATE_VERSION)
+  endif
+endif
+
+ifndef BASE_IMAGE_UPDATE_VERSION
+  BASE_IMAGE_UPDATE_ISHIELD_VERSION=000
+else
+  #If the update string is not 3 characters (01a), then add an additional "0" for the cab name
+  UPDATELENGTH=$(shell ($(ECHO) "${BASE_IMAGE_UPDATE_VERSION}" | $(NAWK) '{print length($$0);}'))
+  ifeq ($(UPDATELENGTH), 2)
+    BASE_IMAGE_UPDATE_ISHIELD_VERSION=$(BASE_IMAGE_UPDATE_VERSION)0
+  else
+    BASE_IMAGE_UPDATE_ISHIELD_VERSION=$(BASE_IMAGE_UPDATE_VERSION)
+  endif
+endif
+
+# Copied over from J2SE
+# COMPILER_PATH is the path to where the compiler and tools 
+# are installed.
+ifeq ($(ARCH_DATA_MODEL), 64)
+  ifeq ($(ARCH), ia64)
+    ifdef USING_CYGWIN
+      COMPILER_PATH = $(subst \,/,$(MSSDK))/Bin/Win64/
+    else
+      COMPILER_PATH = $(subst \,/,$(MSSdk))/Bin/Win64/
+    endif
+  else
+    ifdef USING_CYGWIN
+      COMPILER_PATH = $(subst \,/,$(MSSDK))/Bin/Win64/x86/$(ARCH)/
+    else
+      COMPILER_PATH = $(subst \,/,$(MSSdk))/Bin/Win64/x86/$(ARCH)/
+    endif
+  endif
+endif
+# Allow the user to override the default value...
+ifdef ALT_COMPILER_PATH
+  COMPILER_PATH = $(subst //,/,$(subst \,/,$(ALT_COMPILER_PATH)/))
+endif
+
+#SED commands to be used by both jre and sdk install builds
+SED_ARCH = $(SED) -e 's%ARCH%$(ARCH_DATA_MODEL)%g'
+SED_MAJOR_VERSION = $(SED) -e 's%MAJORVERSION%$(JDK_MAJOR_VERSION)%g'
+SED_MINOR_VERSION = $(SED) -e 's%MINORVERSION%$(JDK_MINOR_VERSION)%g'
+SED_MICRO_VERSION = $(SED) -e 's%MICROVERSION%$(JDK_MICRO_VERSION)%g'
+SED_UPDATE_VERSION = $(SED) -e 's%UPDATEVERSION%$(JDK_UPDATE_VERSION)%g'
+SED_COMPONENT_UPDATE_VERSION = $(SED) -e 's%COMPUPDATEVERSION%$(JDK_UPDATE_ISHIELD_VERSION)%g'
+SED_FULL_VERSION = $(SED) -e 's%THEFULLVERSION%$(JDK_VERSION)%g'
+SED_BASE_MAJOR_VERSION = $(SED) -e 's%MAJORBASEVERSION%$(BASE_IMAGE_MAJOR_VERSION)%g'
+SED_BASE_MINOR_VERSION = $(SED) -e 's%MINORBASEVERSION%$(BASE_IMAGE_MINOR_VERSION)%g'
+SED_BASE_MICRO_VERSION = $(SED) -e 's%MICROBASEVERSION%$(BASE_IMAGE_MICRO_VERSION)%g'
+SED_BASE_UPDATE_VERSION = $(SED) -e 's%UPDATEBASEVERSION%$(BASE_IMAGE_UPDATE_VERSION)%g'
+SED_BASE_COMPONENT_UPDATE_VERSION = $(SED) -e 's%COMPUPDATEBASEVERSION%$(BASE_IMAGE_UPDATE_ISHIELD_VERSION)%g'
+SED_BASE_IMAGE_FULL_VERSION = $(SED) -e 's%BASEIMAGEFULLDOTVERSION%$(DOT_BASE_IMAGE_FULLVERSION)%g'
+SED_NEW_IMAGE_FULL_VERSION = $(SED) -e 's%NEWIMAGEFULLDOTVERSION%$(DOT_NEW_IMAGE_FULLVERSION)%g'
+PROCESS_FILES = $(SED_MAJOR_VERSION) | $(SED_MINOR_VERSION) | $(SED_MICRO_VERSION) | $(SED_BASE_MAJOR_VERSION) | $(SED_BASE_MINOR_VERSION) | $(SED_BASE_MICRO_VERSION) | $(SED_BASE_IMAGE_FULL_VERSION) | $(SED_NEW_IMAGE_FULL_VERSION) | $(SED_ARCH)
+PROCESS_FILES_COMP= $(PROCESS_FILES) | $(SED_COMPONENT_UPDATE_VERSION) | $(SED_BASE_COMPONENT_UPDATE_VERSION) | $(SED_ARCH)

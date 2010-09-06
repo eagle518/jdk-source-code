@@ -1,0 +1,54 @@
+Action	Type	Source	Target	ISComments
+s72	i2	S64	S0	S255
+CustomAction	Action
+charsets	34	J2SDKPATCHFULLVERSION	"[J2SDKPATCHFULLVERSION]\launcher.exe" "[bin]\unpack200.exe" -r -v -l "[LOGFILE]" "[INSTALLDIR]\jre\lib\sdk.charsets.pack" "[INSTALLDIR]\jre\lib\charsets.jar"	
+CheckForProductUpdates	226	ISUpdateServiceFolder	[ISUpdateServiceFolder]agent.exe "/au[ProductCode] /EndOfInstall"	Checks for product updates
+CheckForProductUpdatesOnReboot	226	ISUpdateServiceFolder	[ISUpdateServiceFolder]agent.exe "/au[ProductCode] /EndOfInstall /Reboot"	Checks for product updates on reboot
+copysrczip	18	copier.exe	"[J2SDKBASEIMAGEFULLVERSION]\src.zip" "[INSTALLDIR]\src.zip"	
+getlogfile	17	RegUtils	MSIGetLogFileName	
+InstallJava	17	RegUtils	MSIInstallJava	
+installpublicjre	98	SystemFolder	msiexec.exe /i "[J2SDKPATCHFULLVERSION]\jre.msi" ADDLOCAL=ALL SDKSILENT=1	
+installpublicjrejapan	98	SystemFolder	msiexec.exe /i "[J2SDKPATCHFULLVERSION]\jre.msi" TRANSFORMS="[J2SDKPATCHFULLVERSION]\jre1041.MST" ADDLOCAL=ALL SDKSILENT=1	
+ISInitAllUsers	307	ALLUSERS	2	Initializes ALLUSERS property
+ISSetupFilesCleanup	257	ISSetupFilesHelper	SFCleanupEx	
+ISSetupFilesExtract	257	ISSetupFilesHelper	SFStartupEx	
+javaws	34	J2SDKPATCHFULLVERSION	"[J2SDKPATCHFULLVERSION]\launcher.exe" "[bin]\unpack200.exe" -r -v -l "[LOGFILE]" "[INSTALLDIR]\jre\lib\sdk.javaws.pack" "[INSTALLDIR]\jre\lib\javaws.jar"	Unpack javaws.jar file
+jaws	34	J2SDKPATCHFULLVERSION	"[J2SDKPATCHFULLVERSION]\launcher.exe" "[bin]\unpack200.exe" -r -v -l "[LOGFILE]" "[INSTALLDIR]\jre\lib\sdk.plugin.pack" "[INSTALLDIR]\jre\lib\plugin.jar"	
+jsse	34	J2SDKPATCHFULLVERSION	"[J2SDKPATCHFULLVERSION]\launcher.exe" "[bin]\unpack200.exe" -r -v -l "[LOGFILE]" "[INSTALLDIR]\jre\lib\sdk.jsse.pack" "[INSTALLDIR]\jre\lib\jsse.jar"	
+localedata	34	J2SDKPATCHFULLVERSION	"[J2SDKPATCHFULLVERSION]\launcher.exe" "[bin]\unpack200.exe" -r -v -l "[LOGFILE]" "[INSTALLDIR]\jre\lib\ext\sdk.localedata.pack" "[INSTALLDIR]\jre\lib\ext\localedata.jar"	
+patchsdk	18	patchsdk.exe	-s "[INSTALLDIR]"	
+removepackfiles	17	RegUtils	MSIRemovePackFiles	
+rt	34	J2SDKPATCHFULLVERSION	"[J2SDKPATCHFULLVERSION]\launcher.exe" "[bin]\unpack200.exe" -r -v -l "[LOGFILE]" "[INSTALLDIR]\jre\lib\sdk.rt.pack" "[INSTALLDIR]\jre\lib\rt.jar"	
+deploy	34	J2SDKPATCHFULLVERSION	"[J2SDKPATCHFULLVERSION]\launcher.exe"  "[bin]\unpack200.exe" -r -v -l "[LOGFILE]" "[INSTALLDIR]\jre\lib\sdk.deploy.pack" "[INSTALLDIR]\jre\lib\deploy.jar"	Unpack deploy.jar file
+semicolon	1	RegUtilsMSI	MSIIsINSTALLDIRValid	is there a semi colon in the INSTALLDIR?
+setAllUsersProfile2K	51	ALLUSERSPROFILE	[%ALLUSERSPROFILE]	
+SetAllUsersProfileNT	51	ALLUSERSPROFILE	[%SystemRoot]\Profiles\All Users	
+SetARPReadme	51	ARPREADME	[INSTALLDIR]README.html	
+setUserProfileNT	51	USERPROFILE	[%USERPROFILE]	
+tools	34	J2SDKPATCHFULLVERSION	"[J2SDKPATCHFULLVERSION]\launcher.exe" "[bin]\unpack200.exe" -r -l "[LOGFILE]" "[INSTALLDIR]\lib\tools.pack" "[INSTALLDIR]\lib\tools.jar"	
+uninstallsdk	17	RegUtils	MSIUninstallSDK	
+unzipdemos	18	zipper.exe	"[J2SDKBASEIMAGEFULLVERSION]\demos.zip" "[INSTALLDIR]\" "[LOGFILE]"	
+unziptools	18	zipper.exe	"[J2SDKBASEIMAGEFULLVERSION]\tools.zip" "[INSTALLDIR]" "[LOGFILE]"	
+needreboot	17	RegUtils	MSINeedReboot	do we need a reboot
+progressReset	17	RegUtils	CAProgressReset	
+progress1	17	RegUtils	CAProgress	
+progress2	17	RegUtils	CAProgress	
+progress3	17	RegUtils	CAProgress	
+progress4	17	RegUtils	CAProgress	
+progress5	17	RegUtils	CAProgress	
+progress6	17	RegUtils	CAProgress	
+progress7	17	RegUtils	CAProgress	
+progress8	17	RegUtils	CAProgress	
+progress9	17	RegUtils	CAProgress	
+progress10	17	RegUtils	CAProgress	
+progress11	17	RegUtils	CAProgress	
+progress12	17	RegUtils	CAProgress	
+SetREBOOT	51	REBOOT	Force	
+sharedclassdata	98	bin	[INSTALLDIR]\jre\bin\javaw.exe -Xshare:dump	generate shared class data
+unzipcore1	18	zipper.exe	"[J2REBASEIMAGEFULLVERSION]\core1.zip" "[INSTALLDIR]\jre\" "[LOGFILE]"	
+unzipcore2	18	zipper.exe	"[J2REBASEIMAGEFULLVERSION]\core2.zip" "[INSTALLDIR]\jre\" "[LOGFILE]"	
+unzipcore3	18	zipper.exe	"[J2REBASEIMAGEFULLVERSION]\core3.zip" "[INSTALLDIR]\jre\" "[LOGFILE]"	
+unzipextra	18	zipper.exe	"[J2REBASEIMAGEFULLVERSION]\extra.zip" "[INSTALLDIR]\jre\" "[LOGFILE]"	
+unzipother	18	zipper.exe	"[J2REBASEIMAGEFULLVERSION]\other.zip" "[INSTALLDIR]\jre\" "[LOGFILE]"	
+uninstallpublicjre	98	SystemFolder	msiexec.exe /x {3248F0A8-6813-11D6-A77B-00B0D0MAJORVERSIONMINORVERSIONMICROVERSIONCOMPUPDATEVERSION} /qb 	
+SetJREUNINSTALL	51	UNINSTALLJRE	1	

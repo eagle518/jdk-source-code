@@ -1,0 +1,10 @@
+Registry	Root	Key	Name	Value	Component_	ISAttributes
+s72	i2	s255	S255	S0	s72	I4
+Registry	Registry
+Registry1	2	SOFTWARE\JavaSoft\Java Runtime Environment\[MAJOR].[MINOR].[MICRO]	MicroVersion	[MICRO]	ja150000	0
+Registry2	2	SOFTWARE\JavaSoft\Java Runtime Environment\[MAJOR].[MINOR].[MICRO]	JavaHome	[INSTALLDIR]	ja150000	0
+Registry3	2	SOFTWARE\JavaSoft\Java Runtime Environment\[MAJOR].[MINOR].[MICRO]	RuntimeLib	[INSTALLDIR]bin\client\jvm.dll	ja150000	0
+Registry4	2	SOFTWARE\JavaSoft\Java Runtime Environment	CurrentVersion	[MAJOR].[MINOR]	ja150000	0
+Registry5	2	SOFTWARE\JavaSoft\Java Runtime Environment\[MAJOR].[MINOR]	JavaHome	[INSTALLDIR]	ja150000	0
+Registry6	2	SOFTWARE\JavaSoft\Java Runtime Environment\[MAJOR].[MINOR]	MicroVersion	[MICRO]	ja150000	0
+Registry7	2	SOFTWARE\JavaSoft\Java Runtime Environment\[MAJOR].[MINOR]	RuntimeLib	[INSTALLDIR]bin\client\jvm.dll	ja150000	0

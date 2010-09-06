@@ -1,0 +1,79 @@
+Action	Condition	Sequence	ISComments	ISAttributes
+s72	S255	I2	S255	I4
+InstallExecuteSequence	Action
+ISSetupFilesExtract		3		
+AppSearch		49	AppSearch	
+LaunchConditions		50	LaunchConditions	
+FindRelatedProducts	NOT ISSETUPDRIVEN	100	FindRelatedProducts	
+CCPSearch	CCP_TEST	200	CCPSearch	
+RMCCPSearch	Not CCP_SUCCESS And CCP_TEST	250	RMCCPSearch	
+ValidateProductID		300	ValidateProductID	
+setUserProfileNT	VersionNT	301		
+SetAllUsersProfileNT	VersionNT = 400	302		
+setAllUsersProfile2K	VersionNT >= 500	303		
+CostInitialize		350	CostInitialize	
+FileCost		400	FileCost	
+IsolateComponents		450	IsolateComponents	
+CostFinalize		500	CostFinalize	
+SetARPReadme		501		
+SetODBCFolders		550	SetODBCFolders	
+MigrateFeatureStates		600	MigrateFeatureStates	
+InstallValidate		650	InstallValidate	
+RemoveExistingProducts		675	RemoveExistingProducts	
+InstallInitialize		700	InstallInitialize	
+AllocateRegistrySpace	NOT Installed	750	AllocateRegistrySpace	
+ProcessComponents		800	ProcessComponents	
+UnpublishComponents		850	UnpublishComponents	
+MsiUnpublishAssemblies		875	MsiUnpublishAssemblies	
+UnpublishFeatures		900	UnpublishFeatures	
+StopServices	VersionNT	950	StopServices	
+DeleteServices	VersionNT	1000	DeleteServices	
+UnregisterComPlus		1050	UnregisterComPlus	
+SelfUnregModules		1100	SelfUnregModules	
+UnregisterTypeLibraries		1150	UnregisterTypeLibraries	
+RemoveODBC		1200	RemoveODBC	
+UnregisterFonts		1250	UnregisterFonts	
+RemoveRegistryValues		1300	RemoveRegistryValues	
+UnregisterClassInfo		1350	UnregisterClassInfo	
+UnregisterExtensionInfo		1400	UnregisterExtensionInfo	
+UnregisterProgIdInfo		1450	UnregisterProgIdInfo	
+UnregisterMIMEInfo		1500	UnregisterMIMEInfo	
+RemoveIniValues		1550	RemoveIniValues	
+RemoveShortcuts		1600	RemoveShortcuts	
+RemoveEnvironmentStrings		1650	RemoveEnvironmentStrings	
+RemoveDuplicateFiles		1700	RemoveDuplicateFiles	
+RemoveFiles		1750	RemoveFiles	
+RemoveFolders		1800	RemoveFolders	
+CreateFolders		1850	CreateFolders	
+MoveFiles		1900	MoveFiles	
+InstallFiles		1950	InstallFiles	
+PatchFiles		2000	PatchFiles	
+DuplicateFiles		2050	DuplicateFiles	
+BindImage		2100	BindImage	
+CreateShortcuts		2150	CreateShortcuts	
+RegisterClassInfo		2200	RegisterClassInfo	
+RegisterExtensionInfo		2250	RegisterExtensionInfo	
+RegisterProgIdInfo		2300	RegisterProgIdInfo	
+RegisterMIMEInfo		2350	RegisterMIMEInfo	
+WriteRegistryValues		2400	WriteRegistryValues	
+WriteIniValues		2450	WriteIniValues	
+WriteEnvironmentStrings		2500	WriteEnvironmentStrings	
+RegisterFonts		2550	RegisterFonts	
+InstallODBC		2600	InstallODBC	
+RegisterTypeLibraries		2650	RegisterTypeLibraries	
+RegisterComPlus		2700	RegisterComPlus	
+InstallServices	VersionNT	2750	InstallServices	
+StartServices	VersionNT	2800	StartServices	
+SelfRegModules		2850	SelfRegModules	
+RegisterUser		2900	RegisterUser	
+RegisterProduct		2950	RegisterProduct	
+PublishComponents		3000	PublishComponents	
+MsiPublishAssemblies		3025	MsiPublishAssemblies	
+PublishFeatures		3050	PublishFeatures	
+PublishProduct		3100	PublishProduct	
+InstallFinalize		3127		
+rt	&jrecore=3 AND NOT Installed	3143		
+jsse	&jrecore=3 AND NOT Installed	3147		
+charsets	&other_US=3 Or &other_onnonUS=3	3163		
+localedata	&other_US=3 Or &other_onnonUS=3	3167		
+ISSetupFilesCleanup		3185		

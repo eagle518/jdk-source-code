@@ -1,0 +1,5 @@
+Registry	Root	Key	Name	Value	Component_	ISAttributes
+s72	i2	s255	S255	S0	s72	I4
+Registry	Registry
+Registry1	2	Software\JavaSoft\Java Runtime Environment\[JDK_VERSION]	-		jzMAJORVERSIONMINORVERSIONMICROVERSIONCOMPUPDATEVERSION	0
+Registry2	2	Software\Microsoft\Windows\CurrentVersion\Uninstall\[ProductCode]	DisplayIcon	[INSTALLDIR]\bin\javaws.exe	jzMAJORVERSIONMINORVERSIONMICROVERSIONCOMPUPDATEVERSION	0

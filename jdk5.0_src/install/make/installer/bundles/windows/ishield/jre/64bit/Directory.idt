@@ -1,0 +1,71 @@
+Directory	Directory_Parent	DefaultDir	ISDescription	ISAttributes
+s72	S72	l255	S255	I4
+Directory	Directory
+AdminToolsFolder	TARGETDIR	.:Admint~1|AdminTools		0
+Africa	zi	Africa		0
+ALLUSERSPROFILE	TARGETDIR	.:ALLUSE~1|All Users		0
+America	zi	America		0
+Antarctica	zi	ANTARC~1|Antarctica		0
+AppDataFolder	TARGETDIR	.:APPLIC~1|Application Data		0
+applet	lib	applet		0
+Asia	zi	Asia		0
+Atlantic	zi	Atlantic		0
+audio	lib	audio		0
+Australia	zi	AUSTRA~1|Australia		0
+BASE_IMAGES	UPDATEDIR	BASEIM~1|Base Images		0
+bin	INSTALLDIR	bin		0
+client	bin	client		0
+cmm	lib	cmm		0
+CommonAppDataFolder	TARGETDIR	.:Common~1|CommonAppData		0
+CommonFiles64Folder	TARGETDIR	.:Common64		0
+CommonFilesFolder	TARGETDIR	.:Common		0
+cursors	images	cursors		0
+DesktopFolder	TARGETDIR	.:Desktop		3
+Etc	zi	Etc		0
+Europe	zi	Europe		0
+ext	lib	ext		0
+FavoritesFolder	TARGETDIR	.:FAVORI~1|Favorites		0
+fonts	lib	fonts		0
+FontsFolder	TARGETDIR	.:Fonts		0
+GlobalAssemblyCache	TARGETDIR	.:Global~1|GlobalAssemblyCache		0
+i386	lib	i386		0
+im	lib	im		0
+images	lib	images		0
+India	zi	India		0
+Indian	zi	Indian		0
+Indiana	America	Indiana		0
+INSTALLDIR	JAVA1	JRE1_~1|jre1.5.0		0
+ISYourProductDir	JAVA	JRE1_~1|jre1.5.0		0
+J2REBASEIMAGEFULLVERSION	BASE_IMAGES	JRE1_~1|jre1.5.0.b99		0
+J2REPATCHFULLVERSION	J2REBASEIMAGEFULLVERSION	PATCH-~1|patch-jre1.5.0.b99		0
+JAVA	ProgramFilesFolder	Java		0
+JAVA1	ProgramFiles64Folder	Java		0
+JAVADIR	CommonFilesFolder	Java		0
+javaws	lib	javaws		0
+Kentucky	America	Kentucky		0
+lib	INSTALLDIR	lib		0
+LocalAppDataFolder	TARGETDIR	.:LocalA~1|LocalAppData		0
+management	lib	MANAGE~1|management		0
+MyPicturesFolder	TARGETDIR	.:MyPict~1|MyPictures		0
+North_Dakota	America	NORTH_~1|North_Dakota		0
+Pacific	zi	Pacific		0
+PersonalFolder	TARGETDIR	.:Personal		0
+PrimaryVolumePath	TARGETDIR	.:Primar~1|PrimaryVolumePath		0
+ProgramFiles64Folder	TARGETDIR	.:Prog64~1|Program Files 64		0
+ProgramFilesFolder	TARGETDIR	.:PROGRA~1|program files		0
+ProgramMenuFolder	TARGETDIR	.:Programs		3
+security	lib	security		0
+SendToFolder	TARGETDIR	.:SendTo		3
+StartMenuFolder	TARGETDIR	.:STARTM~1|Start Menu		3
+StartupFolder	TARGETDIR	.:StartUp		3
+System16Folder	TARGETDIR	.:System		0
+System64Folder	TARGETDIR	.:System64		0
+SystemFolder	TARGETDIR	.:System32		0
+TARGETDIR		SourceDir		0
+TempFolder	TARGETDIR	.:Temp		0
+TemplateFolder	TARGETDIR	.:ShellNew		0
+UPDATEDIR	JAVADIR	Update		0
+USERPROFILE	TARGETDIR	.:USERPR~1|UserProfile		0
+WindowsFolder	TARGETDIR	.:Windows		0
+WindowsVolume	TARGETDIR	.:WinRoot		0
+zi	lib	zi		0

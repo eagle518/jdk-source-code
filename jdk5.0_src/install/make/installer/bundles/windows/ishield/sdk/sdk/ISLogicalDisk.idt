@@ -1,0 +1,6 @@
+DiskId	ISProductConfiguration_	ISRelease_	LastSequence	DiskPrompt	Cabinet	VolumeLabel	Source
+i2	s255	s255	i2	L64	S255	S32	S32
+ISLogicalDisk	DiskId	ISProductConfiguration_	ISRelease_
+1	sdk	singleexe	0				
+1	sdk	iftw	0				
+1	sdk	singlemsi	0				

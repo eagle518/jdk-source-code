@@ -1,0 +1,479 @@
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# Use is subject to license terms.
+#
+# pragma ident "@(#)postinstall	1.62 04/07/14 Sun Microsystems"
+#
+# The JRE package installs links outside of its BASEDIR from "utilities"
+# in /usr/bin, up to the /usr/java link which (in turn) points to the
+# default JVM. This script installs these links which are independent
+# of BASEDIR.
+#
+# The current system default is determined by the setting of the /usr/java
+# symbolic link.
+#
+# In general, the newly installed jre/sdk should make itself the system
+# default iff:
+#
+#	There is no current system default or it appears to be corrupt.
+#
+#	The current default is outside of the range of expected defaults
+#	for the underlying release of Solaris and this package is within
+#	that range.
+#
+# The single exception to this algorithm is if the version being installed
+# is a more recent patch within the the same Micro release family as the
+# current default, then the version being installed shall make itself the
+# default. The rough translation of this is "patches are patches".
+#
+
+#
+# InstallLinks ( default_flag )
+#
+# Shell routine to install the /usr/bin links. Note that we want to register
+# these as part of each package which uses them, so that they won't be
+# removed until the last Java is removed from the system (or the last Java
+# which has that particular component.
+#
+# Be sure to modify the space file if you add to or subtract from the list
+# of links.
+#
+# Parameters:
+#   $1	default_flag	"true" if this package is being installed as the
+#			Solaris system default, "false" otherwise.
+#
+InstallLinks() {
+
+    $INSTALLF -c none $PKGINST $BIN_PATH d 0755 root bin
+
+    BIN_FILES="java keytool policytool rmid rmiregistry tnameserv \
+      orbd servertool"
+    for file in $BIN_FILES; do
+	$INSTALLF -c none $PKGINST "$BIN_PATH/${file}=../java/bin/${file}" s
+    done
+
+    JRE_BIN_FILES="ControlPanel"
+    for file in $JRE_BIN_FILES; do
+	$INSTALLF -c none $PKGINST "$BIN_PATH/${file}=../java/jre/bin/${file}" s
+    done
+
+    #
+    # IMPORTANT NOTE: Special handling for the /usr/bin/javaws symbolic
+    # link. See PSARC/2003/091.
+    #
+    # If this version is being made the default, force the link to the
+    # "normal" form.  If not, see if the current setting of the link
+    # points at a valid javaws executable. If it doesn't, point it at
+    # this installation, but only if this is being installed in the
+    # default /usr/jdk directory.
+    #
+    #	if ("the package being installed will be the default") then
+    #	    [Re]Create the link through /usr/java.
+    #	else if ("/usr/bin/javaws doesn't exist") then
+    #	    Create the link to point directly to this package
+    #	else if ("it is a link and is 'dangling'") then
+    #	    Create the link to point directly to this package
+    #	endif
+    #
+    # Note that it is not a bug that /usr/bin/javaws isn't registered with
+    # the package data base (via installf).
+    #
+    if [ "$1" = "true" ]; then
+	${RM} -f ${BIN_JAVAWS}
+	${LN} -s ../java/${REL_JAVAWS} ${BIN_JAVAWS}
+    elif [ ! -f ${BIN_JAVAWS} ] && [ ! -d ${BIN_JAVAWS} ] && \
+	 [ ! -h ${BIN_JAVAWS} ]; then 
+	${RM} -f ${BIN_JAVAWS}
+	${LN} -s ../${REGISTRY_DIR}/${REGISTRY_ENTRY}/${REL_JAVAWS} \
+	  ${BIN_JAVAWS}
+    elif [ -h ${BIN_JAVAWS} ]; then
+	target=`FollowLink ${BIN_JAVAWS}`
+	if [ ! -x $target ]; then
+	    ${RM} -f ${BIN_JAVAWS}
+	    ${LN} -s ../${REGISTRY_DIR}/${REGISTRY_ENTRY}/${REL_JAVAWS} \
+	      ${BIN_JAVAWS}
+        fi
+    fi
+}
+
+#
+# Shell routine to install the /usr symbolic link of /usr/java.
+#
+# Note that it is not a bug that /usr/java isn't registered with
+# the package database. Multiple instances will each have there own
+# idea of what this link value should be, so (to avoid pkgchk warnings)
+# all manipulation is done via postinstall and postremove scripts.
+#
+# Returns:
+#	zero:		The link was created or altered.
+#	non-zero:	The link was not altered
+#
+SetJavaLink() {
+
+    #
+    # If there is nothing there just create a link to this instance.
+    #
+    if [ ! -f ${JAVA_PATH} ] && [ ! -d ${JAVA_PATH} ] &&
+       [ ! -h ${JAVA_PATH} ]; then
+	${RM} -f ${JAVA_PATH}
+	${LN} -s ${JAVA_LINK_VALUE} ${JAVA_PATH}
+	return 0
+    fi
+
+    #
+    # If there is something there but its not a symbolic link, leave it
+    # alone.  Funky things have been done to this system which we had better
+    # not muck with.
+    #
+    if [ ! -h ${JAVA_PATH} ]; then
+	return 1
+    fi
+
+    #
+    # It exists and is a symbolic link.  Possibly we want to do something
+    # with it
+    #
+    # First, resolve what it (and any subsequent links) point to.
+    path=`FollowLink ${JAVA_PATH}`
+
+    #
+    # If it is 'dangling' (points to something that is no longer a valid
+    # JVM, or perhaps never was), take it over.  The simplistic test is for
+    # an executable object called "java" at the expected path relative to
+    # the final destination of this link.
+    #
+    if [ ! -x ${path}/bin/java ]; then
+	${RM} -f ${JAVA_PATH}
+	${LN} -s ${JAVA_LINK_VALUE} ${JAVA_PATH}
+	return 0
+    fi
+
+    #
+    # Getting this far, indicates that the symbolic link exists and points
+    # to something which is very likely to be a valid JVM.
+    #
+    # If the current default is out side of the default range for the
+    # Solaris release and the release being installed is within the
+    # default range, steal the link.
+    #
+    # Note that we can't tell the exact version of JVM release found
+    # in the legacy directories of /usr/java1.1, /usr/java1.2, or
+    # /usr/j2se.  We can only assume the Minor release family found there.
+    # Be conservative and assume that the JVM installed there is the most
+    # advanced within that family.
+    #
+    GetDefaultRange
+    current_dir=`basename $path`
+    if [ "$current_dir" = "j2se" ]; then
+	current_tuple=`ExpandPrefixInfinity 1.4`
+    elif [ "$current_dir" = "java1.2" ]; then
+	current_tuple=`ExpandPrefixInfinity 1.2`
+    elif [ "$current_dir" = "java1.1" ]; then
+	current_tuple=`ExpandPrefixInfinity 1.1`
+    else
+	current_tuple=`GetRel $current_dir`
+	current_tuple=`ExpandPrefix $current_tuple`
+    fi
+    prodver_tuple=`ExpandPrefix $PRODVERS`
+    if [ \( "`RelCmp $current_tuple $DEFAULT_MIN`" = "lt" -o \
+	    "`RelCmp $current_tuple $DEFAULT_MAX`" = "gt" \) -a \
+	 \( "`RelCmp $prodver_tuple $DEFAULT_MIN`" != "lt" -a \
+	    "`RelCmp $prodver_tuple $DEFAULT_MAX`" != "gt" \) ]; then
+	${RM} -f ${JAVA_PATH}
+	${LN} -s ${JAVA_LINK_VALUE} ${JAVA_PATH}
+	return 0
+    fi
+
+    #
+    # Subsequent tests for acquiring the link depend upon both the
+    # current owner and this package being referenced through the
+    # /usr/jdk directory. We know this is true for this package.
+    # If this isn't true for the existing default, bail out.
+    #
+    ls=`ls -l ${JAVA_PATH}`
+    target=`echo $ls | cut -f 11 -d " "`
+    link=`dirname ${JAVA_PATH}`/`dirname $target`
+    link=`echo $link | sed -e "s:/\./:/:g" -e "s:[^/]*/\.\./::g"`
+    if [ "$link" != "${REGISTRY_PATH}" ]; then
+	return 1
+    fi
+    target=`basename $target`
+    current_tuple=`GetRel $target`
+
+    #
+    # Finally, if the link points to a release in the same Micro (dot-dot)
+    # family, but of a lower patch level, take over the link.
+    #
+    if [ "`GetMicro $prodver_tuple`" = "`GetMicro $current_tuple`" ]; then
+	if [ "`RelCmp $prodver_tuple $current_tuple`" = "gt" ]; then
+	    ${RM} -f ${JAVA_PATH}
+	    ${LN} -s ${JAVA_LINK_VALUE} ${JAVA_PATH}
+	    return 0
+	fi
+    fi
+
+    return 1
+}
+
+#
+# RegisterGNOMEDirs ()
+#
+# Shell routine to register/create the GNOME directories need by this
+# installation.  This is done dynamically (rather than in the prototype_com
+# file), because is some cases this is not done (notably, when the package
+# is relocated and not part of an system installation).
+#
+RegisterGNOMEDirs() {
+    $INSTALLF -c none ${PKGINST} \
+      ${SHARE_PATH} d 0755 root sys
+    $INSTALLF -c none ${PKGINST} \
+      ${SHARE_PATH}/pixmaps d 0755 root other
+    $INSTALLF -c none ${PKGINST} \
+      ${SHARE_PATH}/icons d 0755 root other
+    $INSTALLF -c none ${PKGINST} \
+      ${SHARE_PATH}/icons/HighContrast d 0755 root other
+    $INSTALLF -c none ${PKGINST} \
+      ${SHARE_PATH}/icons/HighContrast/48x48 d 0755 root other
+    $INSTALLF -c none ${PKGINST} \
+      ${SHARE_PATH}/icons/HighContrast/48x48/apps d 0755 root other
+    $INSTALLF -c none ${PKGINST} \
+      ${SHARE_PATH}/icons/HighContrastInverse d 0755 root other
+    $INSTALLF -c none ${PKGINST} \
+      ${SHARE_PATH}/icons/HighContrastInverse/48x48 d 0755 root other
+    $INSTALLF -c none ${PKGINST} \
+      ${SHARE_PATH}/icons/HighContrastInverse/48x48/apps d 0755 root other
+    $INSTALLF -c none ${PKGINST} \
+      ${SHARE_PATH}/icons/LowContrast d 0755 root other
+    $INSTALLF -c none ${PKGINST} \
+      ${SHARE_PATH}/icons/LowContrast/48x48 d 0755 root other
+    $INSTALLF -c none ${PKGINST} \
+      ${SHARE_PATH}/icons/LowContrast/48x48/apps d 0755 root other
+    $INSTALLF -c none ${PKGINST} \
+      ${SHARE_PATH}/gnome d 0755 root other
+    $INSTALLF -c none ${PKGINST} \
+      ${SHARE_PATH}/gnome/mime-info d 0755 root other
+    $INSTALLF -c none ${PKGINST} \
+      ${SHARE_PATH}/gnome/application-registry d 0755 root other
+}
+
+#
+# AssociateWithGNOME ( default_flag
+#		      mime type
+#                     extension
+#                     name
+#                     command
+#                     icon   
+#                     icon_ext
+#                     description )
+#
+# Shell routine to add an entry to GNOME application registry.
+#
+# Since multiple packages (or package instances) may be attempting to
+# install these files, only install them it they don't exist.  However,
+# always register them with the package database so that they don't
+# get removed out from under you. (This really should be a separate
+# package.)
+#
+# Note that the association files are marked as editable files, so that
+# they can be modified (perhaps by being updated by another package) without
+# generating pkgchk errors.
+#
+# Parameters:
+#   $1  default_flag	"true" if this package is being installed as the 
+#			Solaris system default, "false" otherwise. 
+#   $2	mime type	associated mime type
+#   $3	extension	associated file extension
+#   $4	name		used to name GNOME registry files
+#   $5	command		what to invoke when launching file/mime type
+#   $6	icon		base name of icon file
+#   $7	icon_ext	extension for icon file
+#   $8	description	description for association
+#
+AssociateWithGNOME() {
+    _default_flag=$1
+    _mime_type=$2
+    _extension=$3
+    _name=$4
+    _command=$5
+    _icon=$6
+    _icon_ext=$7
+    _description=$8
+
+    #
+    # Update the icon files (all or none) if this JDK is being installed
+    # as the default or any of the expected files are MIA.
+    #
+    if [ "${_default_flag}" = "true" ] ||
+       [ ! -f ${SHARE_DEFAULT}/${_icon}.${_icon_ext} ] ||
+       [ ! -f ${SHARE_HIGH_CONTRAST}/${_icon}.${_icon_ext} ] ||
+       [ ! -f ${SHARE_HIGH_CONTRAST_INVERSE}/${_icon}.${_icon_ext} ] ||
+       [ ! -f ${SHARE_LOW_CONTRAST}/${_icon}.${_icon_ext} ]; then
+
+	${CP} ${JDK_ICONS}/${_icon}.${_icon_ext} \
+	    ${SHARE_DEFAULT}/${_icon}.${_icon_ext}
+
+	${CP} ${JDK_ICONS}/${_icon}_HighContrast.${_icon_ext} \
+	    ${SHARE_HIGH_CONTRAST}/${_icon}.${_icon_ext}
+
+	${CP} ${JDK_ICONS}/${_icon}_HighContrastInverse.${_icon_ext} \
+	    ${SHARE_HIGH_CONTRAST_INVERSE}/${_icon}.${_icon_ext}
+
+	${CP} ${JDK_ICONS}/${_icon}_LowContrast.${_icon_ext} \
+	    ${SHARE_LOW_CONTRAST}/${_icon}.${_icon_ext}
+
+    fi
+
+    #
+    # Updated or not, these files are now expected by this JDK (default
+    # at the moment, or not).  Register them with the package data base
+    # with installf.  Note that even though these files are not really
+    # "editable" they are so marked, so that if different versions of the
+    # JDK install different files, pkgchk errors should not be generated.
+    #
+    $INSTALLF -c none $PKGINST \
+	${SHARE_DEFAULT}/${_icon}.${_icon_ext} e 0644 root other
+    $INSTALLF -c none $PKGINST \
+	${SHARE_HIGH_CONTRAST}/${_icon}.${_icon_ext} e 0644 root other
+    $INSTALLF -c none $PKGINST \
+	${SHARE_HIGH_CONTRAST_INVERSE}/${_icon}.${_icon_ext} e 0644 root other
+    $INSTALLF -c none $PKGINST \
+	${SHARE_LOW_CONTRAST}/${_icon}.${_icon_ext} e 0644 root other
+
+    #
+    # Similar to the above, update the associateion files (all or none).
+    #
+    GNOME_KEYS_FILE=${MIME_PATH}/${_name}.keys
+    GNOME_MIME_FILE=${MIME_PATH}/${_name}.mime
+    GNOME_APPS_FILE=${APPS_PATH}/${_name}.applications
+
+    if [ "${_default_flag}" = "true" ] ||
+       [ ! -f ${GNOME_KEYS_FILE} ] ||
+       [ ! -f ${GNOME_MIME_FILE} ] ||
+       [ ! -f ${GNOME_APPS_FILE} ]; then
+
+	# Create the keys file.
+	echo "${_mime_type}"						 > $GNOME_KEYS_FILE
+	echo "        description=${_description}"			>> $GNOME_KEYS_FILE
+	echo "        icon_filename=${_icon}"				>> $GNOME_KEYS_FILE
+	echo "        default_action_type=application"			>> $GNOME_KEYS_FILE
+	echo "        default_application_id=${_name}"			>> $GNOME_KEYS_FILE
+	echo "        short_list_application_user_additions=${_name}"	>> $GNOME_KEYS_FILE
+
+	# Create the mime file.
+	echo "${_mime_type}"			 > $GNOME_MIME_FILE
+	echo "        ext: ${_extension}"	>> $GNOME_MIME_FILE
+
+	# Create the apps file.
+	echo "${_name}"					 > $GNOME_APPS_FILE
+	echo "        command=${_command}"		>> $GNOME_APPS_FILE
+	echo "        name=${_name}"			>> $GNOME_APPS_FILE
+	echo "        can_open_multiple_files=false"	>> $GNOME_APPS_FILE
+	echo "        requires_terminal=false"		>> $GNOME_APPS_FILE
+	echo "        mime_types=${_mime_type}"		>> $GNOME_APPS_FILE
+    fi
+
+    #
+    # Also similar to the above, register these truly editable files with
+    # unconditionally with the package data base.
+    $INSTALLF -c none $PKGINST $GNOME_MIME_FILE e 0644 root other
+    $INSTALLF -c none $PKGINST $GNOME_KEYS_FILE e 0644 root other
+    $INSTALLF -c none $PKGINST $GNOME_APPS_FILE e 0644 root other
+}
+
+#
+# Main Processing
+#
+
+#
+# Add a link containing the full version from the "registry" directory to
+# the "instances" directory.  Also, remove any other symbolic links from
+# the "instances" directory which may now be lies.
+#
+for path in `ls -d ${REGISTRY_PATH}/jdk* ${REGISTRY_PATH}/jre* \
+  ${REGISTRY_PATH}/j2sdk* ${REGISTRY_PATH}/j2re* 2>/dev/null`; do
+    if [ -h $path ]; then
+	target=`FollowLink $path`
+	if [ "$target" = "${INSTALL_NAME}" ]; then
+	    ${RM} $path
+	fi
+    fi
+done
+${LN} -s ${INSTALL_DIR}/${INSTALL_ENTRY} ${REGISTRY_NAME}
+
+#
+# If this package should become the system default, make it so by
+# creating/modifying the /usr/java symbolic link.
+#
+# Note that this link is always created in $BASEDIR, even if this
+# isn't a "system" installation.  This is to provide a "release
+# identifier free" name for a relocated JRE. This behavior is required
+# by the Solaris install software.
+#
+if `SetJavaLink`; then
+    default_flag="true"
+else
+    default_flag="false";
+fi
+
+#
+# Establish the links from the system "bin" directrory, iff this is
+# being installed as a "system" JDK. Typically, this would be if $BASEDIR
+# has its default value of /usr.  However, diskless installations make
+# this a bit more difficult to assertain, so hieristic of $BASEDIR
+# containing a "bin" directory is applied.  This hieristic is ideal
+# because even if it incorrectly identifies a "system" installation,
+# it will generate a sensible and expected result.
+#
+if [ -d ${BIN_PATH} ]; then
+    InstallLinks $default_flag
+fi
+
+#
+# create GNOME associations
+#
+# The same logic as above applies to creating the GNOME associations except
+# it it based on $BASEDIR containing a "share" directory.
+#
+if [ -d ${SHARE_PATH} ]; then
+
+    RegisterGNOMEDirs
+
+    AssociateWithGNOME $default_flag \
+		       application/java-archive \
+		       jar \
+		       java-archive \
+		       "/usr/bin/java -jar" \
+		       sun-java \
+		       png \
+		       "Java Archive"
+
+    AssociateWithGNOME $default_flag \
+		       application/x-java-jnlp-file \
+		       jnlp \
+		       java-web-start \
+		       "/usr/bin/javaws" \
+		       sun-java \
+		       png \
+		       "Java Web Start Application"
+fi
+
+#
+# To support class data sharing, run a special command.  An
+# additional 'classes.jsa' file is generated.  Add this new
+# file to the install registry.
+#
+# Fix 4972526 - Swallow any errors caused while generating JSA file.  Errors
+# can be generated when using -R to install from server/client of different
+# architectures.
+#
+${INSTALL_NAME}/bin/java -client -Xshare:dump > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+    $INSTALLF -c none $PKGINST \
+        ${INSTALL_NAME}/jre/lib/${ARCH}/client/classes.jsa
+fi
+
+#
+# Commit
+#
+$INSTALLF -f $PKGINST
+exit 0

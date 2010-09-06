@@ -1,0 +1,3 @@
+AppKey	RegKey	Root	Key	Name	Value	Processor	Platform	Overwrite
+s50	s50	i4	s255	S255	S255	i4	i4	i4
+ISCERegistry	AppKey	RegKey

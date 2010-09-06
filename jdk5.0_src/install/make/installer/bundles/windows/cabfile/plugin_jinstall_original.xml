@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+
+<java-update>
+  <information version="1.0" xml:lang="en">
+    <identifier></identifier>
+    <description>J2SE Runtime Environment #MINORMICRO_VERSION#</description>
+    <url>#HTTP_SERVER#/update/#JDK_VERSION#/jre-#PLUGIN_VERSION_FOR_FILE#-windows-i586.exe</url>
+    <msi-url>#HTTP_SERVER#/update/#JDK_VERSION#/</msi-url>
+    <options></options>
+  </information>
+  <information version="1.0" xml:lang="ja">
+    <identifier></identifier>
+    <description>J2SE Runtime Environment #MINORMICRO_VERSION#</description>
+    <url>#HTTP_SERVER#/update/#JDK_VERSION#/jre-#PLUGIN_VERSION_FOR_FILE#-windows-i586.exe</url>
+    <msi-url>#HTTP_SERVER#/update/#JDK_VERSION#/</msi-url>
+    <options></options>
+  </information>
+</java-update>    
+
+
+

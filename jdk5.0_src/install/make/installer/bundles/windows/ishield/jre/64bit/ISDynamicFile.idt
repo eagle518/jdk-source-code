@@ -1,0 +1,8 @@
+Component_	SourceFolder	IncludeFlags	IncludeFiles	ExcludeFiles	ISAttributes
+s72	s255	I2	S255	S255	I4
+ISDynamicFile	Component_	SourceFolder
+ja150000	<ISProjectFolder>\jre-image\bin	4		java.exe,javaw.exe	2
+jb150000	<ISProjectFolder>\jre-image	4			0
+jc150000	<ISProjectFolder>\jre-image\lib	4		charsets.pack,localedata.pack,soundbank.gm,PYCC.pf,LucidaBright*.ttf,LucidaType*.ttf,LucidaSansDemi*.ttf	2
+je150000	<ISProjectFolder>\jre-image	4	PYCC.pf,soundbank.gm,*.ttf	LucidaSansRegular.ttf	2
+jo150000	<ISProjectFolder>\jre-image	4	charsets.pack,localedata.pack		2

@@ -1,0 +1,96 @@
+#
+# @(#)Makefile.targ	1.62 03/12/19
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+$(PACKAGE_TMP_DIR)/pkginfo:	pkginfo.tmpl $(TMP_AWK)
+		$(RM) $@; $(NAWK) -f $(TMP_AWK) pkginfo.tmpl > $@
+
+pkg:		$(PKG_ARCHIVE) FRC
+		$(CP) prototype_com prototype_$(ARCH) $(PACKAGE_TMP_DIR)
+		$(CHMOD)  -f +w $(PACKAGE_TMP_DIR)/*
+		$(CD) $(PACKAGE_TMP_DIR); \
+		$(PKGMK) -f prototype_$(ARCH) -d $(PKG_ARCHIVE) \
+			-o pkg_arch=$(ARCH) $(PACKAGE)
+
+#
+# Make a package with existing man pages.  The prototype file
+# is created on the fly from the list of man pages in the SDK.
+#
+
+man-pkg:	$(PKG_ARCHIVE) FRC
+		$(CP) prototype_com $(PROTOTYPE)
+		$(CHMOD) +w $(PROTOTYPE);
+		for i in $(MAN_DEST_PATH); do \
+		  $(ECHO) d none $(PKGDEST)$$i 755 root bin >> $(PROTOTYPE); \
+		  for j in $(MAN_PAGE_FILES) $(EXTRA_FILES); do \
+		    $(ECHO) f none $(PKGDEST)$$i/$$j=$(JDK_IMAGE_DIR)/$$i/$$j 0444 root bin >> $(PROTOTYPE); \
+		  done; \
+		done;
+		$(PKGMK) -f $(PROTOTYPE) -d $(PKG_ARCHIVE) -o pkg_arch=$(ARCH) $(PACKAGE)
+
+
+$(PKG_ARCHIVE): FRC
+		[ -d $(PKG_ARCHIVE) ] || $(MKDIR) -p $(PKG_ARCHIVE)
+		$(CHMOD) -f +w $(PACKAGE_TMP_DIR)/*
+		$(CP) prototype_com $(PACKAGE_TMP_DIR)/proto.$(ARCH).tmp
+		$(CHMOD) +w $(PACKAGE_TMP_DIR)/proto.$(ARCH).tmp
+
+make-package:   FRC
+		if [ -n "$(PKGFILES)" ] || [ -n "$(PKGDBGFILES)" ] || \
+		   [ -n "$(MAN_PAGE_FILES)" ] ; then \
+		    $(CD) $(PACKAGE_TMP_DIR); \
+		    $(PKGMK) -f proto.$(ARCH).tmp -d $(PKG_ARCHIVE) -o pkg_arch=$(ARCH) $(PACKAGE); \
+		fi
+
+$(DATAFILES):	../common/depend ../common/copyright
+		$(RM) $@;
+		$(MKDIR) -p $(PACKAGE_TMP_DIR)
+		$(CHMOD) -f +w $(PACKAGE_TMP_DIR)/*
+		$(CP) ../common/copyright ../common/depend $(PACKAGE_TMP_DIR)
+
+# Additional dependency:  start with a fresh depend file if the version strings
+# in pkginfo change.
+$(PACKAGE_TMP_DIR)/depend:		$(PACKAGE_TMP_DIR)/pkginfo
+
+# action is a pseudotarget denoting completed work on the depend file
+#
+# Fetch the NAME attributes from the dependent pkginfo files.  Replace
+# the relevant variables first.
+#
+$(PACKAGE_TMP_DIR)/action:  $(PACKAGE_TMP_DIR)/depend
+	for dep in $(PKG_DEPENDENCIES); \
+	do \
+		$(GREP) -s $$dep $(PACKAGE_TMP_DIR)/depend && { continue; }; \
+		$(CHMOD) 666 $(PACKAGE_TMP_DIR)/depend; \
+		case $$dep in \
+		SUNWj5rt | SUNWj5dev | SUNWj5dbg | SUNWj5rtx | SUNWj5man) \
+			j5rt_n="`$(NAWK) -f $(TMP_AWK)  $(ROOT_DIR)/install/make/installer/bundles/solaris/pkgdefs/$$dep/pkginfo.tmpl | \
+				 $(SED) -n 's/^NAME=\"\(.*\)\"/\1/p'`"; \
+			$(ECHO) "P $$dep	$$j5rt_n";; \
+		SUNWj5rt_nover) \
+			$(ECHO) "P SUNWjvrt	JDK 1.1 run time environment";; \
+		SUNWmfrun) \
+			$(ECHO) "P $$dep	Motif RunTime Kit";; \
+		SUNWlibC) \
+			$(ECHO) "P $$dep      Sun Workshop Compilers Bundled libC";; \
+		SUNWxwrtl) \
+			$(ECHO) "P $$dep      X Window System & Graphics Runtime Library Links in /usr/lib";; \
+		SUNWxwice) \
+			$(ECHO) "P $$dep      X Window System Inter-Client Exchange(ICE) Components ";; \
+		SUNWxwplt) \
+			$(ECHO) "P $$dep      X Window System platform software";; \
+		*) \
+			$(ECHO) "P $$dep";; \
+		esac >> $(PACKAGE_TMP_DIR)/depend; \
+		$(CHMOD) 444 $(PACKAGE_TMP_DIR)/depend; \
+		$(TOUCH) $@; \
+	done
+
+clobber clean:
+		-$(RM) $(CLOBBERFILES) $(CLEANFILES) 
+		-$(RM) $(PACKAGE_TMP_DIR)/proto.$(ARCH).tmp
+
+FRC:

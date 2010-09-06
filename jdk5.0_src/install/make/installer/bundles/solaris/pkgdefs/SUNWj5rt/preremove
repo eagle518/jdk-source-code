@@ -1,0 +1,320 @@
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# Use is subject to license terms.
+#
+# pragma ident "@(#)preremove	1.30 04/06/10 Sun Microsystems"
+#
+# The only function of this script is to attempt to restore a system default
+# jvm should is be that it is the former system default which is being
+# removed.
+#
+# See "NewDefault()" for the exact algorithm.
+#
+
+#
+# CheckLegacy ( dir )
+#
+# Check the legacy directory (ie: j2se, java1.2, java1.1) as a valid answer
+# for the default release based on the assumed contents of that directory.
+# If valid, the /usr/java symbolic link is set to point there and "success"
+# is returned; else return "failure".
+#
+# Parameters:
+#   $1	dir		Directory (in /usr) assumed to contain a legacy release.
+#
+# Returns:
+#   0	(success) is the release identifier is in range.
+#   1	(failure) is the release identifier is out of range.
+#
+CheckLegacy() {
+    if [ ! -h ${BASEDIR}/$1 -a \
+	-d ${BASEDIR}/$1 -a \
+	-x ${BASEDIR}/$1/bin/java ]; then
+	case $1 in
+	    "j2se" )
+		rel=1.4
+		;;
+	    "java1.2" )
+		rel=1.2
+		;;
+	    "java1.1" )
+		rel=1.1
+		;;
+	    * )
+		return 1
+		;;
+	esac
+	min=`ExpandPrefix "$rel"`
+	max=`ExpandPrefixInfinity "$rel"`
+	if [ "`RelCmp $min $DEFAULT_MAX`" != "gt" -a \
+	     "`RelCmp $max $DEFAULT_MIN`" != "lt" ]; then
+	    ${RM} -f ${JAVA_PATH}
+	    ${LN} -s $1 ${JAVA_PATH}
+	    return 0
+	fi
+    fi
+    return 1
+}
+
+#
+# NewDefault ()
+#
+# Try to establish a new default. Note that only JREs installed in well
+# known system locations are considered.
+#
+NewDefault() {
+
+    #
+    # Begin by generating the list of possible JREs from the system
+    # repository (/usr/jdk).
+    #
+    list=""
+    for path in `ls -d ${REGISTRY_PATH}/jdk* ${REGISTRY_PATH}/jre* \
+      ${REGISTRY_PATH}/j2sdk* ${REGISTRY_PATH}/j2re*  2>/dev/null`; do
+	if [ ! -d $path -a ! -h $path ]; then
+	    continue
+	fi
+	if [ ! -x ${path}/bin/java ]; then
+	    continue
+	fi
+	entry=`basename $path`
+	if [ "$entry" = "${REGISTRY_ENTRY}" ]; then
+	    continue
+	fi
+	list="$list $entry"
+    done
+  
+    #
+    # Step 1:	Try to make a different patch level of the same Micro release
+    #		the default. If multiple candidates exist, choose the most
+    #		advanced.
+    #
+    if [ "$list" != "" ]; then
+	mymicro=`GetMicro ${REGISTRY_ENTRY}`
+	minimum=`ExpandPrefix $mymicro`
+	maximum=`ExpandPrefixInfinity $mymicro`
+	short_list=""
+	for jre in $list; do
+	    jre_rel=`GetRel $jre`
+	    jre_rel=`ExpandPrefix $jre_rel`
+	    if `InRange $minimum $jre_rel $maximum`; then
+		short_list="$short_list $jre"
+	    fi
+	done
+	if [ "$short_list" != "" ]; then
+	    entry=`Select "greatest" "$short_list"`
+	    ${RM} -f ${JAVA_PATH}
+	    ${LN} -s jdk/$entry ${JAVA_PATH}
+	    return
+	fi
+    fi
+
+    #
+    # Step 2:	Try to find a JRE within the preferred default range
+    #		for this host platform. If multiple candidates exist,
+    #		choose the most	advanced.
+    #
+    GetDefaultRange
+    if [ "$list" != "" ]; then
+	short_list=""
+	for jre in $list; do
+	    jre_rel=`GetRel $jre`
+	    jre_rel=`ExpandPrefix $jre_rel`
+	    if `InRange $DEFAULT_MIN $jre_rel $DEFAULT_MAX`; then
+		short_list="$short_list $jre"
+	    fi
+	done
+	if [ "$short_list" != "" ]; then
+	    entry=`Select "greatest" "$short_list"`
+	    ${RM} -f ${JAVA_PATH}
+	    ${LN} -s jdk/$entry ${JAVA_PATH}
+	    return
+	fi
+    fi
+
+    #
+    # Step 2':	Special case for when the default range includes 1.4.
+    #		We don't know exactly what release exists in /usr/j2se,
+    #		but the odds are high enough that we should try to use
+    #		it now. By this point we know that there are no other
+    #		1.4 candidates, so anything that's in j2se is better
+    #		than anything else we will find.
+    #
+    if CheckLegacy "j2se" ; then
+	return
+    fi
+
+    #		Ditto for 1.2 and java1.2.
+    if CheckLegacy "java1.2" ; then
+	return
+    fi
+
+    #		Ditto for 1.1 and java1.1.
+    if CheckLegacy "java1.1" ; then
+	return
+    fi
+
+    #
+    # Step 3:	(Desperation sets in) Look for any JRE.
+    #
+    if [ "$list" != "" ]; then
+	entry=`Select "greatest" "$list"`
+	${RM} -f ${JAVA_PATH}
+	${LN} -s jdk/$entry ${JAVA_PATH}
+	return
+    fi
+    for dir in j2se java1.2 java1.1 ; do
+	if [ ! -h ${BASEDIR}/${dir} ] && [ -d ${BASEDIR}/${dir} ] && \
+	   [ -x ${BASEDIR}/${dir}/bin/java ]; then
+	    ${RM} -f ${JAVA_PATH}
+	    ${LN} -s ${dir} ${JAVA_PATH}
+	    return
+	fi
+    done
+
+    #
+    # Finally, if there is no default, there should be no link.
+    #
+    if [ -h ${JAVA_PATH} ]; then
+        ${RM} -f ${JAVA_PATH}
+    fi
+
+}
+
+#
+# FixDangle ( rel_path )
+#
+FixDangle() {
+    list=""
+    for path in `ls -d ${REGISTRY_PATH}/jdk* ${REGISTRY_PATH}/jre* \
+      ${REGISTRY_PATH}/j2sdk* ${REGISTRY_PATH}/j2re*  2>/dev/null`; do
+	    if [ ! -d $path -a ! -h $path ]; then
+		continue
+	    fi
+	    if [ ! -x ${path}/$1 ]; then
+		continue
+	    fi
+	    entry=`basename $path`
+	    if [ "$entry" = "${REGISTRY_ENTRY}" ]; then
+		continue
+	    fi
+	    list="$list $entry"
+	done
+	if [ "$list" != "" ]; then
+	    entry=`Select "least" "$list"`
+	    ${RM} -f ${BIN_JAVAWS}
+	    ${LN} -s ../${REGISTRY_DIR}/${entry}/$1 ${BIN_JAVAWS}
+	    return 0
+	elif [ -x ${J2SE_PATH}/$1 ]; then
+	    ${RM} -f ${BIN_JAVAWS}
+	    ${LN} -s ../j2se/$1 ${BIN_JAVAWS}
+	    return 0
+	fi	
+	return 1
+}
+
+#
+# Main Processing
+#
+
+#
+# Remove all links from the Registry directory which point to this instance
+# being removed.
+#
+for path in `ls -d ${REGISTRY_PATH}/jdk* ${REGISTRY_PATH}/jre* \
+  ${REGISTRY_PATH}/j2sdk* ${REGISTRY_PATH}/j2re* 2>/dev/null`; do
+    if [ -h $path ]; then
+	target=`FollowLink $path`
+	if [ "$target" = "${INSTALL_NAME}" ]; then
+	    ${RM} $path
+	fi
+    fi
+done
+
+#
+# The only processing need is if this package is either the current default
+# or the target of the /usr/bin/javaws symbolic link (See PSARC/2003/091).
+#
+# Generate the paths to examine before starting to adjust these links.
+#
+if [ -h ${JAVA_PATH} ]; then
+    path=`FollowLink ${JAVA_PATH}`
+fi
+if [ -h ${BIN_JAVAWS} ]; then
+    ls=`ls -l ${BIN_JAVAWS}`
+    link=`echo $ls | cut -f 11 -d " "`
+    javaws_path=`echo ${BIN_PATH}/$link | \
+      sed -e "s:/${REL_JAVAWS_GOOFY}$::" \
+	  -e "s:/${REL_JAVAWS}$::" \
+	  -e "s:/${REL_JAVAWS_OLD}$::" \
+	  -e "s:/\./:/:g" \
+	  -e "s:[^/]*/\.\./::g"`
+    javaws_path=`FollowLink $javaws_path`
+fi
+
+#
+# Test to see if /usr/java is a symlink and points to the package being
+# removed.  If so, then search for a new default.
+#
+if [ -h ${JAVA_PATH} ]; then
+    if [ "$path" = "${REGISTRY_NAME}" ] || \
+       [ "$path" = "${INSTALL_NAME}" ]; then
+
+	NewDefault
+
+    fi
+fi
+
+#
+# Due to PSARC/2003/091, it is possible that the /usr/bin/javaws now
+# needs to be adjusted. Only perform these adjustments if they are
+# the result of this package removal.
+#
+if [ -h ${BIN_JAVAWS} ]; then
+    if [ "$javaws_path" = "${REGISTRY_NAME}" ] || \
+       [ "$javaws_path" = "${INSTALL_NAME}" ]; then
+
+	#
+	# 1.If the default now contains a valid javaws, point the link back to
+	#	the default (through /usr/java).
+	#
+	# Due to psarc/2003/091 and 4954923, there are multiple places to search
+	# for javaws.
+	#
+	if [ -x ${JAVA_PATH}/${REL_JAVAWS} ]; then
+	    ${RM} -f ${BIN_JAVAWS}
+	    ${LN} -s ../java/${REL_JAVAWS} ${BIN_JAVAWS}
+	elif [ -x ${JAVA_PATH}/${REL_JAVAWS_GOOFY} ]; then
+	    ${RM} -f ${BIN_JAVAWS}
+	    ${LN} -s ../java/${REL_JAVAWS_GOOFY} ${BIN_JAVAWS}
+	elif [ -x ${JAVA_PATH}/${REL_JAVAWS_OLD} ]; then
+	    ${RM} -f ${BIN_JAVAWS}
+	    ${LN} -s ../java/${REL_JAVAWS_OLD} ${BIN_JAVAWS}
+
+	#
+	# 2.Failing the above, if the link is now dangling removal of this
+	#	package, then scan all the available JREs for one with an
+	#	appropriate javaws.  Try to choose the one with the most
+	#	correct name, and from amont those, try to choose the oldest.
+	#	Note that the oldest, must be newer than the default, so this
+	#	is "closest approximation").
+	#
+	else
+	    if FixDangle ${REL_JAVAWS}; then
+		exit 0
+	    fi
+	    if FixDangle ${REL_JAVAWS_GOOFY}; then
+		exit 0
+	    fi
+	    if FixDangle ${REL_JAVAWS_OLD}; then
+		exit 0
+	    fi
+
+	    #
+	    # Nothng to point at.  Nuke it!
+	    #
+	    ${RM} -f ${BIN_JAVAWS}
+	fi
+    fi
+fi
+exit 0

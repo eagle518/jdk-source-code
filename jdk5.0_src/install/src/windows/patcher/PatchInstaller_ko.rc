@@ -1,0 +1,55 @@
+//Microsoft Developer Studio generated resource script.
+//
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_PROGRESS_DIALOG DIALOGEX 0, 0, 237, 160
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_MINIMIZEBOX | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Java(TM) Update"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "취소",IDCANCEL,180,142,50,14
+    CONTROL         "DownloadAnimate",IDC_UPDATE_ANIMATE,"SysAnimate32",ACS_AUTOPLAY,7,7,65,130
+    LTEXT           "Java(TM) Technology",IDC_STATIC,82,7,70,8
+    LTEXT           "Sun Microsystems, Inc.",IDC_STATIC,82,34,74,8
+    LTEXT           "Java(TM) Update 기술을 사용하여 최신 Java(TM)를 클라이언트에 제공할 수 있습니다.",
+                    IDC_STATIC,82,66,130,32
+    LTEXT           IDS_STATUS_UPDATING,IDC_PROGRESS_TEXT,82,113,135,9
+    CONTROL         "Progress1",IDC_PROGRESS_BAR,"msctls_progress32",
+                    PBS_SMOOTH,82,124,148,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_CAPTION_UPDATE	    "Java(TM) Update %s"
+    IDS_CAPTION_WARNING     "경고 - Java(TM) Update"
+    IDS_CAPTION_ERROR       "오류 - Java(TM) Update"
+    IDS_CAPTION_ABORT       "중단 - Java(TM) Update"
+    IDS_CAPTION_CONFIRM     "확인 필요 - Java(TM) Update"
+    IDS_CAPTION_SUCCEEDED   "성공 - Java(TM) Update"
+    IDS_STATUS_UPDATING	    "Java(TM)를 업데이트하는 중..."
+    IDS_STATUS_BACKINGUP    "원본 파일을 백업하는 중 ..."
+    IDS_STATUS_PROCESSING   "처리 중: %s"
+    IDS_STATUS_SEARCHING    "업데이트할 시스템 검색 중 ..."
+    IDS_OPTIONS             "사용법: %s   [-s] 디렉토리"
+    IDS_ERROR_HANDLING      "오류 코드 0x%x을(를) 처리할 수 없습니다."
+    IDS_ERROR_VM_RUNNING    "설치하기 위해 선택한 디렉토리가 잠겨 있으므로\nJava Update를 이 시스템에 설치할 수 없습니다.\n\n브라우저를 비롯하여 설치하기 위해\n선택한 디렉토리를 사용 중인 응용\n프로그램을 모두 닫으십시오."
+    IDS_ERROR_UPDATE	    "Java(TM) Update가 변경 사항을 시스템에 적용할 수 없습니다."
+    IDS_ERROR_VERSIONINFO   "Java(TM) Update가 대상 디렉토리에서 버전 정보를 검색할 수 없습니다."
+    IDS_ERROR_BASE_IMAGE_NOT_FOUND  "Java(TM) Update(%s)를 설치할 수 없습니다. 그 이유는 기본 이미지(%s)를 찾을 수 없기 때문입니다."
+    IDS_ERROR_INSTALLED_NEWER_VERSION  "Java(TM) Update(%s)를 설치할 수 없습니다. 그 이유는 새 버전(%s)이 시스템에 이미 설치되어 있이 때문입니다."
+    IDS_ERROR_INSTALLED_SAME_VERSION  "시스템에 Java(TM) Update(%s)가 이미 설치되어 있습니다."
+    IDS_ERROR_UNINSTALL_WRONG_VERSION  "Java(TM) Update(%s)를 설치할 수 없습니다. 그 이유는 현재 이미지가 다른 버전(%s)이기 때문입니다."
+    IDS_INSTALL_SUCCESS	    "Java(TM) Update(%s)를 시스템에 성공적으로 설치했습니다."
+END
