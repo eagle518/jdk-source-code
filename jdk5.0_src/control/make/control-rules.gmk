@@ -1,0 +1,66 @@
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# @(#)control-rules.gmk	1.4 03/12/19
+#
+
+################################################################
+# CONTROL TARGET
+################################################################
+
+scsl: scsl-build
+
+SCSL_BUILD_TARGETS = all
+
+SCSL_BUILD_ARGUMENTS = \
+		     MAKEFLAGS= \
+		     DEV_ONLY=true \
+		     JAVA_HOME= \
+		     CLASSPATH= \
+		     ALT_MOTIFDIR= \
+		     ALT_HOTSPOT_IMPORT_PATH= \
+		     ALT_HOTSPOT_SERVER_PATH= \
+		     ALT_HOTSPOT_CLIENT_PATH= \
+		     ALT_HOTSPOT_LIB_PATH= \
+		     ALT_TOPDIR= 
+
+ifeq ($(PLATFORM), windows)
+  SCSL_BUILD_ARGUMENTS += NO_RTPATCH=true
+endif
+
+clean-check:
+	@if [ -d $(CONTROL_TOPDIR)/Codemgr_wsdata ]; then \
+	  $(ECHO) '\nPerforming workspace scan for remnant files.\n' \
+		'  Any files listed below are not under SCCS control in the workspace\n' \
+		'  and you should review them and possibly remove them manually:' ; \
+	  $(CLEAN_WS_CHECK) ; \
+	  $(ECHO) 'End of workspace scan.' ; \
+	fi
+
+control-bringover:
+	@if [ -d $(CONTROL_TOPDIR)/Codemgr_wsdata ]; then \
+	  $(BRINGOVER) -p $(CONTROL_MASTER) -w $(CONTROL_TOPDIR) $(CONTROL_SOURCE) ; \
+	else \
+	  $(BRINGOVER) -C -q -p $(CONTROL_MASTER) -w $(CONTROL_TOPDIR) $(CONTROL_SOURCE) ; \
+	fi
+
+scsl-build:
+	$(CD) $(CONTROL_TOPDIR)/make 
+	$(MAKE) $(SCSL_BUILD_TARGETS) $(SCSL_BUILD_ARGUMENTS)
+
+scsl-sanity:
+	$(CD) $(CONTROL_TOPDIR)/make 
+	$(MAKE) sanity $(SCSL_BUILD_ARGUMENTS)
+	
+scsl-clobber:
+	$(CD) $(CONTROL_TOPDIR)/make 
+	$(MAKE) clobber $(SCSL_BUILD_ARGUMENTS)
+	
+################################################################
+#  PHONY
+################################################################
+
+.PHONY: control-bringover clean-check scsl scsl-build scsl-sanity scsl-clobber

@@ -1,0 +1,81 @@
+#
+# Copyright 2004 Sun Microsystems, Inc.  All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL.  Use is subject to license terms.
+
+#
+# @(#)motif-rules.gmk	1.25 03/12/19
+
+################################################################
+# MOTIF TARGETS
+################################################################
+
+
+motif-bringover:
+	@if [ -d $(MOTIF_TOPDIR)/Codemgr_wsdata ]; then \
+	  $(BRINGOVER) -p $(MOTIF_MASTER) -w $(MOTIF_TOPDIR) $(MOTIF_SOURCE) ; \
+	else \
+	  $(BRINGOVER) -C -q -p $(MOTIF_MASTER) -w $(MOTIF_TOPDIR) $(MOTIF_SOURCE) ; \
+	fi
+
+ifeq ($(PLATFORM), linux)
+# LINUX vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv LINUX
+
+ifeq ($(BUILD_MOTIF), true)
+  ABS_MOTIF_TOPDIR := $(shell $(CD) $(MOTIF_TOPDIR); $(PWD))
+  dummy := $(shell $(MKDIR) -p $(MOTIF_DIR))
+  ABS_MOTIF_DIR := $(shell $(CD) $(MOTIF_DIR); $(PWD))
+endif
+
+MOTIF = $(MOTIF_LIB)/libXm.a 
+
+motif: motif-build motif-install
+
+$(MOTIF): motif-build motif-install
+
+motif-build:
+	$(CD) $(MOTIF_TOPDIR)/lib/Xm ; \
+	$(MAKE) MAKEFLAGS= ARCH_DATA_MODEL=$(ARCH_DATA_MODEL) ARCH=$(ARCH); \
+	$(MAKE) includes MAKEFLAGS= ARCH_DATA_MODEL=$(ARCH_DATA_MODEL) ARCH=$(ARCH)
+
+motif-install: motif-install-lib motif-install-include
+
+motif-install-lib: $(MOTIF_LIB) 
+	$(CD) $(MOTIF_LIB); \
+	$(RM) libXm.a ; \
+	$(LN) -s $(ABS_MOTIF_TOPDIR)/lib/libXm.a .
+
+motif-install-include: $(MOTIF_DIR)/include 
+	$(CD) $(MOTIF_DIR)/include; \
+	$(RM) Xm ; \
+	$(LN) -s $(ABS_MOTIF_TOPDIR)/lib/Xm/exports/include/Xm .
+#
+# clobber the workspace, but note that the motif code misses some
+# clobber files in $(MOTIF_TOPDIR), so clean them up too. 
+# Also, remove the staging area - $(MOTIF_DIR)
+#
+motif-clobber:
+	( $(CD) $(MOTIF_TOPDIR)/lib/Xm ; \
+		$(MAKE) clean MAKEFLAGS= ARCH_DATA_MODEL=$(ARCH_DATA_MODEL) ARCH=$(ARCH); ); \
+	$(RM) $(MOTIF_TOPDIR)/lib/libXm.a \
+	      $(MOTIF_TOPDIR)/lib/Xm/Xm.msg 
+	$(RM) -r $(MOTIF_TOPDIR)/lib/Xm/exports
+	$(RM) -r $(MOTIF_LIB) $(MOTIF_DIR)/include $(MOTIF_DIR)
+	$(RM) $(MOTIF_TOPDIR)/include 
+
+$(MOTIF_DIR) $(MOTIF_LIB) $(MOTIF_DIR)/include:
+	$(MKDIR) -p $@
+
+# LINUX ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ LINUX
+else
+# NON-LINUX vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv NON-LINUX
+
+motif:
+
+motif-clobber:
+
+.PHONY: motif motif-build motif-install motif-install-lib \
+	motif-bringover motif-install-include motif-clobber 
+
+
+# NON-LINUX ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ NON-LINUX
+endif

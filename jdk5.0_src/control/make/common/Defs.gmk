@@ -1,0 +1,383 @@
+#
+# Copyright 2004 Sun Microsystems, Inc.  All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL.  Use is subject to license terms.
+#
+
+#
+# @(#)Defs.gmk	1.190 04/10/11
+#
+# Common variables used by all the Java makefiles.  This file should
+# not contain rules.
+#
+
+TOPDIR = $(BUILDDIR)/../..
+ifdef ALT_TOPDIR
+  TOPDIR = $(ALT_TOPDIR)
+endif
+
+# set default values for where to find the other workspaces. Allow
+# overrides to reset
+HOTSPOT_TOPDIR_NAME = hotspot
+HOTSPOT_TOPDIR=$(TOPDIR)/$(HOTSPOT_TOPDIR_NAME)
+ifdef ALT_HOTSPOT_TOPDIR
+  HOTSPOT_TOPDIR=$(ALT_HOTSPOT_TOPDIR)
+endif
+
+MOTIF_TOPDIR_NAME = motif
+MOTIF_TOPDIR=$(TOPDIR)/$(MOTIF_TOPDIR_NAME)
+ifdef ALT_MOTIF_TOPDIR
+  MOTIF_TOPDIR=$(ALT_MOTIF_TOPDIR)
+endif
+
+J2SE_TOPDIR_NAME = j2se
+J2SE_TOPDIR=$(TOPDIR)/$(J2SE_TOPDIR_NAME)
+ifdef ALT_J2SE_TOPDIR
+  J2SE_TOPDIR=$(ALT_J2SE_TOPDIR)
+endif
+
+CONTROL_TOPDIR_NAME = control
+CONTROL_TOPDIR=$(TOPDIR)/$(CONTROL_TOPDIR_NAME)
+ifdef ALT_CONTROL_TOPDIR
+  CONTROL_TOPDIR=$(ALT_CONTROL_TOPDIR)
+endif
+
+INSTALL_TOPDIR_NAME = install
+INSTALL_TOPDIR=$(TOPDIR)/$(INSTALL_TOPDIR_NAME)
+ifdef ALT_INSTALL_TOPDIR
+  INSTALL_TOPDIR=$(ALT_INSTALL_TOPDIR)
+endif
+
+DEPLOY_TOPDIR_NAME = deploy
+DEPLOY_TOPDIR=$(TOPDIR)/$(DEPLOY_TOPDIR_NAME)
+ifdef ALT_DEPLOY_TOPDIR
+  DEPLOY_TOPDIR=$(ALT_DEPLOY_TOPDIR)
+endif
+
+ALL_TOPDIRS = \
+	$(CONTROL_TOPDIR) \
+	$(J2SE_TOPDIR) \
+	$(HOTSPOT_TOPDIR) \
+	$(MOTIF_TOPDIR) \
+	$(INSTALL_TOPDIR) \
+	$(DEPLOY_TOPDIR)
+
+ALL_TOPDIR_NAMES = \
+	$(CONTROL_TOPDIR_NAME) \
+	$(J2SE_TOPDIR_NAME) \
+	$(HOTSPOT_TOPDIR_NAME) \
+	$(MOTIF_TOPDIR_NAME) \
+	$(INSTALL_TOPDIR_NAME) \
+	$(DEPLOY_TOPDIR_NAME)
+
+
+include $(BUILDDIR)/common/Defs-$(PLATFORM).gmk
+
+
+#
+# Source directories - all the directories managed by the workspace
+#
+CONTROL_SOURCE       = make
+CONTROL_SOURCE_DIRS  = $(addprefix $(CONTROL_TOPDIR)/, $(CONTROL_SOURCE))
+HOTSPOT_SOURCE       = build doc src agent
+HOTSPOT_SOURCE_DIRS  = $(addprefix $(HOTSPOT_TOPDIR)/, $(HOTSPOT_SOURCE))
+MOTIF_SOURCE         = lib
+MOTIF_SOURCE_DIRS    = $(addprefix $(MOTIF_TOPDIR)/, $(MOTIF_SOURCE))
+J2SE_SOURCE          = make src
+J2SE_SOURCE_DIRS     = $(addprefix $(J2SE_TOPDIR)/, $(J2SE_SOURCE))
+INSTALL_SOURCE	     = make src
+INSTALL_SOURCE_DIRS    = $(addprefix $(INSTALL_TOPDIR)/, $(INSTALL_SOURCE))
+DEPLOY_SOURCE	     = make src
+DEPLOY_SOURCE_DIRS    = $(addprefix $(DEPLOY_TOPDIR)/, $(DEPLOY_SOURCE))
+
+#
+# Suffixes for various VARIANTs
+#
+OPT_SUFFIX      =
+DBG_SUFFIX      = _g
+
+ifndef JDK_MAJOR_VERSION
+   JDK_MAJOR_VERSION = 1
+endif
+
+ifndef JDK_MINOR_VERSION
+   JDK_MINOR_VERSION = 5
+endif
+
+ifndef JDK_MICRO_VERSION
+   JDK_MICRO_VERSION = 0
+endif
+
+ifndef MILESTONE
+   MILESTONE = internal
+endif
+
+ifndef BUILD_NUMBER
+#   use ':=' to keep this value from changing as time marches on...
+  BUILD_NUMBER := $(shell $(ECHO) $(USER)_`$(DATE) '+%d_%b_%Y_%H_%M' | $(TR) "A-Z" "a-z"`)
+endif
+
+#
+# These default values are redefined during a release build.
+#
+ifdef JDK_UPDATE_VERSION
+  JDK_VERSION  = $(JDK_MAJOR_VERSION).$(JDK_MINOR_VERSION).$(JDK_MICRO_VERSION)_$(JDK_UPDATE_VERSION)
+  JDK_MKTG_VERSION  = $(JDK_MINOR_VERSION).$(JDK_MICRO_VERSION)_$(JDK_UPDATE_VERSION)
+else
+  JDK_VERSION  = $(JDK_MAJOR_VERSION).$(JDK_MINOR_VERSION).$(JDK_MICRO_VERSION)
+  JDK_MKTG_VERSION  = $(JDK_MINOR_VERSION).$(JDK_MICRO_VERSION)
+endif
+
+
+# the underscore version of JDK_VERSION is used for bundle generation.
+ifndef JDK_UPDATE_VERSION
+   JDK_UNDERSCORE_VERSION = $(JDK_MAJOR_VERSION)_$(JDK_MINOR_VERSION)_$(JDK_MICRO_VERSION)
+else
+   JDK_UNDERSCORE_VERSION = $(JDK_MAJOR_VERSION)_$(JDK_MINOR_VERSION)_$(JDK_MICRO_VERSION)_$(JDK_UPDATE_VERSION)
+endif
+
+# RELEASE is JDK_VERSION and -MILESTONE if MILESTONE is set
+ifneq ($(MILESTONE),fcs)
+RELEASE      = $(JDK_VERSION)-$(MILESTONE)
+else
+RELEASE      = $(JDK_VERSION)
+endif
+
+# FULL_VERSION is RELEASE and -BUILD_NUMBER if BUILD_NUMBER is set
+ifneq ($(BUILD_NUMBER),)
+FULL_VERSION = $(RELEASE)-$(BUILD_NUMBER)
+else
+FULL_VERSION = $(RELEASE)
+endif
+
+PREVIOUS_JDK_VERSION = 1.4.2
+ifdef ALT_PREVIOUS_JDK_VERSION
+  PREVIOUS_JDK_VERSION = $(ALT_PREVIOUS_JDK_VERSION)
+endif
+export PREVIOUS_JDK_VERSION
+
+PREVIOUS_JDK_UNDERSCORE_VERSION =  $(subst .,_,$(PREVIOUS_JDK_VERSION))
+
+# choose the output directory if it is not specified. It really
+# should be outside of the workspace, but there is no guarantee 
+# anyplace outside is writeable and unique. So, it will be
+# in the root of the workspace.
+#
+OUTPUTDIR = $(BUILDDIR)/../build/$(PLATFORM)-$(ARCH)
+ifdef ALT_OUTPUTDIR
+  OUTPUTDIR = $(subst \,/,$(ALT_OUTPUTDIR))
+endif # ALT_OUTPUTDIR
+
+dummy := $(shell $(MKDIR) -p $(OUTPUTDIR))
+ifndef USING_CYGWIN
+   ABS_OUTPUTDIR := $(shell $(CD) $(OUTPUTDIR); $(PWD))
+else
+   ABS_OUTPUTDIR := $(shell $(CYGPATH) -u -a $(OUTPUTDIR))
+endif
+
+TEMP_DIR = $(OUTPUTDIR)/tmp
+dummy := $(shell $(MKDIR) -p $(TEMP_DIR))
+ifndef USING_CYGWIN
+   ABS_TEMP_DIR := $(shell $(CD) $(TEMP_DIR); $(PWD))
+else
+   ABS_TEMP_DIR := $(shell $(CYGPATH) -u -a $(TEMP_DIR))
+endif
+
+BUILD_HOTSPOT := $(shell if [ -r $(HOTSPOT_TOPDIR)/build/$(PLATFORM) ]; then \
+                          $(ECHO) true; \
+                        else \
+                          $(ECHO) false; \
+                        fi)
+
+ifdef ALT_HOTSPOT_IMPORT_PATH
+  ifdef ALT_HOTSPOT_SERVER_PATH
+    ifeq ($(ARCH_DATA_MODEL), 32) 
+      ifdef ALT_HOTSPOT_CLIENT_PATH
+        ifneq ($(PLATFORM), windows)  
+          BUILD_HOTSPOT := false
+	else
+	  ifdef ALT_HOTSPOT_LIB_PATH 
+	    BUILD_HOTSPOT := false
+          endif
+	endif
+      endif
+    else
+      ifneq ($(PLATFORM), windows)  
+        BUILD_HOTSPOT := false
+      else
+	ifdef ALT_HOTSPOT_LIB_PATH 
+	  BUILD_HOTSPOT := false
+        endif
+      endif
+    endif
+  endif
+endif
+
+BUILD_MOTIF := $(shell if [ -r $(MOTIF_TOPDIR)/lib/Xm/Makefile ]; then \
+                          $(ECHO) true; \
+                        else \
+                          $(ECHO) false; \
+                        fi)
+ifdef ALT_MOTIF_DIR
+  BUILD_MOTIF := false
+endif
+
+BUILD_INSTALL := $(shell if [ -r $(INSTALL_TOPDIR)/make/Makefile ]; then \
+	                   $(ECHO) true; \
+                        else \
+                          $(ECHO) false; \
+                        fi)
+ifdef DEV_ONLY
+  BUILD_INSTALL := false
+endif
+
+ifneq ($(PLATFORM), windows)
+   HOTSPOT_DIR = $(ABS_OUTPUTDIR)/hotspot-$(ARCH)
+else
+   HOTSPOT_DIR = $(ABS_OUTPUTDIR)/hotspot-windows
+endif
+#
+# Set HOTSPOT_IMPORT/CLIENT/SERVER_PATH: Use ALT_HOTSPOT_IMPORT/CLIENT/SERVER_PATH 
+# if it's set, otherwise use the default from 
+# _HOTSPOT_IMPORT/CLIENT/SERVER_PATH.
+
+_HOTSPOT_IMPORT_PATH = $(HOTSPOT_DIR)/import
+_HOTSPOT_CLIENT_PATH = $(HOTSPOT_DIR)/client
+_HOTSPOT_SERVER_PATH = $(HOTSPOT_DIR)/server
+
+HOTSPOT_IMPORT_PATH = $(_HOTSPOT_IMPORT_PATH)
+ifdef ALT_HOTSPOT_IMPORT_PATH
+  HOTSPOT_IMPORT_PATH = $(subst \,/,$(ALT_HOTSPOT_IMPORT_PATH))
+endif # ALT_HOTSPOT_IMPORT_PATH
+export HOTSPOT_IMPORT_PATH
+
+HOTSPOT_CLIENT_PATH = $(_HOTSPOT_CLIENT_PATH)
+ifdef ALT_HOTSPOT_CLIENT_PATH
+  HOTSPOT_CLIENT_PATH = $(subst \,/,$(ALT_HOTSPOT_CLIENT_PATH))
+endif # ALT_HOTSPOT_CLIENT_PATH
+export HOTSPOT_CLIENT_PATH
+
+HOTSPOT_SERVER_PATH = $(_HOTSPOT_SERVER_PATH)
+ifdef ALT_HOTSPOT_SERVER_PATH
+  HOTSPOT_SERVER_PATH = $(subst \,/,$(ALT_HOTSPOT_SERVER_PATH))
+endif # ALT_HOTSPOT_SERVER_PATH
+export HOTSPOT_SERVER_PATH
+
+#
+# Set PREVIOUS_JDK_FILE: use ALT_PREVIOUS_JDK_FILE if it's set, otherwise use
+# default from _PREVIOUS_JDK_FILE
+#
+PREVIOUS_JDK_FILE = $(_PREVIOUS_JDK_FILE)
+ifdef ALT_PREVIOUS_JDK_FILE
+PREVIOUS_JDK_FILE = $(subst \,/,$(ALT_PREVIOUS_JDK_FILE))
+endif
+export PREVIOUS_JDK_FILE
+
+#
+# Set PREVIOUS_JRE_FILE: use ALT_PREVIOUS_JRE_FILE if it's set, otherwise use
+# default from _PREVIOUS_JRE_FILE
+#
+PREVIOUS_JRE_FILE = $(_PREVIOUS_JRE_FILE)
+ifdef ALT_PREVIOUS_JRE_FILE
+PREVIOUS_JRE_FILE = $(subst \,/,$(ALT_PREVIOUS_JRE_FILE))
+endif
+export PREVIOUS_JRE_FILE
+
+#
+# Set PREVIOUS_RELEASE_PATH: use ALT_PREVIOUS_RELEASE_PATH if it's set, otherwise use
+# default from _PREVIOUS_RELEASE_PATH
+#
+PREVIOUS_RELEASE_PATH = $(_PREVIOUS_RELEASE_PATH)
+ifdef ALT_PREVIOUS_RELEASE_PATH
+PREVIOUS_RELEASE_PATH = $(subst \,/,$(ALT_PREVIOUS_RELEASE_PATH))
+endif
+export PREVIOUS_RELEASE_PATH
+
+#
+# Set BOOTDIR: Use ALT_BOOTDIR if it's set, otherwise use the default
+# from _BOOTDIR.
+#
+BOOTDIR = $(_BOOTDIR)
+ifdef ALT_BOOTDIR
+  BOOTDIR = $(subst \,/,$(ALT_BOOTDIR))
+endif # ALT_BOOTDIR
+export BOOTDIR
+
+# The MESSAGE, WARNING and ERROR files are used to store sanityck and 
+# SCCS check messages, warnings and errors. 
+export ERROR_FILE   := $(ABS_OUTPUTDIR)/sanityCheckErrors.txt
+export WARNING_FILE := $(ABS_OUTPUTDIR)/sanityCheckWarnings.txt
+export MESSAGE_FILE := $(ABS_OUTPUTDIR)/sanityCheckMessages.txt
+
+# using *_SOURCE_DIRS in the workspace scan gives erroneous results 
+# because those lists contain files and the scan must contain directories.
+# It is OK for the control workspace to have a build dir, so just limit
+# the scan to the make directory for that workspace.
+CONTROL_SCAN_DIRS  = $(CONTROL_TOPDIR)/make
+HOTSPOT_SCAN_DIRS  = $(HOTSPOT_TOPDIR)
+MOTIF_SCAN_DIRS    = $(MOTIF_TOPDIR)
+J2SE_SCAN_DIRS     = $(J2SE_TOPDIR)
+DEPLOY_SCAN_DIRS   = $(DEPLOY_TOPDIR)
+
+CLEAN_WS_CHECK = $(FIND) $(CONTROL_SCAN_DIRS) $(HOTSPOT_SCAN_DIRS) \
+   $(MOTIF_SCAN_DIRS) $(J2SE_SCAN_DIRS) \
+   $(DEPLOY_SCAN_DIRS) \
+   -name Codemgr_wsdata -prune -o -type f -print | \
+   $(SED) 's+SCCS/[ps]\.++' | $(SORT) | $(UNIQ) -c | \
+   $(NAWK) '$$1<2 {print $$2;}'
+
+# source bundle generation definitions
+BUNDLE_DATE := $(shell $(DATE) '+%d_%b_%Y' | $(TR) "[A-Z]" "[a-z]")
+ifdef ALT_BUNDLE_DATE
+  BUNDLE_DATE := $(ALT_BUNDLE_DATE)
+endif
+
+SRC_BUNDLEDIR              = $(OUTPUTDIR)/source-bundles
+BIN_BUNDLEDIR              = $(OUTPUTDIR)/bundles
+dummy := $(shell $(MKDIR) -p $(BIN_BUNDLEDIR))
+ifndef USING_CYGWIN
+   ABS_BIN_BUNDLEDIR := $(shell $(CD) $(BIN_BUNDLEDIR); $(PWD))
+else
+   ABS_BIN_BUNDLEDIR := $(shell $(CYGPATH) -u -a $(BIN_BUNDLEDIR))
+endif
+dummy := $(shell $(MKDIR) -p $(SRC_BUNDLEDIR) )
+ifndef USING_CYGWIN
+  ABS_SRC_BUNDLEDIR  := $(shell $(CD) $(SRC_BUNDLEDIR); $(PWD))
+else
+  ABS_SRC_BUNDLEDIR  := $(shell $(CYGPATH) -u -a $(SRC_BUNDLEDIR))
+endif
+
+# product names
+J2RE_NAME = jre
+J2SDK_NAME = jdk
+PLUGIN_NAME = java_plugin
+SCSL_COMPONENT_NAME=-scsl
+SRCLIC_COMPONENT_NAME=
+INTERNAL_COMPONENT_NAME=-internal
+JAVAWS_NAME = javaws
+
+# Source License (SRCLIC) bundle names
+J2RE_SOLWIN_SRCLICBUNDLE_NAME   = $(ABS_SRC_BUNDLEDIR)/$(J2RE_NAME)-$(JDK_UNDERSCORE_VERSION)-$(MILESTONE)-src-$(BUILD_NUMBER)-solwin$(SRCLIC_COMPONENT_NAME)-$(BUNDLE_DATE).zip
+J2RE_WINDOWS_SRCLICBUNDLE_NAME   = $(ABS_SRC_BUNDLEDIR)/$(J2RE_NAME)-$(JDK_UNDERSCORE_VERSION)-$(MILESTONE)-src-$(BUILD_NUMBER)-windows$(SRCLIC_COMPONENT_NAME)-$(BUNDLE_DATE).zip
+J2RE_SOLARIS_SRCLICBUNDLE_NAME    = $(ABS_SRC_BUNDLEDIR)/$(J2RE_NAME)-$(JDK_UNDERSCORE_VERSION)-$(MILESTONE)-src-$(BUILD_NUMBER)-solaris$(SRCLIC_COMPONENT_NAME)-$(BUNDLE_DATE).zip
+J2RE_LINUX_SRCLICBUNDLE_NAME    = $(ABS_SRC_BUNDLEDIR)/$(J2RE_NAME)-$(JDK_UNDERSCORE_VERSION)-$(MILESTONE)-src-$(BUILD_NUMBER)-linux$(SRCLIC_COMPONENT_NAME)-$(BUNDLE_DATE).zip
+
+J2SDK_SOLWIN_SRCLICBUNDLE_NAME  = $(ABS_SRC_BUNDLEDIR)/$(J2SDK_NAME)-$(JDK_UNDERSCORE_VERSION)-$(MILESTONE)-src-$(BUILD_NUMBER)-solwin$(SRCLIC_COMPONENT_NAME)-$(BUNDLE_DATE).zip
+J2SDK_WINDOWS_SRCLICBUNDLE_NAME  = $(ABS_SRC_BUNDLEDIR)/$(J2SDK_NAME)-$(JDK_UNDERSCORE_VERSION)-$(MILESTONE)-src-$(BUILD_NUMBER)-windows$(SRCLIC_COMPONENT_NAME)-$(BUNDLE_DATE).zip
+J2SDK_SOLARIS_SRCLICBUNDLE_NAME   = $(ABS_SRC_BUNDLEDIR)/$(J2SDK_NAME)-$(JDK_UNDERSCORE_VERSION)-$(MILESTONE)-src-$(BUILD_NUMBER)-solaris$(SRCLIC_COMPONENT_NAME)-$(BUNDLE_DATE).zip
+J2SDK_LINUX_SRCLICBUNDLE_NAME   = $(ABS_SRC_BUNDLEDIR)/$(J2SDK_NAME)-$(JDK_UNDERSCORE_VERSION)-$(MILESTONE)-src-$(BUILD_NUMBER)-linux$(SRCLIC_COMPONENT_NAME)-$(BUNDLE_DATE).zip
+
+PLUGIN_WINDOWS_SRCLICBUNDLE_NAME = $(ABS_SRC_BUNDLEDIR)/$(PLUGIN_NAME)-$(JDK_UNDERSCORE_VERSION)-$(MILESTONE)-src-$(BUILD_NUMBER)-windows$(SRCLIC_COMPONENT_NAME)-$(BUNDLE_DATE).zip
+
+J2SDK_ALL_SCSLBUNDLE_NAME    = $(ABS_SRC_BUNDLEDIR)/$(J2SDK_NAME)-$(JDK_UNDERSCORE_VERSION)-$(MILESTONE)-src-$(BUILD_NUMBER)$(SCSL_COMPONENT_NAME)-$(BUNDLE_DATE).zip
+J2SDK_BIN_SCSLBUNDLE_NAME    = $(ABS_SRC_BUNDLEDIR)/$(J2SDK_NAME)-$(JDK_UNDERSCORE_VERSION)-$(MILESTONE)-bin-$(BUILD_NUMBER)$(SCSL_COMPONENT_NAME)-$(BUNDLE_DATE).zip
+
+JAVAWEBSTART_SRCLICBUNDLE_NAME = $(ABS_SRC_BUNDLEDIR)/$(JAVAWS_NAME)-$(JDK_UNDERSCORE_VERSION)-$(MILESTONE)-src-$(BUILD_NUMBER)-$(BUNDLE_DATE).zip
+
+# internal bundle name
+INTERNAL_BUNDLE_NAME = $(ABS_SRC_BUNDLEDIR)/internal.zip
+
+# how to perform bringovers (note that the bringover command is pulled
+# from the PATH)
+
+BRINGOVER = bringover
+

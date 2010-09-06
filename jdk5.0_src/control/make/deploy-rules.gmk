@@ -1,0 +1,155 @@
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# @(#)deploy-rules.gmk	1.20 03/12/19
+
+################################################################
+# DEPLOY TARGETS
+################################################################
+
+ifeq ($(ARCH_DATA_MODEL), 32)
+deploy:  deploy-build
+else
+deploy:
+endif
+
+DEPLOY = deploy
+
+# put the generated bundles in their own place in OUTPUTDIR
+DEPLOY_OUTPUTDIR = $(ABS_OUTPUTDIR)
+
+ABS_CONTROL_TOPDIR = $(shell $(CD) $(CONTROL_TOPDIR); $(PWD))
+
+# NO_IMAGES may be set in conjunction with DEV_ONLY
+ifdef NO_IMAGES
+  IMAGES_TARGET =
+else
+  IMAGES_TARGET = images
+endif
+
+DEPLOY_BUILD_TARGETS = sanity javaws-all plugin-all
+ifndef DEV_ONLY
+  DEPLOY_BUILD_TARGETS += images
+else
+  DEPLOY_BUILD_TARGETS += $(IMAGES_TARGET)
+endif
+
+DEPLOY_BUILD_ARGUMENTS = \
+			EXTERNALSANITYCONTROL=true \
+			CONTROL_TOPDIR=$(ABS_CONTROL_TOPDIR) \
+			CONTROL_TOPDIR_NAME=$(CONTROL_TOPDIR_NAME) \
+			ALT_OUTPUTDIR=$(DEPLOY_OUTPUTDIR) 
+
+ifdef ARCH_DATA_MODEL
+DEPLOY_BUILD_ARGUMENTS += ARCH_DATA_MODEL=$(ARCH_DATA_MODEL)
+endif
+
+ifdef MILESTONE
+DEPLOY_BUILD_ARGUMENTS += MILESTONE=$(MILESTONE)
+endif
+
+ifdef BUILD_NUMBER
+DEPLOY_BUILD_ARGUMENTS += BUILD_NUMBER=$(BUILD_NUMBER)
+endif
+
+ifdef ALT_IMAGE_DIR
+DEPLOY_BUILD_ARGUMENTS += ALT_IMAGE_DIR=$(ALT_IMAGE_DIR)
+endif
+
+ifdef ALT_BUNDLE_DATE
+DEPLOY_BUILD_ARGUMENTS += ALT_BUNDLE_DATE=$(ALT_BUNDLE_DATE)
+endif
+
+ifdef ALT_JAVAWS_BOOTDIR
+DEPLOY_BUILD_ARGUMENTS += ALT_JAVAWS_BOOTDIR=$(ALT_JAVAWS_BOOTDIR)
+endif
+
+ifdef CERT
+DEPLOY_BUILD_ARGUMENTS += CERT=$(CERT)
+endif
+
+ifdef PKEY
+DEPLOY_BUILD_ARGUMENTS += PKEY=$(PKEY)
+endif
+
+deploy-build:
+ifeq ($(ARCH_DATA_MODEL), 32)
+	if [ -r $(DEPLOY_TOPDIR)/make/Makefile ]; then \
+	  ( $(CD) $(DEPLOY_TOPDIR)/make; $(MAKE) $(DEPLOY_BUILD_TARGETS) $(DEPLOY_BUILD_ARGUMENTS) ); \
+	fi
+endif
+
+deploy-clobber: deploy-source-clobber
+ifeq ($(ARCH_DATA_MODEL), 32)
+	if [ -r $(DEPLOY_TOPDIR)/make/Makefile ]; then \
+	  ( $(CD) $(DEPLOY_TOPDIR)/make; $(MAKE) clobber $(DEPLOY_BUILD_ARGUMENTS) ; ); \
+	fi
+endif 
+
+deploy-sanity::
+ifeq ($(ARCH_DATA_MODEL), 32)
+	if [ -r $(DEPLOY_TOPDIR)/make/Makefile ]; then \
+	  ( $(CD) $(DEPLOY_TOPDIR)/make; $(MAKE) sanity $(DEPLOY_BUILD_ARGUMENTS) ; ); \
+	fi
+endif
+
+deploy-bringover:
+	@if [ -d $(DEPLOY_TOPDIR)/Codemgr_wsdata ]; then \
+	  $(BRINGOVER) -p $(DEPLOY_MASTER) -w $(DEPLOY_TOPDIR) $(DEPLOY_SOURCE) ; \
+	else \
+	  $(BRINGOVER) -C -q -p $(DEPLOY_MASTER) -w $(DEPLOY_TOPDIR) $(DEPLOY_SOURCE) ; \
+	fi
+
+deploy-source: $(ABS_SRC_BUNDLEDIR) $(PLUGIN_WINDOWS_SRCLICBUNDLE_NAME)
+	if [ -r $(DEPLOY_TOPDIR)/make/Makefile ]; then \
+	  ( $(CD) $(TOPDIR) ; \
+	    $(FIND) $(subst $(TOPDIR)/,,$(DEPLOY_SOURCE_DIRS)) -name SCCS -prune -o -print | grep -v plugin | \
+	    $(ZIPEXE) -q@ $(JAVAWEBSTART_SRCLICBUNDLE_NAME) ); \
+	fi	
+
+
+deploy-source-clobber:
+	$(RM) $(JAVAWEBSTART_SRCLICBUNDLE_NAME) $(PLUGIN_WINDOWS_SRCLICBUNDLE_NAME)
+
+# the allplugin.txt files contains all the names of all the deploy ws plugin files.
+# This file is used only generating the windows-plugin bundle. allfiles.txt cannot
+# be used because the exclude list becomes too long for processing.
+$(TEMP_DIR)/pluginfiles.txt :
+	for ws in $(DEPLOY_TOPDIR); do \
+	     $(CAT) $$ws/Codemgr_wsdata/nametable \
+		| $(SED) -e '1,1d' -e'/^deleted_files/d' \
+			 -e 's/ .*$$//' -e "s/^/`$(BASENAME) $$ws`\//" \
+		>> $@  ; \
+	done
+	$(SORT) -u -o $@ $@
+
+# note that the windows plugin bundle does not use the exclude-all file...
+$(PLUGIN_WINDOWS_SRCLICBUNDLE_NAME)::   $(SRCLIC_TOOLS_FILEPATH)/exclude-plugin-windows
+	$(CAT) $^ | $(GREP) -v '^#' > $(TEMP_DIR)/excludepaths.txt
+
+# The plugin bundle contains all the plugin code required to build the windows 
+# plugin. It is built in the same manner as above, but the allfiles.txt file 
+# generates too many excludes and blows a buffer in $(COMM), so the list is 
+# pared down to the candidate files when building pluginfiles.txt. The windows
+# plugin bundle is intended to be additive (without overlap) to the windows 
+# j2se source bundle.
+$(PLUGIN_WINDOWS_SRCLICBUNDLE_NAME)::  $(TEMP_DIR)/pluginfiles.txt
+	$(RM) $(TEMP_DIR)/excludefiles.txt
+	for file in `$(CAT) $(TEMP_DIR)/excludepaths.txt`; do \
+	    if [ -f $(TOPDIR)/$$file ]; then \
+		$(ECHO) $$file >> $(TEMP_DIR)/excludefiles.txt ; \
+	    elif [ -d $(TOPDIR)/$$file ]; then \
+		$(FIND) $(TOPDIR)/$$file -name SCCS -prune -o -type f -print \
+		  | $(SED) 's#^$(TOPDIR)/##' >> $(TEMP_DIR)/excludefiles.txt ; \
+	    fi \
+	done
+	$(SORT) -u -o $(TEMP_DIR)/excludefiles.txt  $(TEMP_DIR)/excludefiles.txt 
+	$(CD) $(TOPDIR) ; \
+	    $(COMM) -2 -3 $(ABS_TEMP_DIR)/pluginfiles.txt $(ABS_TEMP_DIR)/excludefiles.txt \
+	    | $(ZIPEXE) -q@ $@  ;
+
+.PHONY: deploy deploy-build deploy-clobber deploy-sanity deploy-source \
+	deploy-bringover deploy-source-clobber
