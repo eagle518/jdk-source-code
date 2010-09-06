@@ -1,0 +1,537 @@
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# @(#)hotspot-rules.gmk	1.61 04/04/12
+
+################################################################
+# HOTSPOT TARGETS
+################################################################
+#
+# Note: the hotspot build sets the MAKEFLAG variable to "-w" which
+#       messes up both SolarisMake and NMake builds used later.
+#
+
+DB_SUFFIX       = _db
+
+hotspot: hotspot-sanity hotspot-build hotspot-staging
+
+# These are the actual targets that must be there. The order is important
+# as hotspot builds must be performed in the order: 
+#   product product1 jvmg jvmg1
+
+# HOTSPOT_IMPORT_PATH points to a dir that contains files
+# that are needed in an SDK build, in the same relative positions as
+# these files are in an SDK image.
+# The SDK java/redist/Makefile will copy files from HOTSPOT_IMPORT_PATH
+# into the SDK being built.
+#
+# For Serviceability Agent, sa-jdi.jar is put into $(HOTSPOT_IMPORT_PATH)/lib.
+# The SA shared libs are put into 
+#    $(HOTSPOT_IMPORT_PATH)/jre/lib/sparc
+#    $(HOTSPOT_IMPORT_PATH)/jre/lib/sparcv9
+#    $(HOTSPOT_IMPORT_PATH)/jre/lib/i386    linux and sol
+#    $(HOTSPOT_IMPORT_PATH)/jre/lib/ia64
+#    $(HOTSPOT_IMPORT_PATH)/jre/lib/amd64
+#    $(HOTSPOT_IMPORT_PATH)/jre/bin         win32, win64
+#
+
+HOTSPOT  = \
+ $(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX).$(LIBRARY_SUFFIX) \
+ $(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX).$(LIBRARY_SUFFIX) \
+ $(HOTSPOT_SERVER_PATH)/Xusage.txt \
+ $(HOTSPOT_IMPORT_PATH)/include/jvmti.h
+
+# JDI-SA is not currently released on some platforms. See the Defs-<arch>.gmk files.
+ifeq ($(INCLUDE_SA), true)
+  SA_FILES = $(HOTSPOT_IMPORT_PATH)/lib/sa-jdi.jar \
+             $(HOTSPOT_SALIB_PATH)/$(SA_OPT_LIB_NAME) \
+             $(HOTSPOT_SALIB_PATH)/$(SA_DEBUG_LIB_NAME)
+  HOTSPOT += $(SA_FILES)
+endif
+
+ifneq ($(ARCH_DATA_MODEL), 64)
+HOTSPOT += \
+ $(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX).$(LIBRARY_SUFFIX) \
+ $(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX).$(LIBRARY_SUFFIX) \
+ $(HOTSPOT_CLIENT_PATH)/Xusage.txt 
+endif
+
+HOTSPOT_UNIX_VERSION_ARGUMENT = HOTSPOT_BUILD_VERSION=$(FULL_VERSION)
+HOTSPOT_WINDOWS_VERSION_ARGUMENT = BuildID=$(FULL_VERSION)
+# Pass version info to the Hotspot build to be encoded in jvm[_g].dll
+HOTSPOT_WINDOWS_ARGS = \
+ $(HOTSPOT_WINDOWS_VERSION_ARGUMENT) \
+ HS_RELEASE=$(RELEASE) \
+ HS_MAJOR_VER=$(JDK_MAJOR_VERSION) \
+ HS_MINOR_VER=$(JDK_MINOR_VERSION) \
+ HS_MICRO_VER=$(JDK_MICRO_VERSION)
+
+ifdef COOKED_JDK_UPDATE_VERSION
+HOTSPOT_WINDOWS_ARGS += HS_UPDATE_VER=$(COOKED_JDK_UPDATE_VERSION)
+endif
+
+ABS_HOTSPOT_TOPDIR = $(shell $(CD) $(HOTSPOT_TOPDIR); $(PWD))
+HOTSPOT_TMPDIR = $(OUTPUTDIR)/hotspot-$(ARCH)/tmp
+
+$(HOTSPOT):: hotspot-sanity
+
+hotspot-clobber:: hotspot-staging-clobber
+
+hotspot-sanity::
+	@$(ECHO) "Hotspot Settings:" >> $(MESSAGE_FILE)
+	@$(ECHO) "   HOTSPOT_BUILD_JOBS = $(HOTSPOT_BUILD_JOBS)"  \
+		>> $(MESSAGE_FILE)
+	@$(ECHO) "" >> $(MESSAGE_FILE)
+
+hotspot-bringover:
+	@if [ -d $(HOTSPOT_TOPDIR)/Codemgr_wsdata ]; then \
+	  $(BRINGOVER) -p $(HOTSPOT_MASTER) -w $(HOTSPOT_TOPDIR) $(HOTSPOT_SOURCE) ; \
+	else \
+	  $(BRINGOVER) -C -q -p $(HOTSPOT_MASTER) -w $(HOTSPOT_TOPDIR) $(HOTSPOT_SOURCE) ; \
+	fi
+
+ifeq ($(PLATFORM), windows)
+# WINDOWS vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv WINDOWS
+
+HOTSPOT_PATH_SEPARATOR = ;
+HOTSPOT_BUILD_ARGS = $(HOTSPOT_WINDOWS_ARGS) 
+
+HOTSPOT += \
+ $(HOTSPOT_LIB_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX).$(LIB_SUFFIX) \
+ $(HOTSPOT_LIB_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX).$(LIB_SUFFIX) \
+ $(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX).map \
+ $(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX).map \
+ $(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX).pdb \
+ $(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX).pdb
+
+ifneq ($(ARCH_DATA_MODEL), 64)
+HOTSPOT += \
+ $(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX).map \
+ $(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX).map \
+ $(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX).pdb \
+ $(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX).pdb 
+endif
+
+
+HOTSPOT_COMPILER1_DIR = $(HOTSPOT_TMPDIR)/$(PLATFORM)_$(HOTSPOT_ARCH)_compiler1
+HOTSPOT_COMPILER2_DIR = $(HOTSPOT_TMPDIR)/$(PLATFORM)_$(HOTSPOT_ARCH)_compiler2
+
+# Windows generated directory (not the same as Solaris/Linux)
+#  (using compiler2 version because compiler1 isn't always built)
+HOTSPOT_COMPILER_GENDIR = $(HOTSPOT_COMPILER2_DIR)/vm/generated
+
+HOTSPOT_COMPILER1_BINDIR = $(HOTSPOT_COMPILER1_DIR)/bin
+HOTSPOT_COMPILER2_BINDIR = $(HOTSPOT_COMPILER2_DIR)/bin
+HOTSPOT_COMPILER1_DEBUG_BINDIR = $(HOTSPOT_COMPILER1_BINDIR)
+HOTSPOT_COMPILER2_DEBUG_BINDIR = $(HOTSPOT_COMPILER2_BINDIR)
+
+ifneq ($(ARCH_DATA_MODEL), 64)
+# WINDOWS 32 vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv WINDOWS 32
+HOTSPOT_BUILD_DIR = $(ABS_HOTSPOT_TOPDIR)/build/$(PLATFORM)
+hotspot-build: hotspot-compiler1 hotspot-compiler2
+
+$(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX).$(LIBRARY_SUFFIX) \
+$(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX).$(LIBRARY_SUFFIX) \
+$(HOTSPOT_LIB_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX).$(LIB_SUFFIX) \
+$(HOTSPOT_LIB_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX).$(LIB_SUFFIX):: hotspot-compiler1 
+
+$(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX).$(LIBRARY_SUFFIX) \
+$(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX).$(LIBRARY_SUFFIX):: hotspot-compiler2
+
+hotspot-clobber:: hotspot-compiler1-clobber hotspot-compiler2-clobber
+
+$(HOTSPOT_LIB_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX).$(LIB_SUFFIX):: $(HOTSPOT_LIB_PATH) 
+	$(CP) $(HOTSPOT_COMPILER1_BINDIR)/$(@F) $@
+
+$(HOTSPOT_LIB_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX).$(LIB_SUFFIX):: $(HOTSPOT_LIB_PATH) 
+	$(CP) $(HOTSPOT_COMPILER1_BINDIR)/$(@F) $@
+
+
+# WINDOWS 32 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ WINDOWS 32
+else
+# WINDOWS 64 vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv WINDOWS 64
+HOTSPOT_BUILD_DIR = $(ABS_HOTSPOT_TOPDIR)/build/$(PLATFORM)
+HOTSPOT_BUILD_ARGS += LP64=1
+HOTSPOT_BUILD_ARGS += ARCH=$(HOTSPOT_ARCH)
+hotspot-build: hotspot-compiler2
+
+$(HOTSPOT_LIB_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX).$(LIB_SUFFIX) \
+$(HOTSPOT_LIB_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX).$(LIB_SUFFIX):: hotspot-compiler2 
+
+$(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX).$(LIBRARY_SUFFIX) \
+$(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX).$(LIBRARY_SUFFIX):: hotspot-compiler2
+
+hotspot-clobber:: hotspot-compiler2-clobber
+
+$(HOTSPOT_LIB_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX).$(LIB_SUFFIX):: $(HOTSPOT_LIB_PATH) 
+	$(CP) $(HOTSPOT_COMPILER2_BINDIR)/$(@F) $@
+
+$(HOTSPOT_LIB_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX).$(LIB_SUFFIX):: $(HOTSPOT_LIB_PATH) 
+	$(CP) $(HOTSPOT_COMPILER2_BINDIR)/$(@F) $@
+
+# WINDOWS 64 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ WINDOWS 64
+endif
+
+hotspot-compiler1: $(HOTSPOT_COMPILER1_DIR) 
+	$(CD) $(HOTSPOT_TMPDIR); \
+	  $(NMAKE) -f $(HOTSPOT_BUILD_DIR)/build.make Variant=compiler1 \
+		WorkSpace=$(ABS_HOTSPOT_TOPDIR) BootStrapDir=$(subst /,\\,$(BOOTDIR)) \
+		BuildUser=$(USERNAME) $(HOTSPOT_BUILD_ARGS) ;
+
+hotspot-compiler2: $(HOTSPOT_COMPILER2_DIR) 
+	$(CD) $(HOTSPOT_TMPDIR); \
+	  $(NMAKE) -f $(HOTSPOT_BUILD_DIR)/build.make Variant=compiler2 \
+		WorkSpace=$(ABS_HOTSPOT_TOPDIR)  BootStrapDir=$(subst /,\\,$(BOOTDIR)) \
+		BuildUser=$(USERNAME) $(HOTSPOT_BUILD_ARGS) ;
+
+
+$(HOTSPOT_COMPILER1_DIR) $(HOTSPOT_COMPILER2_DIR):
+	$(MKDIR) -p $@
+
+# This is wierd...
+#   nmake -f ..\\Makefile -n clean    works, but
+#   nmake -f ..\\Makefile clean       fails. 
+# Hotspot clobbers on windows are forced and may become out of
+# sync with the makefiles...
+#
+hotspot-compiler1-clobber:
+	($(CD) $(HOTSPOT_COMPILER1_DIR); \
+	  $(RM) *.OLD *.publish ; \
+	  $(RM) -r vm bin ; )
+	$(RM) -r $(HOTSPOT_COMPILER1_DIR)
+
+hotspot-compiler2-clobber:
+	($(CD) $(HOTSPOT_COMPILER2_DIR); \
+	  $(RM) *.OLD *.publish ; \
+	  $(RM) -r vm bin ; )
+	$(RM) -r $(HOTSPOT_COMPILER2_DIR)
+
+hotspot-client-staging:: \
+   $(HOTSPOT_LIB_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX).$(LIB_SUFFIX) \
+   $(HOTSPOT_LIB_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX).$(LIB_SUFFIX) \
+   $(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX).map \
+   $(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX).map \
+   $(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX).pdb \
+   $(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX).pdb
+
+hotspot-server-staging:: \
+  $(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX).map \
+  $(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX).map \
+  $(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX).pdb \
+  $(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX).pdb
+
+# WINDOWS ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ WINDOWS
+else
+# NON-WINDOWS vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv NON-WINDOWS
+
+HOTSPOT_PATH_SEPARATOR = :
+HOTSPOT_BUILD_ARGS = $(HOTSPOT_UNIX_VERSION_ARGUMENT) 
+
+# 
+# Unix platforms also need to copy jsig binary
+HOTSPOT  += \
+ $(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jsig$(OPT_SUFFIX).$(LIBRARY_SUFFIX) \
+ $(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jsig$(DBG_SUFFIX).$(LIBRARY_SUFFIX) 
+
+ifeq ($(PLATFORM), solaris)
+HOTSPOT  += \
+ $(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX)$(DB_SUFFIX).$(LIBRARY_SUFFIX) \
+ $(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX)$(DB_SUFFIX).$(LIBRARY_SUFFIX)
+endif
+
+ifneq ($(ARCH_DATA_MODEL), 64)
+
+ifeq ($(ARCH), sparc)
+HOTSPOT  += \
+ $(HOTSPOT_SERVER_PATH)/64/$(LIB_PREFIX)jvm$(OPT_SUFFIX)$(DB_SUFFIX).$(LIBRARY_SUFFIX) \
+ $(HOTSPOT_SERVER_PATH)/64/$(LIB_PREFIX)jvm$(DBG_SUFFIX)$(DB_SUFFIX).$(LIBRARY_SUFFIX)
+endif
+
+ifneq ($(PLATFORM), linux)
+HOTSPOT  += \
+ $(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX)$(DB_SUFFIX).$(LIBRARY_SUFFIX) \
+ $(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX)$(DB_SUFFIX).$(LIBRARY_SUFFIX) 
+endif 
+
+ifeq ($(ARCH), sparc)
+HOTSPOT  += \
+ $(HOTSPOT_CLIENT_PATH)/64/$(LIB_PREFIX)jvm$(OPT_SUFFIX)$(DB_SUFFIX).$(LIBRARY_SUFFIX) \
+ $(HOTSPOT_CLIENT_PATH)/64/$(LIB_PREFIX)jvm$(DBG_SUFFIX)$(DB_SUFFIX).$(LIBRARY_SUFFIX)
+endif
+
+HOTSPOT += \
+ $(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jsig$(OPT_SUFFIX).$(LIBRARY_SUFFIX) \
+ $(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jsig$(DBG_SUFFIX).$(LIBRARY_SUFFIX) 
+
+endif
+
+# hotspot build target base names for optimized and debug builds. C1 adds a '1'
+# to each name to build equivalent.
+HOTSPOT_LIBJVM_TARGET = product
+HOTSPOT_LIBJVMG_TARGET = jvmg
+
+HOTSPOT_COMPILER1_DIR = $(HOTSPOT_TMPDIR)/$(PLATFORM)_$(HOTSPOT_ARCH)_compiler1
+HOTSPOT_COMPILER2_DIR = $(HOTSPOT_TMPDIR)/$(PLATFORM)_$(HOTSPOT_ARCH)_compiler2
+
+# Solaris/Linux generated directory (not the same as windows)
+#  (using compiler2 version because compiler1 isn't always built)
+HOTSPOT_COMPILER_GENDIR = $(HOTSPOT_COMPILER2_DIR)/generated
+
+HOTSPOT_COMPILER1_BINDIR       = $(HOTSPOT_COMPILER1_DIR)/$(HOTSPOT_LIBJVM_TARGET)
+HOTSPOT_COMPILER1_DEBUG_BINDIR = $(HOTSPOT_COMPILER1_DIR)/$(HOTSPOT_LIBJVMG_TARGET)
+
+HOTSPOT_COMPILER2_BINDIR       = $(HOTSPOT_COMPILER2_DIR)/$(HOTSPOT_LIBJVM_TARGET)
+HOTSPOT_COMPILER2_DEBUG_BINDIR = $(HOTSPOT_COMPILER2_DIR)/$(HOTSPOT_LIBJVMG_TARGET)
+
+$(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX).$(LIBRARY_SUFFIX) \
+$(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jsig$(OPT_SUFFIX).$(LIBRARY_SUFFIX) \
+$(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX)$(DB_SUFFIX).$(LIBRARY_SUFFIX) \
+$(HOTSPOT_SERVER_PATH)/64/$(LIB_PREFIX)jvm$(OPT_SUFFIX)$(DB_SUFFIX).$(LIBRARY_SUFFIX):: $(HOTSPOT_LIBJVM_TARGET)
+
+$(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX).$(LIBRARY_SUFFIX) \
+$(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jsig$(DBG_SUFFIX).$(LIBRARY_SUFFIX) \
+$(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX)$(DB_SUFFIX).$(LIBRARY_SUFFIX) \
+$(HOTSPOT_SERVER_PATH)/64/$(LIB_PREFIX)jvm$(DBG_SUFFIX)$(DB_SUFFIX).$(LIBRARY_SUFFIX):: $(HOTSPOT_LIBJVMG_TARGET)
+
+hotspot-build:: $(HOTSPOT_LIBJVM_TARGET) $(HOTSPOT_LIBJVMG_TARGET)
+
+ifeq ($(ARCH_DATA_MODEL), 32)
+$(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX).$(LIBRARY_SUFFIX) \
+$(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jsig$(OPT_SUFFIX).$(LIBRARY_SUFFIX) \
+$(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX)$(DB_SUFFIX).$(LIBRARY_SUFFIX) \
+$(HOTSPOT_CLIENT_PATH)/64/$(LIB_PREFIX)jvm$(OPT_SUFFIX)$(DB_SUFFIX).$(LIBRARY_SUFFIX):: $(HOTSPOT_LIBJVM_TARGET)1
+
+$(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX).$(LIBRARY_SUFFIX) \
+$(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jsig$(DBG_SUFFIX).$(LIBRARY_SUFFIX) \
+$(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX)$(DB_SUFFIX).$(LIBRARY_SUFFIX) \
+$(HOTSPOT_CLIENT_PATH)/64/$(LIB_PREFIX)jvm$(DBG_SUFFIX)$(DB_SUFFIX).$(LIBRARY_SUFFIX):: $(HOTSPOT_LIBJVMG_TARGET)1
+
+hotspot-build:: $(HOTSPOT_LIBJVM_TARGET)1 $(HOTSPOT_LIBJVMG_TARGET)1
+endif
+
+hotspot-clobber::
+	($(CD) $(HOTSPOT_TOPDIR)/build/$(PLATFORM); \
+	  $(MAKE) clean ; )
+
+ifeq ($(PLATFORM), solaris)
+# SOLARIS vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv SOLARIS
+
+CC_VER := $(shell cc -V 2>&1 | \
+	$(NAWK) '{ for (i=3; i<NF; i++) if ($$i=="C") {print $$++i; exit 0} }')
+
+hotspot-sanity::
+	@if [ "$(CC_VER)" != 5.5 ]; then \
+	  $(ECHO) "ERROR: The Solaris compiler version must be 5.5 \n" \
+	      "      You are using the following compiler version: $(CC_VER) \n" \
+	      "      The compiler was obtained from the following location: \n" \
+	      "      `which cc` \n" \
+	      "      Please change your compiler. \n" \
+	      "" >> $(ERROR_FILE) ; \
+	fi \
+
+# SOLARIS ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ SOLARIS
+endif
+
+ifeq ($(ARCH_DATA_MODEL), 64)
+  HOTSPOT_BUILD_ARGS += LP64=1
+endif
+
+# GAMMADIR tells hotspot build where the hotspot workspace is
+HOTSPOT_BUILD_ARGS  += GAMMADIR=$(ABS_HOTSPOT_TOPDIR)
+
+$(HOTSPOT_LIBJVM_TARGET)  $(HOTSPOT_LIBJVM_TARGET)1 : $(HOTSPOT_TMPDIR)
+	($(CD) $(HOTSPOT_TMPDIR); \
+	  $(MAKE) -f $(ABS_HOTSPOT_TOPDIR)/build/$(PLATFORM)/Makefile $@ \
+		$(HOTSPOT_BUILD_ARGS) ; )
+
+$(HOTSPOT_LIBJVMG_TARGET) $(HOTSPOT_LIBJVMG_TARGET)1: $(HOTSPOT_TMPDIR)
+	($(CD) $(HOTSPOT_TMPDIR); \
+	  $(MAKE) -f $(ABS_HOTSPOT_TOPDIR)/build/$(PLATFORM)/Makefile $@ \
+		$(HOTSPOT_BUILD_ARGS) ; )
+
+hotspot-client-staging:: \
+   $(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jsig$(OPT_SUFFIX).$(LIBRARY_SUFFIX) \
+   $(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jsig$(DBG_SUFFIX).$(LIBRARY_SUFFIX)
+
+hotspot-server-staging:: \
+  $(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jsig$(OPT_SUFFIX).$(LIBRARY_SUFFIX) \
+  $(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jsig$(DBG_SUFFIX).$(LIBRARY_SUFFIX) 
+
+ifeq ($(PLATFORM), solaris)
+
+hotspot-server-staging:: \
+  $(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX)$(DB_SUFFIX).$(LIBRARY_SUFFIX) \
+  $(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX)$(DB_SUFFIX).$(LIBRARY_SUFFIX) 
+
+ifeq ($(ARCH_DATA_MODEL), 32)
+
+ifeq ($(ARCH), sparc)
+hotspot-server-staging:: \
+  $(HOTSPOT_SERVER_PATH)/64/$(LIB_PREFIX)jvm$(OPT_SUFFIX)$(DB_SUFFIX).$(LIBRARY_SUFFIX) \
+  $(HOTSPOT_SERVER_PATH)/64/$(LIB_PREFIX)jvm$(DBG_SUFFIX)$(DB_SUFFIX).$(LIBRARY_SUFFIX)
+endif
+
+hotspot-client-staging:: \
+   $(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX)$(DB_SUFFIX).$(LIBRARY_SUFFIX) \
+   $(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX)$(DB_SUFFIX).$(LIBRARY_SUFFIX)
+
+ifeq ($(ARCH), sparc)
+hotspot-client-staging:: \
+   $(HOTSPOT_CLIENT_PATH)/64/$(LIB_PREFIX)jvm$(OPT_SUFFIX)$(DB_SUFFIX).$(LIBRARY_SUFFIX) \
+   $(HOTSPOT_CLIENT_PATH)/64/$(LIB_PREFIX)jvm$(DBG_SUFFIX)$(DB_SUFFIX).$(LIBRARY_SUFFIX)
+endif
+
+endif
+
+endif 
+
+
+# NON-WINDOWS ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ NON-WINDOWS
+endif
+
+hotspot-import-staging:: $(HOTSPOT_IMPORT_PATH) \
+    $(HOTSPOT_IMPORT_PATH)/include/jvmti.h
+
+hotspot-staging:: hotspot-server-staging hotspot-import-staging
+
+ifeq ($(ARCH_DATA_MODEL), 32)
+hotspot-staging:: hotspot-client-staging
+endif
+
+
+hotspot-client-staging:: $(HOTSPOT_CLIENT_PATH) \
+   $(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX).$(LIBRARY_SUFFIX) \
+   $(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX).$(LIBRARY_SUFFIX) \
+   $(HOTSPOT_CLIENT_PATH)/Xusage.txt
+
+hotspot-server-staging:: $(HOTSPOT_SERVER_PATH) \
+  $(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX).$(LIBRARY_SUFFIX) \
+  $(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX).$(LIBRARY_SUFFIX) \
+  $(HOTSPOT_SERVER_PATH)/Xusage.txt
+
+$(HOTSPOT_TMPDIR) $(HOTSPOT_IMPORT_PATH) $(HOTSPOT_CLIENT_PATH) \
+$(HOTSPOT_SERVER_PATH) $(HOTSPOT_LIB_PATH) $(HOTSPOT_CLIENT_PATH)/64 $(HOTSPOT_SERVER_PATH)/64:
+	$(MKDIR) -p $@
+
+$(HOTSPOT_IMPORT_PATH)/include/jvmti.h :: $(HOTSPOT_IMPORT_PATH)
+	$(MKDIR) -p $(@D)
+	$(CP) $(HOTSPOT_COMPILER_GENDIR)/jvmtifiles/$(@F) $@
+
+
+ifeq ($(INCLUDE_SA), true)
+# The following rules copy SA files into the HOTSPOT_IMPORT_PATH dir structure.
+# They are setup to tolerate SA files not being in the hotspot build
+# as a transition aid, ie, to allow these changes to these makefiles
+# to be promoted before the hotspot makefiles actually start building
+# JDI-SA.  When the latter occurs, the warnings below could be changed
+# to be actual errors.
+
+hotspot-import-staging:: $(SA_FILES)
+
+$(HOTSPOT_SALIB_PATH):
+	$(MKDIR) -p $@
+
+$(HOTSPOT_IMPORT_PATH)/lib/sa-jdi.jar :: $(HOTSPOT_IMPORT_PATH)
+	if [ -r "$(HOTSPOT_COMPILER_GENDIR)/$(@F)" ] ; then \
+	    $(MKDIR) -p $(@D) ; \
+	    $(CP) $(HOTSPOT_COMPILER_GENDIR)/$(@F) $@ ; \
+	else \
+	    $(ECHO) "Warning: $(HOTSPOT_COMPILER_GENDIR)/$(@F) does not exist; skipping it" ; \
+	fi
+
+# At least one of client or server must be present.  The SA lib
+# is the same for both.
+$(HOTSPOT_SALIB_PATH)/$(SA_OPT_LIB_NAME) :: $(HOTSPOT_SALIB_PATH)
+	if [ -r "$(HOTSPOT_COMPILER2_BINDIR)/$(@F)" ] ; then \
+	    $(MKDIR) -p $(@D) ; \
+	    $(CP) $(HOTSPOT_COMPILER2_BINDIR)/$(@F) $@ ; \
+	elif [ -r "$(HOTSPOT_COMPILER1_BINDIR)/$(@F)" ] ; then \
+	    $(MKDIR) -p $(@D) ; \
+	    $(CP) $(HOTSPOT_COMPILER1_BINDIR)/$(@F) $@ ; \
+	else \
+	    $(ECHO) "Warning: $(@F) does not exist in either $(HOTSPOT_COMPILER1_BINDIR)" ; \
+	    $(ECHO) "         or $(HOTSPOT_COMPILER2_BINDIR) ; skipping it" ; \
+	fi
+
+$(HOTSPOT_SALIB_PATH)/$(SA_DEBUG_LIB_NAME) :: $(HOTSPOT_SALIB_PATH)
+	if [ -r "$(HOTSPOT_COMPILER2_DEBUG_BINDIR)/$(@F)" ] ; then \
+	    $(MKDIR) -p $(@D) ; \
+	    $(CP) $(HOTSPOT_COMPILER2_DEBUG_BINDIR)/$(@F) $@ ; \
+	elif [ -r "$(HOTSPOT_COMPILER1_DEBUG_BINDIR)/$(@F)" ] ; then \
+	    $(MKDIR) -p $(@D) ; \
+	    $(CP) $(HOTSPOT_COMPILER1_DEBUG_BINDIR)/$(@F) $@ ; \
+	else \
+	    $(ECHO) "Warning: $(@F) does not exist in either $(HOTSPOT_COMPILER1_DEBUG_BINDIR)" ; \
+	    $(ECHO) "         or $(HOTSPOT_COMPILER2_DEBUG_BINDIR) ; skipping it" ; \
+	fi
+endif
+
+$(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX).$(LIBRARY_SUFFIX) \
+$(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jsig$(OPT_SUFFIX).$(LIBRARY_SUFFIX) \
+$(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX)$(DB_SUFFIX).$(LIBRARY_SUFFIX) \
+$(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX).map \
+$(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX).pdb:: $(HOTSPOT_CLIENT_PATH)
+	$(CP) $(HOTSPOT_COMPILER1_BINDIR)/$(@F) $@
+
+$(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX).$(LIBRARY_SUFFIX) \
+$(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jsig$(DBG_SUFFIX).$(LIBRARY_SUFFIX) \
+$(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX)$(DB_SUFFIX).$(LIBRARY_SUFFIX) \
+$(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX).map \
+$(HOTSPOT_CLIENT_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX).pdb:: $(HOTSPOT_CLIENT_PATH)
+	$(CP) $(HOTSPOT_COMPILER1_DEBUG_BINDIR)/$(@F) $@
+
+$(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX).$(LIBRARY_SUFFIX) \
+$(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jsig$(OPT_SUFFIX).$(LIBRARY_SUFFIX) \
+$(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX)$(DB_SUFFIX).$(LIBRARY_SUFFIX) \
+$(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX).map \
+$(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jvm$(OPT_SUFFIX).pdb:: $(HOTSPOT_SERVER_PATH)
+	$(CP) $(HOTSPOT_COMPILER2_BINDIR)/$(@F) $@
+
+$(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX).$(LIBRARY_SUFFIX) \
+$(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jsig$(DBG_SUFFIX).$(LIBRARY_SUFFIX) \
+$(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX)$(DB_SUFFIX).$(LIBRARY_SUFFIX) \
+$(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX).map \
+$(HOTSPOT_SERVER_PATH)/$(LIB_PREFIX)jvm$(DBG_SUFFIX).pdb:: $(HOTSPOT_SERVER_PATH)
+	$(CP) $(HOTSPOT_COMPILER2_DEBUG_BINDIR)/$(@F) $@
+
+$(HOTSPOT_CLIENT_PATH)/64/$(LIB_PREFIX)jvm$(OPT_SUFFIX)$(DB_SUFFIX).$(LIBRARY_SUFFIX):: $(HOTSPOT_CLIENT_PATH)/64 
+	$(CP) $(HOTSPOT_COMPILER1_BINDIR)/64/$(@F) $@
+
+$(HOTSPOT_SERVER_PATH)/64/$(LIB_PREFIX)jvm$(OPT_SUFFIX)$(DB_SUFFIX).$(LIBRARY_SUFFIX):: $(HOTSPOT_SERVER_PATH)/64 
+	$(CP) $(HOTSPOT_COMPILER2_BINDIR)/64/$(@F) $@
+
+$(HOTSPOT_CLIENT_PATH)/64/$(LIB_PREFIX)jvm$(DBG_SUFFIX)$(DB_SUFFIX).$(LIBRARY_SUFFIX):: $(HOTSPOT_CLIENT_PATH)/64 
+	$(CP) $(HOTSPOT_COMPILER1_DEBUG_BINDIR)/64/$(@F) $@
+
+$(HOTSPOT_SERVER_PATH)/64/$(LIB_PREFIX)jvm$(DBG_SUFFIX)$(DB_SUFFIX).$(LIBRARY_SUFFIX):: $(HOTSPOT_SERVER_PATH)/64 
+	$(CP) $(HOTSPOT_COMPILER2_DEBUG_BINDIR)/64/$(@F) $@
+
+$(HOTSPOT_CLIENT_PATH)/Xusage.txt $(HOTSPOT_SERVER_PATH)/Xusage.txt:: \
+  $(HOTSPOT_CLIENT_PATH) $(HOTSPOT_SERVER_PATH) \
+  $(HOTSPOT_TOPDIR)/src/share/vm/Xusage.txt
+	$(RM) -f $@
+	$(SED) 's/\(separated by \)[;:]/\1$(HOTSPOT_PATH_SEPARATOR)/g' < \
+		$(HOTSPOT_TOPDIR)/src/share/vm/Xusage.txt > $@
+
+hotspot-staging-clobber:
+	$(RM) -r $(HOTSPOT_IMPORT_PATH) $(HOTSPOT_CLIENT_PATH) \
+		$(HOTSPOT_SERVER_PATH) \
+		$(HOTSPOT_LIB_PATH) $(OUTPUTDIR)/hotspot
+
+hotspot-clobber::
+	$(RM) -r $(HOTSPOT_DIR)
+
+#####################
+# .PHONY
+#####################
+.PHONY: hotspot hotspot-build hotspot-compiler1 hotspot-compiler2 \
+	hotspot-staging hotspot-import-staging \
+	hotspot-client-staging hotspot-server-staging \
+	hotspot-bringover hotspot-clobber hotspot-staging-clobber \
+	hotspot-compiler1-clobber hotspot-compiler2-clobber hotspot-sanity \
+	hotspot-staging-clobber \
+	$(HOTSPOT_LIBJVM_TARGET) $(HOTSPOT_LIBJVM_TARGET)1 \
+	$(HOTSPOT_LIBJVMG_TARGET) $(HOTSPOT_LIBJVMG_TARGET)1

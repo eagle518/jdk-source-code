@@ -1,0 +1,385 @@
+#
+# Copyright 2004 Sun Microsystems, Inc.  All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL.  Use is subject to license terms.
+
+#
+# @(#)j2se-rules.gmk	1.59 04/10/19
+
+################################################################
+# J2SE TARGETS
+################################################################
+
+J2SE = $(OUTPUTDIR)/bin/java$(EXE_SUFFIX)
+
+# NO_IMAGES may be set in conjunction with DEV_ONLY
+ifdef NO_IMAGES
+  IMAGES_TARGET =
+else
+  IMAGES_TARGET = images
+endif
+
+# No DOCS build when JDK_UPDATE_VERSION set
+ifdef JDK_UPDATE_VERSION
+  DOCS_TARGET =
+else
+  DOCS_TARGET = docs
+endif
+
+# NO_DOCS may be set in conjunction with DEV_ONLY
+ifdef NO_DOCS
+  DOCS_TARGET =
+endif
+
+ifndef DEV_ONLY
+  J2SE_BUILD_TARGETS = sanity all $(DOCS_TARGET) images
+else
+  J2SE_BUILD_TARGETS = sanity all $(IMAGES_TARGET)
+endif
+
+J2SE_CLOBBER_TARGETS = clobber
+
+J2SE_BUILD_ARGUMENTS = \
+	MAKEFLAGS= \
+	EXTERNALSANITYCONTROL=true \
+	MILESTONE=$(MILESTONE) \
+	BUILD_NUMBER=$(BUILD_NUMBER) \
+	ALT_OUTPUTDIR=$(ABS_OUTPUTDIR)
+
+ifeq ($(BUILD_HOTSPOT), true)
+   J2SE_BUILD_ARGUMENTS += \
+	ALT_HOTSPOT_IMPORT_PATH=$(HOTSPOT_IMPORT_PATH) \
+	ALT_HOTSPOT_SERVER_PATH=$(HOTSPOT_SERVER_PATH) \
+	ALT_HOTSPOT_CLIENT_PATH=$(HOTSPOT_CLIENT_PATH)
+
+   ifeq ($(PLATFORM), windows)
+      J2SE_BUILD_ARGUMENTS += ALT_HOTSPOT_LIB_PATH=$(HOTSPOT_LIB_PATH)
+   endif
+endif
+
+J2SE_BUILD_ARGUMENTS += \
+        BUILD_HOTSPOT=$(BUILD_HOTSPOT) \
+	BUILD_MOTIF=$(BUILD_MOTIF)
+
+COMPARE_IMAGES_TARGETS = compare-image-jre compare-image-jdk
+
+COMPARE_IMAGES_ARGUMENTS = \
+	ALT_OUTPUTDIR=$(ABS_OUTPUTDIR)  \
+	ALT_PREVIOUS_RELEASE_PATH=$(PREVIOUS_RELEASE_PATH) \
+	ALT_PREVIOUS_JRE_FILE=$(PREVIOUS_JRE_FILE) \
+	ALT_PREVIOUS_JDK_FILE=$(PREVIOUS_JDK_FILE)
+
+ifeq ($(BUILD_MOTIF), true)
+  J2SE_BUILD_ARGUMENTS += ALT_MOTIF_DIR=$(ABS_MOTIF_DIR)
+endif
+
+ifdef ARCH_DATA_MODEL
+J2SE_BUILD_ARGUMENTS += ARCH_DATA_MODEL=$(ARCH_DATA_MODEL)
+endif
+
+$(J2SE):: j2se-build
+
+j2se: j2se-build
+j2se-build:
+	( $(CD) $(J2SE_TOPDIR)/make; $(MAKE) $(J2SE_BUILD_TARGETS) $(J2SE_BUILD_ARGUMENTS) ; )
+
+j2se-clobber: j2se-readme-clobber j2se-source-clobber scsl-license-clobber
+	( $(CD) $(J2SE_TOPDIR)/make; $(MAKE) $(J2SE_CLOBBER_TARGETS) $(J2SE_BUILD_ARGUMENTS) ; )
+
+j2se-sanity::
+	@( $(CD) $(J2SE_TOPDIR)/make; $(MAKE) sanity $(J2SE_BUILD_ARGUMENTS) ; )
+
+j2se-bringover:
+	@# some linux boxes crash if the entire j2se workspace is created all at once,
+	@# so break it up into separate pieces.
+	@if [ -d $(J2SE_TOPDIR)/Codemgr_wsdata ]; then \
+	  for dir in $(J2SE_SOURCE); do \
+	    $(BRINGOVER) -p $(J2SE_MASTER) -w $(J2SE_TOPDIR) $$dir ; \
+	  done; \
+	else \
+	  for dir in $(J2SE_SOURCE); do \
+	    $(BRINGOVER) -C -q -p $(J2SE_MASTER) -w $(J2SE_TOPDIR) $$dir ; \
+	  done; \
+	fi
+
+compare-images:
+	( $(CD) $(J2SE_TOPDIR)/make; $(MAKE) $(COMPARE_IMAGES_TARGETS) $(COMPARE_IMAGES_ARGUMENTS) ; )
+
+compare-images-clobber:
+	( $(CD) $(J2SE_TOPDIR)/make; $(MAKE) compare-image-clobber $(COMPARE_IMAGES_ARGUMENTS) ; )
+
+j2se-source: j2se-source-clobber scsl-license-clobber j2se-readme scsl-license \
+	$(J2RE_WINDOWS_SRCLICBUNDLE_NAME) \
+	$(J2RE_SOLARIS_SRCLICBUNDLE_NAME) $(J2RE_LINUX_SRCLICBUNDLE_NAME) \
+	$(J2SDK_WINDOWS_SRCLICBUNDLE_NAME) \
+	$(J2SDK_SOLARIS_SRCLICBUNDLE_NAME) $(J2SDK_LINUX_SRCLICBUNDLE_NAME) \
+	$(J2RE_SOLWIN_SRCLICBUNDLE_NAME) $(J2SDK_SOLWIN_SRCLICBUNDLE_NAME) \
+	$(J2SDK_ALL_SCSLBUNDLE_NAME) $(J2SDK_BIN_SCSLBUNDLE_NAME) \
+	$(BIN_BUNDLEDIR)/build.tar $(INTERNAL_BUNDLE_NAME)
+
+
+j2se-source-clobber:
+	$(RM) $(TEMP_DIR)/allfiles.txt
+	$(RM) $(TEMP_DIR)/excludefiles.txt $(TEMP_DIR)/excludepaths.txt 
+	$(RM) $(TEMP_DIR)/includefiles.txt
+	$(RM) $(J2RE_WINDOWS_SRCLICBUNDLE_NAME) 
+	$(RM) $(J2RE_SOLARIS_SRCLICBUNDLE_NAME) $(J2RE_LINUX_SRCLICBUNDLE_NAME) 
+	$(RM) $(J2SDK_WINDOWS_SRCLICBUNDLE_NAME)
+	$(RM) $(J2SDK_SOLARIS_SRCLICBUNDLE_NAME) $(J2SDK_LINUX_SRCLICBUNDLE_NAME) 
+	$(RM) $(J2RE_SOLWIN_SRCLICBUNDLE_NAME) $(J2SDK_SOLWIN_SRCLICBUNDLE_NAME)
+	$(RM) $(J2SDK_ALL_SCSLBUNDLE_NAME) $(J2SDK_BIN_SCSLBUNDLE_NAME)
+	$(RM) -r $(BUILD_README_STAGEDDIR) $(BIN_BUNDLEDIR)/build.tar
+	$(RM) -r $(INTERNAL_BUNDLE_NAME)
+
+#
+# motif workspace is now included into the allfiles.txt because j2se/j2re linux bundle
+# and j2se-scsl bundle need to include the motif source
+#
+# the allfiles.txt file contains all the names of all the controlled files in
+# all the workspaces.
+# even though all 'delete_files' and 'test'
+# directories are again excluded by the exclude-all list, processing is faster
+# if we skip them up front as well.
+$(TEMP_DIR)/allfiles.txt :
+	for ws in $(CONTROL_TOPDIR) $(MOTIF_TOPDIR) $(HOTSPOT_TOPDIR) $(J2SE_TOPDIR) $(DEPLOY_TOPDIR) $(INSTALL_TOPDIR); do \
+	     $(CAT) $$ws/Codemgr_wsdata/nametable \
+		| $(SED) -e '1,1d' -e '/^test/d' -e'/^deleted_files/d' \
+			 -e 's/ .*$$//' -e "s/^/`$(BASENAME) $$ws`\//" \
+		>> $@  ; \
+	done
+	$(SORT) -u -o $@ $@
+
+SRCLIC_TOOLS_FILEPATH = $(BUILDDIR)/tools/source-bundles
+
+# generate the appropriate list of excluded dirs and files for 
+# each bundle...
+$(J2RE_WINDOWS_SRCLICBUNDLE_NAME)::  $(SRCLIC_TOOLS_FILEPATH)/exclude-all \
+  $(SRCLIC_TOOLS_FILEPATH)/exclude-j2re-all  $(SRCLIC_TOOLS_FILEPATH)/exclude-j2re-windows
+	$(CAT) $^ | $(GREP) -v '^#' > $(TEMP_DIR)/excludepaths.txt
+
+$(J2RE_SOLARIS_SRCLICBUNDLE_NAME)::   $(SRCLIC_TOOLS_FILEPATH)/exclude-all \
+  $(SRCLIC_TOOLS_FILEPATH)/exclude-j2re-all  $(SRCLIC_TOOLS_FILEPATH)/exclude-j2re-solaris
+	$(CAT) $^ | $(GREP) -v '^#' > $(TEMP_DIR)/excludepaths.txt
+
+$(J2RE_LINUX_SRCLICBUNDLE_NAME)::   $(SRCLIC_TOOLS_FILEPATH)/exclude-all \
+  $(SRCLIC_TOOLS_FILEPATH)/exclude-j2re-all  $(SRCLIC_TOOLS_FILEPATH)/exclude-j2re-linux
+	$(CAT) $^ | $(GREP) -v '^#' > $(TEMP_DIR)/excludepaths.txt
+
+$(J2RE_SOLWIN_SRCLICBUNDLE_NAME)::  $(SRCLIC_TOOLS_FILEPATH)/exclude-all \
+  $(SRCLIC_TOOLS_FILEPATH)/exclude-j2re-all  $(SRCLIC_TOOLS_FILEPATH)/exclude-j2re-solwin
+	$(CAT) $^ | $(GREP) -v '^#' > $(TEMP_DIR)/excludepaths.txt
+
+$(J2SDK_WINDOWS_SRCLICBUNDLE_NAME):: $(SRCLIC_TOOLS_FILEPATH)/exclude-all \
+  $(SRCLIC_TOOLS_FILEPATH)/exclude-j2sdk-all $(SRCLIC_TOOLS_FILEPATH)/exclude-j2sdk-windows
+	$(CAT) $^ | $(GREP) -v '^#' > $(TEMP_DIR)/excludepaths.txt
+
+$(J2SDK_SOLARIS_SRCLICBUNDLE_NAME)::  $(SRCLIC_TOOLS_FILEPATH)/exclude-all \
+  $(SRCLIC_TOOLS_FILEPATH)/exclude-j2sdk-all $(SRCLIC_TOOLS_FILEPATH)/exclude-j2sdk-solaris
+	$(CAT) $^ | $(GREP) -v '^#' > $(TEMP_DIR)/excludepaths.txt
+
+$(J2SDK_LINUX_SRCLICBUNDLE_NAME)::  $(SRCLIC_TOOLS_FILEPATH)/exclude-all \
+  $(SRCLIC_TOOLS_FILEPATH)/exclude-j2sdk-all $(SRCLIC_TOOLS_FILEPATH)/exclude-j2sdk-linux
+	$(CAT) $^ | $(GREP) -v '^#' > $(TEMP_DIR)/excludepaths.txt
+
+$(J2SDK_SOLWIN_SRCLICBUNDLE_NAME):: $(SRCLIC_TOOLS_FILEPATH)/exclude-all \
+  $(SRCLIC_TOOLS_FILEPATH)/exclude-j2sdk-all $(SRCLIC_TOOLS_FILEPATH)/exclude-j2sdk-solwin
+	$(CAT) $^ | $(GREP) -v '^#' > $(TEMP_DIR)/excludepaths.txt
+
+$(J2SDK_ALL_SCSLBUNDLE_NAME)::   $(SRCLIC_TOOLS_FILEPATH)/exclude-all \
+  $(SRCLIC_TOOLS_FILEPATH)/exclude-j2sdk-all $(SRCLIC_TOOLS_FILEPATH)/include-scsl-binary \
+  $(SRCLIC_TOOLS_FILEPATH)/exclude-scsl
+	$(CAT) $^ | $(GREP) -v '^#' > $(TEMP_DIR)/excludepaths.txt
+
+# generate the appropriate list of included dirs and files for 
+# SCSL binary and internal bundle...
+$(J2SDK_BIN_SCSLBUNDLE_NAME)::   $(SRCLIC_TOOLS_FILEPATH)/include-scsl-binary
+	$(CAT) $^ | $(GREP) -v '^#' > $(TEMP_DIR)/includepaths.txt
+
+$(INTERNAL_BUNDLE_NAME)::   $(SRCLIC_TOOLS_FILEPATH)/include-internal
+	$(CAT) $^ | $(GREP) -v '^#' > $(TEMP_DIR)/includepaths.txt
+
+# generate each bundle by first resolving an excluded file or dir to an actual
+# file, then put that real file into the exclude list. Next, create a zip file using
+# every file found in the workspace, but use the zip eclude capability to not add
+# the actual files to exclude.
+$(J2RE_WINDOWS_SRCLICBUNDLE_NAME) \
+$(J2RE_SOLARIS_SRCLICBUNDLE_NAME) $(J2RE_LINUX_SRCLICBUNDLE_NAME) \
+$(J2SDK_WINDOWS_SRCLICBUNDLE_NAME) \
+$(J2RE_SOLWIN_SRCLICBUNDLE_NAME) $(J2SDK_SOLWIN_SRCLICBUNDLE_NAME) \
+$(J2SDK_SOLARIS_SRCLICBUNDLE_NAME) $(J2SDK_LINUX_SRCLICBUNDLE_NAME) \
+$(J2SDK_ALL_SCSLBUNDLE_NAME):: $(TEMP_DIR)/allfiles.txt
+	$(RM) $(TEMP_DIR)/excludefiles.txt
+	for file in `$(CAT) $(TEMP_DIR)/excludepaths.txt`; do \
+	    if [ -f $(TOPDIR)/$$file ]; then \
+		$(ECHO) $$file >> $(TEMP_DIR)/excludefiles.txt ; \
+	    elif [ -d $(TOPDIR)/$$file ]; then \
+		$(FIND) $(TOPDIR)/$$file -name SCCS -prune -o -type f -print \
+		  | $(SED) 's#^$(TOPDIR)/##' >> $(TEMP_DIR)/excludefiles.txt ; \
+	    fi \
+	done
+	$(SORT) -u -o $(TEMP_DIR)/excludefiles.txt  $(TEMP_DIR)/excludefiles.txt 
+	$(CD) $(TOPDIR) ; \
+	    $(COMM) -2 -3 $(ABS_TEMP_DIR)/allfiles.txt $(ABS_TEMP_DIR)/excludefiles.txt \
+	    | $(ZIPEXE) -q@ $@  ;
+
+# internal.zip bundle contains all the files used internally.
+# SCSL binary bundle contains all the binary files.
+$(INTERNAL_BUNDLE_NAME) \
+$(J2SDK_BIN_SCSLBUNDLE_NAME)::
+	$(RM) $(TEMP_DIR)/includefiles.txt
+	for file in `$(CAT) $(TEMP_DIR)/includepaths.txt`; do \
+	    if [ -f $(TOPDIR)/$$file ]; then \
+	        $(ECHO) $$file >> $(TEMP_DIR)/includefiles.txt ; \
+	    elif [ -d $(TOPDIR)/$$file ]; then \
+		$(FIND) $(TOPDIR)/$$file -name SCCS -prune -o -type f -print \
+		| $(SED) 's#^$(TOPDIR)/##' >> $(TEMP_DIR)/includefiles.txt ; \
+	    fi \
+	done
+	$(SORT) -u -o $(TEMP_DIR)/includefiles.txt  $(TEMP_DIR)/includefiles.txt
+	$(CD) $(TOPDIR) ; \
+	    $(CAT) $(ABS_TEMP_DIR)/includefiles.txt \
+	     | $(ZIPEXE) -q@ $@  ;
+
+# This is the list of staged README files:
+README_TMPDIR = $(OUTPUTDIR)/tmp/readme
+
+SCSL_LICENSE_TMPDIR = $(OUTPUTDIR)/tmp/scsl
+
+$(BIN_BUNDLEDIR) $(README_TMPDIR) $(SCSL_LICENSE_TMPDIR):
+	$(MKDIR) -p $@
+
+# Where are the readme's located within the workspace:
+J2SE_BUILD_README_DIR = $(J2SE_TOPDIR)/src/share/doc/build
+
+# where are the scsl license file's located within the workspace
+SCSL_BUNDLE_LICENSE_DIR = $(J2SE_TOPDIR)/src/share/doc/scsl
+
+# Where are the require patch list files in the workspace:
+J2SE_SOLARIS_PATCHES = $(J2SE_BUILD_README_DIR)/PatchList.solaris
+SOLARIS_OS_PATCHES_HTML = $(README_TMPDIR)/solaris_os_patches.html
+SOLARIS_COMPILER_PATCHES_HTML = $(README_TMPDIR)/solaris_compiler_patches.html
+
+$(SOLARIS_OS_PATCHES_HTML): $(README_TMPDIR)
+	$(NAWK) -f $(SRCLIC_TOOLS_FILEPATH)/osPatchTable.awk $(J2SE_SOLARIS_PATCHES) > $@
+
+$(SOLARIS_COMPILER_PATCHES_HTML): $(README_TMPDIR)
+	$(NAWK) -f $(SRCLIC_TOOLS_FILEPATH)/compilerPatchTable.awk $(J2SE_SOLARIS_PATCHES) > $@
+
+# These are the platform-specific build readmes:
+SOLARIS_README = build-solaris.html
+LINUX_README = build-linux.html
+WINDOWS_README = build-windows-i586.html
+
+# These are the files that are platform/bundle-type independent:
+BASIC_READMES = build.html
+
+README_BINARIES = sunlogo64x30.gif \
+	javalogo52x88.gif 
+
+# These are the bundle-specific readme file lists:
+SCSL_README = README-SCSL.html
+SRCLIC_README = README-SRCLIC.html
+INTERNAL_READMES = \
+	index.html \
+	README-internal.html \
+	README-RE.html \
+	README-SRCLIC.html \
+	README-SCSL.html
+
+# These are the scsl bundle specific license file lists.
+SCSL_SRC_BUNDLE_LICENSE_DOCLIST = SourceLicense.txt
+SCSL_BIN_BUNDLE_LICENSE_DOCLIST = BinaryLicense.txt
+
+# This is the complete list of all files to be staged:
+ALL_READMES = $(BASIC_READMES) $(SOLARIS_README) $(LINUX_README) $(WINDOWS_README) $(SCSL_README) $(SRCLIC_README) $(INTERNAL_READMES) $(README_BINARIES)
+
+# These are the lists of source and staged build readmes:
+SRC_BUILD_READMES = $(addprefix $(J2SE_BUILD_README_DIR)/, $(BASIC_READMES) $(SOLARIS_README) $(LINUX_README) $(WINDOWS_README))
+STAGED_BUILD_READMES = $(addprefix $(README_TMPDIR)/, $(BASIC_READMES) $(SOLARIS_README) $(LINUX_README) $(WINDOWS_README))
+
+# These are the lists of source and staged readme binaries (not to be processed):
+SRC_README_BINARIES = $(addprefix $(J2SE_BUILD_README_DIR)/, $(README_BINARIES))
+STAGED_README_BINARIES = $(addprefix $(README_TMPDIR)/, $(README_BINARIES))
+
+# These are the lists of source and staged bundle readmes:
+SRC_BUNDLE_READMES = $(addprefix $(J2SE_BUILD_README_DIR)/, $(SCSL_README) $(SRCLIC_README) $(INTERNAL_READMES))
+STAGED_BUNDLE_READMES = $(addprefix $(README_TMPDIR)/, $(SCSL_README) $(SRCLIC_README) $(INTERNAL_READMES))
+
+STAGED_READMES = $(STAGED_BUILD_READMES) $(STAGED_BUNDLE_READMES) $(STAGED_README_BINARIES)
+
+SCSL_BUNDLE_LICENSE = $(SCSL_SRC_BUNDLE_LICENSE_DOCLIST) $(SCSL_BIN_BUNDLE_LICENSE_DOCLIST)
+STAGED_SCSL_BUNDLE_LICENSE = $(addprefix $(SCSL_LICENSE_TMPDIR)/, $(SCSL_BUNDLE_LICENSE))
+
+# the rule for j2se-readme must follow the defintion of STAGED_READMES
+j2se-readme: $(STAGED_READMES)
+	$(ECHO) $(STAGED_READMES)
+
+scsl-license: $(STAGED_SCSL_BUNDLE_LICENSE)
+
+# The list of patches is needed for staging...
+$(STAGED_READMES):: $(README_TMPDIR) $(J2SE_SOLARIS_PATCHES) $(SRC_BUILD_READMES) $(SRC_BUNDLE_READMES) 
+
+$(STAGED_SCSL_BUNDLE_LICENSE):: $(SCSL_LICENSE_TMPDIR)
+	$(CP) $(SCSL_BUNDLE_LICENSE_DIR)/$(@F) $@
+
+# Copy over the binaries used by the readme html files:
+# Note: addprefix adds an extra ./ to the defines, but it gets removed
+#       when similar defines are targets... gnumake bug?
+$(STAGED_README_BINARIES)::
+	$(CP) -f $(subst $(README_TMPDIR),$(J2SE_BUILD_README_DIR),./$@) $@
+
+# Copy over and process the html files - add version, milestone and patch info:
+$(STAGED_BUILD_READMES) $(STAGED_BUNDLE_READMES):: $(SOLARIS_OS_PATCHES_HTML) \
+$(SOLARIS_COMPILER_PATCHES_HTML)
+	$(CAT) $(subst $(README_TMPDIR),$(J2SE_BUILD_README_DIR),./$@) | \
+	$(SED)  -e "s@#VERSION#@$(JDK_MKTG_VERSION)@g" \
+		-e "s@#MILESTONE#@$(MILESTONE)@g" \
+		-e "s@#SOLARIS_OS_PATCH_TABLE#@$(SOLARIS_OS_PATCHES_HTML)@g" \
+		-e "s@#SOLARIS_COMPILER_PATCH_TABLE#@$(SOLARIS_COMPILER_PATCHES_HTML)@g" | \
+	$(NAWK) -f $(SRCLIC_TOOLS_FILEPATH)/include.awk > $@
+
+# add the appropriate readmes to each bundle. Since the target files exist and
+# are up to date because of the earlier rules, we use the FORCE depency convention
+# to force the rule to be executed.
+$(J2RE_WINDOWS_SRCLICBUNDLE_NAME) $(J2SDK_WINDOWS_SRCLICBUNDLE_NAME) \
+$(J2RE_SOLARIS_SRCLICBUNDLE_NAME) $(J2SDK_SOLARIS_SRCLICBUNDLE_NAME) \
+$(J2RE_SOLWIN_SRCLICBUNDLE_NAME) $(J2SDK_SOLWIN_SRCLICBUNDLE_NAME) \
+$(J2RE_LINUX_SRCLICBUNDLE_NAME) $(J2SDK_LINUX_SRCLICBUNDLE_NAME):: FORCE
+	$(CD) $(README_TMPDIR); \
+	    $(MV) $(SRCLIC_README) README.html; \
+	    $(ZIPEXE) -q -u $@ README.html $(BASIC_READMES) \
+		$(README_BINARIES) $(SOLARIS_README) $(LINUX_README) $(WINDOWS_README); \
+	    $(MV) README.html $(SRCLIC_README);
+
+$(J2SDK_ALL_SCSLBUNDLE_NAME):: FORCE
+	$(CD) $(README_TMPDIR); \
+	    $(MV) $(SCSL_README) README.html; \
+	    $(ZIPEXE) -q -u $@ README.html $(BASIC_READMES) \
+		$(README_BINARIES) $(SOLARIS_README) $(LINUX_README) $(WINDOWS_README); \
+	    $(MV) README.html $(SCSL_README);
+	$(CD) $(SCSL_LICENSE_TMPDIR); \
+	    $(ZIPEXE) -q -u $@ $(SCSL_SRC_BUNDLE_LICENSE_DOCLIST);
+
+$(J2SDK_BIN_SCSLBUNDLE_NAME):: FORCE
+	$(CD) $(SCSL_LICENSE_TMPDIR); \
+	    $(ZIPEXE) -q -u $@ $(SCSL_BIN_BUNDLE_LICENSE_DOCLIST);
+
+BUILD_README_STAGED_ROOTDIR = doc
+BUILD_README_STAGEDDIR = $(BUILD_README_STAGED_ROOTDIR)/build
+
+$(BIN_BUNDLEDIR)/build.tar: $(BIN_BUNDLEDIR)
+	$(CD) $(README_TMPDIR); \
+	    $(MKDIR) -p $(BUILD_README_STAGEDDIR); \
+	    $(CP) -f $(ALL_READMES) $(BUILD_README_STAGEDDIR)/; \
+	    $(TAR) cf build.tar $(BUILD_README_STAGED_ROOTDIR);
+	$(MV) $(README_TMPDIR)/build.tar $@
+
+FORCE:
+
+j2se-readme-clobber:
+	$(RM) -r $(README_TMPDIR)
+
+scsl-license-clobber:
+	$(RM) -r $(SCSL_LICENSE_TMPDIR)
+
+.PHONY: j2se j2se-build j2se-clobber j2se-sanity j2se-source j2se-source-clobber \
+	j2se-bringover j2se-readme j2se-readme-clobber scsl-license scsl-license-clobber

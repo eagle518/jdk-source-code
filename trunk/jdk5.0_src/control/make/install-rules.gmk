@@ -1,0 +1,84 @@
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# @(#)install-rules.gmk	1.13 03/04/18
+#
+# 
+
+################################################################
+# INSTALL  TARGETS
+################################################################
+
+install:  install-build
+
+# The generated java files are generated as a set, so instead of
+# setting the INSTALL variable to that list of files, set it to
+# the .PHONY target that generates the set of files.
+INSTALL = install
+
+# put the generated patch in their own place in OUTPUTDIR
+INSTALL_OUTPUTDIR = $(ABS_OUTPUTDIR)
+
+ABS_CONTROL_TOPDIR = $(shell $(CD) $(CONTROL_TOPDIR); $(PWD))
+ABS_J2SE_TOPDIR = $(shell $(CD) $(J2SE_TOPDIR); $(PWD))
+
+INSTALL_BUILD_TARGETS = sanity all
+INSTALL_BUILD_ARGUMENTS = \
+			MAKEFLAGS= \
+			EXTERNALSANITYCONTROL=true \
+			ALT_CONTROL_TOPDIR=$(ABS_CONTROL_TOPDIR) \
+			ALT_J2SE_TOPDIR=$(ABS_J2SE_TOPDIR) \
+			ALT_OUTPUTDIR=$(INSTALL_OUTPUTDIR) \
+			ALT_RTPATCH_DIR=$(ALT_RTPATCH_DIR) \
+			ALT_BASE_IMAGE_ZIP=$(ALT_BASE_IMAGE_ZIP) \
+			ALT_BASE_IMAGE_DIR=$(ALT_BASE_IMAGE_DIR) \
+			ALT_NEW_IMAGE_DIR=$(ALT_NEW_IMAGE_DIR) \
+			ALT_BUNDLE_DATE=$(BUNDLE_DATE)
+
+install: install-build
+
+install-build:
+	if [ -r $(INSTALL_TOPDIR)/make/Makefile ]; then \
+	  ( $(CD) $(INSTALL_TOPDIR)/make; $(MAKE) $(INSTALL_BUILD_TARGETS) $(INSTALL_BUILD_ARGUMENTS) ); \
+	fi
+
+update-patcher:
+	if [ -r $(INSTALL_TOPDIR)/make/update/Makefile ]; then \
+	  ( $(CD) $(INSTALL_TOPDIR)/make/update; $(MAKE) all $(INSTALL_BUILD_ARGUMENTS) ); \
+	fi
+
+update-patchgen:
+	if [ -r $(INSTALL_TOPDIR)/make/update/Makefile ]; then \
+	  ( $(CD) $(INSTALL_TOPDIR)/make/update; $(MAKE) patchgen $(INSTALL_BUILD_ARGUMENTS) ); \
+	fi
+
+installer:
+	if [ -r $(INSTALL_TOPDIR)/make/installer/Makefile ]; then \
+	  ( $(CD) $(INSTALL_TOPDIR)/make/installer; $(MAKE) all $(INSTALL_BUILD_ARGUMENTS) ); \
+	fi
+
+install-clobber:
+	if [ -r $(INSTALL_TOPDIR)/make/Makefile ]; then \
+	  ( $(CD) $(INSTALL_TOPDIR)/make; $(MAKE) clobber $(INSTALL_BUILD_ARGUMENTS) ; ); \
+	fi
+
+
+install-sanity::
+	if [ -r $(INSTALL_TOPDIR)/make/Makefile ]; then \
+	  ( $(CD) $(INSTALL_TOPDIR)/make; $(MAKE) sanity $(INSTALL_BUILD_ARGUMENTS) ; ); \
+	fi
+
+install-bringover:
+	@if [ -d $(INSTALL_TOPDIR)/Codemgr_wsdata ]; then \
+	  $(BRINGOVER) -p $(INSTALL_MASTER) -w $(INSTALL_TOPDIR) $(INSTALL_SOURCE) ; \
+	else \
+	  $(BRINGOVER) -C -q -p $(INSTALL_MASTER) -w $(INSTALL_TOPDIR) $(INSTALL_SOURCE) ; \
+	fi
+
+######################################
+# Rules for making the install
+######################################
+
+.PHONY: install install-build install-clobber install-sanity \
+	install-bringover update-installer update-patchgen installer

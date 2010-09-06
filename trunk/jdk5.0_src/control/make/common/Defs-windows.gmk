@@ -1,0 +1,303 @@
+#
+# Copyright 2004 Sun Microsystems, Inc.  All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL.  Use is subject to license terms.
+#
+
+#
+# @(#)Defs-windows.gmk	1.98 04/04/12
+#
+# Makefile to specify compiler flags for programs and libraries
+# targeted to Windows.  Should not contain any rules.
+#
+
+# set default values for where to find the other workspaces. Allow
+# overrides to reset. 
+
+CONTROL_MASTER=K:/$(JDK_VERSION)/ws/MASTER/control
+ifdef ALT_CONTROL_MASTER
+  CONTROL_MASTER=$(ALT_CONTROL_MASTER)
+endif
+
+HOTSPOT_MASTER=K:/$(JDK_VERSION)/ws/MASTER/hotspot
+ifdef ALT_HOTSPOT_MASTER
+  HOTSPOT_MASTER=$(ALT_HOTSPOT_MASTER)
+endif
+
+MOTIF_MASTER=K:/$(JDK_VERSION)/ws/MASTER/motif
+ifdef ALT_MOTIF_MASTER
+  MOTIF_MASTER=$(ALT_MOTIF_MASTER)
+endif
+
+J2SE_MASTER=K:/$(JDK_VERSION)/ws/MASTER/j2se
+ifdef ALT_J2SE_MASTER
+  J2SE_MASTER=$(ALT_J2SE_MASTER)
+endif
+
+INSTALL_MASTER=K:/$(JDK_VERSION)/ws/MASTER/install
+ifdef ALT_INSTALL_MASTER
+  INSTALL_MASTER=$(ALT_INSTALL_MASTER)
+endif
+
+DEPLOY_MASTER=K:/$(JDK_VERSION)/ws/MASTER/deploy
+ifdef ALT_DEPLOY_MASTER
+  DEPLOY_MASTER=$(ALT_DEPLOY_MASTER)
+endif
+
+#
+# define these to avoid picking up ones from alaises or from
+# non-standard locations
+#
+AR             = $(UNIXCOMMAND_PATH)ar.exe
+BASENAME       = $(UNIXCOMMAND_PATH)basename.exe
+CAT            = $(UNIXCOMMAND_PATH)cat.exe
+ifeq ($(CC_VERSION), msvc)
+  CC           = $(COMPILER_PATH)cl.exe
+  CPP          = $(COMPILER_PATH)cl.exe
+  CXX          = $(COMPILER_PATH)cl.exe
+else # CC_VERSION
+  CC           = $(COMPILER_PATH)gcc
+  CPP          = $(COMPILER_PATH)gcc -E
+  CXX          = $(COMPILER_PATH)g++
+endif #CC_VERSION
+ifdef USING_CYGWIN
+   CYGPATH    = $(UNIXCOMMAND_PATH)cygpath.exe
+endif
+CD             = cd # DOS intrinsic command
+CHMOD          = $(UNIXCOMMAND_PATH)chmod.exe
+COMM           = $(UNIXCOMMAND_PATH)comm.exe
+COMPRESS       = $(UNIXCOMMAND_PATH)compress.exe
+CP             = $(UNIXCOMMAND_PATH)cp.exe
+CPIO           = $(UNIXCOMMAND_PATH)cpio.exe
+CUT            = $(UNIXCOMMAND_PATH)cut.exe
+DATE           = $(UNIXCOMMAND_PATH)date.exe
+DF             = $(UNIXCOMMAND_PATH)df.exe
+DIFF           = $(UNIXCOMMAND_PATH)diff.exe
+DIRNAME        = $(UNIXCOMMAND_PATH)dirname.exe
+ifdef USING_CYGWIN
+   ECHO        = $(UNIXCOMMAND_PATH)echo.exe -e # with backslash-escaped character interpretation
+else
+   ECHO        = $(UNIXCOMMAND_PATH)echo.exe
+endif
+EGREP          = $(UNIXCOMMAND_PATH)egrep.exe
+EXPR           = $(UNIXCOMMAND_PATH)expr.exe
+FIND           = $(UNIXCOMMAND_PATH)find.exe
+GREP           = $(UNIXCOMMAND_PATH)grep.exe
+HEAD           = $(UNIXCOMMAND_PATH)head.exe
+LEX=# override GNU Make intrinsic: no lex on windows      
+LN             = $(UNIXCOMMAND_PATH)ln.exe
+LIBEXE         = $(COMPILER_PATH)lib.exe
+LINK           = $(COMPILER_PATH)link.exe
+LS             = $(UNIXCOMMAND_PATH)ls.exe
+M4             = $(UNIXCOMMAND_PATH)m4.exe
+MKDIR          = $(UNIXCOMMAND_PATH)mkdir.exe
+MV             = $(UNIXCOMMAND_PATH)mv.exe
+NAWK           = $(UNIXCOMMAND_PATH)awk.exe
+# unset any GNU Make settings of MFLAGS and MAKEFLAGS which may mess up nmake
+NMAKE          = MFLAGS= MAKEFLAGS= $(COMPILER_PATH)nmake.exe -nologo 
+PWD            = $(UNIXCOMMAND_PATH)pwd.exe
+RC             = $(MSDEVTOOLS_PATH)rc.exe
+REBASE         = $(COMPILER_PATH)REBASE.EXE 
+#RM   is intrinsically defined by GNU Make as 'rm -f'
+RMDIR          = $(UNIXCOMMAND_PATH)rmdir.exe
+SED            = $(UNIXCOMMAND_PATH)sed.exe
+SH             = $(UNIXCOMMAND_PATH)sh.exe
+SORT           = $(UNIXCOMMAND_PATH)sort.exe
+TAR            = $(UNIXCOMMAND_PATH)tar.exe
+TOUCH          = $(UNIXCOMMAND_PATH)touch.exe
+TR             = $(UNIXCOMMAND_PATH)tr.exe
+TRUE           = $(UNIXCOMMAND_PATH)true.exe
+UNAME          = $(UNIXCOMMAND_PATH)uname.exe
+UNIQ           = $(UNIXCOMMAND_PATH)uniq.exe
+UNZIP          = $(DEVTOOLS_PATH)unzip.exe
+WC             = $(UNIXCOMMAND_PATH)wc.exe
+ZIPEXE         = $(DEVTOOLS_PATH)zip.exe
+
+OS_VERSION = $(shell $(UNAME) -r)
+OS_NAME = nt
+
+#
+# Windows builds default to the appropriate for the underlaying
+# architecture.
+#
+# GNU Make or MKS overrides $(PROCESSOR_ARCHITECTURE) to always
+# return "x86". Use the first word of $(PROCESSOR_IDENTIFIER) instead.
+ifndef ARCH_DATA_MODEL
+  ifeq ($(word 1, $(PROCESSOR_IDENTIFIER)),ia64)
+    ARCH_DATA_MODEL=64
+  else
+    ifeq ($(word 1, $(PROCESSOR_IDENTIFIER)),AMD64)
+      ARCH_DATA_MODEL=64
+    else
+      ARCH_DATA_MODEL=32
+    endif
+  endif
+endif
+
+ARCH=i586
+HOTSPOT_ARCH = i486
+ifeq ($(ARCH_DATA_MODEL), 64)
+  ifeq ($(word 1, $(PROCESSOR_IDENTIFIER)),AMD64)
+    ARCH=amd64
+  else
+    ARCH=ia64
+  endif
+  HOTSPOT_ARCH = $(ARCH)
+endif
+HOTSPOT_PLATFORM = win32
+ARCH_FAMILY = $(ARCH)
+
+# LIBARCH is used to preserve the jre/lib/i386 directory name for 32-bit intel
+ARCH=i586
+LIBARCH=i386
+ifeq ($(ARCH_DATA_MODEL), 64)
+  ifeq ($(word 1, $(PROCESSOR_IDENTIFIER)),AMD64)
+    ARCH=amd64
+  else
+    ARCH=ia64
+  endif
+  LIBARCH=$(ARCH)
+endif
+
+
+# get USER name from the environment
+USER       = $(USERNAME)
+
+# where is unwanted output to be delivered?
+DEV_NULL = NUL
+export DEV_NULL
+
+# The suffix used for object file (.o for unix .obj for windows)
+OBJECT_SUFFIX = obj
+# The suffix applied to the library name for FDLIBM
+FDDLIBM_SUFFIX = lib
+# The suffix applied to executables (.exe for windows, nothing for solaris)
+EXE_SUFFIX = .exe
+# The prefix applied to library files (lib for solaris, nothing for windows)
+LIB_PREFIX=
+
+# Platform specific definitions 
+CLASSPATH_SEPARATOR = ;
+_BOOTDIR = C:/j2sdk$(PREVIOUS_JDK_VERSION)
+
+# Set _HOTSPOT_DRIVE from ALT_HOTSPOT_DRIVE if that's set;
+# otherwise default it to the J drive.
+#
+HOTSPOT_DRIVE = J
+ifdef ALT_HOTSPOT_DRIVE
+  HOTSPOT_DRIVE = $(ALT_HOTSPOT_DRIVE)
+endif
+
+#
+# Default Hotspot dirs
+#
+_HOTSPOT_LIB_PATH = $(HOTSPOT_DIR)/lib
+
+# Set HOTSPOT_LIB_PATH: Use ALT_HOTSPOT_LIB_PATH if it's set, otherwise
+# use the default from _HOTSPOT_LIB_PATH.  We define this here rather
+# than in Defs.gmk because only windows needs it.
+#
+HOTSPOT_LIB_PATH = $(_HOTSPOT_LIB_PATH)
+ifdef ALT_HOTSPOT_LIB_PATH
+  HOTSPOT_LIB_PATH = $(subst \,/,$(ALT_HOTSPOT_LIB_PATH))
+endif # ALT_HOTSPOT_LIB_PATH
+
+LIBRARY_SUFFIX = dll
+LIB_SUFFIX     = lib
+
+#
+# Default Previous jre and jdk bundle path
+#
+_PREVIOUS_JDK_FILE = j2sdk-$(PREVIOUS_JDK_UNDERSCORE_VERSION)-$(PLATFORM)-$(ARCH).tar
+_PREVIOUS_JRE_FILE = j2re-$(PREVIOUS_JDK_UNDERSCORE_VERSION)-$(PLATFORM)-$(ARCH).tar
+_PREVIOUS_RELEASE_PATH = J:/jdk$(PREVIOUS_JDK_VERSION)/binaries/bundles/$(PLATFORM)-$(ARCH)
+PREVIOUS_JRE_BUNDLE = $(PREVIOUS_RELEASE_PATH)/$(PREVIOUS_JRE_FILE)
+PREVIOUS_JDK_BUNDLE = $(PREVIOUS_RELEASE_PATH)/$(PREVIOUS_JDK_FILE)
+
+#
+# UNIXCOMMAND_PATH is the path to where the most common Unix
+# commands are installed.
+ifdef USING_CYGWIN
+  UNIXCOMMAND_PATH = C:/cygwin/bin/
+else
+  UNIXCOMMAND_PATH = C:/mksnt/
+endif
+# Allow the user to override the default value...
+ifdef ALT_UNIXCOMMAND_PATH
+  UNIXCOMMAND_PATH = $(subst //,/,$(subst \,/,$(ALT_UNIXCOMMAND_PATH)/))
+endif
+
+# COMPILER_PATH is the path to where the compiler and tools 
+# are installed.
+ifdef USING_CYGWIN
+  COMPILER_PATH = $(subst \,/,$(MSVCDIR))/Bin/
+else
+  COMPILER_PATH = $(subst \,/,$(MSVCDir))/Bin/
+endif
+# Allow the user to override the default value...
+ifdef ALT_COMPILER_PATH
+  COMPILER_PATH = $(subst //,/,$(subst \,/,$(ALT_COMPILER_PATH)/))
+endif
+
+# DEVTOOLS_PATH is for other tools required for building (such as
+# zip, etc.)
+DEVTOOLS_PATH = C:/utils/
+# Allow the user to override the default value...
+ifdef ALT_DEVTOOLS_PATH
+  DEVTOOLS_PATH = $(subst //,/,$(subst \,/,$(ALT_DEVTOOLS_PATH)/))
+endif
+
+# MSDEVTOOLS_PATH is the path to where the additional MS Compiler
+# tools are installed.
+ifdef USING_CYGWIN
+  MSDEVTOOLS_PATH = $(subst \,/,$(MSDEVDIR))/Bin/
+else
+  MSDEVTOOLS_PATH = $(subst \,/,$(MSDevDir))/Bin/
+endif
+# Allow the user to override the default value...
+ifdef ALT_MSDEVTOOLS_PATH
+  MSDEVTOOLS_PATH = $(subst //,/,$(subst \,/,$(ALT_MSDEVTOOLS_PATH)/))
+endif
+
+ifdef USING_CYGWIN
+  WINDOWS_NT_VERSION_STRING=CYGWIN_NT-4.0
+else
+  WINDOWS_NT_VERSION_STRING=Windows_NT
+endif
+
+# Values for the JDI binding of the Serviceability Agent.
+HOTSPOT_SALIB_PATH = $(HOTSPOT_IMPORT_PATH)/jre/bin
+SA_OPT_LIB_NAME    = $(LIB_PREFIX)sawindbg$(OPT_SUFFIX).$(LIBRARY_SUFFIX)
+SA_DEBUG_LIB_NAME  = $(LIB_PREFIX)sawindbg$(DBG_SUFFIX).$(LIBRARY_SUFFIX)
+
+# JDI-SA is not currently supported on Windows
+INCLUDE_SA = false
+
+# If the update version contains non-numeric characters, we need
+# to massage it into a numeric format.  Unfortunately, the
+# Windows VERSIONINFO resource that we stick in jvm.dll cannot
+# handle non-numeric characters.  We have to do this here because
+# Hotspot workspace nmake cannot handle calculations.  So we use the
+# following formula:
+# COOKED_JDK_UPDATE_VERSION = JDK_UPDATE_VERSION * 10 + EXCEPTION_VERSION
+# 
+# Here are some examples:
+#     1.5.0 -> 1,5,0,0
+#     1.5.0_10 -> 1,5,0,100
+#     1.4.2 -> 1,4,2,0
+#     1.4.2_02 -> 1,4,2,20
+#     1.4.2_02a -> 1,4,2,21
+#     1.4.2_02b -> 1,4,2,22
+ifdef JDK_UPDATE_VERSION
+  VTMP := $(shell $(ECHO) $(JDK_UPDATE_VERSION) | $(TR) "abcde" "12345")
+  CHAR1 := $(shell $(ECHO) $(VTMP) | $(NAWK) '{print substr($$1, 1, 1);}')
+  CHAR2 := $(shell $(ECHO) $(VTMP) | $(NAWK) '{print substr($$1, 2, 1);}')
+  CHAR3 := $(shell $(ECHO) $(VTMP) | $(NAWK) '{print substr($$1, 3, 1);}')
+  ifeq ($(CHAR3),)
+    CHAR3 := 0
+  endif
+  ifeq ($(CHAR1), 0)
+    COOKED_JDK_UPDATE_VERSION := $(CHAR2)$(CHAR3)
+  else
+    COOKED_JDK_UPDATE_VERSION := $(CHAR1)$(CHAR2)$(CHAR3)
+  endif
+endif

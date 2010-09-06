@@ -1,0 +1,255 @@
+#
+# Copyright 2004 Sun Microsystems, Inc.  All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL.  Use is subject to license terms.
+
+#
+# @(#)Defs-linux.gmk	1.98 04/02/19
+#
+# Makefile to set defaults for Linux.  Should not contain any rules.
+#
+
+# set default values for where to find the MASTER workspaces. Allow
+# overrides to reset
+
+CONTROL_MASTER=/java/jdk/$(JDK_VERSION)/ws/MASTER/control
+ifdef ALT_CONTROL_MASTER
+  CONTROL_MASTER=$(ALT_CONTROL_MASTER)
+endif
+
+HOTSPOT_MASTER=/java/jdk/$(JDK_VERSION)/ws/MASTER/hotspot
+ifdef ALT_HOTSPOT_MASTER
+  HOTSPOT_MASTER=$(ALT_HOTSPOT_MASTER)
+endif
+
+MOTIF_MASTER=/java/jdk/$(JDK_VERSION)/ws/MASTER/motif
+  ifdef ALT_MOTIF_MASTER
+    MOTIF_MASTER=$(ALT_MOTIF_MASTER)
+endif
+
+J2SE_MASTER=/java/jdk/$(JDK_VERSION)/ws/MASTER/j2se
+ifdef ALT_J2SE_MASTER
+  J2SE_MASTER=$(ALT_J2SE_MASTER)
+endif
+
+INSTALL_MASTER=/java/jdk/$(JDK_VERSION)/ws/MASTER/install
+ifdef ALT_INSTALL_MASTER
+  INSTALL_MASTER=$(ALT_INSTALL_MASTER)
+endif
+
+DEPLOY_MASTER=/java/jdk/$(JDK_VERSION)/ws/MASTER/deploy
+ifdef ALT_DEPLOY_MASTER
+  DEPLOY_MASTER=$(ALT_DEPLOY_MASTER)
+endif
+
+# define these to avoid picking up ones from aliases or from
+# non-standard locations
+#
+
+AR             = $(USRBIN_PATH)ar
+BASENAME       = $(UNIXCOMMAND_PATH)basename
+CAT            = $(UNIXCOMMAND_PATH)cat
+CD             = cd # intrinsic unix command
+CHMOD          = $(UNIXCOMMAND_PATH)chmod
+CMP            = $(USRBIN_PATH)cmp
+COMM           = $(USRBIN_PATH)comm
+COMPRESS       = $(USRBIN_PATH)compress
+CP             = $(UNIXCOMMAND_PATH)cp
+CPIO           = $(UNIXCOMMAND_PATH)cpio
+CUT            = $(USRBIN_PATH)cut
+DATE           = $(UNIXCOMMAND_PATH)date
+DF             = $(UNIXCOMMAND_PATH)df
+DIFF           = $(USRBIN_PATH)diff
+DIRNAME        = $(USRBIN_PATH)dirname
+ECHO           = echo -e # intrinsic unix command, with backslash-escaped character interpretation 
+EGREP          = $(UNIXCOMMAND_PATH)egrep
+EXPR           = $(USRBIN_PATH)expr
+FIND           = $(USRBIN_PATH)find
+GREP           = $(UNIXCOMMAND_PATH)grep
+LEX            = $(USRBIN_PATH)lex
+LN             = $(UNIXCOMMAND_PATH)ln
+LS             = $(UNIXCOMMAND_PATH)ls
+M4             = $(USRBIN_PATH)m4
+MKDIR          = $(UNIXCOMMAND_PATH)mkdir
+MV             = $(UNIXCOMMAND_PATH)mv
+MSGFMT         = $(USRBIN_PATH)msgfmt
+NAWK           = $(USRBIN_PATH)gawk
+PWD            = $(UNIXCOMMAND_PATH)pwd
+#RM   is defined by GNU Make as 'rm -f'
+RMDIR          = $(UNIXCOMMAND_PATH)rmdir
+RPM            = $(UNIXCOMMAND_PATH)rpm
+SED            = $(UNIXCOMMAND_PATH)sed
+SH             = $(UNIXCOMMAND_PATH)sh
+SORT           = $(UNIXCOMMAND_PATH)sort
+STRIP          = $(USRBIN_PATH)strip
+TAR            = $(UNIXCOMMAND_PATH)tar
+TOUCH          = $(UNIXCOMMAND_PATH)touch
+TR             = $(USRBIN_PATH)tr
+TRUE           = $(UNIXCOMMAND_PATH)true
+UNAME          = $(UNIXCOMMAND_PATH)uname
+UNIQ           = $(USRBIN_PATH)uniq
+UNZIPSFX       = $(USRBIN_PATH)unzipsfx
+WC             = $(USRBIN_PATH)wc
+YACC           = $(USRBIN_PATH)yacc
+ZIPEXE         = $(USRBIN_PATH)zip
+
+
+archExpr = case "`$(UNAME) -m`" in  \
+		i[3-9]86) \
+		    $(ECHO) i586 \
+		    ;; \
+		ia64) \
+		    $(ECHO) ia64 \
+		    ;; \
+		x86_64) \
+		    $(ECHO) amd64 \
+		    ;; \
+		sparc*)  \
+		    $(ECHO) sparc \
+		    ;; \
+		*) \
+		    $(UNAME) -m  \
+		    ;; \
+	esac
+
+ARCH        := $(shell $(archExpr) )
+ARCH_FAMILY = $(ARCH)
+OS_VERSION = $(shell $(UNAME) -r)
+OS_NAME = linux
+
+#
+# Linux builds may be 32-bit or 64-bit data model. Select
+# the default based on the build platform architecture.
+#
+ifndef ARCH_DATA_MODEL
+  ifeq ($(ARCH), i586)
+    ARCH_DATA_MODEL=32
+  else
+    ARCH_DATA_MODEL=64
+  endif
+endif
+
+ifeq ($(ARCH_DATA_MODEL), 32)
+  HOTSPOT_ARCH = i486
+else
+  HOTSPOT_ARCH = $(ARCH)
+endif
+
+#
+# Need to maintain the jre/lib/i386 location for 32-bit Intel
+#
+ifeq ($(ARCH), i586)
+  LIBARCH = i386
+else
+  LIBARCH = $(ARCH)
+endif
+
+#
+# Default Previous jre and jdk bundle path
+#
+_PREVIOUS_JDK_FILE = j2sdk-$(PREVIOUS_JDK_UNDERSCORE_VERSION)-$(PLATFORM)-$(ARCH).tar.gz
+_PREVIOUS_JRE_FILE = j2re-$(PREVIOUS_JDK_UNDERSCORE_VERSION)-$(PLATFORM)-$(ARCH).tar.gz
+_PREVIOUS_RELEASE_PATH = /java/re/j2se/$(PREVIOUS_JDK_VERSION)/archive/fcs/bundles/$(PLATFORM)-$(ARCH)
+PREVIOUS_JRE_BUNDLE = $(PREVIOUS_RELEASE_PATH)/$(PREVIOUS_JRE_FILE)
+PREVIOUS_JDK_BUNDLE = $(PREVIOUS_RELEASE_PATH)/$(PREVIOUS_JDK_FILE)
+
+# UNIXCOMMAND_PATH is the path to where the most common Unix
+# commands are installed.
+UNIXCOMMAND_PATH = /bin/
+# Allow the user to override the default value...
+ifdef ALT_UNIXCOMMAND_PATH
+# make sure that there is a "/" on the end...
+UNIXCOMMAND_PATH = $(subst //,/,$(ALT_UNIXCOMMAND_PATH)/)
+endif
+
+# USRBIN_PATH is the path to where the most common Unix
+# commands are installed.
+USRBIN_PATH = /usr/bin/
+# Allow the user to override the default value...
+ifdef ALT_USRBIN_PATH
+# make sure that there is a "/" on the end...
+USRBIN_PATH = $(subst //,/,$(ALT_USRBIN_PATH)/)
+endif
+
+# COMPILER_PATH is the path to where the compiler and tools 
+# are installed.
+COMPILER_PATH = /usr/bin/
+#
+# Allow the user to override the default value...
+ifdef ALT_COMPILER_PATH
+COMPILER_PATH = $(subst //,/,$(subst \,/,$(ALT_COMPILER_PATH))/)
+endif
+
+# GCC29_COMPILER_PATH is the path to where the gcc 2.9 compiler
+# are installed
+GCC29_COMPILER_PATH = /java/devtools/$(PLATFORM)/gcc29/
+#
+# Allow the user to override the default value...
+#
+ifdef ALT_GCC29_COMPILER_PATH
+GCC29_COMPILER_PATH = $(subst //,/,$(subst \,/,$(ALT_GCC29_COMPILER_PATH))/)
+endif
+
+# DEVTOOLS_PATH is for other tools required for building (such as
+# zip, etc.)
+DEVTOOLS_PATH = /java/devtools/$(PLATFORM)/bin/
+# Allow the user to override the default value...
+ifdef ALT_DEVTOOLS_PATH
+DEVTOOLS_PATH = $(subst //,/,$(ALT_DEVTOOLS_PATH)/)
+endif
+
+
+# where is unwanted output to be delivered?
+DEV_NULL = /dev/null
+export DEV_NULL
+
+CLASSPATH_SEPARATOR = :
+
+#
+# Default BOOTDIR
+#
+_BOOTDIR = /java/re/j2se/$(PREVIOUS_JDK_VERSION)/archive/fcs/binaries/$(PLATFORM)-$(ARCH)
+
+
+# suffix used for object file (.o for unix .obj for windows)
+OBJECT_SUFFIX = o
+# The suffix applied to runtime libraries
+LIBRARY_SUFFIX = so
+# The suffix applied to link libraries
+LIB_SUFFIX = so
+# The suffix applied to executables (.exe for windows, nothing for solaris)
+EXE_SUFFIX =
+# The prefix applied to library files (lib for solaris, nothing for windows)
+LIB_PREFIX = lib
+
+
+# Where to get motif for linux
+#
+ifdef ALT_MOTIF_DIR
+  MOTIF_DIR = $(ALT_MOTIF_DIR)
+  BUILD_MOTIF := false
+else
+  # If the motif workspace exists, use it.
+  ifeq ($(shell if [ -r $(MOTIF_TOPDIR)/lib/Xm/Makefile ]; then $(ECHO) true; fi), true)
+    MOTIF_DIR = $(OUTPUTDIR)/motif-$(ARCH)
+  else
+    MOTIF_DIR = /java/devtools/linux/motif-$(ARCH)
+  endif
+endif
+
+ifeq ($(ARCH_DATA_MODEL), 32)
+  MOTIF_LIB = $(MOTIF_DIR)/lib
+else
+  MOTIF_LIB = $(MOTIF_DIR)/lib64
+endif
+
+# Values for the JDI binding of the Serviceability Agent.
+HOTSPOT_SALIB_PATH = $(HOTSPOT_IMPORT_PATH)/jre/lib/$(LIBARCH)
+SA_OPT_LIB_NAME    = $(LIB_PREFIX)saproc$(OPT_SUFFIX).$(LIBRARY_SUFFIX)
+SA_DEBUG_LIB_NAME  = $(LIB_PREFIX)saproc$(DBG_SUFFIX).$(LIBRARY_SUFFIX)
+
+# JDI-SA is not supported on linux-ia64.
+ifeq ($(ARCH), ia64)
+  INCLUDE_SA = false
+else
+  INCLUDE_SA = true
+endif

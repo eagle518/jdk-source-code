@@ -1,0 +1,256 @@
+#
+# Copyright 2004 Sun Microsystems, Inc.  All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL.  Use is subject to license terms.
+
+#
+# @(#)sanity-rules.gmk	1.30 04/01/29
+
+################################################################
+# SANITY
+################################################################
+
+sanity:: pre-sanity settings insane environment
+
+ifeq ($(BUILD_HOTSPOT), true)
+  sanity:: hotspot-sanity
+endif
+
+ifeq ($(BUILD_MOTIF), true)
+  sanity:: motif-sanity
+endif
+
+sanity:: deploy-sanity j2se-sanity 
+
+ifeq ($(BUILD_INSTALL), true)
+  sanity:: install-sanity
+endif
+
+ifndef DEV_ONLY
+  ifndef SKIP_COMPARE_IMAGES
+    sanity:: compare-images-sanity
+  endif
+endif
+
+sanity:: post-sanity
+
+pre-sanity: 
+	@$(RM) $(ERROR_FILE) $(WARNING_FILE) $(MESSAGE_FILE)
+
+# this should be the last rule in any target's sanity rule.
+post-sanity post-sanity-hotspot post-sanity-j2se post-sanity-motif post-sanity-install post-sanity-deploy:
+	@if [ -r $(MESSAGE_FILE) ]; then \
+	  $(ECHO) "" ; \
+	  $(CAT) $(MESSAGE_FILE) ; \
+	fi
+	@if [ -r $(WARNING_FILE) ]; then \
+	  $(CAT) $(WARNING_FILE) ; \
+	fi
+	@if [ "x$(INSANE)" != x ]; then \
+	  $(ECHO) "INSANE mode requested. \n" \
+	    "Sanity will not force a build termination, even with errors.\n" \
+	    "" >> $(ERROR_FILE); \
+	fi
+	@if [ -r $(ERROR_FILE) ]; then \
+	  if [ "x$(INSANE)" = x ]; then \
+	    $(ECHO) "Exiting because of the above error(s). \n" \
+	      "">> $(ERROR_FILE); \
+	  fi ; \
+	  $(CAT) $(ERROR_FILE) ; \
+	  if [ "x$(INSANE)" = x ]; then \
+	    exit 1 ; \
+	  fi ; \
+	fi
+ifdef PEDANTIC
+	@if [ -r $(WARNING_FILE) ]; then \
+	  $(ECHO) "PEDANTIC mode requested. \n" \
+	    "Exiting because of the above warning(s). \n" \
+	    "" >> $(ERROR_FILE); \
+	  $(CAT) $(ERROR_FILE) ; \
+	  exit 1 ; \
+	fi
+endif
+	@if [ ! -r $(ERROR_FILE) ]; then \
+	  $(ECHO) "Sanity check passed." ; \
+	fi
+
+insane:
+ifdef INSANE
+	@$(ECHO) "WARNING: You are building in 'INSANE' mode. You \n" \
+	   "        should not use this mode, and in fact, \n" \
+	   "        it may be removed at any time. If you \n" \
+	   "        have build problems as a result of using \n" \
+	   "        INSANE mode, then you should not expect \n" \
+	   "        assistance from anyone with the problems \n" \
+	   "        or consequences you experience. \n" \
+	   "" >> $(WARNING_FILE)
+endif
+
+environment:
+ifeq ($(BUILD_HOTSPOT), true)
+  ifdef ALT_HOTSPOT_IMPORT_PATH
+	@$(ECHO) "ERROR: Your build environment has the variable\n" \
+	   "        ALT_HOTSPOT_IMPORT_PATH defined. When building\n" \
+	   "        using the control workspace this variable should\n" \
+	   "        not be set. Please unset it and restart your build or \n" \
+	   "        please set ALT_HOTSPOT_SERVER_PATH and ALT_HOTSPOT_CLIENT_PATH \n" \
+	   "        (32 bit only) ALT_HOTSPOT_LIB_PATH (windows only) and restart your build. \n" \
+	   "" >> $(ERROR_FILE)
+  endif
+  ifdef ALT_HOTSPOT_SERVER_PATH
+	@$(ECHO) "ERROR: Your build environment has the variable\n" \
+	   "        ALT_HOTSPOT_SERVER_PATH defined. When building\n" \
+	   "        using the control workspace this variable should\n" \
+	   "        not be set. Please unset it and restart your build or \n" \
+	   "        please set ALT_HOTSPOT_IMPORT_PATH and ALT_HOTSPOT_CLIENT_PATH \n" \
+	   "        (32 bit only) ALT_HOTSPOT_LIB_PATH (windows only) and restart your build. \n" \
+	   "" >> $(ERROR_FILE)
+  endif
+  ifdef ALT_HOTSPOT_CLIENT_PATH
+	@$(ECHO) "ERROR: Your build environment has the variable\n" \
+	   "        ALT_HOTSPOT_CLIENT_PATH defined. When building\n" \
+	   "        using the control workspace this variable should\n" \
+	   "        not be set. Please unset it and restart your build or \n" \
+	   "        please set ALT_HOTSPOT_IMPORT_PATH and ALT_HOTSPOT_SERVER_PATH \n" \
+	   "        and ALT_HOTSPOT_LIB_PATH (windows only) and restart your build. \n" \
+	   "" >> $(ERROR_FILE)
+  endif
+  ifdef ALT_HOTSPOT_LIB_PATH
+	@$(ECHO) "ERROR: Your build environment has the variable\n" \
+	   "        ALT_HOTSPOT_LIB_PATH defined. When building\n" \
+	   "        using the control workspace this variable should\n" \
+	   "        not be set. Please unset it and restart your build or \n" \
+	   "        please set ALT_HOTSPOT_IMPORT_PATH and ALT_HOTSPOT_SERVER_PATH \n" \
+	   "        and ALT_HOTSPOT_CLIENT_PATH (32 bit only) and restart your build. \n" \
+	   "" >> $(ERROR_FILE)
+  endif
+else
+	@$(ECHO) "WARNING: You are not building HOTSPOT workspace from\n" \
+	   "        the control build. Hotspot libs will be obtained from \n" \
+	   "        the usual location or from the ALT_HOTSPOT_IMPORT_PATH, \n" \
+	   "        ALT_HOTSPOT_SERVER_PATH and ALT_HOTSPOT_CLIENT_PATH  \n" \
+	   "        (32 bit only) and ALT_HOTSPOT_LIB_PATH (windows only) location, if they are defined.\n" \
+	   "" >> $(WARNING_FILE)
+endif
+ifneq ($(BUILD_MOTIF), true)
+  ifeq ($(PLATFORM), linux)
+	@$(ECHO) "WARNING: You are not building MOTIF workspace from\n" \
+	   "        the control build. MOTIF libs will be obtained from \n" \
+	   "        the usual location or from the ALT_MOTIF_DIR, \n" \
+	   "        location, if it is defined.\n" \
+	   "" >> $(WARNING_FILE)
+  endif
+endif
+ifneq ($(BUILD_INSTALL), true)
+	@$(ECHO) "WARNING: Your are not building INSTALL workspace from\n" \
+	   "        the control build. This will result in a development-only\n" \
+	   "        build of the J2SE workspace, lacking the installation bundles\n" \
+	   "" >> $(WARNING_FILE)
+endif
+ifdef NO_DOCS
+	@$(ECHO) "WARNING: Your build environment has the variable NO_DOCS\n" \
+	   "        defined. This will result in a development-only\n" \
+	   "        build of the J2SE workspace, lacking the documentation\n" \
+	   "        build.\n" \
+	   "" >> $(WARNING_FILE)
+endif
+ifdef NO_IMAGES
+	@$(ECHO) "WARNING: Your build environment has the variable NO_IMAGES\n" \
+	   "        defined. This will result in a development-only\n" \
+	   "        build of the J2SE workspace, lacking the install images\n" \
+	   "        and bundles.\n" \
+	   "" >> $(WARNING_FILE)
+endif
+ifdef DEV_ONLY
+	@$(ECHO) "WARNING: Your build environment has the variable DEV_ONLY\n" \
+	   "        defined. This will result in a development-only\n" \
+	   "        build of the J2SE workspace, lacking the documentation\n" \
+	   "        build and installation bundles.\n" \
+	   "" >> $(WARNING_FILE)
+endif
+ifdef J2RE_ONLY
+	@$(ECHO) "WARNING: Your build environment has the variable\n" \
+	   "        J2RE_ONLY defined. This will result in a runtime-only\n" \
+	   "        build of the J2SE workspace, lacking the javac compiler\n" \
+	   "        and other tools that are built as part of a full J2SDK build.\n" \
+	   "" >> $(WARNING_FILE)
+endif
+ifdef NO_RTPATCH
+	@$(ECHO) "WARNING: Your build environment has the variable NO_RTPATCH\n" \
+	   "        defined. This will result in a development-only\n" \
+	   "        build of the J2SE workspace, lacking the patch installer\n" \
+	   "        bundles based on a pre-determined JRE base.\n" \
+	   "" >> $(WARNING_FILE)
+endif
+
+###########################################################
+# Check for existence of previous release jdk & jre bundle
+###########################################################
+compare-images-sanity:
+ifndef DEV_ONLY
+  ifndef SKIP_COMPARE_IMAGES
+	@if [ ! -f $(PREVIOUS_JRE_BUNDLE) ]; then \
+	  $(ECHO) "ERROR: You do not have access to the previous java release jre bundles. \n" \
+	    "      Please check your access to \n" \
+	    "          $(PREVIOUS_JRE_BUNDLE) \n" \
+	    "      and/or check your value of ALT_PREVIOUS_RELEASE_PATH or ALT_PREVIOUS_JRE_FILE \n" \
+	    "      This will affect you if you build the images target. \n" \
+	    "" >> $(ERROR_FILE) ; \
+	fi
+	@if [ ! -f $(PREVIOUS_JDK_BUNDLE) ]; then \
+	  $(ECHO) "ERROR: You do not have access to the previous java release sdk bundles. \n" \
+	    "      Please check your access to \n" \
+	    "          $(PREVIOUS_sdk_BUNDLE) \n" \
+	    "      and/or check your value of ALT_PREVIOUS_RELEASE_PATH or ALT_PREVIOUS_JDK_FILE. \n" \
+	    "      This will affect you if you build the images target. \n" \
+	    "" >> $(ERROR_FILE) ; \
+	fi
+  endif
+endif
+
+######################################################
+# dump out the variable settings...
+######################################################
+settings:: 
+	@$(ECHO) "Build Machine Information:" >> $(MESSAGE_FILE)
+ifeq ($(PLATFORM), windows)
+	@$(ECHO) "   build machine = $(COMPUTERNAME)"  >> $(MESSAGE_FILE)
+else
+	@$(ECHO) "   build machine = $(HOSTNAME)"  >> $(MESSAGE_FILE)
+endif
+	@$(ECHO) "" >> $(MESSAGE_FILE)
+	@$(ECHO) "Build Directory Structure:" >> $(MESSAGE_FILE)
+	@$(ECHO) "   CWD = `$(PWD)`" >> $(MESSAGE_FILE)
+	@$(ECHO) "   TOPDIR = $(TOPDIR)"  >> $(MESSAGE_FILE)
+	@$(ECHO) "   CONTROL_TOPDIR = $(CONTROL_TOPDIR)"  >> $(MESSAGE_FILE)
+ifeq ($(BUILD_HOTSPOT), true)
+	@$(ECHO) "   HOTSPOT_TOPDIR = $(HOTSPOT_TOPDIR)"  >> $(MESSAGE_FILE)
+endif
+	@$(ECHO) "   J2SE_TOPDIR = $(J2SE_TOPDIR)"  >> $(MESSAGE_FILE)
+ifeq ($(BUILD_MOTIF), true)
+	@$(ECHO) "   MOTIF_TOPDIR = $(MOTIF_TOPDIR)"  >> $(MESSAGE_FILE)
+endif
+ifeq ($(ARCH_DATA_MODEL), 32)
+	@$(ECHO) "   DEPLOY_TOPDIR = $(DEPLOY_TOPDIR)"  >> $(MESSAGE_FILE)
+endif
+ifeq ($(BUILD_INSTALL), true)
+	@$(ECHO) "   INSTALL_TOPDIR = $(INSTALL_TOPDIR)"  >> $(MESSAGE_FILE)
+endif
+	@$(ECHO) "" >> $(MESSAGE_FILE)
+ifndef DEV_ONLY
+  ifndef SKIP_COMPARE_IMAGES
+	@$(ECHO) "External File/Binary Locations:" >> $(MESSAGE_FILE)
+	@$(ECHO) "   PREVIOUS_JRE_BUNDLE = $(PREVIOUS_JRE_BUNDLE) " >> $(MESSAGE_FILE)
+	@$(ECHO) "   PREVIOUS_JDK_BUNDLE = $(PREVIOUS_JDK_BUNDLE) " >> $(MESSAGE_FILE)
+	@$(ECHO) "" >> $(MESSAGE_FILE)
+  endif
+endif
+	@$(ECHO) "Build Directives:" >> $(MESSAGE_FILE)
+	@$(ECHO) "   BUILD_HOTSPOT = $(BUILD_HOTSPOT) " >> $(MESSAGE_FILE)
+	@$(ECHO) "   BUILD_MOTIF   = $(BUILD_MOTIF) " >> $(MESSAGE_FILE)
+	@$(ECHO) "   BUILD_INSTALL = $(BUILD_INSTALL) " >> $(MESSAGE_FILE)
+	@$(ECHO) "" >> $(MESSAGE_FILE)
+
+.PHONY: sanity settings pre-sanity hotspot-sanity motif-sanity insane j2se-sanity \
+	post-sanity post-sanity-hotspot post-sanity-j2se post-sanity-motif \
+	post-sanity-install install-sanity deploy-sanity post-sanity-deploy \
+	compare-images-sanity	
