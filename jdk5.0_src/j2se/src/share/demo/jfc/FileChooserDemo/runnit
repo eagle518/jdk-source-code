@@ -1,0 +1,36 @@
+#!/bin/sh
+#
+# %% %%
+
+if [ -z "${JAVA_HOME}" ] ; then
+    if [ -d /usr/local/java/jdk1.1.7/solaris ] ; then
+        JAVA_HOME=/usr/local/java/jdk1.1.7/solaris
+	CLASSPATH=.:/usr/local/java/jdk1.1.7/solaris/lib/classes.zip
+	export CLASSPATH
+    else
+        echo "JAVA_HOME environment variable not set." 1>&2 
+        exit 1
+    fi
+fi
+
+# Compute an absolute pathname here because Class.getResource()
+# fails if $CLASSPATH contains "../".
+if [ -d ../../1.1_demo ] ; then
+    SWING_HOME=`(cd ../../1.1_classes; pwd)`
+    SWING_JARS=${SWING_HOME}
+else
+    SWING_HOME=`(cd ../../; pwd)`
+    SWING_JARS=${SWING_HOME}/swing.jar:${SWING_HOME}/motif.jar:${SWING_HOME}/multi.jar:${SWING_HOME}/windows.jar
+fi
+
+SWING_CLASSES=.:${SWING_JARS}:FileChooserDemo.jar
+if [ -z "$CLASSPATH" ] ; then
+    CLASSPATH="${SWING_CLASSES}":${JAVA_HOME}/lib/classes.zip
+else
+    CLASSPATH="${SWING_CLASSES}:$CLASSPATH"
+fi
+
+CMD="${JAVA_HOME}/bin/java -classpath ${CLASSPATH} FileChooserDemo"
+
+echo ${CMD}
+${CMD}
