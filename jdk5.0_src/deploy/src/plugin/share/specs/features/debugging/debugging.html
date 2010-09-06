@@ -1,0 +1,428 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0062)http://webwork.eng/products/plugin/1.3/docs/appletcaching.html -->
+<!-- Copyright 1998 Sun Microsystems, Inc. All Rights Reserved. --><!-- "@(#)index.html	1.32 99/08/27 Sun Microsystems" --><HTML><HEAD><TITLE>Debugging
+applets in Java Plug-in</TITLE>
+<META content="text/html; charset=iso-8859-1" http-equiv=Content-Type><!-------------------------------><!--      ABOUT THIS HTML      --><!-------------------------------><!-- FOLLOW THESE COMMENTS FOR --><!--   INFORMATION ABOUT THE   --><!-- STRUCTURE OF OUR TEMPLATES--><!-------------------------------><!-------------------------------><!--   INSERT YOUR TITLE HERE  --><!------------BEGIN-TITLE--------><!-------------END-TITLE---------><!--        END OF TITLE       --><!------------------------------->
+<META content="Microsoft FrontPage 4.0" name=GENERATOR></HEAD>
+<BODY bgColor=#ffffff text=#000000><!-- begin main page table -->
+<TABLE border=0 cellPadding=0 cellSpacing=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=top width=157><!-------------------------------><!--  SERVER SIDE INCLUDE FOR  --><!--  NAVIGATION MENU AT LEFT  --><!-------------------------------><!-- Begin Navbar Segment -->
+      <TABLE border=0>
+        <TBODY>
+        <TR vAlign=top>
+          <TD width=155><IMG alt="" height=20 src="debugging_files/pixel.gif" 
+            width=20> <A href="http://webwork.eng/"><IMG 
+            alt="Java Technology Home Page" border=0 height=88 
+            src="debugging_files/javalogo52x88.gif" width=52></A><BR>
+            <TABLE border=0 cellPadding=3 cellSpacing=0 width=157><!-- the following spacer ensures that the --><!--   table is at least 157 pixels wide   -->
+              <TBODY>
+              <TR>
+                <TD></TD></TR><!-- tab categories -->
+              <TR>
+                <TD></TD>
+                <TD><A href="http://webwork.eng/products/"><IMG 
+                  alt="Downloads, APIs, Documentation" border=0 height=15 
+                  src="debugging_files/side.tab.products.gif" 
+              width=130></A></TD></TR>
+              <TR>
+                <TD></TD>
+                <TD><A href="http://webwork.eng/jdc/"><IMG 
+                  alt="Java Developer Connection" border=0 height=15 
+                  src="debugging_files/side.tab.developer.gif" 
+              width=130></A></TD></TR>
+              <TR>
+                <TD></TD>
+                <TD><A href="http://webwork.eng/infodocs/"><IMG 
+                  alt="Docs, Tutorials, Tech Articles, Training" border=0 
+                  height=15 src="debugging_files/side.tab.docs.gif" 
+                  width=130></A></TD></TR>
+              <TR>
+                <TD></TD>
+                <TD><A href="http://webwork.eng/support/"><IMG 
+                  alt="Online Support" border=0 height=15 
+                  src="debugging_files/side.tab.support.gif" 
+width=130></A></TD></TR>
+              <TR>
+                <TD></TD>
+                <TD><A href="http://webwork.eng/community/"><IMG 
+                  alt="Community Discussion" border=0 height=15 
+                  src="debugging_files/side.tab.community.gif" 
+              width=130></A></TD></TR>
+              <TR>
+                <TD></TD>
+                <TD><A href="http://webwork.eng/industry"><IMG 
+                  alt="News &amp; Events from Everywhere" border=0 height=15 
+                  src="debugging_files/side.tab.news.gif" width=130></A></TD></TR>
+              <TR>
+                <TD></TD>
+                <TD><A href="http://webwork.eng/solutions/"><IMG 
+                  alt="Products from Everywhere" border=0 height=15 
+                  src="debugging_files/side.tab.solutions.gif" 
+              width=130></A></TD></TR>
+              <TR>
+                <TD></TD>
+                <TD><A href="http://webwork.eng/casestudies/"><IMG 
+                  alt="How Java Technology is Used Worldwide" border=0 height=15 
+                  src="debugging_files/side.tab.case.gif" width=130></A></TD></TR>
+              <TR>
+                <TD></TD>
+                <TD></TD></TR></TBODY></TABLE>
+            <P></P></TD></TR></TBODY></TABLE><!-- End Navbar Segment --></TD>
+    <TD vAlign=top width=452><!--  begin header table -->
+      <TABLE border=0 width=452><!-------------------------------><!--  SERVER SIDE INCLUDE FOR  --><!--  HEADER AT TOP OF PAGE    --><!-------------------------------><!-- Begin Header Segment -->
+        <TBODY>
+        <TR>
+          <TD>
+            <FORM action=http://search.java.sun.com/query.html method=get><INPUT 
+            name=col type=hidden value=jsun> <INPUT name=pw type=hidden 
+            value=100%> <INPUT name=ws type=hidden value=0> <INPUT name=nh 
+            type=hidden value=10> 
+            <TABLE border=0 cellPadding=0 cellSpacing=0 width="100%">
+              <TBODY>
+              <TR>
+                <TD align=right><IMG alt="" height=14 
+                  src="debugging_files/stripelt.gif" width=6></TD>
+                <TD width="100%">
+                  <TABLE border=0 cellPadding=0 cellSpacing=0 width="100%">
+                    <TBODY>
+                    <TR>
+                      <TD bgColor=#cc9966 width="100%"><IMG alt="" height=2 
+                        src="debugging_files/pixel.gif" width=1></TD></TR>
+                    <TR>
+                      <TD><IMG alt="" height=2 src="debugging_files/pixel.gif" 
+                        width=1></TD></TR>
+                    <TR>
+                      <TD bgColor=#cc9966><IMG alt="" height=2 
+                        src="debugging_files/pixel.gif" width=1></TD></TR>
+                    <TR>
+                      <TD><IMG alt="" height=2 src="debugging_files/pixel.gif" 
+                        width=1></TD></TR>
+                    <TR>
+                      <TD bgColor=#cc9966><IMG alt="" height=2 
+                        src="debugging_files/pixel.gif" width=1></TD></TR>
+                    <TR>
+                      <TD><IMG alt="" height=2 src="debugging_files/pixel.gif" 
+                        width=1></TD></TR>
+                    <TR>
+                      <TD bgColor=#cc9966><IMG alt="" height=2 
+                        src="debugging_files/pixel.gif" 
+                  width=1></TD></TR></TBODY></TABLE></TD>
+                <TD align=left><IMG alt="" height=14 
+                  src="debugging_files/stripert.gif" width=6></TD>
+                <TD>
+                  <TABLE border=0 cellPadding=0 cellSpacing=0>
+                    <TBODY>
+                    <TR>
+                      <TD vAlign=center><A href="http://webwork.eng/a-z/"><IMG 
+                        alt="A-Z Index" border=0 height=11 
+                        src="debugging_files/azindex.gif" width=72></A></TD>
+                      <TD vAlign=center><FONT face=Helvetica size=1><INPUT 
+                        maxLength=2033 name=qt size=15></FONT></TD>
+                      <TD vAlign=center><INPUT alt="Search the Site" border=0 
+                        height=14 name=search 
+                        src="debugging_files/search.button.gif" type=image 
+                        value=search 
+            width=55></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></FORM>
+            <P>
+            <TABLE border=0 cellPadding=0 cellSpacing=0 width="100%">
+              <TBODY>
+              <TR vAlign=top>
+                <TD width="100%"><IMG height=18 
+                  src="debugging_files/pixel.gif" width=20></TD>
+                <TD align=right rowSpan=3 width=152><A 
+                  href="http://webwork.eng/"><IMG 
+                  alt="The Source for Java Technology" border=0 height=42 
+                  src="debugging_files/thesourceforjava.gif" 
+width=389></A></TD></TR>
+              <TR vAlign=top>
+                <TD bgColor=#cc9966 height=1 width="100%"><IMG height=1 
+                  src="debugging_files/pixel.gif" width=1></TD></TR>
+              <TR vAlign=top>
+                <TD width="100%"><IMG height=20 
+                  src="debugging_files/pixel.gif" width=20></TD>
+                <TD align=right></TD></TR></TBODY></TABLE></P></TD></TR><!-- End Header Segment --><!-- breadcrumb trail -->
+        <TR>
+          <TD align=right height=25 vAlign=top></TD></TR>
+        <TR>
+          <TD>
+            <P></P></TD></TR>
+        <TR>
+          <TD align=right colSpan=2><!-- page headline --><!-------------------------------><!--EDIT THE PAGE HEADLINE HERE--><!------------BEGIN-HEADLINE-----><FONT 
+            size=+2><B>Debugging applets in Java Plug-in</B></FONT><BR><!-------------END-HEADLINE------><!--    END OF PAGE HEADLINE   --><!-------------------------------></TD></TR></TBODY></TABLE><!-- Begin Page Data --><!-------------------------------><!--  EDIT PAGE CONTENT HERE   --><!------------BEGIN-CONTENT------><!-------------END-CONTENT------->
+      <P>The experience of debugging Java applets in Java Plug-in has not been
+      too easy in the past, partly because the applets relies lots of services
+      and facilities from the Java 2 Runtime Environment, Java Plug-in, and the
+      browser itself. If the applet doesn't work, the developer normally will
+      need to spend certain amount of time to figure out what exactly the
+      problem is, or take a wild guess.<P>The purpose of this document is to
+      bridge this debugging gap. We will provide various techniques and
+      suggestions for developing applets in Java Plug-in. We will also outlines
+      some of the most common mistakes/problems in applet development, so you
+      don't have to fall into the same trap again.<h3>How to debug applets in
+      Java Plug-in</h3>
+      <p>                     In order to debug your applets you must have appropriate version of
+      Java 2 Development Kit, Standard Edition (JDK) installed on your machine. Also make sure to compile your
+      applet's .java files with -g option in javac. Steps to debug the applet are as follows<br>
+      </p>
+      <ol>
+        <li>Run the Java Plug-in Control Panel. Under the <i> Basic</i> tab, specify the
+          parameters&nbsp;<i><font color="#0000FF">
+          <pre>-Djava.compiler=NONE 
+-Xnoagent 
+-Xdebug 
+-Xrunjdwp:transport=dt_shmem,address=&lt;connection-address&gt;,server=y,suspend=n</pre>
+          </font></i>
+          <p>
+          in the Java Runtime Parameters. The <i>&lt;connection-address></i> could be any string which is used by the java
+          debugger later to connect to the JVM. For example,
+          <font color="#0000FF"><i><pre>-Djava.compiler=NONE 
+-Xnoagent 
+-Xdebug 
+-Xrunjdwp:transport=dt_shmem,address=2502,server=y,suspend=n&nbsp;</pre>
+          </i></font>
+          <p>
+                          Visit the URL <a href="http://java.sun.com/products/jdk/1.3/docs/guide/jpda/conninv.html#Plugin">http://java.sun.com/products/jdk/1.3/docs/guide/jpda/conninv.html#Plugin</a>&nbsp;
+          for the details on the possible run time parameters for debugging.<br>
+        </li>
+        <li>Under the <i> Advanced</i> tab in the Java Plug-in Control Panel, select
+          <i>&quot;JDK &lt;version> in &lt;jdk-path&gt;&quot;</i> for the Java
+          Runtime, where <i> &lt;version></i> is the Java Plug-in version and <i>&lt;jdk-path&gt;</i> is the path to the JDK installation. For
+          example, &quot;JDK1.3 in C:\jdk1.3&quot; . Do NOT select the Debug Options under the
+          <i> Advanced</i> tab.&nbsp;<br>
+        </li>
+        <li>Launch Internet Explorer or Netscape Navigator to load the page
+          which contains the applet to be debugged. Make sure the applet code
+          has been compiled with -g option in javac.<br>
+        </li>
+        <li>Run the command <i> jdb -attach &lt;connection address></i> in a DOS
+          command prompt. <i> &lt;connection address></i> is the name mentioned in the step 1. For example, if &lt;connection address> is "2502", you will run the command as&nbsp;<br>
+          <br>
+          <font color="#0000FF"><i> jdb -attach 2502<br>
+          </i></font><br>
+          To know more about the jdb, visit the URL <a href="http://java.sun.com/products/jdk/1.3/docs/tooldocs/win32/jdb.html">http://java.sun.com/products/jdk/1.3/docs/tooldocs/win32/jdb.html</a>.<br>
+        </li>
+        <li>Once the jdb debugger has attached to the VM, you may set up
+          breakpoints in the applet.&nbsp;<br>
+        </li>
+        <li>When the applet in the browser reaches the breakpoint, it will stop
+          executing, and you will see the debugger waiting for your input to
+          continue debugging.&nbsp;</li>
+      </ol>
+      <p>When debugging applets in Java Plug-in, please make sure NO more than
+      one instance of the browser are debugged using the same connection address
+      at the same time. Otherwise, it will result in conflict because the Java
+      Runtime running inside different instance of the browsers will try to gain
+      exclusive access to the same connection address. Therefore, to debug
+      applets in both Internet Explorer and Netscape Navigator, you should make
+      sure either Internet Explorer or Netscape Navigator is running with Java
+      Plug-in at any given time, but not both.</p>
+      <p>Debugging applets in Java Plug-in with Active Desktop is discouraged
+      because an instance of Internet Explorer will always run in the desktop
+      process in the lifetime of the user session.</p>
+      <p>You may also use other Java 2 debuggers instead of jdb. For example,
+      you may use Inprise's JBuilder or Symantac's VisualCafe to debug applets
+      in Java Plug-in. To debug applets using these debuggers, you will need to
+      change the project option in these IDEs to <i>attach</i> Java Plug-in in
+      the browser process on the same machine or remote machine. A different
+      Java Runtime Parameters may also be required to be used in the Java
+      Plug-in Control Panel. For more information, please consult your Java 2
+      debugger or IDE manuals.</p>
+      <h3>Java Plug-in Console</h3>
+      <P>One of the most powerful tools in Java Plug-in is Java Plug-in Console.
+      It is a simple console window for redirecting all the <i>System.out </i>and
+      <i>System.err</i> messages. By default, this console window is disabled,
+      and it could be enabled from the Java Plug-in Control Panel. If the
+      console is enabled, you should see the console window popup when Java
+      Plug-in is used in the browser.<h3>Java Plug-in Trace File</h3>
+      <P>Similar to the Java Plug-in Console, this is a file that records all
+      the <i>System.out</i> and <i>System.err</i> messages. By default, this
+      trace file is disabled, and it is enabled automatically when Java Plug-in
+      Console is enabled. The trace file is normally located in the <i>user.dir</i>,
+      and the file is called <i>plugin.trace.</i> For example, in Windows NT,
+      this file is located in <i>C:\WINNT\Profiles\&lt;username&gt;\plugin.trace.</i><h3>javaplugin.trace
+      property</h3>
+      <p>This property is for controlling whether Java Plug-in should print out
+      its trace messages during execution. This is invaluable to applets
+      developers to determine what exactly Java Plug-in is doing under the hood.
+      The possible values are either <i>true</i> or <i>false</i>. By default,
+      this property is set to false. To enable this property, <i>-Djavaplugin.trace=true</i>
+      should be put in the Runtime Parameters in the Java Plug-in Control Panel.</p>
+      <h3>java.security.debug property</h3>
+      <P>This property is for controlling whether the security system of the
+      Java 2 Runtime Environment should print out its trace messages during
+      execution. This is invaluable to applet developers when security exception
+      is thrown in their applets or when their signed applets not working. The
+      following options are supported:
+      <ul>
+        <li><i>access</i> - print all checkPermission results</li>
+        <li><i>jar</i> - jar verification</li>
+        <li><i>policy</i> - loading and granting</li>
+        <li><i>scl</i> - permissions SecureClassLoader assigns</li>
+      </ul>
+      <p>The following options can be used with <i>access</i>:</p>
+      <ul>
+        <li><i>stack</i> - include stack trace</li>
+        <li><i>domain</i> - dumps all domains in context</li>
+        <li><i>failure</i> - before throwing exception, dump stack and domain that didn't have
+          permission</li>
+      </ul>
+      <p>For example, to print all checkPermission results and dump all domains
+      in context, <i>-Djava.security.debug=access:stack</i> will be specified in
+      the Runtime Parameters in the Java Plug-in Control Panel.&nbsp;</p>
+      <h3>Online documentation</h3>
+      <p>Java Plug-in provides a rich set of documentation on our <a href="http://java.sun.com/products/plugin/1.3/docs/index.docs.html">web
+      site</a> to help developers leveraging various features in Java Plug-in.
+      We also documented some of the most frequently asked questions in our FAQ
+      as well. Please make sure you spend sometime to read and understand these
+      documents during applet development, and it may save you hundreds of hours
+      in debugging.&nbsp;</p>
+      <h3>Isolating bugs</h3>
+      <P>Although Java Plug-in provides Java 2 Runtime Environment within
+      Internet Explorer and Netscape Navigator, most of the facilities are
+      provided by the Java 2 Runtime itself, rather than by Java Plug-in.
+      Therefore, if a problem occurs in Java Plug-in, it may be either a problem
+      in Java Plug-in or the Java 2 Runtime itself. It is extremely important to
+      determine where the bugs belong, because it will speed up/slow down the
+      bug evaluation and bug fix process. In some other cases, the bug may be an
+      user error in the applet code. Here are some suggestions to isolate the
+      bug:
+      <ol>
+        <li>Run the applets in both Internet Explorer and Netscape Navigator
+          through Java Plug-in.&nbsp;</li>
+        <li>Run the applets in appletviewer. Because Java Plug-in is mainly
+          derived from appletviewer, so it also inherits problems from
+          appletviewer as well. The step should be performed only if the applet
+          doesn't require specific browser facilities that Java Plug-in
+          provides. For examples, HTTPS or RSA signing.</li>
+        <li>If the applet fails in appletviewer, it is very likely the problem
+          is in Java 2 Runtime, and not in Java Plug-in.&nbsp;</li>
+        <li>If the applet fails in only one of the browsers (IE or NS), it is
+          very likely a Java Plug-in problem.</li>
+        <li>If the applet fails in both browsers but not appletviewer, it could
+          be either a Java Plug-in problem or user errors. Please examine the
+          applet code to see if it makes any assumption about the execution
+          environment. For example, in appletviewer, the current directory is
+          set to the current directory in the shell when appletviewer launched,
+          while the current directory in Java Plug-in may be set to the
+          browser's directory. Therefore, loading resources from current
+          directory may work in appletviewer but not in Java Plug-in.</li>
+        <li>Try to reproduce the problem on other machines or on other
+          platforms. In some cases, the root of the problem is in the machine
+          configuration. For example, DNS may not setup properly.</li>
+        <li>If the developers have isolated the problems in Java 2 Runtime or
+          Java Plug-in, please follow the instruction in the next section to
+          submit a bug report to the appropriate product categories.</li>
+      </ol>
+      <h3>Submitting Bug Report</h3>
+      <P>To submit bug report, you may go to the Java Development Connection's <a href="http://developer.java.sun.com/developer/bugParade/index.jshtml">BugParade</a>.
+      Before submitting a bug, you should search the BugParade to determine if
+      the bug has been reported previously and fixed. In some cases, workaround
+      may also have been suggested. If the bug is not reported previously, you
+      may submit a new bug report to the Java Plug-in team. In the bug report,
+      please make sure the following information are included:
+      <ul>
+        <li>Complete description of the problem, and step-by-step description of
+          how to reproduce it.</li>
+        <li>Error messages captured by Java Plug-in Console or trace file. Make
+          sure <i>javaplugin.trace</i> is turned on.</li>
+        <li>Proxy configuration information. e.g. Auto proxy configuration, with
+          the proxy configuration file attached.</li>
+        <li>Browser and platform information. e.g. Navigator 4.5 on Win98.</li>
+        <li>Test case that demonstrates the problem.</li>
+        <li>Specify whether the problem occurs in other browsers and
+          appletviewer.</li>
+        <li>Specify any workaround available.</li>
+        <li>Specify your own information like name and email address, so you may
+          be contacted if additional information are needed for further bug
+          investigation.</li>
+      </ul>
+      <p>Once the Java Plug-in team received the bug report with all the
+      necessary information, it will be evaluated properly.</p>
+      <h3>Submitting Feature Request</h3>
+      <P>To submit feature request, you may go through <a href="http://java.sun.com/cgi-bin/bugreport.cgi">Java
+      Development Connection</a>. In the feature request, please make sure the
+      following information are included:
+      <ul>
+        <li>Complete description of the requested feature.</li>
+        <li>How this feature will be able to improve the quality of your product
+          or Java Plug-in in general.</li>
+      </ul>
+      <p>Once the Java Plug-in team received the feature request, it will be
+      evaluated properly.</p>
+      <h3>Java Plug-in Feedback Alias</h3>
+      <P>The purpose of the Java Plug-in Feedback alias <a href="mailto:java-plugin-feedback@sun.com">java-plugin-feedback@sun.com</a>
+      is for customers to provide feedback on various product features and the
+      product itself in general, so the Java Plug-in team will be able to
+      improve the product to fit the customers' needs. However, this alias is
+      not intended for bug report submission. To submit bug report, please
+      follow the instruction described earlier in this document.
+      <TABLE border=0 width=452>
+        <TBODY>
+        <TR>
+          <TD align=right vAlign=top>
+            <P></P></TD></TR></TBODY></TABLE></TD></TR>
+  <TR>
+    <TD vAlign=top width=157></TD>
+    <TD vAlign=top width=452></TD></TR></TBODY></TABLE><!-- Footer table --><!-------------------------------><!--  SERVER SIDE INCLUDE FOR  --><!--  FOOTER AT BOTTOM OF PAGE --><!-------------------------------><!-- Begin Footer Segment --><BR 
+clear=all>
+<TABLE border=0 cellPadding=0 cellSpacing=5 width="100%">
+  <TBODY>
+  <TR>
+    <TD vAlign=top>
+      <P align=center><FONT color=#999999 size=-1>[ This page was updated: 
+      02-Dec-99 ]</FONT></P></TD></TR>
+  <TR>
+    <TD bgColor=#cccccc><SPACER WIDTH="1" HEIGHT="1" TYPE="BLOCK"></TD></TR>
+  <TR>
+    <TD>
+      <CENTER><FONT size=-1><A href="http://webwork.eng/products/">Products 
+      &amp; APIs</A> | <A href="http://webwork.eng/jdc/">Developer 
+      Connection</A> | <A href="http://webwork.eng/infodocs/">Docs &amp; 
+      Training</A> | <A href="http://webwork.eng/support/">Support</A><BR><A 
+      href="http://webwork.eng/community/">Community Discussion</A> | <A 
+      href="http://webwork.eng/industry/">Industry News</A> | <A 
+      href="http://webwork.eng/solutions/">Solutions Marketplace</A> | <A 
+      href="http://webwork.eng/casestudies/">Case Studies</A> 
+  </FONT></CENTER></TD></TR>
+  <TR>
+    <TD bgColor=#cccccc><SPACER WIDTH="1" HEIGHT="1" TYPE="BLOCK"></TD></TR>
+  <TR>
+    <TD align=middle><FONT size=-2><A 
+      href="http://webwork.eng/docs/glossary.html">Glossary</A> - <A 
+      href="http://webwork.eng/applets/">Applets</A> - <A 
+      href="http://webwork.eng/docs/books/tutorial/">Tutorial</A> - <A 
+      href="http://webwork.eng/jobs/">Employment</A> - <A 
+      href="http://webwork.eng/nav/business/">Business &amp; Licensing</A> - <A 
+      href="http://webwork.eng/javastore/">Java Store</A> - <A 
+      href="http://webwork.eng/casestudies/">Java in the Real World</A> 
+    </FONT></TD></TR>
+  <TR>
+    <TD>
+      <CENTER><FONT size=-2><A 
+      href="http://webwork.eng/cgi-bin/feedback.pl">Feedback</A> | <A 
+      href="http://www.dynamicdiagrams.net/mapa/cgi-bin/help.tcl?db=javasoft&amp;dest=http://java.sun.com/">Map</A> 
+      | <A href="http://webwork.eng/a-z/index.html">A-Z Index</A> 
+      </FONT></CENTER>
+      <P></P></TD></TR>
+  <TR>
+    <TD>
+      <TABLE border=0 cellPadding=0 cellSpacing=0 width="100%">
+        <TBODY>
+        <TR>
+          <TD width="50%"><FONT size=-2>For more information on Java 
+            technology<BR>and other software from Sun Microsystems, 
+            call:<BR></FONT><FONT size=-1>(800) 786-7638<BR></FONT><FONT 
+            size=-2>Outside the U.S. and Canada, dial your country's <A 
+            href="http://www.att.com/business_traveler/attdirecttollfree/">AT&amp;T&nbsp;Direct&nbsp;Access&nbsp;Number</A> 
+            first.<BR></FONT></TD>
+          <TD align=right width="50%"><A href="http://www.sun.com/"><IMG 
+            alt="Sun Microsystems, Inc." border=0 height=30 
+            src="debugging_files/lgsun.gif" width=64></A><BR><FONT 
+            size=-2>Copyright ?995-2000 <A href="http://www.sun.com/">Sun 
+            Microsystems, Inc.</A><BR>All Rights Reserved. <A 
+            href="http://www.sun.com/share/text/termsofuse.html">Terms of 
+            Use</A>. <A 
+            href="http://www.sun.com/privacy">Privacy&nbsp;Policy</A>. 
+        </FONT></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE><!-- End Footer Segment --></BODY></HTML>

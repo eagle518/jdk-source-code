@@ -1,0 +1,447 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.79 [en] (WinNT; U) [Netscape]">
+   <title>Engineering Specification Template</title>
+<!-- saved from url=(0043)http://javaweb.sfbay/~xl116366/4480339.html -->
+</head>
+<body bgcolor="#FFFFFF">
+
+<h2>
+<font size=+1>Java Plug-in should try all proxies returned by auto-proxy
+script </font>Engineering Specification</h2>
+
+<h4>
+RFE:&nbsp; <a href="http://andorra1.sfbay:8080/cgi-bin/ws.exe/bugtraq/jdk/bug.hts?bugid_value=4480339">4480339</a></h4>
+Author:Xiaobin Lu
+<br>Date: Feb 25, 2002
+<br>&nbsp;
+<br>&nbsp;
+<table BORDER=0 CELLSPACING=0 CELLPADDING=3 WIDTH="100%" >
+<caption><TBODY>
+<br></TBODY></caption>
+
+<tr>
+<td BGCOLOR="#F5DEB3">
+<h3>
+1 Project Description</h3>
+</td>
+</tr>
+</table>
+
+<p><b>1.1 Overview</b>
+<p>This goal of this RFE is to change the current mechanism of Java Plug-in
+to handle the auto proxy configuration. Currently we just return the first
+match of proxy server in the returned list of "FindProxyForURL" function
+no matter whether it is dead or alive. This RFE is to make Java Plug-in
+to return the first alive proxy in the list.
+<h4>
+1.2 Project Dependencies</h4>
+N/A
+<h4>
+1.3 OS and Browser Compatibility and Interoperability</h4>
+This feature will be available for all supported platforms.
+<h4>
+1.4 Performance and Scalability</h4>
+N/A
+<h4>
+1.5 Security</h4>
+N/A
+<h4>
+1.6 Internationalization (I18N) / Localization (L10N)</h4>
+N/A
+<h4>
+1.7 Packaging</h4>
+N/A
+<h4>
+1.8 Usability</h4>
+This feature enhances the usability of JRE/JPI in terms of networking.
+<h4>
+1.9 Quality</h4>
+
+<h5>
+1.9.1 Unit or Functional Tests to be Delivered</h5>
+&nbsp;
+<h5>
+1.9.2 Additional Testing Notes</h5>
+In order to test this, you probably need to set up a webserver which stores
+the proxy autoconfig file. Look at your Netscape configuartion at Unix,
+you will probably find a pac file. Here is the typical proxy autoconfiguration
+script:
+<p>function FindProxyForURL(url, host) {
+<br>&nbsp;&nbsp;&nbsp; return "PROXY wcscab.SFBay.Sun.COM:8080;" +
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "PROXY
+wcscaa.SFBay.Sun.COM:8080;" +
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "PROXY
+wcmpka.Eng.Sun.COM:8080;" +
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "PROXY
+wcnwkc.EBay.Sun.COM:8080";
+<br>&nbsp; }
+<p>// End FindProxyForURL
+<p>You can change the return value to add an invalid proxy server at the
+beginning of this list. Go to Java control panel, open "Proxies" tab and
+point the URL of the script into the Autoconfig Proxy URL field. After
+changing this, apply the change and open the browser and go to java.sun.com,
+you should be able to see the applet working after the fix of this RFE.
+<br>&nbsp;
+<table BORDER=0 CELLSPACING=0 CELLPADDING=3 WIDTH="100%" >
+<caption><TBODY>
+<br></TBODY></caption>
+
+<tr>
+<td BGCOLOR="#F5DEB3">
+<h3>
+2 Technical Description</h3>
+</td>
+</tr>
+</table>
+
+<h4>
+2.1 Architecture</h4>
+The goal of this RFE is:
+<p>1. Find the first <b>alive</b> proxy server from the returned list of
+"FindProxyForURL".
+<p>2. If any proxy server is down, but it is up after 10 minutes, plugin
+may pick up and use it.
+<p>3. If any proxy server is up, but it is down after 30 minutes, plugin
+may ignore to use it.
+<p>4. If all the proxy server are dead, return the first proxy found.
+<p>&nbsp;The second goal guarantees that if the admin shut down the proxy
+and turn on it later, the proxy can be used at most after 10 minutes. The
+third goal makes plugin be smart enough to ignore the dead proxy.&nbsp;
+To make sure it does not have regression, we add the fourth one.
+<p>Here is the algorithm. Assume that each time the function "FindProxyForURL"
+return some string like p1: p2: p3:...pi...pn (pi includes host and port
+number, 1&lt;=i&lt;=n). A table Tp&nbsp; which can be implemented as a
+hash map is used to cache the proxy information. Each entry of Tp uses
+proxy as a key, the status (alive and dead) plus the timestamp as the value.
+<p>For i = 1.. n
+<br>&nbsp;&nbsp; Look up pi in Tp.
+<br>&nbsp;&nbsp;&nbsp;&nbsp; If it is not in the cache
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Ping pi, if it is alive,
+store it in the cache and update the timestamp. Return.
+<p>&nbsp;&nbsp;&nbsp; If pi is timeout (meaning the difference between
+the current time and the time recorded in the cache is greater or equal
+to 30 minutes/10 minutes depends on the status of the proxy).
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Ping pi, if alive, update
+the cache entry. Return
+<p>&nbsp;&nbsp;&nbsp; If pi is alive, return
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else i = i+1, continue the loop.
+<br>// If out of the loop, all the proxy are dead
+<br>return p1.
+<p>Two notes:
+<br>1. There is a timeout value associated with the ping action. The default
+value is 2seconds.&nbsp; The user may change this value by changing the
+system property "javaplugin.proxy.timeout".
+<p>2. Considering a special case. If pi is DIRECT, we need to be able to
+correctly handle this. So we prepopulte the table with a "DIRECT" entry
+and we always think "DIRECT" is alive, so it can be returned correctly.
+<h4>
+2.2 Exported Interfaces/API</h4>
+In order to make "ping timeout" configurable, we exported two methods in
+AutoProxyHandler.java so that it can be easly hooked with other code.
+<p>* public void setPingTimeout(int timeout);
+<br>parameter: timeout, is the ping timeout in milliseconds
+<p>* public int getPingTimeout();
+<br>return value: the current ping timeout using.
+<h4>
+2.3 Imported Interfaces/API</h4>
+N/A
+<h4>
+2.4 User Interface</h4>
+N/A
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<table BORDER=0 CELLSPACING=0 CELLPADDING=3 WIDTH="100%" >
+<caption><TBODY>
+<br></TBODY></caption>
+
+<tr>
+<td BGCOLOR="#F5DEB3">
+<h3>
+3 Marketing</h3>
+</td>
+</tr>
+</table>
+
+<h4>
+3.1 Justification</h4>
+In the Java plug-in proxy document at: <a href="http://java.sun.com/products/plugin/1.3/docs/proxies.html">http://java.sun.com/products/plugin/1.3/docs/proxies.html</a>,
+it says: "the function FindProxyForURL always returns proxy information
+as a string. Java Plug-in extracts the setting in the following way...If
+'PROXY' is in the string, it uses the first proxy setting for the connection."
+However, as described in the Netscape auto-proxy documentation at: <a href="http://devedge.netscape.com/docs/manuals/proxy/adminnt/autoconf.htm">http://devedge.netscape.com/docs/manuals/proxy/adminnt/autoconf.htm</a>
+<br>the return value of FindProxyForURL is a list of entries separated
+by semicolons.&nbsp; If the first proxy in the list cannot be contacted,
+the next one
+<br>should be used.
+<p>The customers are requesting that the plug-in implement the same behavior.&nbsp;
+That is, if the attempt to contact the first proxy fails, the next proxy
+in the list should be used, and so on.
+<h4>
+3.2 Customer Request</h4>
+Above
+<h4>
+3.3 Competitive Analysis</h4>
+<!-- Discuss tradeoffs between this project and relevant 
+     alternatives. Why will the target audience prefer this
+     product over the competition?  The contents of this
+     section may be replaced by a pointer to the appropriate
+     section of the MRD, if it provides the required
+     information. -->
+<table BORDER=0 CELLSPACING=0 CELLPADDING=3 WIDTH="100%" >
+<caption><TBODY>
+<br></TBODY></caption>
+
+<tr>
+<td BGCOLOR="#F5DEB3">
+<h3>
+4 Management and Planning</h3>
+</td>
+</tr>
+</table>
+
+<h4>
+4.1 Scope/Priority</h4>
+P4/S4
+<h4>
+4.2 Target Release</h4>
+Hopper
+<h4>
+4.3 Resources</h4>
+
+<h5>
+4.3.1 Development</h5>
+Xiaobin Lu
+<h5>
+4.3.2 Quality Assurance/Testing</h5>
+<!-- Number of test engineers required to develop tests, or
+     assigned test engineers -->
+<h5>
+4.3.3 Documentation</h5>
+<!-- Number of writers required, or assigned writers -->
+<h5>
+4.3.4 Technical Support</h5>
+<!-- Background knowledge required to support this feature. -->
+<h5>
+4.3.4 Special Hardware/Software</h5>
+<!-- List any special hardware/software required to complete
+     this project. -->
+<h4>
+4.4 Schedule</h4>
+<!-- Detailed schedule for project, including engineering work,
+     testing, documentation, integration and release. -->
+<center><table BORDER=0 CELLPADDING=0 BGCOLOR="#FFFFFF" >
+<caption>
+<center><TBODY>
+<br></TBODY></center>
+</caption>
+
+<tr>
+<td>
+<table BORDER CELLPADDING=10 BGCOLOR="#F5DEB3" >
+<caption><TBODY>
+<br></TBODY></caption>
+
+<tr ALIGN=CENTER>
+<th WIDTH="75" BGCOLOR="#666699"><font color="#FFFFFF">Start Date</font></th>
+
+<th WIDTH="75" BGCOLOR="#666699"><font color="#FFFFFF">End Date</font></th>
+
+<th WIDTH="250" BGCOLOR="#666699"><font color="#FFFFFF">Activity</font></th>
+
+<th WIDTH="50" BGCOLOR="#666699"><font color="#FFFFFF">Owner</font></th>
+
+<th WIDTH="50" BGCOLOR="#666699"><font color="#FFFFFF">Status</font></th>
+</tr>
+
+<tr>
+<td>3/8/2002&nbsp;</td>
+
+<td>3/15/2002&nbsp;</td>
+
+<td>&nbsp;</td>
+
+<td>&nbsp;</td>
+
+<td>
+<br><!-- Change the foreground/background colors for this cell to reflect
+               the status.  For example...
+
+               <td bgcolor=green align=center><font color=white>04/16/2001</font></td>
+            --></td>
+
+<td>&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+</table></center>
+
+<center><table BORDER=0 CELLSPACING=5 >
+<caption>
+<center><TBODY>
+<br></TBODY></center>
+</caption>
+
+<tr>
+<td WIDTH="50" BGCOLOR="#008000">&nbsp;</td>
+
+<td WIDTH="50" BGCOLOR="#90EE90">&nbsp;</td>
+
+<td WIDTH="50" BGCOLOR="#F5DEB3">&nbsp;</td>
+
+<td WIDTH="50" BGCOLOR="#FFFF00">&nbsp;</td>
+
+<td WIDTH="50" BGCOLOR="#FF0000">&nbsp;</td>
+</tr>
+
+<tr ALIGN=CENTER>
+<td>Complete</td>
+
+<td>Started</td>
+
+<td>Not Started</td>
+
+<td>Difficulties</td>
+
+<td>Trouble</td>
+</tr>
+</table></center>
+
+<br>&nbsp;
+<table BORDER=0 CELLSPACING=0 CELLPADDING=3 WIDTH="100%" >
+<caption><TBODY>
+<br></TBODY></caption>
+
+<tr>
+<td BGCOLOR="#F5DEB3">
+<h3>
+Appendices (as needed, suggestions below)</h3>
+</td>
+</tr>
+</table>
+
+<h4>
+A. Background Information</h4>
+
+<h4>
+B. Interface Specifications</h4>
+
+<h4>
+C. Notes and Additional Details</h4>
+
+<h4>
+D. Miscellaneous</h4>
+
+<h4>
+E. Tracking</h4>
+
+<h5>
+E.1 Final Webrev</h5>
+
+<h5>
+E.2 Bugtraq</h5>
+<!-- All related Bugtraq RFEs, Bugs, and EOUs.. -->
+<center><table BORDER=0 CELLPADDING=0 BGCOLOR="#FFFFFF" >
+<caption>
+<center><TBODY>
+<br></TBODY></center>
+</caption>
+
+<tr>
+<td>
+<table BORDER CELLPADDING=10 BGCOLOR="#F5DEB3" >
+<caption><TBODY>
+<br></TBODY></caption>
+
+<tr ALIGN=CENTER>
+<th WIDTH="50" BGCOLOR="#666699"><font color="#FFFFFF">Bugid</font></th>
+
+<th WIDTH="10" BGCOLOR="#666699"><font color="#FFFFFF">P</font></th>
+
+<th WIDTH="10" BGCOLOR="#666699"><font color="#FFFFFF">S</font></th>
+
+<th WIDTH="25" BGCOLOR="#666699"><font color="#FFFFFF">Subcategory</font></th>
+
+<th WIDTH="25" BGCOLOR="#666699"><font color="#FFFFFF">Type</font></th>
+
+<th WIDTH="20" BGCOLOR="#666699"><font color="#FFFFFF">Engineer</font></th>
+
+<th WIDTH="300" BGCOLOR="#666699"><font color="#FFFFFF">Synopsis</font></th>
+</tr>
+
+<tr>
+<td>&nbsp;</td>
+
+<td>&nbsp;</td>
+
+<td>&nbsp;</td>
+
+<td>&nbsp;</td>
+
+<td>&nbsp;</td>
+
+<td>&nbsp;</td>
+
+<td>&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+</table></center>
+
+<br>&nbsp;
+<br>&nbsp;
+<table BORDER=0 CELLSPACING=0 CELLPADDING=3 WIDTH="100%" >
+<caption><TBODY>
+<br></TBODY></caption>
+
+<tr>
+<td BGCOLOR="#F5DEB3">
+<h3>
+Revision History</h3>
+</td>
+</tr>
+</table>
+
+<center><table BORDER=0 CELLPADDING=0 BGCOLOR="#FFFFFF" >
+<caption>
+<center><TBODY>
+<br></TBODY></center>
+</caption>
+
+<tr>
+<td>
+<table BORDER CELLPADDING=10 BGCOLOR="#F5DEB3" >
+<caption><TBODY>
+<br></TBODY></caption>
+
+<tr ALIGN=CENTER>
+<th WIDTH="50" BGCOLOR="#666699"><font color="#FFFFFF">Date</font></th>
+
+<th WIDTH="10" BGCOLOR="#666699"><font color="#FFFFFF">Version</font></th>
+
+<th WIDTH="50" BGCOLOR="#666699"><font color="#FFFFFF">Author</font></th>
+
+<th WIDTH="400" BGCOLOR="#666699"><font color="#FFFFFF">Description</font></th>
+</tr>
+
+<tr>
+<td>&nbsp;</td>
+
+<td>&nbsp;</td>
+
+<td>&nbsp;</td>
+
+<td>&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+</table></center>
+
+</body>
+</html>

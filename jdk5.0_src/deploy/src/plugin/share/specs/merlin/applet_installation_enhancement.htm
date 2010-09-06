@@ -1,0 +1,269 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Applet Installation Enhancement in Java Plug</title>
+</head>
+
+<body>
+
+<h1 align="center"><br>
+Applet Installation Enhancement in Java Plug-in</h1>
+<hr>
+<h3>Introduction</h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This document outlines the applet
+installation enhancements that has been planned in Java Plug-in for
+Ladybird/Merlin release. The main goal of this enhancement is to make applet
+much easier to be used in both the desktop and browser environment.</p>
+<h3>Problem</h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Currently, we provide applet
+installation support in Java Plug-in for Kestrel. The idea is to store applet
+JAR files locally into permanent store, so applet will be downloaded only when
+it is necessary. However, to launch the applet, users will still need to bring
+up the browser and type-in the URL to start the applet. Also, although applet
+may be cached completely in the local disk, it still requires the user to
+connect to the network to download the HTML page to launch the applet. This
+eliminates any type of applet usage in an offline situation, such as laptop
+users.</p>
+<h3>Solution</h3>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This applet installation enhancement
+will enable generating applet's HTML file in the local disk, creating shortcut
+on the desktop and browser's bookmark, according to the applet's HTML PARAMs in
+the OBJECT/EMBED tag. Once the HTML file is generated locally, applet could be
+launched by user easier through the shortcut or bookmark, without connecting to
+the network potentially.&nbsp;
+<h4>HTML parameters</h4>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Several HTML parameters will be
+introduced into Java Plug-in to support this enhancement:</p>
+<div align="center">
+  <center>
+  <table border="1" width="61%">
+    <tr>
+      <td width="33%" bgcolor="#0000FF" align="center"><font color="#FFFF00">Parameter
+        Name</font></td>
+      <td width="67%" bgcolor="#0000FF" align="center"><font color="#FFFF00">Parameter
+        Value</font></td>
+    </tr>
+    <tr>
+      <td width="33%">applet_html_title</td>
+      <td width="67%">Applet's HTML page title</td>
+    </tr>
+    <tr>
+      <td width="33%">applet_html_version</td>
+      <td width="67%">Applet's HTML page version</td>
+    </tr>
+    <tr>
+      <td width="33%">applet_object_clsid</td>
+      <td width="67%">CLSID to be used with the applet in OBJECT tag</td>
+    </tr>
+    <tr>
+      <td width="33%">applet_object_codebase</td>
+      <td width="67%">CAB codebase&nbsp; to be used with the applet in OBJECT
+        tag</td>
+    </tr>
+    <tr>
+      <td width="33%">applet_embed_pluginpage</td>
+      <td width="67%">Pluginpage to be used with the applet in EMBED tag</td>
+    </tr>
+    <tr>
+      <td width="33%">applet_embed_pluginsurl</td>
+      <td width="67%">Pluginsurl to be used with the applet in EMBED tag</td>
+    </tr>
+  </table>
+  </center>
+</div>
+<ul>
+  <li><i>applet_html_title</i> is used in the generated HTML page as page title</li>
+  <li><i>applet_html_version</i> is used for controlling the versioning of the
+    generated HTML page. If a newer version is specified than the one that is
+    already generated locally, a new HTML page will be regenerated using the
+    applet's HTML PARAMs. The version should be in the form of X.X.X.X, where X
+    is 0 to F.</li>
+  <li><i>applet_object_clsid</i> is used in the generated HTML page as OBJECT
+    tag's CLSID to launch Java Plug-in. This information is necessary because
+    the original applet's HTML tag may be an EMBED tag.</li>
+  <li><i>applet_object_codebase</i> is used in the generated HTML page as OBJECT
+    tag's codebase to download Java Plug-in. This information is necessary
+    because the original applet's HTML tag may be an EMBED tag.</li>
+  <li><i>applet_embed_pluginpage</i> is used in the generated HTML page as EMBED
+    tag's pluginpage to download Java Plug-in. This information is necessary
+    because the original applet's HTML tag may be an OBJECT tag.</li>
+  <li><i>applet_embed_pluginsurl</i> used in the generated HTML page as EMBED
+    tag's pluginsurl to download Java Plug-in. This information is necessary
+    because the original applet's HTML tag may be an OBJECT tag.</li>
+</ul>
+<p>For example, you may specify your applet as follows:</p>
+<blockquote>
+  <pre><font color="#800000">&lt;OBJECT classid=&quot;clsid:8AD9C840-044E-11D1-B3E9-00805F499D93&quot; 
+	WIDTH = 300 HEIGHT = 300 
+	codebase=&quot;http://java.sun.com/products/plugin/1.2.2/jinstall-1_2_2-win.cab#Version=1,2,2,0&quot;&gt;
+&lt;PARAM NAME=code VALUE=&quot;XYZApp&quot;&gt;
+&lt;PARAM NAME=type VALUE=&quot;application/x-java-applet;version=1.2.2&quot;&gt;
+&lt;PARAM NAME=model VALUE=&quot;models/HyaluronicAcid.xyz&quot;&gt;
+&lt;COMMENT&gt;
+&lt;EMBED  type=&quot;application/x-java-applet;version=1.2.2&quot; 
+	code=&quot;XYZApp&quot; width=300 height=300 
+	model=&quot;models/HyaluronicAcid.xyz&quot; 
+	pluginspage=&quot;http://java.sun.com/products/plugin/1.2.2/plugin-install.html&quot;&gt;
+&lt;/COMMENT&gt;
+&lt;/OBJECT&gt;</font></pre>
+</blockquote>
+<p>To enable HTML caching, you should modify the HTML tags as follows:</p>
+<blockquote>
+  <pre><font color="#800000">&lt;OBJECT classid=&quot;clsid:8AD9C840-044E-11D1-B3E9-00805F499D93&quot; 
+	WIDTH = 300 HEIGHT = 300 
+	codebase=&quot;http://java.sun.com/products/plugin/1.2.2/jinstall-1_2_2-win.cab#Version=1,2,2,0&quot;&gt;
+&lt;PARAM NAME=code VALUE=&quot;XYZApp&quot;&gt;
+&lt;PARAM NAME=type VALUE=&quot;application/x-java-applet;version=1.2.2&quot;&gt;
+&lt;PARAM NAME=model VALUE=&quot;models/HyaluronicAcid.xyz&quot;&gt;
+</font><font color="#0000FF">&lt;PARAM NAME=applet_html_title VALUE=&quot;Molecule Viewer Applet&quot;&gt;
+&lt;PARAM NAME=applet_html_version VALUE=&quot;1.0.0.0&quot;&gt;
+&lt;PARAM NAME=applet_object_clsid VALUE=&quot;clsid:8AD9C840-044E-11D1-B3E9-00805F499D93&quot;&gt;
+&lt;PARAM NAME=applet_object_codebase VALUE=&quot;http://java.sun.com/products/plugin/1.2.2/jinstall-1_2_2-win.cab#Version=1,2,2,0&quot;&gt;
+&lt;PARAM NAME=applet_embed_pluginpage VALUE=&quot;http://java.sun.com/products/plugin/1.2.2/plugin-install.html&quot;&gt;</font><font color="#800000">
+&lt;COMMENT&gt;
+&lt;EMBED  type=&quot;application/x-java-applet;version=1.2.2&quot; 
+	code=&quot;XYZApp&quot; width=300 height=300 
+	model=&quot;models/HyaluronicAcid.xyz&quot; 
+	pluginspage=&quot;http://java.sun.com/products/plugin/1.2.2/plugin-install.html&quot;
+	</font><font color="#0000FF">applet_html_title=&quot;Molecule Viewer Applet&quot;
+	applet_html_version=&quot;1.0.0.0&quot;
+	applet_object_clsid=&quot;clsid:8AD9C840-044E-11D1-B3E9-00805F499D93&quot;
+	applet_object_codebase=&quot;http://java.sun.com/products/plugin/1.2.2/jinstall-1_2_2-win.cab#Version=1,2,2,0&quot;
+	applet_embed_pluginpage=&quot;http://java.sun.com/products/plugin/1.2.2/plugin-install.html&quot;&gt;</font><font color="#800000">
+&lt;/COMMENT&gt;
+&lt;/OBJECT&gt;</font></pre>
+</blockquote>
+<p>When Java Plug-in encounters this HTML page with the special PARAMs, it will
+generate an HTML file locally as follows:</p>
+<blockquote>
+  <pre><font color="#800000">&lt;HTML&gt;
+&lt;TITLE&gt;Molecule Viewer Applet&lt;/TITLE&gt;
+&lt;BODY&gt;
+&lt;OBJECT classid=&quot;clsid:8AD9C840-044E-11D1-B3E9-00805F499D93&quot; 
+	WIDTH = 300 HEIGHT = 300 
+	codebase=&quot;http://java.sun.com/products/plugin/1.2.2/jinstall-1_2_2-win.cab#Version=1,2,2,0&quot;&gt;
+&lt;PARAM NAME=code VALUE=&quot;XYZApp&quot;&gt;
+&lt;PARAM NAME=type VALUE=&quot;application/x-java-applet;version=1.2.2&quot;&gt;
+&lt;PARAM NAME=model VALUE=&quot;models/HyaluronicAcid.xyz&quot;&gt;
+</font><font color="#0000FF">&lt;PARAM NAME=applet_html_title VALUE=&quot;Molecule Viewer Applet&quot;&gt;
+&lt;PARAM NAME=applet_html_version VALUE=&quot;1.0.0.0&quot;&gt;
+&lt;PARAM NAME=applet_object_clsid VALUE=&quot;clsid:8AD9C840-044E-11D1-B3E9-00805F499D93&quot;&gt;
+&lt;PARAM NAME=applet_object_codebase VALUE=&quot;http://java.sun.com/products/plugin/1.2.2/jinstall-1_2_2-win.cab#Version=1,2,2,0&quot;&gt;
+&lt;PARAM NAME=applet_embed_pluginpage VALUE=&quot;http://java.sun.com/products/plugin/1.2.2/plugin-install.html&quot;&gt;
+</font><font color="#800000">&lt;COMMENT&gt;
+&lt;EMBED  type=&quot;application/x-java-applet;version=1.2.2&quot; 
+	code=&quot;XYZApp&quot; width=300 height=300 
+	model=&quot;models/HyaluronicAcid.xyz&quot; 
+	pluginspage=&quot;http://java.sun.com/products/plugin/1.2.2/plugin-install.html&quot;
+</font><font color="#0000FF">	applet_html_title=&quot;Molecule Viewer Applet&quot;
+	applet_html_version=&quot;1.0.0.0&quot;
+	applet_object_clsid=&quot;clsid:8AD9C840-044E-11D1-B3E9-00805F499D93&quot;
+	applet_object_codebase=&quot;http://java.sun.com/products/plugin/1.2.2/jinstall-1_2_2-win.cab#Version=1,2,2,0&quot;
+	applet_embed_pluginpage=&quot;http://java.sun.com/products/plugin/1.2.2/plugin-install.html&quot;&gt;
+</font><font color="#800000">&lt;/COMMENT&gt;
+&lt;/OBJECT&gt;
+&lt;/BODY&gt;
+&lt;/HTML&gt;</font></pre>
+</blockquote>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The generated HTML page will
+contain information about the installed applet itself. However, any other HTML
+elements (e.g. JavaScript) in the original HTML page will not be stored in the
+generated HTML page. Each applet on the same HTML page taking advantages of this
+enhancement will result in separated generated HTML page for each applet.</p>
+<h4>Generated HTML pages</h4>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The generated HTML page will be
+stored as in the following path:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>&lt;user.home&gt;</i>/java_applet_Store/&lt;<i>plugin
+version</i>&gt;/html//<i>&lt;applet_html_title&gt;</i>/index.html</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This should provide enough
+namespaces to avoid multi-versioning problem.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Versioning information about the
+generated HTML page will be stored in a version table file:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>&lt;user.home&gt;</i>/java_applet_Store/&lt;<i>plugin
+version</i>&gt;/html/version.table</p>
+<h4>Launching applets</h4>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Even if the HTML page are
+generated for the applet and stored locally, launching the applet will still not
+be easy because of the location the page is stored. To make it easier for users
+to launch the applet, the following will be provided:</p>
+<ul>
+  <li>For Win32, desktop shortcut to the HTML file will be added if applet
+    installation is used. Also, bookmark will also be added into Internet
+    Explorer's Favorite menu as well.<br>
+  </li>
+  <li>For UNIX, bookmark will be added into Netscape Navigator's bookmark menu.</li>
+</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Before the shortcut/bookmark is
+created, Java Plug-in will prompt the users to ensure that the shortcut/bookmark
+will be added only if the users agree to.<br>
+</p>
+<h4>Deleting Cached HTML Files</h4>
+&nbsp;&nbsp;&nbsp; Cached HTML&nbsp; files can be deleted by selecting the
+button &quot;Clear HTML Cache&quot; in the Cache tab of&nbsp; the Java Plug-in
+control panel.<br>
+<h4>Error Handling</h4>
+<p>&nbsp;&nbsp;&nbsp; Error handling will be provided using the unified dialog
+support in the new Applet Usability framework in Java Plug-in for Merlin, so
+exception dialog may popup when an error occurs. The following situations will
+cause the exception dialog to popup:</p>
+<ol>
+  <li>Any HTML parameter required for HTML Installation is missing. e.g. <i>applet_html_version.</i></li>
+  <li>Version information specified in <i>applet_html_version</i> is not in the
+    proper format.</li>
+  <li>HTML version table file exists, but unable to access it.</li>
+  <li>Unable to generate the local HTML page.</li>
+</ol>
+<p>&nbsp;&nbsp;&nbsp; By enabling -Djavaplugin.trace=true in the Java Plug-in
+Control Panel, progress statu about HTML installation will be displayed in the
+Java Console, so users will be able to determine what's happening under the
+cover easily.<br>
+</p>
+<h3>Conclusion</h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The above outlines all the applet
+installation enhancements that are planned in Java Plug-in for Merlin release.
+Hopefully, this will make applets much easier to be used by users and
+developers.</p>
+<h3><br>
+Changes history</h3>
+<div align="center">
+  <center>
+  <table border="1" width="565">
+    <tr>
+      <td width="94" bgcolor="#0000FF"><font color="#FFFF00"><b>Date</b></font></td>
+      <td width="289" bgcolor="#0000FF"><font color="#FFFF00"><b>Action</b></font></td>
+      <td width="160" bgcolor="#0000FF"><font color="#FFFF00"><b>Author(s)</b></font></td>
+    </tr>
+    <tr>
+      <td width="94">04/20/2000</td>
+      <td width="289">Applet Installation Enhancement Draft 1</td>
+      <td width="160"><a href="mailto:stanley.ho@eng.sun.com">Stanley Ho</a></td>
+    </tr>
+    <tr>
+      <td width="94">07/06/2000</td>
+      <td width="289">Added section Deleting Cached HTML Files</td>
+      <td width="160"><a href="jdeva@eng.sun.com">Devananda J.</a></td>
+    </tr>
+    <tr>
+      <td width="94">07/18/2000</td>
+      <td width="289">Updated the storage path for generated HTML files to use
+        the plugin version</td>
+      <td width="160"><a href="jdeva@eng.sun.com">Devananda J.</a></td>
+    </tr>
+    <tr>
+      <td width="94">07/31/2000</td>
+      <td width="289">Added &quot;Error Handling&quot; section</td>
+      <td width="160"><a href="mailto:stanley.ho@eng.sun.com">Stanley Ho</a></td>
+    </tr>
+  </table>
+  </center>
+</div>
+<hr>
+<p>&nbsp;</p>
+
+</body>
+
+</html>

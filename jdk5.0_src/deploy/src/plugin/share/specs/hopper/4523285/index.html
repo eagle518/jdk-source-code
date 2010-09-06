@@ -1,0 +1,584 @@
+<html>
+<head><title>Applet Lifecycle Shutdown Sequence Engineering Specification</title></head>
+<body bgcolor=white>
+
+<h2>
+Applet Lifecycle Shutdown Sequence Engineering Specification
+</h2>
+<p>
+<h4>
+RFE: <a target=new href=http://andorra1.sfbay:8080/cgi-bin/ws.exe/bugtraq/jdk/bug.hts?bugid_value=4523285>4523285</a>
+
+Revisit applet lifecycle shutdown sequence
+
+
+<p>
+Author: Zhengyu Gu
+<br>
+Date: 2/13/2001      
+</h4>
+
+<p><br>
+
+<table width=100% cellspacing=0 cellpadding=3 border=0>
+  <tr>
+    <td bgcolor=wheat><h3>1  Project Description</td>
+  </tr>
+</table>
+
+<p>
+
+<h4>
+1.1 Overview
+</h4>
+
+<p>
+This project is to ensure the Applet lifecycle fully comply Applet lifecycle specification, shown as figure 1 and 2.
+</p>
+<p align="center" color=#000000>
+
+<img src="normal.gif" width="412" height="124" border="0">
+<p align="center" color=#000000>
+<img src="legacy.gif" width="412" height="124" border="0">
+</p>
+<p>When legacy applet cycle was re-introduced in Merlin, the shutdown sequence did not fully implemented. In other word, applet destroy method has never been called. <br>
+
+The reason for delaying implementing the shutdown sequence is due to the difficulty for Java Plug-in to distinguish the browser page switch and browser shutdown. IE and Netscape do not provide any notification during the browser shutdown. <br>
+
+This project mainly focus on finding a hook to browser shutdown event, so Java Plug-in will have opportunity to clean up, including calling destroy method on all cached applet. 
+</p>
+
+
+<h4>
+1.2 Project Dependencies
+</h4>
+
+N/A
+
+<h4>
+1.3 OS and Browser Compatibility and Interoperability 
+</h4>
+
+<p>
+This feature will be available on all platforms and browsers. 
+
+<h4>
+1.4 Performance and Scalability
+</h4>
+
+<p>
+N/A
+
+
+<h4>
+1.5 Security
+</h4>
+
+<p>
+N/A
+
+
+<h4>
+1.6 Internationalization (I18N) / Localization (L10N)
+</h4>
+
+<p>
+N/A
+
+
+<h4>
+1.7 Packaging
+</h4>
+
+<!-- Describe any special packaging requirements or installer changes. -->
+
+<p>
+N/A
+
+<h4>
+1.8 Usability
+</h4>
+
+<!-- Describe any usability enhancements or concerns for target
+     users or audience. -->
+
+<p>
+N/A
+
+<h4>
+1.9 Quality
+</h4>
+
+<p>
+All legacy lifecycle test cases have to be retested.
+
+<h5>
+1.9.1 Unit or Functional Tests to be Delivered
+</h5>
+
+<!-- Describe any Unit or Functional tests to be delivered by engineering
+     for this project. -->
+
+<p>
+N/A
+
+<h5>
+1.9.2 Additional Testing Notes
+</h5>
+
+<!-- Describe recommended testing approaches and any special requirements
+     to completely certify and test the project. -->
+
+<p>
+
+<br><br>
+
+<table width=100% cellspacing=0 cellpadding=3 border=0>
+  <tr>
+    <td bgcolor=wheat><h3>2  Technical Description</td>
+  </tr>
+</table>
+
+<p>
+
+
+<h4>
+2.1 Architecture
+</h4>
+<ol>
+  <li><b>UNIX/Linux</b>
+   <p>On UNIX/Linux, Java Plug-in is implemented as out-of-process model, and uses named pipe as communication channel between the browser and plug-in. We can take advantage of this feature, by detecting the broken pipe, Java plug-in should be able to perform clean up before exit.
+	<p>
+  </li>
+  <li><b>Windows/Internet Explorer</b>
+		<p>Every Internet Explorer browser instance implements IWebBrowser2 interface, which can be retrieved through IShellWindows interface. 
+		So, when Java plug-in sees the first legacy lifecycle applet, it should be able to use IShellWindows interface to walk through all IWebBrowser2 instances,
+		and by comparing process id, plug-in can identify one of its browser instance.
+		<p>After plugin identifies one of its IWebBrowser2 instance, it registers an implementation of DWebBrowserEvent2 sink to IWebBrowser2's DWebBrowserEvent2
+		connection point. Then the sink listens to OnQuit event which is fired when the browser window is about to exit. At this moment, plugin re-walk the all
+		IWebBrowser2 instances, find if there is any other browser instance within its process space. If new instance found, registers DWebBrowserEvent2 sink
+		to new found IWebBrowser2 instance, otherwise, it executes Java plugin clean up code.
+		<p>
+  </li>
+  <li><b>Windows/Netscape Browser</b>
+	<ol>
+	<li><b>Windows/Netscape 6.x</b>
+	<p>Netscape 6.x/Mozilla browser provides a publish/subscribe model of evnet mechanism, and exposed it
+	through XPCOM interface nsIObserverService. By implementing a certain event listener, Java plugin can
+	monitor certain events related to browser profile change and component shutdown, to provide Java plugin
+	a chance to invoke shutdown sequence.
+	<p>
+	The event listener implements nsIObserver interface, and monitor "profile-after-change" and "xpcom-shutdown"
+	events.
+	
+	<p>Monitoring "profile-after-change" event allows plugin to reset applet cache once browser profile
+	switched.
+	<p>"xpcom-shutdown" event is a early indicator of application shutdown, at this moment, JVM is still
+	alive if it has been started, so plugin will have chance to invoke shutdown sequence.
+	<p>
+	However, nsIObserverService and nsIObserver interfaces are not frozen in Netscape 6.21 and before, and 
+	frozen on current Mozilla tree, and they are different. To resolve the conflict, we have to rename a set of 
+	interfaces and added to our workspace, and branch the code by browser version (Gecko version).
+	<p>
+	Rename the non-frozen interfaces to nsIObserverService610 and nsIObserver610, and the interfaces will be
+	used by Netscape 6.21 and before.
+	<p>
+	For the frozen interfaces, copy they to our workspace and can be removed after we update our mozilla
+	headers.
+	<p>
+	The disadvantage of above architect is it will break some mozilla browser with Gecko version later than
+	Netscape 6.21 and before the interface changes, unless we can identify the exact version mozilla made
+	changes. Since Mozilla browser is not on our support list, it may not be a big problem.
+	<p>
+	
+	</li>
+	<li><b>Windows/Netscape 4.7x</b>
+	<p>
+	Netscape 4.7x does not expose any meaningful interfaces/APIs for plugin component to monitor browser's
+	behavior, the only way to achieve the goal is to hook on its windowing system and monitor window messages.
+	Since Netscape 4.7x will not have any more new releases, so we can carefully exam all supported Netscape
+	4.7x to find a common hook.
+	<p>
+	Fortunately, Netscape 4.7x browser has a hidden window that lasts application life span, by monitoring
+	this window should be enough to determin the browser shutdown event. So:
+	<ol><p>
+	<li> When plugin sees legacy lifecycle applet for the first time, plugin walks through all windows to find the hidden window
+	     within the browser process space.
+	<li> Subclasses the window
+	<li> Listen to WM_DESTROY message and invoke java side shutdown sequence.
+	</ol>
+	</li>
+
+</li>
+	</ol>
+ </li>
+</ol>
+
+<p>
+
+
+<h4>
+2.2 Exported Interfaces/API
+</h4>
+
+<!-- List and describe any new or changed exported interfaces
+     or APIs. -->
+
+<p>
+N/A
+
+<h4>
+2.3 Imported Interfaces/API
+</h4>
+
+<!-- List and describe any new or changed imported interfaces
+     or APIs which are of significance to note. -->
+
+<p>
+N/A
+
+<h4>
+2.4 User Interface
+</h4>
+
+<!-- Describe the user interface of this project, if any.  Include
+     screen shots or diagrams where helpful. -->
+
+<p>
+N/A
+<br><br>
+
+
+<table width=100% cellspacing=0 cellpadding=3 border=0>
+  <tr>
+    <td bgcolor=wheat><h3>3  Marketing</td>
+  </tr>
+</table>
+
+<p>
+
+
+<h4>
+3.1 Justification
+</h4>
+
+<!-- Why is this project important to Sun? -->
+
+<p>
+N/A
+
+<h4>
+3.2 Customer Request
+</h4>
+
+<!-- Which customers are asking for this project? -->
+
+<p>
+Oracle
+
+<h4>
+3.3 Competitive Analysis
+</h4>
+
+<!-- Discuss tradeoffs between this project and relevant 
+     alternatives. Why will the target audience prefer this
+     product over the competition?  The contents of this
+     section may be replaced by a pointer to the appropriate
+     section of the MRD, if it provides the required
+     information. -->
+
+<p>
+
+<br><br>
+
+<table width=100% cellspacing=0 cellpadding=3 border=0>
+  <tr>
+    <td bgcolor=wheat><h3>4  Management and Planning</td>
+  </tr>
+</table>
+
+<p>
+
+
+<h4>
+4.1 Scope/Priority
+</h4>
+
+<!-- What is the size of this effort?  Small, Medium, Large.
+     What is the priority?  1, 2, 3. -->
+
+<p>
+
+
+<h4>
+4.2 Target Release
+</h4>
+
+<!-- Which specific release will be tartgeted for this project work. -->
+
+<p>
+Hopper
+
+<h4>
+4.3 Resources
+</h4>
+   
+<p>
+
+
+<h5>
+4.3.1 Development
+</h5>
+   
+<!-- Number of developers required, or assigned developers -->
+   
+<p>
+Zhengyu Gu
+    
+<h5>
+4.3.2 Quality Assurance/Testing
+</h5>
+    
+<!-- Number of test engineers required to develop tests, or
+     assigned test engineers -->
+   
+<p>
+
+   
+<h5>
+4.3.3 Documentation
+</h5>
+   
+<!-- Number of writers required, or assigned writers -->
+   
+<p>
+
+   
+<h5>
+4.3.4 Technical Support
+</h5>
+
+<!-- Background knowledge required to support this feature. -->
+
+<p>
+
+
+<h5>
+4.3.4 Special Hardware/Software
+</h5>
+
+<!-- List any special hardware/software required to complete
+     this project. -->
+
+<p>
+
+
+<h4>
+4.4 Schedule
+</h4>
+
+<!-- Detailed schedule for project, including engineering work,
+     testing, documentation, integration and release. -->
+
+<p>
+
+<center>
+
+<table cellpadding=0 cellspacing=1 bgcolor=white border=0>
+
+  <tr>
+    <td>
+      <table cellspacing=1 cellpadding=10 bgcolor=wheat border=1>
+
+        <tr align=center>
+          <th bgcolor=#666699 width=75><font color=white>Start Date</font></th>
+          <th bgcolor=#666699 width=75><font color=white>End Date</font></th>
+          <th bgcolor=#666699 width=250><font color=white>Activity</font></th>
+          <th bgcolor=#666699 width=50><font color=white>Owner</font></th>
+          <th bgcolor=#666699 width=50><font color=white>Status</font></th>
+        </tr>
+
+        <tr>
+          <td>&nbsp</td>
+          <td>&nbsp</td>
+          <td>&nbsp</td>
+          <td>&nbsp</td>
+
+          <!-- Change the foreground/background colors for this cell to reflect
+               the status.  For example...
+
+               <td bgcolor=green align=center><font color=white>04/16/2001</font></td>
+            -->
+
+          <td>&nbsp</td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+
+</table>
+
+<table cellspacing=5 border=0>
+
+  <tr>
+    <td bgcolor=green width=50>&nbsp</td>
+    <td bgcolor=lightgreen width=50>&nbsp</td>
+    <td bgcolor=wheat width=50>&nbsp</td>
+    <td bgcolor=yellow width=50>&nbsp</td>
+    <td bgcolor=red width=50>&nbsp</td>
+  </tr>
+
+  <tr align=center>
+    <td>Complete</td>
+    <td>Started</td>
+    <td>Not Started</td>
+    <td>Difficulties</td>
+    <td>Trouble</td>
+  </tr>
+
+</table>
+
+</center>
+
+<br><br>
+
+
+<table width=100% cellspacing=0 cellpadding=3 border=0>
+  <tr>
+    <td bgcolor=wheat><h3>Appendices (as needed, suggestions below)</td>
+  </tr>
+</table>
+
+<p>
+
+
+<h4>
+A. Background Information
+</h4>
+
+<p>
+
+
+<h4>
+B. Interface Specifications
+</h4>
+
+<p>
+
+
+<h4>
+C. Notes and Additional Details
+</h4>
+
+<p>
+
+
+<h4>
+D. Miscellaneous
+</h4>
+
+<p>
+
+
+<h4>
+E. Tracking
+</h4>
+
+<p>
+
+
+<h5>
+E.1  Final Webrev
+</h5>
+
+<p>
+
+
+<h5>
+E.2  Bugtraq
+</h5>
+
+<!-- All related Bugtraq RFEs, Bugs, and EOUs.. -->
+
+<center>
+
+<table cellpadding=0 cellspacing=1 bgcolor=white border=0>
+
+  <tr>
+    <td>
+      <table cellspacing=1 cellpadding=10 bgcolor=wheat border=1>
+
+        <tr align=center>
+          <th bgcolor=#666699 width=50><font color=white>Bugid</font></th>
+          <th bgcolor=#666699 width=10><font color=white>P</font></th>
+          <th bgcolor=#666699 width=10><font color=white>S</font></th>
+          <th bgcolor=#666699 width=25><font color=white>Subcategory</font></th>
+          <th bgcolor=#666699 width=25><font color=white>Type</font></th>
+          <th bgcolor=#666699 width=20><font color=white>Engineer</font></th>
+          <th bgcolor=#666699 width=300><font color=white>Synopsis</font></th>
+        </tr>
+
+        <tr>
+          <td><ahttp://andorra1.sfbay:8080/cgibin/ws.exe/bugtraq/jdk/bug.hts?bugid_value=4523285>4523285</a></td>
+          <td>4</td>
+          <td>3</td>
+          <td>plugin</td>
+          <td>REF</td>
+          <td>Zhengyu Gu</td>
+          <td>Revisit applet lifecycle shutdown sequence</td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+
+</table>
+
+</center>
+
+<p>
+
+<br><br>
+
+<table width=100% cellspacing=0 cellpadding=3 border=0>
+  <tr>
+    <td bgcolor=wheat><h3>Revision History</td>
+  </tr>
+</table>
+
+<p>
+
+<center>
+
+<table cellpadding=0 cellspacing=1 bgcolor=white border=0>
+
+  <tr>
+    <td>
+      <table cellspacing=1 cellpadding=10 bgcolor=wheat border=1>
+
+        <tr align=center>
+          <th bgcolor=#666699 width=50><font color=white>Date</font></th>
+          <th bgcolor=#666699 width=10><font color=white>Version</font></th>
+          <th bgcolor=#666699 width=50><font color=white>Author</font></th>
+          <th bgcolor=#666699 width=400><font color=white>Description</font></th>
+        </tr>
+
+        <tr>
+          <td>2/13/2002</td>
+          <td>1.0</td>
+          <td>Zhengyu Gu</td>
+          <td>Initial draft</td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+
+</table>
+
+</center>
+
+</body>
+</html>
+

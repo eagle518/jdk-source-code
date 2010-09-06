@@ -1,0 +1,17 @@
+/*
+ * @(#)ResourceType.java	1.9 03/12/19
+ * 
+ * Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+ * SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
+
+package com.sun.javaws.jnl;
+import com.sun.deploy.xml.XMLable;
+
+/*
+ * Public super class for all resource entries
+ */
+interface ResourceType extends XMLable {
+    /** Visit this specific type */
+    void visit(ResourceVisitor visitor);
+}

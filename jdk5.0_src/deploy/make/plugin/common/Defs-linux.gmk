@@ -1,0 +1,29 @@
+#
+# @(#)Defs-linux.gmk	1.2 03/01/23
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# these are specific to Linux (RH6.1)
+
+# Default MOZILLA_PATH and allow override.
+MOZILLA_PATH = /java/devtools
+ifdef ALT_MOZILLA_PATH
+  MOZILLA_PATH = $(subst //,/,$(ALT_MOZILLA_PATH))
+endif
+
+# Default Mozilla Headers and Libs directories
+MOZILLA_HEADERS_PATH=$(MOZILLA_PATH)/share/plugin
+ifdef ALT_MOZILLA_HEADERS_PATH
+  MOZILLA_HEADERS_PATH=$(ALT_MOZILLA_HEADERS_PATH)
+endif
+
+# GCC29_COMPILER_PATH is the path to where the gcc 2.9 compiler
+# are installed
+GCC29_COMPILER_PATH = /java/devtools/$(PLATFORM)/gcc29/usr/
+#
+# Allow the user to override the default value...
+#
+ifdef ALT_GCC29_COMPILER_PATH	
+  GCC29_COMPILER_PATH = $(subst //,/,$(subst \,/,$(ALT_GCC29_COMPILER_PATH))/)
+endif

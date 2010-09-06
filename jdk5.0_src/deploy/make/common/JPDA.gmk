@@ -1,0 +1,138 @@
+#
+# @(#)JPDA.gmk	1.8 03/12/19
+# 
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+###  This file is include'd by <platform>/GNUmakefile ###
+
+# Four different types of binary distributions of Java Web Start can
+# be built, each featuring a different level of JPDA support.  The
+# level of JPDA support can be controlled through gnumake variable
+# JPDA (which may be defined on the gnumake command line):
+#
+#    JPDA undefined   --  No JPDA-related code ever runs in Java Web
+#                         Start.  This is because "cc" skips and ignores
+#                         all JPDA functionality in Java Web Start's .c
+#                         files, so the .o files are free of any JPDA-
+#                         related code; and while "javac" on the other
+#                         hand does not skip and ignore JPDA functionality
+#                         in Java Web Start's .java files, "java" does
+#                         skip and ignore all JPDA functionality when it
+#                         executes Java Web Start's .class files.
+#
+#    JPDA = JWS       --  JPDA support in Java Web Start code is such that
+#                         all JREs in a JRE invocation chain can run in
+#                         JPDA mode, except the last JRE running a JNLP
+#                         application.
+#
+#    JPDA = JWSJNL    --  JPDA support in Java Web Start code is such that
+#                         all JREs in a JRE invocation chain can run in
+#                         JPDA mode, including the last JRE running a JNLP
+#                         application.
+#
+#    JPDA = JNL       --  JPDA support in Java Web Start code is such that
+#                         none of the JREs in a JRE invocation chain can
+#                         run in JPDA mode, except the last JRE running a
+#                         JNLP application.
+#
+# The only valid settings for variable JPDA are: JPDA=JWS, JPDA=JWSJNL, or
+# JPDA=JNL; for any other setting, an error message will be automatically
+# generated.
+#
+# In the current version of Java Web Start, the smallest JRE invocation chain
+# comprises one JRE, and the largest JRE invocation chain comprises two JREs.
+
+##############################################################################
+
+# The following table should help in understanding the JPDA-related
+# changes/additions that were made to the gnumake build procedure and
+# to the C/Java source code files:
+#
+# +========+=========================================+======================+
+# |  MODE  |       COMPILING, LINKING, JARRING       |  FLAG PASSED TO JRE  |
+# +========+====================+====================+===========+==========+
+# | JPDA   | .o files           | .class files       | -Djnlpx.   | -Xdebug |
+# | value  | directory          | directory          |   jpda.env |         |
+# +--------+--------------------+--------------------+------------+---------+
+# | ???    | ./obj/CMKDIR_0     | ./classes/JMKDIR_0 | ~          | ~       |
+# | JWS    | ./obj/CMKDIR_{0,1} | ./classes/JMKDIR_1 | <-         | <-      |
+# | JWSJNL | ./obj/CMKDIR_{0,2} | ./classes/JMKDIR_2 | <-         | <->     |
+# | JNL    | ./obj/CMKDIR_{0,3} | ./classes/JMKDIR_3 | <-         | >       |
+# +--------+--------------------+--------------------+------------+---------+
+#
+#  ???                 : variable JPDA undefined
+#
+#  CMKDIR_0            : For JPDA=???, this is the directory for all .o files,
+#                        including "launcher.o"; "jpda.o" not generated/read
+#  CMKDIR_{0,i}        : For JPDA=JWS (i=1), JPDA=JWSJNL (i=2), and JPDA=JNL
+#                        (i=3), CMKDIR_i is the directory for "launcher.o"
+#                        and "jpda.o", whereas all other .o files reside in
+#                        CMKDIR_0
+#
+#  Settings for CMKDIR_i and JMKDIR_i (i=0,1,2,3):
+#  CMKDIR_0            : .
+#  CMKDIR_1, CMKDIR_2  : jpda/jws_jwsjnl
+#  CMKDIR_3            : jpda/jnl
+#  JMKDIR_0, JMKDIR_3  : .
+#  JMKDIR_1, JMKDIR_2  : _g
+#
+#  -Djnlpx.jpda.env=...: JPDA debugging environment for Java Web Start
+#
+#  -Xdebug             : causes JRE to run in JPDA debugging mode
+#
+#                 ~    : none of the JREs in a JRE invocation chain
+#                 <->  : all JREs in a JRE invocation chain
+#                 <-   : all JREs in a JRE invocation chain, except last JRE
+#                 >    : only last JRE in a JRE invocation chain
+
+##############################################################################
+
+# Destination directories for the four modes of the JPDA variable:
+
+CMKDIR_0   = .			# JPDA undefined (no JPDA support)
+CMKDIR_1_2 = jpda/jws_jwsjnl	# JPDA=JWS or JPDA=JWSJNL
+CMKDIR_3   = jpda/jnl		# JPDA=JNL
+
+JMKDIR_0_3 = .			# JPDA undefined (no JPDA support) or JPDA=JNL
+JMKDIR_1_2 = _g			# JPDA=JWS or JPDA=JWSJNL
+
+##############################################################################
+
+# If variable JPDA is defined, do validity check on its value (abort build
+# if value invalid) and define some convenience variables:
+
+ifdef JPDA
+   JDEBUG_OPTION = -g
+   CMKDIR = $(strip $(CMKDIR_1_2))
+   JMKDIR = $(strip $(JMKDIR_1_2))
+   ifneq ($(JPDA), JWS)
+      ifneq ($(JPDA), JWSJNL)
+         ifeq ($(JPDA), JNL)
+            JDEBUG_OPTION =
+            CMKDIR = $(strip $(CMKDIR_3))
+            JMKDIR = $(strip $(JMKDIR_0_3))
+         else
+            $(error ERROR: Variable JPDA was set to $(JPDA).  Must be set to JWS or JNL or JWSJNL)
+         endif
+      endif
+   endif
+else
+   JDEBUG_OPTION =
+   CMKDIR = $(strip $(CMKDIR_0))
+   JMKDIR = $(strip $(JMKDIR_0_3))
+endif
+
+##############################################################################
+
+# Location of "launcher.o" and "jpda.o"
+# (note: all other .o files are located in OBJDIR)
+
+JPDA_OBJDIR = $(OBJDIR)/$(CMKDIR)
+
+##############################################################################
+
+# Define timestamp files:
+
+include ../common/TSfile.gmk

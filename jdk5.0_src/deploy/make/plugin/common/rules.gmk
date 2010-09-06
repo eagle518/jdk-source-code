@@ -1,0 +1,33 @@
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# @(#)rules.gmk	1.7 04/05/05
+#
+# additional rules
+#
+
+ifeq ($(PLATFORM), windows)
+
+ifdef SUBDIR
+FILES_res += $(patsubst %.rc, %.res, $(addprefix $(OBJDIR)/$(SUBDIR)/, $(FILES_rc)))
+else
+FILES_res += $(patsubst %.rc, %.res, $(addprefix $(OBJDIR)/, $(FILES_rc)))
+endif
+
+FILES_o += $(FILES_res)
+
+$(OBJDIR)/$(LIBRARY)$(SUFFIX).lcf: $(FILES_res)
+
+$(OBJDIR)/$(EXECUTABLE)$(SUFFIX).lcf: $(FILES_res)
+
+ifdef SUBDIR
+$(OBJDIR)/$(SUBDIR)/%.res:%.rc
+	$(RSC) $(RC_FLAGS) $(RSCINC) $(RSCFLAGS) -fo$@ $<
+else
+$(OBJDIR)/%.res:%.rc
+	$(RSC) $(RC_FLAGS) $(RSCINC) $(RSCFLAGS) -fo$@ $<
+endif
+
+else
+endif

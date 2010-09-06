@@ -1,0 +1,545 @@
+<SCRIPT>
+/*
+ * Copyright (c) 1996 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * Permission to use, copy, modify, and distribute this software
+ * and its documentation for NON-COMMERCIAL purposes and without
+ * fee is hereby granted provided that this copyright notice
+ * appears in all copies. Please refer to the file "COPYRIGHT"
+ * for further important copyright and licensing information.
+ *
+ * SUN MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF
+ * THE SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+ * TO THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+ * PARTICULAR PURPOSE, OR NON-INFRINGEMENT. SUN SHALL NOT BE LIABLE FOR
+ * ANY DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR
+ * DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+ * 
+ * THIS SOFTWARE IS NOT DESIGNED OR INTENDED FOR USE OR RESALE AS ON-LINE
+ * CONTROL EQUIPMENT IN HAZARDOUS ENVIRONMENTS REQUIRING FAIL-SAFE
+ * PERFORMANCE, SUCH AS IN THE OPERATION OF NUCLEAR FACILITIES, AIRCRAFT
+ * NAVIGATION OR COMMUNICATION SYSTEMS, AIR TRAFFIC CONTROL, DIRECT LIFE
+ * SUPPORT MACHINES, OR WEAPONS SYSTEMS, IN WHICH THE FAILURE OF THE
+ * SOFTWARE COULD LEAD DIRECTLY TO DEATH, PERSONAL INJURY, OR SEVERE
+ * PHYSICAL OR ENVIRONMENTAL DAMAGE ("HIGH RISK ACTIVITIES").  SUN
+ * SPECIFICALLY DISCLAIMS ANY EXPRESS OR IMPLIED WARRANTY OF FITNESS FOR
+ * HIGH RISK ACTIVITIES.
+ */
+
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//
+// ProxyScript.html  by Stanley Man-Kit Ho
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//
+// Contains emulated JavaScript functions for obtaining the proxy settings in Activator.
+//
+
+var _mon = new Array('JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC');
+var _day = new Array('SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT');
+
+function _isGmt(i)
+{
+    return typeof i == 'string' && i == 'GMT';
+}
+
+
+function dnsDomainIs(host, domain)
+{
+      if (domain.charAt(0) != '.')
+           return false;
+
+      return shExpMatch(host, '*' + domain);
+}
+
+function isInNet(host, pattern, mask)
+{
+      if (typeof host != 'string' || typeof pattern != 'string' || typeof mask != 'string')
+	  return false;
+
+      if (dnsDomainLevels(pattern) != 3 || dnsDomainLevels(mask) != 3)
+          return false;
+ 
+      var offset1 = 0, offset2 = 0, ofs1 = 0, ofs2 = 0;
+      var m = '', result;	
+      
+      // Create new mask
+      for (var i=0; i < 4; i++)
+      {
+          ofs1 = pattern.indexOf('.', offset1);
+          ofs2 = mask.indexOf('.', offset2);
+
+          if (i != 3)
+	      result = (pattern.substring(offset1, ofs1) - 0) & (mask.substring(offset2, ofs2) - 0);
+          else
+	      result = (pattern.substring(offset1) & mask.substring(offset2));
+  
+	  if (result == 0)
+             result = '*';
+
+          m = m + result;
+          if (i != 3)
+              m = m + '.';
+          
+          offset1 = ofs1 + 1;
+          offset2 = ofs2 + 1;
+      }
+
+      return shExpMatch(host, m);
+}	
+
+function isPlainHostName(host)
+{
+      return (dnsDomainLevels(host) == 0);
+}
+
+function isResolvable(host)
+{
+      return (dnsResolve(host) != '');
+}
+
+function localHostOrDomainIs(host, hostdom)
+{
+      return shExpMatch(hostdom, host + '*');
+}
+
+function dnsDomainLevels(host)
+{
+     var s = host + '';
+     for (var i=0, j=0; i < s.length; i++)
+	if (s.charAt(i) == '.')
+	    j++;
+     return j;	 
+}
+
+function dnsResolve(host)
+{
+     if (typeof host != 'string' || dnsDomainLevels(host) != 3)
+	 return '';
+
+     for (var i=0; i < host.length; i++)
+	if ((host.charAt(i) < '0' || host.charAt(i) > '9') && host.charAt(i) != '.')
+	    return '';
+	   
+    return host;
+}
+
+
+function myIpAddress()
+{
+     // Cannot emulate this function in Navigator, IP address is hardcoded.
+     return '129.144.251.64';	
+}
+
+
+function shExpMatch(str, shexp)
+{
+     if (typeof str != 'string' || typeof shexp != 'string')
+		return false;
+
+	if (shexp == '*')
+	    return true;
+
+	// NULL is not a valid input.
+	//
+    if (str == '' && shexp == '') 
+		return true; 
+
+	// Convert the string to lower case
+	str = str.toLowerCase();
+	shexp = shexp.toLowerCase();
+
+	// Check the position of the wildcard
+	var index = shexp.indexOf('*');
+
+	if (index == -1)
+	{
+	    // No wildcard anymore
+	    return (str == shexp);
+	}
+	else if (index == 0)
+	{
+	    // Wildcard at the beginning of the pattern
+
+	    for (var i=0; i <= str.length; i++)
+	    {
+		// Loop through the string to see if anything match.
+		if (shExpMatch(str.substring(i), shexp.substring(1)))
+		    return true;
+	    }
+
+	    return false;
+	}
+	else
+	{
+	    // index > 0
+	    var sub = null, sub2 = null;
+
+	    sub = shexp.substring(0, index);
+
+	    if (index <= str.length)
+			sub2 = str.substring(0, index);
+
+		if (sub != '' && sub2 != '' && sub == sub2)
+		{
+			return shExpMatch(str.substring(index), shexp.substring(index));
+		}
+	    else
+		{
+			return false;
+		}
+	}
+}
+
+
+function dateRange(p1, p2, p3, p4, p5, p6, p7)
+{
+      var cur = new Date(); 
+
+      if (typeof p1 == 'undefined')
+           return false;
+      else if (typeof p2 == 'undefined' || _isGmt(p2))
+      {
+           if ((typeof p1) == 'string')		// dateRange(mon) / dateRange(mon, gmt)
+               return _dateRange(1, p1, cur.getYear(), 31, p1, cur.getYear(), _isGmt(p2));
+           else if (typeof p1 == 'number' && p1 > 31)	// dateRange(yr) / dateRange(yr, gmt)
+               return _dateRange(1, 'JAN', p1, 31, 'DEC', p1, _isGmt(p2));
+           else   
+           {					// dateRange(day) / dateRange(day, gmt)
+               for (var i=0; i < 11; i++)	
+                   if (_dateRange(p1, _mon[i], cur.getYear(), p1, _mon[i], cur.getYear(), _isGmt(p2)))
+	               return true;
+	
+	       return false;
+	   }
+      }
+      else if (typeof p3 == 'undefined' || _isGmt(p3))
+      {
+           if ((typeof p1) == 'string')		// dateRange(mon1, mon2) / dateRange(mon1, mon2, gmt)
+               return _dateRange(1, p1, cur.getYear(), 31, p2, cur.getYear(), _isGmt(p3));
+           else if (typeof p1 == 'number' && typeof p2 == 'number' && (p1 > 31 || p2 > 31))	// dateRange(yr1, yr2) / dateRange(yr1, yr2, gmt)
+               return _dateRange(1, 'JAN', p1, 31, 'DEC', p2, _isGmt(p3));
+           else  
+           {
+	       if ((typeof p2) == 'string')	// dateRange(day, mon) / dateRange(day, mon, gmt)
+               {
+		   return _dateRange(p1, p2, cur.getYear(), p1, p2, cur.getYear(), _isGmt(p3));	
+               }
+               else
+               {				// dateRange(day1, day2) / dateRange(day1, day2, gmt)
+                   for (var i=0; i < 11; i++)
+                       if (_dateRange(p1, _mon[i], cur.getYear(), p2, _mon[i], cur.getYear(), _isGmt(p3)))
+	                   return true;
+	
+ 	      	   return false;
+               }
+           }
+      }
+      else if (typeof p4 == 'undefined' || _isGmt(p4))	// dateRange(day, mon, yr) / dateRange(day, mon, yr, gmt)
+           return _dateRange(p1, p2, p3, p1, p2, p3, _isGmt(p4));
+      else if (typeof p5 == 'undefined' || _isGmt(p5))
+      {
+           if (typeof p2 == 'number')       // dateRange(mon1, yr1, mon2, yr2) / dateRange(mon1, yr1, mon2, yr2, gmt)
+               return _dateRange(1, p1, p2, 31, p3, p4, _isGmt(p5));
+           else 					// dateRange(day1, mon1, day2, mon2) / dateRange(day1, mon1, day2, mon2, gmt)
+               return _dateRange(p1, p2, cur.getYear(), p3, p4, cur.getYear(), _isGmt(p5))
+      }
+      else if (typeof p6 == 'undefined')
+           return false;
+      else 					// dateRange(day1, mon1, yr1, day2, mon2, yr2) / dateRange(day1, mon1, yr1, day2, mon2, yr2, gmt)
+           return _dateRange(p1, p2, p3, p4, p5, p6, _isGmt(p7));
+}
+
+
+
+
+function _dateRange(day1, month1, year1, day2, month2, year2, gmt)
+{
+      if (typeof day1 != 'number' || day1 <= 0 || typeof month1 != 'string' || typeof year1 != 'number' || year1 <= 0
+          || typeof day2 != 'number' || day2 <=0 || typeof month2 != 'string' || typeof year2 != 'number' || year2 <= 0
+	  || typeof gmt != 'boolean')
+	    return false;
+
+      var m1 = -1, m2 = -1;
+
+      for (var i=0; i < _mon.length; i++)
+      {
+          if (_mon[i] == month1)   
+              m1 = i;
+          if (_mon[i] == month2)
+              m2 = i;
+      }              		
+
+      var cur = new Date();     
+      var d1 = new Date(year1, m1, day1, 0, 0, 0);
+      var d2 = new Date(year2, m2, day2, 23, 59, 59);
+
+      if (gmt == true)
+          cur = new Date(cur.getTime() - cur.getTimezoneOffset() * 60 * 1000);
+
+      return ((d1.getTime() <= cur.getTime()) && (cur.getTime() <= d2.getTime()));
+}
+
+
+function timeRange(p1, p2, p3, p4, p5, p6, p7)
+{
+      if (typeof p1 == 'undefined')
+           return false;
+      else if (typeof p2 == 'undefined' || _isGmt(p2)) 	// timeRange(hour) / timeRange(hour, gmt)
+	   return _timeRange(p1, 0, 0, p1, 59, 59, _isGmt(p2));
+      else if (typeof p3 == 'undefined' || _isGmt(p3))	// timeRange(hour1, hour2) / timeRange(hour1, hour2, gmt)
+           return _timeRange(p1, 0, 0, p2, 0, 0, _isGmt(p3));
+      else if (typeof p4 == 'undefined')
+           return false
+      else if (typeof p5 == 'undefined' || _isGmt(p5)) 	// timeRange(hour1, min1, hour2, min2) / timeRange(hour1, min1, hour2, min2, gmt)
+           return _timeRange(p1, p2, 0, p3, p4, 0, _isGmt(p5));
+      else if (typeof p6 == 'undefined')
+           return false;
+      else 					// timeRange(hour1, min1, sec1, hour2, min2, sec2) / timeRange(hour1, min1, sec1, hour2, min2, sec2, gmt)
+           return _timeRange(p1, p2, p3, p4, p5, p6, _isGmt(p7));
+}
+
+
+function _timeRange(hour1, min1, sec1, hour2, min2, sec2, gmt)
+{
+      if (typeof hour1 != 'number' || typeof min1 != 'number' || typeof sec1 != 'number'
+          || hour1 < 0 || min1 < 0 || sec1 < 0 
+          || typeof hour2 != 'number' || typeof min2 != 'number' || typeof sec2 != 'number'
+          || hour2 < 0 || min2 < 0 || sec2 < 0 
+	  || typeof gmt != 'boolean')
+	    return false;
+
+      var cur = new Date();  // Obtain current time
+      var d1 = new Date();
+      var d2 = new Date();
+
+      d1.setHours(hour1);
+      d1.setMinutes(min1);
+      d1.setSeconds(sec1);
+      d2.setHours(hour2);
+      d2.setMinutes(min2);
+      d2.setSeconds(sec2);
+
+      if (gmt == true)
+          cur = new Date(cur.getTime() - cur.getTimezoneOffset() * 60 * 1000);
+
+      return ((d1.getTime() <= cur.getTime()) && (cur.getTime() <= d2.getTime()));
+}
+
+
+function weekdayRange(wd1, wd2, gmt)
+{
+      if (typeof wd1 == 'undefined')   
+	  return false;
+      else if (typeof wd2 == 'undefined' || _isGmt(wd2)) 	// weekdayRange(wd1) / weekdayRange(wd1, gmt)
+          return _weekdayRange(wd1, wd1, _isGmt(wd2));
+      else					// weekdayRange(wd1, wd2) / weekdayRange(wd1, wd2, gmt) 
+	  return _weekdayRange(wd1, wd2, _isGmt(gmt));   		
+}
+
+function _weekdayRange(wd1, wd2, gmt)
+{
+      if (typeof wd1 != 'string' || typeof wd2 != 'string' || typeof gmt != 'boolean')
+	    return false;
+
+      var w1 = -1, w2 = -1;
+
+      for (var i=0; i < _day.length; i++)
+      {
+          if (_day[i] == wd1)   
+              w1 = i;
+          if (_day[i] == wd2)
+              w2 = i;
+      }              		
+
+      var cur = new Date(); 
+
+      if (gmt == true)
+          cur = new Date(cur.getTime() - cur.getTimezoneOffset() * 60 * 1000);
+
+      var w3 = cur.getDay();
+
+      if (w1 > w2)
+          w2 = w2 + 7;
+
+      if (w1 > w3)
+          w3 = w3 + 7;                    
+
+      return (w1 <= w3 && w3 <= w2);       
+}
+
+function FindProxyForURL(url, host) {
+
+// Client goes direct if the URL is in the Bay Area
+
+  if (isPlainHostName(host) || 
+      dnsDomainIs(host, '.corp') ||
+      dnsDomainIs(host, '.corp.sun.com') || 
+      dnsDomainIs(host, '.ebay') ||
+      dnsDomainIs(host, '.ebay.sun.com') || 
+      dnsDomainIs(host, '.eng') ||
+      dnsDomainIs(host, '.eng.sun.com')) 
+  {
+     return 'DIRECT' ;
+  }
+
+
+// Lighthouse Design
+
+  else if (isInNet('129.144.81.0', myIpAddress(), '255.255.255.0')) {
+    return 'PROXY webcache-lhd.Eng.Sun.COM:8080;' +
+    'PROXY webcache.Eng.Sun.COM:8080;' +
+    'PROXY webcache.Corp.Sun.COM:8080;' +
+    'PROXY webcache.EBay.Sun.COM:8080';
+  }
+
+
+// Sunnnyvale
+
+  else if (isInNet('129.144.6.0', myIpAddress(), '255.255.255.0')) {
+    return 'PROXY webcache-svl.Eng.Sun.COM:8080;' +
+    'PROXY webcache-mtv-01.Eng.Sun.COM:8080;' +
+    'PROXY webcache.Eng.Sun.COM:8080;' +
+    'PROXY webcache.Corp.Sun.COM:8080;' +
+    'PROXY webcache.EBay.Sun.COM:8080';
+  }
+
+// Cupertino
+
+  else if (isInNet('129.144.75.0', myIpAddress(), '255.255.255.0') ||
+	   isInNet('129.144.85.0', myIpAddress(), '255.255.255.0') ||
+	   isInNet('129.144.89.0', myIpAddress(), '255.255.255.0') ||
+	   isInNet('129.144.123.0', myIpAddress(), '255.255.255.0') ||
+	   isInNet('129.144.124.0', myIpAddress(), '255.255.255.0') ||
+	   isInNet('129.144.125.0', myIpAddress(), '255.255.255.0') ||
+	   isInNet('129.144.170.0', myIpAddress(), '255.255.255.0') ||
+	   isInNet('129.144.171.0', myIpAddress(), '255.255.255.0') ||
+	   isInNet('129.144.172.0', myIpAddress(), '255.255.255.0') ||
+	   isInNet('129.144.173.0', myIpAddress(), '255.255.255.0') ||
+	   isInNet('129.144.174.0', myIpAddress(), '255.255.255.0') ||
+	   isInNet('129.144.175.0', myIpAddress(), '255.255.255.0') ||
+	   isInNet('129.144.176.0', myIpAddress(), '255.255.255.0') ||
+	   isInNet('129.144.177.0', myIpAddress(), '255.255.255.0') ||
+	   isInNet('129.144.250.0', myIpAddress(), '255.255.255.0') ||
+	   isInNet('129.144.251.0', myIpAddress(), '255.255.255.0') ||
+	   isInNet('129.144.252.0', myIpAddress(), '255.255.255.0')) 
+  {
+    return 'PROXY webcache-cup.Eng.Sun.COM:8080;' +
+    'PROXY webcache-mpk-01.Eng.Sun.COM:8080;' +
+    'PROXY webcache.Eng.Sun.COM:8080;' +
+    'PROXY webcache.Corp.Sun.COM:8080;' +
+    'PROXY webcache.EBay.Sun.COM:8080';
+  }
+
+// Old Menlo Park
+
+  // MPK02
+  else if (isInNet('129.144.25.0', myIpAddress(), '255.255.255.0') ||
+	   isInNet('129.144.26.0', myIpAddress(), '255.255.255.0')) {
+    return 'PROXY netracache1.Eng.Sun.COM:8080;' +
+    'PROXY webcache-mpk-01.Eng.Sun.COM:8080;' +
+    'PROXY webcache.Eng.Sun.COM:8080;' +
+    'PROXY webcache.Corp.Sun.COM:8080;' +
+    'PROXY webcache.EBay.Sun.COM:8080';
+  }
+
+  // MPK03
+  else if (isInNet('129.144.204.0', myIpAddress(), '255.255.255.0') ||
+	   isInNet('129.144.205.0', myIpAddress(), '255.255.255.0')) {
+    return 'PROXY netracache2.Eng.Sun.COM:8080;' +
+    'PROXY webcache-mpk-01.Eng.Sun.COM:8080;' +
+    'PROXY webcache.Eng.Sun.COM:8080;' +
+    'PROXY webcache.Corp.Sun.COM:8080;' +
+    'PROXY webcache.EBay.Sun.COM:8080';
+  }
+
+// Mountain View
+
+  else if (isInNet('129.144.0.0', myIpAddress(), '255.255.0.0')) {
+    return 'PROXY webcache-mtv-01.Eng.Sun.COM:8080;' +
+    'PROXY webcache1.Eng.Sun.COM:8080;' +
+    'PROXY webcache.Eng.Sun.COM:8080;' +
+    'PROXY webcache.Corp.Sun.COM:8080;' +
+    'PROXY webcache.EBay.Sun.COM:8080';
+  }
+
+
+// Everywhere else 
+
+  else {
+    return 'PROXY webcache-mpk-01.Eng.Sun.COM:8080;' +
+    'PROXY webcache.Eng.Sun.COM:8080;' +
+    'PROXY webcache1.Eng.Sun.COM:8080;' +
+    'PROXY webcache.Corp.Sun.COM:8080;' +
+    'PROXY webcache.EBay.Sun.COM:8080';
+  }
+} 
+
+
+
+// Testing
+document.writeln(dnsDomainIs('www.netscape.com', '.netscape.com') + '<P>');
+document.writeln(dnsDomainIs('www', '.netscape.com') + '<P>');
+document.writeln(dnsDomainIs('www.mcom.com', '.netscape.com') + '<P>');
+document.writeln(isInNet('198.95.249.79', '198.95.249.79', '255.255.255.255') + '<P>');
+document.writeln(isInNet('198.95.249.78', '198.95.249.79', '255.255.255.255') + '<P>');
+document.writeln(isInNet('198.95.249.78', '198.95.249.79', '255.255.0.0') + '<P>');
+document.writeln(isPlainHostName('javax') + '<P>');
+document.writeln(isPlainHostName('javax.eng') + '<P>');
+document.writeln(localHostOrDomainIs('www.netscape.com', 'www.netscape.com') + '<P>');
+document.writeln(localHostOrDomainIs('www', 'www.netscape.com') + '<P>');
+document.writeln(localHostOrDomainIs('www.mcom.com', 'www.netscape.com') + '<P>');
+document.writeln(localHostOrDomainIs('home.netscape.com', 'www.netscape.com') + '<P>');
+document.writeln(dnsDomainLevels('www') + '<P>');
+document.writeln(dnsDomainLevels('www.netscape.com') + '<P>');
+document.writeln(myIpAddress() + '<P>');
+document.writeln(shExpMatch('http://home.netscape.com/people/index.html', '*/people/*') + '<P>');
+document.writeln(shExpMatch('http://home.netscape.com/people/yourpage/index.html', '*/mypage/*') + '<P>');
+document.writeln('============================<P>');
+document.writeln(isResolvable('www') + '<P>');
+document.writeln(isResolvable('www.aa.aa.com') + '<P>');
+document.writeln(isResolvable('122.22.111') + '<P>');
+document.writeln(isResolvable('122.222.111.44') + '<P>');
+document.writeln('============================<P>');
+document.write(dateRange(13) + '<P>');
+document.write(dateRange(13, 'GMT') + '<P>');
+document.write(dateRange(1, 15) + '<P>');
+document.write(dateRange(24, 'DEC') + '<P>');
+document.write(dateRange(24, 'DEC', 1995) + '<P>');
+document.write(dateRange(13, 'JAN') + '<P>');
+document.write(dateRange(13, 'JAN', 1998) + '<P>');
+document.write(dateRange('JAN', 'MAR') + '<P>');
+document.write(dateRange('MAR', 'JAN') + '<P>');
+document.write(dateRange(1, 'JAN', 15, 'MAR') + '<P>');
+document.write(dateRange(1, 'JAN', 1995, 15, 'MAR', 1997) + '<P>');
+document.write(dateRange(1997) + '<P>');
+document.write(dateRange(1998) + '<P>');
+document.write(dateRange(1997, 1998) + '<P>');
+document.write(dateRange(1, 2000) + '<P>');
+document.write(dateRange(1, 31) + '<P>');
+document.write(dateRange(25, 31) + '<P>');
+document.write(dateRange(1995, 2000) + '<P>');
+document.writeln('============================<P>');
+document.write(dateRange('JAN', 1, 'DEC', 2000) + '<P>');
+document.write(dateRange('JAN', 1, 'DEC', 31) + '<P>');
+document.writeln('============================<P>');
+document.write(timeRange(12, 15) + '<P>');
+document.write(timeRange(6, 'GMT') + '<P>');
+document.write(timeRange(9, 17) + '<P>');
+document.write(timeRange(9, 12) + '<P>');
+document.write(timeRange(0, 0, 0, 0, 0, 30) + '<P>');
+document.writeln('============================<P>');
+document.write(weekdayRange('SUN', 'MON') + '<P>');
+document.write(weekdayRange('MON', 'FRI') + '<P>');
+document.write(weekdayRange('MON', 'FRI', 'GMT') + '<P>');
+document.write(weekdayRange('SAT') + '<P>');
+document.write(weekdayRange('TUE') + '<P>');
+document.write(weekdayRange('WED', 'GMT') + '<P>');
+document.write(weekdayRange('TUE', 'GMT') + '<P>');
+
+document.writeln('===== FindProxyForURL =========<P>');
+
+document.write(FindProxyForURL('http://www.microsoft.com', 'java.sun.com'));
+
+</SCRIPT>
+

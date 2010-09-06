@@ -1,0 +1,100 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta http-equiv="CONTENT-TYPE" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.76C-CCK-MCD Netscape [en] (X11; U; SunOS 5.8 sun4u) [Netscape]">
+   <meta name="CREATED" content="20010713;12581800">
+   <meta name="CHANGED" content="16010101;0">
+   <meta name="ProgId" content="Word.Document">
+   <meta name="Originator" content="Microsoft Word 9">
+   <title>Jar in Jar specifications</title>
+<!-- [if gte mso 9]<xml
+ <o:DocumentProperties
+  <o:AuthorMargarita Fisher</o:Author
+  <o:LastAuthorMargarita Fisher</o:LastAuthor
+  <o:Revision2</o:Revision
+  <o:TotalTime1363</o:TotalTime
+  <o:Created2001-06-26T21:27:00Z</o:Created
+  <o:LastSaved2001-06-26T21:27:00Z</o:LastSaved
+  <o:Pages1</o:Pages
+  <o:Words182</o:Words
+  <o:Characters1043</o:Characters
+  <o:CompanySun Microsystems</o:Company
+  <o:Lines8</o:Lines
+  <o:Paragraphs2</o:Paragraphs
+  <o:CharactersWithSpaces1280</o:CharactersWithSpaces
+  <o:Version9.2720</o:Version
+ </o:DocumentProperties
+</xml<![endif] -->
+<style>
+	<!--
+		TD P { color: #000000 }
+		P { color: #000000 }
+		A:link { color: #0000ff }
+		A:visited { color: #800080 }
+	-->
+	</style>
+</head>
+<body text="#000000" link="#0000FF" vlink="#800080">
+
+<center><b><u><font size=+2>Jar in Jar Implementation Specifications.</font></u></b></center>
+
+
+<p CLASS="msonormal">1.&nbsp;&nbsp;&nbsp; Name of a JAR file containing
+another JAR must have extension JARJAR
+
+<p CLASS="msonormal">Example 1:
+
+<p CLASS="msonormal">&nbsp;&nbsp;&nbsp; A.class B.class -> first.jar
+
+<p CLASS="msonormal">&nbsp;&nbsp;&nbsp; first.jar -> my.jarjar
+<br>&nbsp;
+
+<p CLASS="msonormal">2.&nbsp;&nbsp;&nbsp; Only JAR file and manifest can
+be inside the JARJAR file.&nbsp; If you try to do the following, an IOException
+will be thrown in Java Console, indicating that it found an "Invalid entry
+in jarjar file", and ClassNotFoundException will be displayed in the applet's
+gray box.
+
+<p CLASS="msonormal">Example 2:
+
+<p CLASS="msonormal">&nbsp;&nbsp;&nbsp; A.class B.class -> first.jar
+
+<p CLASS="msonormal">&nbsp;&nbsp;&nbsp; first.jar C.class -> my.jarjar
+<br>&nbsp;
+
+<p CLASS="msonormal">3.&nbsp;&nbsp;&nbsp; Only one JAR file can be inside
+a JARJAR file.&nbsp; The following will cause a ClassNotFoundException:
+
+<p CLASS="msonormal">Example 3:
+
+<p CLASS="msonormal">&nbsp;&nbsp;&nbsp; A.class B.class -> first.jar
+
+<p CLASS="msonormal">&nbsp;&nbsp;&nbsp; C.class D.class -> second.jar
+
+<p CLASS="msonormal">&nbsp;&nbsp;&nbsp; first.jar second.jar -> my.jarjar
+<br>&nbsp;
+<br>&nbsp;
+
+<p CLASS="msonormal">In applet's code, use only C class, only D class,
+or both:
+
+<p CLASS="msonormal">&nbsp;&nbsp;&nbsp; C var = new C( );
+
+<p CLASS="msonormal">When you try to load applet, you should see IOException
+in Java Console window, indicating that multiple JAR files were found in
+a JARJAR file, and ClassNotFoundException in the gray box for each applet.
+<br>&nbsp;
+<br>&nbsp;
+
+<p CLASS="msonormal">Dense JAR format feature is supported for the following
+types of connections:
+<ul>
+<div STYLE="margin-bottom: 0in">HTTP</div>
+
+<div STYLE="margin-bottom: 0in">HTTPS</div>
+FILE</ul>
+
+</body>
+</html>

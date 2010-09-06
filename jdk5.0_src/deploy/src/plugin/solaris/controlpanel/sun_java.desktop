@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Java
+Comment=Java Control Panel
+Exec=INSTALL_DIR/JRE_NAME_VERSION/bin/ControlPanel
+Icon=INSTALL_DIR/JRE_NAME_VERSION/plugin/desktop/sun_java.png
+Terminal=0
+Type=Application
+Categories=Application;Settings;X-Sun-Supported;X-Red-Hat-Base;

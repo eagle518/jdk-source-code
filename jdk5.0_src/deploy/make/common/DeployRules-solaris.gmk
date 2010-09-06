@@ -1,0 +1,46 @@
+#
+# @(#)DeployRules-solaris.gmk	1.14 04/01/12
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+DEPLOY_COMMON_SO = $(COMMON_LIB_DIR)/libdeploy.so
+DEPLOY_OUTPUT_LIB = $(OUTPUTDIR)/lib/$(LIBARCH)/libdeploy.so
+
+DEPLOY_COMMON_SO_DBG = $(COMMON_LIB_DIR_DBG)/libdeploy$(DBG_SUFFIX).so
+DEPLOY_OUTPUT_LIB_DBG = $(OUTPUTDIR)/lib/$(LIBARCH)/libdeploy$(DBG_SUFFIX).so
+
+
+SO_o = $(SO_c:%.c=$(DEPLOYOBJDIR)/%.o)
+SO_o_DBG = $(SO_c:%.c=$(DEPLOYOBJDIR_DBG)/%.o)
+
+SO_GNOME_o = $(SO_GNOME_C:%.c=$(DEPLOYOBJDIR)/%.o)
+SO_GNOME_o_DBG = $(SO_GNOME_C:%.c=$(DEPLOYOBJDIR_DBG)/%.o)
+
+ifeq ($(PLATFORM), solaris)
+  CXX = $(COMPILER_PATH)cc
+  CXXFLAGS = -G
+else
+  CXX = $(COMPILER_PATH)gcc
+  CXXFLAGS = -shared
+endif
+
+deploy-native: deploy-so-mkdir $(DEPLOY_COMMON_SO) $(DEPLOY_COMMON_SO_DBG)
+
+$(DEPLOY_COMMON_SO): $(SO_o) $(SO_GNOME_o)
+	$(CXX) $(CXXFLAGS) -o $(DEPLOY_COMMON_SO) $(SO_o) $(SO_GNOME_o)
+	$(CP) $(DEPLOY_COMMON_SO) $(DEPLOY_OUTPUT_LIB)
+
+$(DEPLOY_COMMON_SO_DBG): $(SO_o_DBG) $(SO_GNOME_o_DBG)
+	$(CXX) -g $(CXXFLAGS) -o $(DEPLOY_COMMON_SO_DBG) $(SO_o_DBG) $(SO_GNOME_o_DBG)
+	$(CP) $(DEPLOY_COMMON_SO_DBG) $(DEPLOY_OUTPUT_LIB_DBG)
+
+$(DEPLOYOBJDIR)/%.o: $(DEPLOY_PLATFORM_SRC)/native/%.c
+	$(CXX) -I$(BOOTDIR)/include -I$(BOOTDIR)/include/$(PLATFORM) -c $? -o $@
+
+$(DEPLOYOBJDIR_DBG)/%.o: $(DEPLOY_PLATFORM_SRC)/native/%.c
+	$(CXX) -g -I$(BOOTDIR)/include -I$(BOOTDIR)/include/$(PLATFORM) -c $? -o $@
+
+deploy-so-mkdir:
+	$(MKDIR) -p $(DEPLOYOBJDIR) $(DEPLOYOBJDIR_DBG) $(COMMON_LIB_DIR) $(COMMON_LIB_DIR_DBG)

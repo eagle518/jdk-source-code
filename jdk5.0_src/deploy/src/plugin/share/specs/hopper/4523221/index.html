@@ -1,0 +1,562 @@
+<html>
+<head><title>HTTP Connection Timeout Engineering Specification</title></head>
+<body bgcolor=white>
+
+<h2>
+HTTP/HTTPS Connection Timeout Engineering Specification
+</h2>
+<p>
+<h4>
+RFE: <a target=new href=http://andorra1.sfbay:8080/cgi-bin/ws.exe/bugtraq/jdk/bug.hts?bugid_value=4523221>4523221</a>
+Default Connection Timeout in Java Plug-in Networking support
+<!-- Replace BUGID with the RFE bugtraq ID and remove these comments...-->   
+
+
+<p>
+Author: Michael Colburn
+<br>
+Date:   01/16/02    
+</h4>
+
+<p><br>
+
+<table width=100% cellspacing=0 cellpadding=3 border=0>
+  <tr>
+    <td bgcolor=wheat><h3>1  Project Description</td>
+  </tr>
+</table>
+
+<p>
+
+<h4>
+1.1 Overview
+</h4>
+
+<!-- Description of the project/problem -->
+
+This project is to set a default network time-out value for HTTP/HTTPS
+connections. Right now there is no time-out value. So when a connection
+is made by an applet and the server doesn't respond properly the applet 
+will appear to hang and may also cause the browser to hang.
+<p>
+
+<h4>
+1.2 Project Dependencies
+</h4>
+
+<!-- Describe any dependencies on other projects -->
+N/A
+
+<h4>
+1.3 OS and Browser Compatibility and Interoperability 
+</h4>
+
+<!-- Describe any compatibility or interoperability issues.  Is this
+     project a cross platform solution, or does it only affect certain
+     platforms/browsers?  Is this compatible with earlier and future
+     releases? -->
+This feature will be available on all platforms.
+<p>
+
+
+<h4>
+1.4 Performance and Scalability
+</h4>
+
+<!-- Describe the performance goals and measurements.  Describe any 
+     scalability limits and potential bottlenecks. -->
+<p>
+N/A
+
+<h4>
+1.5 Security
+</h4>
+
+<!-- Describe any security related issues. -->
+N/A
+<p>
+
+
+<h4>
+1.6 Internationalization (I18N) / Localization (L10N)
+</h4>
+
+<!-- Describe any internationalization and/or localization requirements. -->
+
+<p>
+N/A
+
+<h4>
+1.7 Packaging
+</h4>
+
+<!-- Describe any special packaging requirements or installer changes. -->
+
+<p>
+N/A
+
+<h4>
+1.8 Usability
+</h4>
+
+<!-- Describe any usability enhancements or concerns for target
+     users or audience. -->
+
+<p>
+Check with UI expert (Michael Albers) for feedback on this issue.
+<p>
+Java Look and Feel Design Guidelines:
+<a target=new href=http://java.sun.com/products/jlf/ed2/book/HIGTitle.html>
+http://java.sun.com/products/jlf/ed2/book/HIGTitle.html
+</a>     
+
+
+<h4>
+1.9 Quality
+</h4>
+The test team will have to come up with the testing requirements.
+This change will be needed to be tested on the various platforms (OS's).
+This change should be tested on fast and slow hardware.
+This change should be tested with fast and slow network connections
+(i.e. slow = modem dial-up). 
+This change needs to be tested using a server that is not available, to
+make sure the connection times out in the proper amount of time.
+        
+<p>
+
+<h5>
+1.9.1 Unit or Functional Tests to be Delivered
+</h5>
+
+<!-- Describe any Unit or Functional tests to be delivered by engineering
+     for this project. -->
+
+<p>
+
+
+<h5>
+1.9.2 Additional Testing Notes
+</h5>
+
+<!-- Describe recommended testing approaches and any special requirements
+     to completely certify and test the project. -->
+
+<p>
+
+<br><br>
+
+<table width=100% cellspacing=0 cellpadding=3 border=0>
+  <tr>
+    <td bgcolor=wheat><h3>2  Technical Description</td>
+  </tr>
+</table>
+
+<p>
+
+
+<h4>
+2.1 Architecture
+</h4>
+
+<!-- Describe the basic architecture of the project. Enumerate and
+     briefly describe the major components and the basic technical
+     approach chosen for the project. Where relevant, discuss major
+     tradeoffs or rejected approaches. -->
+
+<p>
+
+
+<h4>
+2.2 Exported Interfaces/API
+</h4>
+
+<!-- List and describe any new or changed exported interfaces
+     or APIs. -->
+
+<p>
+
+
+<h4>
+2.3 Imported Interfaces/API
+</h4>
+
+<!-- List and describe any new or changed imported interfaces
+     or APIs which are of significance to note. -->
+
+<p>
+
+
+<h4>
+2.4 User Interface
+</h4>
+
+<!-- Describe the user interface of this project, if any.  Include
+     screen shots or diagrams where helpful. -->
+     
+<p>
+
+<br><br>
+
+
+<table width=100% cellspacing=0 cellpadding=3 border=0>
+  <tr>
+    <td bgcolor=wheat><h3>3  Marketing</td>
+  </tr>
+</table>
+
+<p>
+
+
+<h4>
+3.1 Justification
+</h4>
+
+<!-- Why is this project important to Sun? -->
+
+<p>
+
+
+<h4>
+3.2 Customer Request
+</h4>
+
+<!-- Which customers are asking for this project? -->
+
+<p>
+
+
+<h4>
+3.3 Competitive Analysis
+</h4>
+
+<!-- Discuss tradeoffs between this project and relevant 
+     alternatives. Why will the target audience prefer this
+     product over the competition?  The contents of this
+     section may be replaced by a pointer to the appropriate
+     section of the MRD, if it provides the required
+     information. -->
+
+<p>
+
+<br><br>
+
+<table width=100% cellspacing=0 cellpadding=3 border=0>
+  <tr>
+    <td bgcolor=wheat><h3>4  Management and Planning</td>
+  </tr>
+</table>
+
+<p>
+
+
+<h4>
+4.1 Scope/Priority
+</h4>
+
+<!-- What is the size of this effort?  Small, Medium, Large.
+     What is the priority?  1, 2, 3. -->
+
+<p>
+Size of this effort?  Small[X] Medium[] Large[]
+<p>
+What is the priority? 1[] 2[] 3[X]
+
+<h4>
+4.2 Target Release
+</h4>
+
+<!-- Which specific release will be tartgeted for this project work. -->
+
+<p>
+Hopper.
+
+<h4>
+4.3 Resources
+</h4>
+   
+<p>
+
+
+<h5>
+4.3.1 Development
+</h5>
+   
+<!-- Number of developers required, or assigned developers -->
+   
+<p>
+Michael Colburn. 
+    
+<h5>
+4.3.2 Quality Assurance/Testing
+</h5>
+    
+<!-- Number of test engineers required to develop tests, or
+     assigned test engineers -->
+   
+<p>
+The quality team will need to determine this.
+   
+<h5>
+4.3.3 Documentation
+</h5>
+   
+<!-- Number of writers required, or assigned writers -->
+   
+<p>
+
+   
+<h5>
+4.3.4 Technical Support
+</h5>
+
+<!-- Background knowledge required to support this feature. -->
+
+<p>
+Need to consult with others and other products to determine what is an 
+acceptable default time-out value.
+
+
+<h5>
+4.3.4 Special Hardware/Software
+</h5>
+
+<!-- List any special hardware/software required to complete
+     this project. -->
+Fast and slow hardware. Fast and slow network connection.
+<p>
+
+
+<h4>
+4.4 Schedule
+</h4>
+
+<!-- Detailed schedule for project, including engineering work,
+     testing, documentation, integration and release. -->
+
+<p>
+
+<center>
+
+<table cellpadding=0 cellspacing=1 bgcolor=white border=0>
+
+  <tr>
+    <td>
+      <table cellspacing=1 cellpadding=10 bgcolor=wheat border=1>
+
+        <tr align=center>
+          <th bgcolor=#666699 width=75><font color=white>Start Date</font></th>
+          <th bgcolor=#666699 width=75><font color=white>End Date</font></th>
+          <th bgcolor=#666699 width=250><font color=white>Activity</font></th>
+          <th bgcolor=#666699 width=50><font color=white>Owner</font></th>
+          <th bgcolor=#666699 width=50><font color=white>Status</font></th>
+        </tr>
+
+        <tr>
+          <td>//02</td>
+          <td>//02&nbsp</td>
+          <td>Investigate what the default time-out value should be (research phase)&nbsp</td>
+          <td>Michael Colburn&nbsp</td>                    
+
+          <!-- Change the foreground/background colors for this cell to reflect
+               the status.  For example...
+
+               <td bgcolor=green align=center><font color=white>04/16/2001</font></td>
+            -->
+
+          <td>&nbsp</td>
+        </tr>	                
+        
+        <tr>
+          <td>//02&nbsp</td>
+          <td>//02&nbsp</td>
+          <td>Implement rfe (development phase)&nbsp</td>
+          <td>Michael Colburn&nbsp</td>                              
+          <td>&nbsp</td>
+        </tr>
+        
+        <tr>
+          <td>//02&nbsp</td>
+          <td>//02&nbsp</td>
+          <td>Test (first pass) and make fixes to problems found&nbsp</td>
+          <td>Michael Colburn&nbsp</td>                              
+          <td>&nbsp</td>
+        </tr>
+        
+        <tr>
+          <td>//02&nbsp</td>
+          <td>//02&nbsp</td>
+          <td>Test and report any problems found&nbsp</td>
+          <td>Quality team&nbsp</td>                              
+          <td>&nbsp</td>
+        </tr>
+        
+      </table>
+    </td>
+  </tr>
+
+</table>
+
+<table cellspacing=5 border=0>
+
+  <tr>
+    <td bgcolor=green width=50>&nbsp</td>
+    <td bgcolor=lightgreen width=50>&nbsp</td>
+    <td bgcolor=wheat width=50>&nbsp</td>
+    <td bgcolor=yellow width=50>&nbsp</td>
+    <td bgcolor=red width=50>&nbsp</td>
+  </tr>
+
+  <tr align=center>
+    <td>Complete</td>
+    <td>Started</td>
+    <td>Not Started</td>
+    <td>Difficulties</td>
+    <td>Trouble</td>
+  </tr>
+
+</table>
+
+</center>
+
+<br><br>
+
+<p>
+
+<table width=100% cellspacing=0 cellpadding=3 border=0>
+  <tr>
+    <td bgcolor=wheat><h3>Appendices (as needed, suggestions below)</td>
+  </tr>
+</table>
+
+<p>
+
+
+<h4>
+A. Background Information
+</h4>
+
+<p>
+
+
+<h4>
+B. Interface Specifications
+</h4>
+
+<p>
+
+
+<h4>
+C. Notes and Additional Details
+</h4>
+
+<p>
+
+
+<h4>
+D. Miscellaneous
+</h4>
+
+<p>
+
+
+<h4>
+E. Tracking
+</h4>
+
+<p>
+
+
+<h5>
+E.1  Final Webrev
+</h5>
+
+<p>
+
+
+<h5>
+E.2  Bugtraq
+</h5>
+
+<!-- All related Bugtraq RFEs, Bugs, and EOUs.. -->
+
+<center>
+
+<table cellpadding=0 cellspacing=1 bgcolor=white border=0>
+
+  <tr>
+    <td>
+      <table cellspacing=1 cellpadding=10 bgcolor=wheat border=1>
+
+        <tr align=center>
+          <th bgcolor=#666699 width=50><font color=white>Bugid</font></th>
+          <th bgcolor=#666699 width=10><font color=white>P</font></th>
+          <th bgcolor=#666699 width=10><font color=white>S</font></th>
+          <th bgcolor=#666699 width=25><font color=white>Subcategory</font></th>
+          <th bgcolor=#666699 width=25><font color=white>Type</font></th>
+          <th bgcolor=#666699 width=20><font color=white>Engineer</font></th>
+          <th bgcolor=#666699 width=300><font color=white>Synopsis</font></th>
+        </tr>
+
+        <tr>
+          <td><a target=new href=http://andorra1.sfbay:8080/cgi-bin/ws.exe/bugtraq/jdk/bug.hts?bugid_value=4523221>4523221</a>&nbsp</td>
+          <td>4&nbsp</td>
+          <td>3&nbsp</td>
+          <td>plugin&nbsp</td>
+          <td>rfe&nbsp</td>
+          <td>mcolburn&nbsp</td>
+          <td>RFE: Default Connection Timeout in Java Plug-in Networking support&nbsp</td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+
+</table>
+
+</center>
+
+<p>
+
+<br><br>
+
+<table width=100% cellspacing=0 cellpadding=3 border=0>
+  <tr>
+    <td bgcolor=wheat><h3>Revision History</td>
+  </tr>
+</table>
+
+<p>
+
+<center>
+
+<table cellpadding=0 cellspacing=1 bgcolor=white border=0>
+
+  <tr>
+    <td>
+      <table cellspacing=1 cellpadding=10 bgcolor=wheat border=1>
+
+        <tr align=center>
+          <th bgcolor=#666699 width=50><font color=white>Date</font></th>
+          <th bgcolor=#666699 width=10><font color=white>Version</font></th>
+          <th bgcolor=#666699 width=50><font color=white>Author</font></th>
+          <th bgcolor=#666699 width=400><font color=white>Description</font></th>
+        </tr>
+
+        <tr>
+          <td>01/16/02&nbsp</td>
+          <td>0.1&nbsp</td>
+          <td>Michael Colburn&nbsp</td>
+          <td>Initial version&nbsp</td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+
+</table>
+
+</center>
+
+</body>
+</html>
+

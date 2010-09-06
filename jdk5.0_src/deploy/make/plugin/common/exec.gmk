@@ -1,0 +1,65 @@
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# @(#)exec.gmk	1.4 03/12/19
+#
+# Rules to build our executables,  mostly stolen from Library.gmk
+#
+
+.PHONY: all optimized debug clean .exported.classes
+
+all: optimized debug
+
+ifeq ($(PLATFORM),windows)
+EXEC_SUFFIX = .exe
+else
+EXEC_SUFFIX =
+endif
+
+include $(BUILDDIR)/common/Classes.gmk
+
+DEBUG     = $(BINDIR)/$(EXECUTABLE)$(DBG_SUFFIX)$(EXEC_SUFFIX)
+OPTIMIZED = $(BINDIR)/$(EXECUTABLE)$(OPT_SUFFIX)$(EXEC_SUFFIX)
+
+FILES_o   = $(patsubst %.c,   %.$(OBJECT_SUFFIX), $(addprefix $(OBJDIR)/, $(notdir $(FILES_c))))
+FILES_o  += $(patsubst %.s,   %.$(OBJECT_SUFFIX), $(addprefix $(OBJDIR)/, $(notdir $(FILES_s))))
+FILES_o  += $(patsubst %.cpp, %.$(OBJECT_SUFFIX), $(addprefix $(OBJDIR)/, $(notdir $(FILES_cpp))))
+
+$(OPTIMIZED) $(DEBUG):: $(INIT) $(OBJDIR) $(TMPDIR) $(LIBDIR) $(EXTDIR) $(BINDIR) classheaders
+
+#
+# Executable building rules.
+#
+LINKER=$(LINK.c)
+
+ifeq ($(PLATFORM), windows)
+$(OPTIMIZED) $(DEBUG):: $(OBJDIR)/$(EXECUTABLE)$(SUFFIX).lcf 
+	$(LINK) -out:$(OBJDIR)/$(@F) $(LFLAGS) @$(OBJDIR)/$(EXECUTABLE)$(SUFFIX).lcf $(OTHER_LCF) $(JAVALIB) $(LDLIBS)
+	$(CP) $(OBJDIR)/$(@F) $@
+
+
+$(OBJDIR)/$(EXECUTABLE)$(SUFFIX).lcf: $(FILES_o) $(FILES_m)
+	@$(ECHO) $(FILES_o) > $@ 
+	@$(ECHO) Created $@ 
+else
+$(OPTIMIZED) $(DEBUG):: $(FILES_o)
+ifeq ($(CC_VERSION), gcc)
+	$(LINKER) -o $@ $(FILES_o) $(LDLIBS)
+else
+	$(LINKER) -o $@ $(FILES_o) $(LDLIBS)
+endif
+endif
+
+clean::
+	$(RM) -r $(DEBUG) $(OPTIMIZED)
+
+clobber:: clean
+
+#
+# Include make dependancies
+#
+files := $(foreach file, $(wildcard $(OBJDIR)/*.d), $(file))
+ifneq ($(strip $(files)),)
+    include $(files)
+endif

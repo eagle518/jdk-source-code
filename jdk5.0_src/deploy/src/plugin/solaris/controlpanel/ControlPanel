@@ -1,0 +1,166 @@
+#!/bin/sh
+
+# Shell Script to run the Java(tm) Plug-in control panel.
+
+# Parse the command-line options
+# -r means make associate with the container (i.e browser)
+# -u means remove the association with the container
+# -c provides the location of the container install
+# -j provides the location of the jre install
+# if neither -r or -u are specified, run the ControlPanel UI
+
+USAGE='usage: ControlPanel [ (-u scheme | -r scheme) -c cpath -j jrepath ]'
+JLERROR='ControlPanel: Error: Invalid JRE location: '
+CLERROR='ControlPanel: Error: Invalid container location: '
+IPERROR='ControlPanel: Error: Insufficient permission'
+ISERROR='ControlPanel: Error: Invalid scheme: '
+
+check_container_dir() {
+
+   if [ ! -d ${1} ]; then
+      echo "${CLERROR}${2}"
+      exit 1
+   fi
+   if [ ! -w ${1} ]; then
+      echo "${IPERROR}"
+      exit 1
+   fi
+}
+
+link_logic() {
+   if [ ${mode} = "reg" ]; then
+      ln -s ${1} ${2}
+   else
+      rm -f ${2}
+   fi
+}
+
+while getopts ":r:u:c:j:" opt; do
+   case $opt in
+      r ) mode="reg";no_ui="true";scheme=${OPTARG}
+          ;;
+      u ) mode="unreg";no_ui="true";scheme=${OPTARG}
+          ;;
+      c ) container_home=${OPTARG}
+          ;;
+      j ) java_home=${OPTARG}
+          ;;
+      : ) echo ${USAGE}
+          exit 1
+          ;;
+     \? ) echo ${USAGE}
+          exit 1
+          ;;
+   esac
+done
+
+if [ ${mode} ]; then
+   if [ -z "${java_home}" -o -z "${container_home}" ]; then
+      echo ${USAGE}
+      exit 1
+   fi
+else
+   if [ -n "${java_home}" -o -n "${container_home}" ]; then
+      echo ${USAGE}
+      exit 1
+   fi
+fi   
+
+PRG=$0
+progname=`basename $0`
+os=`uname -s`
+
+REPLACEME
+
+if [ "${os}" = "Linux" ]; then
+    case "`uname -m`" in
+	i[3-9]86  | ia32 | ia64 | x86_64)
+	    proc=i386
+	    ;;
+	sparc*)
+	    proc=sparc
+	    ;;
+	*)
+	    proc="`uname -m`"
+	    ;;
+    esac
+    linktest="-L"
+else
+    proc=`uname -p`
+    linktest="-h"
+fi
+
+# Resolve symlinks. See 4152645.
+while [ "${linktest}" "${PRG}" ]; do
+    ls=`/usr/bin/ls -ld "${PRG}"`
+    link=`/usr/bin/expr "${ls}" : '^.*-> \(.*\)$'`
+    if /usr/bin/expr "${link}" : '^/' > /dev/null; then
+	PRG="${link}"
+    else
+	PRG="`dirname ${PRG}`/${link}"
+    fi
+done
+
+APPHOME=`dirname "${PRG}"`/..
+JREHOME=${APPHOME}/jre
+export APPHOME JREHOME
+
+# Where is JRE?
+unset jre
+if [ -f "${JREHOME}/lib/${proc}/libjava.so" ]; then
+    jre="${JREHOME}"
+fi
+if [ -f "${APPHOME}/lib/${proc}/libjava.so" ]; then
+    jre="${APPHOME}"
+fi
+if [ "x${jre}" = "x" ]; then
+    echo "Error: can't find libjava.so."
+    exit 1
+fi
+
+if [ "${os}" = "Linux" ]; then
+    P=`pwd`
+    cd ${jre}
+    jre=`pwd`
+    cd ${P}
+fi
+
+
+if [ -n "${no_ui}" ]; then
+
+# Do the "right" thing based on the provided scheme.
+   plugin_stem=${java_home}/plugin/${proc}
+   if [ ! -d ${plugin_stem} ]; then
+      echo "${JLERROR}${java_home}"
+      exit 1
+   fi
+
+   case ${scheme} in
+        ns4 | ns4E )
+              plugin_location="${plugin_stem}/ns4"
+              if [ ${mode} = "reg" ]; then
+                 echo "${plugin_location}"
+              fi
+              ;;
+       ns4L ) 
+              plugin_location="${plugin_stem}/ns4"
+              filename=`ls ${plugin_location}`
+              container_target="${container_home}/plugins"
+              check_container_dir ${container_target} ${container_home}
+              link_logic ${plugin_location}/${filename} ${container_target}/${filename}
+              ;;
+     ns610 | ns610L )
+              plugin_location="${plugin_stem}/ns610"
+              filename=`ls ${plugin_location}`
+              container_target="${container_home}/plugins"
+              check_container_dir ${container_target} ${container_home}
+              link_logic ${plugin_location}/${filename} ${container_target}/${filename}
+              ;;
+          * ) 
+              echo ${ISERROR}${scheme}
+              exit 1
+   esac
+else
+   ${APPHOME}/bin/java -Djavaplugin.user.profile=${USER_JPI_PROFILE} -Djavaplugin.version=${PLUGIN_VERSION} -Djavaplugin.nodotversion=${PLUGIN_NODOTVERSION} -classpath ${jre}/lib/deploy.jar:${jre}/lib/plugin.jar:${jre}/lib/javaplugin_l10n.jar ${_JAVA_VM_OPTIONS} com.sun.deploy.panel.ControlPanel
+fi
+

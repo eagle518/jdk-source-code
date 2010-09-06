@@ -1,0 +1,486 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0109)https://east.sun.net/http://javaweb.eng/~stanleyh/java-plugin/docs/features/applet_caching/appletcaching.html -->
+<!-- Copyright 1998 Sun Microsystems, Inc. All Rights Reserved. --><!-- "@(#)index.html	1.32 99/08/27 Sun Microsystems" --><HTML><HEAD><TITLE>Deploying
+Java Extensions in Java Plug-in</TITLE>
+<META content="text/html; charset=windows-1252" http-equiv=Content-Type><!-------------------------------><!--      ABOUT THIS HTML      --><!-------------------------------><!-- FOLLOW THESE COMMENTS FOR --><!--   INFORMATION ABOUT THE   --><!-- STRUCTURE OF OUR TEMPLATES--><!-------------------------------><!-------------------------------><!--   INSERT YOUR TITLE HERE  --><!------------BEGIN-TITLE--------><!-------------END-TITLE---------><!--        END OF TITLE       --><!------------------------------->
+<META content="Microsoft FrontPage 4.0" name=GENERATOR></HEAD>
+<BODY bgColor=#ffffff text=#000000><!-- begin main page table -->
+<TABLE border=0 cellPadding=0 cellSpacing=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=top width=157><!-------------------------------><!--  SERVER SIDE INCLUDE FOR  --><!--  NAVIGATION MENU AT LEFT  --><!-------------------------------><!-- Begin Navbar Segment -->
+      <TABLE border=0>
+        <TBODY>
+        <TR vAlign=top>
+          <TD width=155><IMG alt="" height=20 src="extensions_files/pixel.gif" 
+            width=20> <A href="https://east.sun.net/http://javaweb.eng/"><IMG 
+            alt="Java Technology Home Page" border=0 height=88 
+            src="extensions_files/javalogo52x88.gif" width=52></A><BR>
+            <TABLE border=0 cellPadding=3 cellSpacing=0 width=157><!-- the following spacer ensures that the --><!--   table is at least 157 pixels wide   -->
+              <TBODY>
+              <TR>
+                <TD></TD></TR><!-- tab categories -->
+              <TR>
+                <TD></TD>
+                <TD><A 
+                  href="https://east.sun.net/http://javaweb.eng/products/"><IMG 
+                  alt="Downloads, APIs, Documentation" border=0 height=15 
+                  src="extensions_files/side.tab.products.gif" 
+              width=130></A></TD></TR>
+              <TR>
+                <TD></TD>
+                <TD><A 
+                  href="https://east.sun.net/http://javaweb.eng/jdc/"><IMG 
+                  alt="Java Developer Connection" border=0 height=15 
+                  src="extensions_files/side.tab.developer.gif" 
+              width=130></A></TD></TR>
+              <TR>
+                <TD></TD>
+                <TD><A 
+                  href="https://east.sun.net/http://javaweb.eng/infodocs/"><IMG 
+                  alt="Docs, Tutorials, Tech Articles, Training" border=0 
+                  height=15 src="extensions_files/side.tab.docs.gif" 
+                  width=130></A></TD></TR>
+              <TR>
+                <TD></TD>
+                <TD><A 
+                  href="https://east.sun.net/http://javaweb.eng/support/"><IMG 
+                  alt="Online Support" border=0 height=15 
+                  src="extensions_files/side.tab.support.gif" 
+              width=130></A></TD></TR>
+              <TR>
+                <TD></TD>
+                <TD><A 
+                  href="https://east.sun.net/http://javaweb.eng/community/"><IMG 
+                  alt="Community Discussion" border=0 height=15 
+                  src="extensions_files/side.tab.community.gif" 
+              width=130></A></TD></TR>
+              <TR>
+                <TD></TD>
+                <TD><A 
+                  href="https://east.sun.net/http://javaweb.eng/industry"><IMG 
+                  alt="News &amp; Events from Everywhere" border=0 height=15 
+                  src="extensions_files/side.tab.news.gif" width=130></A></TD></TR>
+              <TR>
+                <TD></TD>
+                <TD><A 
+                  href="https://east.sun.net/http://javaweb.eng/solutions/"><IMG 
+                  alt="Products from Everywhere" border=0 height=15 
+                  src="extensions_files/side.tab.solutions.gif" 
+              width=130></A></TD></TR>
+              <TR>
+                <TD></TD>
+                <TD><A 
+                  href="https://east.sun.net/http://javaweb.eng/casestudies/"><IMG 
+                  alt="How Java Technology is Used Worldwide" border=0 height=15 
+                  src="extensions_files/side.tab.case.gif" width=130></A></TD></TR>
+              <TR>
+                <TD></TD>
+                <TD></TD></TR></TBODY></TABLE>
+            <P></P></TD></TR></TBODY></TABLE><!-- End Navbar Segment --></TD>
+    <TD vAlign=top width=452><!--  begin header table -->
+      <TABLE border=0 width=452><!-------------------------------><!--  SERVER SIDE INCLUDE FOR  --><!--  HEADER AT TOP OF PAGE    --><!-------------------------------><!-- Begin Header Segment -->
+        <TBODY>
+        <TR>
+          <TD>
+            <FORM action=http://search.java.sun.com/query.html method=get><INPUT 
+            name=col type=hidden value=jsun> <INPUT name=pw type=hidden 
+            value=100%> <INPUT name=ws type=hidden value=0> <INPUT name=nh 
+            type=hidden value=10> 
+            <TABLE border=0 cellPadding=0 cellSpacing=0 width="100%">
+              <TBODY>
+              <TR>
+                <TD align=right><IMG alt="" height=14 
+                  src="extensions_files/stripelt.gif" width=6></TD>
+                <TD width="100%">
+                  <TABLE border=0 cellPadding=0 cellSpacing=0 width="100%">
+                    <TBODY>
+                    <TR>
+                      <TD bgColor=#cc9966 width="100%"><IMG alt="" height=2 
+                        src="extensions_files/pixel.gif" width=1></TD></TR>
+                    <TR>
+                      <TD><IMG alt="" height=2 
+                        src="extensions_files/pixel.gif" width=1></TD></TR>
+                    <TR>
+                      <TD bgColor=#cc9966><IMG alt="" height=2 
+                        src="extensions_files/pixel.gif" width=1></TD></TR>
+                    <TR>
+                      <TD><IMG alt="" height=2 
+                        src="extensions_files/pixel.gif" width=1></TD></TR>
+                    <TR>
+                      <TD bgColor=#cc9966><IMG alt="" height=2 
+                        src="extensions_files/pixel.gif" width=1></TD></TR>
+                    <TR>
+                      <TD><IMG alt="" height=2 
+                        src="extensions_files/pixel.gif" width=1></TD></TR>
+                    <TR>
+                      <TD bgColor=#cc9966><IMG alt="" height=2 
+                        src="extensions_files/pixel.gif" 
+                  width=1></TD></TR></TBODY></TABLE></TD>
+                <TD align=left><IMG alt="" height=14 
+                  src="extensions_files/stripert.gif" width=6></TD>
+                <TD>
+                  <TABLE border=0 cellPadding=0 cellSpacing=0>
+                    <TBODY>
+                    <TR>
+                      <TD vAlign=center><A 
+                        href="https://east.sun.net/http://javaweb.eng/a-z/"><IMG 
+                        alt="A-Z Index" border=0 height=11 
+                        src="extensions_files/azindex.gif" width=72></A></TD>
+                      <TD vAlign=center><FONT face=Helvetica size=1><INPUT 
+                        maxLength=2033 name=qt size=15></FONT></TD>
+                      <TD vAlign=center><INPUT alt="Search the Site" border=0 
+                        height=14 name=search 
+                        src="extensions_files/search.button.gif" type=image 
+                        value=search 
+            width=55></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></FORM>
+            <P>
+            <TABLE border=0 cellPadding=0 cellSpacing=0 width="100%">
+              <TBODY>
+              <TR vAlign=top>
+                <TD width="100%"><IMG height=18 
+                  src="extensions_files/pixel.gif" width=20></TD>
+                <TD align=right rowSpan=3 width=152><A 
+                  href="https://east.sun.net/http://javaweb.eng/"><IMG 
+                  alt="The Source for Java Technology" border=0 height=42 
+                  src="extensions_files/thesourceforjava.gif" 
+              width=389></A></TD></TR>
+              <TR vAlign=top>
+                <TD bgColor=#cc9966 height=1 width="100%"><IMG height=1 
+                  src="extensions_files/pixel.gif" width=1></TD></TR>
+              <TR vAlign=top>
+                <TD width="100%"><IMG height=20 
+                  src="extensions_files/pixel.gif" width=20></TD>
+                <TD align=right></TD></TR></TBODY></TABLE></P></TD></TR><!-- End Header Segment --><!-- breadcrumb trail -->
+        <TR>
+          <TD align=right height=25 vAlign=top></TD></TR>
+        <TR>
+          <TD>
+            <P></P></TD></TR>
+        <TR>
+          <TD align=right colSpan=2><!-- page headline --><!-------------------------------><!--EDIT THE PAGE HEADLINE HERE--><!------------BEGIN-HEADLINE-----><font size="+2"><b>Deploying Java Extensions in Java 
+            Plug-in</b></font><BR><!-------------END-HEADLINE------><!--    END OF PAGE HEADLINE   --><!-------------------------------></TD></TR></TBODY></TABLE><!-- Begin Page Data --><!-------------------------------><!--  EDIT PAGE CONTENT HERE   --><!------------BEGIN-CONTENT------><!-------------END-CONTENT------->
+      <P>Java applets may leverage various Java Extensions to provide
+      functionalities to users. Deploying Java Extensions dynamically with Java applets
+      in Java Plug-in have
+      been a challenge to developers, especially with tens of thousands of
+      machines over the Intranet/Internet environment.
+      <P>Java Extensions Installation is a new feature in Java Plug-in 1.3. It
+      enables various <a href="http://http://java.sun.com/products/jdk/1.3/docs/guide/extensions/index.html">Java
+      Extensions</a> (e.g. JavaHelp, Java3D) to be deployed and installed easily
+      along with Java applets into the Java 2 Runtime
+      Environment. This document outlines the basic steps in
+      deploying Installed Java Extensions in Java Plug-in. For details about how
+      Java Extensions works in general, please check out the <a href="http://http://java.sun.com/products/jdk/1.3/docs/guide/extensions/index.html">Java
+      Extensions Mechanism</a> documentation in Java 2.<br>
+      <h3>Overview</h3>
+      <P>To leverage Java Extensions Installation in Java Plug-in, details and
+      information about the extensions must be specified in three places:<P>1)
+      MANIFEST of the applet's JAR files. If the applet requires Java Extensions
+      Installation, the applet MUST define the list of Java Extension
+      Installation it requires in the MANIFEST, and specifies the URLs to download
+      the extensions. The URLs point to the Java Extension Installation.<br>
+      <br>
+      2) MANIFEST of the Java Extension Jar files to be installed/actually installed
+      (e.g. JAR files that will be downloaded to the \lib\ext directory). The
+      purpose is to denote the extension name, version and vendor info within
+      the extension JAR file itself. Therefore, Java Plug-in will be able to
+      compare the vendor, extension-name and vendor info of all the installed
+      extensions (e.g. inside lib/ext) against the extension the applet requests  to determine if
+      the extensions need to be installed/upgraded.<br>
+      <br>
+      3) MANIFEST of the Java Extension Installation's JAR file. This is the JAR
+      file which the applet's refer to with the Implementation-URL attribute in
+      the MANIFEST. The purpose is to indicate the extension installation type,
+      so the installation will be triggered properly.
+      <h3><br>
+      Specifying Java Extensions in the applet</h3>
+      <P>To deploy Java Extensions with applets, the applet must be packaged as
+      JAR files. Also, the MANIFEST file of the applet must contain proper
+      information about the Java Extensions to be installed, according to the <a href="http://java.sun.com/products/jdk/1.3/docs/guide/extensions/versioning.html">Extension
+      Versioning Specification</a>. For example,&nbsp;<pre>Extension-List: RectangleArea RectanglePerimeter
+RectangleArea-Extension-Name: com.mycompany.RectangleArea
+RectangleArea-Specification-Version: 1.2
+RectangleArea-Implementation-Version: 1.2
+RectangleArea-Implementation-Vendor-Id: com.mycompany
+RectangleArea-Implementation-URL: http://mycompany.com/RectangleArea.jar
+RectanglePerimeter-Extension-Name: com.mycompany.RectanglePerimeter
+RectanglePerimeter-Specification-Version: 1.2
+RectanglePerimeter-Implementation-Version: 1.2
+RectanglePerimeter-Implementation-Vendor-Id: com.mycompany
+RectanglePerimeter-Implementation-URL: http://mycompany.com/RectanglePerimeter.jar
+</pre>
+      In this example, two extensions are deployed with the applet - <i>
+      RectangleArea</i> and <i> RectanglePerimeter</i>. If they have not been installed or
+      if updates are needed, the proper version will be downloaded from
+      Implementation-URL. Notice that the <i> Implementation-URL</i> must point to a JAR
+      file which is the Java Extensions Installation.
+      <h3>Java Extensions Installation</h3>
+      <P>Three types of Java Extensions Installation are supported in Java
+      Plug-in:
+      <ol>
+        <li>
+      <P><i>Raw Java Extensions</i>: Java Extensions consist of several JAR files.
+      In the applet's MANIFEST file, these raw Java Extensions are specified
+      through the <i> Implementation-URL. </i>During installation, these Java Extensions JAR files will be
+      downloaded and verified, and copied into
+      the Java 2 Runtime<i> lib/ext </i> directory.<br>
+        </li>
+        <li>
+      <P> <i> Java installer</i>: Java Extensions are installed through Java installer.
+      The Java installer must be bundled as a JAR file, and the resulting JAR
+      file must be specified as <i> Implementation-URL </i>in the applet's
+      MANIFEST file. During installation, the JAR file will be downloaded and
+      verified, and the <i> main-class</i> of the Java installer inside the JAR file will be executed
+      to start the installer. It is the job of the Java installer to copy the
+      Java Extensions inside the installer into the right location of the Java 2
+      Runtime (i.e. <i>lib/ext</i>).&nbsp;<br>
+        </li>
+        <li>
+      <P><i>Native installer</i>: Java Extensions are installed through native
+      installer. The native installer must be bundled as a JAR file, and the
+      resulting JAR file must be specified as <i> Implementation-URL </i>in the
+      applet's MANIFEST file. During installation, the JAR file will be
+      downloaded and verified, and the native installer will be started. It is the job of the native installer to copy the Java Extensions inside
+      the installer into the right location of the Java 2 Runtime (i.e. <i>lib/ext</i>).</li>
+      </ol>
+      <P>To ensure the Java Extensions Installation to be downloaded and installed properly,
+      it must be bundled as JAR file and be specified as <i> Implementation-URL </i>in the applet's
+      MANIFEST. Each Java Extensions itself MUST be bundled as JAR files and
+      contain proper versioning information in its own MANIFEST file as well, according to the <a href="http://java.sun.com/products/jdk/1.3/docs/guide/extensions/versioning.html">Extension
+      Versioning Specification</a>. For example,
+      <ol>
+        <li>
+          Raw Java Extensions:&nbsp;
+
+<pre>Extension-Name: javax.help 
+Specification-Vendor: Sun Microsystems, Inc 
+Specification-Version: 1.0 
+Implementation-Vendor-Id: com.sun 
+Implementation-Vendor: Sun Microsystems, Inc 
+Implementation-Version: 1.0</pre>
+
+In this case, it will be recognized as raw Java Extensions, and it will be copied into the lib/ext directory directly.<br>
+        </li>
+        <li>
+Java Installer:
+
+<pre>Extension-Name: javax.help 
+Specification-Vendor: Sun Microsystems, Inc 
+Specification-Version: 1.0 
+Implementation-Vendor-Id: com.sun 
+Implementation-Vendor: Sun Microsystems, Inc 
+Implementation-Version: 1.0
+Main-Class: com.sun.javahelp.installer</pre>
+
+In this case, because <i>Main-Class</i> is present in the MANIFEST, it will be
+treated as Java Installer, and the main-class will be invoked. It is the job of
+the Java Installer to copy the Java Extensions into the proper<i> lib/ext </i>directory.
+However, each Java Extension being copied into the <i>lib/ext</i> directory MUST
+contain proper versioning information as well. For example,&nbsp;
+
+<pre>Extension-Name: javax.help 
+Specification-Vendor: Sun Microsystems, Inc 
+Specification-Version: 1.0 
+Implementation-Vendor-Id: com.sun 
+Implementation-Vendor: Sun Microsystems, Inc 
+Implementation-Version: 1.0</pre>
+
+<p>This ensures the versioning information of the extensions could be determined
+by looking into the MANIFEST file of all the JAR files&nbsp; in the <i>lib/ext</i>
+directory.&nbsp;</p>
+<p>&nbsp;
+</li>
+        <li>
+
+Native Installer:
+
+<pre>Extension-Name: javax.help 
+Specification-Vendor: Sun Microsystems, Inc 
+Specification-Version: 1.0 
+Implementation-Vendor-Id: com.sun 
+Implementation-Vendor: Sun Microsystems, Inc 
+Implementation-Version: 1.0
+Extension-Installation: installer.exe</pre>
+
+In this case, because <i>Extension-Installation</i> is present in the MANIFEST,
+it will be treated as native Installer, and the installer itself will be
+launched. It is the job of the native Installer to copy the Java Extensions into
+the proper<i> lib/ext </i>directory. However, similar to the Java installer
+case, each Java Extension being copied into the <i>lib/ext</i> directory MUST
+contain proper versioning information as well. For example,&nbsp;
+
+<pre>Extension-Name: javax.help 
+Specification-Vendor: Sun Microsystems, Inc 
+Specification-Version: 1.0 
+Implementation-Vendor-Id: com.sun 
+Implementation-Vendor: Sun Microsystems, Inc 
+Implementation-Version: 1.0</pre>
+
+<p>This ensures the versioning information of the extensions could be determined
+by looking into the MANIFEST file of all the JAR files&nbsp; in the <i>lib/ext</i>
+directory.&nbsp;
+        </li>
+      </ol>
+
+      <h3><br>
+      How it works</h3>
+      <P>To deploy Java Extensions with Java applets, the following steps are
+      required to be performed:
+      <ol>
+        <li>Obtained the Java Extensions Installation through third-party vendors.
+          As described above, both Java Extensions Installation and the Java
+          Extensions themselves MUST contain proper versioning information, according to
+          the <a href="http://java.sun.com/products/jdk/1.3/docs/guide/extensions/versioning.html">Extension
+          Versioning Specification</a>. Both the Java Extensions Installation
+          and Java Extensions themselves must be bundled as JAR
+          files.&nbsp;</li>
+        <li>Signed each Java Extensions Installation JAR file using DSA/RSA
+          certificate. Notice that the Java Extensions itself is not required to
+          be signed, unless it is a raw extensions.</li>
+        <li>Specified the Java Extensions Installation in the applet's MANIFEST file,
+          accordingly to the <a href="http://java.sun.com/products/jdk/1.3/docs/guide/extensions/versioning.html">Extension
+          Versioning Specification</a>.</li>
+        <li>Bundled the applet itself as JAR file.</li>
+        <li>Now, you are ready to deploy Java Extensions with Java applets in
+          Java Plug-in.</li>
+      </ol>
+      <p>When the applets is deployed with Java Extensions, the Java Extensions
+      information stored in the applet's MANIFEST file will be examined. The
+      extensions update algorithm is based on the one described in the <a href="http://java.sun.com/products/jdk/1.3/docs/guide/extensions/versioning.html">Extension
+          Versioning Specification</a>. If an
+      update is required, the Java Extensions Installation will be downloaded and
+      be verified that the extensions is correctly signed. If it is valid, the
+      Plug-in will pop-up a security dialog that provides three options:</p>
+      <ol>
+        <li><em>Grant always</em>: If selected, the extensions installation JAR
+          will be granted &quot;AllPermission&quot;. Any signed applet or signed
+          extensions signed using the same certificate will be trusted
+          automatically in the future, and no security dialog will pop up again
+          when this certificate is encountered again. This decision can be
+          changed from the Java Plug-in Control Panel.<br>
+        <li><em>Grant this session</em>: If selected, the extensions
+          installation will be granted &quot;AllPermission&quot;. Any signed
+          applet or signed extensions signed using the same certificate will be
+          trusted automatically within the same browser session.<br>
+        <li><em>Deny</em>: If selected, the extensions installation is
+          cancelled.<br>
+      </ol>
+      <p>Once the user selects the options from the security dialog, the
+      extensions installation will be executed in the corresponding security
+      context accordingly. The applet will not be started until the extensions
+      are properly installed, so it ensures the extensions installation is as
+      seemless as possible.<br>
+      </p>
+      <h3>Security</h3>
+      <P>Because Java Extensions are downloaded and installed into the Java 2
+      Runtime <i> lib/ext</i> directory, each Java Extensions Installation must be
+      signed. Once the Java Extensions are installed, it will have the proper
+      permissions that are granted to Java Extensions through the policy file.
+      <h3><br>
+      Known Limitations</h3>
+      <ul>
+        <li>If the Java Extensions Installation is not signed properly, Java
+          Plug-in will fail silently.</li>
+        <li>For Java Extensions Installation, please ensure newer versions of
+          the Java Extensions contains at least the same set of the JAR file
+          names as the older versions. Otherwise, installing newer Java
+          Extensions may not overwrite all the older Java Extensions, and there
+          will be a mix of different versions of Java Extensions in the same
+          Java Runtime. The result is un-deterministic.&nbsp;</li>
+        <li>If the applet is consist of several JAR files, only one of them is
+          required to have the extensions versioning information if Java
+          Extensions installation is used. We recommend putting the versioning
+          information in the first JAR specified in the <i>archive</i>/<i>cache_archive</i>
+          attribute, so it may speed up the extensions download.</li>
+        <li>If the Java Extensions is consist of several JAR files and it is
+          installed through Java/native installer, only one of the JAR files is
+          required to have the extensions versioning information. On the other
+          hand, for raw extensions installation, each JAR files MUST contain the
+          proper extensions versioning information.</li>
+        <li>If Java Installer is used, make sure the program doesn't exit the
+          main-class until the installation is done. In some cases, Java
+          Installer may create a AWT window and switch control to a different
+          thread and return immediately from main-class. Returning control from
+          the main-class will force the applets to be loaded and started
+          immediately, even if the Java Installer is still in the process of
+          installation. This will cause the applet fail to load because
+          extensions is not installed yet.</li>
+      </ul>
+      <TABLE border=0 width=452>
+        <TBODY>
+        <TR>
+          <TD align=right vAlign=top>
+            <P></P></TD></TR></TBODY></TABLE></TD></TR>
+  <TR>
+    <TD vAlign=top width=157></TD>
+    <TD vAlign=top width=452></TD></TR></TBODY></TABLE><!-- Footer table --><!-------------------------------><!--  SERVER SIDE INCLUDE FOR  --><!--  FOOTER AT BOTTOM OF PAGE --><!-------------------------------><!-- Begin Footer Segment --><BR 
+clear=all>
+<TABLE border=0 cellPadding=0 cellSpacing=5 width="100%">
+  <TBODY>
+  <TR>
+    <TD vAlign=top>
+      <P align=center><FONT color=#999999 size=-1>[ This page was updated: 
+      02-Dec-99 ]</FONT></P></TD></TR>
+  <TR>
+    <TD bgColor=#cccccc><SPACER WIDTH="1" HEIGHT="1" TYPE="BLOCK"></TD></TR>
+  <TR>
+    <TD>
+      <CENTER><FONT size=-1><A 
+      href="https://east.sun.net/http://javaweb.eng/products/">Products &amp; 
+      APIs</A> | <A 
+      href="https://east.sun.net/http://javaweb.eng/jdc/">Developer 
+      Connection</A> | <A 
+      href="https://east.sun.net/http://javaweb.eng/infodocs/">Docs &amp; 
+      Training</A> | <A 
+      href="https://east.sun.net/http://javaweb.eng/support/">Support</A><BR><A 
+      href="https://east.sun.net/http://javaweb.eng/community/">Community 
+      Discussion</A> | <A 
+      href="https://east.sun.net/http://javaweb.eng/industry/">Industry News</A> 
+      | <A href="https://east.sun.net/http://javaweb.eng/solutions/">Solutions 
+      Marketplace</A> | <A 
+      href="https://east.sun.net/http://javaweb.eng/casestudies/">Case 
+      Studies</A> </FONT></CENTER></TD></TR>
+  <TR>
+    <TD bgColor=#cccccc><SPACER WIDTH="1" HEIGHT="1" TYPE="BLOCK"></TD></TR>
+  <TR>
+    <TD align=middle><FONT size=-2><A 
+      href="https://east.sun.net/http://javaweb.eng/docs/glossary.html">Glossary</A> 
+      - <A href="https://east.sun.net/http://javaweb.eng/applets/">Applets</A> - 
+      <A 
+      href="https://east.sun.net/http://javaweb.eng/docs/books/tutorial/">Tutorial</A> 
+      - <A href="https://east.sun.net/http://javaweb.eng/jobs/">Employment</A> - 
+      <A href="https://east.sun.net/http://javaweb.eng/nav/business/">Business 
+      &amp; Licensing</A> - <A 
+      href="https://east.sun.net/http://javaweb.eng/javastore/">Java Store</A> - 
+      <A href="https://east.sun.net/http://javaweb.eng/casestudies/">Java in the 
+      Real World</A> </FONT></TD></TR>
+  <TR>
+    <TD>
+      <CENTER><FONT size=-2><A 
+      href="https://east.sun.net/http://javaweb.eng/cgi-bin/feedback.pl">Feedback</A> 
+      | <A 
+      href="http://www.dynamicdiagrams.net/mapa/cgi-bin/help.tcl?db=javasoft&amp;dest=http://java.sun.com/?db=javasoft&amp;dest=http://java.sun.com/">Map</A> 
+      | <A href="https://east.sun.net/http://javaweb.eng/a-z/index.html">A-Z 
+      Index</A> </FONT></CENTER>
+      <P></P></TD></TR>
+  <TR>
+    <TD>
+      <TABLE border=0 cellPadding=0 cellSpacing=0 width="100%">
+        <TBODY>
+        <TR>
+          <TD width="50%"><FONT size=-2>For more information on Java 
+            technology<BR>and other software from Sun Microsystems, 
+            call:<BR></FONT><FONT size=-1>(800) 786-7638<BR></FONT><FONT 
+            size=-2>Outside the U.S. and Canada, dial your country's <A 
+            href="http://www.att.com/business_traveler/attdirecttollfree/">AT&amp;T&nbsp;Direct&nbsp;Access&nbsp;Number</A> 
+            first.<BR></FONT></TD>
+          <TD align=right width="50%"><A href="http://www.sun.com/"><IMG 
+            alt="Sun Microsystems, Inc." border=0 height=30 
+            src="extensions_files/lgsun.gif" width=64></A><BR><FONT 
+            size=-2>Copyright ?995-2000 <A href="http://www.sun.com/">Sun 
+            Microsystems, Inc.</A><BR>All Rights Reserved. <A 
+            href="http://www.sun.com/share/text/termsofuse.html">Terms of 
+            Use</A>. <A 
+            href="http://www.sun.com/privacy">Privacy&nbsp;Policy</A>. 
+        </FONT></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE><!-- End Footer Segment --></BODY></HTML>

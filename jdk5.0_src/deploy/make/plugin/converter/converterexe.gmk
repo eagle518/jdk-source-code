@@ -1,0 +1,62 @@
+#
+# @(#)Makefile	1.00 07/21/01
+#
+# Makefile for HtmlConverter wrapper
+
+# Build HtmlConverter.exe and HtmlConverter_g.exe and copy to BINDIR
+
+
+PROGRAM = HtmlConverter
+DEPLOY_BUILDDIR = ../../../make
+
+
+SRCDIR = ../src/win32/converter
+
+include $(DEPLOY_BUILDDIR)/common/Defs.gmk
+
+
+OPTIONS = /c /nologo /MD /W3 /GX /O2     
+DEBUG_OPTIONS = /c /nologo /Z7
+LINKFILES = user32.lib
+DEBUG_LINK = /PDB:NONE
+
+all :  $(BINDIR)/HtmlConverter.exe $(BINDIR)/HtmlConverter_g.exe
+
+
+$(BINDIR)/$(PROGRAM)$(EXE_SUFFIX) : $(TMPDIR)/$(PROGRAM).$(OBJECT_SUFFIX) $(TMPDIR)/$(PROGRAM).res
+	link $(TMPDIR)/$(PROGRAM).$(OBJECT_SUFFIX) $(TMPDIR)/$(PROGRAM).res $(LINKFILES)
+	mv $(PROGRAM)$(EXE_SUFFIX) $(BINDIR)
+
+
+$(TMPDIR)/$(PROGRAM).$(OBJECT_SUFFIX) : $(SRCDIR)/$(PROGRAM).cpp
+	cl $(OPTIONS) $(SRCDIR)/$(PROGRAM).cpp
+	mv $(PROGRAM).$(OBJECT_SUFFIX) $(TMPDIR)
+
+$(TMPDIR)/$(PROGRAM).res : $(SRCDIR)/$(PROGRAM).rc
+	rc $(SRCDIR)/$(PROGRAM).rc
+	mv $(SRCDIR)/$(PROGRAM).res $(TMPDIR)
+
+
+$(BINDIR)/$(PROGRAM)_g$(EXE_SUFFIX) : $(TMPDIR)/$(PROGRAM)_g.$(OBJECT_SUFFIX) $(TMPDIR)/$(PROGRAM).res
+	link $(DEBUG_LINK) $(TMPDIR)/$(PROGRAM)_g.$(OBJECT_SUFFIX) $(TMPDIR)/$(PROGRAM).res $(LINKFILES)
+	mv $(PROGRAM)_g$(EXE_SUFFIX) $(BINDIR)
+
+
+
+$(TMPDIR)/$(PROGRAM)_g.$(OBJECT_SUFFIX) : $(SRCDIR)/$(PROGRAM).cpp
+	cl $(DEBUG_OPTIONS) $(SRCDIR)/$(PROGRAM).cpp 
+	mv $(PROGRAM).$(OBJECT_SUFFIX) $(TMPDIR)/$(PROGRAM)_g.$(OBJECT_SUFFIX)
+
+
+
+
+$(SRCDIR)/HtmlConverter.cpp:
+
+
+
+clobber :
+	$(RM) -r $(TMPDIR)
+	$(RM) $(BINDIR)/$(PROGRAM).exe
+	$(RM) $(BINDIR)/$(PROGRAM)_g.exe
+
+.phony: all clobber 

@@ -1,0 +1,2021 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=iso-8859-1">
+<meta name="GENERATOR" content="Microsoft FrontPage Express 2.0">
+<title>Home Page of Stanley Man-Kit Ho</title>
+</head>
+
+<body bgcolor="#FFFFFF">
+
+<h1 align="center"><img src="javalogo52x88.gif" align="center"
+width="52" height="88"><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </i><font
+size="6" face="Arial,Helvetica"><strong>Java Plug-in Tricks and
+Hacks<br>
+</strong></font><font size="5" face="Arial,Helvetica">by </font><a
+href="mailto:stanley.ho@eng.sun.com"><font size="5"
+face="Arial,Helvetica">Stanley Man-Kit Ho</font></a></h1>
+
+<hr>
+
+<h3 align="center"><font color="#FF0000" size="5"
+face="Arial,Helvetica"><strong>This page is still under
+construction!!</strong></font></h3>
+
+<h3><img src="chiclet2.jpg" width="14" height="11"> <font
+size="3" face="Arial,Helvetica"><strong>Introduction:</strong></font></h3>
+
+<blockquote>
+    <p>Java Plug-in have been in active development for almost
+    two years now (three years, if you count JavaBeans Bridge for
+    ActiveX). The main goal for this product is to deploy the
+    latest JDK/JRE into both Internet Explorer and Netscape
+    Navigator, and quite a lot of people are already using it for
+    applet deployment. Because we have to embed the whole JVM
+    inside different browsers, we have done a lot of tricks and
+    hacks to make it to work. Sometimes, we find that people
+    inside Sun are having problem to understand the internal of
+    Java Plug-in when they browse the source codes. Thus, in this
+    page, we documented some of the tricks and hacks that we have
+    done, so it should make people feel better when they browse
+    the code. Notice that this is not a design document or
+    anything like that, and not all the tricks and hacks in Java
+    Plug-in are documented here. Because I have been working
+    primary on the Navigator side, the issues in Netscape
+    Navigator will be more concentrated in this document.</p>
+</blockquote>
+
+<hr>
+
+<h3><img src="chiclet2.jpg" width="14" height="11"> <font
+size="3" face="Arial,Helvetica"><strong>Internet Explorer and
+Netscape Navigator:</strong></font></h3>
+
+<blockquote>
+    <p>Java Plug-in mainly consists of two major components: Java
+    Plug-in for Internet Explorer (IE) and Java Plug-in for
+    Netscape Navigator (NS). Java Plug-in for IE is written as an
+    ActiveX control, using the COM interfaces defined by
+    Microsoft. Java Plug-in for NS is written as a Netscape
+    Plug-in, using the Netscape Plug-in API. Currently, Java
+    Plug-in for IE only supports Apartment threading model, and
+    Java Plug-in for NS have similar restriction.In other words,
+    the browser is restricted to call into Java Plug-in only from
+    the main thread, and Java Plug-in is restricted to callback
+    to the browser only in the main thread as well.</p>
+    <p>&nbsp;</p>
+</blockquote>
+
+<h3><img src="chiclet2.jpg" width="14" height="11"><font size="3"
+face="Arial,Helvetica"><strong>Threading Model in Netscape
+Navigator:</strong></font></h3>
+
+<blockquote>
+    <p>Java Plug-in for NS is written using the Netscape Plug-in
+    API. One restriction is that everything must be called from
+    the browser thread -- the thread that loads Java Plug-in into
+    memory in NS. </p>
+    <p>In Java Plug-in, applets may need to callback into the
+    plug-in for various services, e.g. calling <em>showDocument()</em>
+    or <em>showStatus()</em>. In these cases, the callback can be
+    in any arbitary Java thread. In order to use the services in
+    the browser using the Plug-in API on the browser side, all
+    the callback from Java must be marshaled into the browser
+    thread. </p>
+    <p>The trick that we used in Win32 is windows subclassing.
+    Since all Plug-in will have a window that is created by the
+    browser in the browser thread, the WinProc is guaranteed to
+    run in the the browser thread. Thus, when there is a need to
+    do marshaling between threads, we basically package
+    everything into a user-defined window message and send it to
+    the plug-in window, and the hook in the plug-in window will
+    recognize the user-defined window message and execute the
+    call in the browser thread. </p>
+    <p>Here is a list of features that requires callback:</p>
+    <ol>
+        <li>AppletContext.showDocument</li>
+        <li>AppletContext.showStatus</li>
+        <li>Automatic proxy configuration support</li>
+        <li>Cookie support</li>
+        <li>File caching support</li>
+        <li>HTTPS support</li>
+        <li>RSA signed applet support</li>
+        <li>netscape.javascript.JSObject support in Navigator 3/4</li>
+        <li>netscape.javascript.JSObject support in Navigator 5</li>
+    </ol>
+</blockquote>
+
+<blockquote>
+    <p>Notice that to send window message to the plug-in window,
+    we must somehow get the correct plug-in instance or plug-in
+    window handle. In most cases, it can be figured out. For
+    example, when <em>AppletContext.showDocument()</em> is
+    called, we can always get the correct plug-in window from the
+    AppletContext object, because each applet is associated with
+    a unique AppletContext object. However, in some other cases,
+    it can't be figured out easily. For example, caching is done
+    in the <em>HttpURLConnection</em> handler, and it has no idea
+    which applet is associated with the call. Thus, we
+    implemented a general plug-in instance map that stores all
+    the running plug-in instance in the map. When we can't find
+    an plug-in window to send message, we just grab a plug-in
+    instance from the map and uses its windows for call
+    dispatching.</p>
+    <p>In Solaris, the JVM is out-of-process, and the plug-in is
+    responsible for marshaling all the call from the JVM across
+    the process boundary back to the browser through IPC. Because
+    the browser and the JVM use different threading libraries,
+    the out-of-process model actually simplifies the threading
+    issues in this case. Also, it also avoid potential system
+    conflicts like signal handling, or Motif library locking.
+    Similar to the Win32 case, the browser will always call into
+    the plugin from the main thread, and the plugin can only
+    callback into the browser through the Plug-in API in the main
+    thread as well.</p>
+    <p>&nbsp;</p>
+</blockquote>
+
+<p><img src="chiclet2.jpg" width="14" height="11"> <font size="3"
+face="Arial,Helvetica"><strong>Java Plug-in MIME type:</strong></font></p>
+
+<blockquote>
+    <p>Why are there so many MIME types in Java Plug-in? Let's
+    break it down:</p>
+    <p>For general purpose:</p>
+    <ol>
+        <li>&quot;application/x-java-applet&quot; -- used for
+            Java applet</li>
+        <li>&quot;application/x-java-bean&quot; -- used for
+            JavaBeans</li>
+    </ol>
+    <p>For specific version of Java Plug-in:</p>
+    <ol>
+        <li>&quot;application/x-java-applet;version=x.y.z&quot;</li>
+        <li>&quot;application/x-java-bean;version=x.y.z&quot;</li>
+    </ol>
+    <p>For OJI:</p>
+    <ol>
+        <li>&quot;application/x-java-vm&quot;</li>
+    </ol>
+    <p>In each new versions of Java Plug-in, we add two new MIME
+    types for that specific version of Java Plug-in. As you may
+    notice, that adds up a lot after we shipped couple versions
+    of Java Plug-in in the past two years. Supporting multiple
+    versions of MIME types also introduces a problem in Java
+    Plug-in for NS. Netscape restricts that all Netscape Plug-in
+    in Win32 must put all the MIME types it supports into the DLL
+    resources. This limitation makes expanding MIME types support
+    in runtime impossible. Also, because of a bug in Netscape
+    Navigator 3.0x in Win95/98, if the MIME types string exceed
+    more than 256 characters, it will crash the browser during
+    startup. Because we have to support more than 12 MIME types,
+    the MIME types string in the plug-in resource will definitely
+    more than 256 characters. To workaround this bug, we break
+    down the Java Plug-in for NS into several DLLs. Each DLL will
+    have identical codes, but different only in the MIME types
+    each DLL support. Thus, we now have three DLLs in the plug-in
+    directory -- NPJava11.dll, NPJava12.dll, and NPJava32.dll,
+    just because we need to work around the problem described
+    above.</p>
+</blockquote>
+
+<p>&nbsp;</p>
+
+<p><img src="chiclet2.jpg" width="14" height="11"> <font size="3"
+face="Arial,Helvetica"><strong>javascript: URL:</strong></font></p>
+
+<blockquote>
+    <p>Netscape Navigator supports a very special type of URL --
+    javascript. By using the javascript URL, any JavaScript
+    expression can be evaluated using the JavaScript engine
+    inside Navigator. For example, 'javascript: 1+1' would yield
+    '2' as the result. However, the main power of javascript URL
+    is its capability to access the Document Object Model (DOM)
+    inside the browser. For example, calling 'javascript:
+    document.location' would yield the current value of the
+    document.location property in the current page. We have been
+    using this powerful technique to workaround most of the
+    limitations in the Netscape Plug-in API, including</p>
+    <ol>
+        <li>Document base.</li>
+        <li>Auto proxy configuration support.</li>
+        <li>Cookie support.</li>
+        <li>netscape.javascript.JSObject support in Navigator
+            3/4.</li>
+    </ol>
+    <p>Notice that javascript URL can only be used in the Plug-in
+    API in Java Plug-in. The JVM itself doesn't recognize
+    javascript URL, so using it in the applet will result in
+    exception.</p>
+    <p>&nbsp;</p>
+</blockquote>
+
+<p><img src="chiclet2.jpg" width="14" height="11"> <font size="3"
+face="Arial,Helvetica"><strong>Document base in Netscape
+Navigator:</strong></font></p>
+
+<blockquote>
+    <p>One of the biggest limitation in the Netscape Plug-in API
+    is the inability to obtain the document base of the Netscape
+    Plug-in, because there is simply no API for doing it. We
+    spent quite some time to hack around this issue, and luckily
+    we came up with two solutions:</p>
+    <ol>
+        <li>Calling NPP_GetURLNotify with a URL &quot;javascript:
+            document.location&quot;, and the document base will
+            be obtained from the DOM and sent back to the
+            plug-in.</li>
+        <li>Calling NPP_GetURLNotify with an empty URL
+            &quot;&quot;, and the browser will actually open a
+            HTTP connection to the web server that the current
+            page resides, and request a GET with an empty URL
+            &quot;&quot;. The tricky thing here is that the web
+            server will actually return the URL of the current
+            document as the result of the HTTP request, and the
+            plug-in can obtain the result through the streaming
+            API.</li>
+    </ol>
+    <p>We tested these two solutions, both worked, and both have
+    advantages and disadvantages. In #1, calling
+    &quot;javascript: document.location&quot; will actually cause
+    the browser default JVM to start, because of the tight
+    integration between the Netscape JVM and the DOM in Navigator
+    3/4. In #2, it will cause an extra round trip to the web
+    server in order to obtain the URL. However, we finally
+    decided to go with #2 because starting up the Netscape JVM
+    introduced more impacts and side-effects to the plug-in. One
+    side effect of using #2 is that the URL that it returns will
+    contain the path without the document name. In other words,
+    if the document base should be <a
+    href="http://java.sun.com/a/b/c.html">&quot;http://java.sun.com/a/b/c.html&quot;</a>,
+    the returned document base will be <a
+    href="http://java.sun.com/a/b/">&quot;http://java.sun.com/a/b/&quot;</a>.
+    To minimize the confusion, we updated Java Plug-in for IE, so
+    it will ignore the document name when it needs to deal with
+    document base.</p>
+    <p>In Navigator 5, this limitation is gone because we have
+    added a new method in <em>nsIPluginTagInfo2::GetDocumentBase()</em>
+    to obtain the full document base, so we no longer need to do
+    this hack.</p>
+    <p>&nbsp;</p>
+</blockquote>
+
+<p><img src="chiclet2.jpg" width="14" height="11"> <font size="3"
+face="Arial,Helvetica"><strong>Cookie support:</strong></font></p>
+
+<blockquote>
+    <p>Basically, when an applet is downloaded, Java Plug-in will
+    try to download the CLASS/JAR files by making a
+    HttpURLConnection. However, in some web servers, cookies
+    support is needed for authentication or session tracking. As
+    a result, when Java Plug-in makes a HttpURLConnection to the
+    web server, it doesn't send any cookie in the HTTP header,
+    and the HTTP request will fail. When works around this
+    problem in two ways:</p>
+    <ol>
+        <li>In Java Plug-in for IE, we explicitly uses WinInet
+            API to obtain the cookie. Because Internet Explorer
+            also uses WinInet for making all the network
+            connection, any cookie that is valid in Internet
+            Explorer can be obtained by Java Plug-in using
+            WinInet. Thus, when Java Plug-in makes a
+            HttpURLConnection, it callbacks into native code and
+            obtain the cookie. The cookie obtained from WinInet
+            will always be a valid one, so the correct cookie
+            will always get sent along with the HttpURLConnection
+            in IE.</li>
+        <li>In Java Plug-in for NS, this is much tricker. Another
+            limitation of the Netscape Plug-in API is the
+            inability to obtain the cookie of the document,
+            because no such API exists. Thus, we work around it
+            again by using &quot;javascript:
+            document.cookie&quot;, and this will return all the
+            valid cookies associated with the document. Notice
+            that it is possible that make a HttpURLConnection to
+            a URL that is totally different from the document
+            base. In this case, returning the cookies assciated
+            with the document will be a security flaw. We
+            workaround this by caching all the plug-in instance
+            in the map. When HttpURLConnection callbacks, Java
+            Plug-in will enumerate all the plug-in instances and
+            ask for their cookies. If any of the plug-in
+            instances have a document base which is the same as
+            the URL of the HttpURLConnection, then the cookie
+            associated with that plug-in instance is sent.
+            Otherwise, no cookie will be sent. To summarize, we
+            try to do the best we can in Navigator to return the
+            cookie, without security flaw. However, we cannot
+            guarantee that the correct cookie will always be
+            returned because we have no access to the cookie
+            store in Navigator 3/4. Notice that this limitation
+            will be gone in Navigator 5 because we have added a
+            new method in <em>nsICookieStorage::GetCookie</em>
+            and <em>nsICookieStorage::SetCookie</em> for
+            manipulating the cookie store.</li>
+    </ol>
+    <p>In some cases, dealing with cookie is still a problem in
+    Java Plug-in. Thus, in Java Plug-in 1.2.2, we allow users to
+    set the cookie explicitly if they know what they are doing.
+    If cookie is set in the HttpURLConnection by the applet,
+    HttpURLConnection will not callbacks into native code.
+    Instead, it will use the cookie that has been set and make a
+    HTTP connection. In this way, the users can override the
+    cookie behavior themselves if they need.</p>
+    <p>&nbsp;</p>
+</blockquote>
+
+<p><img src="chiclet2.jpg" width="14" height="11"> <font size="3"
+face="Arial,Helvetica"><strong>HTTPS support:</strong></font></p>
+
+<blockquote>
+    <p>Lots of people have been requesting HTTPS support in Java
+    Plug-in, and we finally add such support in Java Plug-in
+    1.2.2 by using the browser API. However, because of the
+    limitation of the Netscape Plug-in API, we are only able to
+    support two basic HTTP operations: GET and POST.</p>
+    <p>In Java Plug-in for IE, WinInet is used to implement the
+    HTTPS support in native code. All request headers set by the
+    applet will be sent through HTTPS, and all the respond header
+    will be available for access in the applet.</p>
+    <p>In Java Plug-in for NS, the Netscape Plug-in API --
+    NPP_GetURLNotify() and NPP_PostURLNotify() are used to
+    implement the HTTPS support in native code. However, because
+    of the limitation, no request headers set by the applet will
+    be sent through HTTPS, and no respond header will be
+    available for access in the applet. </p>
+    <p>One other trick we have done in performing HTTPS POST is
+    that we explicitly added the HTTP header
+    &quot;Content-Length&quot; and &quot;Content-Type&quot; in
+    the request. The issue is that for most web server out there,
+    they will not recognize a POST request if these two headers
+    are absent.</p>
+    <p>In Navigator 5, the limitation in transferring the HTTPS
+    headers should be gone. Netscape is currently working on a
+    new networking library project called Necko, and their
+    engineers have promised that we will have capability to
+    access the header information. The other possible feature is
+    to support the HEAD operation in HTTPS in Navigator 5, if
+    Necko is capable of doing that.</p>
+    <p>&nbsp;</p>
+</blockquote>
+
+<p><img src="chiclet2.jpg" width="14" height="11"> <font size="3"
+face="Arial,Helvetica"><strong>Protocols support and proxy
+configuration:</strong></font></p>
+
+<blockquote>
+    <p>In Java Plug-in, it supports five network protocols: HTTP,
+    FTP, Gopher, SOCKS, and HTTPS. Protocol support for HTTP,
+    FTP, Gopher and SOCKS are built-in into the JDK/JRE. However,
+    the main problem for the protocol support in JDK/JRE is that
+    it assumes static proxy configuration setting. In the
+    JDK/JRE, the protocol handler always obtain the proxy
+    configuration setting from a system property, which is
+    entirely useless in Java Plug-in. </p>
+    <p>Basically, there are three types of proxy configurations
+    supported in Internet Explorer and Netscape Navigator:</p>
+    <ol>
+        <li>Direct Connection (No proxy)</li>
+        <li>Manual Proxy Configuration </li>
+        <li>Automatic Proxy Configuration</li>
+    </ol>
+    <p>Because Java Plug-in runs inside both browser, it must
+    support all three types of proxy configuration. Because all
+    the default protocol handler in JDK/JRE only support static
+    proxy configuration, Java Plug-in overrides all these
+    protocol handlers to support the proxy configuration it
+    needs. When the protocol is used by an applet in Java
+    Plug-in, the protocol handlers will callbacks into Java
+    Plug-in to obtain proxy configuration information. Supporting
+    #1 is easy because no proxy is needed. Supporting #2 is a bit
+    tricky because we must support proxy override list. Thus,
+    when a connection is made, we must compare the URL with the
+    proxy override list to determine the final proxy
+    configuration information. Supporting #3 is the trickiest
+    one, because the proxy configuration is encapsulated in a
+    JavaScript function called FindProxyForURL() that is written
+    by the administator. Whenever proxy information is needed,
+    the JavaScript function must be evalulated against a given
+    URL to yield the proxy information. What makes it worse is
+    the fact that there are about 15 pre-defined JavaScript
+    functions that FindProxyForURL() can call. The hack we used
+    is as follows: Implemented these 15 pre-defined functions in
+    pure JavaScript, and emulate their behaviors as much as we
+    can. Whenever there is a callbacks for proxy information, we
+    append the FindProxyForURL() with our pre-defined functions,
+    and send it to the JavaScript engine for evaluation. When the
+    result comes back, we simply return the result back to the
+    protocol handlers. How do we access the JavaScript engine?</p>
+    <ul>
+        <li>In Java Plug-in for IE, we access the JavaScript
+            engine by using the JavaScript engine COM objects
+            that shipped with IE.</li>
+        <li>In Java Plug-in for NS, again, this is a limitation
+            in the Plug-in API. Thus, we workaround it by using
+            javascript: URL trick again. Yes, we actually convert
+            the FindProxyForURL() and all the pre-defined
+            JavaScript methods into a single javascript: URL, and
+            send it to the browser through NPP_GetURLNotify.</li>
+    </ul>
+    <p>By default, HTTPS is not supported by JDK/JRE, so we
+    implemented the HTTPS protocol handlers so it will call back
+    into the plug-in native code to use the browser API.</p>
+    <p>One other interesting note is that you won't find a
+    protocol handlers for SOCKS. Why? Because SOCKS is just a
+    protocol for opening up the firewall. Once the firewall is
+    opened up, the communication is still done by HTTP, FTP,
+    Gopher or HTTPS. Thus, the key to SOCKS support is actually
+    in the socket level. When HTTP is used for communication and
+    if SOCKS is enabled, special handshakes will be performed at
+    the socket level, before the HTTP connection is established.</p>
+    <p>All the Java Plug-in protocol handlers are located in <em>sun.plugin.protocol</em>
+    package. </p>
+</blockquote>
+
+<p>&nbsp;</p>
+
+<p><img src="chiclet2.jpg" width="14" height="11"> <font size="3"
+face="Arial,Helvetica"><strong>File Caching, JAR Caching and
+Applet Caching:</strong></font></p>
+
+<blockquote>
+    <p>There have been lots of confusion over file caching, JAR
+    caching, and Applet caching features in Java Plug-in. Let's
+    clear them up!!</p>
+    <p>File Caching is a feature in Java Plug-in 1.2. Its main
+    purpose is to store all the CLASS/JAR files that the applet
+    used into the browser cache. Thus, when the file is requested
+    the second time by the applet, the file should not be
+    downloaded again.</p>
+    <p>JAR Caching is also a feature in Java Plug-in. Its name is
+    a little bit misleading. The main purpose is to cache the
+    applet's classloader in memory inside Java Plug-in, even
+    there is no external reference to the classloader or if the
+    applet is already destroyed.</p>
+    <p>Applet Caching is a new feature in Java Plug-in 1.3, and
+    its main purpose is for fine-grain caching control over JAR
+    files, and flexible repository support. Its name is misleding
+    as well, and &quot;Applet Installation&quot; or
+    &quot;Persistance Applet support&quot; will be more
+    appropiate. Please check </p>
+    <p>To support file caching, HttpURLConnection is overriden
+    thus that it can intercept all the HTTP request. Whenever the
+    requested is a CLASS/JAR files from the web server, Java
+    Plug-in will intercept it and callback into native code. In
+    Java Plug-in for IE, Win32 URL moniker is used to download
+    the files into the browser cache, and returns the cached file
+    back to the HttpURLConnection, so the file content can be
+    read as stream. In Java Plug-in for NS, Netscape Plug-in API
+    is used for downloading the file into the browser cache. The
+    tricky thing here is that there is no known way to do it in
+    Navigator, because of the limitation of the Netscape Plug-in
+    API. We workaround it by calling NPP_GetURLNotify() and ask
+    the browser to save the HTTP result as a file. The side
+    effect is that the file will actually be stored in the
+    browser cache. Thus, if the URL is for a CLASS/JAR file, the
+    HTTP result will be the file itself, and storing the result
+    as file will effectively make the CLASS/JAR file to store in
+    the browser cache. Notice that we still have no way to
+    enumerate or manipulate the cache entries in Navigator. </p>
+</blockquote>
+
+<p>&nbsp;</p>
+
+<p><img src="chiclet2.jpg" width="14" height="11"> <font size="3"
+face="Arial,Helvetica"><strong>RSA signed applet support:</strong></font></p>
+
+<blockquote>
+    <p>RSA signed applet support is a feature in Java Plug-in
+    1.2.2, and it is restricted to JAR file only. RSA certificate
+    is supported by using a RSA security provider, provided by
+    our security team. When a RSA signed applet is loaded, the
+    security provider will be in effect to extract all the
+    certificates associated with the applet JAR file, and store
+    them into the CodeSource object. We also override the <em>getPermissions()
+    </em>method in the plug-in classloader. When the applet is
+    loaded, the <em>getPermissions()</em> in the classloader will
+    be called, and we have a chance to return the right
+    permissions by verifying the certificate chains in the
+    CodeSource object.</p>
+</blockquote>
+
+<blockquote>
+    <p>Verifying the certificate chains is easy: Start from the
+    first certificate in the certificate chain. Make sure the
+    signature of certificate 'i' can be verified using public key
+    from certificate 'i+1'. This process continue until
+    certificate 1 to i are verified. The remaining thing is to
+    verify the last certificate in the certificate chain.
+    Normally, the last certificate is a self-signed certificate
+    issued by the certificate authority, so we need to verify to
+    see if this certificate authority is valid.</p>
+</blockquote>
+
+<blockquote>
+    <p>In IE, Microsoft Crypto API 2.0 is available for
+    manipulating certificate and managing certificate store.
+    Thus, we decided to use the root CA store in IE to verify
+    against the certificate authority in the RSA signed applet we
+    have in Java. Crypto API is used to enumerate each
+    certificate in the root CA store to see if the certificate
+    authority in the certificate chain is valid. If none of them
+    match, this cerificate authority in the JAR file certificate
+    chain cannot be verified, so we treat the applet as untrusted
+    automatically. However, if any one of the certificates in the
+    root CA store matches with the CA in the JAR file certificate
+    chain, then it only means one thing: the JAR file is signed
+    properly by a recognized root CA. It doesn't mean that it can
+    be trusted though.</p>
+</blockquote>
+
+<blockquote>
+    <p>To determine if the applet can be trusted, we popup a
+    security dialog to give the user three options: <em>Deny</em>,
+    <em>Grant this session</em>, <em>Grant Always</em>. If the
+    user selects <em>Deny</em>, the applet will be treated as
+    untrusted. If the user selects <em>Grant this session</em>,
+    the certificate in the JAR file will be stored in a memory
+    cache, so any applet signed using the same certificate chains
+    will be trusted for the entire browser session. If user
+    selects <em>Grant Always</em>, the certificate in the JAR
+    file will be stored in a persist cert store called
+    &quot;Plugin&quot; using the Crypto API. Thus, any applet
+    signed using the same certificate chains will be trusted
+    forever. Notice that this decision can be reversed from
+    removing the certificate from the Java Plug-in Control Panel.</p>
+    <p>In the current implementation, we also verify the
+    certificate effective and expire date as well. Thus, if your
+    certificate expires already and you use it to sign the JAR
+    file, the JAR file will be loaded as untrusted.</p>
+    <p>Notice that Netscape doesn't provide any API in Navigator
+    3/4 to access their root CA store. Thus, to use RSA signed
+    applet in Java Plug-in in Navigator, you will need to have IE
+    installed. This is a pain, but we have no choice.</p>
+    <p>Also, for some reasons, enumerating the root CA store in
+    IE3 will yield nothing. In other words, we cannot access any
+    root CA certificate in IE3. Thus, to use RSA signed applet in
+    IE, you must have IE4 or later.</p>
+    <p>In general, using RSA signed applet is very easy in Java
+    Plug-in. It is the requirement of IE4 that confuses the
+    users. In the future, we can resolve this problem if the
+    JDK/JRE bundles its own root CA store, so we don't have to
+    rely on IE anymore. Also, it will work on Solaris as well.</p>
+</blockquote>
+
+<blockquote>
+    <p>In Navigator 5, Netscape will expose the root CA store
+    through the <em>nsICapsManager</em> interface in Mozilla, so
+    we should be able to use it to verify the certificate chains
+    in the JAR file in both Win32 and Solaris.</p>
+</blockquote>
+
+<p>&nbsp;</p>
+
+<p><img src="chiclet2.jpg" width="14" height="11"> <font size="3"
+face="Arial,Helvetica"><strong>netscape.javascript.JSObject in IE
+and Navigator 3/4:</strong></font></p>
+
+<blockquote>
+    <p>netscape.javascript.JSObject is a special Java class that
+    allows Java applet to access the document object model of the
+    current page. It is supported in both NS and IE default JVM.
+    Java Plug-in supports JSObject in both IE and NS as well, but
+    the implementation is quite different. </p>
+    <p>In Java Plug-in for IE, the entire document object model
+    can be accessed through COM using IDispatch. Thus, whenever
+    JSObject.getWindow get called, the IDispatch associated with
+    the native Window object in the DOM will be returned, and all
+    the calls in JSObject will just delegated to IDispatch in the
+    native code.</p>
+    <p>In Java Plug-in for NS, again, there is no Netscape
+    Plug-in API to do it, so our solution is to use our mighty
+    javascript: URL hack through the Netscape Plug-in API. The
+    idea is that we can access information about the JavaScript
+    document object model using the &quot;javascript:&quot; URL.
+    To emulate the JSObject model inside the plugin, a technique
+    called lazy/late evaluation is used. For example, when the
+    following code is running:</p>
+    <blockquote>
+        <p>JSObject window = (JSObject) JSObject.getWindow(this);<br>
+        JSObject document = (JSObject)
+        window.getMember(&quot;document&quot;);<br>
+        JSObject location = (JSObject)
+        document.getMember(&quot;location&quot;);<br>
+        Object host = location.getMember(&quot;host&quot;);</p>
+    </blockquote>
+    <p>The above code is used to access the
+    &quot;window.document.location.host&quot; property in the
+    browser window. In each line in the above code, a seperate
+    evaluation context is created in each object. Since we know
+    exactly when the document object model looks like, we also
+    know when we should defer the evaluation and when we should
+    execute the evaluation. Thus, when &quot;host&quot; is
+    accessed from the Location object, we know it is the leaf of
+    the document object model, and we execute the evaluation.
+    Using the technique, we can basically access any
+    method/property in the predefined document object model. </p>
+    <p>Currently, the following objects are supported: Navigator,
+    Window, Document, Location, Form, Element, Link, History,
+    Frame, Anchor, URL, Option and Array. We provide basic
+    support for Navigator 3 document object model. Thus, by
+    accessing NS3-defined methods/properties in the above objects
+    should be successful. Since we only support Navigator 3
+    document object model, Java Plug-in running applets inside
+    Navigator 4 can only access the Navigator 3 document object
+    model at this point. Thus, to access the DHTML or other
+    features in Navigator 4, the above method will not work.
+    However, there is a special method in JSObject called eval,
+    and we basically pass the eval expression directly to the
+    browser for evaluation. Thus, people can still access DHTML
+    or other stuffs that are not supported directly from the
+    JSObject getMember/setMember/call functions.</p>
+    <p>To access custom property/method in the HTML page, there
+    are currently two ways available:</p>
+    <ol>
+        <li>Use JSObject.eval(expr). This will execute the
+            expression in the current window context. </li>
+        <li>Use the Window JSObject and do
+            setMember/getMember/call. If the property is
+            available or the function is callable, it will
+            execute it and return the result. However, if the
+            property does not exist, or the function does not
+            have return value, null will be returned.</li>
+    </ol>
+    <p>Anyway, we have done quite a bit testing in the JSObject
+    support in Navigator 3/4, and it works pretty well. The only
+    limitation is that this is implemented through emulation, so
+    it may not work in Navigator in some boundary cases of using
+    JSObject.</p>
+    <p>Notice that this hack will go away in Navigator 5, as OJI
+    provides basic Java to JavaScript bi-directional
+    communication through LiveConnect.</p>
+</blockquote>
+
+<p>&nbsp;</p>
+
+<p><img src="chiclet2.jpg" width="14" height="11"> <font size="3"
+face="Arial,Helvetica"><strong>Scripting in Navigator 3/4:</strong></font></p>
+
+<blockquote>
+    <p>We have been telling our customers that scripting is not
+    possible in Navigator 3/4 with Java Plug-in. Actually, this
+    statement is not entirely true. In Navigator 3/4, plug-in can
+    be scripted if it provides a Java wrapper class. Thus, if
+    Navigator needs to script the plug-in, it will load the Java
+    wrapper class and invoke its method in Netscape JVM, and the
+    Java wrapper class will callback into the plug-in through JRI
+    (not JNI) that Netscape supports. So it sounds possible, but
+    there are several limitations:</p>
+    <ul>
+        <li>Navigator only obtains the Java wrapper class once
+            for the lifetime of the plug-in, because it assumes
+            that the Java wrapper class should not be changed
+            between different plug-in instances. This is true for
+            most of the Netscape Plug-ins out there, but this is
+            not true in Java Plug-in. Because each Java Plug-in
+            instance can host a different Java applet, it needs
+            to supply a different Java wrapper class for each
+            plug-in instance.</li>
+        <li>Using this approach will start the Netscape JVM,
+            which increases the memory footprint quite a lot.</li>
+    </ul>
+</blockquote>
+
+<blockquote>
+    <p>Anyway, the hack that we came up with is as follow: create
+    a Java wrapper class that contains methods like <em>setField</em>,
+    <em>getField</em>, <em>call</em>, etc, and this wrapper class
+    is used for all Java applets inside Java Plug-in. For
+    example, to call a method in an applet in Java Plug-in, you
+    can do the following:</p>
+    <pre>&lt;APPLET code=myClass NAME=a WIDTH=100 HEIGHT=100&gt;
+&lt;/APPLET&gt;</pre>
+    <pre>&lt;SCRIPT language=&quot;JavaScript&quot;&gt;
+	var param = { 0, &quot;Hi&quot;, null };
+	document.a.call(&quot;method1&quot;, param);
+&lt;/SCRIPT&gt;</pre>
+    <p>When the plug-in is actually called through the Java
+    wrapper through JRI, it will unpackage the parameters and use
+    Java Reflection on the actual applet to make the call. Thus,
+    all the call and field access to the Java applet will be done
+    indirectly by <em>setField</em>, <em>getField</em>, <em>call</em>,
+    etc in the wrapper class. We have tested it, and it actually
+    works reasonablely. However, because this hack requires all
+    the HTML writer to use a new style to call the applet method
+    in Java Plug-in, we thought that it would introduce lots of
+    confusion to users, and we decided to back out this hack.
+    That's why you don't see it in Java Plug-in today.</p>
+    <p>Notice that OJI will provide bi-directional JavaScript and
+    Java communication support, so scripting will work again in
+    Navigator 5.</p>
+    <p>&nbsp;</p>
+</blockquote>
+
+<p><img src="chiclet2.jpg" width="14" height="11"> <font size="3"
+face="Arial,Helvetica"><strong>Automatic Installation in Java
+Plug-in for IE:</strong></font></p>
+
+<blockquote>
+    <p>Java Plug-in for IE installation is fully automatic, and
+    Microsoft packaging and code signing techologies are used for
+    creating this installation. Basically, the installation
+    contains three parts:</p>
+    <ol>
+        <li>OBJECT tag</li>
+        <li>CAB file</li>
+        <li>INI and actual Java Plug-in Installer.</li>
+    </ol>
+    <p>In the HTML page, Java Plug-in is specified using the
+    OBJECT tag. For example,</p>
+    <pre>&lt;OBJECT classid=&quot;clsid:8AD9C840-044E-11D1-B3E9-00805F499D93&quot; WIDTH=455 HEIGHT=543 
+ codebase=&quot;http://java.sun.com/products/plugin/jinstall.cab#Version=1,3,0,0&quot;&gt;
+&lt;PARAM NAME = CODE VALUE = &quot;crossword.class&quot; &gt;
+&lt;PARAM NAME=&quot;type&quot; VALUE=&quot;application/x-java-applet;version=1.1&quot;&gt;
+&lt;COMMENT&gt;</pre>
+    <p>The classid is used by IE to launch Java Plug-in. Here is
+    how it works: When IE encounters this tag, it will do the
+    following:</p>
+    <ol>
+        <li>Locate the classid in the registry
+            &quot;HKEY_LOCAL_MACHINE\Software\Microsoft\Code
+            Store DataBase\Distribution
+            Units\&lt;classid&gt;&quot;.</li>
+        <li>If the classid does't exist in the registry key,
+            download the CAB file from the CODEBASE of the OBJECT
+            tag.</li>
+        <li>If the classid exists, compare the
+            &quot;InstalledVersion&quot; subkey value in
+            &quot;HKEY_LOCAL_MACHINE\Software\Microsoft\Code
+            Store DataBase\Distribution
+            Units\&lt;classid&gt;\InstalledVersion&quot; with the
+            version number specified in the CODEBASE in the
+            OBJECT tag.</li>
+        <li>If the installed version is higher than the one in
+            the tag, launch Java Plug-in immediately. Otherwise,
+            download the CAB file from the CODEBASE of the OBJECT
+            tag.</li>
+    </ol>
+    <p>CAB file is a Microsoft standard way of packaging other
+    files, similar to JAR file in Java. In Java Plug-in, the CAB
+    file contains two files: The INF file and the JINSTALL.EXE
+    file. In Windows, INF is the installation script which
+    describe all the components and files that will be installed.
+    Unfortunately, when an INF file is used in a CAB file, it has
+    lots of restrictions and most of the Microsoft documented
+    syntax doesn't work!! JINSTALL.EXE is our mini-application
+    that redirect users to download Java Plug-in from different
+    sites. We defined the CAB file as follow:</p>
+    <blockquote>
+        <p>; Version number and signature of INF file.<br>
+        ;<br>
+        [version]<br>
+        signature=&quot;$CHICAGO$&quot;<br>
+        AdvancedINF=2.0<br>
+        <br>
+        ; The order of files in this section defines the download
+        order.<br>
+        ; Last in First download.<br>
+        [Add.Code]<br>
+        jinstall.exe<br>
+        beans.ocx=beans.ocx<br>
+        <br>
+        ; beans.ocx is the OCX name of the bridge. It is included
+        in bridgeinstaller, so<br>
+        ; the bridge runtime has to be download.<br>
+        ;<br>
+        [beans.ocx]<br>
+        FileVersion=#PLUGIN_VERSION#<br>
+        RegisterServer=no<br>
+        clsid={8AD9C840-044E-11D1-B3E9-00805F499D93}<br>
+        hook=bridgeinstaller<br>
+        <br>
+        [jinstall.exe]<br>
+        file-win32-x86=thiscab<br>
+        FileVersion=#PLUGIN_VERSION#<br>
+        ; RegisterServer=yes<br>
+        <br>
+        ; jinstall.exe will be executed.<br>
+        ;<br>
+        [bridgeinstaller]<br>
+        run=%EXTRACT_DIR%\jinstall.exe
+        #HTTP_SERVER#/jinstall_#PLUGIN_VERSION_FOR_FILE#.ini<br>
+        </p>
+    </blockquote>
+    <p>The key thing in the INF file is the <em>clsid</em> and <em>hook</em>
+    in the [beans.ocx]. When IE downloads the CAB file, it will
+    try to obtain the INF file in order to install the component
+    specified in the OBJECT tag classid. Thus, the <em>clsid</em>
+    in the [beans.ocx] section MUST match the <em>classid</em> in
+    the OBJECT tag, or it will not work. Once IE finds the <em>clsid</em>
+    in the INF file, it will try to install it, and this will
+    trigger the <em>hook</em> in the [beans.ocx], and the <em>run</em>
+    in [bridgeinstaller] will be executed. JINSTALL.EXE is
+    specified in the <em>run</em> in [bridgeinstaller], so it
+    will be executed from the CAB file.</p>
+    <p>The main purpose of JINSTALL.EXE is to obtain a list of
+    possible download location and present it to the user, so the
+    user can pick and choose where they want to download Java
+    Plug-in. The list of download location is stored in an
+    Windows's INI file, that is downloaded from java.sun.com from
+    JINSTALL.EXE.</p>
+    <p>Once the user pick the location, JINSTALL.EXE will
+    download the Java Plug-in installer from the right location
+    and launch the installer. After the installation is done,
+    JINSTALL.EXE will exist, and IE will launch Java Plug-in
+    accordingly.</p>
+    <p>&nbsp;</p>
+</blockquote>
+
+<p><img src="chiclet2.jpg" width="14" height="11"> <font size="3"
+face="Arial,Helvetica"><strong>SmartUpdate support:</strong></font></p>
+
+<blockquote>
+    <p>SmartUpdate is a way for Java Plug-in automatic
+    installation in Navigator 4 or later, similar to what Java
+    Plug-in auto installation does in IE. There are multiple ways
+    to use SmartUpdate, but not all of them are good or
+    reasonable. Here is the way we suggest to use SmartUpdate for
+    Java Plug-in: in every converted HTML page, specify</p>
+    <pre>&lt;SCRIPT language=&quot;JavaScript&quot; src=trigger.js&gt;
+&lt;/SCRIPT&gt;</pre>
+    <p>at the beginning of the page. This will make Navigator to
+    read in the SmartUpdate trigger script and start the
+    SmartUpdate installation if needed. Unfortunately, this tag
+    only needed to specified once per page, so we cannot use the
+    HTML Converter to automatically add it, unless of course we
+    modify the conversion engine.</p>
+    <p>Also, nobody except me have tested the SmartUpdate
+    support, so we still don't know how well it works externally.
+    As this document is written, we haven't shipped the
+    SmartUpdate support to any of our customers, so it still
+    remains to be seen whether it will be shipped at all.</p>
+</blockquote>
+
+<p>&nbsp;</p>
+
+<p><img src="chiclet2.jpg" width="14" height="11"> <font size="3"
+face="Arial,Helvetica"><strong>Swing focus bug:</strong></font></p>
+
+<blockquote>
+    <p>This is probably one of the most nasty bugs in Java
+    Plug-in. We have fixed this couple of times. However,
+    whenever the AWT implemention is updated, it will break Java
+    Plug-in one way or the other. We have to use various hacks to
+    workaround it, but the worst thing is that we don't know why
+    it breaks, and why the hack works. So fixing Swing focus bug
+    is more like trial-and-error. Anyway, there are still few
+    tips we can share here:</p>
+    <ol>
+        <li>Make sure all mouse and focus related Windows message
+            is filtered from the container -- the browser in our
+            cases. Once I was notifying the browser that my
+            component had the focus, but the browser actually
+            stole the focus from my component whenever it saw
+            WM_SETFOCUS and WM_KILLFOCUS, so my component never
+            gained the focus, and I fixed this by window event
+            filtering.</li>
+        <li>Make sure you don't call back and forth between the
+            embedded frame and the native container window in
+            focus/mouse related events, or the browser may
+            deadlock.</li>
+        <li>Avoid manipulate any Java lightweight component using
+            Windows handle in native code. Because the component
+            is lightweight, using Win32 API to manipulate it will
+            yield undeterministic result.</li>
+        <li>Always test your solution with minimizing, maximizing
+            and resizing the window, your solution may break in
+            these cases.</li>
+        <li>Always test your solution in all versions of
+            browsers. Different versions of Navigator or IE may
+            behave differently.</li>
+        <li>Be patient, try several times, and good luck!!</li>
+    </ol>
+</blockquote>
+
+<p>&nbsp;</p>
+
+<p><img src="chiclet2.jpg" width="14" height="11"> <font size="3"
+face="Arial,Helvetica"><strong>Java Plug-in HTML Converter:</strong></font></p>
+
+<blockquote>
+    <p>Most of the details have been documented in the HTML
+    Converter README file, so they won't be repeated here.
+    However, one interesting misconception is that people can
+    only use the templates that we provide in the converter, and
+    this is not true at all. The HTML Converter convertion logic
+    is separated from the file generation logic, and that's why
+    templates are needed. Users are free to modify and uses their
+    own templates if they want. The four predefined templates in
+    the HTML Converter are just happened to be those most people
+    need. </p>
+</blockquote>
+
+<p>&nbsp;</p>
+
+<p><img src="chiclet2.jpg" width="14" height="11"> <font size="3"
+face="Arial,Helvetica"><strong>New COM objects in Java Plug-in
+1.3:</strong></font></p>
+
+<blockquote>
+    <p>In Java Plug-in, a lot of common codes have been modulized
+    into different COM objects for code reuse purpose. These COM
+    objects reside in BEANS.OCX, JPISHARE.DLL and JPINS32.DLL.</p>
+    <p>In BEANS.OCX, it mainly contains the code for Java Plug-in
+    for IE, and the COM object for JavaBeans Bridge for ActiveX.
+    JavaBeans Bridge for ActiveX enables any JavaBeans to run in
+    native Win32 application as an ActiveX control.</p>
+    <p>In JPISHARE.DLL, it contains three separate COM objects:
+    JavaVMService, CryptoService and ShellService. JavaVMService
+    currently is used for starting the JVM. CryptoService is used
+    for certificate verification of RSA signed applet.
+    ShellService is used provide Task icon when the console is
+    opened, currently it is not implemented.</p>
+    <p>In JPINS32.DLL, it contains two COM objects:
+    BackwardAdapter and OJIPlugin. BackwardAdapter is the
+    essential OJI backward adapter for running the OJI plug-in in
+    Navigator 3/4. OJIPlugin is the actual Win32 OJI plug-in for
+    Netscape Navigator.</p>
+</blockquote>
+
+<p>&nbsp;</p>
+
+<p><img src="chiclet2.jpg" width="14" height="11"> <font size="3"
+face="Arial,Helvetica"><strong>Compiler and Linker flags in Java
+Plug-in build:</strong></font></p>
+
+<blockquote>
+    <p>The build process in the Java Plug-in 1.3 workspace have
+    been completely updated. All the major compiler and linker
+    settings are now stored in <em>/build/win32/config</em>. The
+    compiler and linker flags we decided to use are actually
+    quite similar to JDK/JRE 1.3.</p>
+    <p>Compiler: </p>
+    <ol>
+        <li><strong>/MTd</strong> in Debug mode, <strong>/MD</strong>
+            in Release mode -- these flags are used for linking
+            the C runtime library. In Debug mode, all the
+            binaries will be statically linked with LIBCMD.LIB,
+            so no extra DLL needs to be distributed when
+            debugging on other machine. In Release mode, all the
+            binaries will be linked with MSVCRT.LIB, so all DLL
+            can share the MSVCRT.DLL that comes with JDK/JRE, and
+            the resulting binary sizes should be smaller.</li>
+        <li><strong>/W3</strong> -- set the warning level to 3.
+            Notice that <strong>/W4 </strong>cannot be used
+            because the build will fail when compiling the OJI
+            plug-in using the Netscape header files. No, this is
+            not our fault, but we have to live with it.</li>
+        <li><strong>/Od</strong> in Debug mode, <strong>/O1</strong>
+            in Release mode -- for Debug mode, turn off
+            optimization. For Release mode, space optimization is
+            used. Notice that Microsoft is also using <strong>/O1
+            </strong>in their shipping products.</li>
+        <li><strong>/GX</strong> -- enable C++ exception
+            handling.</li>
+        <li><strong>/GZ</strong> in Debug mode -- enable runtime
+            debug checks.</li>
+        <li><strong>/Zi</strong> -- Enable debugging information
+            for both Debug and Release mode. This is the key for
+            debugging in Release mode products.</li>
+        <li><strong>/ZI</strong> in Debug mode -- enable Edit and
+            Continue Debug Info in Visual C++ 6.0.</li>
+        <li><strong>/D &quot;_ATL_STATIC_REGISTRY&quot;</strong>
+            in Release mode -- make sure we don't depend on
+            ATL.DLL in Release build, if ATL is used.</li>
+    </ol>
+    <p>Linker:</p>
+    <ol>
+        <li><strong>/subsystem:windows</strong> -- make sure the
+            resulting binary is for the Windows subsystem.</li>
+        <li><strong>/incremental:yes</strong> in Debug mode, <strong>/incremental:no</strong>
+            in Release mode -- make sure incremental linking is
+            not used in Release build. Otherwise, the binary will
+            be bigger because of extra padding in the PE file.</li>
+        <li><strong>/debug</strong> -- linked with Debug
+            information in the OBJ and LIB files.</li>
+        <li><strong>/pdbtype:sept </strong>-- make sure the Debug
+            information will be stored in a separate PDB (Program
+            Database) files, instead of linking into the
+            resulting EXE/DLL files.</li>
+        <li><strong>/map:XXX</strong> -- generate MAP files.</li>
+        <li><strong>/opt:ref</strong> in Release mode -- instruct
+            the linker to link only the functions that have been
+            referenced into the resulting binary. This is to
+            eliminate dead code in the Release build.</li>
+    </ol>
+    <p>We have reduced the Java Plug-in binary sizes quite a bit
+    in 1.3 by combining the compiler and linker flags above.</p>
+    <p>Also, we have enhanced the Java Plug-in Release build, so
+    it is also built with PDB file for Debug info, and MAP file
+    for listing method addresses in the DLLs. This should make
+    debugging in Java Plug-in much easier.</p>
+    <p>The other related issue is REBASE DLL in Java Plug-in. As
+    a matter of fact, JDK/JRE will rebase all the plug-in DLL
+    when creating the installer from the JDK workspaces, so we
+    don't have to do it ourselves. However, if you are building
+    the JRE installer from Java Plug-in workspaces, no REBASE
+    will be done, so you should expect the loading will be much
+    slower because of the work involves in DLLs relocation and
+    address fixup.</p>
+    <p>&nbsp;</p>
+</blockquote>
+
+<p><img src="chiclet2.jpg" width="14" height="11"> <font size="3"
+face="Arial,Helvetica"><strong>How to build Java Plug-in:</strong></font></p>
+
+<blockquote>
+    <p>To build Java Plug-in, you will need couple things:</p>
+    <ul>
+        <li>Microsoft Visual C++ 5.0 SP3 or 6.0 SP2</li>
+        <li>MKS Toolkit 6.x</li>
+        <li>Microsoft Windows NT 4.0 Service Pack 3 SDK</li>
+        <li>Microsoft Internet Client SDK 4.0 or later</li>
+        <li>Java SSL standard extension.</li>
+    </ul>
+    <p>Once these tools are installed, please set the following
+    environment variables:</p>
+    <ul>
+        <li><font size="2" face="Courier New">set</font><font
+            size="3" face="Courier New"> </font><font size="2"
+            face="Courier New"><strong>ALT_BOOTDIR</strong>=&lt;jdk1.2.2
+            directory&gt;</font></li>
+        <li><font size="2" face="Courier New">set <strong>ALT_BOOTDIR_11</strong>=&lt;jdk1.1.8
+            directory&gt;</font></li>
+        <li><font size="2" face="Courier New">set <strong>ALT_BOOTDIR_12</strong>=&lt;jdk1.2.2
+            directory&gt;</font></li>
+        <li><font size="2" face="Courier New">set <strong>SP3SDK</strong>=&lt;Windows
+            NT 4.0 Service Pack 3 SDK directory&gt;</font></li>
+        <li><font size="2" face="Courier New">set <strong>INETSDK</strong>=&lt;Internet
+            Client SDK directory&gt;</font></li>
+        <li><font size="2" face="Courier New">set <strong>SSL</strong>=&lt;Java
+            SSL extension directory&gt;</font></li>
+        <li><font size="2" face="Courier New">set <strong>PATH</strong>=&lt;MKS
+            Toolkit directory&gt;;%PATH%</font></li>
+    </ul>
+    <p>Once the environment is set correctly, run the
+    vcvars32.bat from Visual C++ to setup the build environment. </p>
+    <p>To actually build Java Plug-in, do the following:</p>
+    <blockquote>
+        <p>cd build/win32<br>
+        nmake <strong>all</strong> </p>
+    </blockquote>
+    <p>This will build Java Plug-in in Release mode. To build
+    Java Plug-in in Debug mode, do the following:</p>
+    <blockquote>
+        <p>cd build/win32<br>
+        nmake <strong>all</strong> CFG=&quot;Debug&quot;</p>
+    </blockquote>
+    <p>To clean up the build, please do the following:</p>
+    <blockquote>
+        <p>cd build/win32<br>
+        nmake <strong>clean</strong> </p>
+    </blockquote>
+    <p>or</p>
+    <blockquote>
+        <p>cd build/win32<br>
+        nmake <strong>clean</strong> CFG=&quot;Debug&quot;</p>
+    </blockquote>
+    <p>Here is a basic layout of the workspace:</p>
+    <blockquote>
+        <p>\build\win32 -- All makefiles for Win32 build<br>
+        \build\solaris -- All makefiles for Solaris build<br>
+        \build\share -- Shared information for build
+        configuration between Win32 and Solaris<br>
+        \converter -- Java Plug-in HTML Converter<br>
+        \demo -- JavaBeans Bridge for ActiveX demo, now obselete<br>
+        \doc -- Java Plug-in documentaion, not often used these
+        days<br>
+        \java -- All Java codes for supporting Java Plug-in<br>
+        \jinstall -- Automatic installation for Java Plug-in in
+        IE<br>
+        \jpishare -- Shared DLL for Java Plug-in for IE and NS in
+        Win32<br>
+        \ocx -- Java Plug-in for IE<br>
+        \oji-plugin -- Java Plug-in for NS<br>
+        \oji-plugin\src\win32 -- Java Plug-in for NS in Win32<br>
+        \oji-plugin\src\solaris -- Java Plug-in for NS in Solaris<br>
+        \packager -- Packager DLL used by Java Plug-in for IE for
+        typelib generation and bean packaging.<br>
+        \share -- Common codes shared by Java Plug-in<br>
+        \unreg\src\dos -- Unregister utility for JavaBeans Bridge
+        for ActiveX, DOS based<br>
+        \unreg\src\win32 -- Unregister utility for JavaBeans
+        Bridge for ActiveX, Win32 based.</p>
+    </blockquote>
+    <p>Notice that not all the directories are listed here. Once
+    Java Plug-in is built, the binary can be found in <em>\build\win32\bin</em>
+    and <em>\build\win32\lib</em>.</p>
+    <p>To build the actual JRE installer with Java Plug-in, do
+    the following:</p>
+    <blockquote>
+        <p>cd build/win32/ishield<br>
+        nmake all </p>
+    </blockquote>
+    <p>Make sure you have InstallShield 5.x installed. The
+    resulting binaries can be found in build/win32 after the
+    build.</p>
+    <p>In general, we kept all the Mozilla/OJI headers that we
+    used in the workspaces /oji-plugin/include. However, there
+    may be chances that you want to build Java Plug-in against
+    the latest Mozilla headers. To do that, please specify</p>
+    <blockquote>
+        <p><font size="2" face="Courier New">set<strong> MOZ_DIST</strong>=&lt;Mozilla
+        directory&gt;</font></p>
+    </blockquote>
+    <p><font size="3">before you build.</font></p>
+    <p><font size="3">In some other cases, you may want to only
+    build the Win32 OJI plug-in without building the entire
+    workspace. To do that, please specify</font></p>
+    <blockquote>
+        <p><font size="2" face="Courier New">set<strong>
+        MOZ_OJI_PLUGIN</strong>=1</font></p>
+    </blockquote>
+    <p><font size="3">before you build.</font></p>
+    <p>&nbsp;</p>
+</blockquote>
+
+<p><img src="chiclet2.jpg" width="14" height="11"> <font size="3"
+face="Arial,Helvetica"><strong>Mozilla buzzwords:</strong></font></p>
+
+<blockquote>
+    <p>Netscape tends to change their project code name every
+    couple weeks. To avoid confusion, you should understand the
+    following terms, before you try to browse <a
+    href="http://www.mozilla.org">http://www.mozilla.org</a></p>
+</blockquote>
+
+<blockquote>
+    <ul>
+        <li>Mozilla -- overall Netscape Navigator Open Source
+            Effort. It is also the code name for the original
+            Netscape Navigator -- it stands for Mosaic Killer.</li>
+        <li>Gromit -- original code name for Netscape Navigator
+            5. It is obselete.</li>
+        <li>Raptor/Gecko -- code name for Netscape Next
+            Generation Layout engine, and it is original called <em>Raptor</em>.
+            However, it was later found that some companies have
+            licensed the name, so they switch it to use <em>Gecko</em>.</li>
+        <li>SeaMonkey -- latest code name for Netscape Navigator
+            5.</li>
+        <li>Necko -- code name for the new network library
+            project.</li>
+        <li>Mocha -- original code name for JavaScript.</li>
+        <li>Rhino -- code name for JavaScript in Java project.</li>
+        <li>Electric Fire -- code name for Netscape Java
+            Just-In-Time compiler. </li>
+        <li>NSPR -- Netscape Portable Runtime. It is the runtime
+            layer that all Netscape projects uses in all
+            platforms.</li>
+        <li>Bugzilla -- Mozilla Bug Tracking System.</li>
+        <li>Tinderbox -- Tool in Mozilla to determine the state
+            of the tree.</li>
+        <li>Bonsai -- Query tool for browing Mozilla source codes
+            online.</li>
+        <li>XP* -- Cross Platform. For example, XPCOM -- Cross
+            Platform COM. XPFE -- Cross Platform Front End.</li>
+        <li>CVS -- Concurrent Versions System -- version control
+            software used in Mozilla.</li>
+    </ul>
+</blockquote>
+
+<p>&nbsp;</p>
+
+<p><img src="chiclet2.jpg" width="14" height="11"> <font size="3"
+face="Arial,Helvetica"><strong>Backward Adapter in Open Java
+Interface/Open JVM Integration (OJI):</strong></font></p>
+
+<blockquote>
+    <p>OJI is a set of interfaces based on XP-COM that allows
+    different vendors to plug-in their JVM into Navigator 5 as
+    the default browser JVM. There are several major features:</p>
+    <ol>
+        <li>APPLET/EMBED/OBJECT tag support</li>
+        <li>LiveConnect -- Java and JavaScript bi-directional
+            communication</li>
+        <li>RSA signed applet support</li>
+        <li>Various browser integration, including cookie, proxy,
+            console, pref dialog, ... etc.</li>
+    </ol>
+    <p>In Java Plug-in 1.2.x and 1.3.x, we have rewritten the
+    entire Java Plug-in to use OJI. However, because OJI is based
+    on XPCOM, and it is completely different than the old
+    Netscape Plug-in API, OJI plug-in will not work in Netscape
+    Navigator 3/4 anymore. However, we solved this problem by
+    using another piece of code called backward adapter -- it
+    mapped all the Netscape Plug-in entry points and APIs into
+    OJI internally. Thus, by linking the backward adapter and the
+    OJI plug-in together, the OJI plug-in will work in all
+    versions of Navigator. Notice that when the OJI plug-in is
+    running in Navigator 3/4, the browser will communicate with
+    the plug-in through the backward adapter, and the plug-in can
+    only behave like a general Netscape Plug-in. Iit doesn't have
+    any of the OJI features listed above. However, when the OJI
+    plug-in is running in Navigator 5, the browser will talk to
+    the plug-in directly through OJI, and it will have all the
+    OJI features.</p>
+    <p>&nbsp;</p>
+</blockquote>
+
+<h3><img src="chiclet2.jpg" width="14" height="11"> <font
+size="3" face="Arial,Helvetica"><strong>Threading Model in
+Netscape Navigator 5 (Mozilla):</strong></font></h3>
+
+<blockquote>
+    <p>Java Plug-in for NS have been rewritten to take advantages
+    of the <a href="http://www.mozilla.org/oji">Open Java
+    Interface</a> in Mozilla. Basically, all OJI interfaces are
+    single-threaded. In other words, the OJI plug-in will be
+    called from the main thread, and the plug-in is also
+    restricted to callback to the browser in the main thread
+    only. This is actually quite similar to the threading model
+    used in the Plug-in API in Navigator 3/4. However, there is
+    one big different: in Navigator 3/4, the layout engine is
+    running in the main thread, while the JavaScript engine is
+    running in a separate thread. In Navigator 5, both layout and
+    JavaScript engine are now running in the main thread. This
+    presents quite a challenge because it means that JavaScript
+    engine can block the layout engine easily and freeze the
+    browser UI. Thus, to avoid potential problems in Mozilla,
+    here are what we do:</p>
+    <ol>
+        <li>Never, ever block the main thread. Even if we must
+            block, implement a dispatch message loop to keep the
+            UI alive.</li>
+        <li>For all Java threads callback, always marshal the
+            calls back to the main thread for execution. Similar
+            to the situation in Navigator 3/4, this can be done
+            by windows subclassing to the plug-in window.
+            Netscape also provides a way to use <em>nsIThreadManager</em>
+            to put a callback request to the thread queue of any
+            NSPR thread you want, and the callback method will be
+            executed in corresponding thread. We used the <em>nsIThreadManager</em>
+            for implementing netscape.javascript.JSObject in
+            Mozilla, because it requires a callback to <em>nsILiveConnect</em>
+            in the main thread. Check the LiveConnect section in
+            this document for more details.</li>
+    </ol>
+    <p>Anyway, although Netscape usually claim some of the
+    XPCOM/OJI interfaces can be called from any thread, my advice
+    is: DON'T DO THAT. The browser will always call you in the
+    main thread, and you should always callback the browser from
+    the main thread only.</p>
+    <p>From the past experience working with Mozilla, more than
+    often, some components in Mozilla sometimes made wrong
+    assumption about how threads are used, and how interfaces are
+    called. These assumptions are wrong mainly because they don't
+    take the JVM callback situation into account when the design
+    was made. In our case, any Java thread may be called back
+    into the plug-in through the native method, and the browser
+    may not know the existance of these threads at all because
+    these threads are created by the JVM. Thus, when these
+    threads callback into a XPCOM/OJI interfaces, the whole
+    things will break if any of the interface implementations
+    require access to the thread local storage. Because nothing
+    is stored in the thread local storage in these Java threads,
+    it will result in error, assertion, or browser crash. Anyway,
+    this is one of the main reasons why you should restrict the
+    XPCOM/OJI call to the main thread.</p>
+    <p>The threading issue is much more complicated in other
+    platforms. Basically, Netscape uses its threading library
+    NSPR (Netscape Portable Runtime) in all its products to
+    encapsulate the underlying system layer, e.g. threading,
+    synchronization, ... etc. In Win32, it is relatively simple,
+    because all the NSPR primitives are mapped directly to the
+    Win32 primitives. Java Plug-in uses the in-process model, so
+    the browser and the JVM are running inside the same process.
+    On the other hand, things get pretty complicated in MacOS and
+    UNIX. In these platforms, NSPR primitives are not mapped
+    directly to the native primitives in these platforms. For
+    example, in these platforms, NSPR have its own threading
+    library, different than the kernel thread, the POSIX thread
+    or even the green thread library. Because the JVM on these
+    platforms are normally using either the kernel thread, the
+    POSIX thread or the green thread library, it is different
+    than NSPR. Thus, when we try to embed the browser that uses
+    NSPR with the JVM that uses a different threading library,
+    special handling needs to be done when the browser and the
+    JVM communicate through Java Plug-in.</p>
+    <p>In UNIX, Java Plug-in uses the out-of-process model, and
+    the plug-in is broken down into two pieces. One piece of the
+    plug-in is running inside the browser with NSPR thread and
+    communicate with the browser using OJI. Another piece of the
+    plug-in is actually launching and communicating with the JVM
+    in another process through JNI, using the native/green thread
+    library. In the Solaris case, the plug-in pieces in two
+    processes communicate with each other through IPC. Notice
+    that in this model, the interaction between two different
+    threading systems in the browser and the JVM occur only in
+    the IPC.</p>
+    <p>In MacOS, the situation is worse. Unlike Win32 or UNIX,
+    MacOS is cooperatively multitasking. When dealing with NSPR
+    and native primitives, the browser and the plug-in must be
+    careful enough to yield or give up the control in the right
+    time; otherwise, the browser or the plug-in may not be
+    responsive. The Mac OJI plug-in is also broken into two
+    pieces. One piece of the plug-in is running with the browser
+    with NSPR thread and communicate with the browser using OJI.
+    Another piece of the plug-in is launching and communicating
+    with the JVM in the same browser process through JNI, using
+    the native/green thread library. These two plug-in pieces in
+    the same process communicate with each other through share
+    memory and constant pooling. The interaction between
+    different threading systems in the browser and the JVM occur
+    only in the share memory.</p>
+    <p>In Win32, we don't have to worry about it because NSPR is
+    exactly the same as the native thread library that JVM uses.</p>
+    <p>&nbsp;</p>
+</blockquote>
+
+<p><img src="chiclet2.jpg" width="14" height="11"> <font size="3"
+face="Arial,Helvetica"><strong>LiveConnect support in Navigator
+5:</strong></font></p>
+
+<blockquote>
+    <p>LiveConnect enables Java and JavaScript bi-directional
+    communication between Mozilla and Java Plug-in. This is the
+    most complicated feature to design and support in OJI.
+    Java-&gt;JavaScript communciation is done by using
+    netscape.javascript.JSObject and <em>nsILiveConnect</em>, and
+    JavaScript-&gt;Java is done by using straight JNI calls.</p>
+    <p>Let's go over some history in Navigator 3/4 first.
+    LiveConnect is a technology developed by Netscape for Java
+    and JavaScript communication, and it is used in both
+    Navigator and Netscape Server products. In the past,
+    LiveConnect can only used with the Netscape default JVM,
+    because it made lots of assumptions how threading and
+    security model works inside the JVM. In Navigator 3/4,
+    JavaScript-&gt;Java communication is done by straight JNI
+    calls. As you may know, using JNI normally will bypass all
+    the security checks in JDK/JRE. However, because of the
+    security model used in the Netscape JVM, security will still
+    be checked if the call is issued from JNI.
+    Java-&gt;JavaScript communication is again done by providing
+    a netscape.javascript.JSObject implementation, which calls
+    back into native code through JNI. Again, security will still
+    be checked because of the security model in the Netscape JVM.
+    One other note is that the JavaScript engine and the Netscape
+    JVM use the same security model for security checks, lots of
+    security information are implicitly shared between the
+    JavaScript engine and Netscape JVM in LiveConnect.</p>
+    <p>Now, let's come back to the Navigator 5 reality. OJI will
+    allow any JVM vendors to plug their JVM into the browser. The
+    LiveConnect model is now broken because the JVM does not use
+    NSPR and does not use the Netscape security model. Rewritting
+    LiveConnect is not an option either, because LiveConnect code
+    is used heavily by other Netscape products, and the JS and
+    LiveConnect team at Netscape is not willing to rewrite it
+    just for us. Thus, the only option we have is to emulate it
+    as much as we can, we achieve this goal by the following:</p>
+    <ol>
+        <li><em>nsISecurityContext</em>: This is an interface we
+            define that encapsulates the current security context
+            in either the JavaScript or the JVM. Notice that
+            LiveConnect is basically either JS-&gt;Java, or
+            Java-&gt;JS communicator, so there is a need to pass
+            the security context from one boundary to another,
+            and this is the task of <em>nsISecurityContext</em>.
+            In JavaScript, <em>nsISecurityContext</em> contains
+            the JavaScript execution state, and some other
+            JavaScript execution stack related information. In
+            Java, <em>nsISecurityContext</em> basically is the
+            AccessControlContext in the Java thread.<br>
+            </li>
+        <li><em>nsISecureEnv</em>: In LiveConnect, thousands of
+            JNI calls are used for applet method invocation. By
+            default, JNI is not secure. If any application is
+            able to get a hold of the JNIEnv pointer, it can do
+            anything it wants, and the security checks are
+            completely bypassed. However, JNI in Navigator 3/4 is
+            secure basically because the JVM and the JavaScript
+            engine share the same security model. On the other
+            hand, in Navigator 5, this represents a big problem
+            because our JVM have a totally different security
+            model. <br>
+            <br>
+            To address this problem, we designed an interface
+            called <em>nsISecureEnv</em>. <em>nsISecureEnv</em>
+            have exactly the same methods like JNIEnv, except
+            some of the methods take one extra param -- <em>nsISecurityContext</em>.
+            As described above, <em>nsISecurityContext</em> is an
+            interface that encapsulates the security context. In
+            this case, <em>nsISecurityContext</em> represents the
+            security context in the JavaScript side when the
+            method is called through <em>nsISecureEnv</em> (or
+            JNIEnv). For normal JNI call through JNIEnv, the
+            method is invoked directly in the JVM. However, in <em>nsISecureEnv</em>,
+            only certain JNI methods will be invoked directly
+            through the underlying JNIEnv, if security is not an
+            issue. For example, GetMethodID, etc. For other
+            methods that security is an issue, the call will
+            actually performed through Java Reflection using <em>nsISecurityContext</em>
+            as the security context of the call in the JVM. By
+            using Reflection, we are able to setup the correct
+            stack frame with the right permission, so proper
+            security checks will be triggered during method
+            invocation. When there is a security check, the <em>nsISecurityContext</em>
+            passed in <em>nsISecureEnv</em> will actually get
+            called to determine if certain action is allowed on a
+            security target.<br>
+            <br>
+            In Navigator 5, <em>nsISecureEnv</em> is exposed as
+            the only way to make JNI call through the OJI
+            plug-in, and the real JNIEnv is never exposed. In
+            this way, any components trying to make JNI call will
+            be forced to pass an extra param <em>nsISecurityContext</em>
+            in order to make the call. If <em>nsISecurityContext</em>
+            is passed as NULL, the call will be treated as from
+            an untrusted source.<br>
+            <br>
+            Remember that LiveConnect engine uses JNI heavily,
+            but not <em>nsISecureEnv</em>, and it is impossible
+            to ask the JavaScript team to change it. The
+            workaround is to create another object called
+            ProxyJNIEnv. ProxyJNIEnv looks exactly the same as
+            JNIEnv. The main difference is that ProxyJNIEnv will
+            not called into the JVM directly. Rather, every
+            ProxyJNIEnv is associated with a <em>nsISecurityContext</em>.
+            Whenever any method in ProxyJNIEnv is invoked, it
+            will call <em>nsISecureEnv</em> in the OJI plug-in,
+            with the <em>nsISecurityContext</em> that it
+            associated with. The advantage of this scheme is that
+            all the existing browser code that uses JNIEnv will
+            not need to be rewritten. The only trick here is that
+            the browser has to know how to get the ProxyJNIEnv to
+            pass in these browser code. The other advantage is
+            that the browser now can give out JNIEnv to any of
+            its components. Because the JNIEnv seen by other
+            components is actually ProxyJNIEnv, it will always
+            have a <em>nsISecurityContext</em> associated with
+            it, so the browser can handle out a &quot;No
+            security&quot; ProxyJNIEnv to trusted components, and
+            &quot;Untrusted&quot; ProxyJNIEnv to untrusted
+            components.<br>
+            <br>
+            Because of this extra indirection for making JNI
+            call, some OJI plug-ins can also take advantage of it
+            to perform thread switching if necessary. Remember
+            that the browser and the JVM may use different
+            threading model or in different processes, so calling
+            JNIEnv in the JVM directly from the browser is not
+            possible. By using <em>nsISecureEnv</em>, the
+            threading switching or IPC communication can all be
+            hidden in <em>nsISecureEnv</em>.<br>
+            <br>
+            Also notice that the layout engine and JavaScript
+            engine are on the main thread in Navigator 5, so all
+            the calls through <em>nsISecureEnv</em> will be in
+            the main thread. By using <em>nsISecurityContext</em>
+            and <em>nsISecureEnv</em>, the security and threading
+            issue in JS-&gt;Java communication is solved. <br>
+            </li>
+        <li><em>nsILiveConnect</em>: In LiveConnect, Java-&gt;JS
+            communication is through
+            netscape.javascript.JSObject. This is a Java wrapper
+            that allows the applet to access the document object
+            model (DOM) of the current document. In Navigator 5, <em>nsILiveConnect</em>
+            provides a way to navigate the DOM in the native
+            code. However, because JSObject is a Java wrapper
+            class, it can be called from any Java thread in the
+            applet. Also remember that all XPCOM/OJI interface
+            should be called in the main thread only, so we are
+            restricted to call <em>nsILiveConnect</em> from the
+            main thread as well. As a result, all the callbacks
+            from netscape.javascript.JSObject will need to be
+            marshaled into the main thread, then the call can be
+            executed. The marshaling is done through <em>nsIThreadManager</em>
+            in XPCOM, and it provides a way to post a execution
+            request in the main thread. When our request is
+            finally executed in the main thread, it will call <em>nsILiveConnect</em>
+            to access the DOM. In Windows, the OJI plug-in is
+            in-process, so the marshaling involves only packaging
+            the params when netscape.javascript.JSObject is
+            called, post a request in the <em>nsIThreadManager</em>,
+            carry out the request, and return the result into the
+            original thread. In Solaris, it is more complicated
+            because the OJI plug-in is out-of-process. Thus, the
+            marshaling will involve communication between the
+            browser and the JVM in two separate processes through
+            IPC.<br>
+            <br>
+            One thing is still missing: security!! This time, <em>nsISecurityContext</em>
+            is used to encapsulate the security context in Java
+            -- i.e. AccessControlContext. When
+            netscape.javascript.JSObject is called, the current
+            Java stack state will be taken in the
+            AccessControlContext object, and pass it back to the
+            native code. Before <em>nsILiveConnect</em> is
+            actually call, AccessControlContext will be wrapped
+            as a <em>nsISecurityContext</em> and pass along.
+            Thus, if there is any security check in the
+            LiveConnect engine when <em>nsILiveConnect</em> is
+            called, the security check will eventually ask the <em>nsISecurityContext</em>
+            to determine if certain action is allowed on a
+            security target<br>
+            <br>
+            Notice that all calls in <em>nsILiveConnect</em>
+            occur in the main thread only. By using <em>nsISecurityContext</em>
+            and <em>nsILiveConnect</em>, the security and
+            threading issue in Java-&gt;JS communication is
+            solved.<br>
+            </li>
+        <li>Nested calls: What happen if JS-&gt;Java-&gt;JS, or
+            Java-&gt;JS-&gt;Java? How does security works in
+            these cases? In these cases, the mechanism is the
+            same: <em>nsISecureEnv</em> is used for JS-&gt;Java,
+            and <em>nsILiveConnect</em> is used for Java-&gt;JS.
+            The intereresting thing is the chaining of security
+            context. In the situation of nested calls, the
+            security context used for execution is always
+            determined by the original caller in the chain. For
+            example, if JS-&gt;Java-&gt;JS, and the first JS is
+            trusted, Java and second JS is untrusted, then the
+            call in JS should eventually be executed by using a
+            trusted security context because the original of the
+            caller is trusted. To achieve this effect, the <em>nsISecurityContext</em>
+            that is passed in <em>nsISecureEnv</em> and <em>nsILiveConnect</em>
+            always encapulates the security context of all the
+            caller in the current call chain. Let's see another
+            example: JS-&gt;Java-&gt;JS-&gt;Java. <br>
+            <br>
+            JS<em>-1-&gt;</em>Java -- <em>securityContext1</em>
+            represents the security context in 1 is passed to <em>nsISecureEnv</em>.<br>
+            JS<em>-1-&gt;</em>Java<em>-2-&gt;</em>JS -- <em>securityContext2</em>
+            represents both the security context in 2 and <em>securityContext1</em>
+            is passed to <em>nsILiveConnect</em><br>
+            JS<em>-1-&gt;</em>Java<em>-2-&gt;</em>JS<em>-3-&gt;</em>Java
+            -- <em>securityContext3</em> represents all the
+            security context in 3 and <em>securityContext2</em>
+            is passed to <em>nsISecureEnv</em><br>
+            <br>
+            Whenever there is a security check in the last Java
+            call, it will trigger the check in <em>securityContext3</em>,
+            and that will trigger the check in <em>securityContext2</em>,
+            and eventually that will trigger the check in <em>securityContext1</em>,
+            so the actual security context in JavaScript in 1
+            will be used to determine if certain action is
+            allowed on a security target.<br>
+            <br>
+            Notice that the <em>nsISecurityContext</em>
+            represents the AccessControlContext object in the
+            Java side in Java-&gt;JS call, and <em>nsISecurityContext</em>
+            represents the JavaScript execution state in the JS
+            side in JS-&gt;Java call. When there is a security
+            check in either JS or Java side, it will eventually
+            call <em>nsISecurityContext</em> to check if certain
+            actions is allowed on a security target. Currently,
+            Java does not understand any JavaScript security
+            target except <em>AllPermission</em>, and JavaScript
+            does not understand any Java security target either
+            except <em>AllPermission</em>. Thus, security context
+            propagation is only useful for JS if there is more
+            than one JS-&gt;Java call in the call chain.
+            Similarly, it is only useful for Java if more than
+            one Java-&gt;JS call occur in the call chain.
+            However, in the future, it is completely possible to
+            map security targets between Java and JS, so security
+            context propagation can be used in both Java and JS
+            no matter what the security target is.<br>
+            <br>
+            This summaries the general scheme for security
+            context propagation between JS and Java. </li>
+    </ol>
+    <p>By using <em>nsISecureEnv</em>, <em>nsISecurityContext</em>
+    and <em>nsILiveConnect</em>, threading and security issues
+    are completely abstracted out, and LiveConnect is now
+    possible to work with different JVMs in Navigator 5.</p>
+</blockquote>
+
+<p>&nbsp;</p>
+
+<p><img src="chiclet2.jpg" width="14" height="11"> <font size="3"
+face="Arial,Helvetica"><strong>How to obtain Mozilla source:</strong></font></p>
+
+<blockquote>
+    <p>The offical documentation for how to obtain the Mozilla
+    source is at <a href="http://www.mozilla.org/cvs.html">http://www.mozilla.org/cvs.html</a>.
+    </p>
+    <p>Assuming you are running Windows NT, you can also do the
+    following:</p>
+    <ol>
+        <li>Install CVS from <a
+            href="http://www.cyclic.com/cvs/windows.html">http://www.cyclic.com/cvs/windows.html</a>.</li>
+        <li>Open the command prompt in Windows NT.</li>
+        <li>Set the following:<ul>
+                <li><font size="2" face="Courier New"><strong>set
+                    CVSROOT=:pserver:anonymous@cvs-mirror.mozilla.org:/cvsroot</strong></font></li>
+                <li><font size="2" face="Courier New"><strong>set
+                    USERNAME=anonymous</strong></font></li>
+                <li><font size="2" face="Courier New"><strong>set
+                    CVS_PASSWORD=anonymous</strong></font></li>
+            </ul>
+        </li>
+        <li>Login using <font size="2" face="Courier New"><strong>cvs
+            login</strong></font> and use <font size="2"
+            face="Courier New"><strong>anonymous</strong></font>
+            as password.</li>
+        <li>Obtain the source by <font size="2"
+            face="Courier New"><b>cvs -z3 checkout SeaMonkeyAll</b></font></li>
+    </ol>
+    <p>Notice that <b><tt>HOME</tt></b> environment variable must
+    be set to a sensible directory, or cvs will complain. Also,
+    CVS cannot be used over proxy server or firewall, so make
+    sure your machine can connect to <a
+    href="http://www.mozilla.org">www.mozilla.org</a> directly.</p>
+    <p>Because people can check in stuffs into mozilla.org
+    anytime, it is possible that the tree that you obtain from
+    mozilla.org is broken. Thus, before pulling down the Mozilla
+    tree, use <a href="http://www.mozilla.org/tinderbox.html">tinderbox</a>
+    to verify the state of the SeaMonkey tree is
+    &quot;green&quot; in your platform, before the pulling.
+    Otherwise, this is a waste of time.</p>
+    <p>The other issue is that there is a nightly build of
+    Mozilla, and you can pull the nightly build by setting the
+    date in the <font size="2" face="Courier New"><strong>MOZ_DATE</strong></font>
+    environment variable before the pulling. However, We have
+    found several times that even the nightly build was broken.
+    Thus, don't trust the nightly build -- always pull the tree
+    only if the tree is &quot;green&quot; in tinderbox.</p>
+    <p>Also, if you are running Windows, pulling the source in
+    Windows NT on a NTFS partition is highly recommended. If you
+    are running Windows 95/98, don't bother to pull the source
+    because all the long filenames in the sources will get messed
+    up, and you won't be able to build it. If you are running
+    Windows NT with FAT or HPFS partition, it should work, but I
+    haven' t tried it myself.</p>
+    <p>&nbsp;</p>
+</blockquote>
+
+<p><img src="chiclet2.jpg" width="14" height="11"> <font size="3"
+face="Arial,Helvetica"><strong>How to build Mozilla:</strong></font></p>
+
+<blockquote>
+    <p>The offical documentation for how to build the Mozilla
+    source is at <a
+    href="http://www.mozilla.org/build/win32.html">http://www.mozilla.org/build/win32.html</a>.
+    Please follow the instructions in this document, and install <a
+    href="http://sourceware.cygnus.com/cygwin/download.html">GNU
+    Tools for Microsoft Windows</a> and <a
+    href="http://www.activestate.com/ActivePerl/download.htm">Perl5
+    for win32</a> on your machine. Also make sure you install the
+    <a
+    href="ftp://ftp.mozilla.org/pub/mozilla/source/wintools.zip">patch</a>
+    for the build tools as well.</p>
+    <p>One you install all the tools on your machine, please set
+    the environment variables as follows:</p>
+    <blockquote>
+        <p><code>set BUILD_OPT= <br>
+        (set this to 1 if you want an optimized build) <br>
+        set BUILD_XPIDL=1 <br>
+        (don't set this if you haven't installed the wintools.zip
+        package in a while) <br>
+        set MODULAR_NETLIB=1 <br>
+        set MOZ_BITS=32 <br>
+        set MOZ_DEBUG=1 <br>
+        (set this only if you want to build a debug build) <br>
+        set MOZ_NT=351 <br>
+        (if running NT3.51) <br>
+        set MOZ_SRC= <br>
+        (top of your tree, for example: set
+        MOZ_SRC=d:\mozilla_source if this is the directory where
+        you checked out or unzipped the source into... don't end
+        this line with a '\'... you'll be sorry if you do) <br>
+        set MOZ_TOOLS= <br>
+        (the parent directory of the GNU tools 'bin' directory.
+        The build looks for MOZ_TOOLS\bin\gmake.exe, so make sure
+        that the gmake.exe from the Windows Build Tools package
+        resides there.) <br>
+        set NGLAYOUT_PLUGINS=1 <br>
+        set OS_TARGET=WINNT <br>
+        (or WIN95, or WIN98? Someone with one of these systems
+        needs to verify this) <br>
+        set STANDALONE_IMAGE_LIB=1 <br>
+        set _MSC_VER=1100 <br>
+        (if you are running VC++ 5.0) or 1200 (if you are running
+        VC++ 6.0) - or - set MOZ_VCVER=42 (for version 4.2,
+        though no reports of successful compilation have been
+        reported with 4.2) <br>
+        set BUILD_CLIENT= <br>
+        (set this to 1 if you want to build the Navigator 5 UI,
+        mail/news reader, and other good stuffs as well)</code></p>
+    </blockquote>
+    <p>To actually build Mozilla, do the following:</p>
+    <blockquote>
+        <p>cd mozilla<br>
+        nmake /f client.mak build_all</p>
+    </blockquote>
+    <p>If you are running Windows, please make sure Mozilla is
+    built in Windows NT, or it will not build at all.</p>
+    <p>Another interesting note is that BUILD_CLIENT is not
+    documented in the Mozilla build instruction, but it is kind
+    of a known thing that you must turn on in order to build the
+    full version of Navigator.</p>
+    <p>Here is a basic layout of the tree:</p>
+    <blockquote>
+        <p>\base -- basic Mozilla services<br>
+        \build -- makefile<br>
+        \caps -- Capability Manager used for security purpose<br>
+        \config -- build configuration<br>
+        \dist\public -- all the public header files<br>
+        \dist\Win32_d.obj -- the resulting binary build<br>
+        \dom -- Gecko Document Object Model<br>
+        \editor -- Navigator 5 HTML Editor<br>
+        \gfx -- Gecko Rendering Layer<br>
+        \htmlparser -- HTML parser<br>
+        \intl -- i18n related stuffs<br>
+        \jpeg -- JPEG decoder<br>
+        \js -- JavaScript engine<br>
+        \js\src\liveconnect -- LiveConnect source<br>
+        \layout -- Gecko Layout engine<br>
+        \mailnews -- Navigator 5 Mail/News Reader<br>
+        \modules -- XPCOM modules in Mozilla<br>
+        \modules\oji -- OJI API<br>
+        \modules\plugin -- New Netscape Plug-in API<br>
+        \nav-java -- Java stubs to make old Netscape code to work<br>
+        \network -- NetLib, Navigator Network Library<br>
+        \nsprpub -- NSPR, Netscape Portable Runtime<br>
+        \rdf -- Resource Definition Framework<br>
+        \silentdl -- Silent Download, replacement for SmartUpdate<br>
+        \sun-java -- Another Java stubs<br>
+        \webshell -- Gecko ActiveX control wrapper<br>
+        \widget -- Navigator 5 cross platform UI widget<br>
+        \xpcom -- XPCOM<br>
+        \xpfe -- New Navigator 5 cross platform UI</p>
+    </blockquote>
+    <p>Notice that not all the directories are listed here, and I
+    mainly list all the things you should know. Once Mozilla is
+    built successfully, a special folder will be created under <em>mozilla\dist</em>,
+    and the resulting binary is in <em>mozilla\dist\Win32_d.obj</em>.
+    The main things in the binaries are <em>viewer.exe</em> and <em>apprunner.exe</em>
+    under <em>mozilla\dist\Win32_d.obj\bin</em>. <em>viewer</em>
+    is the executable for the Gecko layout engine, while <em>apprunner</em>
+    is the new Navigator 5 UI that uses Gecko.</p>
+    <p>&nbsp;</p>
+</blockquote>
+
+<p><img src="chiclet2.jpg" width="14" height="11"> <font size="3"
+face="Arial,Helvetica"><strong>How to run Java Plug-in with
+Mozilla:</strong></font></p>
+
+<blockquote>
+    <p>To run Java Plug-in with Mozilla, you will need the latest
+    Kestrel Java Plug-in. Please do the following:</p>
+    <ol>
+        <li>Build Mozilla.</li>
+        <li>Make sure a version of Netscape Navigator 4.x is
+            installed in the machine. This is for working around
+            a bug in Mozilla. In the future, you don't need this
+            step.</li>
+        <li>Install Kestrel Java Plug-in.</li>
+        <li>Run <em>apprunner</em> or <em>viewer</em> from <em>mozilla\dist\Win32_d.obj\bin.</em></li>
+    </ol>
+    <p>If this doesn't work, make sure you have created at least
+    one user profile in Netscape Navigator 4.x. You can check it
+    in <em>&quot;Program Files-&gt;Netscape Communicator
+    4.x-&gt;Utilities-&gt;User Profile Manager&quot;</em> from
+    the <em>Start</em> menu.</p>
+    <p>Netscape frequently changes the XPCOM API that we rely on,
+    so there are chances that the Kestrel Java Plug-in may get
+    out-of-sync with the OJI API used in your Mozilla build. In
+    this case, you either get an older Mozilla build to make it
+    work, or you will need to update the code in Java Plug-in.</p>
+    <p>&nbsp;</p>
+</blockquote>
+
+<p><img src="chiclet2.jpg" width="14" height="11"> <font size="3"
+face="Arial,Helvetica"><strong>Who to contact with OJI issues:</strong></font></p>
+
+<blockquote>
+    <table border="2">
+        <tr>
+            <td>Name</td>
+            <td>Email Address</td>
+            <td>Role</td>
+            <td>Company/Organization</td>
+        </tr>
+        <tr>
+            <td>Alex Musil</td>
+            <td><a href="mailto:amusil@netscape.com">amusil@netscape.com</a>
+            </td>
+            <td>OJI engineer/manager, Netscape Plug-in</td>
+            <td>Netscape</td>
+        </tr>
+        <tr>
+            <td>Patrick Beard</td>
+            <td><a href="mailto:beard@netscape.com">beard@netscape.com</a>
+            </td>
+            <td>Former OJI engineer, Mac OJI plug-in/JavaScript</td>
+            <td>Netscape</td>
+        </tr>
+        <tr>
+            <td>Warren Harris</td>
+            <td><a href="mailto:warren@netscape.com">warren@netscape.com</a>
+            </td>
+            <td>Former OJI lead, Netlib/Mail &amp; News/ XPCOM</td>
+            <td>Netscape</td>
+        </tr>
+        <tr>
+            <td>Suduharshan Srinivasan</td>
+            <td><a href="mailto:sudu@netscape.com">sudu@netscape.com</a>
+            </td>
+            <td>Former OJI engineer, LiveConnect</td>
+            <td>Netscape</td>
+        </tr>
+        <tr>
+            <td>Raman Tenneti</td>
+            <td><a href="mailto:raman@netscape.com">raman@netscape.com</a>
+            </td>
+            <td>Former OJI engineer, security, signing</td>
+            <td>Netscape</td>
+        </tr>
+        <tr>
+            <td>Paul Wyskoczka</td>
+            <td><a href="mailto:paw@netscape.com">paw@netscape.com</a>
+            </td>
+            <td>OJI SQA manager</td>
+            <td>Netscape</td>
+        </tr>
+        <tr>
+            <td>Scott Furman</td>
+            <td><a href="mailto:fur@netscape.com">fur@netscape.com</a>
+            </td>
+            <td>JavaScript engineer, JavaScript, LiveConnect</td>
+            <td>Netscape</td>
+        </tr>
+        <tr>
+            <td>Jerome Dochez</td>
+            <td><a href="mailto:dochez@eng.sun.com">dochez@eng.sun.com</a>
+            </td>
+            <td>Java Plug-in lead</td>
+            <td>JavaSoft/Sun</td>
+        </tr>
+        <tr>
+            <td>Stanley Ho</td>
+            <td><a href="mailto:stanleyh@eng.sun.com">stanleyh@eng.sun.com</a>
+            </td>
+            <td>Former Java Plug-in engineer, Win32 OJI plug-in</td>
+            <td>JavaSoft/Sun</td>
+        </tr>
+        <tr>
+            <td>Nagendra Nagarajayya</td>
+            <td><a href="mailto:nage@eng.sun.com">nage@eng.sun.com</a>
+            </td>
+            <td>Java Plug-in engineer, Solaris OJI plug-in</td>
+            <td>Solaris division/Sun</td>
+        </tr>
+        <tr>
+            <td>Ben Gomes</td>
+            <td><a href="mailto:bgomes@eng.sun.com">bgomes@eng.sun.com</a>
+            </td>
+            <td>Former Java Plug-in engineer, Solaris OJI plug-in</td>
+            <td>JavaSoft/Sun</td>
+        </tr>
+        <tr>
+            <td>Tom Ball</td>
+            <td><a href="mailto:tball@eng.sun.com">tball@eng.sun.com</a>
+            </td>
+            <td>Java Plug-in Engineering Manager</td>
+            <td>JavaSoft/Sun</td>
+        </tr>
+        <tr>
+            <td>Graham Hamilton</td>
+            <td><a href="mailto:kgh@eng.sun.com">kgh@eng.sun.com</a>
+            </td>
+            <td>D.E. working on various cool projects, including
+            OJI</td>
+            <td>JavaSoft/Sun</td>
+        </tr>
+        <tr>
+            <td>Blake Connell</td>
+            <td><a href="mailto:blake.connell@eng.sun.com">blake.connell@eng.sun.com</a>
+            </td>
+            <td>Java Plug-in Product Manager</td>
+            <td>JavaSoft/Sun</td>
+        </tr>
+        <tr>
+            <td>Gemma Riner</td>
+            <td><a href="mailto:gemma@eng.sun.com">gemma@eng.sun.com</a>
+            </td>
+            <td>Java Plug-in SQA manager</td>
+            <td>JavaSoft/Sun</td>
+        </tr>
+        <tr>
+            <td>Vijay Manda</td>
+            <td><a href="mailto:vmanda@eng.sun.com">vmanda@eng.sun.com</a>
+            </td>
+            <td>Java Plug-in SQA enginner, OJI</td>
+            <td>JavaSoft/Sun</td>
+        </tr>
+        <tr>
+            <td>Li Gong</td>
+            <td><a href="mailto:li.gong@eng.sun.com">li.gong@eng.sun.com</a>
+            </td>
+            <td>D.E., Java Security</td>
+            <td>JavaSoft/Sun</td>
+        </tr>
+        <tr>
+            <td>Jan Luehe</td>
+            <td><a href="mailto:luehe@eng.sun.com">luehe@eng.sun.com</a>
+            </td>
+            <td>Java Security engineer, signing, OJI signed
+            applet support</td>
+            <td>JavaSoft/Sun</td>
+        </tr>
+        <tr>
+            <td>George Drapeau</td>
+            <td><a href="mailto:drapeau@eng.sun.com">drapeau@eng.sun.com</a>
+            </td>
+            <td>Mozilla OJI project owner</td>
+            <td>Sun/Netscape Alliance(??)</td>
+        </tr>
+        <tr>
+            <td>Gabriel Lawrence</td>
+            <td><a href="mailto:gabriel.lawrence@eng.sun.com">gabriel.lawrence@eng.sun.com</a>
+            </td>
+            <td>Java related development in Mozilla</td>
+            <td>Sun/Netscape Alliance (??)</td>
+        </tr>
+        <tr>
+            <td>Jim Laden</td>
+            <td><a href="mailto:jladen@eng.sun.com">jladen@eng.sun.com</a>
+            </td>
+            <td>MDE engineer</td>
+            <td>Computer System/Sun</td>
+        </tr>
+    </table>
+</blockquote>
+
+<hr>
+
+<p><img src="chiclet2.jpg" width="14" height="11"> <font size="3"
+face="Arial,Helvetica"><strong>More Information:</strong></font></p>
+
+<blockquote>
+    <p align="left">Not every aspect of Java Plug-in are
+    documented in this page. However, for more information about
+    each major features, you can find them in the online
+    documents:</p>
+    <ul>
+        <li><a href="http://www.w3.org/Protocols/">HTTP -
+            Hypertext Transfer Protocol Overview</a></li>
+        <li><a href="http://www.socks.nec.com/">SOCKS Proxy
+            Protocol</a></li>
+        <li><a
+            href="http://developer.netscape.com/docs/manuals/proxy/adminnt/autoconf.htm">Using
+            the Client Autoconfiguration File</a></li>
+        <li><a
+            href="http://developer.netscape.com/docs/manuals/js/client/jsguide/cookies.htm">Netscape
+            Cookies</a></li>
+        <li><a
+            href="http://www.cookiecentral.com/n_cookie_faq.htm">Netscape
+            Communications: Cookies and Privacy FAQ</a> </li>
+        <li><a href="http://www.cookiecentral.com/faq.htm">Persistent
+            Cookie FAQ</a> </li>
+        <li><a href="http://www.mozilla.org">Mozilla Home Page</a></li>
+        <li><a href="http://www.mozilla.org/projects/xpcom/">XPCOM
+            Home Page</a></li>
+        <li><a
+            href="http://developer.netscape.com/docs/manuals/communicator/plugin/contents.htm">Netscape
+            Plug-in Guide</a></li>
+        <li><a
+            href="http://www.mozilla.org/docs/tplist/catFlow/extendmoz.html">Extending
+            Mozilla</a></li>
+        <li><a href="http://developer.netscape.com/">Netscape
+            DevEdge Online</a></li>
+        <li><a
+            href="http://developer.netscape.com/docs/manuals/js/server/jsguide/lc.htm">LiveConnect
+            Overview</a></li>
+        <li><a
+            href="http://developer.netscape.com/docs/technote/javascript/liveconnect/liveconnect_rh.html"><font
+            size="3">JavaScript Technote - JAVA, JAVASCRIPT AND
+            PLUG-IN INTERACTION USING CLIENT-SIDE LIVECONNECT </font></a></li>
+        <li><a
+            href="http://developer.netscape.com/docs/manuals/liveconnect.html"><font
+            size="3">Using LiveConnect</font></a></li>
+        <li><a
+            href="http://developer1.netscape.com/docs/manuals/signedobj/signtool/contents.htm">Signing
+            Software with Netscape Signing Tool 1.1</a></li>
+        <li><a
+            href="http://developer1.netscape.com/docs/manuals/signedobj/overview.html">Object
+            Signing Resources</a></li>
+        <li><a
+            href="javascript:openLink('http://developer1.netscape.com:80/docs/manuals/signedobj/trust/owp.htm');">Netscape
+            Object Signing- Establishing Trust for Downloaded
+            Software</a></li>
+        <li><a href="http://msdn.microsoft.com">MSDN</a></li>
+        <li><a
+            href="http://java.sun.com/products/plugin/1.2/docs/index.docs.html">Java
+            Plug-in Documentation</a></li>
+        <li><a
+            href="http://java.sun.com/products/plugin/1.2/plugin.faq.html">Java
+            Plug-in FAQ</a></li>
+    </ul>
+</blockquote>
+
+<hr>
+
+<p align="center"><img src="abig.jpg" align="center" width="48"
+height="33">Please email <a href="mailto:stanley.ho@eng.sun.com">me</a>
+if you have question. </p>
+</body>
+</html>

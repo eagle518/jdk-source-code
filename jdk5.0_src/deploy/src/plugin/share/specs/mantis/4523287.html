@@ -1,0 +1,461 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.76 [en] (WinNT; U) [Netscape]">
+   <title>Engineering Specification Template</title>
+<!-- saved from url=(0043)http://javaweb.sfbay/~xl116366/4480339.html -->
+</head>
+<body bgcolor="#FFFFFF">
+
+<h2>
+&nbsp;<font size=+1>XPInstall for Netscape 6</font> Engineering Specification</h2>
+
+<h4>
+RFE:&nbsp; <a href="http://andorra1.sfbay:8080/cgi-bin/ws.exe/bugtraq/jdk/bug.hts?bugid_value=4480339">4523287</a></h4>
+Author:Xiaobin Lu
+<br>Date: May 14, 2002
+<br>&nbsp;
+<br>&nbsp;
+<table BORDER=0 CELLSPACING=0 CELLPADDING=3 WIDTH="100%" >
+<caption><TBODY>
+<br></TBODY></caption>
+
+<tr>
+<td BGCOLOR="#F5DEB3">
+<h3>
+1 Project Description</h3>
+</td>
+</tr>
+</table>
+
+<p><b>1.1 Overview</b>
+<p>The goal of this RFE is to make XPInstall packages for Windows and Linux
+platforms and host these XPI packages under a public URL domain so that
+Netscape 7/Mozilla browser clients can access and execute when Java Plug-in
+is not installed in their systems. This RFE does not apply for Solaris
+system since Netscape 7 in Solaris always bundle the JRE package with the
+browser itself.
+<h4>
+1.2 Project Dependencies</h4>
+N/A
+<h4>
+1.3 OS and Browser Compatibility and Interoperability</h4>
+This feature will be available for Windows and Linux systems. It is only
+for Netscape 7/Mozilla 1.0+ browsers.
+<h4>
+1.4 Performance and Scalability</h4>
+N/A
+<h4>
+1.5 Security</h4>
+N/A
+<h4>
+1.6 Internationalization (I18N) / Localization (L10N)</h4>
+N/A
+<h4>
+1.7 Packaging</h4>
+In addition to generate the JRE/JDK bundles, we probably need to generate
+four XPI packages for Windows and Linux. The reason why we have four is
+to consider the English version vs. Internationalized version of browser.
+<h4>
+1.8 Usability</h4>
+This feature provides easy access to JRE for the user.
+<h4>
+1.9 Quality</h4>
+
+<h5>
+1.9.1 Unit or Functional Tests to be Delivered</h5>
+&nbsp;
+<h5>
+1.9.2 Additional Testing Note:</h5>
+Testings steps include the following:
+<br>1. Remove any JREs from the system;
+<br>2. Install Mozilla 1.0+ /Netscape 7.0;
+<br>3. Open the browser and visit http://java.sun.com, click "Get Java
+Plug-in", you should probably see the XPI packages got downloaded from
+java.sun.com and executed. Finally after Java Plug-in installed successfully,
+reload the page and you should be able to see the applets. In Linux, type
+about:plugins and you should see the plugins mietypes got registered. Go
+to java.sun.com and you should see the applet working.
+<br>&nbsp;
+<table BORDER=0 CELLSPACING=0 CELLPADDING=3 WIDTH="100%" >
+<caption><TBODY>
+<br></TBODY></caption>
+
+<tr>
+<td BGCOLOR="#F5DEB3">
+<h3>
+2 Technical Description</h3>
+</td>
+</tr>
+</table>
+
+<h4>
+2.1 Architecture</h4>
+The approach used in this RFE is to utilize the APIs provided by Netscape
+to write an XPI file. Mainly it should conatin "install.js" which contains
+most of the logic to do the installation. Except from the install.js, the
+XPI package also contain a jre executable file for Windows and a jre binaries
+bundles for Linux.
+<p>For Windows, the XPI package contains:
+<br>install.js
+<br>j2re1_4_1.exe
+<p>For Linux, the XPI package contains:
+<br>install.js
+<br>j2re1.4.1 ( A directory structure contains the binary image)
+<br>symlink.sh ( A shell script to do the softlink).
+<p>The "install.js" for Windows contains the following logic which is necessary
+to make Java Plug-in to successfully download and work..
+<br>* Before installation, we explicitly check the available size in the
+default location (c:\program files). Currently we need about 30M bytes.
+<br>* After installation is done, call refreshPlugins() to make the new
+plugin to work seamlessly.
+<br>* For Netscape browser, dll copy is not done by the installer which
+performing silent installation. So for Netscape browser we need to copy
+plugin dll files explicilty.
+<p>The "install.js" for Linux contains the following logic which is necessary
+to make Java Plug-in to successfully download and work..
+<br>* After installlation is done, make a softlink to linkjavapligin_oji.so.
+<br>* The JRE images is downloaded to Mozilla/Netscape 6 plugins directory
+called Java2.
+<br>* We explicitly check the disk space which plugins directory mounted
+to&nbsp; to see if it has enough space. The minimum space Java Plugin needs
+is 57.3 Mega bytes.
+<p>The installation scheme is listed as below.
+<p>This feature is available only for Netscape 7 or later and Mozilla 1.0
++ browser. So when Netscape plugin finder service hooks up with our download
+page. That page will explicitly checks for the user agent string. And we
+assume the user agent string is named as usrAgtStr just for ease of explaination.
+<p>The pesudo code is:
+<p>var version = GetVersion (usrAgtStr); //* The user agent string looks
+like "Mozilla 5.0 Windows NT.......Netscape 7/Netscape 7.0.0 " we extract
+the version&nbsp; from last three numbers. For 7.0.0, the version number
+will be 700.
+<p>if (usrAgtStr contains "Netscape")
+<br>&nbsp;&nbsp;&nbsp; if (version >= 700)
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (usrAgtStr contains "en-US")
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+jpi = "j2re1_4_1.xpi"
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+jpi = "j2re1_4_1_i.xpi"&nbsp; // Internationalized version;
+<p>&nbsp;&nbsp;&nbsp; else
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; alert("Please upgrade the&nbsp;
+browser to Netscape 7");
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; answer = confirm("Do you want to upgrade
+your browser?");
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (answer)
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+windows.location = "http://www.netscape.com"
+<p>else&nbsp; // User is using Mozilla browser
+<br>&nbsp;&nbsp;&nbsp; if (buildNo >= 20020504) // Mozilla 1.0+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (usrAgtStr contains "en-US")
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+jpi = "j2re1_4_1.xpi"
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+jpi = "j2re1_4_1_i.xpi"&nbsp; // Internationalized version;
+<p>&nbsp;&nbsp;&nbsp; else
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; alert("Please upgrade
+the&nbsp; browser to Mozilla 1.0 or later");
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; answer = confirm("Do you
+want to upgrade your browser?");
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (answer)
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+windows.location = "http://www.mozilla.org"
+<h4>
+2.3 Imported Interfaces/API</h4>
+N/A
+<h4>
+2.4 User Interface</h4>
+N/A
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<table BORDER=0 CELLSPACING=0 CELLPADDING=3 WIDTH="100%" >
+<caption><TBODY>
+<br></TBODY></caption>
+
+<tr>
+<td BGCOLOR="#F5DEB3">
+<h3>
+3 Marketing</h3>
+</td>
+</tr>
+</table>
+
+<h4>
+3.1 Justification</h4>
+In order to keep Netscape 7 users to get the latest JRE version, it is
+necessary to leverage the version of JRE user get downloaded. There is
+always a delay between the JRE version users are using and the JRE version
+which the user actually want due to the instablity of Mozilla APIs so that
+JRE can not keep comatibility with Netscape 6 or higher. However, with
+more APIs become freeze in Mozilla 1.0, JRE can be tested and certified
+to work with Mozilla 1.0 or higher. So in order to achieve this, we should
+gain control to the XPI package the user get downloaded and executed.
+<h4>
+3.2 Customer Request</h4>
+Above
+<h4>
+3.3 Competitive Analysis</h4>
+<!-- Discuss tradeoffs between this project and relevant 
+     alternatives. Why will the target audience prefer this
+     product over the competition?  The contents of this
+     section may be replaced by a pointer to the appropriate
+     section of the MRD, if it provides the required
+     information. -->
+<table BORDER=0 CELLSPACING=0 CELLPADDING=3 WIDTH="100%" >
+<caption><TBODY>
+<br></TBODY></caption>
+
+<tr>
+<td BGCOLOR="#F5DEB3">
+<h3>
+4 Management and Planning</h3>
+</td>
+</tr>
+</table>
+
+<h4>
+4.1 Scope/Priority</h4>
+P4/S2
+<h4>
+4.2 Target Release</h4>
+Mantis
+<h4>
+4.3 Resources</h4>
+
+<h5>
+4.3.1 Development</h5>
+Xiaobin Lu
+<h5>
+4.3.2 Quality Assurance/Testing</h5>
+<!-- Number of test engineers required to develop tests, or
+     assigned test engineers -->
+<h5>
+4.3.3 Documentation</h5>
+<!-- Number of writers required, or assigned writers --><a href="http://developer.netscape.com/docs/manuals/xpinstall/">http://developer.netscape.com/docs/manuals/xpinstall/</a>
+<h5>
+4.3.4 Technical Support</h5>
+<!-- Background knowledge required to support this feature. -->
+<h5>
+4.3.4 Special Hardware/Software</h5>
+<!-- List any special hardware/software required to complete
+     this project. -->
+<h4>
+4.4 Schedule</h4>
+<!-- Detailed schedule for project, including engineering work,
+     testing, documentation, integration and release. -->
+<center><table BORDER=0 CELLPADDING=0 BGCOLOR="#FFFFFF" >
+<caption>
+<center><TBODY>
+<br></TBODY></center>
+</caption>
+
+<tr>
+<td>
+<table BORDER CELLPADDING=10 BGCOLOR="#F5DEB3" >
+<caption><TBODY>
+<br></TBODY></caption>
+
+<tr ALIGN=CENTER>
+<th WIDTH="75" BGCOLOR="#666699"><font color="#FFFFFF">Start Date</font></th>
+
+<th WIDTH="75" BGCOLOR="#666699"><font color="#FFFFFF">End Date</font></th>
+
+<th WIDTH="250" BGCOLOR="#666699"><font color="#FFFFFF">Activity</font></th>
+
+<th WIDTH="50" BGCOLOR="#666699"><font color="#FFFFFF">Owner</font></th>
+
+<th WIDTH="50" BGCOLOR="#666699"><font color="#FFFFFF">Status</font></th>
+</tr>
+
+<tr>
+<td>5/13/2002&nbsp;</td>
+
+<td>&nbsp;</td>
+
+<td>&nbsp;</td>
+
+<td>&nbsp;</td>
+
+<td>
+<br><!-- Change the foreground/background colors for this cell to reflect
+               the status.  For example...
+
+               <td bgcolor=green align=center><font color=white>04/16/2001</font></td>
+            --></td>
+
+<td>&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+</table></center>
+
+<center><table BORDER=0 CELLSPACING=5 >
+<caption>
+<center><TBODY>
+<br></TBODY></center>
+</caption>
+
+<tr>
+<td WIDTH="50" BGCOLOR="#008000">&nbsp;</td>
+
+<td WIDTH="50" BGCOLOR="#90EE90">&nbsp;</td>
+
+<td WIDTH="50" BGCOLOR="#F5DEB3">&nbsp;</td>
+
+<td WIDTH="50" BGCOLOR="#FFFF00">&nbsp;</td>
+
+<td WIDTH="50" BGCOLOR="#FF0000">&nbsp;</td>
+</tr>
+
+<tr ALIGN=CENTER>
+<td>Complete</td>
+
+<td>Started</td>
+
+<td>Not Started</td>
+
+<td>Difficulties</td>
+
+<td>Trouble</td>
+</tr>
+</table></center>
+
+<br>&nbsp;
+<table BORDER=0 CELLSPACING=0 CELLPADDING=3 WIDTH="100%" >
+<caption><TBODY>
+<br></TBODY></caption>
+
+<tr>
+<td BGCOLOR="#F5DEB3">
+<h3>
+Appendices (as needed, suggestions below)</h3>
+</td>
+</tr>
+</table>
+
+<h4>
+A. Background Information</h4>
+
+<h4>
+B. Interface Specifications</h4>
+
+<h4>
+C. Notes and Additional Details</h4>
+
+<h4>
+D. Miscellaneous</h4>
+
+<h4>
+E. Tracking</h4>
+
+<h5>
+E.1 Final Webrev</h5>
+
+<h5>
+E.2 Bugtraq</h5>
+<!-- All related Bugtraq RFEs, Bugs, and EOUs.. -->
+<center><table BORDER=0 CELLPADDING=0 BGCOLOR="#FFFFFF" >
+<caption>
+<center><TBODY>
+<br></TBODY></center>
+</caption>
+
+<tr>
+<td>
+<table BORDER CELLPADDING=10 BGCOLOR="#F5DEB3" >
+<caption><TBODY>
+<br></TBODY></caption>
+
+<tr ALIGN=CENTER>
+<th WIDTH="50" BGCOLOR="#666699"><font color="#FFFFFF">Bugid</font></th>
+
+<th WIDTH="10" BGCOLOR="#666699"><font color="#FFFFFF">P</font></th>
+
+<th WIDTH="10" BGCOLOR="#666699"><font color="#FFFFFF">S</font></th>
+
+<th WIDTH="25" BGCOLOR="#666699"><font color="#FFFFFF">Subcategory</font></th>
+
+<th WIDTH="25" BGCOLOR="#666699"><font color="#FFFFFF">Type</font></th>
+
+<th WIDTH="20" BGCOLOR="#666699"><font color="#FFFFFF">Engineer</font></th>
+
+<th WIDTH="300" BGCOLOR="#666699"><font color="#FFFFFF">Synopsis</font></th>
+</tr>
+
+<tr>
+<td>&nbsp;</td>
+
+<td>&nbsp;</td>
+
+<td>&nbsp;</td>
+
+<td>&nbsp;</td>
+
+<td>&nbsp;</td>
+
+<td>&nbsp;</td>
+
+<td>&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+</table></center>
+
+<br>&nbsp;
+<br>&nbsp;
+<table BORDER=0 CELLSPACING=0 CELLPADDING=3 WIDTH="100%" >
+<caption><TBODY>
+<br></TBODY></caption>
+
+<tr>
+<td BGCOLOR="#F5DEB3">
+<h3>
+Revision History</h3>
+</td>
+</tr>
+</table>
+
+<center><table BORDER=0 CELLPADDING=0 BGCOLOR="#FFFFFF" >
+<caption>
+<center><TBODY>
+<br></TBODY></center>
+</caption>
+
+<tr>
+<td>
+<table BORDER CELLPADDING=10 BGCOLOR="#F5DEB3" >
+<caption><TBODY>
+<br></TBODY></caption>
+
+<tr ALIGN=CENTER>
+<th WIDTH="50" BGCOLOR="#666699"><font color="#FFFFFF">Date</font></th>
+
+<th WIDTH="10" BGCOLOR="#666699"><font color="#FFFFFF">Version</font></th>
+
+<th WIDTH="50" BGCOLOR="#666699"><font color="#FFFFFF">Author</font></th>
+
+<th WIDTH="400" BGCOLOR="#666699"><font color="#FFFFFF">Description</font></th>
+</tr>
+
+<tr>
+<td>&nbsp;</td>
+
+<td>&nbsp;</td>
+
+<td>&nbsp;</td>
+
+<td>&nbsp;</td>
+</tr>
+</table>
+</td>
+</tr>
+</table></center>
+
+</body>
+</html>

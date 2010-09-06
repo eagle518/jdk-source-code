@@ -1,0 +1,86 @@
+#
+# @(#)Defs-windows.gmk	1.26 04/10/15
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# Uses default JDK for build
+
+CC_VERSION=msvc
+
+include $(CONTROL_TOPDIR)/make/common/Defs-windows.gmk
+
+# for RC_FLAGS
+include $(J2SE_TOPDIR)/make/common/Defs-windows.gmk
+
+LINK32         = $(LINK)
+RSC            = $(RC)
+MTL	       = $(COMPILER_PATH)midl.exe
+
+BUNDLE_SUFFIX  = .exe
+CLASSPATH_SEP  = $(CLASSPATH_SEPARATOR)
+JPEGDIR        = $(JAVAWS_TOPDIR)/src/javaws/share/native/jpeg
+JUMP_EXE       = $(BIN_DIR)/javaws$(SUFFIX).exe
+JUMP_EXE_DBG   = $(BIN_DIR_DBG)/javaws$(DBG_SUFFIX).exe
+PLATFORM_SRC   = $(JAVAWS_TOPDIR)/src/javaws/win32
+
+C_FLAGS_COMMON = -nologo -DWIN32 $(C_FLAGS_JPDA) \
+	-I$(JAVAWS_TOPDIR)/src/javaws/share/native \
+	-I$(JAVAWS_TOPDIR)/src/javaws/win32/native \
+	-I$(GENHDIR) -I$(JPEGDIR)
+LINK_FLAGS_COMMON = kernel32.lib user32.lib gdi32.lib winspool.lib \
+	comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib \
+	uuid.lib odbc32.lib odbccp32.lib wsock32.lib wininet.lib urlmon.lib ws2_32.lib $(LIBS) /nologo \
+	/subsystem:windows /incremental:no /machine:I386
+
+C_FLAGS_OPT = /Fd"$(OBJDIR)/" /MD /Ox /Os /GX /Zi /DNDEBUG
+C_FLAGS_DBG = /MTd /GX /Gm /GZ /ZI /Zi /Od /D "_DEBUG" /Fd"$(OBJDIR)/" /FD 
+
+LINK_FLAGS_OPT = -nologo -map -mapinfo:exports -mapinfo:lines -incremental:no -machine:I386 -debug -pdbtype:sept -opt:ref
+LINK_FLAGS_DBG = -nologo -map -mapinfo:exports -mapinfo:lines -incremental:no -machine:I386 -debug -pdbtype:sept -opt:noref
+
+# JPDA macro from gnumake command line:
+ifdef JPDA
+   C_FLAGS_JPDA = -DJPDA=$(JPDA)
+endif
+
+ifdef JDK_UPDATE_VERSION
+    JAVAWS_CONVERT_JDK_UPDATE_VER := $(shell $(ECHO) $(JDK_UPDATE_VERSION) | $(TR) "abcde" "12345")
+    JAVAWS_CAB_CHAR1 := $(shell $(ECHO) $(JAVAWS_CONVERT_JDK_UPDATE_VER) | $(NAWK) '{print substr($$1, 1, 1);}')
+    JAVAWS_CAB_CHAR2 := $(shell $(ECHO) $(JAVAWS_CONVERT_JDK_UPDATE_VER) | $(NAWK) '{print substr($$1, 2, 1);}')
+    JAVAWS_CAB_CHAR3 := $(shell $(ECHO) $(JAVAWS_CONVERT_JDK_UPDATE_VER) | $(NAWK) '{print substr($$1, 3, 1);}')
+    ifeq ($(JAVAWS_CAB_CHAR3),)
+      JAVAWS_CAB_CHAR3 := 0
+    endif
+    ifeq ($(JAVAWS_CAB_CHAR1), 0)
+      JAVAWS_CAB_VERSION := $(JAVAWS_CAB_CHAR2)$(JAVAWS_CAB_CHAR3)
+    else
+      JAVAWS_CAB_VERSION := $(JAVAWS_CAB_CHAR1)$(JAVAWS_CAB_CHAR2)$(JAVAWS_CAB_CHAR3)
+    endif
+else
+    JAVAWS_CAB_VERSION := 0
+    JAVAWS_CAB_CHAR1 := 0
+    JAVAWS_CAB_CHAR2 := 0
+endif
+
+# versioning for windows
+JAVAWS_CONVERT_MAJOR = $(SED) -e "s/_JAVAWS_MAJOR_VER/$(JDK_MAJOR_VERSION)/g"
+JAVAWS_CONVERT_MINOR = $(SED) -e "s/_JAVAWS_MINOR_VER/$(JDK_MINOR_VERSION)/g"
+JAVAWS_CONVERT_MICRO = $(SED) -e "s/_JAVAWS_MICRO_VER/$(JDK_MICRO_VERSION)/g"
+JAVAWS_CONVERT_JDK   = $(SED) -e "s/_JAVAWS_JDK_VER/\"$(JDK_VERSION)\"/g"
+JAVAWS_CONVERT_FULL  = $(SED) -e "s/_JAVAWS_FULL_VER/$(FULL_VERSION)/g"
+
+ifndef (JDK_UPDATE_VERSION)
+  JAVAWS_CAB_VER = $(SED) -e "s/_JAVAWS_CAB_VER/0/g"
+  JAVAWS_CONVERT_UPDATE = $(SED) -e "s/_JAVAWS_UPDATE_VER/NULL/g"
+else
+  JAVAWS_CAB_VER = $(SED) -e "s/_JAVAWS_CAB_VER/$(JAVAWS_CAB_VERSION)/g"
+  JAVAWS_CONVERT_UPDATE = $(SED) -e "s/_JAVAWS_UPDATE_VER/$(JDK_UPDATE_VERSION)/g"
+endif
+
+JAVAWS_SUBSTITUTE_VERSIONS = $(JAVAWS_CONVERT_MAJOR) | $(JAVAWS_CONVERT_MINOR) | $(JAVAWS_CONVERT_MICRO) | $(JAVAWS_CONVERT_FULL) | $(JAVAWS_CAB_VER) | $(JAVAWS_CONVERT_JDK) | $(JAVAWS_CONVERT_UPDATE)
+
+DEPLOY_MSSDK=$(MSSDK)
+ifdef ALT_PLUGIN_MSSDK
+  DEPLOY_MSSDK=$(subst \\,\,$(subst \,/,$(ALT_PLUGIN_MSSDK)))
+endif

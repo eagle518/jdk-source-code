@@ -1,0 +1,71 @@
+#
+# @(#)TSfile.gmk	1.5 03/12/19
+# 
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+###  This file is include'd by JPDA.gmk ###
+
+# With the introduction of variable JPDA to affect the build process, the
+# .o files being linked to generate JUMP_EXE no longer consistently come
+# from the same directory or directories.  For example, when variable
+# JPDA is undefined, all .o files being linked come from ./obj -- however
+# for JPDA=JWS, "launcher.o" will be different (since it now contains JPDA
+# functionality) and it will come from ./obj/jpda/jws_jwsjnl; moreover,
+# "jpda.o" (in the same directory) will be additionally linked in as variable
+# JPDA is now defined; all other .o files are still taken from ./obj.  (See
+# comments is "JPDA.gmk" for further background on location of .o files.)
+#
+# This has introduced the necessity to sometimes force the recreation of
+# of JUMP_EXE when performing a build with variable JPDA's status being
+# different from the status it had in the preceding build.  For example,
+# assume a fresh source distribution without any .o files and without
+# JUMP_EXE.  Then, build with JPDA undefined, creating JUMP_EXE for the
+# first time.  Next, build with JPDA=JWS, creating "jpda.o" and a JPDA-
+# enabled version of "launcher.o", thus creating an updated version of
+# JUMP_EXE as it depends on .o files.  Finally, without modifying any
+# .c files, build again with JPDA undefined.  Under these circumstances,
+# JUMP_EXE needs to be recreated.  However, it normally wouldn't be re-
+# created (as it is more recent than all the .o files it depends on, i.e.,
+# the .o files from the first build), UNLESS we somehow force its recreation.
+#
+# To force such recreation when circumstances require so, the build rule
+# for target JUMP_EXE has been replaced by a special build rule that has
+# as its target a timestamp file, ts_JUMP_EXE, and as its prerequisites
+# JUMP_EXE and the pertinent .o files.  The action of this new rule is
+# to link the .o files into JUMP_EXE and then to touch ts_JUMP_EXE.  The
+# size of ts_JUMP_EXE is 0 bytes, as only its modification time matters.
+#
+### This gnumake file defines ts_JUMP_EXE.  As well, it defines timestamp
+### files for some .jar files: ts_JUMP_JAR and ts_JNLP_API_JAR.
+#
+# The motivation for the .jar timestamp files is similar to the motivation
+# for ts_JUMP_EXE: mentioned .jar files are no longer consistently created
+# from the same set of .class files.  Instead, one of two possible sets
+# of .class files is being used to create the .jar files -- one set with,
+# and the other set without, Java debugging (-g) information compiled in.
+# Which of the two sets of .class files generated when compiling (with
+# "javac"), or used when jarring ("jar"), depends on variable JPDA's status
+# and (in case of jarring) its preceding status.  (See comments is "JPDA.gmk"
+# for further background on location of .class files.)
+#
+
+##############################################################################
+
+TIMESTAMP_DIR = .tstamp
+
+##############################################################################
+
+# Timestamp file ts_JUMP_EXE
+# (note: CMKDIR defined in JPDA.gmk)
+
+ts_JUMP_EXE = $(PROTO_DIR)/$(TIMESTAMP_DIR)/$(CMKDIR)/$(notdir $(JUMP_EXE)).ts
+
+##############################################################################
+
+# Timestamp files ts_JUMP_JAR and ts_JNLP_API_JAR
+# (note: JMKDIR defined in JPDA.gmk)
+
+ts_JUMP_JAR     = $(PROTO_DIR)/$(TIMESTAMP_DIR)/$(JMKDIR)/$(notdir $(JUMP_JAR)).ts
+ts_JNLP_API_JAR = $(PROTO_DIR)/$(TIMESTAMP_DIR)/$(JMKDIR)/$(notdir $(JNLP_API_JAR)).ts

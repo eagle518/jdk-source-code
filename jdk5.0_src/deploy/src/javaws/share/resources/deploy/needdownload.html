@@ -1,0 +1,49 @@
+<HTML><HEAD><TITLE>Java Web Start AutoInstall</TITLE>
+<meta http-equiv="cache-control" content="no-cache, must-revalidate">
+<center>Java Web Start AutoInstall</center></head>
+<BODY>
+
+<!-- 
+
+CODEBASE is the location and version of the CAB bundle containing the
+Java Web Start component.
+
+To download Java 2 RE v1.4.1 with Java Web Start 1.2, use the following
+CODEBASE:
+"http://java.sun.com/products/plugin/autodl/jinstall-1_4_1-win.cab#Version=1,0,0,2"
+To download the unbundled Java Web Start 1.2 (no Java 2 RE included),
+use the following CODEBASE:
+"http://java.sun.com/products/javawebstart/autodl/jinstall_javaws-1_2.cab#Version=1,0,0,2"
+
+CLASSID is the globally unique identifier for the Java Web Start component
+referred to by CODEBASE.  The CLASSID value should never be changed.
+
+PARAMS
+app: the location of the application to auto-execute after install.
+back: if this value is "false", the browser will not go "back" after
+AutoInstall completes.  The default behavior is to go back.
+
+All PARAMS are optional.
+
+AutoInstall is supported in Internet Explorer 4.0+.  For other
+browsers, the deployer may include HTML inside the OBJECT tag, which
+will be displayed by browsers which cannot render the object.
+
+The OBJECT tag should look something like this:
+
+-->
+
+<center>
+<OBJECT CODEBASE="http://java.sun.com/products/plugin/autodl/jinstall-1_4_1-win.cab#Version=1,0,0,2"
+        CLASSID="clsid:5852F5ED-8BF4-11D4-A245-0080C6F74284"
+	HEIGHT=0 WIDTH=0>
+<PARAM name="app" value="http://myhost.some.com/myapp.jnlp">
+<PARAM name="back" value="true">
+
+<!-- Alternate HTML for browsers which cannot instantiate the object -->
+<A HREF="http://java.sun.com/cgi-bin/javawebstart-platform.sh?">
+Click here to download Java Web Start</A>
+
+</OBJECT>
+</center>
+</BODY></HTML>

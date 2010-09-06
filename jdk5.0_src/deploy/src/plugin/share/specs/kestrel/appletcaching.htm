@@ -1,0 +1,233 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0055)http://javaweb.eng/~dochez/proposals/appletcaching.html -->
+<HTML><HEAD><TITLE></TITLE>
+<META content="text/html; charset=iso-8859-1" http-equiv=Content-Type>
+<META content="MSHTML 5.00.2314.1000" name=GENERATOR></HEAD>
+<BODY>
+<P align=center> </P>
+<HR>
+
+<P align=center><FONT size=6><B>Applet Installation in Java Plug-in 
+1.3</B></FONT> </P>
+<P align=center><FONT size=4>- Draft 3/7/99 -</FONT> <BR><FONT size=4>Jerome 
+Dochez (</FONT><A href="mailto:dochez@eng"><FONT 
+size=4>dochez@eng</FONT></A><FONT size=4>)</FONT></P>
+<P align=center><FONT size=4>- Revision 1 4/22/99<BR>Stanley Ho (</FONT><A 
+href="mailto:stanley.ho@eng.sun.com"><FONT size=4>stanleyh@eng</FONT></A><FONT 
+size=4>)</FONT></P>
+<HR>
+
+<P>send feedback to dochez@eng or stanley.ho@eng</P>
+<P><FONT size=6><B><U>Introduction</U></B></FONT> </P>
+<BLOCKQUOTE>
+  <P>In Java Plug-in 1.2, we support some limited applet caching by exploiting 
+  the native browser cache in which we are embedded. This is clearly enough for 
+  most users but some requested the ability to not depend on the browser 
+  cache.</P></BLOCKQUOTE>
+<BLOCKQUOTE>
+  <P>Therefore, for big applet deployment a more reliable mechanism is necessary 
+  so applets can be "installed" on the end user machine under the control of the 
+  HTML tags. The goals for such a feature are : <BR>&nbsp; </P></BLOCKQUOTE>
+<BLOCKQUOTE>
+  <UL>
+    <LI>Versioning support<BR>We must be able to detect either through the HTTP 
+    HEAD request on the applet resources or though a version tag that the applet 
+    needs to be upgraded from the web server. 
+    <LI>Secure<BR>The "installed" applet must still run within the 
+    AppletSecurityManager to have the same rights as a downloaded version. 
+    <LI>Manageable<BR>We need to provide tools to maintain the applet cache on 
+    the end user machine. These tools should be used to get various information 
+    on "installed" applets and the ability to flush them out the cache. </LI></UL>
+  <P><BR>In order to reduce the changes and risks in the class loaders 
+  architecture, applet installation supports jar files only. For security 
+  reasons, we will not install applets downloaded using the HTTPS 
+protocol.</P></BLOCKQUOTE>
+<P><FONT size=6><B><U>HTML tags</U></B></FONT> </P>
+<BLOCKQUOTE>
+  <P>In Java Plug-in 1.2, applets are cached in the browser cache. There is no 
+  need to specify extra tags information, this mechanism is applied by default 
+  for all .jar and .class files. </P>
+  <P>In Java Plug-in 1.3, for an applet to be installed in the Java Plug-in 
+  cache, the HTML provider needs to provide HTML tags. We propose to use the 
+  following HTML tag for this purpose : </P>
+  <BLOCKQUOTE>
+    <P><TT>&lt;OBJECT ....</TT> &gt;</P>
+    <BLOCKQUOTE>
+      <P><FONT face="Courier New" size=2>&lt;PARAM NAME="archive</FONT><FONT 
+      face="Courier New" size=3>"</FONT><FONT face="Courier New" size=2> 
+      VALUE="..."&gt;<BR></FONT><FONT size=1>......</FONT></P></BLOCKQUOTE>
+    <BLOCKQUOTE>
+      <P><FONT color=#0000ff><TT>&lt;PARAM NAME="cache_option" 
+      VALUE="..."&gt;<BR>&lt;PARAM NAME="cache_archive" 
+      VALUE="..."&gt;</TT></FONT></P></BLOCKQUOTE>
+    <P><TT>&lt;/OBJECT&gt;</TT></P></BLOCKQUOTE>
+  <P>The <EM>cache_option</EM> attribute can take three values : </P>
+  <OL>
+    <LI>No&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Disable 
+    applet installation, always download the file from the web server. 
+    <LI>Browser&nbsp;&nbsp;&nbsp;&nbsp; Run applets from browser cache. 
+    (Default) 
+    <LI>Plugin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Run applets 
+    from Java Plug-in cache. </LI></OL>
+  <P>When Java Plug-in loads an applet, it should check this flag to determine 
+  how that JAR files are cached and how the applet is loaded. The versioning of 
+  the applet resources should rely on the normal HTTP HEAD request. We could 
+  have included a version number to the applet which would trigger a refetch of 
+  its resources but I does not add much. By using jar files, users can limit the 
+  applet loading to a couple of HEAD requests which should be very fast. </P>
+  <P>In some web servers, the HTTP HEAD respond may contain header information 
+  for controlling the caching algorithm, including "Cache-Control", "Expires", 
+  etc. When these HTTP headers are returned from the web server, it will always 
+  override the caching algorithm used by Java Plug-in. Please refer to <A 
+  href="http://www.w3.org/Protocols/HTTP/1.1/draft-ietf-http-v11-spec-rev-06.txt">HTTP 
+  1.1 Specification Revision 6 Section 13</A> for more details.</P>
+  <P>The <EM>cache_archive</EM> attribute can have a list of jar files to be 
+  cached, e.g.</P>
+  <BLOCKQUOTE>
+    <P><FONT face="Courier New" size=2>&lt;PARAM NAME="cache_archive" 
+    VALUE="a.jar,b.jar,c.jar"&gt;</FONT></P></BLOCKQUOTE>
+  <P>Similar to the <EM>archive</EM> attribute in the APPLET tag, the list of 
+  jar files in the <EM>cache_archive</EM> attribute do not contain the full URL. 
+  Rather, they are always downloaded from the <EM>codebase</EM> in the 
+  EMBED/OBJECT tag. </P>
+  <P>Notice that the list of JAR files in the <EM>cache_archive</EM> attribute 
+  can be totally orthogonal to the list of JAR files in the <EM>archive</EM> 
+  attribute in the EMBED/OBJECT tag. This is the result of supporting standard 
+  extension using class-path in MANIFEST because not all JARs are required to be 
+  listed in the <EM>archive</EM> attribute. There are three possible cases:</P>
+  <OL>
+    <LI>JAR file is listed in <EM>cache_archive</EM> but NOT in 
+    <EM>archive</EM>: The JAR file is cached according to <EM>cache_option</EM>. 
+
+    <LI>JAR file is listed in <EM>archive</EM> but NOT in 
+    <EM>cache_archive</EM>: The JAR file is cached using the native browser 
+    cache, and this guarantee a minimum degree of caching. 
+    <LI>JAR file is listed in both <EM>cache_archive</EM> and <EM>archive</EM>: 
+    The JAR file is cached according to <EM>cache_option</EM>, because the 
+    caching mechanism is overriden by <EM>cache_option</EM>. </LI></OL>
+  <P>When the applet is loaded, the final <EM>archive</EM> for an applet is 
+  determined by the union of the list of JAR files in <EM>archive</EM> and 
+  <EM>cache_archive</EM> in the tag.</P>
+  <P><FONT size=3><EM>cache_option</EM> and <EM>cache_archive</EM> can only be 
+  specified once in a single EMBED/OBJECT tag, so each applet can only have one 
+  and only one type of <EM>cache_option</EM> for its <EM>cache_archive</EM> JAR 
+  files.</FONT></P>
+  <P>When the either <EM>cache_option</EM> or <EM>cache_archive</EM> is not 
+  present in the tag, Java Plug-in will not cache any JAR file through applet 
+  installation, and treat the applet normally using the <EM>archive</EM> 
+  attribute.</P>
+  <P><STRONG>Issue:</STRONG> We could possibly eliminate <EM>cache_archive</EM> 
+  by applying the <EM>cache_option</EM> in all the JAR files in the 
+  <EM>archive</EM> attribute. We didn't do it that way because developers may 
+  want to "install" only a subset of JAR files in the <EM>archive</EM> 
+  attribute, rather than installing all the JAR files used by the applet.</P>
+  <P><B>Issue:</B> We could potentially add options in the Java Plug-in Control 
+  Panel to override the <EM>cache_option</EM> flag. The user could choose 
+  between the following behaviours : </P>
+  <UL>
+    <LI>Never<BR>Independently of the <EM>cache_option</EM> flag, the applet 
+    should never be cached 
+    <LI>Default<BR>Use the <EM>cache_option</EM> flag values to cache. </LI></UL>
+  <P>The property used to store this parameter will be named 
+  "javaplugin.global.cache"This could be an interesting RFE if we find out not 
+  having enough time to implement this.</P></BLOCKQUOTE>
+<P><FONT size=6><B><U>Java Plug-in Cache</U></B></FONT></P>
+<BLOCKQUOTE>
+  <P>To ensure user protection, the Java Plug-in will use the "java.home" 
+  property to determine the location of the applet repository. The root 
+  directory for all installed applet should be called java_plugin_cache. </P>
+  <P>The structure of the cache will not be human-readeable. Each stored jar 
+  file should use the hash code of their URL as the file name. We could add in 
+  the future a dictionary to be able to browse the plug-in cache if 
+  necessary.</P></BLOCKQUOTE>
+<P><FONT size=6><B><U>Tools</U></B></FONT> </P>
+<P><B>Java Plug-in Control Panel</B> </P>
+<BLOCKQUOTE>
+  <P>The Java Plug-in Control panel should add an option to delete all the 
+  entries in the plug-in cache. </P>
+  <P>RFE: we could add tools to display the cache content to a finer grained 
+  detail and allow selective deletion.</P></BLOCKQUOTE>
+<P><B>Java Plug-in HTML converter</B> </P>
+<BLOCKQUOTE>
+  <P>The HTML converter could be updated to add a check box to automatically add 
+  the <EM>cache_option</EM> and <EM>cache_archive</EM> param to the HTML 
+  tags.</P></BLOCKQUOTE>
+<P><FONT size=6><B><U>Preliminary Design</U></B></FONT> </P>
+<BLOCKQUOTE>
+  <P>In order to implement such a feature, we need to modify the current cache 
+  mechanism as it was implemented by Robert Szewczyk. The current design present 
+  major drawbacks that need to be addressed in order to implement the new 
+  features. These shortcomings are (but not limited to) : </P>
+  <UL>
+    <LI>No pluggable caching mechanism 
+    <LI>The caching is implemented in HttpURLConnection which is called only for 
+    files loaded though the codebase or archive HTML tags. 
+    <LI>Caching algorithm is triggered entirely through interception, which is 
+    not reliable all the time. </LI></UL>
+  <P>When Java Plug-in 1.3 encounters <EM>cache_options</EM> and 
+  <EM>cache_archive</EM> in the EMBED/OBJECT tag, before the applet is actually 
+  loaded, the following will happen:</P>
+  <OL>
+    <LI>Uses <EM>codebase</EM> and <EM>cache_options</EM> in the tag to 
+    determine if the list of JAR file in <EM>cache_archive</EM> can be loaded 
+    directly from the cache without connecting back to the web server. This 
+    happens if "Cache-Control" or "Expires" was previously set by the web 
+    server. Caching algorithm is determined by using <EM>cache_options</EM> and 
+    "javaplugin.global.cache" property. 
+    <LI>If the JAR files exists in the cache, but the files need to be 
+    revalidated by connecting back to the web server, a HTTP HEAD request will 
+    be sent to the web server to validate the JAR files in the cache. If the 
+    HTTP HEAD respond indicate that the JAR files are up-to-dated, they will be 
+    loaded directly from the cache. 
+    <LI>If the JAR files are not up-to-dated, or if the JAR files are not stored 
+    in the cache previously, Java Plug-in will perform a HTTP GET request to 
+    obtain the files and store them in the cache. If the respond header of the 
+    HTTP GET request contains any caching control header, e.g. "Cache-Control" 
+    or "Expires", it will override the Java Plug-in caching algorithm for this 
+    JAR file. 
+    <LI>This process continues until all the JAR files in the 
+    <EM>cache_archive</EM> are processed, then the actual applet loading process 
+    begins. 
+    <LI>Java Plug-in determines the final <EM>archive</EM> by using the union of 
+    the list of JAR files in <EM>archive</EM> and <EM>cache_archive</EM> in the 
+    tag. 
+    <LI>Java Plug-in stores the name of each JAR file in the 
+    <EM>cache_archive</EM> and its correponding caching info (caching handler, 
+    cache entry in the cache, etc) in the AppletClassLoader. 
+    <LI>Start loading the applet using the AppletClassLoader. If a JAR file 
+    needs to be loaded, always check the JAR caching info in the 
+    AppletClassLoader first. If the JAR file has been cached, load the JAR file 
+    directly from the cache using the stored caching info. Otherwise, download 
+    the JAR file into the native browser cache. This guarantee a minimum degree 
+    of caching. </LI></OL>
+  <P>In some JAR files, class-path attribute in the MANIFEST is used to load 
+  other JAR file, including standard extension. If these JAR files that contains 
+  the MANIFEST are specified in the <EM>cache_archive</EM> attribute, the 
+  referred JAR file will not be cached automatically using the 
+  <EM>cache_option</EM>, unless the referred JAR file is also listed in 
+  <EM>cache_archive</EM>, so no interception is required in Java Plug-in when 
+  referred JAR file is loaded.</P>
+  <P>If two applets happen to share the same classloader and use different 
+  <EM>cache_option</EM> for the same JAR file in the same browser session, e.g. 
+  two untrusted applets with the same codebase, the <EM>cache_option</EM> used 
+  in the JAR file in the first loading applet will always override, and the 
+  second applet will load the same JAR file using the <EM>cache_option</EM> 
+  specified by the first applet.</P>
+  <P>By using the approach above, all JAR files listed in the 
+  <EM>cache_archive</EM> will be validated before the applet is actually loaded. 
+  Because the applet is usually not able to load until it gets most of the JAR 
+  files, the overhead of validating the JAR files in the <EM>cache_archive</EM> 
+  should be small.</P>
+  <P>By default, Java Plug-in 1.3 will provide three caching mechanism 
+  implementation in the <EM>sun.plugin.caching</EM> package:</P>
+  <OL>
+    <LI>NoCacheURLConnection 
+    <LI>BrowserCacheURLConnection 
+    <LI>PluginCacheURLConnection </LI></OL>
+  <P>Java Plug-in will look up the caching handler using reflection when it 
+  encounters the <EM>cache_option</EM>, and locate the handler 
+  <EM>&lt;cache_option&gt;CacheURLConnection</EM> in 
+  <EM>sun.plugin.cachescheme</EM>. This allows additional caching mechanism 
+  implementation to be plugged in easily in the future.</P>
+  <P>&nbsp;</P>
+  <P>&nbsp;</P></BLOCKQUOTE></BODY></HTML>

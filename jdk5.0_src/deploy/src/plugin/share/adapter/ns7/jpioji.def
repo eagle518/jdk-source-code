@@ -1,0 +1,13 @@
+;
+; jpins6.def : COM modules for OJI plug-in Adapter
+;
+; By X. Lu
+;
+
+LIBRARY      "jpins7.DLL"
+
+EXPORTS
+	DllCanUnloadNow		@1 PRIVATE
+	DllGetClassObject	@2 PRIVATE
+	DllRegisterServer	@3 PRIVATE
+	DllUnregisterServer	@4 PRIVATE

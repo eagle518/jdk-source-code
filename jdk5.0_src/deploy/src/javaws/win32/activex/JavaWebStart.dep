@@ -1,0 +1,23 @@
+# Microsoft Developer Studio Generated Dependency File, included by JavaWebStart.mak
+
+.\isInstalled.cpp : \
+	".\isInstalled.h"\
+	".\JavaWebStart.h"\
+	".\StdAfx.h"\
+	
+
+.\JavaWebStart.cpp : \
+	".\isInstalled.h"\
+	".\JavaWebStart.h"\
+	".\JavaWebStart_i.c"\
+	".\StdAfx.h"\
+	
+
+.\JavaWebStart.rc : \
+	".\isInstalled.rgs"\
+	".\JavaWebStart.tlb"\
+	
+
+.\StdAfx.cpp : \
+	".\StdAfx.h"\
+	

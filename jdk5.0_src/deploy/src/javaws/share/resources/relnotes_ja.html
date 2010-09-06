@@ -1,0 +1,198 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<!-- Inserted by TRADOS: --><META HTTP-EQUIV="content-type" CONTENT="text/html; CHARSET=ISO-2022-JP">
+
+   <title>Java(TM) Web Start リリースノート</title>
+</head>
+<body bgcolor="#FFFFFF">
+&nbsp;
+<table BORDER=0 WIDTH="100%" >
+<tr>
+<td WIDTH="40"><img SRC="javalogo52x88.gif" ALT="Java" BORDER=0 height=88 width=52></td>
+
+<td ALIGN=CENTER>
+<h1>
+リリースノート</h1>
+
+<h2>
+Java<sup><font size=-2>TM</font></sup> Web Start テクノロジ</h2>
+
+<h3>
+バージョン 1.2</h3>
+</td>
+
+<td ALIGN=RIGHT VALIGN=TOP WIDTH="40">
+&nbsp;
+</td>
+</tr>
+</table>
+<h2>目次</h2>
+<blockquote>
+このリリースノートでは、Java<sup><font size=-2>TM</font></sup> Web Start ソフトウェアの今回のリリースに追加された新機能、拡張機能、およびバグ修正について記述しています。
+<p>
+<dl>
+<dt><a href="#jnlp"><b>JNLP 仕様への適合性</b></a>
+<dt><a href="#enhancements"><b>拡張機能</b></a>
+<dd><a href="#autoinstall">「ワンクリック」による自動インストール (Microsoft Windows のみ)</a><br> <a href="#splash">カスタマイズ可能なスプラッシュ画面</a><br> <a href="#encodings">UTF-8 以外のエンコーディングのサポート</a><br> <a href="#sample">サンプルコード</a>
+<dt><a href="#bugfixes"><b>バグの修正</b></a>
+</dl>
+<p>コメントおよびフィードバックの送付先: <a href="mailto:javawebstart-feedback@sun.com">javawebstart-feedback@sun.com</a>.
+</blockquote>
+
+
+<a name=jnlp><h2>JNLP 仕様への適合性</h2></a>
+
+<blockquote>このリリースは、Java<sup><font size=-2> TM</font></sup> Network Launching Protocol &amp; API (JNLP) 仕様 v1.0.1 に準拠しています。 この仕様は<a href="http://java.sun.com/products/javawebstart/ja/download-spec_ja.html">こちらから</a>ダウンロードできます。
+</blockquote>
+
+<a name="enhancements"><h2>拡張機能</h2></a>
+<blockquote>
+Java Web Start 1.2 製品では、以前のバージョンと比較すると、以下の新機能および拡張機能が追加されました。
+
+<a name="autoinstall">
+<h3>「ワンクリック」による自動インストール (Microsoft Windows プラットフォームのみ)</h3>
+</a> この機能は、Java Web Start をインストールしていないユーザが Java Web Start アプリケーションを入手した場合に、Java Web Start をインストールする際に必要な処理を改善するために追加されています。この拡張機能は、Java Web Start のインストールがエンドユーザに対してできるだけ透過的に行われるように設計されています。
+<p>
+この機能が実装されるまでは、開発者は自分の Web ページで JavaScript を使って、ユーザがすでに Java Web Start をインストールしているかどうかを検出していました。Java Web Start がインストールされていない場合、JavaScript によってリンクが提供され、ユーザはそのリンクから Java Web Start のダウンロードページを開いていました。Java Web Start を必要とするユーザが Java Web Start のダウンロードページにアクセスしてインストールするためには、何度もマウスをクリックしながら Web ページを進んでいく必要があり、そのあとでようやくアプリケーションを実行することができました。
+<p>
+
+新しい自動インストール機能では、ユーザが Java Web Start をインストールしていない場合、java.sun.com から Java Web Start をダウンロードするためのプロンプト画面が表示されます。ユーザはセキュリティに関するダイアログボックスを通して 1 度クリックするだけで、Java Web Start 単体、または Java Web Start と Java 2 Runtime Environment (J2RE) 1.4.1 のセットのいずれかのダウンロードが自動的に開始されます。どちらがダウンロードされるかは、開発者がアプリケーションの Web ページをどのように設定しているかによります。
+<p>
+ダウンロードが完了したら、Java Web Start (ダウンロードした場合は J2RE も) が自動的にユーザのマシンにインストールされ、Java Web Start がアプリケーションを起動します。
+<p>
+<blockquote>
+<hr>
+注意 : この機能は、Microsoft Windows プラットフォームでのみ利用できます。この機能を完全に実装するのに必要な java.sun.com 上の cab ファイルとスクリプトは、Java Web Start 1.2 と J2SE<sup><font size=-2>TM</font></sup> 1.4.1 の最終リリースが提供されるまでは利用できません。
+<hr>
+</blockquote>
+<p>
+自動インストール機能の詳細については、<a href="developersguide_ja.html#autoinstall">「開発者ガイド」</a>を参照してください。
+
+<a name="splash">
+<h3>カスタマイズ可能なスプラッシュ画面</h3></a>
+
+Java Web Start 1.2 では、アプリケーションの起動時に表示される「スプラッシュ」画面をカスタマイズする機能が提供されています。Java Web Start を使用してアプリケーションを起動した場合、デフォルトでは以下のイメージが表示されます。
+<blockquote>
+<img src="miniSplash.jpg">
+</blockquote> 
+開発者は、アプリケーションの JNLP ファイルに <tt>kind=&quot;splash&quot;</tt> 属性を持つ <tt>icon</tt> 要素を追加して、アプリケーションに対して別のイメージを使用することができます。たとえば次の要素は、<tt>MyIcon.gif</tt> ファイルに格納されたイメージをアプリケーションの起動時に「スプラッシュ」イメージとして表示することを示しています。
+<blockquote><pre>
+&lt;icon kind=&quot;splash&quot; href=&quot;MyIcon.gif&quot;/&gt;
+</pre></blockquote>
+<p>
+スプラッシュイメージは GIF または JPEG 形式でなければなりません。すべての icon 要素がそうであるように、スプラッシュイメージの <tt>href</tt> 属性は絶対 URL か相対 URL のどちらかです。相対 URL である場合は、JNLP ファイルの <tt>codebase</tt> 要素で指定された URL からの相対パスとして指定します。
+
+<p>
+JNLP ファイルに <tt>kind=&quot;splash&quot;</tt> 属性をもつ <tt>icon</tt> タグが含まれておらず、別の <tt>icon</tt> タグが含まれている場合、Java Web Start は、左側に <tt>icon</tt> 要素で指定されたイメージ、右側にアプリケーションのタイトルとベンダーという構成のスプラッシュ画面を表示します。 タイトルとベンダーは、JNLP ファイル内の <tt>title</tt> および <tt>vendor</tt> タグから取得されています。この方法で作成されたスプラッシュ画面が表示されている描画アプリケーションのデモを以下に示します。
+<blockquote>
+<img src="splash.gif">
+</blockquote>
+<p>
+JNLP ファイルに <tt>icon</tt> タグが含まれていない場合、スプラッシュイメージは、JNLP ファイルから取得されたアプリケーションのタイトルとベンダーによって構成されます。
+<p>
+スプラッシュイメージは、Java Werb Start によって定義された枠で囲まれています。 
+<p>
+JNLP ファイルの <tt>icon</tt> 要素を追加または変更したあとのアプリケーションの初回起動時には、変更は反映されず、古いスプラッシュイメージが表示されます。新しいスプラッシュイメージは、2 回目以降にアプリケーションを起動したときに表示されます。
+
+            
+<a name="encodings">  
+<h3>UTF-8 以外のエンコーディングのサポート</h3></a>
+
+Java Web Start ではバージョン 1.2 から、UTF-8、UTF-16、および J2SE<sup><font size="-2">TM</font></sup> プラットフォームによってサポートされるほかのエンコーディングの JNLP ファイルが解析できるようになりました。以前のリリースの Java Web Start では、UTF-8 エンコーディングのみがサポートされていました。
+<p>
+UTF-8 以外のエンコーディングは、JNLP ファイルの XML 宣言で指定します。たとえば、次の行は、JNLP ファイルが UTF-16 でエンコードされることを示しています。
+<blockquote><pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-16&quot;?&gt;
+</pre></blockquote>
+XML 宣言そのものは、UTF-8 でエンコードされる必要があります。
+<p>
+J2SE プラットフォームでサポートされており、現在 JNLP ファイル内でサポートされているエンコーディングのリストについては、<a href="http://java.sun.com/j2se/1.4/ja/docs/ja/guide/intl/encoding.doc.html">J2SE のドキュメント</a>を参照してください。
+
+                
+<a name=sample>   
+<h3>サンプルコード</h3></a>
+
+Java Web Start 製品に含まれるアプリケーション起動ツールなどの JNLP クライアントでは、起動されるアプリケーションが一連のサービスを使用できるようになっています。これらのアプリケーションは JNLP API を介してサービスにアクセスします。JNLP API の仕様は、JNLP 開発者向けパックの <tt>javadoc</tt> ディレクトリで提供されています  (Java Web Start の Web サイトにある <a href="http://java.sun.com/products/javawebstart/ja/developers_ja.html">「開発者用セクション」</a>を参照してください)。
+<p>
+Java Web Start 1.2 開発者向けパックでは、JNLP API を使用するいくつかのサンプルアプリケーションが提供されています。各サンプルには、サンプルの内容をまとめた readme ファイル、アプリケーションのソースファイル、およびアプリケーションの構築、実行、配備に必要なライブラリやリソースを持つ JAR ファイルが含まれています。 
+<p>
+次のようなサンプルアプリケーションが提供されています。
+<dl>
+<dt>WebPad</dt>
+<dd>WebPad はシンプルなワープロアプリケーションで、ユーザはファイルの作成、オープン、変更、保存、および印刷を実行できます。WebPad アプリケーションを信頼できない実行環境で実行している場合、ローカルでリソースへアクセスするために、広い範囲で JNLP API が使用されます。</dd>
+<p>
+<dt>ランダムアクセスファイルサンプル 
+<dd>
+JNLP API の <tt>JNLPRandomAccessFile</tt> インタフェースの機能を示すサンプルです。 ユーザは、読み書き両用にランダムファイルとして開いたファイルを検索します。
+
+<p>
+<dt>拡張機能インストーラサンプル
+<dd>このサンプルは、JNLP API の <tt>ExtensionInstallerService</tt> 機能を使用して、ネイティブの共有ライブラリをクライアントマシンにインストールし、ネイティブライブラリを検索するディレクトリを JNLP クライアントに知らせます。
+<p>
+<dt>ライブラリ (ネイティブ) インストール
+<dd>
+このサンプルは、JNLP ファイルのリソースセクションにある <tt>&lt;nativelib&gt;</tt> 要素を使用して、ネイティブの共有ライブラリをクライアントマシンにインストールします。
+
+<p>
+<dt>CORBA サンプル
+<dd>
+このサンプルは、Java Web Start を使用して CORBA アプリケーションを配備する方法を示すことを目的としています。RMI-IIOP を使用した非常にシンプルな「Hello World」アプリケーションが含まれています。
+</dl>
+</blockquote>
+
+<a name="bugfixes"><h2>バグの修正</h2></a>
+<blockquote>
+開発者は、Java Developer Connection<sup><font size="-2">SM</font></sup> <a href="http://developer.java.sun.com/developer/bugParade/">Bug Parade データベース</a>にアクセスして、自社の製品やプロジェクトに大きな影響をおよぼすバグの修正に関する投票を行うことができます。次に示す表は、Bug Parade で 1 票以上を獲得し、今回のリリースの Java Web Start ソフトウェアで修正されたバグの完全なリストです。表中の各バグ ID をクリックすると、Java Developer Connection Web サイト上の対応するバグレポートが表示されます。
+<p>
+
+<table border="1">
+<tr bgcolor="lightgrey">
+<th>バグ ID</th><th>獲得票数</th><th>説明 </th>
+<tr>   <td><A HREF="http://developer.java.sun.com/developer/bugParade/bugs/4393950.html">4393950</A> <td>28 票<td>codebase を HTTPS の位置で指定できるようにして欲しいという要求 
+<tr>   <td> <A HREF="http://developer.java.sun.com/developer/bugParade/bugs/4474021.html">4474021</A> <td>11 票<td>JNLP バージョンをベースにしたプロトコルが WAR ファイルで失敗
+ <tr>
+<td><A HREF="http://developer.java.sun.com/developer/bugParade/bugs/4476448.html">4476448</A>  <td>10 票<td>パスワード保護されたサーバ上で更新を検索した場合にバグが発生
+<tr>    <td><A HREF="http://developer.java.sun.com/developer/bugParade/bugs/4510364.html">4510364</A>  <td>7 票<td>Java Web Start におけるメモリリーク
+<tr>    <td><A HREF="http://developer.java.sun.com/developer/bugParade/bugs/4473369.html">4473369</A> <td> 4 票<td>forceUpdate:true &amp;&amp; jnlp:installer-desc == ENDLESS_LOOP    
+<tr> <td><a href="http://developer.java.sun.com/developer/bugParade/bugs/4502223.html">4502223</A> <td>4 票    <td>アプリケーションマネージャのショートカットアイコンの見栄えがよくない
+<tr>  <td><A HREF="http://developer.java.sun.com/developer/bugParade/bugs/4393792.html">4393792</A> <td>3 票<td>実行中のアプリケーションの新バージョンをダウンロードすると失敗
+                      
+<tr>   <td> <A HREF="http://developer.java.sun.com/developer/bugParade/bugs/4474870.html">4474870</A>  <td>3 票<td>Windows インストーラが Java 1.3.1 fcs を有効な jre として認識しない                  
+<tr>     <td><A HREF="http://developer.java.sun.com/developer/bugParade/bugs/4626716.html">4626716</A> <td>2 票<td>JavaWS 用の自動インストール (Windows CAB ベースのインターネットコンポーネントのダウンロード)
+                                 
+<tr>     <td><A HREF="http://developer.java.sun.com/developer/bugParade/bugs/4459387.html">4459387</A> <td>2 票<td>署名なしアプリケーション .... コンポーネントの拡張機能で指定される署名付き JAR に対するエラー 
+ <tr>
+<td><A HREF="http://developer.java.sun.com/developer/bugParade/bugs/4474861.html">4474861</A>  <td>2 票<td>キャッシュされた ico ファイルのパージまたは更新ができない                                 
+
+<tr>
+<td><A HREF="http://developer.java.sun.com/developer/bugParade/bugs/4506366.html">4506366</A> 
+<td>1 票<td>IE からプロキシ設定をロードしようとすると Java Web Start がクラッシュする
+<tr><td><A HREF="http://developer.java.sun.com/developer/bugParade/bugs/4528392.html">4528392</A>
+<td>1 票<td>拡張インストーラを更新しても何も効果がない
+<tr><td><A HREF="http://developer.java.sun.com/developer/bugParade/bugs/4469463.html">4469463</A>
+<td>1 票<td>Nullsoft ブラウザ機能で新しいブラウザウィンドウを作成して欲しい
+<tr><td><A HREF="http://developer.java.sun.com/developer/bugParade/bugs/4464328.html">4464328</A> 
+<td>1 票<td>ブラウザを閉じると showDocument() が動作しない
+<tr><td><A HREF="http://developer.java.sun.com/developer/bugParade/bugs/4474211.html">4474211</A> 
+<td>1 票<td>Jardiff が失敗する 
+<tr><td><A HREF="http://developer.java.sun.com/developer/bugParade/bugs/4494767.html">4494767</A> 
+<td>1 票<td>Window でのデフォルトブラウザが Netscape 6 の場合、Java Web Start がクラッシュする 
+<tr><td><A HREF="http://developer.java.sun.com/developer/bugParade/bugs/4617199.html">4617199</A> 
+<td>1 票<td>サーバで拡張インストーラを更新すると、null ポインタ例外が発生する
+
+</table>
+</blockquote>
+
+<HR>
+<table width="100%">
+<tr valign=top>
+<td><small>コメントおよびフィードバックの送付先: <a href="mailto:javawebstart-feedback@sun.com">javawebstart-feedback@sun.com</a></small></td>
+<td align="right">
+<small>Copyright &copy; 2002, <a href="http://www.sun.com">Sun Microsystems, Inc.</a> <br> All rights reserved.</small></td>
+</table>
+
+<pre>
+</pre>
+</body>
+</html>

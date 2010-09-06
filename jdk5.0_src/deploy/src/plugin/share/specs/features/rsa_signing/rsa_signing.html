@@ -1,0 +1,586 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0081)http://javaweb.eng/~stanleyh/java-plugin/docs/features/extensions/extensions.html -->
+<!-- saved from url=(0109)https://east.sun.net/http://javaweb.eng/~stanleyh/java-plugin/docs/features/applet_caching/appletcaching.html --><!-- Copyright 1998 Sun Microsystems, Inc. All Rights Reserved. --><!-- "@(#)index.html	1.32 99/08/27 Sun Microsystems" --><HTML><HEAD><TITLE>Step-by-step
+guide of signing applets using RSA certificate</TITLE>
+<META content="text/html; charset=windows-1252" http-equiv=Content-Type><!-------------------------------><!--      ABOUT THIS HTML      --><!-------------------------------><!-- FOLLOW THESE COMMENTS FOR --><!--   INFORMATION ABOUT THE   --><!-- STRUCTURE OF OUR TEMPLATES--><!-------------------------------><!-------------------------------><!--   INSERT YOUR TITLE HERE  --><!------------BEGIN-TITLE--------><!-------------END-TITLE---------><!--        END OF TITLE       --><!------------------------------->
+<META content="Microsoft FrontPage 4.0" name=GENERATOR></HEAD>
+<BODY bgColor=#ffffff text=#000000><!-- begin main page table -->
+<TABLE border=0 cellPadding=0 cellSpacing=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=top width=157><!-------------------------------><!--  SERVER SIDE INCLUDE FOR  --><!--  NAVIGATION MENU AT LEFT  --><!-------------------------------><!-- Begin Navbar Segment -->
+      <TABLE border=0>
+        <TBODY>
+        <TR vAlign=top>
+          <TD width=155><IMG alt="" height=20 
+            src="rsa_signing_files/pixel.gif" width=20> <A 
+            href="https://east.sun.net/http://javaweb.eng/"><IMG 
+            alt="Java Technology Home Page" border=0 height=88 
+            src="rsa_signing_files/javalogo52x88.gif" width=52></A><BR>
+            <TABLE border=0 cellPadding=3 cellSpacing=0 width=157><!-- the following spacer ensures that the --><!--   table is at least 157 pixels wide   -->
+              <TBODY>
+              <TR>
+                <TD></TD></TR><!-- tab categories -->
+              <TR>
+                <TD></TD>
+                <TD><A 
+                  href="https://east.sun.net/http://javaweb.eng/products/"><IMG 
+                  alt="Downloads, APIs, Documentation" border=0 height=15 
+                  src="rsa_signing_files/side.tab.products.gif" 
+              width=130></A></TD></TR>
+              <TR>
+                <TD></TD>
+                <TD><A 
+                  href="https://east.sun.net/http://javaweb.eng/jdc/"><IMG 
+                  alt="Java Developer Connection" border=0 height=15 
+                  src="rsa_signing_files/side.tab.developer.gif" 
+                width=130></A></TD></TR>
+              <TR>
+                <TD></TD>
+                <TD><A 
+                  href="https://east.sun.net/http://javaweb.eng/infodocs/"><IMG 
+                  alt="Docs, Tutorials, Tech Articles, Training" border=0 
+                  height=15 src="rsa_signing_files/side.tab.docs.gif" 
+                  width=130></A></TD></TR>
+              <TR>
+                <TD></TD>
+                <TD><A 
+                  href="https://east.sun.net/http://javaweb.eng/support/"><IMG 
+                  alt="Online Support" border=0 height=15 
+                  src="rsa_signing_files/side.tab.support.gif" 
+              width=130></A></TD></TR>
+              <TR>
+                <TD></TD>
+                <TD><A 
+                  href="https://east.sun.net/http://javaweb.eng/community/"><IMG 
+                  alt="Community Discussion" border=0 height=15 
+                  src="rsa_signing_files/side.tab.community.gif" 
+                width=130></A></TD></TR>
+              <TR>
+                <TD></TD>
+                <TD><A 
+                  href="https://east.sun.net/http://javaweb.eng/industry"><IMG 
+                  alt="News &amp; Events from Everywhere" border=0 height=15 
+                  src="rsa_signing_files/side.tab.news.gif" width=130></A></TD></TR>
+              <TR>
+                <TD></TD>
+                <TD><A 
+                  href="https://east.sun.net/http://javaweb.eng/solutions/"><IMG 
+                  alt="Products from Everywhere" border=0 height=15 
+                  src="rsa_signing_files/side.tab.solutions.gif" 
+                width=130></A></TD></TR>
+              <TR>
+                <TD></TD>
+                <TD><A 
+                  href="https://east.sun.net/http://javaweb.eng/casestudies/"><IMG 
+                  alt="How Java Technology is Used Worldwide" border=0 height=15 
+                  src="rsa_signing_files/side.tab.case.gif" width=130></A></TD></TR>
+              <TR>
+                <TD></TD>
+                <TD></TD></TR></TBODY></TABLE>
+            <P></P></TD></TR></TBODY></TABLE><!-- End Navbar Segment --></TD>
+    <TD vAlign=top width=452><!--  begin header table -->
+      <TABLE border=0 width=452><!-------------------------------><!--  SERVER SIDE INCLUDE FOR  --><!--  HEADER AT TOP OF PAGE    --><!-------------------------------><!-- Begin Header Segment -->
+        <TBODY>
+        <TR>
+          <TD>
+            <FORM action=http://search.java.sun.com/query.html method=get><INPUT 
+            name=col type=hidden value=jsun> <INPUT name=pw type=hidden 
+            value=100%> <INPUT name=ws type=hidden value=0> <INPUT name=nh 
+            type=hidden value=10> 
+            <TABLE border=0 cellPadding=0 cellSpacing=0 width="100%">
+              <TBODY>
+              <TR>
+                <TD align=right><IMG alt="" height=14 
+                  src="rsa_signing_files/stripelt.gif" width=6></TD>
+                <TD width="100%">
+                  <TABLE border=0 cellPadding=0 cellSpacing=0 width="100%">
+                    <TBODY>
+                    <TR>
+                      <TD bgColor=#cc9966 width="100%"><IMG alt="" height=2 
+                        src="rsa_signing_files/pixel.gif" width=1></TD></TR>
+                    <TR>
+                      <TD><IMG alt="" height=2 
+                        src="rsa_signing_files/pixel.gif" width=1></TD></TR>
+                    <TR>
+                      <TD bgColor=#cc9966><IMG alt="" height=2 
+                        src="rsa_signing_files/pixel.gif" width=1></TD></TR>
+                    <TR>
+                      <TD><IMG alt="" height=2 
+                        src="rsa_signing_files/pixel.gif" width=1></TD></TR>
+                    <TR>
+                      <TD bgColor=#cc9966><IMG alt="" height=2 
+                        src="rsa_signing_files/pixel.gif" width=1></TD></TR>
+                    <TR>
+                      <TD><IMG alt="" height=2 
+                        src="rsa_signing_files/pixel.gif" width=1></TD></TR>
+                    <TR>
+                      <TD bgColor=#cc9966><IMG alt="" height=2 
+                        src="rsa_signing_files/pixel.gif" 
+                  width=1></TD></TR></TBODY></TABLE></TD>
+                <TD align=left><IMG alt="" height=14 
+                  src="rsa_signing_files/stripert.gif" width=6></TD>
+                <TD>
+                  <TABLE border=0 cellPadding=0 cellSpacing=0>
+                    <TBODY>
+                    <TR>
+                      <TD vAlign=center><A 
+                        href="https://east.sun.net/http://javaweb.eng/a-z/"><IMG 
+                        alt="A-Z Index" border=0 height=11 
+                        src="rsa_signing_files/azindex.gif" width=72></A></TD>
+                      <TD vAlign=center><FONT face=Helvetica size=1><INPUT 
+                        maxLength=2033 name=qt size=15></FONT></TD>
+                      <TD vAlign=center><INPUT alt="Search the Site" border=0 
+                        height=14 name=search 
+                        src="rsa_signing_files/search.button.gif" type=image 
+                        value=search 
+            width=55></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></FORM>
+            <P>
+            <TABLE border=0 cellPadding=0 cellSpacing=0 width="100%">
+              <TBODY>
+              <TR vAlign=top>
+                <TD width="100%"><IMG height=18 
+                  src="rsa_signing_files/pixel.gif" width=20></TD>
+                <TD align=right rowSpan=3 width=152><A 
+                  href="https://east.sun.net/http://javaweb.eng/"><IMG 
+                  alt="The Source for Java Technology" border=0 height=42 
+                  src="rsa_signing_files/thesourceforjava.gif" 
+              width=389></A></TD></TR>
+              <TR vAlign=top>
+                <TD bgColor=#cc9966 height=1 width="100%"><IMG height=1 
+                  src="rsa_signing_files/pixel.gif" width=1></TD></TR>
+              <TR vAlign=top>
+                <TD width="100%"><IMG height=20 
+                  src="rsa_signing_files/pixel.gif" width=20></TD>
+                <TD align=right></TD></TR></TBODY></TABLE></P></TD></TR><!-- End Header Segment --><!-- breadcrumb trail -->
+        <TR>
+          <TD align=right height=25 vAlign=top></TD></TR>
+        <TR>
+          <TD>
+            <P></P></TD></TR>
+        <TR>
+          <TD align=right colSpan=2><!-- page headline --><!-------------------------------><!--EDIT THE PAGE HEADLINE HERE--><!------------BEGIN-HEADLINE-----><font size="+2"><b>Step-by-step
+            guide of signing applets using RSA certificate</b></font><!-------------END-HEADLINE------><!--    END OF PAGE HEADLINE   --><!-------------------------------></TD></TR></TBODY></TABLE><!-- Begin Page Data --><!-------------------------------><!--  EDIT PAGE CONTENT HERE   --><!------------BEGIN-CONTENT------><!-------------END-CONTENT------->
+      <P>Since Java Plugin 1.2.2, RSA signed applets has been supported to make
+      deploying signed applets much easier. However, signing applets through RSA
+      is still remained a mystery to most novice applet developers, and it
+      prevents them to fully take advantages of this features of Java Plug-in.
+      This document outlines the step-by-step guide of signing applets using RSA
+      certificate, so novice applet developers will be able to sign their
+      applets in Java Plug-in without fully understand all the complex security
+      related terminalogy.<P>To sign an applet, several things are needed:
+      <ol>
+        <li>Signing tools.</li>
+        <li>An RSA keypair and a certificate chain for its public keys.</li>
+        <li>The applet itself, and all its class files must be bundled as JAR
+          files.</li>
+      </ol>
+      <h3>Signing tools</h3>
+      <P>Two types of signing tools are currently supported in Java Plug-in to
+      sign RSA applets in:
+      <ol>
+        <li><i>Jarsigner</i> -- a tool that is shipped as part of the Java 2
+          Software Development Kit.<br>
+        </li>
+        <li><i>Netscape Signing Tool </i>-- a tool that is provided by Netscape
+          for signing applets in Navigator/Communicator. The latest version of
+          the signing tool is 1.3, and it may be download from <a href="http://developer.netscape.com/software/signedobj/jarpack.html">http://developer.netscape.com/software/signedobj/jarpack.html</a>.
+          Please notice that Netscape no longer make older version of the
+          signing tool available for download.</li>
+      </ol>
+      <h3>RSA certificates</h3>
+      <p>RSA certificates may be purchased from a Certificate Authority (CA)
+      that supports RSA. Examples of such CAs are <a href="http://www.verisign.com">VeriSign</a>
+      and <a href="http://www.thawte.com">Thawte</a>. Some CAs (such as VeriSign)
+      implement different protocols for issuing certificates, depending on the
+      particular signing tool you are using.</p>
+      <h4>Jarsigner</h4>
+      <p>As of the time this document was written, we have demonstrated
+      interoperability of Jarsigner with VeriSign and Thawte. To use jarsigner to sign applets using RSA certificate, you should
+      obtain the <a href="https://digitalid.verisign.com/developer/chooseid.htm">Sun
+      Java Signing</a> certificate from VeriSign, or <a href="http://www.thawte.com/certs/developer/sunjava12.html">Java
+      Code Signing</a> certificate from Thawte, or similar certificate from
+      other CAs. During the process of
+      certificate enrollment, you will be asked to provide the certificate
+      signing request (CSR). To generate the CSR, these are the steps you should follow:</p>
+      <ol>
+        <li>
+          Use keytool to generate an RSA keypair (using the &quot;-genkey -keyalg rsa" options). Make sure your distinguished name contains all the components mandated by VeriSign/Thawte. e.g. 
+<pre>
+C:\&gt;C:\jdk1.3\bin\keytool -genkey -keyalg rsa -alias MyCert
+Enter keystore password: *********
+What is your first and last name?
+[Unknown]: XXXXXXX YYY
+What is the name of your organizational unit?
+[Unknown]: Java Software
+What is the name of your organization?
+[Unknown]: Sun Microsystems
+What is the name of your City or Locality?
+[Unknown]: Cupertino
+What is the name of your State or Province?
+[Unknown]: CA
+What is the two-letter country code for this unit?
+[Unknown]: US
+Is &lt;CN=XXXXXXX YYY, OU=Java Software, O=Sun Microsystems, L=Cupertino, ST=CA, C=US&gt; correct?
+[no]: yes
+
+Enter key password for &lt;MyCert&gt;
+(RETURN if same as keystore password): *********
+</pre>
+        </li>
+        <li> 
+          Use "keytool -certreq" to generate a certification signing request. Copy the result and paste it into the
+          VeriSign/Thawte webform. For example,&nbsp;
+<pre>
+C:\&gt;C:\jdk1.3\bin\keytool -certreq -alias MyCert
+Enter keystore password:&nbsp; *********
+-----BEGIN NEW CERTIFICATE REQUEST-----
+MIIBtjCCAR8CAQAwdjELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAkNBMRIwEAYDVQQHEwlDdXBlcnRp
+bm8xGTAXBgNVBAoTEFN1biBNaWNyb3N5c3RlbXMxFjAUBgNVBAsTDUphdmEgU29mdHdhcmUxEzAR
+BgNVBAMTClN0YW5sZXkgSG8wgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBALTgU8PovA4y59eb
+oPjY65BwCSc/zPqtOZKJlaW4WP+UhmebE+T2Mho7P5zXjGf7elo3tV5uI3vzgGfnhgpf73EoMow8
+EJhly4w/YsXKqeJEqqvNogzAD+qUv7Ld6dLOv0CO5qvpmBAO6mfaI1XAgx/4xU/6009jVQe0TgIo
+ocB5AgMBAAGgADANBgkqhkiG9w0BAQQFAAOBgQAWmLrkifKiUYtd4ykhBtPWSwW/IKkgyfIuNMML
+dF1DH8neSnXf3ZLI32f2yXvs7u3/xn6chnTXh4HYCJoGYOAbB3WNbAoQRi6u6TLLOvgv9pMNUo6v
+1qB0xly1faizjimVYBwLhOenkA3Bw7S8UIVfdv84cO9dFUGcr/Pfrl3GtQ==
+-----END NEW CERTIFICATE REQUEST-----
+</pre>
+        </li>
+        <li>CAs (e.g. VeriSign/Thawte) will send you a certificate reply (chain) by email.
+          Copy the chain and store it in a file. Use "keytool -import" to import the chain into your
+          keystore. e.g.
+          <pre>C:\&gt;C:\jdk1.3\bin\keytool -import -alias MyCert -file VSSStanleyNew.cer
+</pre>
+        </li>
+        <li>Your RSA certificate and its supporting chain have been validated
+          and imported into your keystore. You are now ready to use the
+          <i> jarsigner</i> to sign your JAR file.</li>
+      </ol>
+      <p>Note that you must the *same* alias name for all the above steps (or no alias name, in which case the alias name defaults to "mykey").</p>
+      <h4>Netscape Signing Tool</h4>
+      <p>As of the time this document was written, most CAs (e.g. VeriSign/Thawte)
+      are known to support Netscape Signing Tool. To use Netscape Signing Tool to sign applets using RSA certificate, you should
+      obtain the <a href="http://digitalid.verisign.com/developer/chooseid.htm">Netscape
+      Object Signing</a> certificate from Verisign, or <a href="http://www.thawte.com/certs/developer/nsobjectsign.html">Netscape
+      Object Signing</a> certificate from Thawte, or similar certificate from
+      other CAs. During the process of
+      enrollment, you will be asked about
+      your personal/company information because the CA will need to verify your
+      information before the certificate is issued. This process may take from
+      several hours to several days.</p>
+      <p>Once the RSA certificate is issued, it usually consists of three files:</p>
+      <ul>
+        <li><i>cert7.db</i></li>
+        <li><i>key3.db</i></li>
+        <li><i>secmod.db</i></li>
+      </ul>
+      <p>Depends on the CA, the certificate may be issued and stored in a floppy
+      diskette or be stored directly into the security modules of Netscape
+      Navigator/Communicator. Once it is done, you are now ready to use the
+      Netscape Signing Tool to sign your JAR file.&nbsp;</p>
+      <h3><br>
+      Java Applets</h3>
+      <p>To sign applets with RSA certificates with Jarsigner, the applets must be bundled as
+      JAR files. Jar tool is provided as part of the Java 2 Software Development
+      Kit. For example,</p>
+      <pre>C:&gt;C:\jdk1.3\bin\jar cvf C:\TestApplet.jar .
+added manifest
+adding: TestApplet.class (in = 94208) (out= 20103)(deflated 78%)
+adding: TestHelper.class (in = 16384) (out= 779)(deflated 95%)
+</pre>
+
+This example create a JAR file C:\TestApplet.jar, and it contains all the files under the current directory and its sub-directories.
+      <p>After the JAR file is created, you should verify its content using Jar
+      tool again. e.g.</p>
+      <pre>C:&gt;C:\jdk1.3\bin\jar tvf TestApplet.jar 
+     0 Mon Mar 06 18:02:54 PST 2000 META-INF/
+    68 Mon Mar 06 18:02:54 PST 2000 META-INF/MANIFEST.MF
+ 94208 Wed Mar 10 11:48:52 PST 2000 TestApplet.class
+ 16384 Wed Mar 10 11:48:52 PST 2000 TestHelper.class
+</pre>
+      This ensure the class files are stored with the proper path within the JAR file.
+      <p>To sign applets with RSA certificates with Netscape Signing Tool, the
+      applets must be placed in a directory, and Netscape Signing Tool will
+      bundle it as JAR file after the process of signing.</p>
+      <h3><br>
+      Signing applets</h3>
+      <P>Once we have the RSA certificates, the signing tool and the applet's
+      JAR files, we are ready to sign the applets.
+      <h4>Signing applets using jarsigner</h4>
+      <p>To sign applets using jarsigner, these are the steps you should follow:</p>
+      <ol>
+        <li>
+          Use jarsigner to sign the jar file, using the RSA credentials in your
+          keystore that were generated in the previous steps. Make sure the same alias name is specified. e.g.<pre>C:\&gt;C:\jdk1.3\bin\jarsigner C:\TestApplet.jar MyCert
+Enter Passphrase for keystore: ********
+</pre>
+        </li>
+        <li><pre>Use &quot;jarsigner -verify -verbose -certs&quot; to verify the jar files</pre>
+          <pre>C:&gt;C:\jdk1.3\bin\jarsigner -verify -verbose -certs d:\TestApplet.jar
+
+
+         245 Wed Mar 10 11:48:52 PST 2000 META-INF/manifest.mf
+         187 Wed Mar 10 11:48:52 PST 2000 META-INF/MYCERT.SF
+         968 Wed Mar 10 11:48:52 PST 2000 META-INF/MYCERT.RSA
+smk      943 Wed Mar 10 11:48:52 PST 2000 TestApplet.class
+smk	 163 Wed Mar 10 11:48:52 PST 2000 TestHelper.class
+
+      X.509, CN=XXXXXXX YYY, OU=Java Software, 
+		O=Sun Microsystems, L=Cupertino, 
+		ST=CA, C=US (mycert)
+      X.509, CN=Sun Microsystems, OU=Java Plug-in QA, 
+		O=Sun Microsystems, L=Cupertino, ST=CA, C=US
+      X.509, <a href="mailto:EmailAddress=server-certs@thawte.com">EmailAddress=server-certs@thawte.com</a>, 
+		CN=Thawte Server CA, OU=Certification 
+		Services Division, O=Thawte Co
+sulting cc, L=Cape Town, ST=Western Cape, C=ZA
+
+
+  s = signature was verified
+  m = entry is listed in manifest
+  k = at least one certificate was found in keystore
+  i = at least one certificate was found in identity scope
+
+jar verified.</pre>
+        </li>
+        <li>Your applet has been signed properly, and you are now ready to
+          deploy your RSA signd applet.</li>
+      </ol>
+      <h4>&nbsp;</h4>
+      <h4>Signing applets using Netscape Signing Tool</h4>
+      <p>To sign applets using signtool, these are the steps you should follow:</p>
+      <ol>
+        <li>
+          Use &quot;signtool -L&quot; to determine the certificate nickname that
+          should be used in signing. e.g.
+          
+          <pre>C:\signtool13WINNT40\signtool -L -d a:\cert
+using certificate directory: a:\cert
+
+S Certificates
+- ------------
+  AT&amp;T Certificate Services
+  Thawte Personal Premium CA
+  GTE CyberTrust Secure Server CA
+  Verisign/RSA Commercial CA
+  AT&amp;T Directory Services
+  BelSign Secure Server CA
+  BelSign Class 1 CA
+  GTIS/PWGSC, Canada Gov. Web CA
+  Thawte Personal Freemail CA
+  Thawte Server CA
+  GTIS/PWGSC, Canada Gov. Secure CA
+  MCI Mall CA
+  VeriSign Class 3 Primary CA
+  VeriSign Class 4 Primary CA
+  KEYWITNESS, Canada CA
+  BelSign Class 2 CA
+  BelSign Object Publishing CA
+* Sun Microsystems, Inc.
+  VeriSign Class 3 CA - Commercial Content/Software Publisher - VeriSign, Inc.
+  Verisign/RSA Secure Server CA
+  VeriSign Class 1 Primary CA
+  BBN Certificate Services CA Root 1
+  Thawte Personal Basic CA
+* Sun Microsystems, Inc.'s VeriSign, Inc. ID
+  CertiSign BR
+  VeriSign Class 2 Primary CA
+  Canada Post Corporation CA
+  Integrion CA
+  IBM World Registry CA
+  BelSign Class 3 CA
+  Uptime Group Plc. Class 1 CA
+  Uptime Group Plc. Class 2 CA
+  Thawte Premium Server CA
+  Uptime Group Plc. Class 3 CA
+  GTE CyberTrust Root CA
+  Uptime Group Plc. Class 4 CA
+- ------------
+
+Certificates that can be used to sign objects have *'s to their left.
+          </pre>
+        </li>
+        <li>Create an empty directory. e.g.
+          <pre>mkdir signdir</pre>
+        </li>
+        <li>Put all the applet class files into it.<br>
+        </li>
+        <li>Use &quot;signtool -Z&quot; to sign the applet. e.g.
+          <pre>
+C:\signtool13&gt;signtool -k&quot;Sun Microsystems, Inc.'s VeriSign, Inc. ID&quot; 
+	-d a:\cert -Z c:\TestApplet.jar c:\signdir
+using certificate directory: a:\cert
+Generating c:\signdir/META-INF/manifest.mf file..
+--&gt; TestApplet.class
+adding c:\signdir/TestApplet.class to c:\TestApplet.jar...(deflated 57%)
+--&gt; TestHelper.class
+adding c:\signdir/TestHelper.class to c:\TestApplet.jar...(deflated 43%)
+Generating zigbert.sf file..
+adding c:\signdir/META-INF/manifest.mf to c:\TestApplet.jar...(deflated 44%)
+adding c:\signdir/META-INF/zigbert.sf to c:\TestApplet.jar...(deflated 46%)
+adding c:\signdir/META-INF/zigbert.rsa to c:\TestApplet.jar...(deflated 40%)
+tree &quot;c:\signdir&quot; signed successfully
+        </pre>
+        </li>
+        <li>
+          Use &quot;signtool -w&quot; to verify the archive. e.g.
+
+        <pre>C:\signtool13&gt;signtool -w c:\TestApplet.jar -d a:\cert
+using certificate directory: a:\cert
+
+Signer information:
+
+nickname: Sun Microsystems, Inc.'s VeriSign, Inc. ID
+subject name: C=US, ST=CA, L=Palo Alto, OU=Java Software, 
+	CN=Sun Microsystems, OU=Digital ID Class 3 - Netscape
+Object Signing, OU=&quot;www.verisign.com/repository/RPA Incorp. 
+	by Ref.,LIAB.LTD(c)99&quot;, OU=VeriSign Trust Network, 
+	O=&quot;VeriSign, Inc.&quot;
+issuer name: CN=VeriSign Class 3 CA - Commercial Content/Software 
+	Publisher, OU=&quot;www.verisign.com/repository/RPA Incorp. 
+	by Ref.,LIAB.LTD(c)98&quot;, OU=VeriSign Trust Network, 
+	O=&quot;VeriSign, Inc.&quot;
+</pre>
+        </li>
+        <li>
+          Your applet has been signed properly, and you are now ready to
+          deploy your RSA signd applet.
+        </li>
+      </ol>
+      <H3>&nbsp;</H3>
+      <H3>Deploying RSA signed applets</H3>
+      <p>To deploy RSA signed applets:</p>
+      <ol>
+        <li>Reference the JAR from the HTML page using ARCHIVE=xyz.jar in the
+          EMBED/OBJECT tag.
+        <li>Put the JAR file and the HTML page on the web server.</li>
+      </ol>
+      <p>When users of Java Plug-in encounter an RSA signed applet, the Plug-in
+      will verify that the applet is correctly signed, and that the RSA
+      certificate chain and the root CA are valid. If these are all valid, the
+      Plug-in will pop-up a security dialog that tells the user who signed the
+      applet and provides four options:</p>
+      <ol>
+        <li><em>Grant always</em>: If selected, the applet will be granted
+          &quot;AllPermission&quot;. Any signed applet signed using the same
+          certificate will be trusted automatically in the future, and no
+          security dialog will pop up again when this certificate is encountered
+          again. This decision can be changed from the Java Plug-in Control
+          Panel.<br>
+        <li><em>Grant this session</em>: If selected, the applet will be granted
+          &quot;AllPermission&quot;. Any signed applet signed using the same
+          certificate will be trusted automatically within the same browser
+          session.<br>
+        <li><em>Deny</em>: If selected, the applet will be granted the
+          applicable permissions from the security policy of the Java runtime.
+          By default, the permissions granted would be those for untrusted
+          applets.<br>
+        <li><em>More Info</em>: If selected, users can examine the attributes of
+          each certificate in the certificate chain in the JAR file.</li>
+      </ol>
+      <p>Once the user selects the options from the security dialog, the applet
+      will be run in the corresponding security context. Please notice that all
+      these decisions are determined on the fly, and no preconfiguration is
+      required.</p>
+      <H3><BR>Common Problems</H3>
+      <UL>
+        <LI>If the JAR file is not signed properly, or if the RSA certificate
+          has expired, or if the RSA certificate is a self-generated self-signed
+          certificate, Java Plug-in may fail silently and will not pop up the
+          security dialog. The applet will be treated as unsigned.<br>
+        <LI>The Netscape Signing Tool very picky about JAR file format. In
+          Netscape Signing Tool, it expects the MANIFEST file to be at the end
+          of the JAR file, whereas Jarsigner puts it at the beginning. The
+          standard does not mandate where the MANIFEST should be in the JAR
+          file. Therefore, if you
+          create a JAR file using Jar tool, the Netscape Signing Tool may
+          complain about &quot;Invalid Jar File Format&quot;. On the other hand,
+          Jarsigner is not picky; it can verify JAR files regardless of whether
+          their MANIFEST is at the beginning or at the end. To workaround this
+          problem when using Netscape Signing Tool, you should generate the JAR file and sign it through the
+          tool itself.<br>
+        <LI>Java Plug-in 1.2.2 supports signed applets signed using Netscape
+          Signing Tool 1.2. However, Java Plug-in 1.2.2 fails to authenticate
+          any signed JAR files generated by Netscape Signing Tool 1.3, due to
+          changes in the signature block file of those JAR files. Note that
+          interoperability with Netscape Signing Tool 1.3 has been restored in
+          Java Plug-in 1.3, which also interoperates with Netscape Signing Tool
+          1.2.<br>
+      </UL>
+      <TABLE border=0 width=452>
+        <TBODY>
+        <TR>
+          <TD align=right vAlign=top>
+            <P></P></TD></TR></TBODY></TABLE></TD></TR>
+  <TR>
+    <TD vAlign=top width=157></TD>
+    <TD vAlign=top width=452></TD></TR></TBODY></TABLE><!-- Footer table --><!-------------------------------><!--  SERVER SIDE INCLUDE FOR  --><!--  FOOTER AT BOTTOM OF PAGE --><!-------------------------------><!-- Begin Footer Segment --><BR 
+clear=all>
+<TABLE border=0 cellPadding=0 cellSpacing=5 width="100%">
+  <TBODY>
+  <TR>
+    <TD vAlign=top>
+      <P align=center><FONT color=#999999 size=-1>[ This page was updated: 
+      02-Dec-99 ]</FONT></P></TD></TR>
+  <TR>
+    <TD bgColor=#cccccc><SPACER TYPE="BLOCK" HEIGHT="1" WIDTH="1"></TD></TR>
+  <TR>
+    <TD>
+      <CENTER><FONT size=-1><A 
+      href="https://east.sun.net/http://javaweb.eng/products/">Products &amp; 
+      APIs</A> | <A 
+      href="https://east.sun.net/http://javaweb.eng/jdc/">Developer 
+      Connection</A> | <A 
+      href="https://east.sun.net/http://javaweb.eng/infodocs/">Docs &amp; 
+      Training</A> | <A 
+      href="https://east.sun.net/http://javaweb.eng/support/">Support</A><BR><A 
+      href="https://east.sun.net/http://javaweb.eng/community/">Community 
+      Discussion</A> | <A 
+      href="https://east.sun.net/http://javaweb.eng/industry/">Industry News</A> 
+      | <A href="https://east.sun.net/http://javaweb.eng/solutions/">Solutions 
+      Marketplace</A> | <A 
+      href="https://east.sun.net/http://javaweb.eng/casestudies/">Case 
+      Studies</A> </FONT></CENTER></TD></TR>
+  <TR>
+    <TD bgColor=#cccccc><SPACER TYPE="BLOCK" HEIGHT="1" WIDTH="1"></TD></TR>
+  <TR>
+    <TD align=middle><FONT size=-2><A 
+      href="https://east.sun.net/http://javaweb.eng/docs/glossary.html">Glossary</A> 
+      - <A href="https://east.sun.net/http://javaweb.eng/applets/">Applets</A> - 
+      <A 
+      href="https://east.sun.net/http://javaweb.eng/docs/books/tutorial/">Tutorial</A> 
+      - <A href="https://east.sun.net/http://javaweb.eng/jobs/">Employment</A> - 
+      <A href="https://east.sun.net/http://javaweb.eng/nav/business/">Business 
+      &amp; Licensing</A> - <A 
+      href="https://east.sun.net/http://javaweb.eng/javastore/">Java Store</A> - 
+      <A href="https://east.sun.net/http://javaweb.eng/casestudies/">Java in the 
+      Real World</A> </FONT></TD></TR>
+  <TR>
+    <TD>
+      <CENTER><FONT size=-2><A 
+      href="https://east.sun.net/http://javaweb.eng/cgi-bin/feedback.pl">Feedback</A> 
+      | <A 
+      href="http://www.dynamicdiagrams.net/mapa/cgi-bin/help.tcl?db=javasoft&amp;dest=http://java.sun.com/?db=javasoft&amp;dest=http://java.sun.com/">Map</A> 
+      | <A href="https://east.sun.net/http://javaweb.eng/a-z/index.html">A-Z 
+      Index</A> </FONT></CENTER>
+      <P></P></TD></TR>
+  <TR>
+    <TD>
+      <TABLE border=0 cellPadding=0 cellSpacing=0 width="100%">
+        <TBODY>
+        <TR>
+          <TD width="50%"><FONT size=-2>For more information on Java 
+            technology<BR>and other software from Sun Microsystems, 
+            call:<BR></FONT><FONT size=-1>(800) 786-7638<BR></FONT><FONT 
+            size=-2>Outside the U.S. and Canada, dial your country's <A 
+            href="http://www.att.com/business_traveler/attdirecttollfree/">AT&amp;T&nbsp;Direct&nbsp;Access&nbsp;Number</A> 
+            first.<BR></FONT></TD>
+          <TD align=right width="50%"><A href="http://www.sun.com/"><IMG 
+            alt="Sun Microsystems, Inc." border=0 height=30 
+            src="rsa_signing_files/lgsun.gif" width=64></A><BR><FONT 
+            size=-2>Copyright ?995-2000 <A href="http://www.sun.com/">Sun 
+            Microsystems, Inc.</A><BR>All Rights Reserved. <A 
+            href="http://www.sun.com/share/text/termsofuse.html">Terms of 
+            Use</A>. <A 
+            href="http://www.sun.com/privacy">Privacy&nbsp;Policy</A>. 
+        </FONT></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE><!-- End Footer Segment --></BODY></HTML>

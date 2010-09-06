@@ -1,0 +1,273 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Java Plug-in Multi-versioning Proposal</title>
+</head>
+
+<body>
+
+<h1 align="center">Java Plug-in Multi-versioning Proposal</h1>
+<h3 align="center"><i>By <a href="mailto:stanley.ho@eng.sun.com">Stanley Man-Kit
+Ho</a></i></h3>
+<hr>
+<h3 align="left">Background</h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Java Plug-in enables enterprise
+customers to run their applets using latest Sun's Java Runtime Environment (JRE),
+instead of the web browser's default virtual machine. It provides a consistent
+Java environment across&nbsp; various platforms and browsers. As customers began
+to deploy more and more applets on their Intranet through Java Plug-in, they
+encountered various problems:</p>
+<ol>
+  <li>They would like to install multiple versions of Java Plug-in on the same
+    machine to run their applets. Upgrading all the applets to the latest Java
+    Plug-in release is usually not possible because of resources involved and
+    project schedule.<br>
+  </li>
+  <li>Sun provides patch releases of Java Plug-in and JRE periodically, so
+    customers will be able to get the latest bug fixes, especially for Y2K and
+    security bugs. Customers would like to upgrade Java Plug-in and the JRE to
+    the patch releases automatically through the Java Plug-in installation
+    mechanism.</li>
+</ol>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The Java Plug-in team envisioned
+that customers would usually upgrade to the latest Java Plug-in releases to
+leverage the latest Java features, so Java Plug-in was never designed to coexist
+with different versions of Java Plug-in in the same machine. Thus, in reality,
+when customers would like to have multiple versions of Java Plug-in installed to
+support their applets, this becomes a huge problems to both the customers and
+the Java Plug-in team.&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The reasons why Java Plug-in
+cannot coexist with other versions are summarized as follows:</p>
+<ol>
+  <li>The same CLSID is used for multiple versions of Java Plug-in for Internet
+    Explorer.<br>
+  </li>
+  <li>The same set of MIME types and DLLs (NPJava*.dll) are used for multiple
+    versions of Java Plug-in for Netscape Navigator in the same Navigator's
+    plug-in directory. These DLLs are overwritten when a different version of
+    Java Plug-in is installed.<br>
+  </li>
+  <li>The same registry keys are used for multiple minor versions of Java
+    Plug-in. For example, 1.1.7, 1.1.8 and 1.1.8-0001 are shared the same set of
+    registry keys. This makes them impossible to coexist.<br>
+  </li>
+  <li>The same registry keys and property files are used for storing Java
+    Plug-in Control Panel settings in multiple versions of Java Plug-in.<br>
+  </li>
+  <li>For Java Plug-in 1.1.x and 1.2.x, the same icon &quot;Java Plug-in Control
+    Panel&quot; are installed in the Start menu.&nbsp;<br>
+  </li>
+  <li>For Java Plug-in 1.3.x, the Java Plug-in Control Panel DLLs are installed
+    the WINNT/System32 directory.<br>
+  </li>
+  <li>The same CAB file and pluginspage are used in the EMBED/OBJECT tag for
+    minor versions of Java Plug-in.&nbsp;&nbsp;<br>
+  </li>
+</ol>
+<h3>Solution</h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Basically, the root of the
+multi-versioning problem in Java Plug-in was caused by conflicts in registry
+keys, files, resources, etc. Therefore, the solution is basically
+to provide unique registry keys, files, resources in every new/patch release of
+Java Plug-in:</p>
+<ol>
+  <li>Unique CLSID for every new/patch version of Java Plug-in. Customers who
+    want to use one particular version of Java Plug-in , they will specify this
+    unique CLSID in the OBJECT tag, so the proper version of Java Plug-in will
+    be used. It will be stored in&nbsp;<br>
+    <br>
+    HKEY_CLASSES_ROOT\<i>&lt;clsid&gt;<br>
+    <br>
+    </i>The CLSID is also stored in&nbsp;<br>
+    <br>
+    HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Code Store Database\Distribution
+    Units\<i>&lt;clsid&gt;<br>
+    <br>
+    </i>This registry key is used for Internet Explorer exclusively to determine
+    whether the proper version of Java Plug-in has been installed.<br>
+  </li>
+  <li>Unique MIME type and NP*.DLL for every new/patch version of Java Plug-in.
+    Customers who want to use one particular version of Java Plug-in, they will
+    specify this unique MIME type in the EMBED tag, so the proper version of
+    Java Plug-in will be used. Also, this MIME type will be supported in a
+    NP*.DLL with an unique name for every new/patch version. Therefore,
+    installing different version of Java Plug-in will not overwrite this unique
+    NP*.DLL in the Navigator's plugins directory. The MIME type should follow
+    the convention:<br>
+    <br>
+    For applet, the MIME type should be&nbsp;<br>
+    <br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; application/x-java-applet;jpi-version=<i>&lt;version
+    number&gt;</i>,<br>
+    <br>
+    where the <i>&lt;version number&gt;</i> will include the major, minor and
+    the patch version number. e.g. 1.1.3-0001<br>
+    <br>
+    This MIME type is supported in the file<br>
+    <br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NPJava<i>&lt;modified version
+    number&gt;</i>.DLL<br>
+    <br>
+    e.g. for Java Plug-in 1.1.3-0001, the unique MIME type should be <i>
+    &quot;application/x-java-applet;jpi-version=1.1.3-0001&quot;</i>, and it is
+    supported in the file <i> &quot;NPJava113_0001.DLL&quot;</i> in the Navigator's
+    plugins directory.<br>
+  </li>
+  <li>Unique Java Plug-in registry key for every new/patch version of Java
+    Plug-in. The main Java Plug-in registry key will be<br>
+    <br>
+    HKEY_LOCAL_MACHINE\Software\JavaSoft\Java Plug-in\<i>&lt;version number&gt;</i><br>
+    <br>
+    where the <i>&lt;version number&gt;</i> will include the major, minor and
+    the patch version number. e.g. 1.1.3-0001<br>
+  </li>
+  <li>Unique Java Plug-in Control Panel registry key and property file for every
+    new/patch version of Java Plug-in. The main Java Plug-in Control Panel
+    registry key will be<br>
+    <br>
+    HKEY_CURRENT_USER\Software\JavaSoft\Java Plug-in\<i>&lt;version number&gt;</i><br>
+    <br>
+    where the <i>&lt;version number&gt;</i> will include the major, minor and
+    the patch version number. e.g. 1.1.3-0001<br>
+    <br>
+    The property file will continue to be in <i>&lt;user.dir&gt;\.java.</i>
+    However, the filename will be unique in every new/patch release as follows:<br>
+    <br>
+    <i>&lt;user.dir&gt;</i>\.java\properties_<i>&lt;version number&gt;<br>
+    <br>
+    </i>where the <i>&lt;version number&gt;</i> will include the major, minor
+    and the patch version number. e.g. <i>C:\WINNT\System32\Profiles\stanleyh\.java\properties_113_0001<br>
+    <br>
+    </i>Since Java Plug-in 1.3, a new file <i>plugin.trace</i> is created
+    automatically in <i>&lt;user.dir&gt;</i> when Java Console is enabled. Its
+    purpose is to capture the same messages that are displayed in Java Console
+    into a single file. In order to avoid conflict, this file needs to be unique
+    in every new/patch release as follows:<br>
+    <i><br>
+    &lt;user.dir&gt;</i>\.plugin<i>&lt;modified version number&gt;</i>.trace<i><br>
+    <br>
+    </i>
+    where the <i>&lt;modified version number&gt;</i> will include the major, minor and
+    the patch version number. e.g. plugin113_0001.trace<br>
+  </li>
+  <li>Unique Java Plug-in Control Panel icon in Start Menu for Java Plug-in
+    1.1.x and 1.2.x. When Java Plug-in is installed, it will install an icon
+    with an unique name:<br>
+    <br>
+    Java Plug-in Control Panel <i> &lt;version number&gt;</i><br>
+    <br>
+    where the <i>&lt;version number&gt;</i> will include the major, minor and
+    the patch version number. e.g. &quot;Java Plug-in Control Panel
+    1.1.3-0001&quot;<br>
+  </li>
+  <li>Unique Java Plug-in Control Panel in Windows Control Panel for Java
+    Plug-in 1.3.x. When Java Plug-in 1.3.x is installed, two DLLs (plugincpl.cpl,
+    etc) will be installed in C:\Windows\System32 directory. By providing a
+    unique file names to the Java Plug-in Control Panel DLLs in every new/patch
+    release, users will be able to launch the Control Panel that comes with a
+    particular version of Java Plug-in. The filename for the DLL will be<br>
+    <br>
+    plugincpl_<i>&lt;modified version number&gt;</i>.cpl<br>
+    <br>
+    where the <i>&lt;modified version number&gt;</i> will include the major, minor and
+    the patch version number. e.g. plugincpl_113_0001.cpl<br>
+  </li>
+  <li>
+    Unique CAB file and pluginspage URL for every new/patch version of Java Plug-in. As mentioned in #1 and #2 above, and new CLSID and MIME type will be provided for every new/patch version of Java Plug-in. Therefore, it also requires a new CAB/pluginspage URL for these releases as well. Moreover, the information specified in<br>
+    <br>
+
+HKEY_LOCAL_MACHINE\Software\Microsoft\Code Store Database\Distribution Units\<i>&lt;clsid&gt;</i>\DownloadInformation&nbsp;<br>
+    HKEY_LOCAL_MACHINE\Software\Microsoft\Code Store Database\Distribution Units\<i>&lt;clsid&gt;</i>\InstalledVersion<i>
+
+<br>
+<br>
+
+</i>will need to reflect these unique CAB URLs. 
+
+For example, 
+
+<pre><font color="#0000FF">&lt;OBJECT classid=clsid:EEEEE840-044E-11D1-B3E9-00805F499D93 
+        codeBase=http://java.sun.com/products/plugin/1.1.3-0001/jinstall-113-0001-win32.cab#Version=1,1,3,1 
+        height=300 width=300&gt;
+&lt;PARAM name=code value=&quot;XYZApp.class&quot;&gt;
+&lt;PARAM name=type value=&quot;application/x-java-applet;jpi-version=1.1.3-0001&quot;&gt;
+&lt;EMBED type=&quot;application/x-java-applet;jpi-version=1.1.3-0001&quot; code=XYZApp.class
+       width=300 height=300 
+       pluginspage=&quot;http://java.sun.com/products/plugin/1.1.3-0001/plugin-install.html&quot;&gt;
+&lt;/OBJECT&gt;</font></pre>
+  <p>The CLSID for 1.1.3-0001 is EEEEE840-044E-11D1-B3E9-00805F499D93, and the
+  MIME type is &quot;application/x-java-applet;jpi-version=1.1.3-0001&quot;. The
+  CAB and the pluginspage URL point to unique locations that provide 1.1.3-0001
+  for download. Notice that the version number for the CAB file should include
+  the major, minor and the patch number of the release. For example, for
+  1.1.3-0001, the CAB version should be 1,1,3,1.</p>
+  </li>
+  <li><p>Unique registry keys for every new/patch release JRE/JDK. Currently,
+    installating multiple versions of Java Plug-in will&nbsp; overwrite the JRE/JDK
+    registry keys because of the way JRE/JDK was written. Therefore, even if
+    Java Plug-in no longer overstep other versions, the JRE/JDK that Java
+    Plug-in bundles with will still overstep each other. It is important to
+    provide unique JRE/JDK registry keys as follows:<br>
+    <br>
+    HKEY_LOCAL_MACHINE\Software\JavaSoft\Java Runtime Environment\<i>&lt;version
+    number&gt;</i><br>
+    HKEY_LOCAL_MACHINE\Software\JavaSoft\Java Development Kit\<i>&lt;version
+    number&gt;</i><br>
+    <br>
+    where the <i>&lt;version number&gt;</i> will include the major, minor and
+    the patch version number. e.g. 1.1.3-0001<br>
+    <br>
+    The purpose of these keys are for Java Plug-in to locate the proper version
+    of JRE/JDK. Also, users will be able to select these JRE/JDK from the Java
+    Plug-in Control Panel.</p>
+  </li>
+  <li><p>Collision detection will be supported in every new/patch version of
+    Java Plug-in. Basically, multiple versions of the Java Plug-in cannot be run
+    in the same browser sessions. Therefore, it is extremely important to warn
+    the users if it happens and then fails. The collision detection works as
+    follows: when Internet Explorer or Netscape Navigator loads up Java Plug-in,
+    it will create a global mutex with a name that contains the browser process
+    ID. When another applet is loaded through a different version of Java
+    Plug-in, Java Plug-in will check for this mutex to determine if another
+    version of Java Plug-in has been loaded into the same browser process. If
+    so, it will popup a warning dialog and fail to load the applet. Otherwise,
+    there is no other version of Java Plug-in running, and the applet loads.</p>
+  </li>
+</ol>
+<h3>Outstanding issues</h3>
+
+<ol>
+  <li>This scheme should work with Win32. How about other platforms like
+    Solaris? Do we expect customers to need multiple versions of Java Plug-in
+    coexist on these platforms?<br>
+  </li>
+  <li>This scheme allows even multiple patch releases of Java Plug-in to coexist
+    on the same machine. e.g. 1.1.3-0001 and 1.1.3-0005 will coexist on the same
+    machine. Is it really necessary? If not, we may be able to make the solution
+    easier than the one in this proposal.<br>
+  </li>
+  <li>The patch release number for Win32, Solaris or other platforms may not be
+    in sync. Therefore, customers may need 0001 patch for Win32, while they may
+    need 0008 for Solaris. In this case, JavaScript should be used to emit the
+    proper EMBED/OBJECT tag, depending on the platform.<br>
+  </li>
+  <li>This scheme will work if and only if the unique CLSID, MIME type, etc are
+    used in HTML. If the old CLSID and MIME type are used, we will still run
+    into the same old problem. <br>
+  </li>
+  <li>When Jump comes out this summer, it will allow users to install JRE/JDK
+    randomly on the machine, and this will break Java Plug-in because of this
+    multi-versioning problem. This is extremely important to get a solution in
+    place and put them in the next patch release for 1.1.x, 1.2.x and 1.3.x.
+    Also, it is also desirable to obsolete any previous patch versions that
+    don't have this solution. </li>
+</ol>
+<hr>
+
+</body>
+
+</html>

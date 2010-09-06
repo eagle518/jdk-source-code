@@ -1,0 +1,44 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: JavaWebStart - Win32 Release MinDependency--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP119.tmp" with contents
+[
+/nologo /MT /W3 /O1 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "_ATL_STATIC_REGISTRY" /D "_ATL_MIN_CRT" /Fp"ReleaseMinDependency/JavaWebStart.pch" /Yu"stdafx.h" /Fo"ReleaseMinDependency/" /Fd"ReleaseMinDependency/" /FD /c 
+"U:\jtg\jaws1.2-new\src\win32\activex\isInstalled.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP119.tmp" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP11A.tmp" with contents
+[
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"ReleaseMinDependency/JavaWebStart.pdb" /machine:I386 /def:".\JavaWebStart.def" /out:"ReleaseMinDependency/JavaWebStart.dll" /implib:"ReleaseMinDependency/JavaWebStart.lib" 
+".\ReleaseMinDependency\isInstalled.obj"
+".\ReleaseMinDependency\JavaWebStart.obj"
+".\ReleaseMinDependency\StdAfx.obj"
+".\ReleaseMinDependency\JavaWebStart.res"
+]
+Creating command line "link.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP11A.tmp"
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP11B.bat" with contents
+[
+@echo off
+regsvr32 /s /c ".\ReleaseMinDependency\JavaWebStart.dll"
+echo regsvr32 exec. time > ".\ReleaseMinDependency\regsvr32.trg"
+]
+Creating command line "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP11B.bat"
+Compiling...
+isInstalled.cpp
+Linking...
+   Creating library ReleaseMinDependency/JavaWebStart.lib and object ReleaseMinDependency/JavaWebStart.exp
+<h3>Output Window</h3>
+Performing registration
+
+
+
+<h3>Results</h3>
+JavaWebStart.dll - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

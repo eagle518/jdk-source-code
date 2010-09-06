@@ -1,0 +1,311 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Java Plug</title>
+</head>
+
+<body>
+
+<h1 align="center"><b>Java Plug-In Jar Cache Specification</b></h1>
+<h2><b><u>Introduction</u></b></h2>
+<p>From 1.4 release, Java Plug-In by default caches all the jar files downloaded
+by using HTTP and HTTPS protocols. Earlier releases of Java Plug-In provided an
+option to use the browsers cache and/or Java Plug-In jar cache. Disadvantage of
+using browser cache is that we do not know when the jar file is removed from the
+browser cache. Also, it is not possible for the user to configure to their own
+requirements. So, we have decided not to rely on browser cache any more. This
+implementation will be backward compatible with earlier releases of Java
+Plug-In.</p>
+<p>By default jar files are downloaded from the server when they are needed by
+the applet. Although this approach improves the applet startup time, there are
+few issues we need to consider</p>
+<ul style="MARGIN-TOP: 0in" type="disc">
+  <li class="MsoNormal" style="mso-list: l0 level1 lfo3; tab-stops: list .5in; punctuation-wrap: hanging"><span style="FONT-SIZE: 12pt; mso-bidi-font-size: 10.0pt">Users
+    do not mind if the application takes a long time to download at startup than
+    in the middle of some operation.<O:P>
+    </O:P>
+    </span>
+  <li class="MsoNormal" style="mso-list: l0 level1 lfo3; tab-stops: list .5in; punctuation-wrap: hanging"><span style="FONT-SIZE: 12pt; mso-bidi-font-size: 10.0pt">Plug-In
+    cannot display any kind of meaningful progress to the user </span><span style="FONT-SIZE: 12pt; mso-bidi-font-size: 10.0pt">without
+    knowing ahead of time about the JAR files required to start an applet,.<span style="mso-spacerun: yes">
+    </span>It is useful to have a progress bar, which goes from 0% to 100% one
+    time only and accurately reflects how long the user has to wait before the
+    applet starts.<O:P>
+    </span></li>
+</ul>
+<p>In order to address the problem mentioned in the above paragraph, we have
+introduced a new HTML parameter which allows user to specify jarfiles which are
+to be pre-loaded.<br>
+</p>
+<h2><u>HTML parameters</u></h2>
+<p>Java Plug-In does not require any special parameters in HTML tags in order to
+use Java Plug-In jar cache. Whenever a jar file is required to run an applet,
+Java Plug-in checks whether that file exists in the cache. If exists, before
+using the cached file,&nbsp; Plug-in verifies whether the file is upto-date.
+This is accomplished by obtaining the header information from the host. For
+performance reasons some users do not like to make connection every time they
+run their applets. Java Plug-In resolves this issue by using HTML parameters <i>cache_archive</i>
+and <i>cache_version</i>. Similar to HTML parameter <i>archive</i>, user can
+specify jar files in HTML parameter <i>cache_archive</i>. For each of the jar
+file specified in cache_archive, user can specify the version in the format <i>x.x.x.x</i>,
+where x is an hexa-digit number ranging from 0000-FFFF. When a version is
+specified for a jar file, plug-in checks whether the version for the cached jar
+file is equal to or greater than the version specified in the HTML page. If yes,
+it uses the cached jar file. Otherwise, it downloads the jar file. As explained,
+extra connection to verify the jar file is avoided.</p>
+<p><span style="FONT-SIZE: 12pt; mso-bidi-font-size: 10.0pt">In order to allow
+pre-loading of jar files, we have introduced a new HTML parameter called <i>cache_archive_ex</i>,
+this parameter allows one to specify whether the jar file needs to be
+pre-loaded, optionally the version of the jar file can also be specified.The
+value of <i>cache_archive_ex</i> has the following format<br>
+<i>cache_archive_ex</i> = "&lt;jar file
+name&gt;;&lt;preload(optional)&gt;;&lt;jar file version(optional)&gt;,&lt;jar
+file name&gt;;&lt;preload(optional)&gt;;&lt;jar file version(optional)&gt;,....<br>
+The optional tags like preload or the jar file version can appear after the jar
+file name in any order seperated by the delimiter ';'.</span></p>
+<p>Following HTML tag describes the various parameters,<br>
+<tt>&lt;OBJECT ....</tt> &gt;<br>
+<font face="Courier New" size="2">&lt;PARAM NAME="archive</font><font face="Courier New" size="3">"</font><font face="Courier New" size="2">
+VALUE="a.jar"&gt;<br>
+</font><font color="#0000ff"><tt>&lt;PARAM NAME="cache_archive"
+VALUE="b.jar, c.jar, d.jar"&gt;<br>
+&lt;PARAM NAME="cache_version" VALUE="0.0.0.1, 0.0.A.B,
+0.A.B.C"&gt;<br>
+&lt;PARAM NAME="cache_archive_ex" VALUE="applet.jar;preload,
+util.jar;preload;0.9.0.abc, tools.jar;0.9.8.7"&gt;<br>
+</tt></font><tt>&lt;/OBJECT&gt;</tt></p>
+<p><tt>In the above example, a.jar is specified in archive, whereas b.jar, c.jar
+and d.jar are specified in cache_archive. The versions are also specified for
+b.jar, c.jar, and d.jar as 0.0.0.1, 0.0.A.B, and 0.A.B.C respectively. In
+cache_archive_ex, applet.jar is specified to be pre-loaded. util.jar is also
+specified to be pre-loaded but along with the version. Whereas for tools.jar,
+only version is specified.</tt></p>
+<p><tt>Java Plug-In doesn't compare the versions if they are not specified for
+all the jar files specified in HTML parameter <i>cache_archive</i>. If <i>cache_archive</i>
+is used without <i>cache_version</i>, the jar files specified in <i>cache_archive</i>
+is treated no differently than the jar files specified in HTML parameter <i>archive</i>.
+Similar treatment goes to the jar files specified in <i>cache_archive_ex</i>
+without preload or version options.</tt></p>
+<p><tt>Class files and resources will be searched in the following order from
+the jar files specified by the HTML parameters<br>
+1. cache_archive_ex<br>
+2. cache_archive<br>
+3. archive</tt></p>
+<h2><u>Configuring jar cache</u></h2>
+<p>By default the location of cache is dependent on environment variables and OS
+platforms. <br>
+If USER_JPI_PROFILE is set, the location will be<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<i>$(USER_JPI_PROFILE)\.jpi_cache\jar\1.0 </i>on both Windows and Unix platforms<br>
+If USER_JPI_PROFILE is not set, cache location depends on the OS platform and is
+as follows<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<i>$(USER_PROFILE)\.jpi_cache\jar\1.0</i> on windows NT and Windows 2000<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<i>$(Windows System Directory)\.jpi_cache\jar\1.0</i> on Windows 95 and 98<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<i>$(HOME/.jpi_cache/jar/1.0</i> on Unix platforms</p>
+<p>Cache tab in the Java Plug-In control panel allows users to configure the jar
+cache to their requirements. Cache tab of control panel is as shown below</p>
+<p align="center"><IMG id=IMG1 height=339 src="images/cpanel.jpg" width=443 border=0 ></p>
+<p>Control panel allows you to do the following</p>
+<ul>
+  <li><i>Enable/Disable jar caching</i><br>
+    This can be done by checking/unchecking the <i>Enable Jar Caching</i> check box 
+  <li><i>View the cache contents</i><br>
+    If you click on the button <i>View JAR Cache</i>, Jar Cache Viewer is launched. See notes on Jar Cache Viewer to use 
+  it. 
+  <li><i>Clear the cache contents</i><br>
+    You can click on the button <i>Clear JAR Cache</i> to clear the cache
+    entirely. Before deleting the contents&nbsp; you will be prompted with a
+    warning dialog box as shown below.<br>
+    <p align="center"><IMG id=IMG3 height=143 src="images/clrdlg.jpg" width=546 border=0 ></p>
+  <li><i>Specify a location for the cache</i><br>
+    You can either type in the directory into the <i>Location</i> text field or use the file chooser dialog 
+  to select the appropriate directory. 
+  <li><i>Specify size for cache</i><br>
+    You can either select unlimited or a specific size. If you 
+  select some size, Java Plug-In periodically removes the unused and less 
+  frequently used jar files from the cache 
+  <li><i>Select compression level</i><br>
+    This allows you to specify whether the jar file in cache should be stored
+    with some level of compression(Levels None-High corresponds to 0-9).</li>
+</ul>
+<p>&nbsp;</p>
+<h2><span style="FONT-FAMILY: 'Times New Roman'"><u>Jar Cache Viewer</u></span></h2>
+<p class="MsoNormal"><span style="FONT-SIZE: 12pt; mso-bidi-font-size: 10.0pt">Jar
+Cache Viewer allows user to view and delete the jar files in Java Plug-In jar
+cache. It can be launched either by selecting the button <i>View Jar Cache</i>
+in the cache tab of Java Plug-In control panel or as a separate application by
+using the command<br>
+</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<i><span style="FONT-SIZE: 12pt; mso-bidi-font-size: 10.0pt">java </span><span style="FONT-SIZE: 12pt; mso-bidi-font-size: 10.0pt">?
+&lt;location of jaws.jar&gt; sun.plugin.cache.JarCacheViewer</span></i><span style="FONT-SIZE:
+ 12pt; mso-bidi-font-size: 10.0pt"><o:p>
+</O:P>
+</span></p>
+<p class="MsoNormal"><span style="FONT-SIZE: 12pt; mso-bidi-font-size: 10.0pt">Snapshot
+of a jar cache viewer is as shown below.<o:p>
+</O:P>
+</span></p>
+<p align="center"><IMG alt="" src="images\viewer.jpg" 
+></p>
+<p class="MsoNormal"><span style="FONT-SIZE: 12pt; mso-bidi-font-size: 10.0pt">&nbsp;Following
+attributes are shown for each of the jar file</span></p>
+<ul style="MARGIN-TOP: 0in" type="disc">
+  <li class="MsoNormal" style="mso-list: l1 level1 lfo1; tab-stops: list .5in" 
+ ><span style="FONT-SIZE: 12pt; mso-bidi-font-size: 10.0pt" 
+ ><b>Name</b><span style="mso-spacerun: yes">&nbsp;
+    </span>- name given to the cached jar file</span>
+  <li class="MsoNormal" style="mso-list: l1 level1 lfo1; tab-stops: list .5in" 
+ ><span style="FONT-SIZE: 12pt; mso-bidi-font-size: 10.0pt" 
+ ><b>Size</b><span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;
+    </span>- cached jar file size in KB<o:p>
+    </O:P>
+    </span>
+  <li class="MsoNormal" style="mso-list: l1 level1 lfo1; tab-stops: list .5in" 
+ ><span style="FONT-SIZE: 12pt; mso-bidi-font-size: 10.0pt" 
+ ><b>Expiry
+    Date</b> ?ar file expiry date in <i>mm/dd/yy hh:mm</i><span style="mso-spacerun: yes">
+    <i>a</i> format obtained from HTTP/HTTPS header</span><o:p>
+    </O:P>
+    </span>
+  <li class="MsoNormal" style="mso-list: l1 level1 lfo1; tab-stops: list .5in" 
+ ><span style="FONT-SIZE: 12pt; mso-bidi-font-size: 10.0pt" 
+ ><b>Last
+    Modified</b> ?hen the jar file was modified last in <i>mm/dd/yy hh:mm</i><span style="FONT-SIZE: 12pt; mso-bidi-font-size: 10.0pt"><i>
+    a</i></span><span style="mso-spacerun: yes">&nbsp; format obtained from
+    HTTP/HTTPS header</span><o:p>
+    </O:P>
+    </span>
+  <li class="MsoNormal" style="mso-list: l1 level1 lfo1; tab-stops: list .5in" 
+ ><span style="FONT-SIZE: 12pt; mso-bidi-font-size: 10.0pt" 
+ ><b>Version</b>
+    ?f the jar file and its version was specified using <i>cache_archive</i>
+    </span><span style="FONT-SIZE:
+ 12pt; mso-bidi-font-size: 10.0pt" 
+ >and <i>cache_version</i> HTML parameters
+    respectively.<br>
+    If the version was not specified, ?A?s displayed in the version
+    column.</span>
+  <li class="MsoNormal" style="mso-list: l0 level1 lfo3; tab-stops: list .5in" 
+ ><span style="FONT-SIZE: 12pt; mso-bidi-font-size: 10.0pt" 
+ ><b>URL</b>
+    ?rom where the jar file was downloaded</span></li>
+</ul>
+<p><br>
+Viewer has three buttons at the bottom, their name and functions are as follows</p>
+<UL>
+  <LI>
+  <DIV class=MsoNormal><b>Refresh</b>&nbsp; - to view the 
+  latest jar files in the plug-in jar cache</DIV>
+  <LI>
+  <DIV class=MsoNormal><B>Delete</B> - to remove one or more selected jar 
+  files</DIV>
+  <LI>
+  <DIV class=MsoNormal><b>Close</b>&nbsp;&nbsp;&nbsp;&nbsp; 
+  - to close the viewer.</DIV></LI></UL>
+<p class="MsoNormal"><br>
+If you try to delete any jar file which is being used by some other processes,
+following dialog box is shown</p>
+<p class="MsoNormal" align="center"><IMG height=137 src="images/inusedlg.jpg" width=542 border=0></p>
+<p class="MsoNormal">&nbsp;</p>
+<h2><u>Update Logic</u></h2>
+<p>Jar files in the cache will be updated based on the following attributes</p>
+<ul>
+  <li><b>Expiration date</b> - obtained 
+  from the HTTP/HTTPS header 
+  <li><b>Last modify date</b> - obtained 
+  from the HTTP/HTTPS header 
+  <li><b>Version</b> - specified in <i>cache_version</i> HTML parameter</li>
+</ul>
+<p>Assuming an applet requires a jar file from a remote server. Java Plug-In
+before making a connection to fetch the jar file, it checks whether the jar file
+is available in the cache. The logic followed by Java Plug-in is as follows.</p>
+<ol>
+  <li>If the required connection is HTTP or HTTPS goto step 
+  2, else download and use it. 
+  <li>If the required jar file is in the jar cache, goto 
+  step 3, else goto step 6. 
+  <li>If the version is specified in the HTML page, goto 
+  step 4, else goto step 5 
+  <li>If the version of cached jar file is greater than or 
+  equal to the specified version, go to step 7, else goto step 6. 
+  <li>Make a connection to get the HTTP/HTTPS headers. 
+  Compare the Last modified date and Expiration date of the cached jar file with 
+  the corresponding values obtained from the headers. If the cached jar file is 
+  upto-date, go to step 7, else goto step 6. 
+  <li>Download the jar file and update the cache, go to step 
+  7. 
+  <li>Use the cached jar file</li>
+</ol>
+<p>If a cached jar file is not upto-date, it is marked as unusable and the
+latest jar file is downloaded into a new file. Java Plug-in periodically removes
+the unused files.</p>
+<p>&nbsp;</p>
+<h2><u>  Jar cache contents</u></h2>
+<P>                Downloaded&nbsp;.jar 
+file is stored in the cache as a .zip file. In order to manage 
+the jar cache, Java Plug-In generates an index file with an extension .idx for each of 
+the cached jar file.&nbsp;Therefore we have files with the extensions .idx and .zip for each&nbsp;jar file. 
+In order to improve the performance, signed jar files are verified only 
+when they are downloaded into the cache. This is made 
+possible by&nbsp;storing the authentication information in&nbsp;an&nbsp;index file for signed jar files.</P>
+<P>                 
+              
+                
+                
+            
+          
+ The content of an index file has the following format</P>
+<UL>
+  <LI>
+  <DIV>Jar Cache Implementation Version ( 1 byte) </DIV>
+  <LI>URL (UTF-String) 
+  <LI>Last modify date (long) 
+  <LI>Expiration date (long) 
+  <LI>File type (int) 
+  <LI>Jar file version (UTF-String) 
+  <LI>Authentication information</LI></UL>
+<p>First byte of an index file is marked 0 until the file
+is completely downloaded. When&nbsp;it is completely downloaded it is set to the value of Jar
+Cache Implementation version. The Jar Cache Implementation Version is greater than
+16 and usually its value changes with any modifications to the&nbsp;index file format.&nbsp;&nbsp;Its
+first byte is set to 1 as soon as the cached jar file becomes unusable.</p>
+<h2><br>
+<u>Jar Cache cleanup</u></h2>
+<p>If a size limit is specified in the control panel, before adding a new jar
+file into the cache, Java Plug-in will try to remove the least recently
+used jar files in the cache until the cache size is within the
+user specified limit. Unusable jar files are deleted before deleting any usable jar files. Jar
+Cache Viewer allows the user to selectively&nbsp;delete the cached jar files. An option is available
+on&nbsp;the cache tab of the control panel to delete all the jar files.</p>
+<p>&nbsp;</p>
+<hr style="LEFT: 10px; TOP: 5036px">
+<h4><u>Revision History</u><br>
+</h4>
+<table border="1" width="100%">
+  <tr>
+    <td width="33%"><b>Revision</b></td>
+    <td width="33%"><b>Modification date</b></td>
+    <td width="34%"><b>Author(s)</b></td>
+  </tr>
+  <tr>
+    <td width="33%">0.2, revised the text, added pre-load HTML parameter
+      explanation</td>
+    <td width="33%">07/30/2001</td>
+    <td width="34%">Devananda J.(jdeva@eng.sun.com)</td>
+  </tr>
+  <tr>
+    <td width="33%">0.1(Initial Draft)</td>
+    <td width="33%">06/15/2001</td>
+    <td width="34%">Devananda J.(jdeva@eng.sun.com)</td>
+  </tr>
+</table>
+
+</body>
+
+</html>

@@ -1,0 +1,49 @@
+#
+# @(#)converter.jmk	1.9 03/12/19
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# @(#)converter.jmk	1.9 12/19/03
+#
+# Java source files for the HTML converter
+#
+
+CONVERTER_java = \
+			$(TARGDIR)HTMLConverter.java \
+			$(TARGDIR)sun/plugin/converter/engine/AppletPieces.java \
+			$(TARGDIR)sun/plugin/converter/engine/ConvertFile.java \
+			$(TARGDIR)sun/plugin/converter/engine/ConvertSet.java \
+			$(TARGDIR)sun/plugin/converter/engine/DefaultSet.java \
+			$(TARGDIR)sun/plugin/converter/engine/ConverterProgressEvent.java \
+			$(TARGDIR)sun/plugin/converter/engine/Converter.java \
+			$(TARGDIR)sun/plugin/converter/engine/ConverterProgressListener.java \
+			$(TARGDIR)sun/plugin/converter/engine/PluginConverter.java \
+			$(TARGDIR)sun/plugin/converter/gui/ConverterGUI.java \
+			$(TARGDIR)sun/plugin/converter/gui/ProgressGUI.java \
+			$(TARGDIR)sun/plugin/converter/ResourceHandler.java \
+			$(TARGDIR)sun/plugin/converter/util/AdvancedDialog.java \
+			$(TARGDIR)sun/plugin/converter/util/BasicPrinter.java \
+			$(TARGDIR)sun/plugin/converter/util/FlexFilter.java \
+			$(TARGDIR)sun/plugin/converter/util/HelpDialog.java \
+			$(TARGDIR)sun/plugin/converter/util/NotDirectoryException.java \
+			$(TARGDIR)sun/plugin/converter/util/PrintManyPlaces.java \
+			$(TARGDIR)sun/plugin/converter/util/NotFileException.java \
+			$(TARGDIR)sun/plugin/converter/util/StdUtils.java \
+			$(TARGDIR)sun/plugin/converter/util/CommandLine.java \
+			$(TARGDIR)sun/plugin/converter/util/CommandLineException.java \
+			$(TARGDIR)sun/plugin/converter/util/FileAccessException.java \
+			$(TARGDIR)sun/plugin/converter/resources/ConverterHelpTemplates.java
+
+RESOURCE_BUNDLES =	$(TARGDIR)sun/plugin/converter/resources/Converter.java \
+			$(TARGDIR)sun/plugin/converter/resources/ConverterHelp.java 
+
+LOCALE_SUFFIXES = 	$(PLUGIN_LOCALES)
+
+CONVERTER_java += 	$(RESOURCE_BUNDLES)
+
+CONVERTER_java +=	$(foreach file,$(RESOURCE_BUNDLES),$(foreach locale,$(LOCALE_SUFFIXES),$(basename $(file))_$(locale).java))
+
+FILES_java = 		$(CONVERTER_java)

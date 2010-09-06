@@ -1,0 +1,190 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>OJI Support in Java Plug-in</title>
+</head>
+
+<body>
+
+<h1 align="center"><b>Open JVM Integration (OJI) support in Java Plug-in</b></h1>
+<p align="center">By <a href="mailto:stanley.ho@eng.sun.com">Stanley Man-Kit Ho</a></p>
+<hr>
+<h3>Introduction</h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Open JVM Integration (OJI) is an
+initiative between Sun and Netscape to enable third-party JVM vendors to plug in
+their JRE as the native Java environment in the upcoming Netscape 6 browser. A
+set of OJI APIs are defined by Netscape and are exposed in Netscape 6. Java
+Plug-in will support the full set of OJI APIs, and be bundled with Netscape 6 on
+Win32 and Solaris. This document summaries the features that OJI will enable.
+</p>
+<p>&nbsp;
+</p>
+<h3>OJI Features</h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The basic goal for OJI is to match
+every single feature in the browser native JVM. The following are the features
+enabled by OJI:</p>
+<ul>
+  <li>APPLET / EMBED / OBJECT tag support<br>
+    <br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Users and developers will be able
+    to launch applets using the regular HTML APPLET tag and the Java Plug-in
+    style of EMBED/OBJECT tag. For more information about the Java Plug-in style
+    of EMBED/OBJECT tag, please consult the Java Plug-in HTML Specification.
+    Since the OJI plug-in on Win32 and Solaris will be shipped with Java 2 with
+    Netscape 6, applets in the Internet using the APPLET tag will automatically
+    gain access to the full functionalities of Java 2.<br>
+    <br>
+  </li>
+  <li>Java and JavaScript bi-directional communication (LiveConnect)<br>
+    <br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; HTML authors will be able to
+    access the method of the applets from JavaScript through JavaScript-to-Java
+    communication using LiveConnect. Applet authors will&nbsp; be able to have
+    full access in the browser's document object model from Java through
+    Java-to-JavaScript communication through netscape.javascript.JSObject in
+    LiveConnect as well.<br>
+    <br>
+  </li>
+  <li>RSA signed applet verification through Netscape 6.0 certificate store<br>
+    <br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Java Plug-in has supported RSA
+    signed applet since the Cricket release (J2SE, v1.2.2). However, in Netscape
+    6, Java Plug-in will support RSA signed applet verification through Netscape
+    6 certificate store instead of the Java Plug-in certificate store. This
+    enable both the Netscape 6 browser and Java runtime to share a single
+    certificate store for signed applet verification.<br>
+    <br>
+  </li>
+  <li>Various browser integration<br>
+    <br>
+    -&nbsp; Applet Usability Enhancement<br>
+    <br>
+    &nbsp;&nbsp;&nbsp; To ensure applets are easy to be used and ease the effort
+    of supporting Java Plug-in in Netscape 6, part of the applet usability
+    enhancement that are planned for Merlin will be available in OJI as well. It
+    includes applet progress status support, tracing support, Java Console
+    enhancement, etc. Please consult the Applet Usability Specification for more
+    details.<br>
+    <br>
+    -&nbsp; Enable/Disable Java Console through Netscape 6 browser menu<br>
+    <br>
+    &nbsp;&nbsp;&nbsp; Java Console can be opened and closed directly from the
+    Netscape 6 browser menu.<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<br>
+    -&nbsp; Enable/Disable Java through Netscape 6.0 browser menu<br>
+    <br>
+    &nbsp;&nbsp;&nbsp; Java can be enabled&nbsp; and disabled directly from the
+    Netscape 6 browser menu.<br>
+    <br>
+    -&nbsp; Applet lifecycle<br>
+    <br>
+    &nbsp;&nbsp;&nbsp; Applet lifecycle will behave the same as the browser JVM.
+    In the beginning, the applet will be loaded and started. In any page-switch
+    situation, applets will be stopped, and restarted if the page is resumed.
+    However, the browser may stop and destroy the applet at any time, according
+    to its applet pruning policy. In previous release of Netscape Navigator,
+    applets will be pruned when the number of running applets are more than 10.<br>
+    <br>
+    -&nbsp; Proxy configuration support<br>
+    <br>
+    &nbsp;&nbsp;&nbsp; Unlike previous release of Java Plug-in, proxy
+    configuration information will be directly provided by the browser for a
+    given URL. Therefore, proxy configuration of any connection made by applets
+    in Netscape 6 will be determined by the browser itself instead of Java
+    Plug-in.<br>
+    <br>
+    -&nbsp; Cookie support<br>
+    <br>
+    &nbsp;&nbsp;&nbsp; Cookie will be directly provided by the browser for a
+    given URL. Therefore, cookie of any HTTP/HTTPS request made by applets in
+    Netscape 6 will be determined by the browser itself instead of Java Plug-in<br>
+    <br>
+    -&nbsp; HTTPS support<br>
+    <br>
+    &nbsp;&nbsp;&nbsp; Similar to previous release of Java Plug-in, HTTPS
+    support will be provided by the browser.<br>
+    <br>
+    -&nbsp; Automatic download if JRE not present<br>
+    <br>
+    &nbsp;&nbsp;&nbsp; User installing Netscape 6 may not install the JRE by
+    default. Therefore, it is very important to automatically install the JRE
+    when the user haven't installed the JRE when applet is first used in
+    Netscape 6. This will be achieved through the new SmartUpdate mechanism in
+    Netscape 6.<br>
+ </li>
+</ul>
+<p>&nbsp;</p>
+<h3>Backward Compatibility</h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Since OJI will enable Java 2 to be
+used as the default browser VM to execute applets in the Internet, these applets
+may not work if they use specific browser VM APIs or depends on specific browser
+VM behavior. Although we will ensure backward compatibility between Java 2 and
+Netscape VM as much as possible. However, we will neither guarantee nor commit
+that the compatibility will be 100%. Some applets may work with Java 2
+out-of-the box. Some other applets may work with Java 2 by a simple
+recompilation. However, some other applet developers may find themselves
+spending times to port their applets to Java 2. This is our responsibility (Sun,
+in general) to ensure that customers are aware of this compatibility issues, and
+should not expect 100% backward compatibility between Java 2 and Netscape VM.</p>
+<p>&nbsp;</p>
+<h3>Existing Java Plug-in Features</h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Although OJI will enable all the
+OJI features in Java Plug-in, all the existing functionalities in Java Plug-in
+will still continue to work in Netscape 6. Therefore, customers can not only
+take advantages of the new features available through OJI, but they can also
+leverage the existing Java Plug-in features in Netscape 6 as well.</p>
+<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Conclusion</h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OJI support is a new feature in
+the upcoming Java
+Plug-in release. It will enable Java 2 as the default browser Java runtime on
+Win32 and Solaris, and provide latest Java 2 functionalities to applets in the
+Internet and the Intranet through Netscape 6. Since Netscape 6 will be distributed with Java 2 to millions to users, OJI will enable Java 2
+to compete head-to-head with native JVM in IE and older version of Navigator.&nbsp;</p>
+<hr>
+<p align="center"><i>If there is any comment, please send it to <a href="mailto:stanley.ho@eng.sun.com">stanley.ho@eng.sun.com</a>.</i></p>
+<hr>
+<h3>Revision History<br>
+</h3>
+<table border="1" width="100%" height="144">
+  <tr>
+    <td width="25%" bgcolor="#0000FF" align="center" height="13"><font color="#FFFF00">Revision</font></td>
+    <td width="25%" bgcolor="#0000FF" align="center" height="13"><font color="#FFFF00">Modification
+      Date</font></td>
+    <td width="25%" bgcolor="#0000FF" align="center" height="13"><font color="#FFFF00">Author(s)</font></td>
+  </tr>
+  <tr>
+    <td width="25%" align="center" height="19">First Draft</td>
+    <td width="25%" align="center" height="19">07/05/2000</td>
+    <td width="25%" align="center" height="19">Stanley Ho</td>
+  </tr>
+  <tr>
+    <td width="25%" align="center" height="19">&nbsp;</td>
+    <td width="25%" align="center" height="19">&nbsp;</td>
+    <td width="25%" align="center" height="19">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="25%" align="center" height="19">&nbsp;</td>
+    <td width="25%" align="center" height="19">&nbsp;</td>
+    <td width="25%" align="center" height="19">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="25%" align="center" height="19">&nbsp;</td>
+    <td width="25%" align="center" height="19">&nbsp;</td>
+    <td width="25%" align="center" height="19">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="25%" align="center" height="19">&nbsp;</td>
+    <td width="25%" align="center" height="19">&nbsp;</td>
+    <td width="25%" align="center" height="19">&nbsp;</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+
+</body>
+
+</html>

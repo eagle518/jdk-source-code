@@ -1,0 +1,485 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0069)https://central.sun.net/http://j2se.east/plugin/specs/hopper/4523285/ -->
+<HTML><HEAD><TITLE>Menu Integration with Java Console - Engineering 
+Specification</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1252">
+<META content="Microsoft FrontPage 4.0" name=GENERATOR></HEAD>
+<BODY bgColor=white>
+<H2>Menu Integration with Java Console - Engineering Specification </H2>
+<P>
+<H4>RFE:
+<a target="new" href="http://andorra1.sfbay:8080/cgi-bin/ws.exe/bugtraq/jdk/bug.hts?bugid_value=4523241">
+4523241</a> Menu Integration with Java Console</h4>
+<P>Author: Stanley Ho<br>
+Date: 3/10/2002</H4>
+<P><BR>
+<TABLE cellSpacing=0 cellPadding=3 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD bgColor=wheat>
+      <H3>1 Project Description</H3></TD></TR></TBODY></TABLE>
+<P>
+<H4>1.1 Overview </H4>
+<P>Java Console is an important tool in the Java Plug-in product for monitoring 
+and debugging applets. Prior to Java Plug-in 1.4.1, there are different ways to 
+launch the Java Console - through browser menu, through iconified 
+icon on the desktop, or through Java icon on taskbar on Win32, 
+etc. The Java Console behavior may also be configured through the Java Plug-in 
+Control Panel. The effect of various configuration combination and different 
+ways to access from different browsers has been a 
+confusing subject to the users and even to the engineering team itself. </P>
+<P>There are several goals of this project:</P>
+<ul>
+  <li>Clarify behavior of how Java Console should be accessed from  browsers 
+  on various supported platforms</li>
+  <li>Clarify behavior of Java Console options in Java Plug-in Control Panel</li>
+  <li>Updated Java Console behavior to be consumer friendly, as part of the XP 
+  project</li>
+</ul>
+<H4><br>
+1.2 Project Dependencies </H4>N/A 
+<H4>1.3 OS and Browser Compatibility and Interoperability </H4>
+<P>This feature will be available on all platforms and browsers. 
+<H4>1.4 Performance and Scalability </H4>
+<P>N/A 
+<H4>1.5 Security </H4>
+<P>N/A 
+<H4>1.6 Internationalization (I18N) / Localization (L10N) </H4>
+<P>N/A 
+<H4>1.7 Packaging </H4><!-- Describe any special packaging requirements or installer changes. -->
+<P>N/A 
+<H4>1.8 Usability </H4><!-- Describe any usability enhancements or concerns for target
+     users or audience. -->
+<P>This feature is aimed to improve the usability of the Java Plug-in product.<H4>1.9 Quality </H4>
+<P>All existing tests with Java Console should apply. Additional test cases may 
+be needed for supporting consumer friendly behavior of Java Console in Internet 
+Explorer for Windows XP.<H5>1.9.1 Unit or Functional Tests to be Delivered </H5><!-- Describe any Unit or Functional tests to be delivered by engineering
+     for this project. -->
+<P>N/A 
+<H5>1.9.2 Additional Testing Notes </H5><!-- Describe recommended testing approaches and any special requirements
+     to completely certify and test the project. -->
+<P>N/A<BR><BR>
+<TABLE cellSpacing=0 cellPadding=3 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD bgColor=wheat>
+      <H3>2 Technical Description</H3></TD></TR></TBODY></TABLE>
+<P>
+<H4>2.1 Architecture&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </H4>
+<ul>
+  <li><b>Access Java Console in various browsers<br>
+  <br>
+  </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The main goal is to allow users 
+  to access Java Console in Java Plug-in directly from browser menu if possible. 
+  This has been the user-friendly way for console access in various browser VMs, 
+  including MSVM and NSVM . In some cases, if hooking up browser menu is not 
+  possible, alternative way will be provided for accessing the console.<br>
+&nbsp;<ul>
+    <li>Internet Explorer<br>
+    <br>
+    As part of the XP requirements, accessing Java Console in Internet Explorer 
+    should be tightly integrated with the browser through the browser menu under<i> 
+    &quot;Tools&quot;-&gt;&quot;Sun Java Console&quot;</i>. Supporting this feature will require changes 
+    in the followings:<br>
+&nbsp;<ul>
+      <li>Windows Registry keys<br>
+&nbsp;<table border="1" cellspacing="1" width="72%" id="AutoNumber2">
+        <tr>
+          <td width="100%">
+          <pre>[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Internet Explorer
+\Extensions\{08B0E5C0-4FCB-11CF-AAA5-00401C608501}]
+&quot;MenuText&quot;=&quot;Sun Java Console&quot;
+&quot;CLSID&quot;=&quot;{1FBA04EE-3024-11d2-8F1F-0000F87ABD16}&quot;
+&quot;ClsidExtension&quot;=&quot;{08B0E5C0-4FCB-11CF-AAA5-00401C608501}&quot;</pre>
+          </td>
+        </tr>
+      </table>
+      <p>Registration code in Windows installer and Java Plug-in Control Panel 
+      will be changed to updated the registry keys above, if and only if this 
+      particular version of Java Plug-in is selected as the default VM in IE.<br>
+&nbsp;</li>
+      <li><i>IOleCommandTarget</i> must be supported in Java Plug-in. When the
+      <i>&quot;Sun Java Console&quot;</i> menu is clicked, <i>IOleCommandTarget::Exec</i> 
+      will be executed; Java Plug-in should display the Java Console 
+      accordingly.<br>
+      <br>
+      <br>
+      Notice that <i>&quot;Sun Java Console&quot;</i> is used instead of<i> &quot;Java Console&quot;</i> 
+      as the menu item text. This is done on purpose to avoid name collision of 
+      the Java Console in MSVM and to avoid confusion. Also, <i>&quot;{08B0E5C0-4FCB-11CF-AAA5-00401C608501}&quot;</i>
+        is the CLSID for MSVM Web Browser Applet Control. It is reused here to
+        avoid introducing a new CLSID, so the CLSID namespaces that Java Plug-in
+        creates will be minimal. Also, these set of keys will remain the same
+        for supporting menu integration between different versions of Java
+        Plug-in, so the cost of updating the version information in the code and
+        installer during maintenance will be kept to minimal.<br>
+        &nbsp;</li>
+    </ul>
+    <p>If Java Console is closed by the users, the console is completely hidden. 
+    Users may relaunch the console window only through the browser menu.<br>
+    <br>
+&nbsp;</li>
+    <li>Netscape 6<br>
+    <br>
+    Accessing Java Console in Netscape 6 is integrated with the browser through 
+    the browser menu under &quot;<i>Tools&quot;-&gt;&quot;Java Console&quot;</i>. This feature is 
+    supported through the OJI (Open JVM Integration) interfaces.<br>
+    <br>
+    If Java Console is closed, the console is completely hidden from the users. 
+    Users may relaunch the console window only through the browser menu.<br>
+    <br>
+&nbsp;</li>
+    <li>Netscape 4<br>
+    <br>
+    Unlike Internet Explorer and Netscape 6, Netscape 4 doesn't provide any way 
+    for third party plug-in to integrate menu into the browser. Therefore, 
+    alternative way to access Java Console is provided by Java Plug-in:
+      Iconified Java Console is created on the desktop during JPI startup. Users 
+      may access Java Console by opening the iconified Java Console; if Java 
+      Console is closed, the console window is iconified. <br>
+      <br>
+&nbsp;
+    </li>
+  </ul>
+  </li>
+  <li><b>Java Console options in Java Plug-in Control Panel</b></li>
+</ul>
+<blockquote>
+<P align=left color="#000000">Several options are available for configuring Java
+Console startup behavior:<ul>
+  <li>Show&nbsp; console</li>
+  <li>Hide console</li>
+  <li>Do not start console</li>
+</ul>
+  <p>Notice that these options only affect the behavior of the Java Console 
+  during Java Plug-in startup, and they don't affect the console behavior 
+  afterwards. For example, even if <i>&quot;Do not start&quot;</i> is selected and the 
+  console doesn't start at startup, Java Console will still be started if the 
+  user launches the console manually through the browser menu afterwards.<br>
+  <br>
+  Although trace file is currently hooked with Java Console in the 
+  implementation, trace file should always be created no matter what Java 
+  Console option is selected.<br>
+  <br>
+</p>
+</blockquote>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Several aspects of Java Console 
+behavior are summarized as follows:</p>
+<table border="1" cellspacing="1" width="100%" id="AutoNumber1" cellpadding="2" height="149">
+  <tr>
+    <td width="12%" align="center" bgcolor="#666699" height="29"><font color="#FFFFFF"><b>
+    Browser</b></font></td>
+    <td width="49%" colspan="3" align="center" bgcolor="#666699" height="29">
+    <font color="#FFFFFF"><b>Internet Explorer</b></font></td>
+    <td width="47%" colspan="3" align="center" bgcolor="#666699" height="29">
+    <font color="#FFFFFF"><b>Netscape 6</b></font></td>
+    <td width="39%" colspan="3" align="center" bgcolor="#666699" height="29">
+    <font color="#FFFFFF"><b>Netscape 4</b></font></td>
+  </tr>
+  <tr>
+    <td width="12%" align="center" bgcolor="#F5DEB3" height="30"><b>Option/Action</b></td>
+    <td width="8%" align="center" bgcolor="#F5DEB3" height="30">Startup</td>
+    <td width="10%" align="center" bgcolor="#F5DEB3" height="30">Launch From Menu</td>
+    <td width="9%" align="center" bgcolor="#F5DEB3" height="30">Close Console</td>
+    <td width="9%" align="center" bgcolor="#F5DEB3" height="30">Startup</td>
+    <td width="10%" align="center" bgcolor="#F5DEB3" height="30">Launch From Menu</td>
+    <td width="10%" align="center" bgcolor="#F5DEB3" height="30">Close Console</td>
+    <td width="10%" align="center" bgcolor="#F5DEB3" height="30">Startup</td>
+    <td width="10%" align="center" bgcolor="#F5DEB3" height="30">Launch From Menu</td>
+    <td width="10%" align="center" bgcolor="#F5DEB3" height="30">Close Console</td>
+  </tr>
+  <tr>
+    <td width="12%" align="center" bgcolor="#90EE90" height="30"><b>Start console</b></td>
+    <td width="8%" align="center" height="30">Show</td>
+    <td width="10%" align="center" height="30">Show</td>
+    <td width="9%" align="center" height="30">Hidden</td>
+    <td width="9%" align="center" height="30">Show</td>
+    <td width="10%" align="center" height="30">Show</td>
+    <td width="10%" align="center" height="30">Hidden</td>
+    <td width="10%" align="center" height="30">Show</td>
+    <td width="10%" align="center" height="30">N/A</td>
+    <td width="10%" align="center" height="30">Iconified</td>
+  </tr>
+  <tr>
+    <td width="12%" align="center" bgcolor="#90EE90" height="30"><b>Hide console</b></td>
+    <td width="8%" align="center" height="30">Hidden</td>
+    <td width="10%" align="center" height="30">Show</td>
+    <td width="9%" align="center" height="30">Hidden</td>
+    <td width="9%" align="center" height="30">Hidden</td>
+    <td width="10%" align="center" height="30">Show</td>
+    <td width="10%" align="center" height="30">Hidden</td>
+    <td width="10%" align="center" height="30">Iconified</td>
+    <td width="10%" align="center" height="30">N/A</td>
+    <td width="10%" align="center" height="30">Iconified</td>
+  </tr>
+  <tr>
+    <td width="12%" align="center" bgcolor="#90EE90" height="30"><b>Do not start</b></td>
+    <td width="8%" align="center" height="30">Not started</td>
+    <td width="10%" align="center" height="30">Show</td>
+    <td width="9%" align="center" height="30">Hidden</td>
+    <td width="9%" align="center" height="30">Not started</td>
+    <td width="10%" align="center" height="30">Show</td>
+    <td width="10%" align="center" height="30">Hidden</td>
+    <td width="10%" align="center" height="30">Not started</td>
+    <td width="10%" align="center" height="30">N/A</td>
+    <td width="10%" align="center" height="30">N/A</td>
+  </tr>
+</table>
+<blockquote>
+<ul>
+  <li>Show: Console is shown</li>
+  <li>Hidden: Console is not visible</li>
+  <li>Iconified: Console is iconified</li>
+  <li>Not started: Console is not started</li>
+  <li>N/A: Not applicable</li>
+</ul>
+<p>
+&nbsp;</p>
+</blockquote>
+<H4>2.2 Exported Interfaces/API </H4><!-- List and describe any new or changed exported interfaces
+     or APIs. -->
+<P>N/A 
+<H4>2.3 Imported Interfaces/API </H4><!-- List and describe any new or changed imported interfaces
+     or APIs which are of significance to note. -->
+<P>N/A 
+<H4>2.4 User Interface </H4><!-- Describe the user interface of this project, if any.  Include
+     screen shots or diagrams where helpful. -->
+<P>N/A <BR><BR>
+<TABLE cellSpacing=0 cellPadding=3 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD bgColor=wheat>
+      <H3>3 Marketing</H3></TD></TR></TBODY></TABLE>
+<P>
+<H4>3.1 Justification </H4><!-- Why is this project important to Sun? -->
+<P>N/A 
+<H4>3.2 Customer Request </H4><!-- Which customers are asking for this project? -->
+<p>Yahoo, Pogo, ....</p>
+<H4>3.3 Competitive Analysis </H4><!-- Discuss tradeoffs between this project and relevant 
+     alternatives. Why will the target audience prefer this
+     product over the competition?  The contents of this
+     section may be replaced by a pointer to the appropriate
+     section of the MRD, if it provides the required
+     information. -->
+<P><BR><BR>
+<TABLE cellSpacing=0 cellPadding=3 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD bgColor=wheat>
+      <H3>4 Management and Planning</H3></TD></TR></TBODY></TABLE>
+<P>
+<H4>4.1 Scope/Priority </H4><!-- What is the size of this effort?  Small, Medium, Large.
+     What is the priority?  1, 2, 3. -->
+<P>
+<H4>4.2 Target Release </H4><!-- Which specific release will be tartgeted for this project work. -->
+<P>Hopper/XP Consumer 
+<H4>4.3 Resources </H4>
+<P>
+<H5>4.3.1 Development </H5><!-- Number of developers required, or assigned developers -->
+<P>Stanley Man-Kit Ho<H5>4.3.2 Quality Assurance/Testing </H5><!-- Number of test engineers required to develop tests, or
+     assigned test engineers -->
+<P>
+<H5>4.3.3 Documentation </H5>
+<p>Louis Martin</p><!-- Number of writers required, or assigned writers -->
+<P>
+<H5>4.3.4 Technical Support </H5><!-- Background knowledge required to support this feature. -->
+<P>
+<H5>4.3.4 Special Hardware/Software </H5><!-- List any special hardware/software required to complete
+     this project. -->
+<P>
+<H4>4.4 Schedule </H4><!-- Detailed schedule for project, including engineering work,
+     testing, documentation, integration and release. -->
+<P>
+<CENTER>
+<TABLE cellSpacing=1 cellPadding=0 bgColor=white border=0>
+  <TBODY>
+  <TR>
+    <TD>
+      <TABLE cellSpacing=1 cellPadding=10 bgColor=wheat border=1>
+        <TBODY>
+        <TR align=middle>
+          <TH width=75 bgColor=#666699><FONT color=white>Start Date</FONT></TH>
+          <TH width=75 bgColor=#666699><FONT color=white>End Date</FONT></TH>
+          <TH width=250 bgColor=#666699><FONT color=white>Activity</FONT></TH>
+          <TH width=50 bgColor=#666699><FONT color=white>Owner</FONT></TH>
+          <TH width=50 bgColor=#666699><FONT color=white>Status</FONT></TH></TR>
+        <TR>
+          <TD>3/8/2002</TD>
+          <TD>3/10/2002</TD>
+          <TD>Initial Engineering Spec</TD>
+          <TD>Stanley</TD>
+          <TD bgcolor="#008000"><font color="#FFFFFF">Completed</font></TD></TR>
+        <TR>
+          <TD>3/8/2002</TD>
+          <TD>3/12/2002</TD>
+          <TD>Initial implementation</TD>
+          <TD>Stanley</TD>
+          <TD bgcolor="#008000"><font color="#FFFFFF">Completed</font></TD></TR>
+        <TR>
+          <TD>&nbsp;</TD>
+          <TD>&nbsp;</TD>
+          <TD>&nbsp;</TD>
+          <TD>&nbsp;</TD><!-- Change the foreground/background colors for this cell to reflect
+               the status.  For example...
+
+               <td bgcolor=green align=center><font color=white>04/16/2001</font></td>
+            -->
+          <TD>&nbsp;</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=5 border=0>
+  <TBODY>
+  <TR>
+    <TD width=50 bgColor=green>&nbsp;</TD>
+    <TD width=50 bgColor=lightgreen>&nbsp;</TD>
+    <TD width=50 bgColor=wheat>&nbsp;</TD>
+    <TD width=50 bgColor=yellow>&nbsp;</TD>
+    <TD width=50 bgColor=red>&nbsp;</TD></TR>
+  <TR align=middle>
+    <TD>Complete</TD>
+    <TD>Started</TD>
+    <TD>Not Started</TD>
+    <TD>Difficulties</TD>
+    <TD>Trouble</TD></TR></TBODY></TABLE></CENTER><BR><BR>
+<TABLE cellSpacing=0 cellPadding=3 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD bgColor=wheat>
+      <H3>Appendices (as needed, suggestions below)</H3></TD></TR></TBODY></TABLE>
+<P>
+<H4>A. Background Information </H4>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; There are several problems with 
+the existing Java Console behavior:</p>
+<ul>
+  <li>On Win32, system tray icon is used for launching Java Console by default, but 
+  many users don't want to see the icon at all. </li>
+  <li>In Internet Explorer, Java Plug-in runs within the same process as the 
+  browser. If there are multiple IE processes running JPI, multiple Java icons will 
+  be shown in the system tray. This annoys a lot of users.</li>
+  <li>It is not clear how using various Java Console options in Control Panel 
+  will affect the behavior of Java Console after JPI starts up.<br>
+&nbsp;</li>
+</ul>
+<H4>B. Interface Specifications </H4>
+<P>
+<H4>C. Notes and Additional Details </H4>
+<P>
+<H4>D. Miscellaneous </H4>
+<P>
+<H4>E. Tracking </H4>
+<P>
+<H5>E.1 Final Webrev </H5>
+<P>
+<H5>E.2 Bugtraq </H5><!-- All related Bugtraq RFEs, Bugs, and EOUs.. -->
+<CENTER>
+<TABLE cellSpacing=1 cellPadding=0 bgColor=white border=0>
+  <TBODY>
+  <TR>
+    <TD>
+      <TABLE cellSpacing=1 cellPadding=10 bgColor=wheat border=1 height="91">
+        <TBODY>
+        <TR align=middle>
+          <TH width=50 bgColor=#666699 height="19"><FONT color=white>Bugid</FONT></TH>
+          <TH width=10 bgColor=#666699 height="19"><FONT color=white>P</FONT></TH>
+          <TH width=10 bgColor=#666699 height="19"><FONT color=white>S</FONT></TH>
+          <TH width=25 bgColor=#666699 height="19"><FONT color=white>Subcategory</FONT></TH>
+          <TH width=25 bgColor=#666699 height="19"><FONT color=white>Type</FONT></TH>
+          <TH width=20 bgColor=#666699 height="19"><FONT color=white>Engineer</FONT></TH>
+          <TH width=300 bgColor=#666699 height="19"><FONT 
+color=white>Synopsis</FONT></TH></TR>
+        <TR>
+          <TD height="1">4523241</TD>
+          <TD height="1">4</TD>
+          <TD height="1">3</TD>
+          <TD height="1">plugin</TD>
+          <TD height="1">rfe</TD>
+          <TD height="1">Stanley Ho</TD>
+          <TD height="1">RFE: Menu integration with Java Console</TD></TR>
+        <TR>
+          <TD height="19">4523286</TD>
+          <TD height="19">4</TD>
+          <TD height="19">3</TD>
+          <TD height="19">ocx</TD>
+          <TD height="19">rfe</TD>
+          <TD height="19">Stanley Ho</TD>
+          <TD height="19">RFE: System tray behavior changes for consumer</TD></TR>
+        <tr>
+          <TD height="1">4637994</TD>
+          <TD height="1">4</TD>
+          <TD height="1">5</TD>
+          <TD height="1">misc</TD>
+          <TD height="1">bug</TD>
+          <TD height="1">Rita Fisher</TD>
+          <TD height="1">No starting Java Console disables file trace</TD>
+        </tr>
+        <TR>
+          <TD height="1">4641695</TD>
+          <TD height="1">4</TD>
+          <TD height="1">4</TD>
+          <TD height="1">l10n</TD>
+          <TD height="1">bug</TD>
+          <TD height="1">Stanley Ho</TD>
+          <TD height="1">IE Control Panel options for plugin is not localized.</TD></TR>
+        <TR>
+          <TD height="1">&nbsp;</TD>
+          <TD height="1">&nbsp;</TD>
+          <TD height="1">&nbsp;</TD>
+          <TD height="1">&nbsp;</TD>
+          <TD height="1">&nbsp;</TD>
+          <TD height="1">&nbsp;</TD>
+          <TD height="1">&nbsp;</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></CENTER>
+<P><BR><BR>
+<TABLE cellSpacing=0 cellPadding=3 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD bgColor=wheat>
+      <H3>Revision History</H3></TD></TR></TBODY></TABLE>
+<P>
+<br>
+&nbsp;<CENTER>
+<TABLE cellSpacing=1 cellPadding=0 bgColor=white border=0>
+  <TBODY>
+  <TR>
+    <TD>
+      <TABLE cellSpacing=1 cellPadding=10 bgColor=wheat border=1>
+        <TBODY>
+        <TR align=middle>
+          <TH width=50 bgColor=#666699><FONT color=white>Date</FONT></TH>
+          <TH width=10 bgColor=#666699><FONT color=white>Version</FONT></TH>
+          <TH width=50 bgColor=#666699><FONT color=white>Author</FONT></TH>
+          <TH width=400 bgColor=#666699><FONT 
+        color=white>Description</FONT></TH></TR>
+        <TR>
+          <TD>3/10/2002</TD>
+          <TD>0.1</TD>
+          <TD><a href="mailto:stanley.ho@sun.com">Stanley Man-Kit Ho</a></TD>
+          <TD>Initial Engineering Spec</TD></TR>
+        <tr>
+          <TD>3/11/2002</TD>
+          <TD>0.2</TD>
+          <TD><a href="mailto:stanley.ho@sun.com">Stanley Man-Kit Ho</a></TD>
+          <TD>Clarify Java Console configuration options</TD>
+        </tr>
+        <TR>
+          <TD>3/11/2002</TD>
+          <TD>0.3</TD>
+          <TD><a href="mailto:stanley.ho@sun.com">Stanley Man-Kit Ho</a></TD>
+          <TD>Change Netscape 4 Console behavior on Win32 to iconified in
+            close/hidden state,<br>
+            according to suggestion from Mike Albers.</TD></TR>
+        <TR>
+          <TD>3/12/2002</TD>
+          <TD>0.4</TD>
+          <TD><a href="mailto:stanley.ho@sun.com">Stanley Man-Kit Ho</a></TD>
+          <TD>Updated menu integration extension to use MSVM Web Browser Applet
+            Control <br>
+            CLSID. Clarify problematic icon as system tray icon instead of
+            taskbar icon.</TD></TR>
+        <TR>
+          <TD>&nbsp;</TD>
+          <TD>&nbsp;</TD>
+          <TD>&nbsp;</TD>
+          <TD>&nbsp;</TD></TR>
+        <TR>
+          <TD>&nbsp;</TD>
+          <TD>&nbsp;</TD>
+          <TD>&nbsp;</TD>
+          <TD>&nbsp;</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></CENTER></BODY></HTML>

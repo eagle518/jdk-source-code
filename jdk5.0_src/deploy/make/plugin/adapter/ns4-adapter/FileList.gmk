@@ -1,0 +1,7 @@
+FILES_cpp = StdAfx.cpp \
+	    CNS4Adapter_PluginInstancePeer.cpp \
+	    CNS4Adapter_PluginManager.cpp \
+	    CNS4Adapter_PluginServiceProvider.cpp \
+	    CNS4Adapter_PluginStreamInfo.cpp \
+	    CNS4AdapterPeer.cpp
+

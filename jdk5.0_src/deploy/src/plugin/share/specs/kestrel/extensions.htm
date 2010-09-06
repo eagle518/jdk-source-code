@@ -1,0 +1,438 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0052)http://javaweb.eng/~dochez/proposals/extensions.html -->
+<HTML><HEAD>
+<META content="text/html; charset=iso-8859-1" http-equiv=Content-Type>
+<META content="MSHTML 5.00.2314.1000" name=GENERATOR></HEAD>
+<BODY>
+<HR width="100%">
+
+<CENTER>
+<P><B><FONT size=+3>Support for Installed Extensions in Java Plug-in 
+1.3</FONT></B> 
+<P><FONT size=+1>- Version 0.9 9/27/99 -</FONT> <BR><FONT size=+1>Jerome Dochez 
+(dochez@eng)</FONT></CENTER>
+<P>
+<HR width="100%">
+<BR>&nbsp; <BR>&nbsp; 
+<P>send feedback to dochez@eng 
+<P><B><U><FONT size=+3>Introduction</FONT></U></B> 
+<BLOCKQUOTE>This proposal defines a standard mechanism that Applets running 
+  inside the Java Plug-in should use to define Java Platform extensions which 
+  would be installed on the end user desktop environment. The goals of such a 
+  design are :</BLOCKQUOTE>
+<UL>
+  <UL>
+    <LI>Java Platform Extensions should be installed in the standard local code 
+    source 
+    <BR>&lt;java-home&gt;\lib\ext&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    [win32] 
+    <BR>&lt;java-home&gt;/lib/ext&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    [solaris] 
+    <LI>Bundled extensions should still be supported. 
+    <LI>Java Platform extensions that require native code installation will be 
+    supported 
+    <LI>Provide an "on-demand" upgrade path. When applets require newer 
+    extension versions than the current installed ones, we should provide the 
+    user with the choice of upgrading these extensions. 
+    <LI>Reduce the Java Plug-in specific solutions to a maximum. The mechanisms 
+    described should be useable for Java Applications as well as for Java 
+    Applets. 
+    <LI>Maximize portable code </LI></UL>
+  <P><BR>What we are not planning to do : <BR>&nbsp; 
+  <UL>
+    <LI>Support multiple implementation of an installed extensions. 
+    <LI>Define a new architecture for Java Platform extensions </LI></UL>
+  <P><BR>Reference : 
+  <UL>&nbsp;<A 
+    href="http://java.sun.com/products/jdk/1.2/docs/guide/extensions/index.html">The 
+    Java Extension Framework in Java 2</A> <BR>&nbsp;<A 
+    href="http://java.sun.com/products/plugin/">The Java Plug-in 
+Page</A></UL></UL><B><U><FONT size=+3>1.0 Java Platform Extensions 
+dependency</FONT></U></B> <BR>&nbsp; 
+<BLOCKQUOTE>In Java 2 SDK documentation, the standard way for declaring your 
+  dependency on an extension is through the class-path attribute in the manifest 
+  information of the jar file. For applets or applications relying on installed 
+  extensions, the class-path attribute can be omitted since the system class 
+  loader added the extensions at boot time. For extensions declared in the 
+  class-path (unless the sealed attribute is used), we will use the normal Java 
+  2 Runtime Environment mechanism : if the extensions is installed, use it, if 
+  the extension is not installed, it becomes a bundled extension for this 
+  applet. 
+  <P>We need a better way to declare the Applet or Application dependency on 
+  extensions. First, the current dependency mechanism relies on jar file names. 
+  This is not sufficient since different extensions might share the same jar 
+  file name or different jar files may implement the same&nbsp; extension 
+  specification. Second, the applet has no way of requesting minimal versioning 
+  of the requested extensions. The applet may have very unexpected results when 
+  ran against an older extensions than the one it has been developed and tested 
+  against. Finally, the applet has no way of providing alternate site for 
+  downloading missing extensions. All extensions has to be downloaded from the 
+  same codebase the Applet originated from. 
+  <P>All these short-comings have reduced the ease of using installed standard 
+  extension forcing applet or application providers to rely extensively on 
+  bundled extensions to avoid walking on each other toes.</P></BLOCKQUOTE><B><FONT 
+size=+1>1.1 Extension Manifest Attributes</FONT></B> 
+<BLOCKQUOTE>I propose to add several attributes to the manifest file of 
+  Extensions. These tags would be partly immediately used and others would be 
+  used as hooks for future enhancements of the Java 2 platform 
+  <P><B>Extension-name</B> 
+  <P>The attribute specifies a unique name for an extension used to identify its 
+  specification. This name is usually the main specification package identifier 
+  for the extension. 
+  <P><B>Extension-URL</B> 
+  <P>The attribute specifies the URL to check for an updated version of an 
+  extension. 
+  <P><B>Implementation-Vendor</B> 
+  <P>The Implementation-Vendor optional field should be used for user feedback 
+  only. This field usually contains the legal company name of the provided 
+  software. To avoid name clashing, the Implementation-Id field should really be 
+  used for uniquely identifying the vendor. 
+  <P><B>Implementation-Id</B> 
+  <P>Although there is already an Implementation-Vendor attribute which 
+  specifies the vendor name for an extension implementation, this could still 
+  lead to name clashing (Example: the *Morgan* banks). We could use the prefix 
+  for the implementation package to uniquely identify the implementation vendor. 
+  This name should use the guidelines as defined in the JLS. The 
+  Implementation-Vendor will therefore only be used for user-feedback. 
+  <P><B>Examples :</B> 
+  <P>Here is an example of the standard extension "jhelp.jar" which implements 
+  the standard extension "javax.help" 
+  <P><I>Manifest-Version: 1.0</I> <BR><I>Extension-Name: javax.help</I> 
+  <BR><I>Specification-Version: 1.0</I> <BR><I>Specification-Vendor: Sun 
+  Microsystems. Inc</I> <BR><I>Implementation-Version: 1.0</I> 
+  <BR><I>Implementation-Vendor: Sun Microsystems, Inc</I> 
+  <BR><I>Implementation-Vendor-Id: com.sun</I> 
+  <P>A different vendor implementation manifest file would look like this : 
+  <P><I>Manifest-Version: 1.0</I> <BR><I>Extension-Name: javax.help</I> 
+  <BR><I>Specification-Version: 1.0</I> <BR><I>Specification-Vendor: Sun 
+  Microsystems. Inc</I> <BR><I>Implementation-Version: 1.0.3</I> 
+  <BR><I>Implementation-Vendor: International Business Machine</I> 
+  <BR><I>Implementation-Vendor-Id: com.ibm</I> 
+  <P>There could be a problem with attempting to install multiple jar files 
+  having the same name.&nbsp; To minimize this problem, we should promote a 
+  suitable convention for naming the jar files.&nbsp; One suggestion was to use 
+  the name of the main package in the jar file as the jar file name, but with 
+  the dots changed to underscores to avoid known portability problems.&nbsp; It 
+  would also make sense to append the spec version number to the file 
+  name.&nbsp; E.g.&nbsp; for the Java Sound version 1.0 extension, the <BR>file 
+  could be named javax_sound_1_0.jar.</P></BLOCKQUOTE><B><FONT size=+1>1.2 Bundled 
+Extensions</FONT></B> 
+<BLOCKQUOTE>Bundled Extensions (also referred to as download extensions) 
+  should use the same mechanism as before. This ensure backwards compatibility. 
+  Any applet not using the new proposed tags uses the old class-path manifest 
+  attribute. The Java Plug-in will then consider these extensions dependencies 
+  as bundled extension dependency. For reference, the class-path attribute of 
+  the applet manifest file is used to declare bundled extensions. These 
+  extensions will be downloaded and cached following the same rules as any jar 
+  file dependency declared through the ARCHIVE applet HTML 
+tag.</BLOCKQUOTE><B><FONT size=+1>1.3 Installed Extensions</FONT></B> 
+<BLOCKQUOTE><FONT size=+1>1.3.1 Extension dependency 
+declaration</FONT></BLOCKQUOTE>
+<BLOCKQUOTE>I therefore propose to add attributes to the applet manifest to 
+  declare the Java Platform extensions dependencies it might have. This 
+  attributes should carry the following information :</BLOCKQUOTE>
+<BLOCKQUOTE>
+  <BLOCKQUOTE>- Standard Extension Name <BR>- Standard Extension URL <BR>- 
+    Vendor ID (optional) <BR>- Minimum Specification Version required (optional) 
+    <BR>- Minimum Implementation Version required (optional)</BLOCKQUOTE>The 
+  applet should be able to declare several Java Plaform Extensions dependency 
+  through the Extension-List attribute. The&nbsp; extension download URL should 
+  not be limited to the Applet codebase. All downloadable components will need 
+  to be signed using an DSA or RSA certificate so we ensure that we do not 
+  install rogue extensions on the user's disk. Non signed extensions will be 
+  treated as bundled extensions and loaded through the AppletClassLoader sharing 
+  the applet security attributes.</BLOCKQUOTE>
+<BLOCKQUOTE><B>Example :</B> 
+  <P>This is an example of a manifest file of an applet declaring its dependency 
+  on two installed extensions 
+  <P><I>Manifest-Version: 1.0</I> <BR><I>Extension-List: javahelp java3d</I> 
+  <BR><I>javahelp-Extension-Name: javax.help</I> 
+  <BR><I>javahelp-Specification-Version: 1.0</I> 
+  <BR><I>javahelp-Implementation-Version: 1.0.3</I> 
+  <BR><I>javahelp-Implementation-Vendor-Id: com.sun</I> 
+  <BR><I>javahelp-Implementation-URL: 
+  http://java.sun.com/products/stdext/javahelp.jar</I> 
+  <BR><I>java3d-Extension-Name: javax.3d</I> 
+  <BR><I>java3d-Specification-Version: 1.0</I> 
+  <BR><I>java3d-Implementation-Version: 1.2.1</I> 
+  <BR><I>java3d-Implementation-Vendor-Id: com.sun</I> 
+  <BR><I>java3d-Implementation-URL: 
+  http://java.sun.com/products/stdext/java3d.jar</I> 
+  <P><FONT size=+1>1.3.2 Extension file format</FONT> 
+  <P>Although you always point to a jar file, the content of the specified jar 
+  can be : 
+  <BLOCKQUOTE>
+    <LI>Extension Installation <BR>The extension is a 100 % pure java 
+    application. After downloading the jar file and verified its signature, we 
+    check the manifest file for the <I>main-class</I> key. If the main-class key 
+    is defined, this jar file is considered as being an installation jar file 
+    and therefore we should invoke its main() with the applications security 
+    rights (remember that this jar file has to be signed or it will be 
+    rejected). 
+    <LI>Native Extension Installation <BR>The extension needs a full 
+    installation (probably to install some native libraries and access to the 
+    registry for example). The Java Plug-in will verify its RSA or DSA signature 
+    of the jar file. The jar file will need to have a Manifest attribute called 
+    <I>extension-installation</I> which point to a native installation 
+    application. 
+    <P>The Implementation-URL attribute can actually be in the form 
+    <BR><I>&nbsp;&nbsp;&nbsp; java3d-Implementation-URL: 
+    http://.../stdext/java3d-$(os-name)$.jar</I> <BR>$(os-name)$ would be 
+    replaced at runtime with the system property "os.name". 
+    <P>All native installations would be invoked with one parameter, the value 
+    of the system property "java.ext.dirs".</P></LI></BLOCKQUOTE>
+  <BLOCKQUOTE>
+    <LI>Extension file <BR>If the jar manifest do not define the main-class or 
+    the extension-installation attributes, the jar file will be considered being 
+    the raw extension jar file and it will be copied "As is" to the standard 
+    extension directory.</LI></BLOCKQUOTE><FONT size=+1>1.3.3 Installation 
+  Rules</FONT> 
+  <P>This paragraph is to described to rules the mechanism for installing and 
+  upgrading the extensions using the above mentioned manifest attributes. All 
+  extensions will have to be digitally signed using the RSA or DSA protocol. 
+  Unless the vendor-id is in the user's list of "Always trusted provider", the 
+  Java Plug-in will display security warnings about the software being 
+  downloaded and installed. The user will have to explicitly acknowledge these 
+  warnings. 
+  <P>These are the installation rules the Plug-in or any other tool that want to 
+  install/upgrade installed extensions should follow : 
+  <BLOCKQUOTE>
+    <LI>If an extension with the same Extension-Name does not exist, the new 
+    extension can be safely installed. The installation component should still 
+    check for any possible package name conflicts and should warn the user for 
+    possible damages. This would indicate the extensions did not follow the JLS 
+    guidelines on package naming. 
+    <LI>If an installed extension with the same Extension-Name already exists 
+    then the following case arise : 
+    <UL>
+      <LI>The installed Specification-Version &gt;= applet Specification-Version 
+
+      <UL>
+        <LI>The Implementation-Vendor-Id match 
+        <UL>
+          <LI>The installed Implementation-Version &gt;= applet 
+          Implementation-Version <BR>Nothing to do, the extension is already 
+          installed and ready to use. 
+          <LI>The installed Implementation-Version &lt;applet 
+          Implementation-Version <BR>Prompt to user for an upgrade from the same 
+          vendor.</LI></UL>
+        <LI>The Implementation-Vendor-Id do not match <BR>Prompt the user for an 
+        upgrade/switch to a different vendor</LI></UL>
+      <LI>The installed Specification-Version&nbsp; &lt; applet 
+      Specification-version 
+      <UL>
+        <LI>The Implementation-Vendor match <BR>Prompt the user for an upgrade 
+        from the same Vendor 
+        <LI>The Implementation-Vendor do not match <BR>Prompt the user for an 
+        upgrade to a different Vendor</LI></UL></LI></UL></LI></BLOCKQUOTE>
+  <P><BR>If the Implementation-Vendor is not specified, it is considered as 
+  having the value "any". All installation should happen in the first directory 
+  pointed by the java.ext.dirs property.</P></BLOCKQUOTE><B><U><FONT size=+3>2.0 
+Java 2 platform impact</FONT></U></B> 
+<P><B><FONT size=+1>2.1 JRE changes</FONT></B> 
+<BLOCKQUOTE><FONT size=+1>2.1.1 Extension dependency detection</FONT> 
+  <P><FONT size=-1>I</FONT>n order to implement such features, some Java 2 
+  platform core classes will need to be modified. At this early stage of the 
+  design, I think the core of the changes should happen in sun.misc.URLClassPath 
+  that David Connelly added in JDK 1.2. This class is responsible for managing 
+  the class-path attributes of jar file manifest. See the&nbsp; <A 
+  href="http://java.sun.com/products/jdk/1.2/docs/guide/extensions/index.html">Support 
+  for Extensions and Applications</A> article how the classapth for bundled 
+  extensions is constructed. This URLClassPath class which currently manages 
+  interdependencies of extensions and applets could be extended to check for the 
+  new tags I am proposing and propose the extensions installations as described 
+  earlier. When loading jar files, the URLClassPath checks for dependencies 
+  through the class-path attribute, the new code will also checks for the new 
+  tags for extensions dependencies. 
+  <P>The class sun.misc.ExtensionDependency is responsible for implementing the 
+  algorithm described in the paragraph 1.3.4. Upon detection that an required 
+  extension needs to installed or upgraded, the ExtensionDependency will rely on 
+  the registered callback interface which is responsible for providing download 
+  and installation of the extension following the rules described in 1.3.3. 
+  <P>This is the protocol defined in sun.misc.InstallationDependency to register 
+  and unregister ExtensionInstallationProvider. If several 
+  ExtensionInstallationProvider are registered, they will be invoked one after 
+  the other until the installExtension API return true or the 
+  ExtensionInstallationException is thrown. 
+  <P>&nbsp;&nbsp;&nbsp; /* <BR>&nbsp;&nbsp;&nbsp;&nbsp; * Add an 
+  ExtensionInstallationProvider to delegate all missing extensions 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp; * installations to <BR>&nbsp;&nbsp;&nbsp;&nbsp; * 
+  / <BR>&nbsp;&nbsp;&nbsp; public static void 
+  addExtensionInstallationProvider(ExtensionInstallationProvider eip); 
+  <P>&nbsp;&nbsp;&nbsp; /* <BR>&nbsp;&nbsp;&nbsp;&nbsp; * Remove an 
+  ExtensionInstallationProvider <BR>&nbsp;&nbsp;&nbsp;&nbsp; */ 
+  <BR>&nbsp;&nbsp;&nbsp; public static void 
+  removeExtensionInstallationProvider(ExtensionInstallationProvider eip); 
+  <P>&nbsp;&nbsp;&nbsp; /* <BR>&nbsp;&nbsp;&nbsp;&nbsp; * @return the list of 
+  currently registered ExtensionInstallationProvider implementation 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp; */ <BR>&nbsp;&nbsp;&nbsp; public 
+  ExtensionInstallationProvider[] getExtensionInstallationProviders(); 
+  <P>The Plug-in or any other application should register the CallBack interface 
+  to the ExtensionDependency at boot time to enable the extension dependancy 
+  mechanism. 
+  <P>&nbsp;&nbsp;&nbsp; public interface ExtensionInstallationProvider { 
+  <P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * 
+  &lt;p&gt; 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * 
+  Request the installation of an extension in the extension directory 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * 
+  &lt;/p&gt; 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * 
+  @param requestedExtensionInfo information on the extension that need 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * 
+  to be installed 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * 
+  @param installedExtensionInfo information on the current compatible 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * 
+  installed extension. Can be null if no current installation has been found. 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * 
+  @return true if the extension was successfully installed or false if the 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * 
+  provider could not install the desired extension 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * 
+  @throw ExtensionInstallationException. An installation was attempted 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * 
+  but failed, no more installation should be attempted 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  */ <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  public boolean installExtension(ExtensionInfo requestedExtensionInfo, 
+  ExtensionInfo installedExtensionInfo) 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  throw ExtensionInstallationException 
+  <P>&nbsp;&nbsp;&nbsp; } 
+  <P>The ExtensionInfo class contains all the information identifying a 
+  particular extension. 
+  <P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /** 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * 
+  This class holds all necessary information to install or 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * 
+  upgrade a extension on the user's disk 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  */ <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  public class ExtensionInfo { 
+  <P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  public String title; 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  public String name; 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  public String specVersion; 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  public String specVendor; 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  public String implementationVersion; 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  public String vendor; 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  public String vendorId; 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  public String url; 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+  public String[] jarFiles; 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } 
+  <BR>&nbsp; 
+  <P>We will also move all the extension code from sun.misc to a more 
+  descriptive package like sun.extension. The list of classes to be moved is 
+  <BR>&nbsp;&nbsp;&nbsp; sun.misc.Launcher <BR>&nbsp;&nbsp;&nbsp; 
+  sun.misc.URLClassPath 
+  <P>and the new classes <BR>&nbsp;&nbsp;&nbsp; sun.misc.ExtensionDependency 
+  <BR>&nbsp;&nbsp;&nbsp; sun.misc.ExtensionInstallationProvider 
+  <BR>&nbsp;&nbsp;&nbsp; sun.misc.ExtensionInfo <BR>&nbsp;&nbsp;&nbsp; 
+  sun.misc.ExtensionInstallationException 
+  <P><FONT size=+1>2.1.2 Extension Installation Notification</FONT> 
+  <P>Some service providers may be interested to be notified when new extensions 
+  have been successfully installed in the running Java VM. In order to receive 
+  notification they should register the following listener interface 
+  <P>package sun.misc; <BR>public interface ExtensionInstallationListener { 
+  <P>&nbsp;&nbsp;&nbsp; /* <BR>&nbsp;&nbsp;&nbsp;&nbsp; * Invoked when an 
+  extension has been sucessfully installed <BR>&nbsp;&nbsp;&nbsp;&nbsp; */ 
+  <BR>&nbsp;&nbsp;&nbsp; public void 
+  installationNotification(ExtensionInstallationEvent e); <BR>} 
+  <P>package sun.misc; <BR>public class ExtensionInstallationEvent extends 
+  java.util.EventObject { <BR>&nbsp;&nbsp;&nbsp; /* <BR>&nbsp;&nbsp;&nbsp;&nbsp; 
+  * Construct a new event with the information about the installed extension 
+  <BR>&nbsp;&nbsp;&nbsp;&nbsp; */ <BR>&nbsp;&nbsp;&nbsp; public 
+  ExtensionInstallationEvent(ExtensionInfo ei); 
+  <P>&nbsp;&nbsp;&nbsp; /* <BR>&nbsp;&nbsp;&nbsp;&nbsp; * @return the 
+  information about the installed extension <BR>&nbsp;&nbsp;&nbsp;&nbsp; */ 
+  <BR>&nbsp;&nbsp;&nbsp; public ExtensionInfo getInstalledExtensionInfo(); <BR>} 
+
+  <P>This listener interface will be registered on sun.misc.ExtensionDependency 
+  class through : 
+  <P>/* <BR>&nbsp;* Register a new ExtensionInstallationListener interface 
+  <BR>&nbsp;*/ <BR>public void 
+  addExtensionInstallationListener(ExtensionInstallationListener eil); 
+  <P>/* <BR>&nbsp;* Unregister a previously registered 
+  ExtensionInstallationListener interface <BR>&nbsp;*/ <BR>public void 
+  removeExtensionInstallationListener(ExtensionInstallationListener eil); 
+  <P><FONT size=+1>2.1.3 ClassLoader changes</FONT> 
+  <P>In order to provide a seemless experience to the user, the newly installed 
+  extension should be visible to the client code without requiring to restart 
+  the Java RunTime. In order to do so, a few modification have to be made to the 
+  sun.misc.Launcher classes which manage the class-loaders for applications and 
+  installed extensions. The main change is to move the class definition 
+  sun.misc.ExtClassLoader (responsible for loading extensions) from private to 
+  package restricted and add a package restricted method to add newly installed 
+  jar files to the list of installed extensions. 
+  <P><FONT size=+1>2.1.3 RSA signature</FONT> 
+  <P>We should also modify the RSA security provider we provide with the Java 
+  Plug-in (1.2.1) to make it an extension. That way, users could install the RSA 
+  security provider as described in the <A 
+  href="http://java.sun.com/products/jdk/1.2/docs/guide/security/HowToImplAProvider.html">Java 
+  2 Platform Security documentation</A>&nbsp; to check and validate jar files 
+  when running as an application rather than just an applet inside the Java 
+  Plug-in. We would be adding a second default security provider beside the 
+  sun.security.provider.Sun. I would advocate we make this second security 
+  provider ON by default in the java.security file that ships with the jdk by 
+  adding the following : 
+  <BLOCKQUOTE><I>&nbsp;</I><TT>security.provider.2=sun.security.jsafe.Provider</TT></BLOCKQUOTE><B>Issue:</B> 
+  The current RSA provider relies on the availability of a Browser to actually 
+  do the signature verification. If Internet Explorer are not installed on the 
+  client machine, we would need to fail gracefully warning the user with a 
+  precise error message.</BLOCKQUOTE><B><FONT size=+1>2.2 Plugin 
+changes</FONT></B> 
+<BLOCKQUOTE>The plugin will provide an implementation of the 
+  sun.misc.ExtensionInstallationProvider. These implementation will be 
+  registered at initialization time to enable installation of dependent 
+  extensions. 
+  <BLOCKQUOTE><FONT size=+1>2.2.1 User Feedback</FONT> 
+    <P>During the download of extensions, we need to provide simple feedback to 
+    the user to notify on the progress of the download and installation of the 
+    requested extensions. The feedback should appear in the a temporary top 
+    dialog. 
+    <P><FONT size=+1>2.2.2 Support Tools</FONT> 
+    <P>A number of tools will need to be added or modified to help the user 
+    deploying its applets with&nbsp; extensions within the Java 2 Runtime 
+    Environment and the Java Plug-in.</P></BLOCKQUOTE>
+  <UL>
+    <UL>
+      <LI>Installed Extension View <BR>This little Swing application would list 
+      all installed Java Platform extensions and provide information on the 
+      version and implementation provider of specific extensions. It could also 
+      propose to deinstall some extensions or upgrade to newer versions if they 
+      exist. We could also implement a Win32 shell extension to provide a 
+      friendly display of installed extensions from the Windows Explorer. 
+      <LI>Java Plug-in Control Panel <BR>The Java Plug-in Control Panel should 
+      embed the Extension View in a new Panel called "Extension" 
+      <LI>Applet manifest tool <BR>Manifest files are not so easy and accessible 
+      to users as they should be, we could potentially develop a small tool to 
+      help creating the manifest attributes I described in the previous 
+      paragraphs.</LI></UL></UL></BLOCKQUOTE><B><U><FONT size=+3>3.0 Java 2 platform 
+dependency</FONT></U></B> 
+<BLOCKQUOTE>In order to have this proposal working, the Java Plug-in team 
+  needs several improvements to the Java 2 platform.</BLOCKQUOTE><B><FONT 
+size=+1>3.1 Multiple implementation of a specification (optional)</FONT></B> 
+<BLOCKQUOTE>If applet A requires standard extensions javax.help implementation 
+  from com.sun Implementor-Id and Applet B requires javax.help implementation 
+  from com.ibm Implementor-Id, the current behaviour of currently undefined. 
+  <P>Issue: Should we use the ClassLoader delegation model to load extensions in 
+  separate trusted class loader to avoid implementation and version collision ? 
+  <BR>&nbsp;</P></BLOCKQUOTE><B><FONT size=+1>3.2 Intelligent extension directory 
+parsing</FONT></B> 
+<BLOCKQUOTE>Right now, all extensions (jar files) present in the lib/ext 
+  directory are blindly added to the extension class loader. I think we should 
+  provide a minimum sanity check when loading these jars to load only the latest 
+  version (if multiple versions are installed) to reduce the risks of version 
+  clashing.</BLOCKQUOTE></BODY></HTML>

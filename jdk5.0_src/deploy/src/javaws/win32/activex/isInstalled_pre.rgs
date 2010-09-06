@@ -1,0 +1,30 @@
+HKCR
+{
+	JavaWebStart.isInstalled._JAVAWS_MAJOR_VER._JAVAWS_MINOR_VER._JAVAWS_MICRO_VER._JAVAWS_CAB_VER = s 'isInstalled Class'
+	{
+		CLSID = s '{5852F5ED-8BF4-11D4-A245-0080C6F74284}'
+	}
+	JavaWebStart.isInstalled = s 'isInstalled Class'
+	{
+		CLSID = s '{5852F5ED-8BF4-11D4-A245-0080C6F74284}'
+		CurVer = s 'JavaWebStart.isInstalled._JAVAWS_MAJOR_VER._JAVAWS_MINOR_VER._JAVAWS_MICRO_VER._JAVAWS_CAB_VER'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {5852F5ED-8BF4-11D4-A245-0080C6F74284} = s 'isInstalled Class'
+		{
+			ProgID = s 'JavaWebStart.isInstalled._JAVAWS_MAJOR_VER._JAVAWS_MINOR_VER._JAVAWS_MICRO_VER._JAVAWS_CAB_VER'
+			VersionIndependentProgID = s 'JavaWebStart.isInstalled'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'MiscStatus' = s '0'
+			{
+			    '1' = s '384'
+			}
+			'TypeLib' = s '{5852F5E0-8BF4-11D4-A245-0080C6F74284}'
+		}
+	}
+}

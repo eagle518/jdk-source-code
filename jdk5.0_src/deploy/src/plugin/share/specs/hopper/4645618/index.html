@@ -1,0 +1,516 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Engineering Specification Template</title>
+</head>
+  <body bgcolor="white">
+    
+<h2>Registration Engineering Specification </h2>
+   
+<p> </p>
+ 
+<h4> RFE:&nbsp; &nbsp;4645618 <!-- Replace BUGID with the RFE bugtraq ID and remove these comments...
+
+   <a target=new href=http://andorra1.sfbay:8080/cgi-bin/ws.exe/bugtraq/jdk/bug.hts?bugid_value=BUGID>BUGID</a>
+
+-->
+   
+<p>Author: &nbsp;Steven Katz<br>
+  Date: 04 March 2002        </p>
+ </h4>
+    
+<p><br>
+    
+<table width="100%" cellspacing="0" cellpadding="3" border="0">
+    <tbody>
+     <tr>
+      <td bgcolor="wheat">       
+      <h3>1  Project Description</h3>
+       </td>
+    </tr>
+     
+  </tbody> 
+</table>
+   </p>
+ 
+<p>  </p>
+ 
+<h4> 1.1 Overview</h4>
+ <!-- Description of the project/problem -->  The steps needed to successfully 
+register the plugin, with the container, have become to complex for direct 
+user execution. &nbsp;While the particular steps for any one container may 
+not be so overwhelming, the growing number of containers and their individual 
+idiosyncrasies make it imperative that we assist the user in some way. &nbsp;A 
+user in this case might be and end user, a developer creating an installation 
+script, or anyone else concerned with plugin registration.<br>
+ <br>
+ As such, we need to insure that, if the user knows certain information about 
+their environment, they should not have to know the details of plugin/container 
+registration.<br>
+ <br>
+ The information a user could be expected to know:<br>
+ <br>
+ The location of the container installation they wish to register with.<br>
+ The location of the JRE they wish to register with.<br>
+ The scheme of registration their container employs, from the plugin point 
+of view.<br>
+ <br>
+ Additionally, once a solution is arrived at and made available, it should 
+be expected to be available for the foreseeable development life of the plugin. 
+&nbsp;In other words, once it is out there, users should be able to depend 
+on it still being there and being consistent for as long as we produce versions 
+of the plugin.<br>
+ 
+<h4> 1.2 Project Dependencies </h4>
+   <!-- Describe any dependencies on other projects -->   
+<h4> 1.3 OS and Browser Compatibility and Interpretability</h4>
+ Netscape 4.X Netscape 6.X on all supported UNIX platforms<br>
+   <!-- Describe any compatibility or interoperability issues.  Is this
+     project a cross platform solution, or does it only affect certain
+     platforms/browsers?  Is this compatible with earlier and future
+     releases? -->
+    
+<p>   </p>
+ 
+<h4> 1.4 Performance and Scalability</h4>
+ Performance should not be a gating factor, since we should expect this to 
+be a one time execution for any given container/plugin combination. &nbsp;Scalability 
+needs to be considered since it is clear that additional containers will need
+to be supported latter down the line. 
+<h4> 1.5 Security</h4>
+ No Factor<br>
+   <!-- Describe any security related issues. -->   
+<p>   </p>
+ 
+<h4> 1.6 Internationalization (I18N) / Localization (L10N) </h4>
+   <!-- Describe any internationalization and/or localization requirements. -->
+   No Factor<br>
+ 
+<h4> 1.7 Packaging</h4>
+ The way the solution is to be delivered should be simple.<br>
+   <!-- Describe any special packaging requirements or installer changes. -->
+    
+<p>   </p>
+ 
+<h4> 1.8 Usability </h4>
+   <!-- Describe any usability enhancements or concerns for target
+     users or audience. -->
+    
+<p>   </p>
+ 
+<h4> 1.9 Quality </h4>
+    
+<p>  </p>
+ 
+<h5> 1.9.1 Unit or Functional Tests to be Delivered </h5>
+   <!-- Describe any Unit or Functional tests to be delivered by engineering
+     for this project. -->
+    
+<p>   </p>
+ 
+<h5> 1.9.2 Additional Testing Notes </h5>
+   <!-- Describe recommended testing approaches and any special requirements
+     to completely certify and test the project. -->
+    
+<p>  <br>
+ <br>
+    
+<table width="100%" cellspacing="0" cellpadding="3" border="0">
+    <tbody>
+     <tr>
+      <td bgcolor="wheat">       
+      <h3>2  Technical Description</h3>
+       </td>
+    </tr>
+     
+  </tbody> 
+</table>
+   </p>
+ 
+<p>   </p>
+ 
+<h4> 2.1 Architecture</h4>
+ Key to this architecture is the assumption that the user has some basic
+knowledge (see overview). &nbsp;It is well within reason to believe that
+the user knows or could figure out where to find the installation location
+of both the container and Java. &nbsp;It is not reasonable to assume however,
+that the user will know anything about how their container expects the plugin
+to register with it. &nbsp;As such, we solve this problem today by providing
+manual steps for the user to follow for their container type. &nbsp;This
+architecture replaces the need for the user to follow the manual steps, with
+an automated system based on the method of container registration. &nbsp;In
+short, a script that does what the user would have done manually, assuming
+they can tell us which set of steps (by a name we provide) they would have
+chosen. &nbsp;This "named" set of steps MUST be document. &nbsp;Perhaps in
+some kind of table, such as:<br>
+ <br>
+ Browser&nbsp;&nbsp;&nbsp; Steps name<br>
+ <br>
+ N4.X&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Name1, Name2<br>
+ etc...<br>
+ <br>
+ <br>
+ Each set of steps should be distinguished in the documentation as to which 
+is preferred, for a given container,&nbsp; should more then one be available.<br>
+ <br>
+ A good candidate for this script is the "ControlPanel". &nbsp;It already 
+exists within the plugin distribution. &nbsp;It lives in a well know place, 
+and what we are talking about here is something that fits into the idea of 
+a ControlPanel naturally.<br>
+ <br>
+ So, we will modify the ControlPanel script to take a set of arguments (see 
+Exported Interfaces) and register the plugin accordingly. &nbsp;Further, should
+arguments be provided the ControlPanel should assume it is being used for
+registration and NOT bring up its UI.     
+<p>   </p>
+ 
+<h4> 2.2 Exported Interfaces/API</h4>
+ ControlPanel [ ( -r scheme | -u scheme ) -c path -j path ]<br>
+ <br>
+ This means that, arguments to the ControlPanel are optional, but must be 
+specified completely if they are to be used at all. &nbsp;Each argument means:<br>
+ <br>
+ -r &nbsp;scheme | -u scheme: register or unregister the plugin, respectively 
+using the supplied scheme. &nbsp;only one switch should be specified and only
+the last one specified will be honored. (for "scheme" values and their meaning
+see below)<br>
+ <br>
+ -c path: specify where the ControlPanel script can find the installation 
+location of the container (as indicated by "path")<br>
+ <br>
+ -j path: specify where the ControlPanel script can find the installation 
+location of Java (as indicated by "path")<br>
+ <br>
+ Clearly, it should be possible for the ControlPanel to figure out the information 
+supplied by the "-j" argument by default since by definition the ControlPanel 
+lives inside the distribution. &nbsp;This is not appropriate however, since 
+the information we are really asking for is: "How does the given container 
+locate the Java installation?" &nbsp;That is, the path a given container might
+use in not necessarily the same path we would deduce from our location.<br>
+ <br>
+ Initially, the following scheme (scheme names) should be supported:<br>
+ <br>
+ ns4: the container uses the Netscape 4.X method of setting the NPX_PLUGIN_PATH 
+variable, the script should return the value that the variable should be set
+to.<br>
+ ns4l: the container uses the Netscape 4.X method that assumes a plugin directory, 
+a link is made from the directory to the plugin.<br>
+ <br>
+ ns600: the container uses the Netscape 6.X method that assumes a plugin
+directory, a link is made from the directory to the plugin<br>
+ <br>
+ ns610: the container uses the Netscape 6.X method that assumes the existence 
+of "regxpcom" which is executed on the plugin<br>
+ ns610l: the container uses the Netscape 6.X method that assumes the existence 
+of a plugins directory, a link is made from the directory to the plugin.<br>
+   <!-- List and describe any new or changed exported interfaces
+     or APIs. -->
+    
+<p>   </p>
+ 
+<h4> 2.3 Imported Interfaces/API </h4>
+   <!-- List and describe any new or changed imported interfaces
+     or APIs which are of significance to note. -->
+    
+<p>   </p>
+ 
+<h4> 2.4 User Interface</h4>
+ 
+<h4></h4>
+ As an example suppose the installation script for Sun verision of Netscape 
+6.2.1 wished to register the plugin. &nbsp;We assume that both the JRE and 
+Netscape have been installed by pkgadd in their default locations, but the 
+actuall installation script would be free to chose some other values for the
+installation locations based on its needs.<br>
+ <br>
+ The command the script would run would look like:<br>
+ <br>
+ /usr/java/bin/ControlPanel -r ns610 -c /opt/SUNWns6 -j /usr/java<br>
+ <!-- Describe the user interface of this project, if any.  Include
+     screen shots or diagrams where helpful. -->
+    
+<p>  <br>
+     
+<table width="100%" cellspacing="0" cellpadding="3" border="0">
+    <tbody>
+     <tr>
+      <td bgcolor="wheat">       
+      <h3>3  Marketing</h3>
+       </td>
+    </tr>
+     
+  </tbody> 
+</table>
+   </p>
+ 
+<p>   </p>
+ 
+<h4> 3.1 Justification </h4>
+   <!-- Why is this project important to Sun? -->   
+<p>   </p>
+ 
+<h4> 3.2 Customer Request </h4>
+   <!-- Which customers are asking for this project? -->   
+<p>   </p>
+ 
+<h4> 3.3 Competitive Analysis </h4>
+   <!-- Discuss tradeoffs between this project and relevant 
+     alternatives. Why will the target audience prefer this
+     product over the competition?  The contents of this
+     section may be replaced by a pointer to the appropriate
+     section of the MRD, if it provides the required
+     information. -->
+    
+<p>  <br>
+ <br>
+    
+<table width="100%" cellspacing="0" cellpadding="3" border="0">
+    <tbody>
+     <tr>
+      <td bgcolor="wheat">       
+      <h3>4  Management and Planning</h3>
+       </td>
+    </tr>
+     
+  </tbody> 
+</table>
+   </p>
+ 
+<p>   </p>
+ 
+<h4> 4.1 Scope/Priority </h4>
+   <!-- What is the size of this effort?  Small, Medium, Large.
+     What is the priority?  1, 2, 3. -->
+    
+<p>   </p>
+ 
+<h4> 4.2 Target Release </h4>
+   <!-- Which specific release will be tartgeted for this project work. -->
+    
+<p>   </p>
+ 
+<h4> 4.3 Resources </h4>
+       
+<p>   </p>
+ 
+<h5> 4.3.1 Development </h5>
+      <!-- Number of developers required, or assigned developers -->    
+ 
+<p>       </p>
+ 
+<h5> 4.3.2 Quality Assurance/Testing </h5>
+       <!-- Number of test engineers required to develop tests, or
+     assigned test engineers -->
+       
+<p>      </p>
+ 
+<h5> 4.3.3 Documentation </h5>
+      <!-- Number of writers required, or assigned writers -->      
+<p>      </p>
+ 
+<h5> 4.3.4 Technical Support </h5>
+   <!-- Background knowledge required to support this feature. -->   
+<p>   </p>
+ 
+<h5> 4.3.4 Special Hardware/Software </h5>
+   <!-- List any special hardware/software required to complete
+     this project. -->
+    
+<p>   </p>
+ 
+<h4> 4.4 Schedule </h4>
+   <!-- Detailed schedule for project, including engineering work,
+     testing, documentation, integration and release. -->
+    
+<p>  </p>
+ 
+<center>   
+<table cellpadding="0" cellspacing="1" bgcolor="white" border="0">
+     <tbody>
+     <tr>
+      <td>              
+      <table cellspacing="1" cellpadding="10" bgcolor="wheat" border="1">
+           <tbody>
+           <tr align="Center">
+            <th bgcolor="#666699" width="75"><font color="white">Start Date</font></th>
+            <th bgcolor="#666699" width="75"><font color="white">End Date</font></th>
+            <th bgcolor="#666699" width="250"><font color="white">Activity</font></th>
+            <th bgcolor="#666699" width="50"><font color="white">Owner</font></th>
+            <th bgcolor="#666699" width="50"><font color="white">Status</font></th>
+          </tr>
+           <tr>
+            <td>&nbsp;04.03.2002</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;Initial draft</td>
+            <td>&nbsp;smk</td>
+             <!-- Change the foreground/background colors for this cell to reflect
+               the status.  For example...
+
+               <td bgcolor=green align=center><font color=white>04/16/2001</font></td>
+            -->
+             <td>&nbsp;started</td>
+          </tr>
+                  
+        </tbody>       
+      </table>
+      </td>
+    </tr>
+      
+  </tbody> 
+</table>
+    
+<table cellspacing="5" border="0">
+     <tbody>
+     <tr>
+      <td bgcolor="green" width="50">&nbsp;</td>
+      <td bgcolor="lightgreen" width="50">&nbsp;</td>
+      <td bgcolor="wheat" width="50">&nbsp;</td>
+      <td bgcolor="yellow" width="50">&nbsp;</td>
+      <td bgcolor="red" width="50">&nbsp;</td>
+    </tr>
+     <tr align="Center">
+      <td>Complete</td>
+      <td>Started</td>
+      <td>Not Started</td>
+      <td>Difficulties</td>
+      <td>Trouble</td>
+    </tr>
+      
+  </tbody> 
+</table>
+   </center>
+   <br>
+ <br>
+     
+<table width="100%" cellspacing="0" cellpadding="3" border="0">
+    <tbody>
+     <tr>
+      <td bgcolor="wheat">       
+      <h3>Appendices (as needed, suggestions below)</h3>
+       </td>
+    </tr>
+     
+  </tbody> 
+</table>
+    
+<p>   </p>
+ 
+<h4> A. Background Information</h4>
+ 
+<h4></h4>
+ Numerous problems lead to the need for this proposal. &nbsp;Chief among
+them where the inability to properly communicate the steps to register the
+plugin to the world as a whole and to groups inside Sun in particular. &nbsp;Additionally, 
+several customers have complained that the registration process should be 
+easier. &nbsp;Once this system is in place the hope is that groups that supply 
+products that wish to use the plugin will find this method more reliable and
+predictable and as such make more of an effort to connect to the plugin during
+their installation process.<br>
+    
+<p>   </p>
+ 
+<h4> B. Interface Specifications </h4>
+    
+<p>   </p>
+ 
+<h4> C. Notes and Additional Details </h4>
+    
+<p>   </p>
+ 
+<h4> D. Miscellaneous </h4>
+    
+<p>   </p>
+ 
+<h4> E. Tracking </h4>
+    
+<p>   </p>
+ 
+<h5> E.1  Final Webrev </h5>
+    
+<p>   </p>
+ 
+<h5> E.2  Bugtraq </h5>
+   <!-- All related Bugtraq RFEs, Bugs, and EOUs.. -->   
+<center>   
+<table cellpadding="0" cellspacing="1" bgcolor="white" border="0">
+     <tbody>
+     <tr>
+      <td>              
+      <table cellspacing="1" cellpadding="10" bgcolor="wheat" border="1">
+           <tbody>
+           <tr align="Center">
+            <th bgcolor="#666699" width="50"><font color="white">Bugid</font></th>
+            <th bgcolor="#666699" width="10"><font color="white">P</font></th>
+            <th bgcolor="#666699" width="10"><font color="white">S</font></th>
+            <th bgcolor="#666699" width="25"><font color="white">Subcategory</font></th>
+            <th bgcolor="#666699" width="25"><font color="white">Type</font></th>
+            <th bgcolor="#666699" width="20"><font color="white">Engineer</font></th>
+            <th bgcolor="#666699" width="300"><font color="white">Synopsis</font></th>
+          </tr>
+           <tr>
+            <td>&nbsp;4645618</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+                  
+        </tbody>       
+      </table>
+      </td>
+    </tr>
+      
+  </tbody> 
+</table>
+   </center>
+    
+<p>  <br>
+ <br>
+    
+<table width="100%" cellspacing="0" cellpadding="3" border="0">
+    <tbody>
+     <tr>
+      <td bgcolor="wheat">       
+      <h3>Revision History</h3>
+       </td>
+    </tr>
+     
+  </tbody> 
+</table>
+   </p>
+ 
+<p>  </p>
+ 
+<center>   
+<table cellpadding="0" cellspacing="1" bgcolor="white" border="0">
+     <tbody>
+     <tr>
+      <td>              
+      <table cellspacing="1" cellpadding="10" bgcolor="wheat" border="1">
+           <tbody>
+           <tr align="Center">
+            <th bgcolor="#666699" width="50"><font color="white">Date</font></th>
+            <th bgcolor="#666699" width="10"><font color="white">Version</font></th>
+            <th bgcolor="#666699" width="50"><font color="white">Author</font></th>
+            <th bgcolor="#666699" width="400"><font color="white">Description</font></th>
+          </tr>
+           <tr>
+            <td>&nbsp;04.03.2002</td>
+            <td>0.1</td>
+            <td>&nbsp;smk</td>
+            <td>&nbsp;Initial draft</td>
+          </tr>
+                  
+        </tbody>       
+      </table>
+      </td>
+    </tr>
+      
+  </tbody> 
+</table>
+   </center>
+    
+</body>
+</html>

@@ -1,0 +1,507 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Gnumake Conversion Specification</title>
+</head>
+  <body bgcolor="white">
+      
+<h2>Gnu make&nbsp;conversion and consolidation Engineering Specification </h2>
+     
+<p> </p>
+   
+<h4> RFE: 4549083 <!-- Replace BUGID with the RFE bugtraq ID and remove these comments...
+
+   <a target=new href=http://andorra1.sfbay:8080/cgi-bin/ws.exe/bugtraq/jdk/bug.hts?bugid_value=BUGID>BUGID</a>
+
+-->
+     
+<p> Author: Steven Katz<br>
+   Date: 13 May 2002        </p>
+  </h4>
+      
+<p><br>
+      
+<table width="100%" cellspacing="0" cellpadding="3" border="0">
+     <tbody>
+      <tr>
+       <td bgcolor="wheat">              
+      <h3>1  Project Description</h3>
+        </td>
+     </tr>
+         
+  </tbody>  
+</table>
+    </p>
+   
+<p>  </p>
+   
+<h4> 1.1 Overview</h4>
+  As of this writing the build system for the Plugin consists of three separate
+ schemes. &nbsp;In no particular order, the general UNIX scheme, the general
+ Windows scheme and the scheme for building the HTML Converter.<br>
+  <br>
+  The general UNIX scheme uses a single Makefile that contains the build
+instructions  for each target and includes additional Makefile that contain
+file information.  &nbsp;The Makefiles in this scheme are written for GNU
+Make.<br>
+  <br>
+  The general Windows scheme uses multiple Makefiles. &nbsp;Each one of which
+ builds a sub directory of the source for the Windows plugin. &nbsp;Recursive
+ calls are made from a top level Makefile to build each of the targets known
+ to the sub Makefiles. &nbsp;The Makefile in this scheme are written for
+nmake.<br>
+  <br>
+  The HTML Converter uses a single Makefile and includes additional Makefiles
+ like the general UNIX scheme. &nbsp;In this scheme however the Makefile
+itself  determines which platform it is building for and acts appropriately.
+&nbsp;The  Makefile in this scheme is written for GNU make.<br>
+  <br>
+  It should be intuitively obvious that having three different schemes for
+ building the Plugin is not a desirable situation. &nbsp;As such it is the
+ intent of this project to reduce this complexity down to a single method
+of organizing the build instructions for different targets. &nbsp;Also this
+project will standardize on a single make system.<br>
+  <!-- Description of the project/problem -->    
+<p>  </p>
+   
+<h4> 1.2 Project Dependencies</h4>
+ <!-- Describe any dependencies on other projects -->    
+<h4> 1.3 OS and Browser Compatibility and Interpretability</h4>
+  The solution offered must work on all OS's for which the plugin has deliverables.<br>
+  <!-- Describe any compatibility or interoperability issues.  Is this
+     project a cross platform solution, or does it only affect certain
+     platforms/browsers?  Is this compatible with earlier and future
+     releases? -->
+      
+<p>   </p>
+   
+<h4> 1.4 Performance and Scalability </h4>
+    <!-- Describe the performance goals and measurements.  Describe any 
+     scalability limits and potential bottlenecks. -->
+     
+<p>   </p>
+   
+<h4> 1.5 Security </h4>
+    <!-- Describe any security related issues. -->    
+<p>   </p>
+   
+<h4> 1.6 Internationalization (I18N) / Localization (L10N) </h4>
+    <!-- Describe any internationalization and/or localization requirements. -->
+      
+<p>   </p>
+   
+<h4> 1.7 Packaging </h4>
+    <!-- Describe any special packaging requirements or installer changes. -->
+      
+<p>   </p>
+   
+<h4> 1.8 Usability </h4>
+    <!-- Describe any usability enhancements or concerns for target
+     users or audience. -->
+      
+<p>   </p>
+   
+<h4> 1.9 Quality </h4>
+      
+<p>  </p>
+   
+<h5> 1.9.1 Unit or Functional Tests to be Delivered </h5>
+    <!-- Describe any Unit or Functional tests to be delivered by engineering
+     for this project. -->
+      
+<p>   </p>
+   
+<h5> 1.9.2 Additional Testing Notes </h5>
+    <!-- Describe recommended testing approaches and any special requirements
+     to completely certify and test the project. -->
+      
+<p>  <br>
+  <br>
+      
+<table width="100%" cellspacing="0" cellpadding="3" border="0">
+     <tbody>
+      <tr>
+       <td bgcolor="wheat">              
+      <h3>2  Technical Description</h3>
+        </td>
+     </tr>
+         
+  </tbody>  
+</table>
+    </p>
+   
+<p>   </p>
+   
+<h4> 2.1 Architecture</h4>
+  It is my opinion that the best course of action we can take is to adopt 
+a scheme that incorporates elements from each of those mentioned above. &nbsp;As
+ such we should:<br>
+  <br>
+  1) Standardize on GNU make.<br>
+  This is the build mechanism used by the rest of Java.<br>
+  <br>
+  2) Use recursive make to build sub-parts of the Plugin.<br>
+  It should be possible to decompose the plugin into it's actual deliverables.
+ &nbsp;Each of these deliverables should have it's own sub directory that
+contains it's own &nbsp;Makefile. &nbsp;Makefiles that live in sub directories
+should be completely self contained. &nbsp;That is, they should not depend
+on inheriting variable values from the Makefile that might call them. &nbsp;The
+JRE provides a set of includable Makefiles that define common values. &nbsp;These
+should be included by each sub directory Makefile. &nbsp;Additionally, Plugin
+specific variable should live in includable Makefiles controlled by the Plugin
+team.<br>
+  <br>
+  Deliverables should be thought of as file system artifacts such as scripts,
+ shared libraries, etc. &nbsp;Deliverables should be grouped together by
+upper  level targets to &nbsp;facilitate building. &nbsp;For example, there
+would be an upper level target that builds the Netscape 4 plugin called ns4.
+&nbsp;This  target would depend on each of the deliverables that would actually
+compose  the complete Netscape 4 plugin, such as the Control Panel, the libjavaplugin.so
+ file, etc. &nbsp;For some deliverables it might make sense to combine them
+ into a single sub directory Makefile. &nbsp;For example, the Control Panel
+ is actually composed of several file system artifacts, but since no other
+ part of the plugin depends on them they need not be separated out. &nbsp;The
+ counter example to this would be something like the java_vm command. &nbsp;It
+ is needed by both the UNIX Netscape 4 and 6 plugins so should be in it's
+own sub directory Makefile.<br>
+  <br>
+  3) Separate out analogous deliverables by including different Makefiles 
+in a single controling Makefile, not by introducing additional sub directory 
+Makefiles. &nbsp;By this, it is meant that if two deliverable perform the 
+same conceptual functions a single Makefile should build both by including 
+different specific Makefiles. &nbsp;For example, both the Windows and UNIX 
+plugins build a shared object that is loaded into Netscape 4. &nbsp;Instead 
+of having two separate sub directories, one that builds the UNIX version and
+one that builds the Windows version. &nbsp;There should be a single sub directory
+Makefile that includes into itself a platform specific Makefile that has
+the proper commands and targets for the given platform. &nbsp;In the long
+run, this will make it easier to combine together source that does essentially
+the same thing but for different platforms. &nbsp;It also means a developer
+will only have to look in one place to figure out the things that are similar
+between the platforms.<br>
+  <br>
+  4) When applicable, the Makefiles will build debug as well as optimized 
+versions of all deliverable. &nbsp;This will be done internal to the Makefile, 
+not as a result of two recursive calls.<br>
+  <br>
+  With this in mind, here is a partial list of targets and deliverables:<br>
+  <br>
+  all: &nbsp;all the deliverables<br>
+  ns4: all the deliverables needed to have a complete plugin for Netscape 
+4<br>
+  ns6: all the deliverables needed to have a complete plugin for Netscape 
+6<br>
+  ie: all the deliverables needed to have a complete plugin for IE<br>
+  <br>
+  libjavaplugin.so: <br>
+  javaplugin.so:<br>
+  np*:<br>
+  controlpanel:<br>
+  htmlconverter:<br>
+  javaplugin.jar:<br>
+  java_vm: <br>
+  <br>
+  The standard house keeping targets (clobber etc.) will be implemented where
+ appropriate by each sub directory Makefile<br>
+  <br>
+  Targets for installation will be handled by both the upper level Makefile
+ and the sub directory Makefiles as needed.<br>
+  <!-- Describe the basic architecture of the project. Enumerate and
+     briefly describe the major components and the basic technical
+     approach chosen for the project. Where relevant, discuss major
+     tradeoffs or rejected approaches. -->
+      
+<p>   </p>
+   
+<h4> 2.2 Exported Interfaces/API </h4>
+    <!-- List and describe any new or changed exported interfaces
+     or APIs. -->
+      
+<p>   </p>
+   
+<h4> 2.3 Imported Interfaces/API </h4>
+    <!-- List and describe any new or changed imported interfaces
+     or APIs which are of significance to note. -->
+      
+<p>   </p>
+   
+<h4> 2.4 User Interface </h4>
+    <!-- Describe the user interface of this project, if any.  Include
+     screen shots or diagrams where helpful. -->
+      
+<p>  <br>
+  <br>
+       
+<table width="100%" cellspacing="0" cellpadding="3" border="0">
+     <tbody>
+      <tr>
+       <td bgcolor="wheat">              
+      <h3>3  Marketing</h3>
+        </td>
+     </tr>
+         
+  </tbody>  
+</table>
+    </p>
+   
+<p>   </p>
+   
+<h4> 3.1 Justification </h4>
+    <!-- Why is this project important to Sun? -->    
+<p>   </p>
+   
+<h4> 3.2 Customer Request </h4>
+    <!-- Which customers are asking for this project? -->    
+<p>   </p>
+   
+<h4> 3.3 Competitive Analysis </h4>
+    <!-- Discuss tradeoffs between this project and relevant 
+     alternatives. Why will the target audience prefer this
+     product over the competition?  The contents of this
+     section may be replaced by a pointer to the appropriate
+     section of the MRD, if it provides the required
+     information. -->
+      
+<p>  <br>
+  <br>
+      
+<table width="100%" cellspacing="0" cellpadding="3" border="0">
+     <tbody>
+      <tr>
+       <td bgcolor="wheat">              
+      <h3>4  Management and Planning</h3>
+        </td>
+     </tr>
+         
+  </tbody>  
+</table>
+    </p>
+   
+<p>   </p>
+   
+<h4> 4.1 Scope/Priority </h4>
+    <!-- What is the size of this effort?  Small, Medium, Large.
+     What is the priority?  1, 2, 3. -->
+      
+<p>   </p>
+   
+<h4> 4.2 Target Release </h4>
+    <!-- Which specific release will be tartgeted for this project work. -->
+      
+<p>   </p>
+   
+<h4> 4.3 Resources </h4>
+         
+<p>   </p>
+   
+<h5> 4.3.1 Development </h5>
+       <!-- Number of developers required, or assigned developers -->   
+   
+<p>       </p>
+   
+<h5> 4.3.2 Quality Assurance/Testing </h5>
+        <!-- Number of test engineers required to develop tests, or
+     assigned test engineers -->
+         
+<p>      </p>
+   
+<h5> 4.3.3 Documentation </h5>
+       <!-- Number of writers required, or assigned writers -->       
+<p>      </p>
+   
+<h5> 4.3.4 Technical Support </h5>
+    <!-- Background knowledge required to support this feature. -->    
+<p>   </p>
+   
+<h5> 4.3.4 Special Hardware/Software </h5>
+    <!-- List any special hardware/software required to complete
+     this project. -->
+      
+<p>   </p>
+   
+<h4> 4.4 Schedule </h4>
+    <!-- Detailed schedule for project, including engineering work,
+     testing, documentation, integration and release. -->
+      
+<p>  </p>
+   
+<center>    
+<table cellpadding="0" cellspacing="1" bgcolor="white" border="0">
+      <tbody>
+      <tr>
+       <td>                     
+      <table cellspacing="1" cellpadding="10" bgcolor="wheat" border="1">
+            <tbody>
+            <tr align="Center">
+             <th bgcolor="#666699" width="75"><font color="white">Start Date</font></th>
+             <th bgcolor="#666699" width="75"><font color="white">End Date</font></th>
+             <th bgcolor="#666699" width="250"><font color="white">Activity</font></th>
+             <th bgcolor="#666699" width="50"><font color="white">Owner</font></th>
+             <th bgcolor="#666699" width="50"><font color="white">Status</font></th>
+           </tr>
+            <tr>
+             <td>&nbsp;</td>
+             <td>&nbsp;</td>
+             <td>&nbsp;</td>
+             <td>&nbsp;</td>
+              <!-- Change the foreground/background colors for this cell to reflect
+               the status.  For example...
+
+               <td bgcolor=green align=center><font color=white>04/16/2001</font></td>
+            -->
+              <td>&nbsp;</td>
+           </tr>
+                            
+        </tbody>              
+      </table>
+       </td>
+     </tr>
+          
+  </tbody>  
+</table>
+      
+<table cellspacing="5" border="0">
+      <tbody>
+      <tr>
+       <td bgcolor="green" width="50">&nbsp;</td>
+       <td bgcolor="lightgreen" width="50">&nbsp;</td>
+       <td bgcolor="wheat" width="50">&nbsp;</td>
+       <td bgcolor="yellow" width="50">&nbsp;</td>
+       <td bgcolor="red" width="50">&nbsp;</td>
+     </tr>
+      <tr align="Center">
+       <td>Complete</td>
+       <td>Started</td>
+       <td>Not Started</td>
+       <td>Difficulties</td>
+       <td>Trouble</td>
+     </tr>
+          
+  </tbody>  
+</table>
+    </center>
+    <br>
+  <br>
+       
+<table width="100%" cellspacing="0" cellpadding="3" border="0">
+     <tbody>
+      <tr>
+       <td bgcolor="wheat">              
+      <h3>Appendices (as needed, suggestions below)</h3>
+        </td>
+     </tr>
+         
+  </tbody>  
+</table>
+      
+<p>   </p>
+   
+<h4> A. Background Information </h4>
+      
+<p>   </p>
+   
+<h4> B. Interface Specifications </h4>
+      
+<p>   </p>
+   
+<h4> C. Notes and Additional Details </h4>
+      
+<p>   </p>
+   
+<h4> D. Miscellaneous </h4>
+      
+<p>   </p>
+   
+<h4> E. Tracking </h4>
+      
+<p>   </p>
+   
+<h5> E.1  Final Webrev </h5>
+      
+<p>   </p>
+   
+<h5> E.2  Bugtraq </h5>
+    <!-- All related Bugtraq RFEs, Bugs, and EOUs.. -->    
+<center>    
+<table cellpadding="0" cellspacing="1" bgcolor="white" border="0">
+      <tbody>
+      <tr>
+       <td>                     
+      <table cellspacing="1" cellpadding="10" bgcolor="wheat" border="1">
+            <tbody>
+            <tr align="Center">
+             <th bgcolor="#666699" width="50"><font color="white">Bugid</font></th>
+             <th bgcolor="#666699" width="10"><font color="white">P</font></th>
+             <th bgcolor="#666699" width="10"><font color="white">S</font></th>
+             <th bgcolor="#666699" width="25"><font color="white">Subcategory</font></th>
+             <th bgcolor="#666699" width="25"><font color="white">Type</font></th>
+             <th bgcolor="#666699" width="20"><font color="white">Engineer</font></th>
+             <th bgcolor="#666699" width="300"><font color="white">Synopsis</font></th>
+           </tr>
+            <tr>
+             <td>&nbsp;4549083</td>
+             <td>&nbsp;</td>
+             <td>&nbsp;</td>
+             <td>&nbsp;</td>
+             <td>&nbsp;</td>
+             <td>&nbsp;</td>
+             <td>&nbsp;</td>
+           </tr>
+                            
+        </tbody>              
+      </table>
+       </td>
+     </tr>
+          
+  </tbody>  
+</table>
+    </center>
+      
+<p>  <br>
+  <br>
+      
+<table width="100%" cellspacing="0" cellpadding="3" border="0">
+     <tbody>
+      <tr>
+       <td bgcolor="wheat">              
+      <h3>Revision History</h3>
+        </td>
+     </tr>
+         
+  </tbody>  
+</table>
+    </p>
+   
+<p>  </p>
+   
+<center>    
+<table cellpadding="0" cellspacing="1" bgcolor="white" border="0">
+      <tbody>
+      <tr>
+       <td>                     
+      <table cellspacing="1" cellpadding="10" bgcolor="wheat" border="1">
+            <tbody>
+            <tr align="Center">
+             <th bgcolor="#666699" width="50"><font color="white">Date</font></th>
+             <th bgcolor="#666699" width="10"><font color="white">Version</font></th>
+             <th bgcolor="#666699" width="50"><font color="white">Author</font></th>
+             <th bgcolor="#666699" width="400"><font color="white">Description</font></th>
+           </tr>
+            <tr>
+             <td>&nbsp;05/13/02</td>
+             <td>&nbsp;0.1</td>
+             <td>&nbsp;smk</td>
+             <td>Initial version&nbsp;</td>
+           </tr>
+                            
+        </tbody>              
+      </table>
+       </td>
+     </tr>
+          
+  </tbody>  
+</table>
+    </center>
+      
+</body>
+</html>

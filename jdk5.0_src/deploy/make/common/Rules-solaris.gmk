@@ -1,0 +1,25 @@
+#
+# @(#)Rules-solaris.gmk	1.68 03/12/19
+#
+# Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+FILES_java = $(JDK_1_2_FILES) $(UNIX_SHARE_FILES)
+
+proto-platform:
+	$(MKDIR) -p $(LIB_SECURITY_DIR) $(BIN_DIR) $(LIB_JAVAWS_DIR) \
+		    $(LIB_ICONS_DIR) $(LIB_DIR)/$(LIBARCH)
+	$(CP) -f $(RESOURCE_SRC)/Java1.5.ico  $(LIB_JAVAWS_DIR)
+	$(CP) -f $(RESOURCE_SRC)/sun-java.png $(LIB_ICONS_DIR)
+	$(CP) -f $(RESOURCE_SRC)/sun-java_HighContrast.png $(LIB_ICONS_DIR)
+	$(CP) -f $(RESOURCE_SRC)/sun-java_HighContrastInverse.png $(LIB_ICONS_DIR)
+	$(CP) -f $(RESOURCE_SRC)/sun-java_LowContrast.png $(LIB_ICONS_DIR)
+	$(CP) -f $(SHARE_SRC)/config/javaws.policy $(LIB_SECURITY_DIR)
+	$(CP) -f $(DEPLOY_COMMON_JAR) $(LIB_DIR)
+	$(CP) -f $(DEPLOY_COMMON_SO) $(LIB_DIR)/$(LIBARCH)
+
+dev-platform:
+
+FRC:
+.PHONY: proto-platform dev-platform
