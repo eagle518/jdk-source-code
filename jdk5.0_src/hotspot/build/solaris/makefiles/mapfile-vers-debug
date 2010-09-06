@@ -1,0 +1,20 @@
+#
+# @(#)mapfile-vers-debug	1.4 01/11/27 19:30:18
+#
+
+# 
+# Copyright 1999-2002 Sun Microsystems, Inc.  All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL.  Use is subject to license terms.
+
+# Define public interface.
+
+SUNWprivate_1.1 {
+        global:
+		# debug JVM
+		JVM_AccessVMBooleanFlag;
+		JVM_AccessVMIntFlag;
+		JVM_VMBreakPoint;
+
+		# miscellaneous
+		opnames;
+};

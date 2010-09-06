@@ -1,0 +1,56 @@
+#ifdef USE_PRAGMA_IDENT_SRC
+#pragma ident "@(#)version.rc	1.2 04/04/13 10:19:05 JVM"
+#endif
+//
+// Copyright 2004 Sun Microsystems, Inc.  All rights reserved.
+// SUN PROPRIETARY/CONFIDENTIAL.  Use is subject to license terms.
+//
+
+#include "afxres.h"
+
+// Need 2 defines so macro argument to XSTR will get expanded before quoting.
+#define XSTR(x) STR(x)
+#define STR(x)  #x
+
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION    HS_VER
+ PRODUCTVERSION HS_VER
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ // FILEOS 0x4 is Win32, 0x40004 is Win32 NT only
+ FILEOS 0x4L
+ // FILETYPE should be 0x1 for .exe and 0x2 for .dll
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "000004b0"
+        BEGIN
+            VALUE "CompanyName",      XSTR(HS_COMPANY)       "\0"
+            VALUE "FileDescription",  XSTR(HS_FILEDESC)      "\0"
+            VALUE "FileVersion",      XSTR(HS_DOTVER)        "\0"
+            VALUE "Full Version",     XSTR(HS_BUILD_ID)      "\0"
+	    VALUE "InternalName",     XSTR(HS_INTERNAL_NAME) "\0"
+            VALUE "LegalCopyright",   XSTR(HS_COPYRIGHT)     "\0"
+            VALUE "OriginalFilename", XSTR(HS_FNAME)         "\0"
+            VALUE "ProductName",      XSTR(HS_NAME)          "\0"
+            VALUE "ProductVersion",   XSTR(HS_DOTVER)        "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x0, 1200
+    END
+END

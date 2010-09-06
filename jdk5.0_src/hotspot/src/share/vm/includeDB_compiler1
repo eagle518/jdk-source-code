@@ -1,0 +1,773 @@
+// @(#)includeDB_compiler1	1.150 04/07/29 16:36:19
+// 
+// Copyright 2004 Sun Microsystems, Inc.  All rights reserved.
+// SUN PROPRIETARY/CONFIDENTIAL.  Use is subject to license terms.
+// 
+
+// NOTE: DO NOT CHANGE THIS COPYRIGHT TO NEW STYLE - IT WILL BREAK makeDeps!
+
+allocation.hpp                          c1_globals.hpp
+
+arrayOop.cpp                            vframeArray.hpp
+
+bytecodeTracer.cpp                      methodDataOop.hpp
+
+c1_globals.cpp                          c1_globals.hpp
+
+c1_globals.hpp                          globals.hpp
+c1_globals.hpp                          c1_globals_<arch>.hpp
+c1_globals.hpp                          c1_globals_<os_family>.hpp
+
+classLoader.cpp                         constantPoolKlass.hpp
+
+codeBlob.cpp                            c1_Runtime1.hpp
+
+codeBlob.hpp                            frame.hpp
+codeBlob.cpp                            vframeArray.hpp
+
+codeBuffer.cpp                          codeCache.hpp
+codeBuffer.cpp                          nmethod.hpp
+
+compiledIC.cpp                          codeCache.hpp
+compiledIC.cpp                          compiledIC.hpp
+compiledIC.cpp                          events.hpp
+compiledIC.cpp                          icBuffer.hpp
+compiledIC.cpp                          icache.hpp
+compiledIC.cpp                          interpreter_<arch>.hpp
+compiledIC.cpp                          linkResolver.hpp
+compiledIC.cpp                          methodOop.hpp
+compiledIC.cpp                          nmethod.hpp
+compiledIC.cpp                          oop.inline.hpp
+compiledIC.cpp                          c1_Runtime1.hpp
+compiledIC.cpp                          stubRoutines.hpp
+compiledIC.cpp                          symbolOop.hpp
+compiledIC.cpp                          systemDictionary.hpp
+compiledIC.cpp                          vtableStubs.hpp
+
+compiledIC.hpp                          compiledICHolderKlass.hpp
+compiledIC.hpp                          compiledICHolderOop.hpp
+compiledIC.hpp                          klassOop.hpp
+compiledIC.hpp                          linkResolver.hpp
+compiledIC.hpp                          nativeInst_<arch>.hpp
+
+debug.cpp                               codeCache.hpp
+debug.cpp                               disassembler_<arch>.hpp
+debug.cpp                               icBuffer.hpp
+debug.cpp                               nmethod.hpp
+debug.cpp                               vtableStubs.hpp
+
+debug_<arch>.cpp                        nmethod.hpp
+
+deoptimization.cpp                      allocation.inline.hpp
+deoptimization.cpp                      bytecode.hpp
+deoptimization.cpp                      c1_Runtime1.hpp
+deoptimization.cpp                      deoptimization.hpp
+deoptimization.cpp                      events.hpp
+deoptimization.cpp                      interfaceSupport.hpp
+deoptimization.cpp                      methodOop.hpp
+deoptimization.cpp                      nmethod.hpp
+deoptimization.cpp                      oopFactory.hpp
+deoptimization.cpp                      oop.inline.hpp
+deoptimization.cpp                      oopMapCache.hpp
+deoptimization.cpp                      pcDesc.hpp
+deoptimization.cpp                      resourceArea.hpp
+deoptimization.cpp                      scopeDesc.hpp
+deoptimization.cpp                      signature.hpp
+deoptimization.cpp                      stubRoutines.hpp
+deoptimization.cpp                      systemDictionary.hpp
+deoptimization.cpp                      thread.hpp
+deoptimization.cpp                      vframe.hpp
+deoptimization.cpp                      vframeArray.hpp
+deoptimization.cpp                      vframe_hp.hpp
+deoptimization.cpp                      xmlstream.hpp
+
+deoptimization.hpp                      allocation.hpp
+deoptimization.hpp                      frame.inline.hpp
+
+disassembler_<arch>.cpp                 nmethod.hpp
+
+exceptionHandlerTable.cpp               allocation.inline.hpp
+exceptionHandlerTable.cpp               exceptionHandlerTable.hpp
+exceptionHandlerTable.cpp               nmethod.hpp
+
+exceptionHandlerTable.hpp               allocation.hpp
+exceptionHandlerTable.hpp               methodOop.hpp
+
+fprofiler.cpp                           deoptimization.hpp
+fprofiler.cpp                           icBuffer.hpp
+fprofiler.cpp                           nmethod.hpp
+fprofiler.cpp                           vtableStubs.hpp
+
+frame.cpp                               codeCache.hpp
+frame.cpp                               nmethod.hpp
+frame.cpp                               c1_Runtime1.hpp
+frame.cpp                               oopMap.hpp
+frame.cpp                               vframeArray.hpp
+
+frame.hpp                               location.hpp
+frame.hpp                               stackValue.hpp
+frame.hpp                               c1_Defs.hpp
+
+frame_<arch>.cpp                        c1_Runtime1.hpp
+frame_<arch>.cpp                        codeCache.hpp
+frame_<arch>.cpp                        nmethod.hpp
+frame_<arch>.cpp                        vframeArray.hpp
+
+globals.hpp                             c1_globals_<arch>.hpp
+globals.hpp                             c1_globals_<os_family>.hpp
+
+globals.cpp                             c1_globals.hpp
+
+interpreterRuntime.cpp                  compiledIC.hpp
+interpreterRuntime.cpp                  compilationPolicy.hpp
+interpreterRuntime.cpp                  onStackReplacement.hpp
+
+interpreter_<arch>.cpp                  compiledIC.hpp
+interpreter_<arch>.cpp                  c1_Runtime1.hpp
+
+java.cpp                                compilationPolicy.hpp
+java.cpp                                compiledIC.hpp
+java.cpp                                deoptimization.hpp
+java.cpp                                c1_Runtime1.hpp
+
+jni.cpp                                 codeCache.hpp
+jni.cpp                                 compilationPolicy.hpp
+jni.cpp                                 nmethod.hpp
+
+jvm.cpp                                 codeCache.hpp
+
+jvmpi.cpp                               vframeArray.hpp
+
+jvmtiCodeBlobEvents.cpp			scopeDesc.hpp
+
+klassVtable.cpp                         nmethod.hpp
+klassVtable.cpp                         c1_Runtime1.hpp
+
+linkResolver.cpp                        vmThread.hpp
+
+location.cpp                            debugInfo.hpp
+location.cpp                            location.hpp
+
+location.hpp                            allocation.hpp
+location.hpp                            assembler.hpp
+location.hpp                            shared.hpp
+
+markSweep.cpp                           codeCache.hpp
+
+memprofiler.cpp                         codeCache.hpp
+
+methodKlass.cpp                         nmethod.hpp
+
+methodOop.cpp                           codeCache.hpp
+methodOop.cpp                           nmethod.hpp
+methodOop.cpp                           c1_Runtime1.hpp
+methodOop.cpp                           debugInfoRec.hpp
+
+methodOop.hpp                           invocationCounter.hpp
+methodOop.hpp                           oopMap.hpp
+
+nativeInst_<arch>.cpp                   c1_Runtime1.hpp
+nativeInst_<arch>.cpp                   codeCache.hpp
+nativeInst_<arch>.cpp                   nmethod.hpp
+
+nmethod.cpp                             interpreter.hpp
+nmethod.cpp                             bytecode.hpp
+nmethod.cpp                             c1_Runtime1.hpp
+nmethod.cpp                             collectedHeap.hpp
+nmethod.cpp                             collectedHeap.inline.hpp
+nmethod.cpp                             compiledIC.hpp
+nmethod.cpp                             disassembler_<arch>.hpp
+nmethod.cpp                             events.hpp
+nmethod.cpp                             frame.inline.hpp
+nmethod.cpp                             genCollectedHeap.hpp
+nmethod.cpp                             handles.inline.hpp
+nmethod.cpp                             icache.hpp
+nmethod.cpp                             instanceKlass.hpp
+nmethod.cpp                             jvmpi.hpp
+nmethod.cpp                             jvmpi.inline.hpp
+nmethod.cpp                             nativeInst_<arch>.hpp
+nmethod.cpp                             markSweep.hpp
+nmethod.cpp                             nmethod.hpp
+nmethod.cpp                             objArrayOop.hpp
+nmethod.cpp                             oop.inline.hpp
+nmethod.cpp                             oop.inline2.hpp
+nmethod.cpp                             pcDesc.hpp
+nmethod.cpp                             relocInfo.hpp
+nmethod.cpp                             resourceArea.hpp
+nmethod.cpp                             safepoint.hpp
+nmethod.cpp                             scopeDesc.hpp
+nmethod.cpp                             stubRoutines.hpp
+nmethod.cpp                             sweeper.hpp
+nmethod.cpp                             vtune.hpp
+nmethod.cpp                             xmlstream.hpp
+nmethod.cpp                             debugInfoRec.hpp
+
+nmethod.hpp                             codeBlob.hpp
+nmethod.hpp                             codeCache.hpp
+nmethod.hpp                             growableArray.hpp
+nmethod.hpp                             methodOop.hpp
+nmethod.hpp                             oopMap.hpp
+nmethod.hpp                             relocInfo.hpp
+
+nmethod_<arch>.cpp                      assembler_<arch>.inline.hpp
+nmethod_<arch>.cpp                      nmethod.hpp
+nmethod_<arch>.cpp                      resourceArea.hpp
+nmethod_<arch>.cpp                      sharedRuntime.hpp
+
+
+onStackReplacement.cpp                  onStackReplacement.hpp
+onStackReplacement.cpp                  forte.hpp
+onStackReplacement.cpp                  frame.hpp
+onStackReplacement.cpp			jvmtiExport.hpp
+onStackReplacement.cpp                  resourceArea.hpp
+onStackReplacement.cpp                  thread.hpp
+onStackReplacement.cpp                  vtune.hpp
+
+onStackReplacement.hpp                  codeBlob.hpp
+
+oopFactory.cpp                          compiledICHolderKlass.hpp
+
+oopMap.cpp                              c1_Defs.hpp
+oopMap.cpp                              scopeDesc.hpp
+
+oopRecorder.cpp                         codeBlob.hpp
+
+os_<os_family>.cpp                      c1_Runtime1.hpp
+
+os_<os_family>_<arch>.cpp               c1_Runtime1.hpp
+
+relocInfo.cpp                           compiledIC.hpp
+relocInfo.cpp                           nmethod.hpp
+
+relocInfo_<arch>.cpp                    nmethod.hpp
+
+registerMap.hpp                         c1_Defs.hpp
+
+runtime.hpp                             codeBlob.hpp
+runtime.hpp                             deoptimization.hpp
+runtime.hpp                             machnode.hpp
+runtime.hpp                             type.hpp
+
+safepoint.cpp                           c1_globals.hpp
+safepoint.cpp                           c1_Runtime1.hpp
+
+safepoint_<os_arch>.cpp                 c1_Runtime1.hpp
+safepoint_<os_arch>.cpp                 vframeArray.hpp
+
+scopeDesc.cpp                           debugInfoRec.hpp
+scopeDesc.cpp                           handles.inline.hpp
+scopeDesc.cpp                           oop.inline.hpp
+scopeDesc.cpp                           pcDesc.hpp
+scopeDesc.cpp                           resourceArea.hpp
+scopeDesc.cpp                           scopeDesc.hpp
+
+scopeDesc.hpp                           debugInfo.hpp
+scopeDesc.hpp                           growableArray.hpp
+scopeDesc.hpp                           methodOop.hpp
+scopeDesc.hpp                           pcDesc.hpp
+
+shared.hpp                              register_<arch>.hpp
+
+sharedRuntime.cpp                       codeCache.hpp
+sharedRuntime.cpp                       c1_Runtime1.hpp
+sharedRuntime.cpp                       handles.inline.hpp
+sharedRuntime.cpp                       objArrayOop.hpp
+sharedRuntime.cpp                       nmethod.hpp
+sharedRuntime.cpp                       vtableStubs.hpp
+sharedRuntime.cpp                       objArrayKlass.hpp
+sharedRuntime.cpp                       objArrayOop.hpp
+
+stackValue.cpp                          debugInfo.hpp
+
+stubGenerator_<arch>.cpp                deoptimization.hpp
+
+stubRoutines_<arch>.cpp                 deoptimization.hpp
+
+systemDictionary.cpp                    cha.hpp
+
+thread.cpp                              c1_Compiler.hpp
+thread.cpp                              deoptimization.hpp
+thread.cpp                              recompilationMonitor.hpp
+thread.cpp                              vframe_hp.hpp
+thread.cpp                              vframeArray.hpp
+
+top.hpp                                 c1_globals.hpp
+
+universe.cpp                            codeCache.hpp
+universe.cpp                            compiledICHolderKlass.hpp
+universe.cpp                            deoptimization.hpp
+
+vframeArray.cpp                         c1_Runtime1.hpp
+
+vframe_hp.cpp                           nativeInst_<arch>.hpp
+
+vmThread.cpp                            compileBroker.hpp
+vmThread.cpp                            recompilationMonitor.hpp
+
+vm_operations.cpp                       compileBroker.hpp
+vm_operations.cpp                       compilerOracle.hpp
+vm_operations.cpp                       deoptimization.hpp
+
+vmError.cpp                             compileBroker.hpp
+
+vmStructs.cpp                           c1_Defs.hpp
+vmStructs.cpp                           c1_Runtime1.hpp
+
+vtableStubs.cpp                         allocation.inline.hpp
+vtableStubs.cpp                         forte.hpp
+vtableStubs.cpp                         handles.inline.hpp
+vtableStubs.cpp                         instanceKlass.hpp
+vtableStubs.cpp                         klassVtable.hpp
+vtableStubs.cpp                         mutexLocker.hpp
+vtableStubs.cpp                         resourceArea.hpp
+vtableStubs.cpp                         vtableStubs.hpp
+vtableStubs.cpp                         vtune.hpp
+vtableStubs.cpp				jvmtiExport.hpp
+
+vtableStubs.hpp                         allocation.hpp
+
+vtableStubs_<arch>.cpp                  assembler.hpp
+vtableStubs_<arch>.cpp                  assembler_<arch>.inline.hpp
+vtableStubs_<arch>.cpp                  instanceKlass.hpp
+vtableStubs_<arch>.cpp                  interp_masm_<arch>.hpp
+vtableStubs_<arch>.cpp                  klassVtable.hpp
+vtableStubs_<arch>.cpp                  resourceArea.hpp
+vtableStubs_<arch>.cpp                  c1_Runtime1.hpp
+vtableStubs_<arch>.cpp                  vtableStubs.hpp
+
+vtune_<os_family>.cpp                   nmethod.hpp
+
+c1_AllocTable.hpp                       c1_RInfo.hpp
+c1_AllocTable.hpp                       c1_FrameMap.hpp
+c1_AllocTable_<arch>.cpp                c1_AllocTable.hpp
+c1_AllocTable.cpp                       c1_AllocTable.hpp
+
+c1_Canonicalizer.cpp                    c1_Canonicalizer.hpp
+c1_Canonicalizer.cpp                    c1_InstructionPrinter.hpp
+c1_Canonicalizer.hpp                    c1_Instruction.hpp
+
+c1_Compiler.hpp                         abstractCompiler.hpp
+
+c1_Compiler.cpp                         arguments.hpp
+c1_Compiler.cpp                         allocation.hpp
+c1_Compiler.cpp                         allocation.inline.hpp
+c1_Compiler.cpp                         c1_Compilation.hpp
+c1_Compiler.cpp                         c1_MacroAssembler.hpp
+c1_Compiler.cpp                         compileBroker.hpp
+c1_Compiler.cpp                         compilerOracle.hpp
+c1_Compiler.cpp                         interfaceSupport.hpp
+c1_Compiler.cpp                         linkResolver.hpp
+c1_Compiler.cpp                         resourceArea.hpp
+c1_Compiler.cpp                         nativeLookup.hpp
+c1_Compiler.cpp                         resourceArea.hpp
+c1_Compiler.cpp                         sharedRuntime.hpp
+c1_Compiler.cpp                         c1_Compiler.hpp
+c1_Compiler.cpp                         c1_Runtime1.hpp
+c1_Compiler.cpp                         c1_ValueType.hpp
+c1_Compiler.cpp                         c1_RegAlloc.hpp
+c1_Compiler.cpp                         c1_FrameMap.hpp
+
+fprofiler.cpp                           c1_Compiler.hpp
+
+java.cpp                                c1_Compiler.hpp
+
+c1_Defs.cpp                             c1_Defs.hpp
+
+c1_Defs.hpp                             globalDefinitions.hpp
+c1_Defs_<arch>.hpp                      generate_platform_dependent_include
+
+c1_AllocTable_<arch>.hpp                generate_platform_dependent_include
+
+c1_Instruction.cpp                      c1_IR.hpp
+c1_Instruction.cpp                      c1_ValueStack.hpp
+c1_Instruction.cpp                      c1_Instruction.hpp
+c1_Instruction.cpp                      c1_InstructionPrinter.hpp
+c1_Instruction.cpp                      ciTypeArrayKlass.hpp
+c1_Instruction.cpp                      ciObjArrayKlass.hpp
+
+c1_Instruction.hpp                      c1_Compilation.hpp
+c1_Instruction.hpp                      c1_ValueType.hpp
+c1_Instruction.hpp                      ciField.hpp
+c1_Instruction.hpp                      c1_LIR.hpp
+
+c1_InstructionPrinter.cpp               c1_InstructionPrinter.hpp
+c1_InstructionPrinter.cpp               c1_ValueStack.hpp
+c1_InstructionPrinter.cpp               ciObject.hpp
+c1_InstructionPrinter.cpp               ciInstance.hpp
+c1_InstructionPrinter.cpp               ciArray.hpp
+c1_InstructionPrinter.hpp               c1_Instruction.hpp
+c1_InstructionPrinter.hpp               c1_IR.hpp
+
+c1_IR.cpp                               ciBytecodeStream.hpp
+c1_IR.cpp                               c1_InstructionPrinter.hpp
+c1_IR.cpp                               c1_IR.hpp
+c1_IR.cpp                               c1_GraphBuilder.hpp
+c1_IR.cpp                               c1_Optimizer.hpp
+c1_IR.cpp                               c1_Loops.hpp
+c1_IR.cpp                               c1_Compilation.hpp
+c1_IR.cpp                               ciOopMap.hpp
+
+c1_IR.hpp                               allocation.hpp
+c1_IR.hpp                               ciExceptionHandler.hpp
+c1_IR.hpp                               ciStreams.hpp
+c1_IR.hpp                               c1_Instruction.hpp
+c1_IR.hpp                               ciMethod.hpp
+
+c1_GraphBuilder.cpp                     c1_Compilation.hpp
+c1_GraphBuilder.cpp                     c1_Canonicalizer.hpp
+c1_GraphBuilder.cpp                     c1_InstructionPrinter.hpp
+c1_GraphBuilder.cpp                     c1_GraphBuilder.hpp
+c1_GraphBuilder.cpp                     ciField.hpp
+c1_GraphBuilder.cpp                     ciKlass.hpp
+c1_GraphBuilder.cpp                     c1_ValueMap.hpp
+
+
+c1_GraphBuilder.hpp                     ciBytecodeStream.hpp
+c1_GraphBuilder.hpp                     c1_IR.hpp
+c1_GraphBuilder.hpp                     c1_ValueStack.hpp
+
+c1_ValueSet.hpp                         allocation.hpp
+c1_ValueSet.hpp                         bitMap.hpp
+c1_ValueSet.hpp                         c1_Instruction.hpp
+c1_ValueSet.cpp                         c1_ValueSet.hpp
+
+c1_ValueStack.cpp                       c1_InstructionPrinter.hpp
+c1_ValueStack.cpp                       c1_IR.hpp
+c1_ValueStack.cpp                       c1_ValueStack.hpp
+c1_ValueStack.hpp                       c1_Instruction.hpp
+
+vm_operations.cpp                       c1_Compiler.hpp
+
+c1_FrameMap_<arch>.hpp                  generate_platform_dependent_include
+c1_FrameMap_<arch>.cpp                  c1_RegAlloc.hpp
+c1_FrameMap_<arch>.cpp                  c1_FrameMap.hpp
+c1_FrameMap_<arch>.cpp                  c1_LIR.hpp
+
+c1_FrameMap.hpp                         allocation.hpp
+c1_FrameMap.hpp                         assembler.hpp
+c1_FrameMap.hpp                         c1_Instruction.hpp
+c1_FrameMap.hpp                         c1_IR.hpp
+c1_FrameMap.hpp                         c1_RInfo.hpp
+c1_FrameMap.hpp                         frame.hpp
+c1_FrameMap.hpp                         globalDefinitions.hpp
+c1_FrameMap.hpp                         c1_Defs.hpp
+c1_FrameMap.hpp                         shared.hpp
+c1_FrameMap.hpp                         synchronizer.hpp
+
+c1_FrameMap.cpp                         c1_FrameMap.hpp
+c1_FrameMap.cpp                         c1_RegAlloc.hpp
+c1_FrameMap.cpp                         c1_LIR.hpp
+
+c1_CodeGenerator.hpp                    c1_Items.hpp
+c1_CodeGenerator.hpp                    c1_Instruction.hpp
+c1_CodeGenerator.hpp                    c1_IR.hpp
+c1_CodeGenerator.hpp                    c1_RegAlloc.hpp
+c1_CodeGenerator.hpp                    c1_LIREmitter.hpp
+c1_CodeGenerator.cpp                    c1_ValueStack.hpp
+c1_CodeGenerator.cpp                    c1_CodeGenerator.hpp
+c1_CodeGenerator.cpp                    c1_Compilation.hpp
+c1_CodeGenerator.cpp                    c1_Instruction.hpp
+c1_CodeGenerator.cpp                    c1_ScanBlocks.hpp
+c1_CodeGenerator.cpp                    ciArrayKlass.hpp
+
+c1_CodeGenerator_<arch>.cpp             c1_CodeGenerator.hpp
+c1_CodeGenerator_<arch>.cpp             c1_Compilation.hpp
+c1_CodeGenerator_<arch>.cpp             c1_Instruction.hpp
+c1_CodeGenerator_<arch>.cpp             c1_ValueStack.hpp
+c1_CodeGenerator_<arch>.cpp             c1_ScanBlocks.hpp
+c1_CodeGenerator_<arch>.cpp             c1_CodeStubs.hpp
+
+
+c1_Items.hpp                            c1_Instruction.hpp
+c1_Items.hpp                            c1_RegAlloc.hpp
+c1_Items.cpp                            c1_Items.hpp
+c1_Items.cpp                            ciInstance.hpp
+c1_Items.cpp                            ciArray.hpp
+
+c1_Items_<arch>.cpp                     c1_Items.hpp
+
+c1_Optimizer.hpp                        allocation.hpp
+c1_Optimizer.hpp                        c1_Instruction.hpp
+c1_Optimizer.hpp                        c1_IR.hpp
+c1_Optimizer.cpp                        c1_Optimizer.hpp
+c1_Optimizer.cpp                        c1_ValueSet.hpp
+c1_Optimizer.cpp                        c1_ValueStack.hpp
+
+c1_MacroAssembler_<arch>.cpp            c1_MacroAssembler.hpp
+c1_MacroAssembler_<arch>.cpp            arrayOop.hpp
+c1_MacroAssembler_<arch>.cpp            collectedHeap.hpp
+c1_MacroAssembler_<arch>.cpp            markOop.hpp
+c1_MacroAssembler_<arch>.cpp            os.hpp
+c1_MacroAssembler_<arch>.cpp            stubRoutines.hpp
+c1_MacroAssembler_<arch>.cpp            synchronizer.hpp
+c1_MacroAssembler_<arch>.cpp            interpreter.hpp
+c1_MacroAssembler_<arch>.cpp            systemDictionary.hpp
+c1_MacroAssembler_<arch>.cpp            c1_Runtime1.hpp
+
+c1_MacroAssembler_<arch>.hpp            generate_platform_dependent_include
+
+c1_MacroAssembler.hpp                   assembler.hpp
+c1_MacroAssembler.hpp                   assembler_<arch>.inline.hpp
+
+c1_RegAlloc.hpp                         allocation.hpp
+c1_RegAlloc.hpp                         c1_AllocTable.hpp
+c1_RegAlloc.hpp                         c1_FrameMap.hpp
+c1_RegAlloc.hpp                         c1_ValueType.hpp
+c1_RegAlloc.hpp                         c1_Instruction.hpp
+c1_RegAlloc.hpp                         c1_RInfo.hpp
+
+c1_RegAlloc.cpp                         allocation.hpp
+c1_RegAlloc.cpp                         c1_RegAlloc.hpp
+c1_RegAlloc.cpp                         c1_Items.hpp
+
+c1_RegAlloc_<arch>.cpp                  c1_RegAlloc.hpp
+c1_RegAlloc_<arch>.cpp                  c1_CodeGenerator.hpp
+
+c1_RInfo.cpp                            c1_RegAlloc.hpp
+c1_RInfo.cpp                            c1_RInfo.hpp
+
+c1_RInfo.hpp                            array.hpp
+c1_RInfo.hpp                            assembler.hpp
+c1_RInfo.hpp                            c1_Compilation.hpp
+
+c1_RInfo_<arch>.cpp                     c1_RegAlloc.hpp
+c1_RInfo_<arch>.cpp                     c1_RInfo.hpp
+c1_RInfo_<arch>.hpp                     generate_platform_dependent_include
+
+c1_Runtime1.cpp                         allocation.inline.hpp
+c1_Runtime1.cpp                         bytecode.hpp
+c1_Runtime1.cpp                         barrierSet.hpp
+c1_Runtime1.cpp                         c1_Defs.hpp
+c1_Runtime1.cpp                         c1_FrameMap.hpp
+c1_Runtime1.cpp                         c1_Runtime1.hpp
+c1_Runtime1.cpp                         codeBlob.hpp
+c1_Runtime1.cpp                         codeBuffer.hpp
+c1_Runtime1.cpp                         collectedHeap.hpp
+c1_Runtime1.cpp                         compiledIC.hpp
+c1_Runtime1.cpp                         disassembler_<arch>.hpp
+c1_Runtime1.cpp                         events.hpp
+c1_Runtime1.cpp                         interfaceSupport.hpp
+c1_Runtime1.cpp                         interpreter_<arch>.hpp
+c1_Runtime1.cpp                         javaCalls.hpp
+c1_Runtime1.cpp                         copy.hpp
+c1_Runtime1.cpp                         objArrayKlass.hpp
+c1_Runtime1.cpp                         oop.inline.hpp
+c1_Runtime1.cpp                         pcDesc.hpp
+c1_Runtime1.cpp                         resourceArea.hpp
+c1_Runtime1.cpp                         scopeDesc.hpp
+c1_Runtime1.cpp                         sharedRuntime.hpp
+c1_Runtime1.cpp                         systemDictionary.hpp
+c1_Runtime1.cpp                         threadCritical.hpp
+c1_Runtime1.cpp                         vframe.hpp
+c1_Runtime1.cpp                         vmSymbols.hpp
+c1_Runtime1.cpp                         vtableStubs.hpp
+c1_Runtime1.cpp                         vframeArray.hpp
+c1_Runtime1.cpp                         c1_CodeStubs.hpp
+c1_Runtime1.cpp                         c1_MacroAssembler.hpp
+
+c1_Runtime1_<arch>.cpp                  c1_MacroAssembler.hpp
+c1_Runtime1_<arch>.cpp                  c1_Defs.hpp
+c1_Runtime1_<arch>.cpp                  c1_Runtime1.hpp
+c1_Runtime1_<arch>.cpp                  compiledICHolderOop.hpp
+c1_Runtime1_<arch>.cpp                  interpreter_<arch>.hpp
+c1_Runtime1_<arch>.cpp                  jvmtiExport.hpp
+c1_Runtime1_<arch>.cpp                  nativeInst_<arch>.hpp
+c1_Runtime1_<arch>.cpp                  oop.inline.hpp
+c1_Runtime1_<arch>.cpp                  register_<arch>.hpp
+c1_Runtime1_<arch>.cpp                  sharedRuntime.hpp
+c1_Runtime1_<arch>.cpp                  signature.hpp
+c1_Runtime1_<arch>.cpp                  vframeArray.hpp
+
+c1_Runtime1.hpp                         allocation.hpp
+c1_Runtime1.hpp                         deoptimization.hpp
+c1_Runtime1.hpp                         interpreter.hpp
+c1_Runtime1.hpp                         stubs.hpp
+c1_Runtime1.hpp                         c1_FrameMap.hpp
+
+c1_ValueMap.cpp                         c1_ValueMap.hpp
+c1_ValueMap.hpp                         allocation.hpp
+c1_ValueMap.hpp                         c1_Instruction.hpp
+
+c1_ValueType.cpp                        c1_ValueType.hpp
+c1_ValueType.cpp                        ciNullObject.hpp
+c1_ValueType.cpp                        ciArray.hpp
+c1_ValueType.cpp                        ciInstance.hpp
+
+c1_ValueType.hpp                        ciConstant.hpp
+c1_ValueType.hpp                        c1_Compilation.hpp
+
+c1_CodeStubs.hpp                        array.hpp
+c1_CodeStubs.hpp                        c1_Instruction.hpp
+c1_CodeStubs.hpp                        c1_RInfo.hpp
+c1_CodeStubs.hpp                        c1_LIR.hpp
+c1_CodeStubs.hpp                        c1_FrameMap.hpp
+c1_CodeStubs.hpp                        c1_Runtime1.hpp
+c1_CodeStubs.hpp                        c1_LIREmitter.hpp
+c1_CodeStubs_<arch>.cpp                 c1_LIRAssembler.hpp
+c1_CodeStubs_<arch>.cpp                 c1_CodeStubs.hpp
+c1_CodeStubs_<arch>.cpp                 c1_FrameMap.hpp
+c1_CodeStubs_<arch>.cpp                 c1_Runtime1.hpp
+c1_CodeStubs_<arch>.cpp                 nativeInst_<arch>.hpp
+c1_CodeStubs_<arch>.cpp                 sharedRuntime.hpp
+c1_CodeStubs_<arch>.cpp                 c1_MacroAssembler.hpp
+
+ciBytecodeStream.cpp                    ciBytecodeStream.hpp
+ciBytecodeStream.cpp                    bytecodes.hpp
+
+ciBytecodeStream.hpp                    allocation.hpp
+ciBytecodeStream.hpp                    bytecode.hpp
+ciBytecodeStream.hpp                    bytes_<arch>.hpp
+ciBytecodeStream.hpp                    ciConstant.hpp
+ciBytecodeStream.hpp                    ciKlass.hpp
+ciBytecodeStream.hpp                    ciMethod.hpp
+ciBytecodeStream.hpp                    ciField.hpp
+
+c1_Loops.hpp                            bitMap.hpp
+c1_Loops.hpp                            c1_Instruction.hpp
+c1_Loops.hpp                            c1_IR.hpp
+c1_Loops.cpp                            c1_Loops.hpp
+c1_Loops.cpp                            c1_ValueStack.hpp
+c1_Loops.cpp                            c1_ScanBlocks.hpp
+
+c1_CacheLocals.hpp                      allocation.hpp
+c1_CacheLocals.hpp                      c1_RInfo.hpp
+c1_CacheLocals.hpp                      c1_IR.hpp
+
+c1_CacheLocals.cpp                      c1_CacheLocals.hpp
+c1_CacheLocals.cpp                      c1_LIR.hpp
+c1_CacheLocals.cpp                      c1_Instruction.hpp
+c1_CacheLocals.cpp                      c1_IR.hpp
+c1_CacheLocals.cpp                      c1_Loops.hpp
+c1_CacheLocals.cpp                      c1_ScanBlocks.hpp
+c1_CacheLocals.cpp                      c1_Items.hpp
+c1_CacheLocals.cpp                      c1_ValueStack.hpp
+c1_CacheLocals.cpp                      c1_CodeGenerator.hpp
+c1_CacheLocals.cpp                      c1_RegAlloc.hpp
+
+c1_CacheLocals_<arch>.cpp               c1_CacheLocals.hpp
+c1_CacheLocals_<arch>.cpp               c1_Compilation.hpp
+c1_CacheLocals_<arch>.cpp               c1_Instruction.hpp
+c1_CacheLocals_<arch>.cpp               c1_ValueType.hpp
+c1_CacheLocals_<arch>.cpp               c1_Loops.hpp
+c1_CacheLocals_<arch>.cpp               c1_RInfo.hpp
+c1_CacheLocals_<arch>.cpp               c1_CodeGenerator.hpp
+c1_CacheLocals_<arch>.cpp               c1_ScanBlocks.hpp
+
+c1_ScanBlocks.hpp                       c1_ValueType.hpp
+c1_ScanBlocks.cpp                       c1_ScanBlocks.hpp
+c1_ScanBlocks.cpp                       c1_Instruction.hpp
+
+instanceKlass.cpp                       c1_Compiler.hpp
+
+c1_Compilation.cpp                      c1_CodeGenerator.hpp
+c1_Compilation.cpp                      c1_Compilation.hpp
+c1_Compilation.cpp                      c1_RegAlloc.hpp
+c1_Compilation.cpp                      c1_LIROptimizer.hpp
+c1_Compilation.cpp                      jvmpi.hpp
+c1_Compilation.cpp                      jvmpi.inline.hpp
+c1_Compilation.cpp                      c1_CacheLocals.hpp
+c1_Compilation.cpp                      c1_IR.hpp
+c1_Compilation.cpp                      c1_LIRAssembler.hpp
+c1_Compilation.cpp                      c1_LIREmitter.hpp
+c1_Compilation.cpp                      c1_ValueStack.hpp
+c1_Compilation.cpp                      ciEnv.hpp
+c1_Compilation.cpp                      ciOopMap.hpp
+c1_Compilation.cpp                      debugInfoRec.hpp
+c1_Compilation.cpp                      c1_ScanBlocks.hpp
+c1_Compilation.cpp                      c1_MacroAssembler.hpp
+
+c1_Compilation.hpp                      resourceArea.hpp
+c1_Compilation.hpp                      exceptionHandlerTable.hpp
+
+
+c1_LIREmitter.hpp                       c1_IR.hpp
+c1_LIREmitter.hpp                       c1_LIR.hpp
+
+c1_LIREmitter.cpp                       c1_Items.hpp
+c1_LIREmitter.cpp                       c1_CacheLocals.hpp
+c1_LIREmitter.cpp                       c1_LIREmitter.hpp
+c1_LIREmitter.cpp                       c1_LIRAssembler.hpp
+c1_LIREmitter.cpp                       c1_ValueStack.hpp
+c1_LIREmitter.cpp                       c1_Instruction.hpp
+c1_LIREmitter.cpp                       c1_Compilation.hpp
+c1_LIREmitter.cpp                       c1_Runtime1.hpp
+c1_LIREmitter.cpp                       ciInstance.hpp
+c1_LIREmitter.cpp                       ciTypeArrayKlass.hpp
+c1_LIREmitter.cpp                       ciObjArrayKlass.hpp
+c1_LIREmitter.cpp                       ciOopMap.hpp
+c1_LIREmitter.cpp                       objArrayKlass.hpp
+c1_LIREmitter.cpp                       sharedRuntime.hpp
+
+c1_LIREmitter_<arch>.cpp                c1_LIREmitter.hpp
+c1_LIREmitter_<arch>.cpp                ciInstance.hpp
+c1_LIREmitter_<arch>.cpp                ciTypeArrayKlass.hpp
+c1_LIREmitter_<arch>.cpp                ciObjArrayKlass.hpp
+c1_LIREmitter_<arch>.cpp                c1_LIRAssembler.hpp
+c1_LIREmitter_<arch>.cpp                c1_Items.hpp
+c1_LIREmitter_<arch>.cpp                c1_Runtime1.hpp
+c1_LIREmitter_<arch>.cpp                sharedRuntime.hpp
+c1_LIREmitter_<arch>.cpp                cardTableModRefBS.hpp
+
+c1_LIR.hpp                              c1_RInfo.hpp
+c1_LIR.hpp                              c1_ValueType.hpp
+
+c1_LIR.cpp                              c1_LIR.hpp
+c1_LIR.cpp                              c1_CacheLocals.hpp
+c1_LIR.cpp                              c1_InstructionPrinter.hpp
+c1_LIR.cpp                              c1_LIRAssembler.hpp
+c1_LIR.cpp                              sharedRuntime.hpp
+c1_LIR.cpp                              ciInstance.hpp
+
+c1_LIRAssembler.cpp                     c1_LIRAssembler.hpp
+c1_LIRAssembler.cpp                     c1_Compilation.hpp
+c1_LIRAssembler.cpp                     nativeInst_<arch>.hpp
+c1_LIRAssembler.cpp                     ciInstance.hpp
+c1_LIRAssembler.cpp                     c1_Instruction.hpp
+c1_LIRAssembler.cpp                     c1_ValueStack.hpp
+c1_LIRAssembler.cpp                     c1_MacroAssembler.hpp
+
+c1_LIRAssembler.hpp                     top.hpp
+c1_LIRAssembler_<arch>.hpp              generate_platform_dependent_include
+c1_LIRAssembler.hpp                     c1_CodeStubs.hpp
+c1_LIRAssembler.hpp                     c1_LIREmitter.hpp
+
+c1_LIRAssembler_<arch>.cpp              jvmpi.hpp
+c1_LIRAssembler_<arch>.cpp              c1_CacheLocals.hpp
+c1_LIRAssembler_<arch>.cpp              c1_LIRAssembler.hpp
+c1_LIRAssembler_<arch>.cpp              c1_LIRAssembler.hpp
+c1_LIRAssembler_<arch>.cpp              c1_Compilation.hpp
+c1_LIRAssembler_<arch>.cpp              c1_Runtime1.hpp
+c1_LIRAssembler_<arch>.cpp              c1_Items.hpp
+c1_LIRAssembler_<arch>.cpp              ciInstance.hpp
+c1_LIRAssembler_<arch>.cpp              nativeInst_<arch>.hpp
+c1_LIRAssembler_<arch>.cpp              sharedRuntime.hpp
+c1_LIRAssembler_<arch>.cpp              jvmpi.inline.hpp
+c1_LIRAssembler_<arch>.cpp              ciArrayKlass.hpp
+c1_LIRAssembler_<arch>.cpp              barrierSet.hpp
+c1_LIRAssembler_<arch>.cpp              collectedHeap.hpp
+c1_LIRAssembler_<arch>.cpp              cardTableModRefBS.hpp
+c1_LIRAssembler_<arch>.cpp              c1_ScanBlocks.hpp
+c1_LIRAssembler_<arch>.cpp              c1_ValueStack.hpp
+c1_LIRAssembler_<arch>.cpp              objArrayKlass.hpp
+c1_LIRAssembler_<arch>.cpp              c1_MacroAssembler.hpp
+
+c1_LIROptimizer.hpp                     allocation.hpp
+c1_LIROptimizer.hpp                     c1_LIRAssembler.hpp
+c1_LIROptimizer.hpp                     c1_LIR.hpp
+
+c1_LIROptimizer.cpp                     c1_CacheLocals.hpp
+c1_LIROptimizer.cpp                     c1_CodeGenerator.hpp
+c1_LIROptimizer.cpp                     c1_LIROptimizer.hpp
+c1_LIROptimizer.cpp                     c1_IR.hpp
+c1_LIROptimizer.cpp                     c1_FrameMap.hpp
+c1_LIROptimizer.cpp                     c1_Compilation.hpp
+c1_LIROptimizer.cpp                     c1_Items.hpp
+c1_LIROptimizer.cpp                     c1_ValueStack.hpp
+c1_LIROptimizer.cpp                     ciMethod.hpp
+
+c1_LIROptimizer_<arch>.hpp              generate_platform_dependent_include
+
+c1_LIROptimizer_<arch>.cpp              c1_LIROptimizer.hpp
+c1_LIROptimizer_<arch>.cpp              c1_LIR.hpp
+c1_LIROptimizer_<arch>.cpp              c1_IR.hpp
+

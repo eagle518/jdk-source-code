@@ -1,0 +1,29 @@
+#
+# @(#)mapfile-vers-COMPILER1	1.4 03/11/04 02:39:29
+#
+
+# 
+# Copyright 1999-2002 Sun Microsystems, Inc.  All rights reserved.
+# SUN PROPRIETARY/CONFIDENTIAL.  Use is subject to license terms.
+
+# Define public interface.
+
+SUNWprivate_1.1 {
+        global:
+                # Dtrace support
+                __1cIUniverseP_methodKlassObj_;
+                __1cJCodeCacheF_heap_;
+                __1cIUniverseO_collectedHeap_;
+                __1cHnmethodG__vtbl_;
+                __1cICodeBlobG__vtbl_;
+                __1cKBufferBlobG__vtbl_;
+                __1cLRuntimeStubG__vtbl_;
+                __1cNSafepointBlobG__vtbl_;
+                __1cSDeoptimizationBlobG__vtbl_;
+
+                __1cKC2IAdapterG__vtbl_;
+                __1cKI2CAdapterG__vtbl_;
+                __1cKOSRAdapterG__vtbl_;
+
+		__JvmOffsets;
+};
