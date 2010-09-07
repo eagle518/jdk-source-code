@@ -1,0 +1,45 @@
+# 
+# Copyright (c) 2006, 2009, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+# 
+
+#
+# 
+
+#
+# Master Hotspot version file.  These values may be overridden by a control
+# workspace build.  This file format must remain compatible with both
+# GNU Makefile and Microsoft nmake formats.
+#
+
+# Don't put quotes (fail windows build).
+HOTSPOT_VM_COPYRIGHT=Copyright 2010
+
+HS_MAJOR_VER=17
+HS_MINOR_VER=0
+HS_BUILD_NUMBER=17
+
+JDK_MAJOR_VER=1
+JDK_MINOR_VER=6
+JDK_MICRO_VER=0
+
+# Previous (bootdir) JDK version
+JDK_PREVIOUS_VERSION=1.6.0

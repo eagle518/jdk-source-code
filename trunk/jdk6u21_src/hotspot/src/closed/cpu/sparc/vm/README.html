@@ -1,0 +1,701 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.5 [en] (X11; I; SunOS 5.7 sun4u) [Netscape]">
+   <title>Java HotSpot(TM) Performance Engine README</title>
+</head>
+<body bgcolor="#FFFFFF">
+&nbsp;
+<table BORDER=0 WIDTH="100%" >
+<tr>
+<td ALIGN=CENTER>
+<h1>
+Java HotSpot<sup><font size=-2>TM</font></sup> Performance Engine<br>
+Version 1.0</h1>
+
+<h3>
+Solaris<sup><font size=-2>TM</font></sup> (SPARC<sup><font size=-2>TM</font></sup>
+Platform Edition)</h3>
+</td>
+
+<td ALIGN=RIGHT VALIGN=TOP><font size=+2>&nbsp;</font></td>
+</tr>
+</table>
+
+<h2>
+Contents</h2>
+
+<blockquote><b><a href="#intro">Introduction</a></b>
+<br><b><a href="#req">System Requirements</a></b>
+<br><b><a href="#install">Installing the Java HotSpot Performance Engine</a></b>
+<br><b><a href="#use">Using the Java HotSpot Performance Engine</a></b>
+<br><b><a href="#limitations">Known Issues</a></b>
+<br><b><a href="#limitations">Developer Notes</a></b>
+<br><b><a href="#bench">Benchmarking Issues</a></b></blockquote>
+<a NAME="intro"></a>
+<h2>
+Introduction</h2>
+
+<blockquote>The Java HotSpot<sup><font size=-2>TM</font></sup> performance
+engine is a next-generation, high-performance virtual machine that is fully
+compatible with the new Java<sup><font size=-2>TM</font></sup> 2 platform.
+The Java HotSpot performance engine employs state-of-the-art technology
+to offer many performance enhancements over the "classic" VM that ships
+with the Java 2 SDK.
+<ul>
+<li>
+<b><i>Adaptive and Optimizing Dynamic compiler</i></b> - The Java HotSpot
+performance engine launches an application using a standard interpreter,
+while it analyzes the code, as it runs, to detect performance bottlenecks,
+or "hot spots". It compiles those performance-critical portions of the
+code for a boost in performance, thus avoiding compilation of seldom-used
+portions of the program. Fewer methods are compiled for much better code
+quality, than it is possible in a non-adaptive system that compiles all
+the methods. The Java HotSpot performance engine uses the dynamic program
+profile to decide, on the fly, how best to optimize java code with techniques
+such as inlining and&nbsp; register allocation. The runtime profile&nbsp;
+lets the compiler eliminate guesswork in determining which optimizations
+will yield the largest performance benefit.</li>
+
+<li>
+<b><i>High Performance Memory System</i></b> - The Java HotSpot Performance
+Engine comes with a much improved memory system for allocating, accessing
+and garbage collecting objects. The features include:</li>
+
+<ul>
+<li>
+<i>Direct pointers instead of object Handles for efficient object access.</i>
+In contrast, the Classic VM used object handles which required an extra
+level of indirection to access the fields of an object. Handles also took
+up extra space and sometimes limited the number of objects that can be
+created in the system.</li>
+
+<li>
+<i>Rapid allocation of new objects</i></li>
+
+<li>
+<i>Accurate Garbage Collection</i> which eliminates heap memory leaks and
+fragmentation.</li>
+
+<li>
+Generational garbage Collection for efficient collection. Younger generations
+with higher object mortality rate are collected more frequently for shorter
+pause times and better collection efficiency. Older generations house long-lived
+objects that are only scanned when needed, to free up more space. In contrast,
+non-generational examine the entire heap for every collection.</li>
+
+<li>
+I<i>ncremental garbage collection</i> (optional) for limiting the pause
+times a few milliseconds.</li>
+</ul>
+
+<li>
+<b><i>Fast Thread synchronization</i></b> - A patented, speedy implementation
+of Java synchronization</li>
+
+<li>
+<b><i>Enhanced Scalability</i></b> - Java Threads are implemented using
+native operating system threads, for peak scalability. Fine grained locking
+in the virtual machine, smart thread suspension, and improved thread synchronization
+result in superior scalability for highly threaded Java applications running
+on large, shared-memory multiprocessor servers.</li>
+</ul>
+For more information regarding the architecture of the Java HotSpot performance
+engine, see the whitepaper available on the public <a href="http://java.sun.com/products/hotspot">Java
+HotSpot website</a>.
+<p>Please send general comments and feedback regarding this release to
+<a href="mailto:hotspot-feedback@Sun.com">hotspot-feedback@Sun.com</a>
+.</blockquote>
+<a NAME="req"></a>
+<h2>
+System Requirements</h2>
+
+<blockquote>The Java HotSpot performance engine is fully compatible with
+the Java 2 SDK. You can download the Solaris version of the Java 2 SDK
+from the <a href="http://java.sun.com/products/jdk/1.2/download-solaris.html">Java
+Software public website</a>.
+<blockquote>
+<hr>Currently the Java HotSpot performance engine can be used only in conjunction
+with the
+<a href="http://java.sun.com/products/jdk/1.2/download-solaris.html">Solaris
+<i>Reference
+Implementation</i></a> of the Java 2 SDK from Java Software.&nbsp;
+<hr></blockquote>
+This release of the Java HotSpot performance engine supports SPARC-V8 and
+SPARC-V9 hardware platforms, running Solaris 2.6 or Solaris 7. For proper
+operation, make sure that the required patches listed in the following
+section are installed on your system. This release will run on Solaris
+2.5.1, but there are some known problems, which are not HotSpot related.
+It is likely that support for Solaris 2.5.1 will be dropped in a future
+release. It is recommended that your machine have 64MB of RAM or more.
+<p><a NAME="patches"></a>
+<h3>
+Patches</h3>
+Solaris 2.5.1, 2.6, and Solaris 7 need to have patches installed before
+running this release of the Java HotSpot performance engine. The required
+patches are listed in the table below. The patches in the table can be
+found in an accompanying convnience archive, at the same place where you
+downloaded this version of Java HotSpot for Solaris. The two digit number
+following the dash in each patch id is the revision of that patch. The
+table lists minimum revisions that this release was tested with. Later
+revisions (a higher dash number) are acceptable.
+<br>&nbsp;
+<center><table BORDER=3 CELLPADDING=3 >
+<tr BGCOLOR="#D3D3D3">
+<th>Solaris Version</th>
+
+<th>Patch ID</th>
+
+<th>Use</th>
+
+<th>Description</th>
+</tr>
+
+<tr>
+<td ALIGN=CENTER ROWSPAN="2">7</td>
+
+<td>106980-04</td>
+
+<td>required</td>
+
+<td>Libthread patch</td>
+</tr>
+
+<tr>
+<td>107078-08</td>
+
+<td>recommended</td>
+
+<td>OpenWindows 3.6.1 Xsun patch</td>
+</tr>
+
+<tr>
+<td ALIGN=CENTER ROWSPAN="6">2.6</td>
+
+<td>105490-07</td>
+
+<td>required</td>
+
+<td>Linker patch</td>
+</tr>
+
+<tr>
+<td>105568-13</td>
+
+<td>required</td>
+
+<td>Libthread patch</td>
+</tr>
+
+<tr>
+<td>105210-19</td>
+
+<td>required</td>
+
+<td>LibC and watchmalloc patch</td>
+</tr>
+
+<tr>
+<td>105181-14</td>
+
+<td>recommended</td>
+
+<td>Kernel update (socket close/hang)</td>
+</tr>
+
+<tr>
+<td>105633-21</td>
+
+<td>recommended</td>
+
+<td>OpenWindows 3.6: Xsun patch (fonts)</td>
+</tr>
+
+<tr>
+<td>105669-07</td>
+
+<td>recommended</td>
+
+<td>CDE 1.2: libDTSvc patch (dtmail)</td>
+</tr>
+
+<tr>
+<td ALIGN=CENTER ROWSPAN="3">2.5.1</td>
+
+<td>103627-10</td>
+
+<td>required</td>
+
+<td>Linker patch</td>
+</tr>
+
+<tr>
+<td>103640-27</td>
+
+<td>required</td>
+
+<td>Kernel update and libthread patch</td>
+</tr>
+
+<tr>
+<td>103566-08</td>
+
+<td>required</td>
+
+<td>Xserver update</td>
+</tr>
+</table></center>
+
+<p>In addition to the patches listed here, you may also want to install
+the latest patch cluster for your version of Solaris, which includes additional
+recommended and security patches. Solaris patch clusters are available
+for download on the Web; follow the appropriate links starting at <a href="http://sunsolve.sun.com">SunSolve
+Online</a>.
+<p><a NAME="patchinstall"></a>
+<h3>
+Patch Installation</h3>
+The installation process is most easily performed by downloading the patches
+tar file into an empty current working directory with at least 110MB of
+free space.
+<p>Extract the patches tar file:
+<blockquote>
+<pre>tar xvf solaris_patches.tar</pre>
+</blockquote>
+This will create a number of patch archives with names like <tt>&lt;patch-id>.tar.Z</tt>.
+Patches for several versions of the Solaris operating environment are included
+so no one system will require all the patches.
+<p>Uncompress and extract each of these patch archives that you wish to
+install:
+<blockquote>
+<pre>zcat &lt;patch-id>.tar.Z | tar xvf -</pre>
+</blockquote>
+A patch directory with a name like <tt>&lt;patch-id></tt> will be created
+for each archive. Installation instructions are included in the Install.info
+file in the top directory of each patch. Please also see the README file
+included in each patch for information regarding bug ids fixed and files
+changed by that patch.</blockquote>
+<a NAME="install"></a>
+<h2>
+Installing the Java HotSpot Performance Engine</h2>
+
+<blockquote>The Java HotSpot performance engine is downloaded as a self
+extracting install script. To begin the installation process, use:
+<blockquote>
+<pre>sh hotspot1_0fcs_hp-solsparc.sh</pre>
+</blockquote>
+The installation script will verify that the required patches have been
+installed on your machine. You will need to tell the script where your
+Java 2 SDK is installed, so you should have this information ready.</blockquote>
+<a NAME="use"></a>
+<h2>
+Using the Java HotSpot Performance Engine</h2>
+
+<blockquote>The Java 2 SDK will use the Java HotSpot performance engine
+by default once it's installed. You can use all the SDK tools in the standard
+way, and the Java HotSpot performance engine will automatically be invoked.
+To run an application on the performance engine, for example, simply launch
+it in the usual way:
+<blockquote>
+<pre>java MyApp</pre>
+</blockquote>
+If you want to use the classic virtual machine after the performance engine
+is installed, use the <tt>-classic</tt> command-line option as in these
+examples:
+<blockquote>
+<pre>java -classic MyApp
+appletviewer -classic MyApplet.html
+javac -classic MyApp.java</pre>
+</blockquote>
+The <tt>-classic</tt> option must be the first option in the command.
+<p>You can use the <tt>-version</tt> flag to generate a message that verifies
+which virtual machine is being used:
+<blockquote>
+<pre>java -version
+java -classic -version</pre>
+</blockquote>
+By default, the Java HotSpot performance operates in "mixed mode". This
+means that heavily used program segments (hot spots) are compiled to native
+code, and the remaining bytecodes are executed by a bytecode interpreter.
+This mode provides the fullest performance benefit offered by the Java
+HotSpot performance engine.
+<p>Documentation for the application launcher is available on the <a href="http://java.sun.com/products/jdk/1.2/docs/tooldocs/solaris/java.html">Java
+Software web site</a>. The launcher web page describes "standard" launcher
+options, which work with all Java virtual machines, and "non-standard"
+options, which work only with the classic Java virtual machine. The Java
+HotSpot performance engine supports all standard options and also has its
+own set of non-standard options which are different from the non-standard
+option of the classic VM. The non-standard options of the performance engine
+are:
+<blockquote>
+<dl>
+<dt>
+<b><tt>-Xint</tt></b></dt>
+
+<dd>
+Operate in interpreted-only mode. Compilation to native code is disabled,
+and all bytecodes are executed by the interpreter. The performance benefits
+offered by the Java HotSpot adaptive compiler will not be present in this
+mode.</dd>
+
+<dt>
+<b><tt>-Xbatch</tt></b></dt>
+
+<dd>
+Disables background compilation. If compilation of a large method is taking
+a long time, the VM will revert to interpreting the method. The VM will
+compile the method as a background task, running the method in interpreter
+mode until the background compilation is finished. The <tt>-Xbatch</tt>
+flag disables background compilation so that compilation of all methods
+proceeds as a foreground task until completed, regardless of how long the
+compilation takes. This flag is provided for users who desire more determinisitic
+behavior of method compilation for purposes such as benchmarking.</dd>
+
+<dt>
+<b><tt>-Xincgc</tt></b></dt>
+
+<dd>
+Enable the incremental garbage collector. The incremental garbage collector,
+which is off by default, will eliminate occasional garbage-collection pauses
+during program execution. However, it can lead to a roughly 10% decrease
+in overall performance.</dd>
+
+<dt>
+<b><tt>-Xconcurrentio</tt></b></dt>
+
+<br><tt><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </b>Improves</tt> the performance
+of&nbsp; IO intensive programs with multiple concurrent streams. The
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gains are due
+to higher kernel level concurrency. The impact of this flag on compute
+bound
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; programs is
+expected to be very small.
+<br>&nbsp;
+<dt>
+<tt><b>-Xss</b><i>&lt;size></i></tt></dt>
+
+<dt>
+<tt><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </i>Specify</tt> the size of&nbsp;
+stack for each new Java thread. The default Java thread stack size is 1MB.</dt>
+
+<dt>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This flag
+is appropriate for&nbsp; programs that have small thread stack size requirements
+and/or create</dt>
+
+<dt>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; several thousand
+threads, potentially running out of virtual memory. Program Threads overflowing</dt>
+
+<dt>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; the allocated
+stack will receive java.lang.StackOverFlowException. Example:</dt>
+
+<dt>
+&nbsp;</dt>
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+-Xss128k
+<dt>
+<tt><b>-Xms</b><i>&lt;size></i></tt></dt>
+
+<dd>
+Specify the initial size, in bytes, of the memory allocation pool. This
+value must be a multiple of 1024 greater than 1MB. Append the letter <tt>k</tt>
+or <tt>K</tt> to indicate kilobytes, or <tt>m</tt> or <tt>M</tt> to indicate
+megabytes. The default value is 5248KB. Examples:</dd>
+
+<blockquote>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -Xms4194304
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -Xms4096k
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -Xms4m</pre>
+</blockquote>
+
+<dt>
+<tt><b>-Xmx</b><i>&lt;size></i></tt></dt>
+
+<dd>
+Specify the maximum size, in bytes, of the memory allocation pool. This
+value must a multiple of 1024 greater than 2MB. Append the letter <tt>k</tt>
+or <tt>K</tt> to indicate kilobytes, or <tt>m</tt> or <tt>M</tt> to indicate
+megabytes. The default value is 64MB. Examples:</dd>
+
+<blockquote>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -Xmx83886080
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -Xmx81920k
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -Xmx80m</pre>
+</blockquote>
+
+<dt>
+<tt><b>-Xbootclasspath:</b><i>&lt;bootclasspath></i></tt></dt>
+
+<dd>
+Specify a semicolon-separated list of directories, JAR archives, and ZIP
+archives to search for boot class files. The specified boot class libraries
+will be used instead of the boot class files in the <tt>jre/lib/rt.jar</tt>
+archive normally used by the Java 2 software.</dd>
+
+<dt>
+<b><tt>-Xprof</tt></b></dt>
+
+<dd>
+Send cpu profiling data to standard output. While this option has not been
+extensively tested, it could provide valuable data for program tuning.</dd>
+
+<dt>
+<b><tt>-Xnoclassgc</tt></b></dt>
+
+<dd>
+Disables class garbage collection.</dd>
+
+<dt>
+<b><tt>-X</tt></b></dt>
+
+<dd>
+Prints out a brief usage message describing the non-standard options.</dd>
+</dl>
+</blockquote>
+</blockquote>
+<a NAME="limitations"></a>
+<h2>
+Known Issues</h2>
+
+<blockquote>This release of the Java HotSpot performance engine has the
+following limitations:
+<ul>
+<li>
+This version of Java HotSpot for Solaris only works with the Reference
+implemenetation of the Java 2 SDK for Solaris from Java Software web site.</li>
+
+<li>
+A reproducible VM hang was seen while running a large,&nbsp; threaded Java
+program on Solaris 2.5.1.&nbsp; We have seen the problem&nbsp; with one
+application, and does not appear to be VM related. A future patch or bug
+fix may address this problem in the future.</li>
+
+<li>
+The libthread patch for Solaris 2.5.1 (103640-28) is currently in Beta
+quality.</li>
+
+<li>
+Versions of the <a href="http://java.sun.com/products/plugin/">Java Plug-in</a>
+software prior to and including version 1.2.1 are not compatible with the
+Java HotSpot performance engine. You cannot use the Java HotSpot performance
+engine to run applets using those versions of the Java Plug-in software.
+This incompatibility will be corrected in version 1.2.2 of the Java Plug-in.</li>
+
+<li>
+The JVM Debugging Interface (JVMDI) is implemented but not thoroughly tested.
+A better tested implementation will be made available in the next release.</li>
+
+<li>
+The JVM Profiling Interface (JVMPI) is not implemented yet. A complete
+implementation will become available in the next release.</li>
+</ul>
+</blockquote>
+<a NAME="bench"></a>
+<h2>
+Developer Notes</h2>
+
+<ol>
+<ul>
+<li>
+<b>Java Native Interface (JNI)</b></li>
+</ul>
+
+<ul>
+<ul>
+<li>
+JNI is the only native methods interface supported by Java HotSpot.</li>
+</ul>
+</ul>
+
+<ul>
+<ul>
+<li>
+Faster JNI Array Access can be obtained with using <i>jni_GetPrimitiveArrayCritical()</i>
+and <i>jni_ReleasePrimitiveArrayCritical()</i> instead of using the <i>Get*ArrayElements()</i>
+interfaces. This is subject to all the restrictions that apply to the *Critical()
+operations, as described in JNI documentation. If it is not possible to
+use the <i>*Critical()</i> operations, copying amount of array parameters
+will take place across calls to native code.</li>
+
+<li>
+If you are using Solaris 2.5.1 or Solaris 2.6, you will have set the LD_LIBRARY_PATH
+to &lt;jdk1.2_ref+hotspot_install_dir>/jre/lib/sparc/hotspot, in order
+to find the shared JDK libraries.</li>
+</ul>
+
+<li>
+<b>Signal Processing</b></li>
+</ul>
+
+<ul>
+<ul>
+<li>
+Hotspot 1.0 uses signals internally to handle some exception conditions.
+This can conflict with signal usage in the native code and can cause unpredictable
+behaviour. In order to avoid the problem of conflicting signal usage between
+Hotspot and native code, the following experimental interface has been
+introduced:</li>
+</ul>
+
+<p><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; extern "C"
+int JVM_handle_solaris_signal(int signo,
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+siginfo_t* siginfo,
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+void* ucontext,
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+int abort_if_unrecognized);
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This routine
+may be used by user applications as a "hook" to catch signals. The user-defined
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; signal handler
+must pass unrecognized signals to this routine, and if it returns true
+(non-zero),
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; then the signal
+handler must return immediately.&nbsp; If the flag "abort_if_unrecognized"
+is true,
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; then this routine
+will never return false (zero), but instead will execute a VM panic routine
+to kill
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; the process.
+If this routine returns false, it is OK to call it again.&nbsp; This allows
+the user-defined
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; signal handler
+to perform checks either before or after the VM performs its own checks.
+Naturally,
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; the user code
+would be making a serious error if it tried to handle an exception (such
+as a null
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check or breakpoint)
+that the VM was generating for its own correct operation.
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This routine
+may recognize any of the following kinds of signals: SIGBUS, SIGSEGV, SIGILL,
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SIGFPE, SIGQUIT,
+SIGPIPE. It should be consulted by handlers for any of those signals.
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The caller of
+this routine must pass in the three arguments supplied&nbsp; to the function
+referred to in
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; the "sa_sigaction"
+(not the "sa_handler") field of the structure passed to sigaction().&nbsp;
+This routine
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; assumes that&nbsp;
+the sa_flags field passed to sigaction() includes SA_SIGINFO and SA_RESTART.
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Consider the
+two cases where signal usage conflicts arise:
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a.
+Hotspot VM is created from native code which has already installed signal
+handlers: The
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+native code should invoke Hotspot VM with the additional option -XX:AllowUserSignalHandlers.
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+The HotSpot VM does not install signal handlers if they already exist,
+the VM cross checks to
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+see if -XX:+AllowUserSignalHandlers is specified in the invocation options
+when it finds a
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+pre-existing handler. The signal handler installed by the native code should
+use the
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+JVM_handle_solaris_signal interface to pass unrecognized signals down to
+the VM.
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; b.
+Native code called from Java tries to install signal handlers after HostSpot
+VM has been
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+created and installed it's signal handlers: In this case the native code
+after installing it's handlers
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+should use the JVM_handle_solaris_signal interface to pass unrecognized
+signals down to the
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HotSpot VM.
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Note that if
+the signal handler installed by native code does not pass unrecognized
+signals down
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; to the VM using
+the JVM_handle_solaris_signal interface, it could result in serious errors
+causing
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; termination
+of the Hotspot VM process. Also, in order for java stack overflow checking
+to operate
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; correctly, the
+handler for SIGSEGV should also specify the SA_ONSTACK bit. It is important&nbsp;
+that
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; only the handler
+for SIGSEGV should specify SA_ONSTACK none of the other signal handlers
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; should have
+this bit set.
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>Note that
+above interface and description are experimental and uncommitted. They
+can change</i>
+<br><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+or be removed in future releases of Java HotSpot.</i>
+<br>&nbsp;
+<li>
+<b>File Descriptors</b></li>
+</ul>
+
+<ul>
+<ul>
+<li>
+&nbsp;Programs sometimes run out of file file descriptors. It is easy to
+see what the current setting is and set it with the standard Unix ulimit
+command. In rare cases you may need to bump up the kernel limit by becoming
+root and adding the following lines to the file changing the /etc/system
+file.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; set rlim_fd_max = 4096, set rlim_fd_cur=1024.
+Note that this is general advice and not anything peculiar&nbsp; to the
+Java HotSpot Performance Engine.</li>
+</ul>
+</ul>
+</ol>
+
+<h2>
+Benchmarking Issues</h2>
+
+<blockquote>A useful benchmarking program has two characteristics. First,
+it is <i>representative</i>: the benchmark program does things that larger,
+real-world programs actually do. Second, it is
+<i>predictive</i>: the benchmark
+behaves in a way that predicts the behavior of similar real-world programs.
+<p>The Java HotSpot performance engine is a sophisticated system that uses
+global analysis and optimization. It has been designed and tuned for performance
+on real world applications. Micro-benchmarks might produce unreliable results
+when used to represent or predict the performance of adaptive systems such
+as the Java HotSpot performance engine.
+<br>While it is possible to produce excellent performance on micro benchmarks
+even with an adaptive compilation system, it was not a priority for 1.0.
+<p>A commonly encountered scenario with running micro benchmarks on HotSpot
+1.0, is described by what is known as the "On Stack replacement"&nbsp;
+capability, in adaptive compilation systems. The Java HotSpot performance
+engine typically does not compile a method until the method has been executed
+enough times to become identified as being critical for performance. When
+a method is identified being performance-critical and is compiled, the
+new compiled form of the method is used only for subsequent calls to the
+method, but not for activations of the method already in progress. This
+limitation typically shows up only for small microbenchmarks that execute
+a performance-critical loop only once. A benchmark consisting of a simple
+timed loop in the <tt>main</tt> method, for example, will run at interpreted
+speed, since although the code will be compiled, the compiled code will
+never be used. This limitation has little impact on larger programs written
+using better coding styles and object oriented programming frameworks.
+"On Stack Replacement" feature will be offered in the next release of Java
+HotSpot.
+<p>We believe that there is only one way to gauge the performance of a
+modern virtual machine: test large real-world programs. We strongly recommend
+that you test the HotSpot VM on programs that are as similar as possible
+to the programs whose performance matters to you.
+<p>
+<hr>
+<table BORDER=0 WIDTH="100%" >
+<tr VALIGN=TOP>
+<td><font size=-2>Copyright &copy; 1999 <a href="http://www.sun.com/">Sun
+Microsystems, Inc.</a> All Rights Reserved.&nbsp;</font></td>
+</tr>
+</table>
+</blockquote>
+
+</body>
+</html>

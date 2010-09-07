@@ -1,0 +1,1704 @@
+\documentclass{article}
+
+\long\def\omitThis#1{}
+\long\def\authorComment#1#2{{\bf[#1:\ }{\em #2}{\bf]}}
+\long\def\dld#1{\authorComment{dld}{#1}}
+\long\def\ysr#1{\authorComment{ysr}{#1}}
+\long\def\caveat{CAVEAT:
+This is internal documentation for the HotSpot VM's Garbage Collection
+interface, and is a work in progress. As such, it is at places rough,
+incomplete and out-of-date. Read with caution. In case of any doubts,
+consult the code. As is usually the case with evolving documentation of this
+nature, the best answer will always be to turn to actual code, since
+the documentation is only an obsolete approximation to actual code.}
+
+
+\begin{document}
+
+\title{Hotspot Generational Interface\footnote{\caveat}}
+
+\author{David Detlefs \\
+Java Technology Research Group \\
+Burlington, MA \\
+{\tt david.detlefs@sun.com}
+}
+
+\date{January 2001}
+\maketitle
+
+\section{Introduction}
+
+One of the major features of the Java platform is the requirement that
+its runtime support garbage collection.  However, there are many
+different algorithms for garbage collection, which make different
+tradeoffs, and are therefore appropriate for different applications.
+Interactive applications require short GC interruptions, but usually
+don't mind some degradation in peak application performance to support
+this.  On the other end of the spectrum, "batch" applications don't
+care about the length of GC interruptions, only about their impact on
+the total elapsed time of the application.  Probably most applications
+will obey the "generational hypotheses" (that newer objects are more
+likely to be unreachable than old, and that most pointers point from
+new objects to old); but certainly some applications will violate
+these assumptions.  In some application deployments, extra processors
+and other resoursces will be available to aid in GC; but not so in
+others.  In short, no one GC strategy will be appropriate for all
+applications.
+
+Therefore, to allow Java application developers the ability to choose
+a collection strategy appropriate to their requirements, we have
+crafted a {\em GC interface} that insulates the rest of the HotSpot
+virtual machine from dependencies on a particular implementation of
+the memory system.  This interface is based in large measure on a
+similar interface developed for the Solaris Production Release (aka
+``Research VM'').  However, the fact that HotSpot is written in C++
+allows us to make the "interface" more concrete: it takes the form of
+a pair of C++ abstract classes.  This document is aimed at informing a
+developer how to implement a new collector for the HotSpot system, by
+implementing these abstract classes.
+
+\subsection{Heaps and Barriers}
+
+The two abstract classes that define the GC interface are {\tt
+CollectedHeap} and {\tt BarrierSet.}
+An garbage collection system is a (compatible) pair of concrete
+subclasses of these abstract classes. 
+
+A {\tt CollectedHeap} is an implementation of a heap.  It provides
+functions that perform allocation, invoking garbage collection and
+heap expansion as necessary to satisfy these allocation requests.  A
+given VM instance contains a single {\tt CollectedHeap} instance.
+
+A {\tt BarrierSet} is an implementation of a set of {\em barriers,}
+extra code that is executed by mutator threads whenever they perform
+certain actions.  For example, a generational collector must
+efficiently track references from older to younger generations, usually
+requiring some form of barrier on writes that
+might create such cross-generational references; a Baker-style copying
+collector must maintain 
+the invariant that the mutator observes only to-space references, which
+it implements with a barrier on reference reads.  There are several ways
+in which mutator code can execute: via an interpreter, via compiled
+code (with two distinct compilers in HotSpot), and via native code
+(i.e., via the JNI).  A set of barriers must cover all these modes of
+execution.  So {\tt BarrierSet} contains both virtual functions that
+implement the barriers (suitable for calling from JNI functions that
+access fields, for example) as well as other virtual functions that
+will be called from code generators (such as the two compilers, but
+also the generator that creates the interpreter loop during
+initialization) to generate code to implement the appropriate
+barriers.  Thus, the barrier set implementation will involve writing
+code that is conceptually part of each of the several code
+generators.
+
+{\tt BarrierSet} subtypes may also have data structures associated
+with them.  For example, a generational collector may use a
+card-table-based write barrier to track locations in which
+old-to-young references may have been created.  So the {\tt
+CardTableModRefBS} concrete subclass of {\tt BarrierSet} defines the
+card table data structure, and provides iteration functions that the
+garbage collector can use to find the cards in which modifications
+have occurred.
+
+\subsection{The Generational Interface}
+
+One implementation of {\tt CollectedHeap} is especially important:
+{\tt GenCollectedHeap} is a general framework for generational garbage
+collection.  A {\tt GenCollectedHeap} consists of a sequence of {\em
+generations.}  Each generation is an instance of some concrete
+subclass of the abstract class {\tt Generation}, which defines the
+interface a generation must implement.  We hope that most new
+collection strategies are embodied as subclasses of {\tt Generation.}
+
+\subsection{Roadmap}
+
+Section \ref{s:ch} presents the {\tt CollectedHeap} abstraction.
+Section \ref{s:BarrierSet} discusses the {\tt BarrierSet} type.
+Section \ref{s:gen} describes infrastructure to support
+generational collection within this framework.
+
+\section{CollectedHeap}
+\label{s:ch}
+
+In this section we examine the {\tt CollectedHeap} interface,
+explaining its operation and the contract that each of its methods
+must fulfill.
+
+\subsection{Public Interface}
+\label{ch:public}
+
+The {\tt CollectedHeap} class is defined in the file
+\begin{quote}
+    {\tt src/share/vm/memory/collectedHeap.hpp} \quad .
+\end{quote}
+We will consider each of it's public members.
+
+The enumeration type {\tt CollectedHeap::Name} defines names for the set
+of known subclasses of {\tt CollectedHeap;} the virtual function {\tt
+Name kind()} returns the {\tt Name} of a given collected heap subtype.
+These would be less necessary if we could reliably and portably use
+C++ run-time type information (RTTI) features, but it is not believed
+that this feature set is yet sufficiently standard on all the C++
+implementations to which HotSpot might be ported.
+
+\dld{Delete comment about "Initialize", which no longer applies to
+     anything. }
+
+Several virtual functions deal with the amount of memory used by the
+collected heap.  In HotSpot, the space for the Java heap (and the
+so-called permanent generation, which will be explained later)
+occupies a single contiguous region of address space of the JVM
+process.  This region is {\em reserved,} i.e., the addresses are
+allocated, but may be only partially {\em committed}, i.e., physically
+allocated.  (For example, committing some memory will typically
+involve allocating swap space for it in a disk swap partition.)  A
+{\tt CollectedHeap} instance will reserve a region large enough to contain
+the maximum heap size the user has specified, and 
+commit parts of that as necessary.  (This implicitly assumes that
+address-space reservation is an inexpensive operation: that they
+underlying operating system can efficiently represent large contiguous
+regions of reserved-but-not-committed memory.)  Here are some
+functions:
+
+\dld{I don't see why all of these can't be const...}
+
+\begin{itemize}
+\item {\tt MemRegion reserved\_region();}
+
+Returns the {\tt MemRegion} representing
+the memory reserved for the Java heap.  (A {\tt MemRegion} is a simple
+class type representating a {\tt HeapWord}-aligned contiguous region.
+A {\tt HeapWord} is a word of the Java heap.  Users don't need to know
+more than that.  Object sizes are measured in units of {\tt
+HeapWord}s.  Henceforth, {\em word} will mean {\tt HeapWord}.)
+
+\item {\tt HeapWord* start();}
+
+Returns the start address of the reserved region.
+This is the lowest possible address of a Java object (though it may
+not necessarily be the address of a Java object at the time of any
+call.)
+
+\item {\tt size\_t reserved\_obj\_bytes();}
+
+Returns the size of the reserved
+region in bytes.
+
+\item {\tt size\_t capacity();}
+
+Returns the number of bytes of the reserved
+region that have been committed.
+
+\item {\tt size\_t used();}
+
+Returns the number of bytes of committed memory
+that are currently allocated to hold Java objects.
+
+\end{itemize}
+
+The next set of functions deal with allocation.
+
+\dld{Which of the ``common'' memory allocation functions could become
+private?  Are any beyoud the obj\_allocate, array\_allocate necessary?}
+
+\dld{make size arguments ``word\_size''.}
+
+\begin{itemize}
+\item {\tt oop obj\_allocate(KlassHandle klass, int size, TRAPS);}
+
+Allocates a block of the given (word) {\tt size} (which is required to
+be the appropriate size for {\tt klass}; the redundancy is for efficiency, in
+cases where the caller is in generated code that can statically
+determine the size of the object being allocated.)  The block is
+initialized with zeroes in the fields, and a header indicating it to
+be a member of {\tt klass.}  An {\tt oop} pointing to the head of the
+object is returned.  If the allocation fails, then {\tt TRAPS}
+will indicate an out-of-memory exception.  The implementation must
+exhaust all reasonable methods of reclaiming memory before raising
+this exception.
+
+\item {\tt oop array\_allocate(KlassHandle klass, int size,} \\
+\hspace*{1.30in} {\tt int length, TRAPS);}
+
+Allocates a block large enough to contain an array of the
+given (word) {\tt size.}  The array is of the given {\tt klass} (that is,
+{\tt klass} is the class of the array, not of its elements), and
+contains the given number of elements.  The {\tt size} argument is
+required to be consistent with {\tt klass} and {\tt length}.  Again,
+the redundancy is for efficiency in cases where the call is from
+generated code and the {\tt size} can be determined statically.  If
+the allocation succeeds, the allocated block is initialized with
+zeroes in the elements, and a header containing the given {\tt klass}
+and {\tt length}, and an {\tt oop} pointing to the start of the block
+is returned.  If allocation fails, {\tt TRAPS} indicates an
+out-of-memory exception.
+
+\item {\tt oop large\_typearray\_allocate(KlassHandle klass, int size,}\\
+\hspace*{2.02in} {\tt int length, TRAPS);}
+
+Just like {\tt array\_allocate,} except that the caller asserts that
+the array is large and will contain no references.  Some collectors
+can use such information to optimize memory management.
+
+({\em Large} here means greater than the (word) size returned by the
+virtual function {\tt large\_typearray\_limit()}.)
+
+\end{itemize}
+
+A {\tt CollectedHeap} may or may not support {\em inline, contiguous
+allocation.}  (This term, although already verbose, is stil somewhat
+incomplete: such allocation is also {\em lock-free}.)  If a heap
+supports this feature, then it designates some contiguous region of
+the heap as an allocation area, and allows mutator code access to
+memory locations containing two pointers that delimit the bounds of
+the current allocation area.  Typically, the mutator allocation code
+will use some atomic hardware instruction such as compare-and-swap to
+increment the pointer to the bottom of the allocation area by the size
+of the block being allocated, checking to see whether the block
+extends past the end of allocation area.  If it does, then some
+slow-path allocation strategy is used (which might, for example, set
+up a new contiguous inline allocation area.  Perhaps after a garbage
+collection.)
+
+More concretely, the virtual function
+\begin{quote}
+    {\tt bool supports\_inline\_contig\_alloc();}  {\em const?}
+\end{quote}
+returns a boolean indicating whether the heap supports inline contiguous
+If it does, then the functions
+\begin{quote}
+    {\tt HeapWord** top\_addr();}  {\em const?} \\
+    {\tt HeapWord** end\_addr();}  {\em const?}
+\end{quote}
+return the addresses of fields containing {\tt HeapWord*}s pointing to
+the top of the allocated area (i.e., the bottom of the allocation
+area) ({\tt top\_addr()}) and end of the allocation area ({\tt
+end\_addr()}).
+
+Currenly, the allocation code produced by Compiler 2 uses an
+optimization that complicates matters somewhat.  Apparently, there is
+some savings to be gained by performing the atomic update on {\tt
+top\_addr()} before checking whether this causes {\tt *top\_addr()} to
+exceed {\tt *end\_addr().}  Since several threads may attempt to perform
+such last allocations concurrently, several threads may successfully
+write ``overflow'' values to {\tt top\_addr()} before any of them
+determine that their allocation attempts failed.  In this situation,
+there is always a first such thread, who can provide the correct value
+for ``proper top'', the last value of {\tt *top\_addr()} that did not
+exceed {\tt *end\_addr()}.  The virtual function
+\begin{verbatim}
+    void set_proper_top(HeapWord* prop_top);
+\end{verbatim}
+allows the code that sorts out such situations to restore the proper
+state.
+
+\dld{Does set\_proper\_top really need to be public?}
+
+The virtual function
+\begin{quote}
+    {\tt size\_t unsafe\_max\_alloc();} {\em const?}
+\end{quote}
+returns an estimate of the (word) size of the maximum allocation that
+could currently be done in the heap without any collection or heap
+expansion.  It is an estimate because of possible concurrent
+allocation/collection, hence the ``unsafe'' part of the name: this
+obtains no locks.  However, if the caller holds lock(s) that prevent
+concurrent allocation or collection, then the result is accurate.
+This may be used in heuristic resizing decisions.
+
+The virtual function
+\begin{verbatim}
+    void collect(GCCause cause);
+\end{verbatim}
+causes as full a collection as the {\tt CollectedHeap} supports.  This
+is probably what gets invoked by the Java-level method {\tt
+System.gc.}  The {\tt GCCause} enumeration is a set of possible GC
+causes; {\tt \_java\_lang\_system\_gc} is probably the appropriate choice
+in all calls to {\tt collect.}
+
+As discussed above, a collected heap has an associated {\tt
+BarrierSet}.  (See Section \ref{s:BarrierSet} for a full explanation of
+this type.)  This should be set by an initialization function of any
+concrete subtype of {\tt CollectedHeap}; the member function {\tt
+barrier\_set()} provides access to the heap's barrier set.
+
+Every collected heap (even one that might otherwise be non-generational)
+also has a distinguished {\em permanent generation}, in which non-Java
+objects are allocated.  The most important such objects are related to
+class structures.  This permanent generation is distinguished because
+delicate invariants must be maintained when collecting it.  For
+example, it contains class-related structures whose information is
+necessary in scanning of instances of those classes.  Therefore, those
+structures may not be compacted before all the instances have been
+compacted.  Section \ref{gen:permgen} discusses the permanent
+generation in more detail.  In any case, the member functions
+\begin{verbatim}
+    PermGen* perm() const;
+    Generation* perm_gen() const;
+\end{verbatim}
+both provide access to the permanent generation, the first as an instance
+of the {\tt Permgen} abstraction (which provides allocation functions
+very similar to those of {\tt CollectedHeap}), and the second as a {\tt
+Generation}, whose interface is described in Section
+\ref{gen:generation}.
+
+The next set of functions determine membership of an address in the
+heap.  The member function
+\begin{verbatim}
+    bool is_in_reserved(const void* p) const;
+\end{verbatim}
+tells whether the given address is within the reserved area of the
+heap.  The member function
+\begin{verbatim}
+    bool is_in(const void* p) const;
+\end{verbatim}
+is more specific, telling whether the given address is within a
+committed area of the heap.  (Note that this does {\em not} determine
+whether it points to or within an allocated object in the heap.)  The function
+\begin{verbatim}
+    bool is_in_or_null(const void* p) const;
+\end{verbatim}
+is a variant that also returns {\tt true} if the argument is
+null.
+
+The next set of functions support various kinds of iterations over the
+heap.  Generally in HotSpot an iteration function takes some sort of
+{\em closure} argument.  This is an object that exports a ``do\_{\em
+t}'' function, where {\em t} is a description of the type of object
+that should be passed to the closure function.  For example, the
+{\tt CollectedHeap} virtual function
+\begin{verbatim}
+    void object_iterate(ObjectClosure* cl);
+\end{verbatim}
+calls {\tt cl->do\_object(obj)} with {\tt obj} pointing to the start of
+every object in the heap.  Similarly,
+\begin{verbatim}
+    void oop_iterate(OopClosure* cl);
+\end{verbatim}
+calls {\tt cl->do\_object(p)} for every address {\tt p} of a field of a
+reference type within an allocated object in the heap.
+\begin{verbatim}
+    void oop_iterate(MemRegion mr, OopClosure* cl);
+\end{verbatim}
+is very similar, but includes fields only within the region {\tt mr}.
+
+The function
+\begin{verbatim}
+    void object_iterate_since_last_GC(ObjectClosure* cl);
+\end{verbatim}
+iterates only over objects allocated since the last garbage
+collection.  This is intended to support profiling of allocation
+behavior by type, and in this use is called at the beginning of each GC.
+It is a somewhat fragile interface; it's not completely clear what its
+meaning would be if used for other purposes, or how it would be
+implemented efficiently in a system with non-contiguous spaces.
+
+The collector interface also exposes the concept of a {\em space.}
+This is a region of the heap that supports a uniform allocation and
+collection strategy.  The ``space'' concept is
+embodied by the abstract class {\tt Space}.  Generations will
+generally be made up of one or more {\tt Space}s, but a {\tt
+CollectedHeap} might bypass generations altogether and build up from
+spaces.  We do require that a {\tt CollectedHeap} be
+decomposable entirely into spaces.  The virtual function
+\begin{verbatim}
+    Space* space_containing(const void* addr) const;
+\end{verbatim}
+returns the {\tt Space} containing the given address, if the address
+is within the committed region of the heap (spaces are entirely
+committed), or else NULL.  The virtual function
+\begin{verbatim}
+    void space_iterate(SpaceClosure* cl);
+\end{verbatim}
+calls {\tt cl->do\_space(s)} on all the spaces {\tt s} that make up the
+heap.
+
+In the current HotSpot system, all spaces are {\it contiguous;} that
+is, allocate objects contigously from a bottom to an end, with a
+``top'' pointer indicating the beginning of the unallocated area.
+However, this will probably not be true in the future; concurrent
+mark-and-sweep, for example, will use a non-contiguous space.
+Therefore, several functions present in the old systems have been
+generalized to deal with both cases.  Every space is considered to be
+entirely comprised of a contiguous series of {\em blocks.}  A block
+might be an object, or it might be a chunk of free memory.  (In a
+contiguous space, the unallocated suffix of the space is considered to
+form a single block.)  In any case, we 
+require that a {\tt CollectedHeap} (and, as we will see, a {\tt
+Generation} and a {\tt Space} as well), support the following
+operations:
+\begin{itemize}
+\item {\tt HeapWord* block\_start(const void* addr) const;}
+
+Given an address within the committed portion of the heap, find the
+head of a block containing the address.  If the address is outside the
+committed portion of the heap, return NULL.
+
+\item {\tt size\_t block\_size(const HeapWord* addr) const;}
+
+This requires {\tt addr} to be the start address of a block, and
+returns the size of that block (in {\tt HeapWord}s).  The result is
+undefined if {\tt addr} is not the start address of a block.
+
+\item {\tt bool block\_is\_obj(const HeapWord* addr) const;}
+
+This requires {\tt addr} to be the start address of a block, and
+returns true if the block is an object.  The result is
+undefined if {\tt addr} is not the start address of a block.
+
+\end{itemize}
+
+Another important concept in HotSpot allocation is that of a {\em
+thread-local allocation buffer,} or {\em TLAB.}\footnote{This concept
+was formerly named {\em thread-local eden,} or {\em TLE,} in HotSpot,
+and {\em local allocation buffer,} or {\em LAB,} in EVM.  The use of
+``eden'' carried some implication that these areas were seperately
+collectible, which is inaccurate.  The ``local'' in LAB wasn't
+specific about what sort of thing the allocation buffer was local {\em
+to.}  Hence the compromise name.}  TLABs speed allocation in
+multi-threaded programs.  If all threads are allocating in a single shared
+contiguous allocation area, the threads will contend for access to the
+``top'' pointer that determines the bottom of the free area.  TLABs
+reduce such contention: each thread allocates a chunk signicantly
+larger than the average object size from the shared area, and uses
+that chunk privately to satisfy its allocation requests without any
+synchronization.  Threads only contend for the shared allocation area
+when they need new chunks.
+
+The virtual function
+\begin{quote}
+  {\tt size\_t tlab\_area\_capacity();} {\em const?}
+\end{quote}
+returns the (byte) size of the shared area from which TLABs are
+allocated.  This is used in making sizing decisions about TLABs.
+
+At any point in execution, a number of threads may have active,
+partially-filled TLABs.  However, one thread may fill its TLAB,
+attempt to allocate another, and find the allocation area to be full,
+necessitating a collection.  But the heap is not well-formed at this
+point: the unfilled parts of the active TLABs are not objects, and
+neither are they blocks, because they don't describe their size.  To
+make the heap well-formed, the collector can (must!) call the virtual
+function
+\begin{verbatim}
+    void fill_all_tlabs();
+\end{verbatim}
+which makes the unfilled parts of all active TLABs look like
+well-formed objects (usually arrays of integers.)
+
+The {\tt CollectedHeap} maintains an internal flag telling whether a
+``stop-the-world'' is currently in progress.  (This is a protected
+field that is set and reset by subclasses.)  The virtual function
+\begin{quote}
+  {\tt bool gc\_is\_active();} {\em const?}
+\end{quote}
+returns the value of this flag.
+
+The JVMPI interface divides the address space into ``arenas'' with
+integer identifiers.  The virtual function
+\begin{verbatim}
+    int addr_to_arena_id(void* addr);
+\end{verbatim}
+maps addresses to these arena identifiers.  Zero is not a valid
+identifier, and is returned if the address does not fall within a
+known arena.  \dld{Why not const method and const void*?}
+
+A final set of public virtual functions are not enabled in a product
+build, since they are used for debugging and performance tracking.
+The function
+\begin{verbatim}
+    void update_max_capacity();
+\end{verbatim}
+can be called after the committed size of the heap has increased, and
+it will track the maximum committed size.  This maximum can be
+retrieved with
+\begin{verbatim}
+    void print_max_capacity();
+\end{verbatim}
+which prints the maximum committed size (on standard output?)
+\dld{Why isn't update\_max\_capacity protected?}
+
+{\em Verification} is debugging code that ensures that the invariants
+of a data structure are maintained.  Verification code is useful in
+all programming, but seems to be especially important in garbage
+collection, where the consequences of a bug may otherwise be found
+long after its occurrence and may therefore be impossible to explain.
+
+Some heaps may have certain invariants that only hold at certain
+operation boundaries, not at every point in execution.  The virtual
+function
+\begin{verbatim}
+    void prepare_for_verify();
+\end{verbatim}
+allows such heaps to restore such invariants in preparation for
+verification.  The verification itself is performed by
+\begin{verbatim}
+    void verify(bool allow_dirty, bool silent);
+\end{verbatim}
+(The two are separated because several verifications might be
+performed after a single preparation.)  \dld{Explain the arguments.}
+The function
+\begin{verbatim}
+    void print();
+\end{verbatim}
+prints some representation of the state of the heap (on standard output?)
+
+\dld{Why isn't prepare\_for\_verify within \#ifndef PRODUCT?}
+
+Finally, {\tt CollectedHeap} has an important static function.  In a
+given JVM instance, there will be only a single {\tt CollectedHeap}
+instance.  The static function {\tt heap()} returns that instance.
+
+\subsection{Protected (subclass) Interface}
+
+\dld{Actually, this shouldn't be there.  What's the use of declaring
+{\tt gc\_prologue()} and {\tt gc\_epilogue()} in {\tt CollectedHeap?}
+It's purely local to the subtypes that need these.}
+
+\subsection{Comments on implementation}
+
+Most of the implementation provided with the abstract class {\tt
+CollectedHeap} has to do with allocation.  The basic allocation
+methods are inlined static functions.  (They can be static because of
+the assumption that there is only a single instance of {\tt
+CollectedHeap.})  They call other static inlined functions to allocate
+initialized memory (doing GC if necessary and raising OutOfMemory if
+allocation fails), then another call to initialize the header of the
+object with the class pointer (and array length, if the object is an
+array.)
+
+The memory allocation functions try allocating in a TLAB if those are
+in use.  If not, or if the TLAB allocation fails, they revert to
+calling a virtual allocation function of the particular {\tt
+CollectedHeap} subclass.  This is where GC is performed, if
+appropriate.
+
+\section{BarrierSet}
+\label{s:BarrierSet}
+
+This section explains the {\tt BarrierSet} abstraction.  The function
+of this abstraction is to embody the set of {\em barriers} at which a
+memory system might require the mutator to execute code to cooperate
+in collection.  These barriers allow the memory system to require the
+mutator to participate in a garbage collection algorithm.
+
+The barrier set is quite general, allowing a memory system to
+interpose on a large set of events.  Most garbage collection
+algorithms will require no special action for most of those events; in
+that case, those barriers take no action.  More specifically, the
+barrier set allows barriers on reads and writes of primitive and
+reference values; some collection algorithms require no barrier at all,
+and many others require actions only on reference writes.
+
+Note that a {\tt BarrierSet} is not necessarily just a set of
+functions.  It may also encapsulate some data structures manipulated
+by the barrier code.  For example, in a generational system using a
+card-table-based representation of a remembered set, the card table
+structure will be part of the representation of the {\tt BarrierSet}
+subtype that provides this functionality.
+
+\subsection{Public Interface}
+
+This section discusses the public interface of the abstract class {\tt
+BarrierSet.}
+
+The enumeration
+\pagebreak
+\begin{verbatim}
+    enum Name {
+      ModRef,
+      CardTableModRef,
+      Other
+    };
+\end{verbatim}
+defines names for the known subclasses of {\tt BarrierSet.}  The
+virtual function
+\begin{quote}
+    {\tt BarrierSet::Name kind();} {\em const?}
+\end{quote}
+returns the {\tt Name} of the barrier set to which it is applied, and
+\begin{quote}
+    {\tt bool is\_a(BarrierSet::Name bsn);} {\em const?}
+\end{quote}
+determines whether the barrier set to which it is applied is an
+instance of {\tt bsn.}  As with the similar functions of {\tt
+CollectedHeap}, these functions reflect a lack of confidence in
+widespread correct implementation of the C++ runtime type information
+facility, which would obviate their use.
+
+The first set of functions allow queries on the kind of (non-trivial)
+barriers that the barrier set imposes.
+\begin{quote}
+    {\tt bool has\_read\_ref\_barrier();} {\em const?} \\
+    {\tt bool has\_read\_prim\_barrier();} {\em const?} \\
+    {\tt bool has\_write\_ref\_barrier();} {\em const?} \\
+    {\tt bool has\_write\_prim\_barrier();} {\em const?}
+\end{quote}
+I hope the naming system is self explanatory: a barrier can be a {\tt
+read} or {\tt write} of a {\tt ref} or {\tt prim} field.\footnote{In
+the EVM barrier system there was a further distinction between static
+and instance fields.  That distinction is not reflected in HotSpot,
+where static fields are treated more uniformly as instance fields of
+class objects in the permanant generation.}
+
+The member functions above whether the given kind of memory access {\em ever}
+requires a barrier operation; the next set of member functions
+determines whether {\em particular} accesses requires non-trivial
+barrier actions.
+\begin{verbatim}
+    bool read_ref_needs_barrier(oop obj, size_t offset);
+    bool read_prim_needs_barrier(oop obj, size_t offset,
+                                 size_t bytes);
+    bool write_ref_needs_barrier(oop obj, size_t offset,
+                                 oop new_val);
+    bool write_prim_needs_barrier(oop obj, size_t offset,
+                                  size_t bytes,
+                                  juint val1, juint val2);
+\end{verbatim}
+\dld{All of the above should be const.}
+If a given {\tt BarrierSet} does not have a given barrier, then the
+corresponding {\tt needs\_barrier} function always returns false.
+Otherwise, the functions determine whether a memory access of the
+field at that {\tt offset} from the start of {\tt obj} requires a
+barrier.  These functions may be conservative: they may indicate that
+a barrier call is required when one actually is not, but they may
+never indicate that a barrier is not required when one actually is.
+
+For {\tt prim} operations the {\tt bytes} arguments
+determines the size of the access; this should always be one, two,
+four, or eight bytes.  For {\tt write} operations, the value to be
+written is also provided.  (For {\tt write\_prim}, the 1, 2, and 4 byte
+values are passed in {\tt val1}; an 8-byte value uses both {\tt val1}
+and {\tt val2.})
+
+Let's consider aa non-trival example of these functions.  One such
+example would be the {\tt write\_ref\_needs\_barrier} operation in a
+barrier for a generational system.  Here the goal of the barrier is to
+track the creation of new pointers from older to younger generations,
+so the barrier might determine whether the new reference value being
+written is cross-generational.
+
+Many functions in the interface have two versions, for two different
+ways of specifying a field address.  The functions above used an
+object head address and a field offset.  The versions below pass the
+field address directly.  Otherwise, they are precisely the same as the
+{\tt needs\_barrier} functions already described.
+\begin{verbatim}
+    bool read_ref_needs_barrier(oop* field)
+    bool read_prim_needs_barrier(oop* field, size_t bytes)
+    bool write_ref_needs_barrier(oop* field, oop new_val)
+    bool write_prim_needs_barrier(oop* field, size_t bytes,
+                                  juint val1, juint val2);
+\end{verbatim}
+\dld{All of the above should be const.  Is this duplication really a necessary/good
+idea?}
+
+Now we reach the functions that actually implement the barriers.
+These are quite analogous to the functions we have just seen: they
+even take the same arguments.  However, they actually perform the
+barrier operation rather than determining if one is necessary.
+\begin{verbatim}
+    void read_ref_field(oop obj, size_t offset);
+    void read_prim_field(oop obj, size_t offset, size_t bytes);
+    void write_ref_field(oop obj, size_t offset, oop new_val);
+    void write_prim_field(oop obj, size_t offset, size_t bytes,
+                          juint val1, juint val2);
+\end{verbatim}
+Again, each of these have alternate forms that take the address of the
+accessed field rather than an {\tt obj}/{\tt offset} pair.
+\begin{verbatim}
+    void read_ref_field(oop* field);
+    void read_prim_field(oop* field, size_t bytes);
+    void write_ref_field(oop* field, oop new_val);
+    void write_prim_field(oop* field, size_t bytes,
+                          juint val1, juint val2);
+\end{verbatim}
+
+The next pair of member functions is something of a compromise.  Some
+barrier sets will use their data structures not only to record mutator
+operations, but also allow a garbage collector to record summary
+information found after processing those mutator operations.  For
+example, in a system with a card-table-based write barrier, a mutator
+thread dirties an old-generation card by creating an old-to-young
+reference.  A subsequent young-generation collection would examine that
+dirty card.  Some dirty card table entries should be cleared, because
+the corresponding cards are found to actually contain no old-to-young
+references.  Others do contain such references, and should remain
+non-clean to ensure that they are also scanned in the next collection,
+even if they are not written to again.  To allow this distinction, we
+provide the functions:
+\begin{verbatim}
+    void write_ref_field_gc(oop obj, size_t offset, oop new_val);
+    void write_ref_field_gc(oop* field, oop new_val);
+\end{verbatim}
+The collector can use these when it processes a reference field and
+leaves it in a state where it should also be considered by the next
+collection.
+
+\dld{I'm still not sure this makes complete sense.}
+
+The next set of operations allow some barrier sets to provide
+optimizations.  Some operations, such as {\tt System.arrayCopy} or {\tt
+Object.clone}, involve reads and writes of many fields in possibly
+extensive regions.  Sometimes, the barrier invocations corresponding
+to such operations can be optimized.  For example, consider an {\tt
+arrayCopy} of an array of references in a generational system with a
+card-table-based write barrier.  Assume the array spans several
+cards.  With no optimization, the write barrier would be invoked as
+each element was copied into the new array.  The copy first element on a
+card would set it to dirty, and the copy of each of the remaining
+elements on the card would also redundantly set the to dirty.  The
+obvious optimization is to eliminate the redundancy: compute the range
+of cards spanned by the array, and set all those cards to dirty
+exactly once, performing the copying with no additional write
+barrier.  Note that this requires the entire operation to
+be atomic w.r.t. GC.  Otherwise, a collection occurring in the middle
+of the copying would ``process'' and reset the dirty cards, and a
+subsequent collection would not see the cards in the latter
+half of the array as dirty, even though they were modified since the
+last collection.  For large arrays, a system could break the
+copying process into chunks whose copying is atomic w.r.t. GC, and
+apply the optimization to each chunk separately.
+
+We classify the potential optimizations as read/write operations on
+reference/primitive arrays, and read/write operations on non-array
+regions.  The following functions determine whether a given barrier
+set supports an optimization for the given array or region operation:
+\begin{verbatim}
+    bool has_read_ref_array_opt();
+    bool has_read_prim_array_opt();
+    bool has_write_ref_array_opt();
+    bool has_write_prim_array_opt();
+    bool has_read_region_opt();
+    bool has_write_region_opt();
+\end{verbatim}
+\dld{All of the above should be const.}
+If a barrier uses a given barrier, and provides an optimization for
+array or region operations, the corresponding
+function  above returns true.  If the barrier set uses a given
+barrier, but does not provide an optimization, then the implementation
+must call appropriate barrier operations on each access to the
+elements or fields in the array or region.  If the barrier set does
+provide an optimized array or region barrier, however, then the
+following functions are the implementations of those array or region
+barriers:
+\begin{verbatim}
+    void read_ref_array(MemRegion mr);
+    void read_prim_array(MemRegion mr);
+    void write_ref_array(MemRegion mr);
+    void write_prim_array(MemRegion mr);
+    void read_region(MemRegion mr);
+    void write_region(MemRegion mr);
+\end{verbatim}
+The {\tt MemRegion} arguments describe the regions being read from or
+written to.\footnote{Note that these signatures provide less
+information than is provided in the individual per-element or field
+barrier operations; for example, the new values being written.  If a
+particular barrier requires this extra information, then its barrier
+set cannot provide an array or region optimization of this barrier.}
+
+The operations we have discussed so far provide actual implementations
+of the barriers, suitable for direct execution from an interpreter
+loop, for example.  However, with optimizing JIT compilers, the
+overhead of invoking a virtual function to accomplish a barrier would
+be unacceptable.  Therefore, each of the code generators used in
+HotSpot ``cedes'' part of its implementation to the {\tt BarrierSet}
+abstraction.  That is, these code generators will invoke virtual
+functions of the current {\tt BarrierSet} to generate the appropriate
+code for the barrier.
+
+\dld{This part of the {\tt BarrierSet} interface is still to be worked
+out.  Bernd was trying to figure out the appropriate signatures for
+these methods for the various code generators (Compiler 2, Compiler 1,
+the interpreter generator; these last two may share the same
+interface.)  Getting these right, with implementations for the
+default barrier set is a high-priority task.  A ``null'' barrier set for
+1-generation systems, and ``universal'' barrier set, where each
+generated barrier invokes the corresponding {\tt BarrierSet} virtual
+function (for generality and rapid prototyping, damn the runtime cost) should
+also be easy extensions that will test the generality of the
+interface.}
+
+Here's what we have now, just as a placeholder:
+\begin{verbatim}
+    virtual void gen_read_ref_field();
+    virtual void gen_read_prim_field();
+    virtual void gen_write_ref_field();
+    virtual void gen_write_prim_field();
+\end{verbatim}
+
+\dld{Issue: I have phrased the ``direct'' barriers as things you may
+or may not have.  If you have it, you do it in addition to the memory
+access, which is executed by a caller (such as the interpreter loop.)
+I believe Bernd took the opposite tack: the barrier generation
+functions generate the code that accomplishes the memory access,
+appending any barrier operation if necessary.  So you *always* have a
+barrier function of each kind, it just may not do anything beyond the
+basic memory access.  I forget the issues that influenced this.  It
+would be good to recall them, and decide if the design previously
+discussed should be modified to be more consonant with this approach.}
+
+As we have discussed, barrier sets may have associated data
+structures.  Often the sizes of these structures will be functions of
+the heap size, as is the case with a card table.  We assume that a
+heap is organized as a set of ``reserved regions'' each of which has
+some ``committed'' portion.  The {\tt BarrierSet} constructor takes an
+argument indicating the maximum number of such reserved/committed
+regions:
+\begin{verbatim}
+    BarrierSet(int max_committed_regions);
+\end{verbatim}
+and a {\tt CollectedHeap} informs the {\tt BarrierSet} when the size
+of one its committed regions has changed via the virtual function:
+\begin{verbatim}
+    void resize_committed_region(MemRegion mr);
+\end{verbatim}
+The {\tt mr} argument must either denote a region just expanded from
+0 size, or else {\tt mr.start()} must be the start of a previously
+recorded committed region, whose size is now the the size indicated by
+{\tt mr}.  The {\tt BarrierSet} takes any action appropriate to this
+information, if any, such as expanding a card table to cover an
+expanded heap.
+
+As with most constructs in HotSpot, {\tt BarrierSet} also provides
+{\tt verify()} and {\tt print()} functions useful for debugging. 
+\dld{Why isn't {\tt print()} in the \#ifndef PRODUCT?}
+
+\section{Generational Systems}
+\label{s:gen}
+
+We expect that the most important class of {\tt CollectedHeap}
+implementations will use {\em generational} collection.  This is a
+highly successful technique, in which the heap is divided up into
+several {\em generations} containing objects of different ages.  In
+most programs, recently allocated objects are more likely to become
+garbage than objects that have been reachable for a long time.  To
+take advantage of this behavior, a relatively small portion of the
+heap is designated as the youngest generation.  All (or almost all)
+object allocation occurs there.  When it is full, it is collected
+(mostly) independently of the rest of the heap.  Because of the
+relatively high concentration of garbage in the young generation, such
+collections reclaim more useful space per unit work than full
+collections.  Also, because
+of the relatively small size of the young generation, they interrupt
+the program for shorter periods of time.  Objects that survive several
+young-generation collections are promoted to older generations, which
+are collected less frequently then the young generation.
+
+Because of the wide success of this generational approach, we have
+created an implementation of {\tt CollectedHeap} customized to allow
+easy creation of different generational systems.  The next section
+describes this {\tt GenCollectedHeap} class, and subsequent sections
+describe the {\tt Generation} class from which a {\tt
+GenCollectedHeap} is constructed, the subtleties of the permanent
+generation, and existing instances of {\tt Generation}.
+
+\subsection{GenCollectedHeap}
+
+The {\tt GenCollectedHeap} subclass of {\tt CollectedHeap} provides a
+general framework for a heap comprised of a sequence of generations.
+
+\subsubsection{Public Interface}
+\label{gch:public}
+
+Much of the public interface of {\tt GenCollectedHeap} is simply that
+defined by {\tt CollectedHeap.}  However, there is some extra functionality.
+
+The first set of extra functions exposes the existence of the
+generations that make up the heap, and their order within the heap.
+\begin{quote}
+    {\tt int n\_gens();}  {\em const?} \\
+    {\tt Generation* get\_gen(int i);}  {\em const?} \\
+    {\tt Generation* prev\_gen(Generation* gen) const;} \\
+    {\tt Generation* next\_gen(Generation* gen) const;}
+\end{quote}
+The {\tt n\_gens} virtual function returns the number of generations in
+the heap (not counting the permanent generation.)  The {\tt get\_gen}
+function returns a generation; the sequence is considered to be
+0-based, and if the argument is out of range, {\tt NULL} is returned.
+(We will refer to the index of a generation in this sequence as its
+{\em level.})
+The {\tt prev\_gen} and {\tt next\_gen} functions take a generation
+(required to be a member of the current heap), and return the
+preceding or following generation, respectively (or {\tt NULL} if
+the argument generation is the first or last, respectively.)
+
+The class declaration and virtual function
+\begin{verbatim}
+    class GenClosure {
+    public:
+      virtual void do_generation(Generation* gen) = 0;
+    };
+
+    void generation_iterate(GenClosure* cl, bool old_to_young);
+\end{verbatim}
+allow application of a closure object to each of the generations.  The
+{\tt old\_to\_young} argument determines whether the order of iteration is
+young-to-old (if the argument is {\tt false}) or old-to-young (if {\tt
+true}).
+
+The function
+\begin{quote}
+    {\tt int total\_invocations();} {\em const?}
+\end{quote}
+returns the total number of invocations of GC on individual
+generations.  (This may be greater than the number of times the world
+is stopped for GC, since ease such suspension might collect several
+generations.)  {\`em I'm by no means sure that this is a good
+interface.  Perhaps a counter of the number of times the world is
+stopped for GC would be simpler and more appropriate.  We'd have to
+look at the uses of this function.}
+
+As with {\tt CollectedHeap}, {\tt GenCollectedHeap} has a static
+function {\tt heap()} that returns the heap instance as a {\tt
+GenCollectedHeap*}.  (Unlike {\tt CollectedHeap}, however, this
+function could conceivably fail of the heap instance were {\em not} a
+{\tt GenCollectedHeap}; the {\tt heap} function returns {\tt NULL} in
+that case.  The system is not presently robust in the face of
+non-generational heaps, but I hope it could be made so without too
+much difficulty.)
+
+Another set of public virtual functions is conceptually private, and
+is made public only for implementation reasons.
+\begin{verbatim}
+    HeapWord* satisfy_failed_allocation(size_t size,
+                                        bool large_noref,
+                                        bool& notify_ref_lock);
+
+    void do_full_collection(bool& notify_ref_lock);
+\end{verbatim}
+are exposed because they are the functions invoked by the VM operation
+that actually stops the world and performs collection.
+\dld{(We might consider actually
+making them private, and using appropriate {\tt friend}
+declarations.)}  The {\tt satisfy\_failed\_allocation} function does
+whatever it can do attempt to allocate an object of the given (word)
+size, including GC and heap expansion if necessary.  The {\tt
+large\_no\_ref} flag, if true, is an assertion by the caller that 
+the size is greater than the {\tt large\_typearray\_limit()}, and that
+it will contain no references.  Some implementations can base
+optimizations on this information.  The {\tt notify\_ref\_lock} argument
+is set to {\tt true} if the call did some collection activity that
+added any weak reference objects to queues that require processing.
+Generally, the caller will notify the queue-processing threads when
+this is returned {\tt true}.
+
+The {\tt satisfy\_failed\_allocation} is free to do only as much GC as is
+necessary to perform the allocation.  In contrast, {\tt
+do\_full\_collection} must perform a full collection.  The meaning of
+the {\tt nofiy\_ref\_lock} argument is the same as in {\tt
+satisfy\_failed\_allocation}.
+
+Another set of functions could be considered for exclusive use of
+generation implementations.  For example,
+\begin{verbatim}
+    ScratchBlock* gather_scratch(Generation* requestor,
+                                 size_t max_alloc_words);
+\end{verbatim}
+may be called when a generation (the {\tt requestor}) would benefit
+from some extra temporary storage during its collection.  For
+example, to do compaction, the mark-compact generation must insert
+forwarding pointers into the ``mark words'' of old generation
+objects.  This word has a standard value unless the object has been
+hashed or is currently locked, so the strategy used is to save and
+restore only the non-standard values.  So the mark-compact generation
+request scratch space in which to store these non-standard mark-word
+values.  \dld{By the way, did I remember to reset age bits to 0 on
+promotion, to make sure most objects have the prototype mark word?}
+
+The requestor promises to allocate no more than {\tt max\_alloc\_words}
+in any older generations; this information is necessary since it might
+influence how much scratch space an older generation can make
+available to the requestor, and still handle any promotion from the
+requestor.
+
+The returned result is a linked list of ``scratch blocks,'' sorted by
+decreasing size.  The {\tt ScratchBlock} struct type is defined in
+{\tt generation.hpp}; each block starts with a pointer to the next
+block, then the size of the current block, then the rest of the free
+space.
+
+The functions
+\begin{verbatim}
+    void save_marks();
+    void oop_since_save_marks_iterate(int level, OopClosure* cur,
+				      OopClosure* older);
+    bool no_allocs_since_save_marks(int level);
+\end{verbatim}
+work together to allow certain kinds of iteration.  A generation may
+call {\tt save\_marks} on the {\tt GenCollectedHeap} as a whole.
+A later call to
+\begin{verbatim}
+    no_allocs_since_save_marks(level)
+\end{verbatim}
+will determine whether any allocations have happened in generations at
+or older than {\tt level}.  If so, then {\tt
+oop\_since\_save\_marks\_iterate} allows iteration over these
+allocated objects, if passed the same generation level.  Different
+closures may be applied to objects in the generation {\tt level} and
+in older generations, via the {\tt cur} and {\tt older} arguments.
+
+The fairly complicated function
+\begin{verbatim}
+    enum ClassScanningOption {
+      CSO_None,
+      CSO_AllClasses,
+      CSO_SystemClasses
+    };
+
+    void process_strong_roots(int level,
+                              bool younger_gens_as_roots,
+                              bool collecting_perm_gen,
+                              ClassScanningOption cso,
+                              OopClosure* older_gens,
+                              OopClosure* not_older_gens);
+\end{verbatim}
+allows application of closures to locations containing root references.
+This is obviously a useful function in implementing the collection
+function for a given generation.  In more detail, the {\tt level}
+argument indicates the level of the generation being collected, so
+that other generations can be classified as older or younger.  If {\tt
+younger\_gens\_as\_roots} is {\tt true}, then younger generations are
+scanned in their entirety.  (If {\tt false}, the collecting generation
+must make some other provision for finding references from other
+generation to its objects; for
+example, it could mark the younger generations along with the current
+generation.)  The {\tt cso} argument indicates how classes should be
+treated; {\tt CSO\_None} scans no classes, {\tt CSO\_AllClasses} all of
+them, and {\tt CSO\_SystemClasses} scans only classes loaded by the
+system class loader (i.e., those that can never be unloaded).  This
+last option is useful for marking processes that also determine class
+reachability in order to do unloading.  The implementation may use
+whatever barrier set is provided to help in the identifying references
+into the current generations from older generations.  The closure
+{\tt older\_gens} is applied to such reference locations, and 
+{\tt not\_older\_gens} to all other root locations; some collectors can
+make use of this distinction.
+
+A related function is
+\begin{verbatim}
+    void process_weak_roots(OopClosure* root_closure,
+                            OopClosure* non_root_closure);
+\end{verbatim}
+which process ``weak'' roots, roots that do not make an object
+reachable on their own, but which must be updated if the referent
+object is reachable and has been moved by the collection.
+\dld{Fix comment on this one; out-of-date.  I hope the root/non-root
+distinction can go away, if it was only used to ensure consistency in
+the root set (which now would be accomplished by calling the common
+iterator.)}
+
+\dld{Is {\tt no\_gc\_in\_progress} really necessary?  If so, put in supertype.}
+
+{\tt CollectedHeap} was an abstract class, but {\tt GenCollectedHeap}
+is concrete, so an instance can be constructed.  For somewhat
+complicated reasons {\em (which might be simplifiable and
+surmountable)}, the initialization of a {\tt GenCollectedHeap} is
+separated into a default constructor that does very little and the
+function below, which accomplishes the real work.
+\begin{verbatim}
+    void initialize(int n_gens, GenerationSpec** gs,
+                    PermGenSpec* pgs,
+                    BarrierSet::Name bsn);
+\end{verbatim}
+The {\tt n\_gens} argument indicates how many (non-permanant)
+generations there will be; the {\tt gs} argument must be an array of
+{\tt n\_gens} elements, each of which specifies a generation.  The
+generational configuration will correspond, in order, to the
+generational specifications in this array.  The {\tt pgs} argument
+specifies the permanent generation to use, and {\tt bsn} the kind of
+barrier set.  The {\tt initialize} function is free to abort the JVM
+process with an appropriate error message if its arguments are
+incompatible with one another.  For example, a given generation might
+only work as the youngest generation, or might require a certain
+barrier, etc.
+
+\dld{Get rid of GenerationSpecPtr!}
+
+Here is the definition of {\tt GenerationSpec}:
+\begin{verbatim}
+    class GenerationSpec {
+    public:
+      Generation::Name gn;
+      size_t initSize, maxSize;
+
+      GenerationSpec(Generation::Name t_gn, size_t t_initSize,
+                     size_t t_maxSize) :
+          gn(t_gn), initSize(t_initSize), maxSize(t_maxSize) {}
+
+      Generation* init(ReservedSpace rs, int level,
+                       BarrierSet* bs);
+    };
+\end{verbatim}
+{\tt Generation::Name} is an {\tt enum} of the known generation
+kinds.  The spec specifies the initial and maximum sizes of the
+generation.  The {\tt init} function attempts to create the described
+generation, giving it the appropriate level, and letting it allocated
+a prefix of the reserved space {\tt rs} for its use.  It is informed
+of the barrier set in use (which will have been created before any
+generation is initialized.)  A generation {\tt init} function may abort
+the JVM process with an appropriate error message if it detects some
+incompatibility in the specification (with the barrier set, for
+example).
+
+\subsubsection{Comments on implementation}
+\label{gch:impl}
+
+Let's follow the code path of an allocation request.
+\begin{itemize}
+\item First, allocation is attempted in a TLAB, or in a shared inline
+contiguous allocation area, either by inlined generated code or by the
+{\tt obj\_allocate} function of {\tt CollectedHeap}.  Assume this fails.
+
+\item Therefore, the virtual function {\tt mem\_allocate} will be
+called.  In the case of {\tt GenCollectedHeap}, this calls {\tt
+mem\_allocate\_work}.
+
+\item The function first obtains the mutual exclusion lock that
+protects the heap.  It then iterates over the generations, from
+youngest to oldest.  Each generation has a {\tt should\_allocate}
+virtual function, which determines whether allocation requests of a
+given size should be attempted in the generation.  Young generations
+probably wish to limit the size of objects that can be allocated in
+them: if large objects are allocated frequently in the youngest
+generation, then it will be collected too frequently to be effective. 
+We assume that the generations are monotonic in this regard; that if a
+generation allows a collection request, then so will any older
+generation.  However, we do not enforce this assumption.
+
+Allocation is tried in the first generation that allows the attempt.
+If this succeeds, the result is returned.  If it fails however, we
+attempt a collection to free enough space to satisfy the allocation.
+
+\item A VM operation request is enqueued that causes the VM thread to
+stop all mutator threads and call the {\tt satisfy\_failed\_allocation}
+function of {\tt GenCollectedHeap.}  The first step of this operation
+is to call {\tt do\_collection,} still passing along the allocation
+request size.
+
+\item The {\tt do\_collection} function does some preliminary work to
+prepare for GC, then iterates over the generations in order.  For each
+generation in which the allocation would be tried, we try a
+collection.  Again, this involves some necessary bookkeeping, then an
+invocation of the {\tt collect\_for\_allocation} virtual function of the
+generation, which takes the allocation size as an argument (allowing,
+if it is desired, as little collection activity as will suffice
+to satisfy the allocation.)  This returns a boolean result indicating
+whether it succeeded in freeing enough space to perform the
+allocation.
+
+If collection in some generation frees sufficient space to satisfy the
+request, we still iterate over the remaining generations, querying via
+their {\tt should\_collect} functions whether this is a desirable point
+for further collection.  If so, we invoke the generation's {\tt
+collect\_for\_allocation} function, passing zero as the allocation
+size.  The function may then do whatever collection activity is
+appropriate.  \dld{(This zero-size thing is kind of a clunky encoding
+for ``do incremental stuff;'' maybe just having a separate function
+would be better?)}  For example, an older train generation might wish
+to do some amount of collection work after each young-generation
+collection.
+
+Collection provides information on heap occupancy, so it may also
+cause the generations to be resized.
+
+\item Back in {\tt satisfy\_failed\_allocation,} we attempt the
+allocation, this time trying all generations in which the allocation
+request would be legal, not just the first.  If the collection
+succeeded in freeing sufficient memory, this should succeed in some
+generation.  But the collection may not have succeeded.
+
+\item Finally, we try calling the {\tt expand\_and\_allocate} functions
+of each generation, which try expanding the generation sufficiently to
+satisfy the request.  If one succeeds, we return the result.
+
+\item Otherwise, allocation has failed and {\tt
+satisfy\_failed\_allocation} returns {\tt NULL.}  The allocating thread
+will raise {\tt OutOfMemory.}  There are perhaps other things that
+could be tried before this extreme step:
+\begin{itemize}
+\item Abandoning the generational structure, making one big heap,
+since the partition into generations is one source of internal
+fragmentation in the total heap space.
+
+\item Trying {\em synchronous finalization}; it might be that some
+objects to be finalized contain references that root sizeable
+subgraphs; finalizing all such objects without allowing any other
+mutator threads to run might dispose of such objects, so that another
+collection attempt might reclaim more storage.  However, this is
+complicated: some object finalizer might conceivably
+synchronize on objects, so that running finalizer threads while
+mutator threads are halted might lead to deadlock.
+\end{itemize}
+\end{itemize}
+
+\subsection{Generation}
+\label{gen:generation}
+
+The {\tt GenCollectedHeap} class is meant to support an arbitrary
+sequence of (compatible) generations.  We now explore the {\tt
+Generation} class, which defines the interface that generations must
+implement in order to function correctly in this infrastructure.
+
+\subsubsection{Public Interface}
+
+The {\tt Generation} class defines a {\tt Name enum} that lists the
+known kinds of generations, and a virtual function {\tt kind} that
+returns the {\tt Name} of the current generation.  Again, this is to
+allow pseudo-RTTI functionality.  Similar informational functions:
+\begin{quote}
+    {\tt const char* name() const;} \\
+    {\tt int level();}  {\em const?} \\
+    {\tt bool must\_be\_youngest() const;} \\
+    {\tt bool must\_be\_oldest() const;}
+\end{quote}
+The {\tt name} function returns a string name of the generation; {\tt
+level} is the index of this instance in the {\tt GenCollectedHeap;}
+{\tt must\_be\_youngest} and {\tt must\_be\_oldest} indicate constraints
+that generational configuration specifications must satisfy.
+
+Several virtual functions provide information about the space used by
+the generation.
+\begin{itemize}
+\item {\tt MemRegion reserved();} {\em const?}
+
+Returns a description of the address space region reserved for this
+generation.  {\tt Generation} defines a {\tt GenGrain} constant (and its
+base two logarithm) that is the minimum alignment of a generation's
+space; both the start address of the reserved region and its size will
+be a multiple of {\tt GenGrain.}
+  
+\item {\tt size\_t capacity();} {\em const?}
+
+The amount of the reserved region currently committed, in bytes.
+\dld{(Always a prefix of the reserved region, I believe?)}
+
+\item {\tt size\_t used();} {\em const?}
+
+The number of bytes allocated in the generation.
+
+\item {\tt size\_t free();} {\em const?}
+
+The number of unallocated bytes in the generation.
+
+\item {\tt size\_t unsafe\_max\_alloc\_nogc() const;}
+
+Similar to the {\tt unsafe\_max\_alloc} function of {\tt CollectedHeap:}
+the largest allocation (in words) that could be performed without
+collecting or expanding the heap.  \dld{(Then why are the names
+subtly different?)}  It is an estimate because of possible concurrent 
+allocation/collection, hence the ``unsafe'' part of the name: this
+obtains no locks.  However, if the caller holds lock(s) that prevent
+concurrent allocation or collection, then the result is accurate.
+This may be used in heuristic resizing decisions.
+
+For {\em contiguous} generations {\tt unsafe\_max\_alloc\_nogc} is the
+same as {\tt free} (except for the words/bytes difference).  But for
+non-contigous generations, the number of free bytes may be
+significantly larger than the maximum allocation, because of
+fragmentation.
+
+\item {\tt size\_t contiguous\_available() const;}
+
+Similar to {\tt unsafe\_max\_alloc\_nogc}, except computes the largest
+allocation size (in words) what would be allowed if the generation were
+expanded to its maximum size.
+
+\item {\tt MemRegion used\_region();} {\em const?}
+
+Returns a description of a region guaranteed to contain all allocated
+objects in the generation.  For contiguous generations, this region
+will contain only allocated objects, but for non-contiguous
+generations it may contain both objects and free blocks.
+
+\item {\tt size\_t capacity\_before\_gc();} {\em const?}
+
+Meaningful only for youngest generations, returns the maximum number
+of bytes that can be allocated in this generation before a GC is
+triggered.  \dld{(I completely forget why this is necessary.  Some
+TLAB thing?)}
+\end{itemize}
+
+A next set of functions is concerned with membership in the
+generation.
+\begin{verbatim}
+    bool is_in(const void* p) const;
+    bool is_in_reserved(const void* p) const;
+\end{verbatim}
+The {\tt is\_in} function returns true if the given pointer is within
+the committed region of the generation, and {\tt is\_in\_reserved} tells
+whether the pointer argument points into the reserved region.
+
+As discussed previously, generations are made up of {\em spaces}.  The
+methods
+\begin{verbatim}
+    Space* space_containing(const void* addr) const;
+    void space_iterate(SpaceClosure* blk, bool usedOnly = false);
+\end{verbatim}
+expose this composition.  If {\tt addr} is within the committed region
+of a generation, then {\tt space\_containing(addr)} returns the a
+pointer to the space containing {\tt addr}, or else {\tt NULL.}
+The {\tt space\_iterate}
+function calls a closure on each space in the generation.  If {\tt
+used\_only} is true, then spaces that currently contain no objects are
+omitted from the iteration.  There are no order guarantees.
+
+We next consider functions related to allocation.
+\begin{quote}
+    {\tt bool should\_allocate(size\_t word\_size, bool large\_noref);} {\em const?} \\
+    {\tt HeapWord* allocate(size\_t word\_size, bool large\_noref);} \\
+
+    {\tt bool supports\_inline\_contig\_alloc();} {\em const?} \\
+    {\tt HeapWord** top\_addr();} {\em const?} \\
+    {\tt HeapWord** end\_addr();} {\em const?} \\
+    {\tt void       set\_proper\_top(HeapWord* prop\_top);}
+\end{quote}
+As discussed in section \ref{gch:impl}, a generation can set a limit
+on the maximum allocation size it will accept.  The {\tt
+should\_allocate} function allows this limit to be expressed.
+
+The {\tt allocate} function actually attempts allocation in the
+generation.  As with its callers, the {\tt word\_size} is the size of
+the allocation, and the {\tt larg\_noref} argument, if true, indicates
+that the object being allocated is large and will contain no
+references, which some generations may use for optimizations.
+
+As discussed in Section \ref{ch:public}, some heaps may support inline
+contiguous allocation.  For {\tt GenCollectedHeap}s, this is true if
+and only if the youngest generation does.  The {\tt
+supports\_inline\_contig\_alloc, top\_addr, end\_addr,} and {\tt
+set\_proper\_top} functions are exactly like their {\tt CollectedHeap}
+counterparts.  A generation need not return anything sensible for the
+other functions if it returns {\tt false} for {\tt
+supports\_inline\_contig\_alloc.}
+
+The function
+\begin{verbatim}  
+    oop promote(oop obj, oop* ref);
+\end{verbatim}
+is another form of allocation, used during collection when some
+younger generation is attempting to promote one of its objects
+into the target generation.  If successful, it allocates space
+sufficient to contain the contents of {\tt obj}, copies those contents
+into that space, and returns the new address for the object.  The
+contract of the {\tt promote} operation actually requires it to try
+allocation not only in the current generation, but in older
+generations as well, so the
+caller may assume that a {\tt NULL} result means failure in all such
+generations.
+\dld{(In retrospect, this decision seems ill-considered.  Better to
+have the promote functions be gen-local, and make a GenCollectedHeap
+function that provides this ``try-all'' functionality.)}
+The {\tt ref} argument, if non-{\tt
+NULL}, is the address of a reference field whose value is {\tt obj.}
+In some generations, such as train generations, such information may
+influence placement decisions.
+
+Now we discuss collection.  Section \ref {gch:impl} has already
+described several of these functions.
+\begin{quote}
+    {\tt bool collect\_for\_allocation(size\_t word\_size,} \\
+\hspace*{2.05in}{\tt bool large\_noref);} \\
+    {\tt bool should\_collect();} {\em const?} \\
+    {\tt void collect();} \\
+    {\tt GCCause gc\_cause();}
+\end{quote}
+The {\tt collect\_for\_allocation} function attempts to do enough
+collection work to satisfy the given allocation request, returning a
+boolean result indicating whether sufficient space was reclaimed.  If
+the {\tt word\_size} argument is zero, collection in a previous
+generation has already freed sufficient space to satisfy the
+allocation, but the current generation's {\tt should\_collect} function
+has indicated that the invocation should occur to allow the
+generation to do further work (such as a train generation performing
+incremental GC.)  When the {\tt word\_size} argument is zero, the
+boolean result of {\tt collect\_for\_allocation} is meaningless.
+\dld{(Again, perhaps a separate function would be better than this
+overloading.)}  The {\tt collect} function performs a full collection
+of the generation.  The {\tt gc\_cause} function returns a member of
+the {\tt GCCause} enum indicating the ``reason'' for the current
+collection.  \dld{(I'm not sure these reasons really make sense in the
+new world.  Wouldn't we rather know ``allocation failure in gen 1''
+then the kind of generation?  Maybe they can be made more general...)}
+
+Section \ref {gch:impl} also mentioned that when collection fails to
+free sufficient space for an allocation, the {\tt GenCollectedHeap}
+then attempts to expand the individual generations sufficiently to
+enable the allocation.  This is accomplished via calls to the function
+\begin{verbatim}
+    HeapWord* expand_and_allocate(size_t word_size,
+                                  bool large_noref);
+\end{verbatim}
+\dld{Note: the comment here says ``heap collection'' rather than
+``generation expansion''.}
+
+Some generations may require some preparation functions before, or
+cleanup functions after, a collection.  The {\tt GenCollectedHeap}
+class guarantees to call the methods
+\begin{verbatim}
+    void gc_prologue();
+    void gc_epilogue();
+\end{verbatim}
+before and after GC (respectively) for each generation.  The order of
+invocation on the generations is undefined.  \dld{(Could be made
+defined if necessary.)}
+
+One of the most basic collection algorithms is ``mark and sweep,''
+which often is combined with a compaction phase.  All objects support
+marking, and the ability to iterate over blocks and determine which
+blocks are objects (see section \ref{ch:public}) ensures that sweeping
+is possible.  However, whether a generation supports compaction is
+determined on a per-space basis among the space or spaces that
+comprise the generation.  The subtype of {\tt Space} that supports
+compaction is {\tt CompactibleSpace}.  The following {\tt Generation}
+functions are related to compaction.
+\begin{verbatim}
+    CompactibleSpace* first_compaction_space() const;
+    void prepare_for_compaction(CompactPoint* cp);
+    void adjust_pointers();
+    void compact();
+\end{verbatim}
+By finding the {\tt first\_compaction\_space()} of a {\tt
+Generation,} and iterating via the {\tt next\_compaction\_space}
+function of {\tt CompactibleSpace} until one reaches {\tt NULL,} one
+is guaranteed to iterate over all the compactible spaces in the
+generation.  Compaction is accomplished by applying the remaining
+functions to the compactible spaces in a generation.  This will compact
+the marked objects in the generation towards the first compactible
+space in the order of this iteration.
+
+In more detail, the {\tt prepare\_for\_compaction} function computes the
+locations to which the objects in the generation will be compacted,
+installing forwarding pointers to those locations in the objects.  As
+discussed in section \ref{gch:public}, sometimes this requires saving
+and restoring ``mark words'' with non-standard values before they are
+overwritten with forwarding pointers.  \dld{(How is the connection
+between the scratch space and this call made?  Global variable?
+Interesting issue...)}  The {\tt CompactPoint} structure specifies the
+generation and compactible space into which objects are currently being
+compacted.  The compaction address is stored in the compactible space,
+as its {\tt compaction\_top.}  \dld{(This difference is a little
+difficult to explain; maybe the compaction point should also contain
+the top?)}  The compaction point must specify a generation, but not
+necessarily a space; if its space field is {\tt NULL}, then it will be
+modified to indicate the first compaction space of that generation.
+The {\tt prepare\_for\_compaction} function of {\tt Generation} calls
+a similar function on each compactible space fo the generation,
+passing the same compaction point structure.  When one space is full, the
+compaction point is modified to denote the start of the next
+compactible space in the generation.
+
+Note that this design makes it very easy to choose between compaction
+across generations and compaction only within generations.  Compacting
+objects across generations, if done in the right generation order, can
+have the nice property of (usually) moving all youngest-generation objects
+into older generations, thus allowing the remembered set for the
+youngest generation to be completely cleared.  This is accomplished by
+initializing a compaction point to indicate the oldest generation, and
+using this same compaction point object to compact all the generations
+from oldest to youngest.  If, on the other hand, we wish to do
+compaction only within generations, {\tt prepare\_for\_compaction} could
+be called on the generations in any order, using a newly-initialized
+compaction point for each invocation.
+
+The {\tt prepare\_for\_compaction} function determines where objects
+will be moved, but does not move them.  Two more steps are
+necessary.  First, the {\tt adjust\_pointers} function iterates over all objects in
+a generation, finding references to other objects in compactible spaces,
+and updates those references to the objects' post-compaction
+locations, as indicated by the forwarding pointer.  \dld{(Would having
+a non-compactible space really work? We would need to keep {\tt
+adjust\_pointers} from looking at an object in a non-compactible space
+and assuming it contains a forwarding pointer.)}  Finally, {\tt
+compact} actually moves the objects to their new locations.
+
+\dld{I should add something here about treatment of the permanent
+generation!}
+
+Sometimes collection algorithms wish to apply some processing only to
+objects allocated since some previous point.  For example, if a
+young-generation collection promotes some objects to an older
+generation, we might want to iterate over the newly promoted objects.
+The following ``marks'' functions support this kind of functionality.
+In a contiguous generation, a mark is a physical address in the
+generation indicating the boundary between allocation before setting
+the mark and allocation after.  In a non-contiguous generation, more
+complicated schemes might be necessary to implement this functionality.
+\begin{quote}
+    {\tt void reset\_saved\_marks();} \\
+    {\tt void save\_marks();} \\
+    {\tt bool no\_allocs\_since\_save\_marks();} {\em const?} \\
+    {\tt void oop\_since\_save\_marks\_iterate(OopClosure* cl);} \\
+    {\tt void oop\_since\_save\_marks\_iterate\_scavenge();}
+\end{quote}
+The {\tt reset\_saved\_marks} function should be called once to
+initialize the mark data structures.  \dld{(Is that it? does it really
+need to be public, then?)}  The {\tt save\_marks} function sets the
+marks; that is, {\tt no\_allocs\_since\_save\_marks} will return true if
+and only if no allocation have occurred in the target generation since
+{\tt save\_marks} was last called, and {\tt
+oop\_since\_save\_marks\_iterate} will apply its {\tt OopClosure} argument
+to all reference fields in objects allocated in the target generation,
+if any, since the last call to {\tt save\_marks.}  The function
+{\tt oop\_since\_save\_marks\_iterate\_scavenge} is a
+specialization of this function to the case where the argument closure
+is precisely the {\tt Scavenge::scavenge} closure.  \dld{(This is
+probably going away!)}
+
+Section \ref{gch:public} discussed the idea of scratch space.  The
+{\tt GenCollectedHeap} function that gathers scratch space for a given
+requestor generation is implemented by calling the
+\begin{verbatim}
+    void contribute_scratch(ScratchBlock*& list,
+                            Generation* requestor,
+                            size_t max_alloc_words);
+\end{verbatim}
+function on each generation (including the requestor; it might be that a
+requestor can contribute scratch space for its own collection!).  If
+the generation can contribute any scratch space to the requestor's
+collection, it prepends those blocks onto the {\tt list.}
+
+When an older generation has been collected, the collection provides
+information about heap occupancy.  The collected generation, and
+perhaps younger generations as well, which may have participated to
+some extent in the collection, may wish to resize themselves.
+The {\tt GenCollectedHeap} infrastructure invokes
+\begin{verbatim}
+    void compute_new_size();
+\end{verbatim}
+on the collected generation and all younger generations to allow this.
+
+There are various functions allowing iteration over the allocated
+objects in a generation, and over the references they contain.
+\begin{verbatim}
+    void object_iterate(ObjectClosure* cl);
+    void object_iterate_since_last_GC(ObjectClosure* cl);
+    void oop_iterate(OopClosure* cl);
+    void oop_iterate_m(MemRegion mr, OopClosure* cl);
+    void mod_oop_iterate(OopClosure* cl);
+\end{verbatim}
+The {\tt object\_iterate} function applies its {\tt ObjectClosure} argument
+to every allocated object in the generation.  The 
+{\tt object\_iterate\_since\_last\_GC} does the same, but only to objects
+allocated since the last garbage collection, which may be useful for
+allocationprofiling, for example.  \dld{(I'm not sure this works right
+now.)}  The {\tt oop\_iterate} function applies its {\tt OopClosure}
+argument to the addresses of all the reference fields in allocated
+objects in the generation.  The {\tt oop\_iterate\_m} variant applies
+the closure only to reference fields that occur in the given memory
+region.  The {\tt mod\_oop\_iterate} function is guaranteed to apply its
+{\tt OopClosure} argument to all reference fields that might possibly
+contain references to younger generations.  Generally, this will be
+accomplished efficiently, with cooperation from a {\tt BarrierSet}
+that tracks reference modifications and embodies a remembered set
+implementation.  \dld{(The name of this function and its comment spec
+are a little confused, as is ModRefBarrierSet, whose name doesn't
+reflect the existence of the remembered set.)}
+
+Section \ref{ch:public} introduced the {\em block} abstraction.  As
+with several other functions, the {\tt CollectHeap} functions
+concerning blocks are implemented in {\tt GenCollectedHeap} by
+delegation to the relevant generation.  Therefore, {\tt Generation}
+has the functions:
+\begin{verbatim}
+    HeapWord* block_start(const void* addr) const;
+    size_t block_size(const HeapWord* addr) const;
+    bool block_is_obj(const HeapWord* addr) const;
+\end{verbatim}
+If the argument {\tt addr} is within the committed region of the
+a generation {\tt g,} {\tt g.block\_start(addr)} returns the start of
+the block containing {\tt addr}, or else it returns {\tt NULL.}  The
+{\tt block\_size} and {\tt block\_is\_obj} functions require their
+arguments to be the start of a block in the current generation, and
+return the size of that block and whether it is an object,
+respectively.  The result is undefined if this requirement is not
+met.
+
+The remaining functions all concern verification, debugging, and
+profiling.  The
+\begin{verbatim}
+    void print();
+\end{verbatim}
+function prints some representation of the generation on standard
+output.  The functions
+\begin{verbatim}
+    void update_max_capacity();
+    void print_max_capacity();
+\end{verbatim}
+update the maximum recorded capacity (i.e., size of the committed
+region), and pritn that maximum on standard output, respectively.
+The {\tt StatRecord} structure records some set of statistics about a
+generation, including, but not limited to, the number and total time
+of its collections; the
+\begin{verbatim}
+    StatRecord* stat_record();
+\end{verbatim}
+function gives access to that record.  \dld{(Should the result be const?)}
+Verification is handled by
+\begin{verbatim}
+    void prepare_for_verify();
+    void verify(bool allow_dirty);
+\end{verbatim}
+The first of these does any cleanup operations necessary to allow
+verification of a generation; verification is only done if the world
+is stopped, and it is required that this be called at least once
+between stopping the world and calling {\tt verify} on a generation.
+\dld{(Is the prepare thing really necessary?  Check on what it does
+again.  Explain the allow\_dirty argument.)}  The arena concept of
+JVMPI was touched upon in section \ref{ch:public}; if {\tt addr} is
+an address within the used area of the target generation, then 
+\begin{verbatim}
+    int addr_to_arena_id(void* addr);
+\end{verbatim}
+returns the identifier of the correspond arena.
+
+This concludes our tour of the public interface of {\tt Generation.}
+Section \ref{gen:existing} explores the extant concrete instances of
+this type.
+
+\subsection{Permanent Generation}
+\label{gen:permgen}
+
+Section \ref{ch:public} briefly discussed the permanent generation.
+Here we discuss it in more detail.
+
+The {\tt PermGen} class embodies the interface of permanent
+generations.  In most ways, the permanent generation is just like a
+{\tt Generation}; in fact, the function
+\begin{verbatim}
+    Generation* as_gen() const;
+\end{verbatim}
+returns a generation ``view'' of the permanent generation.  The main
+difference is that permanent generation's allocation functions are
+more like those of {\tt CollectedHeap}:
+\begin{verbatim}
+    oop allocate(KlassHandle klass, size_t size, TRAPS);
+    oop allocate_array(KlassHandle klass, size_t size,
+                       int length, TRAPS);
+\end{verbatim}
+take class specification and sizes and initialize the allocated
+object, raising the {\tt OutOfMemoryException} if the allocation
+fails.  (The allocation functions of the generational view of a
+permanent generation should never be used directly.)
+One other distinction is that {\tt PermGen} provides a
+\begin{verbatim}
+    void compute_new_size();
+\end{verbatim}
+function, which should be used instead of that of the generation view;
+the heuristics controlling resizing of permanent generations is
+different from that controlling non-permanent generations.
+
+\subsection{Existing Generations and Barrier Sets}
+\label{gen:existing}
+
+In this section, we examine several of the existing implementations of
+the general classes we have described so far.
+
+\subsubsection{DefNewGeneration}
+\subsubsection{TenuredGeneration}
+\subsubsection{CompactingPermGeneration}
+\subsubsection{ModRefBarrierSet, CardTableModRefBS}
+
+\section{To be done!}
+
+\end{document}

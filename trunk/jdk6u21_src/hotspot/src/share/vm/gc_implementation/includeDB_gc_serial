@@ -1,0 +1,126 @@
+//
+// Copyright (c) 2007, Oracle and/or its affiliates. All rights reserved.
+// ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//  
+//
+
+adaptiveSizePolicy.hpp			collectedHeap.hpp
+adaptiveSizePolicy.hpp			gcCause.hpp
+adaptiveSizePolicy.hpp			gcUtil.hpp
+adaptiveSizePolicy.hpp			allocation.hpp
+adaptiveSizePolicy.hpp			universe.hpp
+
+adaptiveSizePolicy.cpp			adaptiveSizePolicy.hpp
+adaptiveSizePolicy.cpp			gcCause.hpp
+adaptiveSizePolicy.cpp			ostream.hpp
+adaptiveSizePolicy.cpp			timer.hpp
+
+ageTable.cpp                            ageTable.hpp
+ageTable.cpp				collectorPolicy.hpp
+ageTable.cpp                            copy.hpp
+ageTable.cpp                            gcPolicyCounters.hpp
+ageTable.cpp                            resourceArea.hpp
+ageTable.cpp                            sharedHeap.hpp
+
+ageTable.hpp                            markOop.hpp
+ageTable.hpp                            oop.hpp
+ageTable.hpp                            perfData.hpp
+
+collectorCounters.cpp                   collectorCounters.hpp
+collectorCounters.cpp                   resourceArea.hpp
+
+collectorCounters.hpp                   perfData.hpp
+
+cSpaceCounters.cpp                      resourceArea.hpp
+cSpaceCounters.cpp                      cSpaceCounters.hpp
+
+cSpaceCounters.hpp                      space.inline.hpp
+cSpaceCounters.hpp                      perfData.hpp
+cSpaceCounters.hpp                      generationCounters.hpp
+
+gcPolicyCounters.cpp                    resourceArea.hpp
+gcPolicyCounters.cpp                    gcPolicyCounters.hpp
+
+gcPolicyCounters.hpp                    perfData.hpp
+
+gcStats.cpp				gcStats.hpp
+gcStats.cpp				gcUtil.hpp
+
+gcStats.hpp				gcUtil.hpp
+
+gcUtil.cpp                              gcUtil.hpp
+
+gcUtil.hpp                              allocation.hpp
+gcUtil.hpp                              debug.hpp
+gcUtil.hpp                              globalDefinitions.hpp
+gcUtil.hpp                              ostream.hpp
+gcUtil.hpp				timer.hpp
+
+generationCounters.cpp                  generationCounters.hpp
+generationCounters.cpp                  resourceArea.hpp
+
+generationCounters.hpp                  perfData.hpp
+generationCounters.hpp                  virtualspace.hpp
+
+immutableSpace.hpp                      iterator.hpp
+
+liveRange.hpp                           copy.hpp
+liveRange.hpp                           memRegion.hpp
+
+markSweep.cpp                           collectedHeap.inline.hpp
+markSweep.cpp                           markSweep.inline.hpp
+markSweep.cpp                           oop.inline.hpp
+
+markSweep.hpp                           growableArray.hpp
+markSweep.hpp                           markOop.hpp
+markSweep.hpp                           oop.hpp
+markSweep.hpp                           stack.hpp
+markSweep.hpp                           timer.hpp
+markSweep.hpp                           universe.hpp
+
+markSweep.inline.hpp                    collectedHeap.hpp
+markSweep.inline.hpp                    markSweep.hpp
+markSweep.inline.hpp                    stack.inline.hpp
+
+mutableSpace.hpp                        immutableSpace.hpp
+mutableSpace.hpp                        memRegion.hpp
+mutableSpace.hpp                        copy.hpp
+
+vmGCOperations.cpp                      vmGCOperations.hpp
+vmGCOperations.cpp                      dtrace.hpp
+vmGCOperations.cpp                      classLoader.hpp
+vmGCOperations.cpp                      gcLocker.inline.hpp
+vmGCOperations.cpp                      genCollectedHeap.hpp
+vmGCOperations.cpp                      handles.inline.hpp
+vmGCOperations.cpp                      init.hpp
+vmGCOperations.cpp                      instanceKlass.hpp
+vmGCOperations.cpp                      instanceRefKlass.hpp
+vmGCOperations.cpp                      interfaceSupport.hpp
+vmGCOperations.cpp                      javaClasses.hpp
+vmGCOperations.cpp                      jvmtiExport.hpp
+vmGCOperations.cpp                      oopFactory.hpp
+vmGCOperations.cpp                      preserveException.hpp
+
+vmGCOperations.hpp                      vm_operations.hpp
+vmGCOperations.hpp                      heapInspection.hpp
+vmGCOperations.hpp                      handles.hpp
+vmGCOperations.hpp                      jniHandles.hpp
+vmGCOperations.hpp                      synchronizer.hpp

@@ -1,0 +1,34 @@
+# The following files are essentially identical to files from my Rice project
+# and perhaps should not have the Sun copyright at all?  I dont know if they
+# should or should not.  In any case they have not really changed.
+combo.cpp
+lib2node.hpp
+lib2node.cpp
+lib3node.hpp
+lib3node.cpp
+partial.cpp
+partiton.hpp
+split_con.cpp
+
+# The following files are derivative works from my Rice file.
+# I would like "Copyright (C) 1991-1997 Cliff Click" in each file near the
+# top.  The starting year varies by file.
+addnode.hpp
+addnode.cpp
+callnode.hpp
+callnode.cpp
+cfgnode.hpp
+cfgnode.cpp
+divnode.hpp
+divnode.cpp
+domgraph.cpp
+gcm.cpp
+memnode.hpp
+memnode.cpp
+mulnode.hpp
+mulnode.cpp
+node.hpp
+subnode.hpp
+subnode.cpp
+type.cpp
+type.hpp

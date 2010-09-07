@@ -1,0 +1,20 @@
+// ***********************************************************************
+// Define the pipelines, their resources, and their resource consumption
+// ***********************************************************************
+
+pipeline %{
+// Pipeline Resources
+resource(addr1);
+resource(addr2);
+
+resource(membus);
+
+resource(alu1);
+resource(int_alu2);
+
+// Describe the pipeline phases that are interesting
+pipe_desc(Address, Access, Read, Execute);
+pipe_class V_pipe(addr1; membus; alu1, int_alu2);
+pipe_class U_pipe(addr2; membus; int_alu2);
+
+%}

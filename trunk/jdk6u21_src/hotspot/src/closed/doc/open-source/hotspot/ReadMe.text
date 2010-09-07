@@ -1,0 +1,31 @@
+hotspot/ReadMe.text
+
+This directory contains the sources for the Java(TM) HotSpot(TM) 
+virtual machine, the best Java virtual machine on the planet.  
+
+The HotSpot code base has been worked on by dozens of people, over 
+the course of 10 years, so far.  (That's good and bad.)  It's big.  
+There are nearly 1500 C/C++ header and source files, comprising 
+almost 250,000 lines of code.  In addition to the expected class 
+loader, bytecode interpreter, and supporting runtime routines, 
+you get two runtime compilers from bytecode to native instructions, 
+3 (or so) garbage collectors, and a set of high-performance runtime 
+libraries for synchronization, etc.
+
+Here's what you don't get with this source bundle: the class libraries 
+that in combination with the virtual machine make a Java Runtime 
+Environment (JRE) or Java Developers Kit (JDK).  You can download 
+those separately.  You also don't get our amazing quality team that 
+keeps the plane flying even while we work on it.  You don't get our 
+automated testing environment and labs full of fast machines, slow 
+machines, uniprocessors and big iron, machines with various operating 
+systems and compilers, etc.  You don't get our performance team, to 
+keep us from regressing.  Or our partners and licensees who help us 
+port and keep our code portable.  And you don't get our zillions of 
+happy (and not so happy) users, who keep us focused on what matters.  
+If you want in on all of that you'll have to collaborate with us in 
+the continued development of the platform.
+
+See the FAQ (https://openjdk.dev.java.net/hotspot/faq.html) for 
+details on how to build the virtual machine.  You are already past 
+step 1.

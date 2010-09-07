@@ -1,0 +1,573 @@
+
+David Stoutamire   
+March 20 2002
+
+
+Introduction
+
+This document presents a policy for eliminating these 
+parameters in the default policy:
+
+   MinHeapFreeRatio
+   MaxHeapFreeRatio
+   NewRatio
+   SurvivorRatio
+   TargetSurvivorRatio
+   
+These parameters have been a constant nuisance to customers;
+there aren't one-size-fits-all values, and they are commmonly
+overriden explicitly on the command line.  For many apps, not
+doing so results in poor performance.
+
+The new policy replaces the heuristics of the default policy with
+adaptive policies derived from an explicit objective function,
+inspired by throughput concerns of large systems.
+
+
+Existing Commond Line Options
+
+We need to keep Xmn, Xms, Xmx, because customers already use them and they
+serve other purposes.  However, the new policy sets their initial values
+adaptively and encourages the view that setting them should be a last
+resort.  IBM sets Mx this way:
+
+  mx = min(16MB, sysconf(_SC_PAGESIZE)*sysconf(_SC_PHYS_PAGES)/2)
+
+and we shall do the same.  We'll also pick larger numbers for
+starting sizes to avoid GC at startup (I've heard complaints,
+especially on Linux where suspension is bad):
+
+  ms = 8MB
+  Initial NewSize = 4MB
+  Initial edenSize = 3MB
+
+
+The Objective Function
+
+A good policy is not a black box; it should have easily understood,
+measureable goals.  An objective function defines our measure of success.
+Once it is written explicitly, we can use it to guide our implementation
+and measure it in practice to validate whether the policy is working.
+
+Consider the time and space that a steady-state application uses.  It may
+be diagrammed:
+
+  footprint    ^
+               |
+               |
+               +------------------------+
+    voluntary  |                        |
+    footprint  |                        |
+  (free heap)  |                        |
+               +------------------+     |
+               |                  |     |
+  involuntary  |                  |     |
+    footprint  |                  |     |
+               |                  |     |
+               +------------------+-----+------> time
+                   involuntary       gc      
+                  (mutator) time    time
+
+We can never have a better footprint than the involuntary footprint, which
+consists of space used for live objects, C heap, text segment, etc.  We
+can also never run in a shorter amount of time than the mutators would
+take without gc.  So these are 'involuntary' resource uses.
+
+GC trades off space and time; a larger eden will increase the efficiency
+of GC.  These are 'voluntary' resource uses, and a GC policy is concerned
+with how to trade these off.
+
+Consider a large computer system with a finite but large amount of
+memory.  For a given footprint, some number of virtual machines canbe
+created to run the application before running out of physical memory.  A
+given footprint also implies a corresponding time will be required
+complete a task.  Picture stacking the JVMs up to fill space and time:
+
+               space
+    ^        ^        ^        ^
+    |        |        |        |
+    +--------+--------+--------+--->
+    |        |        |        |
+    +--------+--------+--------+--->
+    |        |        |        |     time
+    +--------+--------+--------+--->
+    |        |        |        |
+    +--------+--------+--------+--->
+
+The throughput of such a system is equivalent to how many boxes we can
+fill an area representing size of the machine.  When memory is large
+relative to the size of each JVM, the throughput will be the inverse of
+the area of each JVM's individual box.  In other words, throughput is the
+inverse of (footprint * time).
+
+There are many situations under which this approximation does not hold.
+For example, one may be limited by the number of cpus or available work
+rather than footprint.  Similarly, the efficiency becomes a discrete
+optimization when the available memory is not large relative to the
+footprint of a given JVM.  Nevertheless, we will proceed under these
+simplifying assumptions because it is convenient; if desired the policy
+can be adapted later to include such considerations.
+
+We have now defined an objective function, to minimize:
+
+   time * footprint
+
+Both terms may be broken into voluntary and involuntary
+components:
+
+   (mutatorTime + gcTime) * (liveSpace + freeSpace)
+
+
+Instrumentation
+
+We're going to measure internal activity of the JVM, such as time spent in
+GC.  We'll do so under the assumption that applications behave sufficient
+steady that it is possible to predict future values based on previous
+ones.
+
+The policy is going to repeatedly use two standard ways of prediction.
+One is a weighted average; this is implemented with a standard
+exponentially weighted mean, modified to reduce the importance of the
+initial value at startup.  Such an average serves as our best estimate of
+a future unknown.
+
+The other is a padded average; this computes not only an average but a
+deviation from the average, some multiple of which is added to the
+average.  Both of these are encapsulated in classes.  The padded average
+serves as our best estimate of an upper bound on a future unknown.
+
+
+Measuring Time
+
+We'll need some new instrumentation to measure the objective function.
+Let's start with measuring the GC times and the interval between them:
+
+   avgMinorGCPause
+   avgMinorGCInterval
+
+   avgMajorGCPause
+   avgMajorGCInterval
+
+The intervals are intended to include GC time itself, so
+1/avgMinorGCInterval is the average number of minor pauses per second,
+independent of full GCs in the same time interval.
+
+Multiplying the objective function by any positive constant will not
+change where the minima are.  So for convenience let's treat "time" to
+"proportion of time", so that the first term is unitless.  Then we can
+define:
+
+   minorGCTime = avgMinorGCPause / avgMinorGCInterval;
+   majorGCTime = avgMajorGCPause / avgMajorGCInterval;
+
+   gcTime = minorGCTime + majorGCTime;
+   mutatorTime = 1 - gcTime;
+
+The proportion of time in GC is the pause for each GC divided by 
+the interval between pauses.  The interval is determined by the free
+space divided by the rate of allocation; we are making the assumption
+that the rate of allocation is constant, so that the interval predicts
+the frequency of GC.
+
+We are also assuming that the pauses for GC do not change as free space
+changes.  We know this isn't quite true, but modeling the change produces
+a much, much more complicated policy.
+
+
+Measuring Space
+
+We're also going to need an estimate of footprint contributed by things
+other than GC heap sizing, like the text segment, stacks, malloc heap
+etc., as well as averages of how much space is required in the young and
+old generations after minor and major collections:
+
+   baseFootprint   // Default 8MB + live objects in perm gen
+   youngAlive      // 2 * targetSurvived for a copying new gen
+   oldAlive        // For CMS, multiplied by measure of fragmentation
+
+We want to find a policy that governs these variables:
+
+   promoSize       // Set before with MinHeapFreeRatio and MaxHeapFreeRatio
+   edenSize        // Set before with NewRatio and SurvivorRatio
+
+Now we have defined the variables needed for the second term:
+
+   liveSpace = baseFootprint + oldAlive + youngAlive
+   freeSpace = promoSize + edenSize
+
+
+What About Perm Gen?
+
+Perm gen has very different properties than the other generations;
+in particular, it is usually not steady state.  The new policy sets
+the free size of perm gen equal to a padded average of the objects
+allocated in perm gen since the last full gc; during class loading the
+free space will be large, but an application reaching steady state
+will have the free space dwindle away to just barely enough to
+prevent full collections.
+
+Due to implementation constraints unrelated to policy, MaxPermSize is
+still required.
+
+
+Costs for Train
+
+For train, the scavenge and car collection times need to be measured
+separately.  avgMinorGCPause should be influenced by scavenge time only,
+and avgMajorGCPause should include the time spent collecting cars. 
+
+  avgTrainGCTime = avgTrainGCPause / avgTrainGCInterval;
+  avgMajorGCTime = avgMajorGCPause / avgMajorGCInterval + avgTrainGCTime;  
+
+
+Costs for CMS
+
+For CMS we must define what the cost of concurrent activity is.  The
+impact of concurrent collection comes as potential overhead that slows
+down mutators.
+
+To arrive at a cost we need to know if there is substantial idle cpu time;
+if there is, concurrently activity is less expensive.  The system already
+knows how many cpus there are; additionally, we'll need an estimate of
+system load.  This is operating system specific, although it might be
+estimated from the number of threads needing suspension at safepoints.
+
+Define avgConcurrentLoad as the average number of threads in
+the system doing concurrent work.  In a CMS system without
+concurrent refinement and a single worker, this would just be:
+   
+  avgConcurrentLoad = avgConcurrentTime / avgConcurrentGCInterval;
+
+Define avgSystemLoad as the average number of total runnable threads in
+the system (eg. as reported by 'w'); this includes load induced by
+concurrent GC threads.
+
+Define nCPU as the number of online cpus (as currently reported).
+
+Then with a fair scheduler the overall work lost to concurrent threads is 
+
+  avgWorkLoss = min(avgSystemLoad-avgConcurrentLoad, nCPU)
+		 - min(avgSystemLoad, nCPU)
+                   * (avgSystemLoad-avgConcurrentLoad)/avgSystemLoad;
+
+which equals the work lost by a non-concurrent collector 
+that stops all cpus with a duty cycle of avgWorkLoss.
+
+Let's verify this by looking at the extremes:
+
+1. When nCPU >> avgSystemLoad this reduces to zero;
+with idle cpus, concurrent collection is considered free.
+
+2. When avgSystemLoad-avgConcurrentLoad >> nCPU, this reduces to 
+
+   nCPU * avgConcurrentLoad / avgSystemLoad
+
+Now we can include this term in the objective function:
+
+  majorGCTime = avgMajorGCPause / avgMajorGCInterval + avgWorkLoss;
+
+(Note that avgMajorGCInterval is defined as the interval between
+pauses; it is independent of time in concurrent GC.)
+
+
+Governing Rate of Promotion and Survivor Size
+
+We'll use the tenuring threshold to equalize the cost of major and minor
+GC.  Why?  Because one way to minimize (x+y) is to locate (x==y), which is
+often close to the optimum for smooth monotone functions, and never
+worse than 2x as the minimal value.
+
+For example, if major GC takes 10 seconds and minor GC takes .5 second,
+then the system will adjust the tenuring threshold up or down so that
+major GC occurs once for every twenty minor GCs.  If the application is
+moved to a system in which additional processors make minor collection
+faster, then work will be automatically shifted to the young generation
+and major collections will occur less often.  Alternately, if additional
+processors mean that old collections are less expensive because of
+enhanced concurrency, then work will be shifted out of the young
+generation.
+
+At steady state a given tenuring threshold causes a certain amount of
+survival.  The survivor spaces must be sized large enough to hold what
+survives, but should also be sized as small as possible to avoid wasting
+footprint.  This is implemented using a padded average of the survival
+rate, just as done for perm gen.  If the survivor space overflows then
+objects are getting promoted that aren't old enough, and in that case
+we not only increase the survivor size but decrease tenuring threshold.
+
+Since the tenuring threshold is a discrete value, we need to
+introduce a tuning parameter that indicates how sensitive it
+is to the difference in cost between generations:
+
+   ThresholdTolerance    // Default 10 (10 percent)
+
+Altogether, the policy for tenuring threshold is just:
+
+  if (survivor overflowed) {
+     threshold = max(threshold-1, 1)
+  } else if (minorGCTime > majorGCTime * (1.0+ThresholdTolerance/100.0)) {
+     threshold = max(threshold-1, 1)
+  } else if (majorGCTime > minorGCTime * (1.0+ThresholdTolerance/100.0)) {
+     threshold = min(threshold+1, MaxTenuringThreshold)
+  }
+
+
+Governing edenSize and promoSize
+
+The old policy set overall heap using MinHeapFreeRatio and
+MaxHeapFreeRatio, and the young generation based on NewSize.  We're going
+to determine settings for both at once using differentiation.  I believe
+this is reasonable because in my experience the generation sizes influence
+the interval between GCs very predictably, and generation sizes can also
+be varied almost continuously.
+
+Deriving this will take us on a little tangent through Mathematica.
+For clarity, let's rename some variables:
+
+   x == new optimal value for promoSize  (1.0 means don't change,
+   y == new optimal value for edenSize    0.5 is half the size)
+
+   a == proportion time in major GC: avgMajorPause / avgMajorInterval
+   b == proportion time in minor GC: avgMinorPause / avgMinorInterval
+
+   c == baseFootprint + oldAlive + youngAlive
+   d == current promoSize
+   e == current edenSize
+
+
+mate:~> math
+Mathematica 4.1 for Sun Solaris
+Copyright 1988-2000 Wolfram Research, Inc.
+ -- Motif graphics initialized -- 
+
+// Our objective function
+
+In[1]:= ((1-a-b) + a/x + b/y) * (c + d*x + e*y)
+
+                     a   b
+Out[1]= (1 - a - b + - + -) (c + d x + e y)
+                     x   y
+
+// Solve the system of equations Dx==0, Dy==0.
+
+In[2]:= Simplify[Solve[{D[%1,x]==0,D[%1,y]==0},{x,y}],a>0&&b>0&&c>0&&d>0&&e>0&&(a+b)<1]
+
+                   -I Sqrt[a c]               -I Sqrt[b c]
+Out[2]= {{x -> --------------------, y -> --------------------}, 
+               Sqrt[(-1 + a + b) d]       Sqrt[(-1 + a + b) e]
+ 
+               -I Sqrt[a c]                       b c
+>    {x -> --------------------, y -> Sqrt[-(--------------)]}, 
+           Sqrt[(-1 + a + b) d]              (-1 + a + b) e
+ 
+                       a c                   -I Sqrt[b c]
+>    {x -> Sqrt[-(--------------)], y -> --------------------}, 
+                  (-1 + a + b) d         Sqrt[(-1 + a + b) e]
+ 
+                       a c                           b c
+>    {x -> Sqrt[-(--------------)], y -> Sqrt[-(--------------)]}, 
+                  (-1 + a + b) d                (-1 + a + b) e
+ 
+>    {x -> (-((-1 + a + b) c) + a d - b e + 
+ 
+                                                                  2
+>         Sqrt[4 b (-1 + a + b) c e + ((-1 + a + b) c + a d - b e) ]) / 
+ 
+>       (2 (-1 + a + b) d), y -> 
+ 
+>      -((-1 + a + b) c + a d - b e + 
+ 
+                                                                   2
+>          Sqrt[4 b (-1 + a + b) c e + ((-1 + a + b) c + a d - b e) ]) / 
+ 
+>       (2 (-1 + a + b) e)}, {x -> 
+ 
+>      -((-1 + a + b) c - a d + b e + 
+ 
+                                                                   2
+>          Sqrt[4 b (-1 + a + b) c e + ((-1 + a + b) c + a d - b e) ]) / 
+ 
+>       (2 (-1 + a + b) d), y -> 
+ 
+>      (-((-1 + a + b) c) - a d + b e + 
+ 
+                                                                  2
+>         Sqrt[4 b (-1 + a + b) c e + ((-1 + a + b) c + a d - b e) ]) / 
+ 
+>       (2 (-1 + a + b) e)}}
+
+// Although the I's are an artifact of mathematica not knowing how to
+// simplify I*sqrt(-x)==sqrt(x), the first three results are still
+// negative.  We discard the first three and substitute the optima
+// back into the objective function...
+
+In[3]:= Simplify[%1 /. %[[{4,5,6}]], a>0&&b>0&&c>0&&d>0&&e>0&&(a+b)<1]
+
+                                 a                         b
+Out[3]= {(1 - a - b + ----------------------- + -----------------------) 
+                                  a c                       b c
+                      Sqrt[-(--------------)]   Sqrt[-(--------------)]
+                             (-1 + a + b) d            (-1 + a + b) e
+ 
+                    a c d                 b c e
+>     (c + Sqrt[-(----------)] + Sqrt[-(----------)]), 0, 0}
+                  -1 + a + b            -1 + a + b
+
+// The last two results were trivial, so we discard them too.
+
+In[4]:= %%[[4]]
+
+                          a c                           b c
+Out[4]= {x -> Sqrt[-(--------------)], y -> Sqrt[-(--------------)]}
+                     (-1 + a + b) d                (-1 + a + b) e
+
+// We want to minimize the objective function, but it might
+// be a maximum or a saddle point.  Is Dxx positive?
+
+In[5]:= Simplify[(D[%1,x,x] /. %)>0, a>0&&b>0&&c>0&&d>0&&e>0&&(a+b)<1]
+
+Out[5]= True
+
+// Let's explore a little.
+
+// Since the objective function is structurally symmetric between
+// x and y, we know this solution is a true minimum.
+
+// By what factor will we change time in GC?
+
+In[7]:= Apart[PowerExpand[(a/x + b/y) /. %4]]
+
+        -I Sqrt[-1 + a + b] (Sqrt[a] Sqrt[d] + Sqrt[b] Sqrt[e])
+Out[7]= -------------------------------------------------------
+                                Sqrt[c]
+
+// Rewriting:   sqrt[(1-a-b) / c] (Sqrt[ad] + Sqrt[be])
+
+// By what factor will we change voluntary footprint?
+
+In[8]:= Simplify[PowerExpand[(d*x + e*y) /. %4]]
+
+        I Sqrt[c] (Sqrt[a] Sqrt[d] + Sqrt[b] Sqrt[e])
+Out[8]= ---------------------------------------------
+                      Sqrt[-1 + a + b]
+
+// Rewriting:   sqrt(c / (1-a-b)) (Sqrt[ad] + Sqrt[be])
+
+// Note that the expansion of heap and gc time are 
+// symmetric; there is an intrinsic "hardness" of gc
+// for the app characterized by Sqrt[ad] + Sqrt[be],
+// and the resource expansion are governed by the ratio
+// sqrt(c / (1-a-b)).
+
+
+// Now consider edge conditions where x or y are prevented
+// from moving passed a certain limit.  In these cases we
+// want to fix one variable at the limit and find the optimal
+// for the other:
+
+In[4]:= Simplify[Solve[{D[%1,x]==0},x]]
+
+                     Sqrt[a y (c + e y)]
+Out[4]= {{x -> -(---------------------------)}, 
+                 Sqrt[d (b + y - a y - b y)]
+ 
+               Sqrt[a y (c + e y)]
+>    {x -> ---------------------------}}
+           Sqrt[d (b + y - a y - b y)]
+
+// We only care about the positive case.  Is it a minimum?
+
+In[9]:= Simplify[D[%1,x,x] /. %[[2]]]
+
+                                 3/2
+        2 (d (b + y - a y - b y))
+Out[9]= ----------------------------
+           y Sqrt[a y (c + e y)]
+
+// That's positive, so it is a minimum.  Do the same thing
+// for y.
+
+In[6]:= Simplify[Solve[{D[%1,y]==0},y]]
+
+                     Sqrt[b x (c + d x)]
+Out[6]= {{y -> -(---------------------------)}, 
+                 Sqrt[e (a + x - a x - b x)]
+ 
+               Sqrt[b x (c + d x)]
+>    {y -> ---------------------------}}
+           Sqrt[e (a + x - a x - b x)]
+
+In[11]:= Simplify[D[%1,y,y] /. %[[2]]]
+
+                                  3/2
+         2 (e (a + x - a x - b x))
+Out[11]= ----------------------------
+            x Sqrt[b x (c + d x)]
+
+
+Now we have everything we need, except a few variables:
+
+   promoLimit == largest possible promoSize
+   edenLimit == largest possible edenSize
+   gcLimit == max time in GC before throwing OutOfMemory
+
+Restating the derivation above into the previously defined names:
+
+desiredPromoSize = promoSize 
+                   * sqrt(majorGCTime * liveSpace / (promoSize * mutatorTime));
+
+desiredEdenSize = edenSize 
+                   * sqrt(minorGCTime * liveSpace / (edenSize * mutatorTime));
+
+if (desiredPromoSize > promoLimit) {
+  if (desiredEdenSize > edenLimit) {
+    promoSize = promoLimit;
+    edenSize = edenLimit;
+    if (gcTime > gcLimit) {
+      Throw OutOfMemory as well
+    }
+  } else {
+    x = promoLimit / promoSize;
+    y = sqrt(minorGCTime * x * (liveSpace + promoSize * x)
+             / (edenSize * (majorGCTime + x * mutatorTime));
+    edenSize = max(edenSize * y, edenLimit);
+    }
+  promoSize = promoLimit;
+} else if (desiredEdenSize > edenLimit) {
+  y = edenLimit / edenSize;
+  x = sqrt(majorGCTime * y * (liveSpace + edenSize * y)
+           / (promoSize * (minorGCTime + y * mutatorTime));
+  promoSize = max(promoSize * x, promoLimit);
+  edenSize = edenLimit;
+} else {
+  promoSize = desiredPromoSize;
+  edenSize = desiredEdenSize;
+}
+
+Until bug 4418952 is fixed, there is a big dead area of the old generation
+that exists just to guarantee the worst case of promotion.  That shouldn't
+be considered part of footprint, because the pages for it rarely get
+touched.  So until it is fixed, the actual free space for the old
+generation should be set to
+
+   promoSize + MaxLiveObjectEvacuationRatio*(edenSize + survivorSize)
+
+rather than just promoSize.
+
+The code above also assumes that the reserved space for the young and old
+generations are fixed, and it is not possible to trade address space
+between them.  If this is fixed, then the code above can be simplified
+by replacing the promoLimit and edenLimit cases by optimization under a 
+combined constraint.
+
+
+Conclusion
+
+This document described an objective function that attempts
+to maximize throughput on large machines under simplifying
+assumptions.  To minimize the objective function, the JVM is
+instrumented in novel ways.  Tenuring theshold is chosen to
+equalize the work done by the old and young generations,
+which is turn determines the survivor size.  The additional
+space used by the old and new generations is determined
+by minimizing the objective function under size constraints.

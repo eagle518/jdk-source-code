@@ -1,0 +1,109 @@
+How to Carry Intel Changes Across To SPARC
+
+If you bring over changes from an Intel workspace,
+you will often find that your *_sparc files
+fail to compile, to link, or to execute properly.
+
+Such problems can be proactively discovered by
+inspecting recent changes to the corresponding
+*_i486 files, and (manually) applying those changes
+to your *_sparc files.
+
+The process of computing recent changes to a *_i486
+file and applying them to the corresponding *_sparc
+file is called __reconciliation__.  It is a crucial
+activity for porters, because it allows VM porting to
+take place in parallel with further development of
+the baseline version of the VM.
+
+Sometimes, it is reasonable after a bringover from
+Intel just to make minimal, tentative changes to the
+*_sparc files, to get the system compiling again.
+The reconciliation process can be deferred.
+
+Deferring reconciliation is reasonable if your goal is
+quick back-integration of a SPARC workspace with an Intel
+baseline workspace.  After all, later changes to the
+*_sparc files will not cause conflicts with Intel
+development.
+
+Each *_sparc file must contain a __reconciliation history__
+which declares the most recent version of the corresponding
+*_i486 file with which it has been reconciled.  It is the
+responsibility of the developer (who owns the *_sparc file)
+to periodically reconcile the *_sparc file, and update the
+reconciliation history accordingly.
+
+If a file has a reconciliation history, the shell script
+carryAcrossChanges.sh will help you keep the file
+reconciled with its Intel counterpart.  In particular,
+the script will inspect all such files in your workspace,
+and generate diffs for files which require reconciliation.
+
+To use carryAcrossChanges.sh, simply execute it in the
+root directory of your workspace:
+
+	% cd <ws>
+	% sh carryAcrossChanges.sh
+
+For each *_sparc file with a reconciliation history,
+if the corresponding *_i486 file has been changed
+since the *_sparc was reconciled, the shell script
+generates context diffs, and prints a message like this:
+
+	Adding to CARRY-ACROSS-DIFFS: vm/code/basicCodeEmit_sparc.cpp.diff
+
+For your convenience, the file <ws>/CARRY-ACROSS-DIFFS
+collects a list of *.diff files which need to be applied
+in order to complete the reconciliation process.
+(The corresponding *_sparc file name is just the
+*.diff file name, minus the ".diff".)
+
+The shell script can be re-executed any number of times.
+It can also be executed on specific files.  For example,
+to reconcile all files in the vm/code/ directory:
+
+	% sh carryAcrossChanges.sh vm/code/*_sparc*.[ch]pp
+
+The shell script makes no modification to any file under SCCS.
+It merely (re-)creates the *.diff files.
+
+(The shell script also creates sub-directories of files
+of the form "<i486file>.rec/dddddd.tttttt"; these cache
+versions of the *_i486 to be reconciled against.)
+
+It is not necessary to actually use the *.diff files.
+You can reconcile a *_sparc by re-translating the
+corresponding *_i486 file from scratch.  What is
+important is that you update the *_sparc file's
+reconciliation history.  The very last diff record
+in each *.diff file shows you how to update the
+reconciliation history.  It is __not__ a real
+diff derived from the *_i486 file.
+
+Some files in the source base do not have reconciliation
+histories yet.  The shell script silently skips these.
+If you wish to begin carrying across changes for a file,
+insert a dummy reconciliation history, like this:
+
+	//Reconciliation History
+	// 1 97/09/01 0 codeEmitter_i486.cpp
+	//End
+
+The script will then do a reasonable thing, generating
+a diffs file against the version of the *_i486 file as of
+the given date.  (It doesn't need to exactly match a delta.)
+The date you choose can be a month or two ago, so you can
+see the recent history of changes to the *_i486 file, and make
+sure they have already been carried across to the *_sparc file.
+You can delete the dummy entry after doing the first reconciliation.
+
+Do not add reconciliation histories to files which do
+not need them.  Often, "*.hpp" files do not need
+reconciliation, but "*.cpp" files generally do,
+if they exist in matched *_sparc/*_i486 pairs.
+
+The script is designed to use SCCS information when possible,
+and yet to work if SCCS information is not available.
+Under the "-v" option, it will describe its actions.
+

@@ -1,0 +1,43 @@
+#
+
+#
+# Copyright (c) 2003, 2008, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#  
+#
+
+# Define public interface.
+
+SUNWprivate_1.1 {
+        global:
+                # Dtrace support
+                __1cIUniverseP_methodKlassObj_;
+                __1cJCodeCacheF_heap_;
+                __1cIUniverseO_collectedHeap_;
+                __1cHnmethodG__vtbl_;
+                __1cICodeBlobG__vtbl_;
+                __1cKBufferBlobG__vtbl_;
+                __1cLRuntimeStubG__vtbl_;
+                __1cNSafepointBlobG__vtbl_;
+                __1cSDeoptimizationBlobG__vtbl_;
+
+		__JvmOffsets;
+};
