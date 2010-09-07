@@ -1,0 +1,79 @@
+<!--ArborText, Inc., 1988-2003, v.4002-->
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?APT Element gi="refentrytitle">
+<?APT Element gi="manvolnum">
+<?APT Element gi="refmiscinfo" attrs="class">
+<?APT Element gi="refmeta">
+<?APT Element gi="refname">
+<?APT Element gi="refpurpose">
+<?APT Element gi="refnamediv">
+<?APT Element gi="title">
+<?APT Element gi="command">
+<?APT Element gi="option" attrs="role">
+<?APT Element gi="arg" attrs="choice">
+<?APT Element gi="replaceable">
+<?APT Element gi="cmdsynopsis">
+<?APT Element gi="refsynopsisdiv">
+<?APT Element gi="primary" attrs="sortas">
+<?APT Element gi="indexterm" attrs="id">
+<?APT Element gi="literal">
+<?APT Element gi="para">
+<?APT Element gi="refsect1">
+<?APT Element gi="term" attrs="remap">
+<?APT Element gi="listitem">
+<?APT Element gi="varlistentry">
+<?APT Element gi="variablelist" attrs="termlength">
+<?APT Element gi="returnvalue">
+<?APT Element gi="citerefentry">
+<?APT Element gi="olink" attrs="targetdocent localinfo">
+<?APT Element gi="entry" attrs="colname rowsep align valign">
+<?APT Element gi="row">
+<?APT Element gi="thead">
+<?APT Element gi="tbody">
+<?APT Element gi="colspec" empty="yes" attrs="colnum colname colwidth colsep align">
+<?APT Element gi="tgroup" attrs="cols colsep rowsep">
+<?APT Element gi="informaltable" attrs="frame orient">
+<?APT Element gi="refentry" attrs="id">
+<?Pub Inc>
+<refentry id="extcheck-1"> <!--@(#)extcheck.1 1.11 01/03/14 SMI;--><refmeta><refentrytitle>
+extcheck</refentrytitle><manvolnum>1</manvolnum><refmiscinfo class="date">
+2004 年 6 月 22 日</refmiscinfo><refmiscinfo class="sectdesc">&man1;</refmiscinfo><refmiscinfo
+class="software">&java-release;</refmiscinfo><refmiscinfo class="arch">generic</refmiscinfo><refmiscinfo
+class="copyright"> Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+ Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.</refmiscinfo></refmeta><refnamediv><refname>
+extcheck</refname><refpurpose>jar の競合検出ユーティリティ</refpurpose></refnamediv><refsynopsisdiv><title>&synp-tt;</title><cmdsynopsis><command>
+extcheck</command><arg choice="opt"><option>verbose</option></arg><arg choice="plain"><replaceable>
+targetfile.jar</replaceable></arg><arg choice="opt"><option>J</option><replaceable>option</replaceable></arg></cmdsynopsis></refsynopsisdiv><refsect1><title>&desc-tt;</title><indexterm
+id="extcheck-1-indx-1"><primary sortas="jar conflict detection utility">jar
+conflict detection utility &mdash; extcheck</primary></indexterm><indexterm
+id="extcheck-1-indx-2"><primary sortas="extcheck">extcheck &mdash; jar conflict
+detection utility</primary></indexterm><para><command>extcheck</command> ユーティリティは、指定された <literal>
+jar</literal> ファイルのタイトルおよびバージョンが JDK&trade; ソフトウェアにインストールされている拡張機能と競合していないかを検査します。拡張機能をインストールする前に、このユーティリティを使って、バージョンが同じか、より新しい拡張機能がすでにインストールされていないかどうかを調べることができます。</para
+><para><command>extcheck</command> ユーティリティは、<replaceable>targetfile.jar</replaceable> ファイルのマニフェスト内のヘッダ
+Specification-title および Specification-version を、拡張機能ディレクトリ内に現在インストールされているすべての <literal>jar</literal> ファイル内の対応するヘッダと比較します。デフォルトでは、拡張機能ディレクトリは、<literal>jre/lib/ext</literal> です。<command>
+extcheck</command> ユーティリティは、<literal>java.lang.Package.isCompatibleWith</literal> メソッドと同様の方法でバージョン番号を比較します。</para></refsect1><refsect1><title>&opts-tt;</title
+><para>以下のオプションが指定できます。</para><variablelist termlength="narrow"><varlistentry><term
+remap="15"><option>verbose</option> </term><listitem><para>拡張機能ディレクトリ内の <literal>
+jar</literal> ファイルを、検査時に一覧表示します。また、ターゲット <literal>jar</literal> ファイルのマニフェストの属性、および競合する <literal>
+jar</literal> ファイルについても報告します。</para></listitem></varlistentry><varlistentry><term><option>J</option><replaceable>option</replaceable></term><listitem><para>
+オプションを Java 仮想マシンに渡します。ここで <replaceable>option</replaceable> は、Java アプリケーション起動ツール
+java(1) のマニュアルページに記載されたオプションの 1 つです。たとえば、<literal>-J-Xms48m</literal> と指定すると、スタートアップメモリは
+48M バイトに設定されます。<literal>-J</literal> を使って基本となる仮想マシンにオプションを渡すことはよく行われています。</para> </listitem></varlistentry></variablelist></refsect1><refsect1><title
+>&exit-tt;</title><para>次の終了値が返されます。</para><variablelist termlength="narrow"><varlistentry><term
+remap="15"><returnvalue>0</returnvalue> </term><listitem><para>競合が検出されない場合。</para></listitem></varlistentry><varlistentry><term>
+0 以外</term><listitem><para>拡張機能ディレクトリ内の <literal>jar</literal> ファイルのマニフェストに、同一の
+Specification-title、および同一またはより新しい Specification-version 番号がある場合。<replaceable>
+あるいは、targetfile.jar</replaceable> のマニフェストに Specification-title または Specification-version
+属性がない場合。</para></listitem></varlistentry></variablelist></refsect1><refsect1><title>&attr-tt;</title> <para>
+次の属性については、<olink targetdocent="REFMAN5" localinfo="attributes-5"><citerefentry><refentrytitle>
+attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry></olink> のマニュアルページを参照してください。</para> <informaltable
+frame="all" orient="port"><tgroup cols="2" colsep="1" rowsep="1"><colspec
+colnum="1" colname="col1" colwidth="1*" colsep="1" align="left"><colspec colnum="2"
+colname="col2" colwidth="1*" align="left"><thead><row><entry colname="col1"
+rowsep="1" align="center" valign="top">属性タイプ</entry><entry colname="col2"
+rowsep="1" align="center" valign="top">属性値</entry></row></thead><tbody><row><entry>
+使用条件</entry><entry>SUNWj5dev</entry></row></tbody></tgroup></informaltable></refsect1><refsect1><title>&also-tt;</title><para><citerefentry><refentrytitle>jar</refentrytitle><manvolnum>1</manvolnum></citerefentry> </para></refsect1></refentry>

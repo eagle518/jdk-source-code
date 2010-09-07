@@ -1,0 +1,177 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1999, v.4002-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub Inc>
+<refentry id="javaws">
+<!--@(#)javaws.1	1.8 04/04/04 SMI;-->
+<refmeta><refentrytitle>javaws</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">22 Jun 2004</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All
+rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.
+</refmiscinfo>
+</refmeta>
+<refnamediv><refname>javaws</refname><refpurpose>Java Web Start command launcher
+</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>javaws</command><arg choice="opt">[ options ]</arg>&nbsp;
+<replaceable>[ URL ]</replaceable>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>PARAMETERS</title>
+<para>Options may be in any order. For a discussion of a specific option,
+see OPTIONS below.</para>
+<varlistentry><term remap="15">options</term><listitem><para>Command-line
+options. See OPTIONS below.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15">URL</term><listitem><para>Uniform Resource
+Locator (<replaceable>URL</replaceable>) of the JNLP (Java Network Launching
+Protocol) file.</para>
+</listitem></varlistentry>
+</refsect1>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="native2ascii-1-indx-1"><primary sortas="native to ASCII converter">
+native to ASCII converter &mdash; native2ascii</primary></indexterm><indexterm
+id="native2ascii-1-indx-2"><primary sortas="native2ascii">native2ascii &mdash;
+native to ASCII converter</primary></indexterm><para>The <command>javaws</command>
+command launches Java Web Start, which is the reference implementation of
+the Java Network Launching Protocol (JNLP).  Java Web Start launches Java
+application/applets hosted on a network. </para>
+<para>Without any options <command>javaws</command> will launch the Java Application
+Cache Viewer.</para>
+<para>If a URL specifying a JNLP (Java Network Launching Protocol) file is
+specified, <command>javaws</command> will launch the Java application/applet
+specified in the JNLP file.</para>
+</refsect1>
+<refsect1><title>OPTIONS</title>
+<para>The <command>javaws</command> launcher has a set of options that are
+supported in the current release.  However, the options may be removed in
+a future release.  All <option>X</option> options are non-standard and subject
+to change.</para>
+<variablelist termlength="wholeline">
+<varlistentry><term><option>online</option></term><listitem><para>Runs in
+online mode (default behavior).</para>
+</listitem></varlistentry>
+<varlistentry><term><option>offline</option> </term><listitem><para>Runs Java
+Web Start in offline mode.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xclearcache</option></term><listitem><para>Clears
+the user's cache.  Java Web Start will exit after the command has completed.
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>uninstall</option><replaceable> URL</replaceable></term>
+<listitem><para>Removes a specific application/applet from the user's cache,
+as indicated by the <replaceable>URL</replaceable> for the JNLP file. Java
+Web Start will exit after the command has completed.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>import</option></term><listitem><para>Imports
+the application specified by the <replaceable>URL</replaceable> into the user's
+cache (without running it)</para>
+</listitem></varlistentry>
+<varlistentry><term><option>silent</option></term><listitem><para>Iimports
+in silent mode, when used with &mdash;import (ie. no UI will be displayed).
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>codebase</option><replaceable> URL</replaceable></term>
+<listitem><para>Replaces the codebase with <replaceable>URL</replaceable>
+ (<replaceable><replaceable>URL </replaceable></replaceable> must be valid)
+in the JNLP file specified when importing the resources.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>system</option></term><listitem><para>Uses the
+system cache instead of the user cache.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>shortcut</option></term><listitem><para>Allows
+the creation of shortcuts during silent import.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>association</option></term><listitem><para>Allows
+the creation of associations during silent import. </para>
+</listitem></varlistentry>
+<varlistentry><term><option>open<?Pub Caret> arguments</option></term><listitem>
+<para>Replaces the arguments in the JNLP file with &ldquo;-open arguments&rdquo;.
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>print arguments</option></term><listitem><para>
+Replaces the arguments in the JNLP file with &ldquo;-print arguments&rdquo;.
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>userConfig </option><replaceable>property-name
+</replaceable></term><listitem><para>Clears the specified deployment property
+ <replaceable>property-name</replaceable>. Java Web Start will then exit.
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>userConfig  </option><replaceable>property-name
+</replaceable> <replaceable>property-value</replaceable></term><listitem>
+<para>Sets the specified deployment <replaceable>property-name</replaceable>
+to the specified <replaceable>property-value</replaceable>. Java Web Start
+will then exit.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>updateVersions</option></term><listitem><para>
+Updates the Java Web Start configuration file based on the current machine's
+settings. Java Web Start will then exit.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xnosplash</option></term><listitem><para>Disable
+the display of the initial splash screen.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>viewer</option></term><listitem><para>Runs the
+Java Application Cache Viewer (default if no URL is specified).</para>
+</listitem></varlistentry>
+<varlistentry><term><option>wait</option></term><listitem><para>The javaws
+process will not exit until the application exits.</para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>EXIT STATUS</title>
+<para>The following exit values are returned:</para>
+<variablelist termlength="narrow">
+<varlistentry><term remap="20">0 </term><listitem><para>Successful completion.
+</para>
+</listitem></varlistentry>
+<varlistentry><term>>0</term><listitem><para>An error occurred.</para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>FILES</title>
+<variablelist>
+<varlistentry><term><filename>$HOME/.java/deployment/deployment.properties
+</filename></term><listitem><para>User configuration file for Java Deployment
+Products</para>
+</listitem></varlistentry>
+<varlistentry><term><filename>/etc/.java/deployment/deployment.config</filename></term>
+<listitem><para>Enterprise configuration file for Java Deployment Products.
+</para>
+</listitem></varlistentry>
+<varlistentry><term><filename>$JRE_HOME/lib/deployment.config</filename></term>
+<listitem><para>Alternate Enterprise configuration file for Java Deployment
+Products.</para>
+</listitem></varlistentry>
+<varlistentry><term><filename>$HOME/.mailcap</filename></term><listitem><para>
+User's mailcap file to specify helper applications for Netscape/Mozilla Browser
+</para>
+</listitem></varlistentry>
+<varlistentry><term><filename>$HOME/.mime.types</filename></term><listitem>
+<para>User's mime-type file to specify mime-types supported in Netscape/Mozilla
+Browser </para>
+</listitem></varlistentry>
+<varlistentry><term><filename>/etc/mailcap</filename></term><listitem><para>
+System mailcap file to specify helper applications for Netscape/Mozilla Browser
+</para>
+</listitem></varlistentry>
+<varlistentry><term><filename>/etc/mime.types</filename></term><listitem>
+<para>System mime-type file to specify mime-types supported in Netscape/Mozilla
+Browser</para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>java</refentrytitle><manvolnum>1</manvolnum>
+</citerefentry>, <citerefentry><refentrytitle>jar</refentrytitle><manvolnum>
+1</manvolnum></citerefentry>, <citerefentry><refentrytitle>pack200</refentrytitle>
+<manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>attributes
+</refentrytitle><manvolnum>5</manvolnum></citerefentry> </para>
+<variablelist termlength="wholeline">
+<varlistentry><listitem><para><para></para>http://java.sun.com/j2se/1.5.0/docs
+</para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+</refentry>

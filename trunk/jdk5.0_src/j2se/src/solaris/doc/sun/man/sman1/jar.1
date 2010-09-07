@@ -1,0 +1,472 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1999, v.4002-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub Inc>
+<refentry id="jar-1">
+<!--@(#)jar.1 1.19 04/05/14 SMI;-->
+<refmeta><refentrytitle>jar</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">22 Jun 2004</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All
+rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.
+</refmiscinfo>
+</refmeta>
+<refnamediv><refname>jar</refname><refpurpose>Java archive tool</refpurpose>
+</refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>jar</command><arg choice="opt"><option>c[v0M] f</option></arg>
+<arg choice="opt"><replaceable>jarfile</replaceable></arg><arg choice="plain">
+[ -C <replaceable>dir</replaceable> ]</arg><arg choice="plain"><replaceable>
+inputfiles</replaceable></arg><arg choice="opt">[ -J<replaceable>option</replaceable> ]
+</arg>
+</cmdsynopsis>
+<cmdsynopsis><command>jar</command><arg choice="opt"><option>c[v0] mf</option></arg>
+<arg choice="opt"><replaceable>manifest</replaceable></arg><arg choice="opt"><replaceable>
+jarfile</replaceable></arg><arg choice="plain">[ -C <replaceable>dir</replaceable> ]
+</arg><arg choice="plain"><replaceable>inputfiles</replaceable></arg><arg
+choice="opt">[ -J<replaceable>option</replaceable> ]</arg>
+</cmdsynopsis>
+<cmdsynopsis><command>jar</command><arg choice="opt"><option>c[v0M]</option></arg>
+<arg choice="plain">[ -C <replaceable>dir</replaceable> ]</arg><arg choice="plain"><replaceable>
+inputfiles</replaceable></arg><arg choice="opt">[ -J<replaceable>option</replaceable> ]
+</arg>
+</cmdsynopsis>
+<cmdsynopsis><command>jar</command><arg choice="opt"><option>c[v0] m</option></arg>
+<arg choice="opt"><replaceable>manifest</replaceable></arg><arg choice="plain">
+[ -C <replaceable>dir</replaceable> ]</arg><arg choice="plain"><replaceable>
+inputfiles</replaceable></arg><arg choice="opt">[-J<replaceable>option</replaceable> ]
+</arg>
+</cmdsynopsis>
+<cmdsynopsis><command>jar</command><arg choice="opt"><option>u[v0M] f</option></arg>
+<arg choice="opt"><replaceable>jarfile</replaceable></arg><arg choice="plain">
+[ -C <replaceable>dir </replaceable> ]</arg><arg choice="plain"><replaceable>
+inputfiles</replaceable></arg><arg choice="opt">[ -J<replaceable>option</replaceable> ]
+</arg>
+</cmdsynopsis>
+<cmdsynopsis><command>jar</command><arg choice="opt"><option>u[v0] mf</option></arg>
+<arg choice="opt"><replaceable>manifest</replaceable></arg><arg choice="opt"><replaceable>
+jarfile</replaceable></arg><arg choice="plain">[ -C <replaceable>dir</replaceable> ]
+</arg><arg choice="plain"><replaceable>inputfiles</replaceable></arg><arg
+choice="opt">[ -J<replaceable>option</replaceable> ]</arg>
+</cmdsynopsis>
+<cmdsynopsis><command>jar</command><arg choice="opt"><option>u[v0M]</option></arg>
+<arg choice="plain">[ -C <replaceable>dir</replaceable> ]</arg><arg choice="plain"><replaceable>
+inputfiles</replaceable></arg><arg choice="opt">[ -J<replaceable>option</replaceable> ]
+</arg>
+</cmdsynopsis>
+<cmdsynopsis><command>jar</command><arg choice="opt"><option>u[v0] m</option></arg>
+<arg choice="opt"><replaceable>manifest</replaceable></arg><arg choice="plain">
+[ -C <replaceable>dir</replaceable> ]</arg><arg choice="plain"><replaceable>
+inputfiles</replaceable></arg><arg choice="opt">[ -J<replaceable>option</replaceable> ]
+</arg>
+</cmdsynopsis>
+<cmdsynopsis><command>jar</command><arg choice="opt"><option>x[v] f</option></arg>
+<arg choice="opt"><replaceable>jarfile</replaceable></arg><arg choice="plain"><replaceable>
+inputfiles</replaceable></arg><arg choice="opt">[ -J<replaceable>option</replaceable> ]
+</arg>
+</cmdsynopsis>
+<cmdsynopsis><command>jar</command><arg choice="opt"><option>x[v]</option><replaceable>
+inputfiles</replaceable></arg><arg choice="opt">[ -J<replaceable>option</replaceable> ]
+</arg>
+</cmdsynopsis>
+<cmdsynopsis><command>jar</command><arg choice="opt"><option>t[v] f</option></arg>
+<arg choice="opt"><replaceable>jarfile</replaceable></arg><arg choice="plain"><replaceable>
+inputfiles</replaceable>[ -J<replaceable>option</replaceable> ]</arg>
+</cmdsynopsis>
+<cmdsynopsis><command>jar</command><arg choice="opt"><option>t[v]</option></arg>
+<arg choice="plain"><replaceable>inputfiles</replaceable></arg><arg choice="opt">
+[ -J<replaceable>option</replaceable> ]</arg>
+</cmdsynopsis>
+<cmdsynopsis><command>jar</command><arg choice="opt"><option>i</option></arg>
+<arg choice="plain"><replaceable>jarfile</replaceable></arg><arg choice="opt">
+[ -J<replaceable>option</replaceable> ]</arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>PARAMETERS</title>
+<variablelist>
+<varlistentry><term>cuxtiv0Mmf</term><listitem><para>Options that control
+the jar command.</para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>jarfile</replaceable></term><listitem><para>
+Jar file to be created (<option>c</option>), updated (<option>u</option>),
+extracted (<option>x</option>), or have its table of  contents viewed (<option>
+t</option>). The <option>f</option> option and filename <replaceable>jarfile
+</replaceable> are a pair -- if either is  present, they must both appear.
+Note that omitting <option> f</option>and jarfile accepts a "jar file" from
+standard input (for <option>x</option> and<option> t</option>) or sends the
+"jar file" to standard output (for <option>c</option> and <option>u</option>). 
+</para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>inputfiles </replaceable></term><listitem>
+<para>Files or directories, separated by spaces, to be combined into jarfile
+(for <option>c</option> and <option>u</option>), or to be extracted (for <option>
+x</option>) or listed (for <option>t</option>) from jarfile. All directories
+are processed recursively. The files are compressed unless option <option>
+O</option> (zero) is used. </para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>manifest </replaceable></term><listitem>
+<para>Pre-existing manifest file whose name: value pairs are to be included
+in <literal>MANIFEST.MF</literal> in the jar file. The <option>m</option>
+option and filename <replaceable>manifest</replaceable> are a pair -- if either
+is present, they must both appear. The letters <option>m</option> and <option>
+f</option> must appear in the same order that <replaceable>manifest</replaceable>
+and <replaceable>jarfile</replaceable> appear. </para>
+</listitem></varlistentry>
+<varlistentry><term>&mdash;C <replaceable>dir</replaceable></term><listitem>
+<para>Temporarily changes directories to <replaceable>dir </replaceable>while
+processing the following inputfiles argument. Multiple <option>-C</option> <replaceable>
+dir</replaceable> inputfiles sets are allowed. </para>
+</listitem></varlistentry>
+<varlistentry><term>&mdash;J<replaceable>option</replaceable></term><listitem>
+<para>Option to be passed into the Java runtime environment. (There must be
+no space between <option>-J</option> and <replaceable>option</replaceable>). 
+</para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>&desc-tt;</title>
+<para>The jar tool combines multiple files into a single JAR archive file.
+jar is a general-purpose archiving and compression tool, based on ZIP and
+the ZLIB compression format. However, jar was designed mainly to facilitate
+the packaging of java applets or applications into a single archive. When
+the components of an applet or application (.class files, images and sounds)
+are combined  into a single archive, they may be downloaded by a java agent
+(like a browser) in a single HTTP transaction, rather than requiring a new
+connection for each piece. This dramatically improves download times. jar
+also compresses files and so further improves download time. In addition,
+it  allows individual entries in a file to be signed by the applet author
+so that their origin can be       authenticated. The syntax for the jar tool
+is almost identical to the syntax for the tar command.  A jar archive can
+be used as a class path entry, whether it is compressed or not. </para>
+<indexterm id="jar-1-indx-1"><primary sortas="Java archive tool">Java archive
+tool &mdash; jar</primary></indexterm><indexterm id="jar-1-indx-2"><primary
+sortas="jar">jar &mdash; Java archive tool</primary></indexterm><para>Typical
+usage to combine files into a jar file is:</para>
+<informalexample>
+<screen>example% <userinput>jar cf myjarfile *.class</userinput> </screen>
+</informalexample>
+<para>In this example, all the class files in the current directory are placed
+into the file named "<literal>myFile.ja</literal>r". A manifest file entry
+named META-INF/MANIFEST.MF is automatically generated by the jar tool and
+is always the first entry in the jar file. The manifest file is the place
+where any  meta-information about the archive is stored as name: value pairs.
+Refer to the JAR file specification for details about how meta-information
+is stored in the manifest file. </para>
+<para>If you have a pre-existing manifest file whose name: value pairs you
+want the jar tool to include for the new jar archive, you can specify it using
+the <option role="nodash">m</option> option:</para>
+<informalexample>
+<screen>example% <userinput>jar cmf myManifestFile myJarFile *.class</userinput></screen>
+</informalexample>
+<para>Be sure that any pre-existing manifest file that you use ends with a
+new line. The last line of a  manifest file will not be parsed if it doesn't
+end with a new line character. Note that when you specify "<option>cfm</option>"
+instead of "<option>cmf</option>" (i.e., you invert the order of the "m" and
+"f" options), you need to specify the name of the jar archive first, followed
+by the name of the manifest file: </para>
+<informalexample>
+<screen>example% <userinput>jar cfm myJarFile myManifestFile *.class</userinput></screen>
+</informalexample>
+<para>The manifest is in a text format inspired by RFC822 <acronym remap="small">
+ASCII</acronym> format, so it is easy to view and process manifest-file contents.
+</para>
+<para>To extract the files from a jar file, use <option>x</option>, as in: 
+</para>
+<informalexample>
+<screen>example% <userinput>jar xf myFile.jar</userinput></screen>
+</informalexample>
+<para>To extract only certain files from a jar file, supply their filenames: 
+</para>
+<informalexample>
+<screen>example% <userinput>jar xf myFile.jar foo bar</userinput></screen>
+</informalexample>
+<para>Beginning with version 1.3 of the Java 2 SDK, the jar utility supports
+JarIndex, which allows application class loaders to load classes more efficiently
+from jar files. If an application or applet is bundled into multiple jar files,
+ only the necessary jar files will be downloaded and opened to load classes.
+This performance optimization is enabled by running jar with the i option.
+It will generate package location information for the specified main jar file
+and all the jar files it  depends on, which need to be specified in the Class-Path
+attribute of the main jar file's manifest. </para>
+<informalexample>
+<screen>example% <userinput>jar i main.jar</userinput></screen>
+</informalexample>
+<para>In this example, an INDEX.LIST file is inserted into the META-INF directory
+of main.jar. The application class loader will use the information stored
+in this file for efficient class loading. Refer to the JarIndex specification
+for details about how location information is stored in the index file. </para>
+<para>A standard way to copy directories is to first compress files in <replaceable>
+dir1</replaceable> to standard out, then extract from standard in to <replaceable>
+dir2</replaceable> (omitting <option>f</option> from both jar commands): 
+</para>
+<informalexample>
+<screen>example% <userinput>% (cd dir1; jar c .) | (cd dir2; jar x)</userinput></screen>
+</informalexample>
+<para>Examples of using the jar tool to operate on jar files and jar file
+manifests are provided below and in the Jar trail of the<ulink url="http://java.sun.com/docs/book/tutorial/jar">
+Java Tutorial</ulink>. </para>
+</refsect1>
+<refsect1><title>&opts-tt;</title>
+<para>The following options are supported:</para>
+<variablelist termlength="xtranarrow">
+<varlistentry><term><option role="nodash">c</option></term><listitem><para>
+Creates a new archive file named <literal>jarfile</literal> (if <option>f
+</option> is specified) or to standard output (if <option>f</option> and <replaceable>
+jarfile</replaceable> are omitted). Add to it the files and directories specified
+by inputfiles. </para>
+</listitem></varlistentry>
+<varlistentry><term>u</term><listitem><para>Updates an existing file <replaceable>
+jarfile</replaceable> (when <option>f</option> is specified) by adding to
+it files and directories specified by <replaceable>inputfiles</replaceable>.
+For example: </para>
+<informalexample>
+<screen><userinput>jar uf foo.jar foo.class</userinput></screen>
+</informalexample>
+<para>would add the file <literal>foo.class</literal> to the existing jar
+file <literal>foo.jar</literal>. The <option>u</option> option can also update
+the manifest entry, as given by this example: </para>
+<informalexample>
+<screen><userinput>jar umf manifest foo.jar</userinput></screen>
+</informalexample>
+<para>updates the <literal>foo.jar</literal> manifest with the name: value
+pairs in <replaceable>manifest</replaceable>. </para>
+</listitem></varlistentry>
+<varlistentry><term><option role="nodash">x</option></term><listitem><para>
+Extracts files and directories from <replaceable>jarfile</replaceable> (if <option>
+f</option> is specified) or standard input (if <option>f</option> and <replaceable>
+jarfile</replaceable> are omitted). If <replaceable>inputfiles</replaceable>
+is specified, only those specified files and directories are  extracted. Otherwise,
+all files and directories are extracted. </para>
+</listitem></varlistentry>
+<varlistentry><term><option role="nodash">t</option></term><listitem><para>
+Lists the table of contents from <replaceable>jarfile</replaceable> (if <option>
+f</option> is specified) or standard input (if <option>f</option> and <replaceable>
+jarfile</replaceable> are omitted). If inputfiles is specified, only those
+specified files and directories are listed. Otherwise, all files and directories
+are listed. </para>
+</listitem></varlistentry>
+<varlistentry><term><option role="nodash">i</option></term><listitem><para>
+Generate index information for the specified <replaceable>jarfile</replaceable>
+and its dependent jar files. For example: <informalexample>
+<screen><userinput>jar i foo.jar</userinput></screen>
+</informalexample>would generate an INDEX.LIST file in foo.jar which contains
+location information for each             package in <literal>foo.jar</literal>
+and all the jar files specified in the Class-Path attribute of <literal>foo.jar
+</literal>. See the index example. </para>
+</listitem></varlistentry>
+<varlistentry><term><option role="nodash">f</option></term><listitem><para>
+Specifies the file jarfile to be created (<option>c</option>), updated (<option>
+u</option>), extracted (<option>x</option>), indexed (<option>i</option>),
+or viewed (<option>t</option>). The <option>f</option> option and filename <replaceable>
+jarfile</replaceable> are a pair -- if present, they must both appear.  Omitting <option>
+f</option> and <replaceable>jarfile</replaceable> accepts a "jar file" from
+standard input (for <option>x</option> and <option>t</option>) or sends the
+"jar file" to standard output (for <option>c</option> and <option>u</option>). 
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option role="nodash">v</option></term><listitem><para>
+Generates verbose output to standard output. Examples shown below. </para>
+</listitem></varlistentry>
+<varlistentry><term><option role="nodash">0</option></term><listitem><para>
+(zero) Store without using ZIP compression. </para>
+</listitem></varlistentry>
+<varlistentry><term><option role="nodash">M</option></term><listitem><para>
+Do not create a manifest file entry (for <option>c</option> and <option>u
+</option>), or delete a manifest file entry if one exists (for <option>u</option>). 
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option role="nodash">m</option></term><listitem><para>
+Includes name: value attribute pairs from the specified manifest file <replaceable>
+manifest</replaceable> in the file at <literal>META-INF/MANIFEST.MF</literal>.
+A name: value pair is added unless one already exists with the same name,
+in which case its value is updated. </para>
+<para>On the command line, the letters <option>m</option> and <option>f</option>
+must appear in the same order that <replaceable>manifest</replaceable> and <replaceable>
+jarfile</replaceable> appear. Example use: </para>
+<informalexample>
+<screen><userinput>jar cmf myManifestFile myFile.jar *.class</userinput></screen>
+</informalexample>
+<para>You can add special-purpose name: value attribute pairs to the manifest
+that aren't             contained in the default manifest. Examples of such
+attributes would be those for vendor             information, version information,
+package sealing, and to make JAR-bundled applications             executable.
+See the JAR Files trail in the Java Tutorial and the Notes for Developers
+page for             examples of using the <option>m</option> option. </para>
+</listitem></varlistentry>
+<varlistentry><term><option>C</option></term><listitem><para>Temporarily changes
+directories (<command>cd</command> <replaceable>dir</replaceable>) during
+execution of the jar command while processing the following inputfiles argument.
+Its operation is intended to be similar to the  <option>-C</option> option
+of the UNIX tar utility. For example: <informalexample>
+<screen><userinput>jar uf foo.jar &ndash;C classes *</userinput></screen>
+</informalexample></para>
+<para>would change to the <literal>classes</literal> directory and add the<literal>
+ bar.class</literal> from that directory to<literal> foo.</literal>jar. The
+following command, </para>
+<informalexample>
+<screen><userinput>jar uf foo.jar -C classes . -C bin xyz.class</userinput></screen>
+</informalexample>
+<para>would change to the <literal>classes</literal> directory and add to<literal>
+ foo.jar</literal> all files within the <literal>classes</literal>  directory
+(without creating a classes directory in the jar file), then change back to
+the original directory before changing to the <literal>bin</literal> directory
+to add <literal>xyz.class</literal> to f<literal>oo.jar</literal>. If  <literal>
+classes</literal> holds files <literal>bar1</literal> and <literal>bar2</literal>,
+then here's what the jar file would contain using <command>jar tf foo.jar
+</command>: </para>
+<screen>META-INF/
+                  META-INF/MANIFEST.MF
+                  bar1
+                  bar2
+                  xyz.class</screen>
+</listitem></varlistentry>
+<varlistentry><term><option role="nodash">J</option><replaceable>option</replaceable></term>
+<listitem><para>Pass <replaceable>option</replaceable> to the Java runtime
+environment, where option is one of the options described on the man page
+for the java application launcher, java (1). For example, <literal>-J-Xms48m
+</literal> sets the startup memory to 48 megabytes. It is a common convention
+for <literal>-J</literal> to pass options to the underlying runtime environment.
+</para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>COMMAND LINE ARGUMENT FILES</title>
+<para>To shorten or simplify the jar command line, you can specify one or
+more files that themselves contain arguments to the jar command (except <option>
+-J </option>options). This enables you to create jar  commands of any length,
+overcoming command line limits imposed by the operating system. </para>
+<para>An argument file can include options and filenames. The arguments within
+a file can be       space-separated or newline-separated. Filenames within
+an argument file are relative to the current directory, not the location of
+the argument file. Wildcards (*) that might otherwise be  expanded by the
+operating system shell are not expanded. Use of the '@' character to recursively
+interpret files is not supported. The <option>-J</option> options are not
+supported because they are passed to the launcher, which does not support
+argument files. </para>
+<para>When executing jar, pass in the path and name of each argument file
+with the '@' leading character. When jar encounters an argument beginning
+with the character `@', it expands the contents of that file into the argument
+list. </para>
+<para>For example, you could use a single argument file named "classes.list"
+to hold the names of  the files: </para>
+<informalexample>
+<screen>% <userinput>find . -name '*.class' -print > classes.list</userinput></screen>
+</informalexample>
+<para>Then execute the jar command passing in the argfile: </para>
+<informalexample>
+<screen>% <userinput>jar cf my.jar @classes.list</userinput></screen>
+</informalexample>
+<para>An argument file can be passed in with a path, but any filenames inside
+the argument file that have relative paths are relative to the current working
+directory, not the path passed in. Here's such an example: </para>
+<informalexample>
+<screen>% <userinput>jar @path1/classes.list</userinput></screen>
+</informalexample>
+</refsect1>
+<refsect1><title>&exam-tt;</title>
+<example role="example">
+<title></title>
+<screen>% <userinput>ls</userinput>
+            1.au          Animator.class    monkey.jpg
+            2.au          Wave.class        spacemusic.au
+            3.au          at_work.gif
+
+            % jar cvf bundle.jar *
+            added manifest
+            adding: 1.au(in = 2324) (out= 67)(deflated 97%)
+            adding: 2.au(in = 6970) (out= 90)(deflated 98%)
+            adding: 3.au(in = 11616) (out= 108)(deflated 99%)
+            adding: Animator.class(in = 2266) (out= 66)(deflated 97%)
+            adding: Wave.class(in = 3778) (out= 81)(deflated 97%)
+            adding: at_work.gif(in = 6621) (out= 89)(deflated 98%)
+            adding: monkey.jpg(in = 7667) (out= 91)(deflated 98%)
+            adding: spacemusic.au(in = 3079) (out= 73)(deflated 97%)</screen>
+</example>
+<example role="example">
+<title></title>
+<para>If you already have separate subdirectories for images, audio files
+and classes, you can combine them into a single jar file: </para>
+<screen>% <userinput>ls -F</userinput>
+            audio/ classes/ images/
+
+            % <userinput>jar cvf bundle.jar audio classes images</userinput>
+            added manifest
+            adding: audio/(in = 0) (out= 0)(stored 0%)
+            adding: audio/1.au(in = 2324) (out= 67)(deflated 97%)
+            adding: audio/2.au(in = 6970) (out= 90)(deflated 98%)
+            adding: audio/3.au(in = 11616) (out= 108)(deflated 99%)
+            adding: audio/spacemusic.au(in = 3079) (out= 73)(deflated 97%)
+            adding: classes/(in = 0) (out= 0)(stored 0%)
+            adding: classes/Animator.class(in = 2266) (out= 66)(deflated 97%)
+            adding: classes/Wave.class(in = 3778) (out= 81)(deflated 97%)
+            adding: images/(in = 0) (out= 0)(stored 0%)
+            adding: images/monkey.jpg(in = 7667) (out= 91)(deflated 98%)
+            adding: images/at_work.gif(in = 6621) (out= 89)(deflated 98%)
+
+            % <userinput>ls -F</userinput>
+            audio/ bundle.jar classes/ images/</screen>
+</example>
+<example role="example">
+<title></title>
+<para>To see the entry names in the jarfile, use the "t" option: </para>
+<para><screen>% <userinput>jar tf bundle.jar</userinput>
+            META-INF/
+            META-INF/MANIFEST.MF
+            audio/1.au
+            audio/2.au
+            audio/3.au
+            audio/spacemusic.au
+            classes/Animator.class
+            classes/Wave.class
+            images/monkey.jpg
+            images/at_work.gif</screen></para>
+</example>
+<example role="example">
+<title></title>
+<para>To add an index file to the jar file for speeding up class loading,
+use the "i" option. </para>
+<para>Let's say you split the inter-dependent classes for a stock trade application,
+into three jar files: <literal>main.jar</literal>, <literal>buy.jar</literal>,
+and <literal>sell.jar</literal>. If you specify the Class-path attribute in
+the <literal>main.jar</literal> manifest as: <screen>Class-Path: buy.jar sell.jar
+</screen></para>
+<para>then you can use the <option>i</option> option to speed up your application's
+class loading time: </para>
+<screen>% <userinput>jar i main.jar</userinput></screen>
+<para>An INDEX.LIST file is inserted to the META-INF directory which will
+enable the application class loader to download the specified jar files when
+it is searching for  classes or resources. </para>
+</example>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<variablelist termlength="wholeline">
+<varlistentry><term remap="10"><citetitle>JAR Tutorial</citetitle> @</term>
+<listitem><para><ulink url="http://java.sun.com/docs/books/tutorial/jar">
+http://java.sun.com/docs/books/tutorial/jar</ulink></para>
+</listitem></varlistentry>
+<varlistentry><term remap="10"><citetitle>JAR File Specification</citetitle>
+@</term><listitem><para><ulink url="http://java.sun.com/j2se/1.5/docs/guide/jar/index.html">
+http://java.sun.com/j2se/1.5/docs/guide/jar/index.html</ulink></para>
+</listitem></varlistentry>
+<varlistentry><term remap="10"><citetitle>JAR File Overview</citetitle> @
+</term><listitem><para><ulink url="http://java.sun.com/j2se/1.5/docs/guide/jar/jarGuide.html">
+http://java.sun.com/j2se/1.5/docs/guide/jar/jarGuide.html</ulink></para>
+</listitem></varlistentry>
+<varlistentry><term remap="10"><citetitle>JARIndex Spec</citetitle> @</term>
+<listitem><para><ulink url="http://java.sun.com/j2se/1.5/docs/guide/jar/jar.html*Jar Index">
+http://java.sun.com/j2se/1.5/docs/guide/jar/jar.html</ulink></para>
+</listitem></varlistentry>
+<varlistentry><term remap="10"><citetitle>pack200 Reference Page</citetitle>
+@</term><listitem><para><ulink url="http://java.sun.com/j2se/1.5/docs/tooldocs/solaris/pack200.html">
+http://java.sun.com/j2se/1.5/docs/tooldocs/solaris/pack200.html</ulink></para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<!--+ 07/27/00 08:33:12
+    | tagMorph:  $Id: tagMorph-engine 1.54 1998/01/19 05:44:48 $
+    | tagMorph library:  $Id: libtagMorph.a 1.50 1998/01/19 22:02:51 $
+    | sunman-to-solbook 1.17
+    +-->
+<?Pub Caret></refentry>
+<?Pub *0000026671>

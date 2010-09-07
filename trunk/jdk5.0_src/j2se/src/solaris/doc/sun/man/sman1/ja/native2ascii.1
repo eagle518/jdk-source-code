@@ -1,0 +1,54 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1998, v.4001-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub Inc>
+<refentry id="native2ascii-1">
+<!--@(#)native2ascii.1 1.14 01/03/14 SMI;-->
+<refmeta><refentrytitle>native2ascii</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">2004 年 6 月 22 日</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.</refmiscinfo>
+</refmeta>
+<refnamediv><refname>native2ascii</refname><refpurpose>ネイティブコードから ASCII への変換</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>native2ascii</command><arg choice="opt"><option>[ options ]</option>&nbsp;</arg><arg choice="opt"><arg choice="plain"><replaceable>inputfile</replaceable></arg><arg choice="opt"><replaceable>outputfile</replaceable></arg></arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="native2ascii-1-indx-1"><primary sortas="native to ASCII converter">native to ASCII converter &mdash; native2ascii</primary></indexterm><indexterm id="native2ascii-1-indx-2"><primary sortas="native2ascii">&mdash; ネイティブコードから ASCII への変換</primary></indexterm>
+<para><citerefentry><refentrytitle>javac</refentrytitle><manvolnum>1</manvolnum></citerefentry> コンパイラなどの Java&trade; ツールが処理できるファイルは、Latin-1 文字もしくは Unicode でエンコードされた文字 (&bsol;udddd) からなるファイルだけです。<command>native2ascii</command> コマンドは、他の文字コードのファイルを Latin-1 または Unicode エンコーディングのファイルに変換します。</para>
+<para><replaceable>outputfile</replaceable> 引数を省略すると、出力先は標準出力となります。<replaceable>inputfile</replaceable> 引数を省略すると、入力元は標準入力となります。</para>
+</refsect1>
+<refsect1><title>&opts-tt;</title>
+<para>以下のオプションが使用できます。</para>
+<variablelist termlength="wholeline"><varlistentry><term remap="15"><option>encoding</option> <replaceable>encoding_name</replaceable></term><listitem><para>変換処理で用いるエンコーディング名を指定します。デフォルトのエンコーディング名は、システムプロパティの <literal>file.encoding</literal> から得られます。<replaceable>encoding_name</replaceable> 文字列は、以下のサイトの『Supported Encodings』ドキュメント内に示されているサポート対象エンコーディングの表の最初の列にある文字列の 1 つでなければなりません。<informalexample>
+<para><ulink url="http://java.sun.com/j2se/1.4/docs/guide/intl/encoding.doc.html">http://java.sun.com/j2se/1.4/docs/guide/intl/encoding.doc.html</ulink></para>
+</informalexample></para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>reverse</option></term><listitem><para>逆の変換処理を行います。つまり Latin-1 または Unicode でエンコーディングされている文字を、ネイティブコードに変換します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>J</option><replaceable>option</replaceable></term><listitem><para><replaceable>option</replaceable> を Java 仮想マシンに渡します。この <replaceable>option</replaceable> は、Java アプリケーション起動プログラム java(1) のマニュアルページで 説明されているオプションの 1 つです。たとえば、<literal>-J-Xms48m</literal> は、起動時に使用するメモリを 48M バイトに設定します。<literal>-J</literal> が基本にする仮想マシンにオプションを渡すことは、共通の規約です。</para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<refsect1><title>&attr-tt;</title>
+<para>次の属性については、<citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry> のマニュアルページを参照してください。</para>
+<informaltable frame="all" orient="port"><tgroup cols="2" colsep="1" rowsep="1"><colspec colnum="1" colname="col1" colwidth="1*" colsep="1" align="left"><colspec colnum="2" colname="col2" colwidth="1*" align="left"><thead><row><entry colname="col1" rowsep="1" align="center" valign="top">属性タイプ</entry><entry colname="col2" rowsep="1" align="center" valign="top">属性値</entry></row></thead><tbody><row><entry>使用条件</entry><entry>SUNWj5dev</entry></row></tbody></tgroup></informaltable>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>javac</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry></para>
+<para><variablelist termlength="wholeline"><varlistentry><term><citetitle>サポートされるエンコーディング :</citetitle></term><listitem><para><ulink url="http://java.sun.com/j2se/1.5/docs/guide/intl/encoding.doc.html">http://java.sun.com/j2se/1.5/docs/guide/intl/encoding.doc.html</ulink></para><?Pub Caret1>
+</listitem></varlistentry>
+</variablelist></para>
+</refsect1>
+<!--+ 07/27/00 08:35:29
+    | tagMorph:  $Id: tagMorph-engine 1.54 1998/01/19 05:44:48 $
+    | tagMorph library:  $Id: libtagMorph.a 1.50 1998/01/19 22:02:51 $
+    | sunman-to-solbook 1.17
+    +-->
+</refentry>
+<?Pub *0000004749 0>

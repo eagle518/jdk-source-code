@@ -1,0 +1,147 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1998, v.4001-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub Inc>
+<refentry id="rmid-1">
+<!--@(#)rmid.1 1.11 01/03/14 SMI;-->
+<refmeta><refentrytitle>rmid</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">2004 年 6 月 22 日</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.  </refmiscinfo>
+</refmeta>
+<refnamediv><refname>rmid</refname><refpurpose>RMI 起動システムデーモン</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>rmid</command><arg choice="opt"><replaceable>options</replaceable></arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="rmid-1-indx-1"><primary sortas="RMI activation system daemon">RMI activation system daemon &mdash; rmid</primary></indexterm><indexterm id="rmid-1-indx-2"><primary sortas="rmid">rmid &mdash; RMI activation system daemon</primary></indexterm>
+<para><command>rmid</command> ツールは、起動システムデーモンを開始します。起動可能なオブジェクトを起動 システムに登録したり、Java VM でアクティブにしたりするには、あらかじめ起動システムデーモンを開始しておく必要があります。起動可能なリモートオブジェクトを使ったプログラムの作成方法についての詳細は、RMI の仕様および起動のチュートリアルを参照してください。</para>
+<para>起動システムデーモンは、次のようにセキュリティポリシーファイルを指定して <command>rmid</command> コマンドを実行することによって開始できます。<informalexample><screen>example% <userinput>rmid &ndash;J&ndash;Djava.security.policy=rmid.policy</userinput></screen>
+</informalexample></para>
+<para><emphasis>注:</emphasis> Sun の <command>rmid</command> 実装を実行する場合、デフォルトではセキュリティポリシーファイルを指定する必要があります。そうすることで、起動グループ用の <acronym>VM</acronym> の起動に、各 <literal>ActivationGroupDesc</literal> 内の情報を使用できるかどうかを <command>rmid</command> が確認できます。特に、<literal>CommandEnvironment</literal> により指定されるコマンドやオプション、および <literal>ActivationGroupDesc</literal> のコンストラクタに渡されるすべての <literal>Properties</literal> は、<command>rmid</command> 用のセキュリティポリシーファイルで明示的に許可することが必要になりました。<literal>sun.rmi.activation.execPolicy</literal> プロパティの値は、起動グループの <acronym>VM</acronym> の起動に <literal>ActivationGroupDesc</literal> 内の情報を使用できるかどうかの判断に <command>rmid</command> が使用するポリシーを定義します。</para>
+<para><command>rmid</command> をデフォルト設定で実行することにより、以下が行われます。</para>
+<itemizedlist>
+<listitem><para>アクティベータを起動するとともにデフォルトポートの <literal>1098</literal> で内部レジストリを開始します。</para>
+</listitem><listitem><para><literal>ActivationSystem</literal> を <literal>java.rmi.activation.ActivationSystem</literal> という名前に内部レジストリ上でバインドします。</para>
+</listitem></itemizedlist>
+<para>レジストリにほかのポートを指定するには、<command>rmid</command> の起動時に <option>port</option> オプションを指定しなければなりません。たとえば、次のようにします。<informalexample><screen><userinput>rmid &ndash;J&ndash;Djava.security.policy=rmid.policy &ndash;port 1099</userinput></screen>
+</informalexample>このコマンドは、起動システムデーモンを開始し、レジストリのデフォルトポート <literal>1099</literal> でレジストリを開始します。</para>
+</refsect1>
+<refsect1><title>inetd/xinetd からの rmid の起動</title>
+<para>コマンド行から <literal>rmid</literal> を起動しないで、 <literal>inetd</literal> (Solaris) または <literal>xinetd</literal> (Linux) を設定し、<literal>rmid</literal> を必要に応じて起動することができます。</para>
+<para>起動時に <literal>rmid</literal> は、<literal>System.inheritedChannel</literal> メソッドを呼び出して継承チャネル (<literal>inetd</literal>/<literal>xinetd</literal> からの継承) の取得を試みます。継承チャネルが <literal>null</literal> の場合、<literal>rmid</literal> はコマンド行から起動されており、前述のように起動します。</para>
+<para>継承チャンネルが <literal>java.io.channels.ServerSocketChannel</literal> のインスタンスでない場合、<literal>rmid</literal> は終了します。</para>
+<para>継承チャンネルが <literal>ServerSocketChannel</literal> インスタンスの場合、<literal>rmid</literal> は <literal>ServerSocketChannel</literal> から取得した <literal>java.net.ServerSocke</literal> を、エクスポートするリモートオブジェクト (<literal>java.rmi.activation.ActivationSystem</literal> がバインドされるレジストリと <literal>java.rmi.activation.Activator</literal> リモートオブジェクト) に対する要求を受け入れるサーバソケットとして使用します。</para>
+<para><literal>inetd</literal>/<literal>xinetd</literal> から起動した場合、<literal>rmid</literal> ツールの動作は、次のことを除いて、コマンド行から起動した場合と同じです。</para>
+<simplelist>
+<member><literal>System.err</literal> に表示される出力はファイルにリダイレクトされます。このファイルは、接頭辞「rmid-err」と接尾辞「tmp」を使用して <literal>java.io.tmpdir</literal> システムプロパティ (通常 <literal>/var/tmp</literal> または <literal>/tmp</literal>) で指定したディレクトリにあります。</member>
+<member><option>port</option> オプションは許可されていません。このオプションが指定されている場合、<literal>rmid</literal> はエラーメッセージを表示して終了します。</member>
+<member><option>log</option> オプションは必須です。このオプションが指定されていない場合、<literal>rmid</literal> はエラーメッセージを表示して終了します。</member></simplelist>
+<para>必要に応じて開始するサービスの設定方法についての詳細は、<literal>inetd</literal> Solaris) または <literal>xinetd</literal> (Linux) のマニュアルページを参照してください。</para>
+</refsect1>
+<refsect1><title>&opts-tt;</title>
+<para>次のオプションがサポートされています。</para>
+<variablelist termlength="wholeline"><varlistentry><term><option>C</option><replaceable>someCommandLineOption</replaceable> </term><listitem><para><command>rmid</command> の子プロセス (起動グループ) が作成されたときに、各子プロセスにコマンド行引数として渡されるオプションを指定します。たとえば、次のように指定すると、起動システムデーモンによって生成される各 Java 仮想マシンにプロパティを渡すことができます。 <informalexample><screen><userinput>rmid &ndash;C&ndash;Dsome.property=value</userinput></screen>
+</informalexample>コマンド行引数を子プロセスに渡す機能は、デバッグを行う際に便利です。たとえば、次のようなコマンドを実行できます。<informalexample><screen><userinput>rmid &ndash;C&ndash;Djava.rmi.server.logCalls=true</userinput></screen>
+</informalexample>このコマンドによって、すべての子 <acronym>VM</acronym> でサーバ呼び出しのログが残るようになります。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>J</option><replaceable>someCommandLineOption</replaceable></term><listitem><para><command>rmid</command> を実行中の java インタプリタに渡すオプションを指定します。たとえば、<command>rmid</command> で <literal>rmid.policy</literal> という名前のポリシーファイルを使用する場合、<command>rmid</command> のコマンド行で <option>J</option> オプションを使って <literal>java.security.policy</literal> プロパティを定義します。次に例を示します。<informalexample><screen><userinput>rmid &ndash;J&ndash;Djava.security.policy=rmid.policy</userinput></screen>
+</informalexample></para>
+</listitem></varlistentry>
+<varlistentry><term><option>J</option><option>D</option>sun.rmi.activation.execPolicy=<replaceable>policy</replaceable> </term><listitem><para>起動グループの実行対象となる <acronym>VM</acronym> の起動に使用するコマンドおよびコマンド行オプションを検査するために、 <command>rmid</command> が採用するポリシーを指定します。このオプションは、Sun の <acronym>RMI</acronym> 起動デーモン実装だけに存在することに注意してください。コマンド行にこのプロパティを指定しない場合、結果は <literal>&ndash;J-Dsun.rmi.activation.execPolicy=default</literal> を指定した場合と同じになります。<replaceable>policy</replaceable> に指定可能な値は、<literal>default</literal>、 <replaceable>policyClassName</replaceable>、または <literal>none</literal> です。 <itemizedlist>
+<listitem><para><literal>default</literal> (または、このプロパティを指定しない場合)</para>
+<para>デフォルトの <literal>execPolicy</literal> では、使用するセキュリティポリシーファイル内のコマンドおよびオプションを実行する権限が <command>rmid</command> に与えられる場合にのみ、 <command>rmid</command> は特定のコマンド行オプションを指定してコマンドを実行できます。<literal>default</literal> の実行ポリシーを使用できるのは、デフォルトの起動グループ実装だけです。</para>
+<para><command>rmid</command> は、起動グループの <acronym>VM</acronym> を起動する際、その登録された起動グループ記述子である <literal>ActivationGroupDesc</literal> 内の情報を使用します。グループ記述子では、オプションの <literal>ActivationGroupDesc.CommandEnvironment</literal> を指定します。これには、起動グループを開始する「コマンド」、およびコマンド行に追加する任意のコマンド行「オプション」が含まれます。デフォルトでは、<command>rmid</command> は <literal>java.home</literal> にある <command>java</command> コマンドを使用します。グループ記述子には、次に示すように、オプションとしてコマンド行に追加される「プロパティ」オーバーライドも含まれます。<informalexample><screen><userinput>-D<replaceable>property</replaceable>=<replaceable>value</replaceable></userinput></screen>
+</informalexample>アクセス権 <literal>com.sun.rmi.rmid.ExecPermission</literal> を使用すると、<command>rmid</command> に対し、グループ記述子の <literal>CommandEnvironment</literal> で指定されたコマンドを実行して起動グループを開始する権限を与えることができます。アクセス権 <literal>com.sun.rmi.rmid.ExecOptionPermission</literal> を使用すると、起動グループを開始するときに、グループ記述子でプロパティオーバーライドとして指定されたコマンド行オプション、または <literal>CommandEnvironment</literal> でオプションとして指定されたコマンド行オプションを <command>rmid</command> から使用できます。</para>
+<para><command>rmid</command> にさまざまなコマンドおよびオプションを実行する権限を与える場合、アクセス権 <literal>ExecPermission</literal> および <literal>ExecOptionPermission</literal> を普遍的に (つまり、すべてのコードソースに対して) 許可する必要があります。<variablelist termlength="wholeline"><varlistentry><term remap="7"><literal>ExecPermission</literal> </term><listitem><para><literal>ExecPermission</literal> クラスは、起動グループを開始するために <command>rmid</command> が特定の「コマンド」を実行する権限を表します。<variablelist termlength="xtranarrow"><varlistentry><term><literal>構文</literal></term><listitem><para><literal>ExecPermission</literal> の「名前」は、<command>rmid</command> に実行権限を与えるコマンドのパス名です。「/*」(「/」はファイル区切り文字、つまり <literal>File.separatorChar</literal>) で終わるパス名は、そのディレクトリに含まれるすべてのファイルを表します。「/-」 で終わるパス名は、そのディレクトリに含まれるすべてのファイルとサブディレクトリ (再帰的に) を表します。パス名に特別なトークン「&lt;&lt;ALL FILES&gt;&gt;」を指定した場合は、任意のファイルに一致します。</para>
+<para><emphasis>注:</emphasis> 「*」が 1 つだけ指定されたパス名は、現在のディレクトリ内のすべてのファイルを表し、「-」が 1 つだけ指定されたパス名は、現在のディレクトリ内のすべてのファイルと、現在のディレクトリに含まれるすべてのファイルとサブディレクトリ (再帰的に) を表します。</para>
+</listitem></varlistentry>
+</variablelist> </para>
+</listitem></varlistentry>
+<varlistentry><term><literal>ExecOptionPermission</literal> </term><listitem><para><literal>ExecOptionPermission</literal> クラスは、起動グループの開始時に <command>rmid</command> が特定のコマンド行「オプション」を使用する権限を表します。<literal>ExecOptionPermission</literal> の「名前」は、コマンド行オプションの値です。<variablelist termlength="xtranarrow"><varlistentry><term><literal>構文</literal></term><listitem><para>オプションでは、制限付きワイルドカード指定がサポートされます。アスタリスクは、ワイルドカードマッチングを指定します。アスタリスクは、オプション名自体を表す (つまり、すべてのオプションに一致する) ために使用できます。また、「.」および「=」の次に指定する場合にのみ、オプション名の最後にアスタリスクを使用できます。</para>
+<para>例を示します。「*」、「-Dfoo.*」、「-Da.b.c=*」は有効です。「*foo」、「-Da*b」 、「ab*」は無効です。</para>
+</listitem></varlistentry>
+</variablelist></para>
+</listitem></varlistentry>
+</variablelist></para>
+<para><literal>rmid のポリシーファイル</literal></para>
+<para><command>rmid</command> にさまざまなコマンドおよびオプションを実行する権限を与える場合は、アクセス権 <literal>ExecPermission</literal> および <literal>ExecOptionPermission</literal> を普遍的に (つまり、すべてのコードソースに対して) 許可する必要があります。これらのアクセス権を検査するのは <command>rmid</command> だけであるため、普遍的に許可しても安全です。</para>
+<para><literal>rmid</literal> にさまざまな実行権限を許可するポリシーファイルの例を、次に示します。<screen>grant {
+    permission com.sun.rmi.rmid.ExecPermission
+        "/files/apps/java/jdk1.2.2/solaris/bin/java";
+ 
+    permission com.sun.rmi.rmid.ExecPermission
+        "/files/apps/java/jdk1.2.2/solaris/bin/java_g";
+ 
+    permission com.sun.rmi.rmid.ExecPermission
+        "/files/apps/rmidcmds/*";
+ 
+    permission com.sun.rmi.rmid.ExecOptionPermission
+        "&ndash;Djava.security.policy=/files/policies/group.policy";
+ 
+    permission com.sun.rmi.rmid.ExecOptionPermission
+        "&ndash;Djava.security.debug=*";
+ 
+    permission com.sun.rmi.rmid.ExecOptionPermission
+        "&ndash;Dsun.rmi.*";
+};</screen>最初の 2 つのアクセス権は、<command>rmid</command> に対し、パス名により明示された 1.2.2 バージョンの <command>java</command> および <command>java_g</command> コマンドを実行する許可を与えます。デフォルトでは、<literal>java.home</literal> にある <command>java</command> コマンドのバージョン (<command>rmid</command> が使用するのと同じもの) が使用されるため、ポリシーファイルで指定する必要はありません。3 番目のアクセス権は、<command>rmid</command> に対し、ディレクトリ <literal>/files/apps/rmidcmds</literal> 内の任意のコマンドを実行する権限を与えます。4 番目に許可されたアクセス権 <literal>ExecOptionPermission</literal> は、<command>rmid</command> に対し、セキュリティポリシーファイルを <literal>/files/policies/group.policy</literal> に定義する起動グループを開始する権限を与えます。次のアクセス権は、起動グループが <literal>java.security.debug</literal> プロパティを使用する権限を与えます。最後のアクセス権は、 起動グループが <literal>sun.rmi</literal> プロパティ名階層内の任意のプロパティを使用する権限を与えます。ポリシーファイルを使って <command>rmid</command> を起動するには、<command>rmid</command> のコマンド行で <literal>
+java.security.policy</literal> プロパティを指定する必要があります。次に例を示します。<informalexample><screen><userinput>rmid &ndash;J&ndash;Djava.security.policy=rmid.policy</userinput></screen>
+</informalexample></para>
+</listitem><listitem><para><replaceable>policyClassName</replaceable></para>
+<para>デフォルトの動作では十分な柔軟性が得られない場合、管理者は <command>rmid</command> の起動時に、<literal>checkExecCommand</literal> メソッドが実行されるクラスの名前を指定することにより、<command>rmid</command> が実行するコマンドを検査できます。<literal>policyClassName</literal> には、public で引数を必要としないコンストラクタとともに public クラスを指定します。また、次の <literal>checkExecCommand</literal> メソッド実装も指定します。<screen>public void checkExecCommand(ActivationGroupDesc desc,
+                                         String[] command)
+                throws SecurityException;</screen>起動グループを開始する前に、<command>rmid</command> は、ポリシーの <literal>checkExecCommand</literal> メソッドを呼び出して、起動グループの記述子および起動グループを開始する完全なコマンドを含む配列を渡します。<literal>checkExecCommand</literal> が <literal>SecurityException</literal> をスローする場合、<command>rmid</command> は起動グループを開始せず、オブジェクトの起動を試みている呼び出し側に <literal>ActivationException</literal> がスローされます。</para>
+</listitem><listitem><para><literal>none</literal></para>
+<para><literal>sun.rmi.activation.execPolicy</literal> プロパティの値が「<literal>none</literal>」の場合、<command>rmid</command> は、起動グループの開始コマンドの検証を一切行いません。</para>
+</listitem></itemizedlist></para>
+</listitem></varlistentry>
+<varlistentry><term><option>log</option> <replaceable>dir</replaceable></term><listitem><para>起動システムデーモンがデータベースおよび関連情報を書き込むのに使う、ディレクトリの名前を指定します。デフォルトでは、<command>rmid</command> コマンドを実行したディレクトリに <literal>log</literal> というログディレクトリが作成されます。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>port</option> <replaceable>port</replaceable> </term><listitem><para><command>rmid</command> のレジストリが使うポートを指定します。起動システムデーモンは、 <literal>java.rmi.activation.ActivationSystem</literal> という名前で <literal>ActivationSystem</literal> をレジストリにバインドします。したがって、ローカルマシンの <literal>ActivationSystem</literal> は、次のように <literal>Naming.lookup</literal> メソッドを呼び出すことによって取得できます。</para>
+</listitem></varlistentry>
+</variablelist>
+<informalexample>
+<para><screen>import java.rmi.*;
+import java.rmi.activation.*;
+ 
+ActivationSystem system;
+system = (ActivationSystem)
+Naming.lookup("//:port/java.rmi.activation.ActivationSystem");</screen></para>
+</informalexample>
+<variablelist termlength="xtranarrow"><varlistentry><term><option>stop</option> </term><listitem><para><option>port</option> オプションによって指定されたポートの、現在の <command>rmid</command> の呼び出しを停止します。ポートの指定がない場合は、ポート <literal>1098</literal> で実行されている <command>rmid</command> を停止します。</para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<refsect1><title>&envr-tt;</title>
+<variablelist termlength="medium"><varlistentry><term remap="20"><envar>CLASSPATH</envar></term><listitem><para>ユーザ定義クラスへのパスをシステムに通知するために使用します。ディレクトリはコロンで区切ります。以下に例を示します。<informalexample>
+<para><screen>example% <userinput>.:/usr/local/java/classes</userinput></screen></para>
+</informalexample></para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<refsect1><title>&attr-tt;</title>
+<para>次の属性については、<citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry> のマニュアルページを参照してください。</para>
+<informaltable frame="all" orient="port"><tgroup cols="2" colsep="1" rowsep="1"><colspec colnum="1" colname="col1" colwidth="1*" colsep="1" align="left"><colspec colnum="2" colname="col2" colwidth="1*" align="left"><thead><row><entry colname="col1" align="center" valign="top">属性タイプ</entry><entry colname="col2" align="center" valign="top">属性値</entry></row></thead><tbody><row><entry>使用条件</entry><entry>SUNWj5rt, SUNWj5dev</entry></row></tbody></tgroup></informaltable>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>rmic</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry> </para>
+<para>次を参照するか、<literal>java.sun.com</literal> で検索してください。</para>
+<variablelist termlength="wholeline"><varlistentry><term remap="10"><citetitle>クラスパスの設定</citetitle> @</term><listitem><para><ulink url="http://java.sun.com/j2se/1.5/docs/tooldocs/solaris/classpath.html">http://java.sun.com/j2se/1.5/docs/tooldocs/solaris/classpath.html</ulink></para>
+</listitem></varlistentry>
+<varlistentry><term remap="10"><citetitle>RMI 仕様</citetitle> @</term><listitem><para><ulink url="http://java.sun.com/j2se/1.5/docs/guide/rmi/spec/rmiTOC.html">http://java.sun.com/j2se/1.5/docs/guide/rmi/spec/rmiTOC.html</ulink></para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<!--+ 07/27/00 08:35:49
+    | tagMorph:  $Id: tagMorph-engine 1.54 1998/01/19 05:44:48 $
+    | tagMorph library:  $Id: libtagMorph.a 1.50 1998/01/19 22:02:51 $
+    | sunman-to-solbook 1.17
+    +-->
+<?Pub Caret>
+</refentry>
+<?Pub *0000016478 3847>

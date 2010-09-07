@@ -1,0 +1,808 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1999, v.4002-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<REFENTRY ID="jarsigner-1">
+<!--@(#)jarsigner.1 1.10 01/03/14 SMI;-->
+<REFMETA><REFENTRYTITLE>jarsigner</REFENTRYTITLE><MANVOLNUM>1</MANVOLNUM>
+<REFMISCINFO CLASS="date">22 Jun 2004</REFMISCINFO>
+<REFMISCINFO CLASS="sectdesc">&man1;</REFMISCINFO>
+<REFMISCINFO CLASS="software">&java-release;</REFMISCINFO>
+<REFMISCINFO CLASS="arch">generic</REFMISCINFO>
+<REFMISCINFO CLASS="copyright"> Copyright 2004 Sun Microsystems, Inc. All
+rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.
+</REFMISCINFO>
+</REFMETA>
+<REFNAMEDIV><REFNAME>jarsigner</REFNAME><REFPURPOSE>JAR signing and verification
+tool </REFPURPOSE></REFNAMEDIV>
+<REFSYNOPSISDIV><TITLE>&synp-tt;</TITLE>
+
+<CMDSYNOPSIS><COMMAND>jarsigner</COMMAND><ARG CHOICE="opt"><OPTION>options
+</OPTION></ARG><ARG CHOICE="plain">jar-file</ARG><ARG CHOICE="plain">alias</ARG></CMDSYNOPSIS>
+
+<CMDSYNOPSIS><COMMAND>jarsigner</COMMAND><ARG CHOICE="plain">-verify</ARG><ARG CHOICE="opt"><OPTION>options</OPTION></ARG><ARG CHOICE="plain">jar-file</ARG></CMDSYNOPSIS>
+
+</REFSYNOPSISDIV>
+<REFSECT1><TITLE>&desc-tt;</TITLE>
+<INDEXTERM ID="jarsigner-1-indx-1"><PRIMARY SORTAS="JAR signing and verification tool ">
+JAR signing and verification tool  &mdash; jarsigner</PRIMARY></INDEXTERM>
+<INDEXTERM ID="jarsigner-1-indx-2"><PRIMARY SORTAS="jarsigner">jarsigner &mdash;
+JAR signing and verification tool </PRIMARY></INDEXTERM><PARA>The <COMMAND>
+jarsigner</COMMAND> tool is used for two purposes:<ORDEREDLIST>
+<LISTITEM><PARA>to sign Java ARchive (<ACRONYM>JAR</ACRONYM>) files, and</PARA>
+</LISTITEM>
+<LISTITEM><PARA>to verify the signatures and integrity of signed <ACRONYM>
+JAR</ACRONYM> files.</PARA></LISTITEM>
+</ORDEREDLIST></PARA>
+<PARA>The <ACRONYM>JAR</ACRONYM> feature enables the packaging of class files,
+images, sounds, and other digital data in a single file for faster and easier
+distribution. A tool named <COMMAND>jar</COMMAND> enables developers to produce <ACRONYM>
+JAR</ACRONYM> files. (See <CITEREFENTRY><REFENTRYTITLE>jar</REFENTRYTITLE>
+<MANVOLNUM>1</MANVOLNUM></CITEREFENTRY>.)</PARA>
+<PARA>A digital signature is a string of bits that is computed from some data
+(the data being "signed") and the private key of an entity (a person, company,
+and so on). Like a handwritten signature, a digital signature has many useful
+characteristics:<ITEMIZEDLIST>
+<LISTITEM><PARA>Its authenticity can be verified, via a computation that uses
+the public key corresponding to the private key used to generate the signature.
+</PARA></LISTITEM>
+<LISTITEM><PARA>It cannot be forged, assuming the private key is kept secret.
+</PARA></LISTITEM>
+<LISTITEM><PARA>It is a function of the data signed and thus cannot be claimed
+to be the signature for other data as well.</PARA></LISTITEM>
+<LISTITEM><PARA>The signed data cannot be changed. If it is, the signature
+will no longer verify as being authentic.</PARA></LISTITEM>
+</ITEMIZEDLIST></PARA>
+<PARA>In order for an entity's signature to be generated for a file, the entity
+must first have a public/private key pair associated with it, and also one
+or more certificates authenticating its public key. A certificate is a digitally
+signed statement from one entity, saying that the public key of some other
+entity has a particular value.</PARA>
+<PARA><COMMAND>jarsigner</COMMAND> uses key and certificate information from
+a keystore to generate digital signatures for <ACRONYM>JAR</ACRONYM> files.
+A keystore is a database of private keys and their associated X.509 certificate
+chains authenticating the corresponding public keys. The <COMMAND>keytool
+</COMMAND> utility is used to create and administer keystores. (See <CITEREFENTRY>
+<REFENTRYTITLE>keytool</REFENTRYTITLE><MANVOLNUM>1</MANVOLNUM></CITEREFENTRY>.)
+</PARA>
+<PARA><COMMAND>jarsigner</COMMAND> uses an entity's private key to generate
+a signature. The signed <ACRONYM>JAR</ACRONYM> file contains, among other
+things, a copy of the certificate from the keystore for the public key corresponding
+to the private key used to sign the file. <COMMAND>jarsigner</COMMAND> can
+verify the digital signature of the signed <ACRONYM>JAR</ACRONYM> file using
+the certificate inside it (in its signature block file).</PARA>
+<PARA>At this time, <COMMAND>jarsigner</COMMAND> can only sign <ACRONYM>JAR
+</ACRONYM> files created by the JDK <COMMAND>jar</COMMAND> tool or zip files.
+(<ACRONYM>JAR</ACRONYM> files are the same as zip files, except they also
+have a <FILENAME>META-INF/MANIFEST.MF</FILENAME> file. Such a file will automatically
+be created when <COMMAND>jarsigner</COMMAND> signs a zip file.)</PARA>
+<PARA>The default <COMMAND>jarsigner</COMMAND> behavior is to sign a <ACRONYM>
+JAR</ACRONYM> file. Use the <OPTION>verify</OPTION> option to have it verify
+a signed <ACRONYM>JAR</ACRONYM> file instead.</PARA>
+<REFSECT2>
+<TITLE>Compatibility with JDK 1.1</TITLE>
+<INDEXTERM ID="jarsigner-1-indx-3"><PRIMARY SORTAS="jarsigner">jarsigner &mdash;
+JAR signing and verification tool </PRIMARY><SECONDARY>Compatibility with
+JDK 1.1</SECONDARY></INDEXTERM><PARA><EMPHASIS>Note:</EMPHASIS> The <COMMAND>
+keytool</COMMAND> and <COMMAND>jarsigner</COMMAND> tools completely replace
+the <COMMAND>javakey</COMMAND> tool provided in JDK 1.1. These new tools provide
+more features than <COMMAND>javakey</COMMAND>, including the ability to protect
+the keystore and private keys with passwords, and the ability to verify signatures
+in addition to generating them.</PARA>
+<PARA>The new keystore architecture replaces the identity database that <COMMAND>
+javakey</COMMAND> created and managed. There is no backwards compatibility
+between the keystore format and the database format used by <COMMAND>javakey
+</COMMAND> in JDK 1.1. However:<ITEMIZEDLIST>
+<LISTITEM><PARA>It is possible to import the information from an identity
+database into a keystore, via the <COMMAND>keytool</COMMAND> <OPTION>identitydb
+</OPTION> command.</PARA></LISTITEM>
+<LISTITEM><PARA><COMMAND>jarsigner</COMMAND> can sign <ACRONYM>JAR</ACRONYM>
+files also previously signed using <COMMAND>javakey</COMMAND>.</PARA></LISTITEM>
+<LISTITEM><PARA><COMMAND>jarsigner</COMMAND> can verify <ACRONYM>JAR</ACRONYM>
+files signed using <COMMAND>javakey</COMMAND>. Thus, it recognizes and can
+work with signer aliases that are from a JDK 1.1 identity database rather
+than a JDK 1.2 keystore.</PARA></LISTITEM>
+</ITEMIZEDLIST></PARA>
+<PARA>The following table explains how <ACRONYM>JAR</ACRONYM> files that were
+signed in JDK 1.1.x are treated in JDK 1.2:</PARA>
+<PARA><SCREEN><LITERAL>                        Trusted
+                        Identity
+                        imported     Policy File
+JAR File  Identity in   into 1.2       grants        Privileges
+  Type   1.1 database   keystore    privileges to     Granted
+                        from 1.1   Identity/Alias
+                        database
+                           (4)
+
+Signed                                               Default
+JAR          NO            NO           NO           privileges
+                                                     granted to
+                                                     all code.
+												   
+Unsigned                                             Default
+JAR          NO            NO           NO           privileges
+                                                     granted to
+                                                     all code.
+
+Signed                                               Default
+JAR          NO            YES          NO           privileges
+                                                     granted to
+                                                     all code.
+
+Signed                                               Default
+JAR          YES/          NO           NO           privileges
+             Untrusted                               granted to
+                                                     all code. (3)
+
+Signed                                               Default
+JAR          YES/          NO           YES          privileges
+             Untrusted                               granted to
+                                                     all code. (1,3)
+
+Signed                                               Default 
+JAR          NO            YES          YES          privileges
+                                                     granted to
+                                                     all code plus
+                                                     privileges
+                                                     granted in
+                                                     policy file.
+												   
+Signed                                               Default 
+JAR          YES/          YES          YES          privileges
+             Trusted                                 granted to
+                                                     all code plus
+                                                     privileges
+                                                     granted in
+                                                     policy file. (2)
+
+Signed                                               All
+JAR          YES/          NO           NO           privileges
+             Trusted
+
+Signed                                               All
+JAR          YES/          YES          NO           privileges (1)
+             Trusted
+
+Signed                                               All
+JAR          YES/          NO           YES          privileges (1)
+             Trusted
+ </LITERAL></SCREEN></PARA>
+<PARA><REPLACEABLE>Notes:</REPLACEABLE><ORDEREDLIST>
+<LISTITEM><PARA>If an identity/alias is mentioned in the policy file, it must
+be imported into the keystore for the policy file to have any effect on privileges
+granted.</PARA></LISTITEM>
+<LISTITEM><PARA>If an identity/alias is mentioned in the policy file, it must
+be imported into the keystore for the policy file to have any effect on privileges
+granted.</PARA></LISTITEM>
+<LISTITEM><PARA>The policy file/keystore combination has precedence over a
+trusted identity in the identity database.</PARA></LISTITEM>
+<LISTITEM><PARA>Untrusted identities are ignored in JDK 1.2.</PARA></LISTITEM>
+<LISTITEM><PARA>Only trusted identities can be imported into JDK 1.2 keystores.
+</PARA></LISTITEM>
+</ORDEREDLIST></PARA>
+</REFSECT2>
+<REFSECT2>
+<TITLE>Keystore Aliases</TITLE>
+<INDEXTERM ID="jarsigner-1-indx-4"><PRIMARY SORTAS="jarsigner">jarsigner &mdash;
+JAR signing and verification tool </PRIMARY><SECONDARY>Keystore Aliases</SECONDARY>
+</INDEXTERM><PARA>All keystore entities are accessed via unique aliases.</PARA>
+<PARA>When using <COMMAND>jarsigner</COMMAND> to sign a <ACRONYM>JAR</ACRONYM>
+file, you must specify the alias for the keystore entry containing the private
+key needed to generate the signature. For example, the following will sign
+the <ACRONYM>JAR</ACRONYM> file named <LITERAL>MyJARFile.jar</LITERAL>, using
+the private key associated with the alias <LITERAL>duke</LITERAL> in the keystore
+named <LITERAL>mystore</LITERAL> in the "working" directory. Since no output
+file is specified, it overwrites <LITERAL>MyJARFile.jar</LITERAL> with the
+signed <ACRONYM>JAR</ACRONYM> file.<INFORMALEXAMPLE>
+<SCREEN>example% <USERINPUT>jarsigner -keystore /working/mystore -storepass 
+   myspass -keypass dukekeypasswd MyJARFile.jar duke</USERINPUT></SCREEN>
+</INFORMALEXAMPLE></PARA>
+<PARA>Keystores are protected with a password, so the store password (in this
+case, <LITERAL>myspass</LITERAL>) must be specified. You will be prompted
+for it if you don't specify it on the command line. Similarly, private keys
+are protected in a keystore with a password, so the private key's password
+(in this case, <LITERAL>dukekeypasswd</LITERAL>) must be specified, and you
+will be prompted for it if you do not specify it on the command line and it
+is not the same as the store password.</PARA>
+</REFSECT2>
+<REFSECT2>
+<TITLE>Keystore Location</TITLE>
+<INDEXTERM ID="jarsigner-1-indx-5"><PRIMARY SORTAS="jarsigner">jarsigner &mdash;
+JAR signing and verification tool </PRIMARY><SECONDARY>Keystore Location</SECONDARY>
+</INDEXTERM><PARA><COMMAND>jarsigner</COMMAND> has a <OPTION>keystore</OPTION>
+option for specifying the name and location of the keystore to be used. The
+keystore is by default stored in a file named <LITERAL>.keystore</LITERAL>
+in the user's home directory, as determined by the <LITERAL>user.home</LITERAL>
+system property. On Solaris systems, <LITERAL>user.home</LITERAL> defaults
+to the user's home directory.</PARA>
+<PARA>Note that the input stream from the <OPTION>-keystore</OPTION> option
+is passed to the <LITERAL>KeyStore.load</LITERAL> method. If NONE is specified
+as the URL, then a null stream is passed             to the <LITERAL>KeyStore.loa
+</LITERAL>d method. NONE should be specified if the KeyStore is not   file-based,
+for example, if it resides on a hardware token device. </PARA>
+</REFSECT2>
+<REFSECT2>
+<TITLE>Keystore Implementation</TITLE>
+<INDEXTERM ID="jarsigner-1-indx-6"><PRIMARY SORTAS="jarsigner">jarsigner &mdash;
+JAR signing and verification tool </PRIMARY><SECONDARY>Keystore Implementation
+</SECONDARY></INDEXTERM><PARA>A keystore implementation is a concrete implementation
+of the <LITERAL>KeyStore</LITERAL> abstract class provided in the <LITERAL>
+java.security</LITERAL> package. This class supplies well-defined interfaces
+to access and modify the information in a keystore.</PARA>
+<PARA>Currently, there are two command-line tools that make use of <LITERAL>
+KeyStore</LITERAL>. These are <COMMAND>keytool</COMMAND> and <COMMAND>jarsigner
+</COMMAND>. There is also a GUI-based tool named <COMMAND>policytool</COMMAND>.
+Since <LITERAL>KeyStore</LITERAL> is publicly available, JDK users can write
+additional security applications that use it.</PARA>
+<PARA>There is a built-in default implementation, provided by Sun Microsystems.
+It implements the keystore as a file, utilizing a proprietary keystore type
+(format) named "JKS". It protects each private key with its individual password,
+and also protects the integrity of the entire keystore with a (possibly different)
+password.</PARA>
+<PARA>Keystore implementations are provider-based. More specifically, the
+application interfaces supplied by <LITERAL>KeyStore</LITERAL> are implemented
+in terms of a "Service Provider Interface" (SPI). That is, there is a corresponding
+abstract <LITERAL>KeystoreSpi</LITERAL> class, also in the <LITERAL>java.security
+</LITERAL> package, which defines the Service Provider Interface methods that
+"providers" must implement. (The term "provider" refers to a package or a
+set of packages that supply a concrete implementation of a subset of services
+that can be accessed by the Java Security API.) Thus, to provide a keystore
+implementation, clients must implement a provider and supply a <LITERAL>KeystoreSpi
+</LITERAL> subclass implementation, as described in <REPLACEABLE>How to Implement
+a Provider for the Java Cryptography Architecture</REPLACEABLE>. </PARA>
+<PARA>Applications can choose different types of keystore implementations
+from different providers, using the <LITERAL>getInstance</LITERAL> factory
+method supplied in the <LITERAL>KeyStore</LITERAL> class. A keystore type
+defines the storage and data format of the keystore information, and the algorithms
+used to protect private keys in the keystore and the integrity of the keystore
+itself. Keystore implementations of different types are not compatible.</PARA>
+<PARA><COMMAND>keytool</COMMAND> works on any file-based keystore implementation.
+(It treats the keytore location that is passed to it at the command line as
+a filename and converts it to a <LITERAL>FileInputStream</LITERAL>, from which
+it loads the keystore information.) The <COMMAND>jarsigner</COMMAND> and  <COMMAND>
+policytool</COMMAND> tools, on the other hand, can read a keystore from any
+location that can be specified using a URL.</PARA>
+<PARA>For <COMMAND>jarsigner</COMMAND> and <COMMAND>keytool</COMMAND>, you
+can specify a keystore type at the command line, via the <OPTION>storetype
+</OPTION> option. For <COMMAND>policytool</COMMAND>, you can specify a keystore
+type via the "Change Keystore" command in the Edit menu.</PARA>
+<PARA>If you do not explicitly specify a keystore type, the tools choose a
+keystore implementation based simply on the value of the <LITERAL>keystore.type
+</LITERAL> property specified in the security properties file. The security
+properties file is called  <LITERAL>java.security</LITERAL>, and it resides
+in the security properties directory,  <FILENAME>java.home/lib/security</FILENAME>,
+where  <LITERAL>java.home</LITERAL> is the runtime environment's directory
+(the jre directory in the SDK or the top-level directory of the Java 2 Runtime
+Environment).</PARA>
+<PARA>Each tool gets the <LITERAL>keystore.type</LITERAL> value and then examines
+all the currently-installed providers until it finds one that implements keystores
+of that type. It then uses the keystore implementation from that provider.
+</PARA>
+<PARA>The <LITERAL>KeyStore</LITERAL> class defines a static method named <LITERAL>
+getDefaultType</LITERAL> that lets applications and applets retrieve the value
+of the <LITERAL>keystore.type</LITERAL> property. The following line of code
+creates an instance of the default keystore type (as specified in the  <LITERAL>
+keystore.type</LITERAL> property):<INFORMALEXAMPLE>
+<PROGRAMLISTING>KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+</PROGRAMLISTING>
+</INFORMALEXAMPLE></PARA>
+<PARA>The default keystore type is "jks" (the proprietary type of the keystore
+implementation provided by Sun). This is specified by the following line in
+the security properties file:<INFORMALEXAMPLE>
+<PROGRAMLISTING>keystore.type=jks</PROGRAMLISTING>
+</INFORMALEXAMPLE></PARA>
+<PARA>To have the tools utilize a keystore implementation other than the default,
+change that line to specify a different keystore type.</PARA>
+<PARA>For example, if you have a provider package that supplies a keystore
+implementation for a keystore type called <LITERAL>pkcs12</LITERAL>, change
+the line to<INFORMALEXAMPLE>
+<PROGRAMLISTING>keystore.type=pkcs12</PROGRAMLISTING>
+</INFORMALEXAMPLE></PARA>
+<PARA><EMPHASIS>Note:</EMPHASIS> Case doesn't matter in keystore type designations.
+For example, "JKS" would be considered the same as "jks".</PARA>
+</REFSECT2>
+<REFSECT2>
+<TITLE>Supported Algorithms and Key Sizes</TITLE>
+<INDEXTERM ID="jarsigner-1-indx-7"><PRIMARY SORTAS="jarsigner">jarsigner &mdash;
+JAR signing and verification tool </PRIMARY><SECONDARY>Supported Algorithms
+and Key Sizes</SECONDARY></INDEXTERM><PARA>At this time, <COMMAND>jarsigner
+</COMMAND> can sign a <ACRONYM>JAR</ACRONYM> file using either<ITEMIZEDLIST>
+<LISTITEM><PARA>DSA (Digital Signature Algorithm) with the SHA-1 digest algorithm,
+or</PARA></LISTITEM>
+<LISTITEM><PARA>the RSA algorithm with the MD5 digest algorithm.</PARA></LISTITEM>
+</ITEMIZEDLIST></PARA>
+<PARA>That is, if the signer's public and private keys are DSA keys, <COMMAND>
+jarsigner</COMMAND> will attempt to sign the <ACRONYM>JAR</ACRONYM> file using
+the SHA-1/DSA algorithm. If the signer's keys are RSA keys, <COMMAND>jarsigner
+</COMMAND> will sign the <ACRONYM>JAR</ACRONYM> file using the MD5/RSA algorithm.
+This is only possible if there is a statically installed provider supplying
+an implementation for the MD5/RSA algorithm. (There is always a SHA-1/DSA
+algorithm available, from the default "SUN" provider.)</PARA>
+</REFSECT2>
+<REFSECT2>
+<TITLE>The Signed JAR File</TITLE>
+<INDEXTERM ID="jarsigner-1-indx-8"><PRIMARY SORTAS="jarsigner">jarsigner &mdash;
+JAR signing and verification tool </PRIMARY><SECONDARY>The Signed JAR File
+</SECONDARY></INDEXTERM><PARA>When <COMMAND>jarsigner</COMMAND> is used to
+sign a <ACRONYM>JAR</ACRONYM> file, the output signed <ACRONYM>JAR</ACRONYM>
+file is exactly the same as the input <ACRONYM>JAR</ACRONYM> file, except
+that it has two additional files placed in the <LITERAL>META-INF</LITERAL>
+directory:<ITEMIZEDLIST>
+<LISTITEM><PARA>a signature file, with a <LITERAL>.SF</LITERAL> extension,
+and</PARA></LISTITEM>
+<LISTITEM><PARA>a signature block file, with a <LITERAL>.DSA</LITERAL> extension.
+</PARA></LISTITEM>
+</ITEMIZEDLIST></PARA>
+<PARA>The base file names for these two files come from the value of the <OPTION>
+sigFile</OPTION> option. For example, if the option appears as <OPTION>sigFile
+</OPTION> <LITERAL>MKSIGN</LITERAL>, the files are named <LITERAL>MKSIGN.SF
+</LITERAL> and <LITERAL>MKSIGN.DSA</LITERAL>.</PARA>
+<PARA>If no <OPTION>sigfile</OPTION> option appears on the command line, the
+base file name for the <LITERAL>.SF</LITERAL> and <LITERAL>.DSA</LITERAL>
+files will be the first 8 characters of the alias name specified on the command
+line, all converted to upper case. If the alias name has fewer than 8 characters,
+the full alias name is used. If the alias name contains any characters that
+are not allowed in a signature file name, each such character is converted
+to an underscore ("_") character in forming the file name. Legal characters
+include letters, digits, underscores, and hyphens.</PARA>
+<VARIABLELIST TERMLENGTH="wholeline">
+<VARLISTENTRY><TERM>The Signature (<LITERAL>.SF</LITERAL>) File</TERM><LISTITEM>
+<PARA>A signature file (the <LITERAL>.SF</LITERAL> file) looks similar to
+the manifest file that is always included in a <ACRONYM>JAR</ACRONYM> file
+generated by the <COMMAND>jar</COMMAND> tool. That is, for each source file
+included in the <ACRONYM>JAR</ACRONYM> file, the  <LITERAL>.SF</LITERAL> file
+has three lines, just as in the manifest file, listing the following:<ITEMIZEDLIST>
+<LISTITEM><PARA>the file name,</PARA>
+</LISTITEM>
+<LISTITEM><PARA>the name of the digest algorithm used (SHA), and</PARA>
+</LISTITEM>
+<LISTITEM><PARA>a SHA digest value.</PARA>
+</LISTITEM>
+</ITEMIZEDLIST></PARA>
+<PARA>In the manifest file, the SHA digest value for each source file is the
+digest (hash) of the binary data in the source file. In the <LITERAL>.SF</LITERAL>
+file, on the other hand, the digest value for a given source file is the hash
+of the three lines in the manifest file for the source file.</PARA>
+<PARA>The signature file also, by default, includes a header containing a
+hash of the whole manifest file. The presence of the header enables verification
+optimization, as described in JAR File Verification.</PARA>
+</LISTITEM></VARLISTENTRY>
+<VARLISTENTRY><TERM>The Signature Block (<LITERAL>.DSA</LITERAL>) File</TERM>
+<LISTITEM><PARA>The <LITERAL>.SF</LITERAL> file is signed and the signature
+is placed in the <LITERAL>.DSA</LITERAL> file. The <LITERAL>.DSA</LITERAL>
+file also contains, encoded inside it, a certificate authenticating the public
+key corresponding to the private key used for signing.</PARA>
+</LISTITEM></VARLISTENTRY>
+</VARIABLELIST></REFSECT2>
+<REFSECT2>
+<TITLE>JAR File Verification</TITLE>
+<INDEXTERM ID="jarsigner-1-indx-9"><PRIMARY SORTAS="jarsigner">jarsigner &mdash;
+JAR signing and verification tool </PRIMARY><SECONDARY>JAR File Verification
+</SECONDARY></INDEXTERM><PARA>A successful <ACRONYM>JAR</ACRONYM> file verification
+occurs if the signature(s) are valid, and none of the files that were in the <ACRONYM>
+JAR</ACRONYM> file when the signatures were generated have been changed since
+then. <ACRONYM>JAR</ACRONYM> file verification involves the following steps:
+</PARA>
+<ORDEREDLIST>
+<LISTITEM><PARA>Verify the signature of the <LITERAL>.SF</LITERAL> file itself. 
+</PARA>
+<PARA>That is, the verification ensures that the signature stored in each
+signature block (<LITERAL>.DSA</LITERAL>) file was in fact generated using
+the private key corresponding to the public key whose certificate also appears
+in the <LITERAL>.DSA</LITERAL> file. It also ensures that the signature is
+a valid signature of the corresponding signature (<LITERAL>.SF</LITERAL>)
+ file, and thus the <LITERAL>.SF</LITERAL> file has not been tampered with.
+</PARA></LISTITEM>
+<LISTITEM><PARA>Verify the digest listed in each entry in the <LITERAL>.SF
+</LITERAL> file with each corresponding section in the manifest.</PARA>
+<PARA>The <LITERAL>.SF</LITERAL> file by default includes a header containing
+a hash of the entire manifest file. When the header is present, then the verification
+can check to see whether or not the hash in the header indeed matches the
+hash of the manifest file. If that is the case, verification proceeds to the
+next step.</PARA>
+<PARA>If that is not the case, a less optimized verification is required to
+ensure that the hash in each source file information section in the <LITERAL>
+.SF</LITERAL> file equals the hash of its corresponding section in the manifest
+file (see &ldquo;The Signature (<LITERAL>.SF</LITERAL>) File&rdquo;).</PARA>
+<PARA>One reason the hash of the manifest file that is stored in the <LITERAL>
+.SF</LITERAL> file header may not equal the hash of the current manifest file
+would be that one or more files were added to the <ACRONYM>JAR</ACRONYM> file
+(using the <COMMAND>jar</COMMAND> tool) after the signature (and thus the <LITERAL>
+.SF</LITERAL> file) was generated. When the <COMMAND>jar</COMMAND> tool is
+used to add files, the manifest file is changed (sections are added to it
+for the new files), but the <LITERAL>.SF</LITERAL> file is not. A verification
+is still considered successful if none of the files that were in the <ACRONYM>
+JAR</ACRONYM> file when the signature was generated have been changed since
+then, which is the case if the hashes in the non-header sections of the <LITERAL>
+.SF</LITERAL> file equal the hashes of the corresponding sections in the manifest
+file.</PARA></LISTITEM>
+<LISTITEM><PARA>Read each file in the <ACRONYM>JAR</ACRONYM> file that has
+an entry in the <LITERAL>.SF</LITERAL> file. While reading, compute the file's
+digest, and then compare the result with the digest for this file in the manifest
+section. The digests should be the same, or verification fails.</PARA></LISTITEM>
+</ORDEREDLIST>
+<PARA>If any serious verification failures occur during the verification process,
+the process is stopped and a security exception is thrown. It is caught and
+displayed by <COMMAND>jarsigner</COMMAND>.</PARA>
+</REFSECT2>
+<REFSECT2>
+<TITLE>Multiple Signatures for a JAR File</TITLE>
+<INDEXTERM ID="jarsigner-1-indx-10"><PRIMARY SORTAS="jarsigner">jarsigner &mdash;
+JAR signing and verification tool </PRIMARY><SECONDARY>Multiple Signatures
+for a JAR File</SECONDARY></INDEXTERM><PARA>A <ACRONYM>JAR</ACRONYM> file
+can be signed by multiple people simply by running the <COMMAND>jarsigner
+</COMMAND> tool on the file multiple times, specifying the alias for a different
+person each time, as in:<INFORMALEXAMPLE>
+<SCREEN>example% <USERINPUT>jarsigner myBundle.jar susan</USERINPUT>
+example% <USERINPUT>jarsigner myBundle.jar kevin</USERINPUT></SCREEN>
+</INFORMALEXAMPLE></PARA>
+<PARA>When a <ACRONYM>JAR</ACRONYM> file is signed multiple times, there are
+multiple <LITERAL>.SF</LITERAL> and <LITERAL>.DSA</LITERAL> files in the resulting <ACRONYM>
+JAR</ACRONYM> file, one pair for each signature. Thus, in the example above,
+the output <ACRONYM>JAR</ACRONYM> file includes files with the following names:
+</PARA>
+<PARA><INFORMALEXAMPLE>
+<SCREEN><COMPUTEROUTPUT>SUSAN.SF
+SUSAN.DSA
+KEVIN.SF
+KEVIN.DSA</COMPUTEROUTPUT></SCREEN>
+</INFORMALEXAMPLE></PARA>
+</REFSECT2>
+</REFSECT1>
+<REFSECT1><TITLE>&opts-tt;</TITLE>
+<PARA>The various <COMMAND>jarsigner</COMMAND> options are listed and described
+below. <EMPHASIS>Note:</EMPHASIS><ITEMIZEDLIST>
+<LISTITEM><PARA>All option names are preceded by a minus sign (-).</PARA>
+</LISTITEM>
+<LISTITEM><PARA>The options may be provided in any order.</PARA></LISTITEM>
+<LISTITEM><PARA>Items in italics (option values) represent the actual values
+that must be supplied.</PARA></LISTITEM>
+<LISTITEM><PARA>The <OPTION>keystore</OPTION>, <OPTION>storepass</OPTION>, <OPTION>
+keypass</OPTION>, <OPTION>sigfile</OPTION>, and <OPTION>signedjar</OPTION>
+options are only relevant when signing a <ACRONYM>JAR</ACRONYM> file, not
+when verifying a signed <ACRONYM>JAR</ACRONYM> file. Similarly, an alias is
+only specified on the command line when signing a <ACRONYM>JAR</ACRONYM> file.
+</PARA></LISTITEM>
+</ITEMIZEDLIST></PARA>
+<VARIABLELIST TERMLENGTH="wholeline">
+<VARLISTENTRY><TERM><OPTION>keystore</OPTION> <REPLACEABLE>file</REPLACEABLE></TERM>
+<LISTITEM><PARA>Specifies the keystore (database file) location. This is only
+needed when signing (not verifying) a <ACRONYM>JAR</ACRONYM> file, and defaults
+to the file <LITERAL>.keystore</LITERAL> in the user's home directory, as
+determined by the <LITERAL>user.home</LITERAL> system property. On Solaris
+systems, <LITERAL>user.home</LITERAL> defaults to the user's home directory.
+</PARA>
+</LISTITEM></VARLISTENTRY>
+<VARLISTENTRY><TERM><OPTION>keystore</OPTION> <REPLACEABLE>url</REPLACEABLE></TERM>
+<LISTITEM><PARA>Specifies the URL that tells the keystore location. This defaults
+to the file <LITERAL>.keystore</LITERAL> in the user's home directory, as
+determined by the <LITERAL>user.home</LITERAL> system property.</PARA>
+<PARA>A keystore is required when signing, so you must explicitly specify
+one if the default keystore does not exist (or you want to use one other than
+the default).</PARA>
+<PARA>A keystore is not required when verifying, but if one is specified,
+or the default exists, and the <OPTION>verbose</OPTION> option was also specified,
+additional information is output regarding whether or not any of the certificates
+used to verify the <ACRONYM>JAR</ACRONYM> file are contained in that keystore.
+</PARA>
+<PARA><EMPHASIS>Note:</EMPHASIS> The <OPTION>keystore</OPTION> argument can
+actually be a file name (and path) specification rather than a URL, in which
+case it will be treated the same as a "file:" URL. That is, <OPTION>keystore
+</OPTION> <LITERAL>filePathAndName</LITERAL> is treated as equivalent to <OPTION>
+keystore</OPTION> <LITERAL>file:filePathAndName</LITERAL>.</PARA>
+</LISTITEM></VARLISTENTRY>
+<VARLISTENTRY><TERM><OPTION>storepass</OPTION> <REPLACEABLE>storetype</REPLACEABLE></TERM>
+<LISTITEM><PARA>Specifies the type of keystore to be instantiated. The default
+keystore type is the one that is specified as the value of the <LITERAL>keystore.type
+</LITERAL> property in the security properties file, which is returned by
+the static <LITERAL>getDefaultType</LITERAL> method in <LITERAL>java.security.KeyStore
+</LITERAL>.</PARA>
+</LISTITEM></VARLISTENTRY>
+<VARLISTENTRY><TERM><OPTION>storepass</OPTION> <REPLACEABLE>password</REPLACEABLE></TERM>
+<LISTITEM><PARA>Specifies the password which is required to access the keystore.
+This is only needed when signing (not verifying) a <ACRONYM>JAR</ACRONYM>
+file. In that case, if a <OPTION>storepass</OPTION> option is not provided
+at the command line, the user is prompted for the password.</PARA>
+<PARA><EMPHASIS>Note:</EMPHASIS> The password should not be specified on the
+command line or in a script unless it is for testing purposes, or you are
+on a secure system. Also, when typing in a password at the password prompt,
+the password is echoed (displayed exactly as typed), so be careful not to
+type it in front of anyone.</PARA>
+</LISTITEM></VARLISTENTRY>
+<VARLISTENTRY><TERM><OPTION>keypass</OPTION> <REPLACEABLE>password</REPLACEABLE></TERM>
+<LISTITEM><PARA>Specifies the password used to protect the private key of
+the keystore entry addressed by the alias specified on the command line. The
+password is required when using  <COMMAND>jarsigner</COMMAND> to sign a <ACRONYM>
+JAR</ACRONYM> file. If no password is provided on the command line, and the
+required password is different from the store password, the user is prompted
+for it.</PARA>
+<PARA><EMPHASIS>Note:</EMPHASIS> The password shouldn't be specified on the
+command line or in a script unless it is for testing purposes, or you are
+on a secure system. Also, when typing in a password at the password prompt,
+the password is echoed (displayed exactly as typed), so be careful not to
+type it in front of anyone.</PARA>
+</LISTITEM></VARLISTENTRY>
+<VARLISTENTRY><TERM><OPTION>sigfile</OPTION> <REPLACEABLE>file</REPLACEABLE></TERM>
+<LISTITEM><PARA>Specifies the base file name, <REPLACEABLE>file</REPLACEABLE>,
+to be used for the generated <LITERAL>.SF</LITERAL> and <LITERAL>.DSA</LITERAL>
+files. For example, if <REPLACEABLE>file</REPLACEABLE> is <LITERAL>DUKESIGN
+</LITERAL>, the generated <LITERAL>.SF</LITERAL> and <LITERAL>.DSA</LITERAL>
+files will be named <LITERAL>DUKESIGN.SF</LITERAL> and <LITERAL>DUKESIGN.DSA
+</LITERAL>, and will be placed in the <LITERAL>META-INF</LITERAL> directory
+of the signed <ACRONYM>JAR</ACRONYM> file.</PARA>
+<PARA>The characters in <REPLACEABLE>file</REPLACEABLE> must come from the
+set "a-zA-Z0-9_-". That is, only letters, numbers, underscore, and hyphen
+characters are allowed. <EMPHASIS>Note:</EMPHASIS> All lowercase characters
+will be converted to uppercase for the <LITERAL>.SF</LITERAL> and <LITERAL>
+.DSA</LITERAL> file names.</PARA>
+<PARA>If no  <OPTION>sigfile</OPTION> option appears on the command line,
+the base file name for the <LITERAL>.SF</LITERAL> and <LITERAL>.DSA</LITERAL>
+files will be the first 8 characters of the alias name specified on the command
+line, all converted to upper case. If the alias name has fewer than 8 characters,
+the full alias name is used.  If the alias name contains any characters that
+are not legal in a signature file name, each such character is converted to
+an underscore ("_") character in forming the file name.</PARA>
+</LISTITEM></VARLISTENTRY>
+<VARLISTENTRY><TERM><OPTION>signedjar</OPTION> <REPLACEABLE>file</REPLACEABLE></TERM>
+<LISTITEM><PARA>Specifies the name to be used for the signed <ACRONYM>JAR
+</ACRONYM> file.</PARA>
+<PARA>If no name is specified on the command line, the name used is the same
+as the input <ACRONYM>JAR</ACRONYM> file name (the name of the <ACRONYM>JAR
+</ACRONYM> file to be signed); in other words, that file is overwritten with
+the signed <ACRONYM>JAR</ACRONYM> file.</PARA>
+</LISTITEM></VARLISTENTRY>
+<VARLISTENTRY><TERM><OPTION>verify</OPTION></TERM><LISTITEM><PARA>If this
+appears on the command line, the specified <ACRONYM>JAR</ACRONYM> file will
+be verified, not signed. If the verification is successful, "jar verified"
+will be displayed. If you try to verify an unsigned <ACRONYM>JAR</ACRONYM>
+file, or a <ACRONYM>JAR</ACRONYM> file signed with an unsupported algorithm
+(for example, RSA when you don't have an RSA provider installed), the following
+is displayed:<INFORMALEXAMPLE>
+<SCREEN><COMPUTEROUTPUT>jar is unsigned. (signatures missing or not parsable)
+</COMPUTEROUTPUT></SCREEN>
+</INFORMALEXAMPLE></PARA>
+<PARA>It is possible to verify <ACRONYM>JAR</ACRONYM> files signed using either <COMMAND>
+jarsigner</COMMAND> or the JDK 1.1 <COMMAND>javakey</COMMAND> tool, or both.
+</PARA>
+<PARA>For further information on verification, see JAR File Verification.
+</PARA>
+</LISTITEM></VARLISTENTRY>
+<VARLISTENTRY><TERM><OPTION>certs</OPTION></TERM><LISTITEM><PARA>If this appears
+on the command line, along with the <OPTION>verify</OPTION> and <OPTION>verbose
+</OPTION> options, the output includes certificate information for each signer
+of the <ACRONYM>JAR</ACRONYM> file. This information includes: <ITEMIZEDLIST>
+<LISTITEM><PARA>the name of the type of certificate (stored in the <LITERAL>
+.DSA</LITERAL> file) that certifies the signer's public key</PARA>
+</LISTITEM>
+<LISTITEM><PARA>if the certificate is an X.509 certificate (more specifically,
+an instance of java.security.cert.X509Certificate): the distinguished name
+of the signer</PARA>
+</LISTITEM>
+</ITEMIZEDLIST></PARA>
+<PARA>The keystore is also examined. If no keystore value is specified on
+the command line, the default keystore file (if any) will be checked. If the
+public key certificate for a signer matches an entry in the keystore, then
+the following information will also be displayed:<ITEMIZEDLIST>
+<LISTITEM><PARA>in parentheses, the alias name for the keystore entry for
+that signer. If the signer actually comes from a JDK 1.1 identity database
+instead of from a keystore, the alias name will appear in brackets instead
+of parentheses.</PARA>
+</LISTITEM>
+</ITEMIZEDLIST></PARA>
+</LISTITEM></VARLISTENTRY>
+<VARLISTENTRY><TERM><OPTION>verbose</OPTION></TERM><LISTITEM><PARA>If this
+appears on the command line, it indicates "verbose" mode, which causes <COMMAND>
+jarsigner</COMMAND> to output extra information about the progress of the <ACRONYM>
+JAR</ACRONYM> signing or verification.</PARA>
+</LISTITEM></VARLISTENTRY>
+<VARLISTENTRY><TERM><OPTION>internalsf</OPTION></TERM><LISTITEM><PARA>In the
+past, the <LITERAL>.DSA</LITERAL> (signature block) file generated when a <ACRONYM>
+JAR</ACRONYM> file was signed used to include a complete encoded copy of the <LITERAL>
+.SF</LITERAL> file (signature file) also generated. This behavior has been
+changed. To reduce the overall size of the output <ACRONYM>JAR</ACRONYM> file,
+the <LITERAL>.DSA</LITERAL> file by default doesn't contain a copy of the <LITERAL>
+.SF</LITERAL> file anymore. But if  <LITERAL>-internalsf</LITERAL> appears
+on the command line, the old behavior is utilized. This option is mainly useful
+for testing. In practice, it should not be used, since doing so eliminates
+a useful optimization.</PARA>
+</LISTITEM></VARLISTENTRY>
+<VARLISTENTRY><TERM><OPTION>sectionsonly</OPTION></TERM><LISTITEM><PARA>If
+this appears on the command line, the <LITERAL>.SF</LITERAL> file (signature
+file) generated when a <ACRONYM>JAR</ACRONYM> file is signed does not include
+a header containing a hash of the whole manifest file. It just contains information
+and hashes related to each individual source file included in the <ACRONYM>
+JAR</ACRONYM> file, as described in &ldquo;The Signature (<LITERAL>.SF</LITERAL>)
+File&rdquo;.</PARA>
+<PARA>By default, this header is added, as an optimization. When the header
+is present, then whenever the <ACRONYM>JAR</ACRONYM> file is verified, the
+verification can first check to see whether or not the hash in the header
+indeed matches the hash of the whole manifest file. If so, verification proceeds
+to the next step. If not, it is necessary to do a less optimized verification
+that the hash in each source file information section in the <LITERAL>.SF
+</LITERAL> file equals the hash of its corresponding section in the manifest
+file.</PARA>
+<PARA>For further information, see JAR File Verification.</PARA>
+<PARA>This option is mainly useful for testing. In practice, it should not
+be used, since doing so eliminates a useful optimization.</PARA>
+</LISTITEM></VARLISTENTRY>
+<VARLISTENTRY><TERM><OPTION>provider</OPTION><REPLACEABLE>provider_class_name
+</REPLACEABLE></TERM><LISTITEM><PARA>Used to specify the name of the cryptographic
+service provider's master class file when the service provider is not listed
+in the security properties file.</PARA>
+</LISTITEM></VARLISTENTRY>
+<VARLISTENTRY><TERM><OPTION>J</OPTION><REPLACEABLE>flag</REPLACEABLE></TERM>
+<LISTITEM><PARA>Passes the specified flag directly to the runtime system.
+(<COMMAND>jarsigner</COMMAND> is actually a "wrapper" around the interpreter.)
+This option should not contain any spaces. It is useful for adjusting the
+execution environment or memory usage. For a list of possible flags, enter <COMMAND>
+java</COMMAND> <OPTION>h</OPTION> or <COMMAND>java</COMMAND> <OPTION>X</OPTION>
+at the command line.</PARA>
+</LISTITEM></VARLISTENTRY>
+</VARIABLELIST></REFSECT1>
+<REFSECT1><TITLE>&exam-tt;</TITLE>
+<EXAMPLE ROLE="example">
+<TITLE>Signing a JAR File</TITLE>
+<INDEXTERM ID="jarsigner-1-indx-11"><PRIMARY SORTAS="jarsigner">jarsigner &mdash;
+JAR signing and verification tool </PRIMARY><SECONDARY>Signing a JAR File
+</SECONDARY></INDEXTERM><PARA>Suppose you have a <ACRONYM>JAR</ACRONYM> file
+named <LITERAL>bundle.jar</LITERAL> and you would like to sign it using the
+private key of the user whose keystore alias is <LITERAL>jane</LITERAL> in
+the keystore named <LITERAL>mystore</LITERAL> in the <LITERAL>working</LITERAL>
+directory. Suppose the keystore password is <LITERAL>myspass</LITERAL> and
+the password for <LITERAL>jane</LITERAL>'s private key is <LITERAL>j638klm
+</LITERAL>. You can use the following to sign the <ACRONYM>JAR</ACRONYM> file
+and name the signed <ACRONYM>JAR</ACRONYM> file <LITERAL>sbundle.jar</LITERAL>:
+</PARA>
+<PARA><SCREEN>example% <USERINPUT>jarsigner &ndash;keystore "/working/mystore" &ndash;storepass myspass
+   &ndash;keypass j638klm &ndash;signedjar sbundle.jar bundle.jar jane</USERINPUT></SCREEN></PARA>
+<PARA>Notice that there is no <OPTION>sigfile</OPTION> specified in the command
+above, so the generated <LITERAL>.SF</LITERAL> and <LITERAL>.DSA</LITERAL>
+files to be placed in the signed JAR file will have default names based on
+the alias name. That is, they will be named <LITERAL>JANE.SF</LITERAL> and <LITERAL>
+JANE.DSA</LITERAL>.</PARA>
+<PARA>If you want to be prompted for the store password and the private key
+password, you could shorten the above command to</PARA>
+<PARA><SCREEN>example% <USERINPUT>jarsigner &ndash;keystore /working/mystore
+   &ndash;signedjar sbundle.jar bundle.jar jane</USERINPUT></SCREEN></PARA>
+<PARA>If the keystore to be used is the default keystore (the one named <LITERAL>
+.keystore</LITERAL> in your home directory), you don't need to specify a keystore,
+as in:</PARA>
+<PARA><SCREEN>example% <USERINPUT>jarsigner &ndash;signedjar sbundle.jar bundle.jar jane
+</USERINPUT></SCREEN></PARA>
+<PARA>Finally, if you want the signed <ACRONYM>JAR</ACRONYM> file to simply
+overwrite the input <ACRONYM>JAR</ACRONYM> file (bundle.jar), you don't need
+to specify a <OPTION>signedjar</OPTION> option:</PARA>
+<PARA><SCREEN>example% <USERINPUT>jarsigner bundle.jar jane</USERINPUT></SCREEN></PARA>
+</EXAMPLE>
+<EXAMPLE ROLE="example">
+<TITLE>Verifying a Signed JAR File</TITLE>
+<INDEXTERM ID="jarsigner-1-indx-12"><PRIMARY SORTAS="jarsigner">jarsigner &mdash;
+JAR signing and verification tool </PRIMARY><SECONDARY>Verifying a Signed
+JAR File</SECONDARY></INDEXTERM><PARA>To verify a signed <ACRONYM>JAR</ACRONYM>
+file, that is, to verify that the signature is valid and the <ACRONYM>JAR
+</ACRONYM> file has not been tampered with, use a command such as the following:
+</PARA>
+<PARA><SCREEN>example% <USERINPUT>jarsigner &ndash;verify sbundle.jar</USERINPUT></SCREEN></PARA>
+<PARA>If the verification is successful, the screen displays:</PARA>
+<PARA><SCREEN><COMPUTEROUTPUT>jar verified.</COMPUTEROUTPUT></SCREEN></PARA>
+<PARA>Otherwise, an error message appears.</PARA>
+<PARA>You can get more information if you use the <OPTION>verbose</OPTION>
+option. A sample use of <COMMAND>jarsigner</COMMAND> with the <OPTION>verbose
+</OPTION> option is shown below, along with sample output:</PARA>
+<PARA><SCREEN>example% <USERINPUT>jarsigner -verify -verbose sbundle.jar</USERINPUT>
+
+             <COMPUTEROUTPUT>198 Fri Sep 26 16:14:06 PDT 1997 META-INF/MANIFEST.MF
+             199 Fri Sep 26 16:22:10 PDT 1997 META-INF/JANE.SF
+            1013 Fri Sep 26 16:22:10 PDT 1997 META-INF/JANE.DSA
+      smk   2752 Fri Sep 26 16:12:30 PDT 1997 AclEx.class
+      smk    849 Fri Sep 26 16:12:46 PDT 1997 test.class
+
+        s = signature was verified
+        m = entry is listed in manifest
+        k = at least one certificate was found in keystore
+
+      jar verified.</COMPUTEROUTPUT></SCREEN></PARA>
+</EXAMPLE>
+<EXAMPLE ROLE="example">
+<TITLE>Verification with Certificate Information</TITLE>
+<INDEXTERM ID="jarsigner-1-indx-13"><PRIMARY SORTAS="jarsigner">jarsigner &mdash;
+JAR signing and verification tool </PRIMARY><SECONDARY>Verification with Certificate
+Information</SECONDARY></INDEXTERM><PARA>If you specify the <OPTION>certs
+</OPTION> option when verifying, along with the <OPTION>verify</OPTION> and <OPTION>
+verbose</OPTION> options, the output includes certificate information for
+each signer of the JAR file, including the certificate type, the signer distinguished
+name information (if it is an X.509 certificate), and, in parentheses, the
+keystore alias for the signer if the public key certificate in the <ACRONYM>
+JAR</ACRONYM> file matches that in a keystore entry. For example:</PARA>
+<PARA><SCREEN>example% <USERINPUT>jarsigner &ndash;keystore /working/mystore &ndash;verify
+                &ndash;verbose &ndash;certs myTest.jar</USERINPUT>
+
+     <COMPUTEROUTPUT>198 Fri Sep 26 16:14:06 PDT 1997 META-INF/MANIFEST.MF
+     199 Fri Sep 26 16:22:10 PDT 1997 META-INF/JANE.SF
+    1013 Fri Sep 26 16:22:10 PDT 1997 META-INF/JANE.DSA
+     208 Fri Sep 26 16:23:30 PDT 1997 META-INF/JAVATEST.SF
+    1087 Fri Sep 26 16:23:30 PDT 1997 META-INF/JAVATEST.DSA
+smk 2752 Fri Sep 26 16:12:30 PDT 1997 Tst.class
+
+ X.509, CN=Test Group, OU=Java Software, O=Sun Microsystems,
+                     L=CUP, S=CA, C=US (javatest)
+ X.509, CN=Jane Smith, OU=Java Software, O=Sun, L=cup, S=ca,
+                     C=us (jane)
+
+ s = signature was verified
+ m = entry is listed in manifest
+ k = at least one certificate was found in keystore
+
+jar verified.</COMPUTEROUTPUT></SCREEN></PARA>
+<PARA>If the certificate for a signer is not an X.509 certificate, there is
+no distinguished name information. In that case, just the certificate type
+and the alias are shown. For example, if the certificate is a PGP certificate,
+and the alias is <LITERAL>bob</LITERAL>, you would get the output:</PARA>
+<PARA><SCREEN><COMPUTEROUTPUT>PGP, (bob)</COMPUTEROUTPUT></SCREEN></PARA>
+</EXAMPLE>
+<EXAMPLE ROLE="example">
+<TITLE>Verification of a JAR File</TITLE>
+<INDEXTERM ID="jarsigner-1-indx-14"><PRIMARY SORTAS="jarsigner">jarsigner &mdash;
+JAR signing and verification tool </PRIMARY><SECONDARY>Verification of a JAR
+File</SECONDARY></INDEXTERM><PARA>The verification example below entails verification
+of a <ACRONYM>JAR</ACRONYM> file that includes identity database signers.
+</PARA>
+<PARA>If a <ACRONYM>JAR</ACRONYM> file has been signed using the JDK 1.1 <COMMAND>
+javakey</COMMAND> tool, and thus the signer is an alias in an identity database,
+the verification output includes an "i" symbol. If the <ACRONYM>JAR</ACRONYM>
+file has been signed by both an alias in an identity database and an alias
+in a keystore, both "k" and "i" appear.</PARA>
+<PARA>When the <OPTION>certs</OPTION> option is used, any identity database
+aliases are shown in square brackets rather than the parentheses used for
+keystore aliases. For example:</PARA>
+<PARA><SCREEN>example% <USERINPUT>jarsigner &ndash;keystore /working/mystore &ndash;verify
+                &ndash;verbose &ndash;certs writeFile.jar</USERINPUT>
+
+      <COMPUTEROUTPUT>198 Fri Sep 26 16:14:06 PDT 1997 META-INF/MANIFEST.MF
+      199 Fri Sep 26 16:22:10 PDT 1997 META-INF/JANE.SF
+     1013 Fri Sep 26 16:22:10 PDT 1997 META-INF/JANE.DSA
+      199 Fri Sep 27 12:22:30 PDT 1997 META-INF/DUKE.SF
+     1013 Fri Sep 27 12:22:30 PDT 1997 META-INF/DUKE.DSA
+smki   2752 Fri Sep 26 16:12:30 PDT 1997 writeFile.html
+
+ X.509, CN=Jane Smith, OU=Java Software, O=Sun, L=cup, S=ca, C=us (jane)
+ X.509, CN=Duke, OU=Java Software, O=Sun, L=cup, S=ca, C=us [duke]
+
+ s = signature was verified
+ m = entry is listed in manifest
+ k = at least one certificate was found in keystore
+ i = at least one certificate was found in identity scope
+
+jar verified.</COMPUTEROUTPUT></SCREEN></PARA>
+<PARA>Please notice that the alias <LITERAL>duke</LITERAL> is in brackets
+to denote that it is an identity database alias, not a keystore alias.</PARA>
+</EXAMPLE>
+</REFSECT1>
+<REFSECT1><TITLE>&attr-tt;</TITLE>
+<PARA>See <CITEREFENTRY><REFENTRYTITLE>attributes</REFENTRYTITLE><MANVOLNUM>
+5</MANVOLNUM></CITEREFENTRY> for a description of the following attributes:
+</PARA>
+<INFORMALTABLE FRAME="all" ORIENT="port">
+<TGROUP COLS="2" COLSEP="1" ROWSEP="1"><COLSPEC COLNUM="1" COLNAME="col1" COLWIDTH="1*" COLSEP="1" ALIGN="left"><COLSPEC COLNUM="2" COLNAME="col2" COLWIDTH="1*" ALIGN="left">
+<THEAD>
+<ROW><ENTRY COLNAME="col1" ALIGN="center" VALIGN="top">ATTRIBUTE TYPE</ENTRY>
+<ENTRY COLNAME="col2" ALIGN="center" VALIGN="top">ATTRIBUTE VALUE</ENTRY>
+</ROW>
+</THEAD>
+<TBODY>
+<ROW><ENTRY>Availability</ENTRY><ENTRY>SUNWj5<?Pub Caret>dev</ENTRY></ROW>
+</TBODY>
+</COLSPEC></COLSPEC></TGROUP>
+</INFORMALTABLE>
+</REFSECT1>
+<REFSECT1><TITLE>&also-tt;</TITLE>
+<PARA><CITEREFENTRY><REFENTRYTITLE>jar</REFENTRYTITLE><MANVOLNUM>1</MANVOLNUM>
+</CITEREFENTRY>, <CITEREFENTRY><REFENTRYTITLE>keytool</REFENTRYTITLE><MANVOLNUM>
+1</MANVOLNUM></CITEREFENTRY>, <CITEREFENTRY><REFENTRYTITLE>attributes</REFENTRYTITLE>
+<MANVOLNUM>5</MANVOLNUM></CITEREFENTRY> </PARA>
+<PARA><CITETITLE>How to Implement a Provider for the Java Cryptography Architecture
+</CITETITLE></PARA>
+</REFSECT1>
+</REFENTRY><?Pub *0000049602>
+

@@ -1,0 +1,78 @@
+'\" t
+.\" @(#)appletviewer.1 1.9 99/06/13 SMI;
+.\" Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+.\" Copyright 2004 Sun Microsystems, Inc. Tous droits r駸erv駸.
+.\" 
+'\"macro stdmacro
+.TH appletviewer 1 "2004 年 6 月 22 日"
+.SH "名前"
+appletviewer \- Java アプレットビューア
+.\" 
+.\"  This document was created by saving an HTML file as text
+.\"  from the JavaSoft web site:
+.\" 
+.\" http://java.sun.com/j2se/1.5/docs/tooldocs/tools.html
+.\" 
+.\"  and adding appropriate troff macros.  Because the JavaSoft web site 
+.\"  man pages can change without notice, it may be helpful to diff
+.\"  files to identify changes other than new functionality.
+.\" 
+.SH "形式"
+.BR appletviewer " ["
+.BR options " ]"
+.I urls ...
+.SH "機能説明"
+.IX "appletviewer" "" "\fLappletviewer\fP \(em run applets"
+.IX "appletviewer" "" "\fLappletviewer\fP \(em Web browser"
+.B appletviewer
+コマンドは、
+.I urls
+で指定したドキュメントまたはリソースに接続して、
+独自のウィンドウ上にそのドキュメントが参照している
+個々のアプレットを表示します。
+注 :
+.I urls
+が示すドキュメント中に
+.SB OBJECT
+、
+.SB EMBED
+、または
+.SB APPLET
+タグを使ったアプレット参照が存在しない場合、
+.B appletviewer
+は何も行いません。
+appletviewer でサポートされている HTML タグの詳細は、
+http://java.sun.com/j2se/1.5.0/docs/tooldocs/appletviewertags.html
+を参照してください。
+.SH "オプション"
+以下のオプションが使用できます。
+.TP 15
+.B \-debug
+Java
+デバッガ "jdb" 内でアプレットビューアを起動します。
+これによりドキュメント中のアプレットをデバッグできます。
+(詳細は
+.BR jdb (1)
+を参照)。
+.TP 15
+.BI \-encoding " encoding_name"
+入力
+HTML
+ファイルのエンコーディング名を指定します。
+.TP 15
+.BI \-J "javaoption"
+文字列
+.I javaoption
+を、アプレットビューアを実行する
+Java インタプリタ
+に
+1
+つの引数として渡します。
+引数中には空白文字を含めることはできません。
+複数の引数を指定する場合には、それぞれの先頭に
+.BR \-J
+を必ず付加してください。この文字は
+.BR java (1)
+に渡す内容からは取り除かれます。
+この引数指定を用いて、実行環境やコンパイラの
+メモリ使用量を有効に調整することができます。

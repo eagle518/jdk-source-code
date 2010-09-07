@@ -1,0 +1,101 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1999, v.4002-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub Inc>
+<refentry id="native2ascii-1">
+<!--@(#)native2ascii.1 1.14 01/03/14 SMI;-->
+<refmeta><refentrytitle>native2ascii</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">22 Jun 2004</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All
+rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.
+</refmiscinfo>
+</refmeta>
+<refnamediv><refname>native2ascii</refname><refpurpose>native to ASCII converter
+</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>native2ascii</command><arg choice="opt"><option>[ options ]
+</option>&nbsp;</arg><arg choice="opt"><arg choice="plain"><replaceable>inputfile
+</replaceable></arg><arg choice="opt"><replaceable>outputfile</replaceable></arg></arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="native2ascii-1-indx-1"><primary sortas="native to ASCII converter">
+native to ASCII converter &mdash; native2ascii</primary></indexterm><indexterm
+id="native2ascii-1-indx-2"><primary sortas="native2ascii">native2ascii &mdash;
+native to ASCII converter</primary></indexterm><para>The  <citerefentry><refentrytitle>
+javac</refentrytitle><manvolnum>1</manvolnum></citerefentry> compiler and
+other Java&trade; tools can only process files that contain Latin-1 or Unicode-encoded
+(\udddd notation) characters. The <command>native2ascii</command> command
+converts files that contain other character encoding into files containing
+Latin-1 or Unicode-encoded charaters.</para>
+<para>If <replaceable>outputfile</replaceable> is omitted, standard output
+is used for output. If <replaceable>inputfile</replaceable> is also omitted,
+standard input is used for input.</para>
+</refsect1>
+<refsect1><title>&opts-tt;</title>
+<para>The following options are supported:</para>
+<variablelist termlength="wholeline">
+<varlistentry><term remap="15"><option>encoding</option> <replaceable>encoding_name
+</replaceable></term><listitem><para>Specifies the encoding name that is used
+by the conversion procedure. The default encoding is taken from system property <literal>
+file.encoding</literal>. The <replaceable>encoding_name</replaceable> string
+must be one  taken from the first column of the table of supported encodings
+in the Supported Encodings document:<informalexample><para><ulink url="http://java.sun.com/j2se/1.4/docs/guide/intl/encoding.doc.html">
+http://java.sun.com/j2se/1.4/docs/guide/intl/encoding.doc.html</ulink></para>
+</informalexample></para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>reverse</option></term><listitem><para>
+Performs the reverse operation: converts a file with Latin-1 or Unicode-encoded
+characters to one with native-encoded characters.</para>
+</listitem></varlistentry>
+<varlistentry><term><option role="nodash">J</option><replaceable>option</replaceable></term>
+<listitem><para>Pass <replaceable>option</replaceable><?Pub Caret1> to the
+Java virtual machine, where option is one of the options described on the
+man page for the java application launcher, java (1). For example, <literal>
+-J-Xms48m</literal> sets the startup memory to 48 megabytes. It is a common
+convention for <literal>-J</literal> to pass options to the underlying virtual
+machine.</para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>&attr-tt;</title>
+<para>See <citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>
+5</manvolnum></citerefentry> for a description of the following attributes:
+</para>
+<informaltable frame="all" orient="port">
+<tgroup cols="2" colsep="1" rowsep="1"><colspec colnum="1" colname="col1"
+colwidth="1*" colsep="1" align="left"><colspec colnum="2" colname="col2" colwidth="1*"
+align="left">
+<thead>
+<row><entry colname="col1" rowsep="1" align="center" valign="top">ATTRIBUTE
+TYPE</entry><entry colname="col2" rowsep="1" align="center" valign="top">
+ATTRIBUTE VALUE</entry></row>
+</thead>
+<tbody>
+<row><entry>Availability</entry><entry>SUNWj35dev</entry></row>
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>javac</refentrytitle><manvolnum>1</manvolnum>
+</citerefentry>, <citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>
+5</manvolnum></citerefentry></para>
+<para><variablelist termlength="wholeline">
+<varlistentry><term><citetitle>Supported Encodings</citetitle> @</term><listitem>
+<para><ulink url="http://java.sun.com/j2se/1.5/docs/guide/intl/encoding.doc.html">
+http://java.sun.com/j2se/1.5/docs/guide/intl/encoding.doc.html</ulink></para>
+</listitem></varlistentry>
+</variablelist></para>
+</refsect1>
+<!--+ 07/27/00 08:35:29
+    | tagMorph:  $Id: tagMorph-engine 1.54 1998/01/19 05:44:48 $
+    | tagMorph library:  $Id: libtagMorph.a 1.50 1998/01/19 22:02:51 $
+    | sunman-to-solbook 1.17
+    +-->
+</refentry>
+<?Pub *0000005275>

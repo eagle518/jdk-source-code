@@ -1,0 +1,89 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1999, v.4002-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub Inc>
+<refentry id="serialver-1">
+<!--@(#)serialver.1 1.13 01/03/14 SMI;-->
+<refmeta><refentrytitle>serialver</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">22 Jun 2004</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All
+rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.
+ </refmiscinfo>
+</refmeta>
+<refnamediv><refname>serialver</refname><refpurpose>serial version command
+</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>serialver</command><arg choice="opt">[ options ]</arg>
+<arg choice="opt"><replaceable>classnames</replaceable></arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="serialver-1-indx-1"><primary sortas="serial version command">
+serial version command &mdash; serialver</primary></indexterm><indexterm id="serialver-1-indx-2">
+<primary sortas="serialver">serialver &mdash; serial version command</primary>
+</indexterm><para>The <command>serialver</command> command returns the <literal>
+serialVersionUID</literal> for one or more classes in a form suitable for
+copying into an evolving class. When invoked with no arguments, it prints
+a usage line.</para>
+</refsect1>
+<refsect1><title>&opts-tt;</title>
+<para>The following option is supported:</para>
+<variablelist termlength="narrow">
+<varlistentry><term remap="15"><option>classpath</option> <replaceable>directories
+and zip/jar files separated by :</replaceable></term><listitem><para>Set search
+path for application classes and resources. </para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>show</option> </term><listitem><para>
+Displays a simple user interface. Enter the full class name and press either
+the Enter key or the Show button to display the <literal>serialVersionUID
+</literal>. </para>
+</listitem></varlistentry>
+<varlistentry><term><option role="nodash">J</option><replaceable>option</replaceable></term>
+<listitem><para>Pass <replaceable>option</replaceable> to the Java virtual
+machine, where option is one of the options described on the man page for
+the java application launcher, java (1). For example, <literal>-J-Xms48m</literal>
+sets the startup memory to 48 megabytes. It is a common convention for <literal>
+-J</literal> to pass options to the underlying virtual machine.</para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><?Pub Caret1><title>&attr-tt;</title>
+<para>See <citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>
+5</manvolnum></citerefentry> for a description of the following attributes:
+</para>
+<informaltable frame="all" orient="port">
+<tgroup cols="2" colsep="1" rowsep="1"><colspec colnum="1" colname="col1"
+colwidth="1*" colsep="1" align="left"><colspec colnum="2" colname="col2" colwidth="1*"
+align="left">
+<thead>
+<row><entry colname="col1" align="center" valign="top">ATTRIBUTE TYPE</entry>
+<entry colname="col2" align="center" valign="top">ATTRIBUTE VALUE</entry>
+</row>
+</thead>
+<tbody>
+<row><entry>Availability</entry><entry>SUNWj5dev</entry></row>
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>5
+</manvolnum></citerefentry> </para>
+<para>See (or search <literal>java.sun.com</literal>) for the following:</para>
+<variablelist termlength="wholeline">
+<varlistentry><term remap="5"><literal>java.io.ObjectStreamClass</literal>
+@</term><listitem><para><ulink url="http://java.sun.com/j2se/1.5/docs/api/java/io/ObjectStreamClass.html">
+http://java.sun.com/j2se/1.5/docs/api/java/io/ObjectStreamClass.html</ulink></para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<!--+ 07/27/00 08:36:07
+    | tagMorph:  $Id: tagMorph-engine 1.54 1998/01/19 05:44:48 $
+    | tagMorph library:  $Id: libtagMorph.a 1.50 1998/01/19 22:02:51 $
+    | sunman-to-solbook 1.17
+    +-->
+</refentry>
+<?Pub *0000004347>

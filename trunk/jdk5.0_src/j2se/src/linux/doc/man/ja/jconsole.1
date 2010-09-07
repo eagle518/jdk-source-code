@@ -1,0 +1,45 @@
+'\" t
+.\" SMI;
+.\" Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+.\" Copyright 2004 Sun Microsystems, Inc. Tous droits r辿serv辿s.
+.\"
+.TH "jconsole" 1 "2004 年 6 月 22 日"
+.SH 名前
+jconsole \- J2SE 監視/管理コンソール
+.SH 形式
+.B jconsole
+.I "[ options ] [ pid | [ host:port ... ] ]"
+.LP
+.SH パラメータ
+.TP 15
+.I pid
+同じマシン上で \-Dcom.sun.management.jmxremote オプションを付けて開始された Java VM のプロセス ID。詳細については、http://java.sun.com/j2se/1.5.0/docs/guide/management/agent.html の「JMX 監視および管理」を参照してください。
+.TP 15
+.I host:port 
+Java VM を実行しているホストの名前と、Java VM の JMX コネクタが公開されているポート番号
+詳細については、http://java.sun.com/j2se/1.5.0/docs/guide/management/agent.html の「JMX 監視および管理」を参照してください。
+.LP
+.SH 機能説明
+
+.B jconsole
+コマンドは、ローカルまたはリモートマシン上の Java アプリケーションと仮想マシンを監視および管理するためのグラフィカルコンソールツールを起動します。
+.LP
+注 - 
+このツールは試験的なものであり、JDK の将来のバージョンでは使用できない可能性があります。
+.SH オプション
+.TP 15
+.B \-interval=n
+更新間隔を n 秒に設定します。(デフォルトは 4 秒)
+.TP
+.B \-notile
+初期状態でウィンドウを並べて表示しません。(接続が 2 つ以上ある場合)
+.TP
+.B \-version
+バージョン情報を出力して終了します。
+.TP
+.B \-help
+ヘルプメッセージを出力して終了します。
+.LP
+.SH "関連項目"
+http://java.sun.com/j2se/1.5.0/docs/guide/management/index.html の「Java プラットフォームの監視と管理」
+

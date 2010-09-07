@@ -1,0 +1,98 @@
+'\" t
+.\" @(#)klist.1 1.10 02/06/18 SMI;
+.\" Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+.\" Copyright 2004 Sun Microsystems, Inc. Tous droits réservés.
+.\" 
+.TH klist 1 "18 June 2002"
+.SH NAME
+klist \- Kerberos display entries in credentials cache and keytab 
+.LP
+.BR klist
+allows the user to view entries in the local credentials cache and
+key table.
+.SH SYNOPSIS
+.B klist
+[
+.IR commands " ]" 
+.SH DESCRIPTION
+.BR klist
+displays the entries in the local credentials cache
+and key table. After the user has modified the 
+credentials cache with 
+.BR kinit 
+or modified the keytab with
+.BR ktab , 
+the only way to verify the changes is to 
+view the contents of the credentials
+cache and/or keytab using 
+.BR klist . 
+.BR klist 
+does not change the Kerberos database.
+.SH COMMANDS
+.B klist 
+[
+\-c [-fe]]
+[
+\-k [-tK]]
+[
+<name>]
+[
+\-help ]
+.TP
+.BI \-c
+Specifies that the credential cache entries
+are to be listed.
+.TP
+.BI \-k
+Specifies that the key tab entries are to be listed.
+.TP
+.BI <cache_name>
+Specifies the credential cache name or the keytab
+name. If the name is not specified default values
+for cache name and the keytab are used. The
+default values for the cache and the keytab are
+specified in the man page for 
+.BR kinit .
+.LP
+If the -c option is specified (options for
+credential cache):
+.TP
+.BI \-f
+Shows credentials flags.
+.TP
+.BI \-e
+Shows the encryption type.
+.LP
+If the -k option is specified (options
+available for keytabs):
+.TP
+.BI \-t
+Shows keytab entry timestamps.
+.TP
+.BI \-K
+Shows keytab entry DES keys.
+.LP
+.TP
+.BI \-help
+Displays instructions.
+.SH EXAMPLES
+List entries in the keytable specified 
+including keytab entry timestamps and
+DES keys:
+.LP
+.ft 3
+.nf
+klist -k -t -K FILE:/temp/mykrb5cc
+.fi
+.ft 1
+.LP
+List entries in the credentials cache
+specified including credentials flag
+and address list:
+.LP
+.ft 3
+.nf
+klist -c -f FILE:/temp/mykrb5cc
+.fi
+.ft 1
+.LP

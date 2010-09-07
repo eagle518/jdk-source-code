@@ -1,0 +1,325 @@
+'\" t
+.\" @(#)tnameserv.1 1.6 00/06/13 SMI;
+.\" Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+.\" Copyright 2004 Sun Microsystems, Inc. Tous droits r駸erv駸.
+.\" 
+.TH tnameserv 1 "2004 年 6 月 22 日"
+.SH "名前"
+tnameserv \- Java IDL ネームサーバの起動スクリプト
+.SH "形式"
+.B tnameserv
+.I \-ORBInitialPort port_number
+.SH "機能説明"
+.IX "Java IDL name server starter script" "" "Java IDL name server starter script \(em \fLtnameserv\fP"
+.IX "tnameserv" "" "\fLtnameserv\fP \(em Java IDL name server starter script"
+.SM CORBA
+の
+.SM COS
+(Common Object Services) ネームサービス は、ファイルシステムがファイルに対してディレクトリ
+構造を提供しているのと同じように、オブジェクト参照に対してツリー構造のディレクトリを提供し
+ます。Java
+.SM IDL
+のネームサービスは、
+.SM COS
+ネームサービスの仕様を単純な形で実装したものです。 
+.LP
+オブジェクト参照は名前空間に名前で格納され、オブジェクト参照と名前の組は、
+それぞれ「ネームバインディング」と呼ばれます。ネームバインディングは「ネーミ
+ングコンテキスト」に組み込むことができます。ネーミングコンテキストはそれ自体
+がネームバインディングであり、ファイルシステムのサブディレクトリと同じ編成機
+能を持ちます。すべてのバインディングは「初期ネーミングコンテキスト」に格納さ
+れます。名前空間において、初期ネーミングコンテキストは唯一の持続的バイン
+ディングです。それ以外のネーミングコンテキストは、Java
+.SM IDL
+のネームサーバプロセスが停止し、再起動されると失われます。 
+.LP
+アプレットまたはアプリケーションから
+.SM COS
+ネームサービスを使用するためには、その
+.SM ORB
+はネームサービスが動作しているホストの名前とポートを知っているか、そのネームサーバの
+文字列化された初期ネーミングコンテキストにアクセスできなければなりません。ネームサービスは、Java
+.SM IDL
+のネームサーバでもその他の
+.SM COS
+準拠のネームサービスでもかまいません。 
+.SH "使用法"
+.SS "Java IDL ネームサーバの起動"
+.IX "tnameserv" "Starting the Java IDL Name Server" "\fLtnameserv\fP \(em Java IDL name server starter script"
+Java
+.SM IDL
+ネームサーバは、ネームサービスを使用するアプリケーションまたはアプレットより前に
+起動しておかなければなりません。Java
+.SM IDL
+製品をインストールすると、Java
+.SM IDL
+ネームサーバを起動するスクリプト (tnameserv) が作成されます。バックグラウンドで
+動作するように、ネームサーバを起動してください。
+.LP
+特に指定しない場合、Java
+.SM IDL
+ネームサーバは、
+.SM ORB
+の
+.B resolve_initial_references(\|)
+メソッドと
+.B list_initial_references(\|)
+メソッドの実装に使用するブートストラッププロトコルに対してポート 900 で待機します。
+ほかのポート (
+.BR 1050
+など) を指定するには、次のようにします。 
+.LP
+.RS
+.B example% tnameserv \-ORBInitialPort 1050
+.RE
+.LP
+ネームサーバのクライアントには、新しいポート番号を知らせる必要があります。このため、
+.SM ORB
+オブジェクトの作成時に
+.B org.omg.CORBA.ORBInitialPort
+プロパティに新しいポート番号を設定します。 
+.SS "Java IDL ネームサーバの停止"
+.IX "tnameserv" "Stopping the Java IDL Name Server" "\fLtnameserv\fP \(em Java IDL name server starter script"
+Java
+.SM IDL
+ネームサーバを停止するには、
+.BR kill (1)
+などのオペレーティングシステムのコマンドを使います。なお、ネームサーバを終了させると、
+Java
+.SM IDL
+ネームサービスに登録されている名前は失われます。
+.SS "サンプルクライアント: オブジェクトの追加"
+.IX "tnameserv" "Sample Client: Browsing the Namespace" "\fLtnameserv\fP \(em Java IDL name server starter script"
+.IX "tnameserv" "Sample Client: Adding Objects to the Namespace" "\fLtnameserv\fP \(em Java IDL name server starter script"
+以下に示すサンプルプログラムは、名前を名前空間に追加する方法を示すものです。
+このサンプルプログラムは、このままの状態で完全に動作するネームサーバクライアントで、
+次のような単純なツリーを作成するものです。 
+.br
+.ne 10
+.ft 3
+.nf
+
+       初期
+     ネーミングコンテキスト
+       /     \\
+      /       \\
+   plans      Personal
+                /\\
+               /  \\
+        calendar   schedule
+
+.fi
+.ft 1
+この例で、
+.B plans 
+はオブジェクト参照、
+.B Personal 
+は 
+.B calendar 
+と 
+.B schedule 
+の 2 つ
+のオブジェクト参照が含まれるネーミングコンテキストです。 
+.ft 3
+.nf
+
+import java.util.Properties;
+import org.omg.CORBA.*;
+import org.omg.CosNaming.*;
+
+public class NameClient
+{
+   public static void main(String args[])
+   {
+      try {
+
+.fi
+.ft 1
+前述の「
+.B Java IDL ネームサーバの起動
+」では、ネームサーバはポート
+.BR 1050
+を使用して起動しました。次のコードで、このポート
+番号をクライアントプログラムに知らせます。 
+.ft 3
+.nf
+
+        Properties props = new Properties();
+        props.put("org.omg.CORBA.ORBInitialPort", "1050");
+        ORB orb = ORB.init(args, props);
+
+.fi
+.ft 1
+次のコードでは、初期ネーミングコンテキストを取得し、それを
+.BR ctx
+に代入します。2 行目では、
+.B ctx
+をダミーのオブジェクト参照 
+.B objref 
+にコピーします。この
+.BR objref
+には、あとでさまざまな名前を割り当てて名前空間に追加します。
+.ft 3
+.nf
+
+        NamingContext ctx = NamingContextHelper.narrow
+            (orb.resolve_initial_references("NameService"));
+        NamingContext objref = ctx;
+
+.fi
+.ft 1
+次のコードでは、text 型の名前「plans」を作成し、それをダミーのオブジェクト参照にバインドします。
+その後、
+.BR rebind
+を使用して初期ネーミングコンテキストの下に「plans」を追加しています。
+.BR rebind
+メソッドを使用すれば、
+.BR bind
+を使用した場合に発生する例外を発生させずに、このプログラムを何度も繰り返し実行できます。
+.ft 3
+.nf
+
+        NameComponent nc1 = new NameComponent("plans", "text");
+        NameComponent[] name1 = {nc1};
+        ctx.rebind(name1, objref);
+        System.out.println("plans rebind sucessful!");
+
+.fi
+.ft 1
+次のコードでは、directory 型の「Personal」というネーミングコンテキストを作成します。
+その結果得られるオブジェクト参照
+.BR ctx2
+をこの名前にバインドし、初期ネーミングコンテキストに追加します。 
+.ft 3
+.nf
+
+        NameComponent nc2 = new NameComponent("Personal", "directory");
+        NameComponent[] name2 = {nc2};
+        NamingContext ctx2 = ctx.bind_new_context(name2);
+        System.out.println("new naming context added..");
+
+.fi
+.ft 1
+残りのコードでは、ダミーのオブジェクト参照を「schedule」と「calendar」という名前でネーミ
+ングコンテキスト「Personal」
+.RB ( ctx2 )
+にバインドします。 
+.ft 3
+.nf
+
+        NameComponent nc3 = new NameComponent("schedule", "text");
+        NameComponent[] name3 = {nc3};
+        ctx2.rebind(name3, objref);
+        System.out.println("schedule rebind sucessful!");
+
+        NameComponent nc4 = new NameComponent("calender", "text");
+        NameComponent[] name4 = {nc4};
+        ctx2.rebind(name4, objref);
+        System.out.println("calender rebind sucessful!");
+
+    } catch (Exception e) {
+        e.printStackTrace(System.err);
+    }
+  }
+}
+
+.fi
+.ft 1
+.SS "サンプルクライアント: 名前空間のブラウズ"
+次のサンプルプログラムでは、名前空間をブラウズする方法を示します。 
+.ft 3
+.nf
+
+import java.util.Properties;
+import org.omg.CORBA.*;
+import org.omg.CosNaming.*;
+
+public class NameClientList
+{
+   public static void main(String args[])
+   {
+      try {
+
+.fi
+.ft 1
+前述の「
+.B Java IDL ネームサーバの起動
+」で、ネームサーバはポート
+.BR 1050
+を使用して起動しました。次のコードで、このポート番号をクライアントプログラムに知らせます。 
+.ft 3
+.nf
+
+        Properties props = new Properties();
+        props.put("org.omg.CORBA.ORBInitialPort", "1050");
+        ORB orb = ORB.init(args, props);
+
+.fi
+.ft 1
+次のコードでは、初期ネーミングコンテキストを取得しています。
+.ft 3
+.nf
+
+        NamingContext nc = NamingContextHelper.narrow
+           (orb.resolve_initial_references("NameService"));
+
+.fi
+.ft 1
+list メソッドは、ネーミングコンテキストに追加されているバインディングをリストします。
+この場合、最大 1000 個までのバインディングが初期ネーミングコンテキストから
+.BR BindingListHolder
+に返されます。残りのバインディングは、
+.BR BindingIteratorHolder 
+に返されます。 
+.ft 3
+.nf
+
+        BindingListHolder bl = new BindingListHolder();
+        BindingIteratorHolder blIt= new BindingIteratorHolder();
+        nc.list(1000, bl, blIt);
+
+.fi
+.ft 1
+次のコードでは、返された
+.BR BindingListHolder
+からバインディングの配列を取得します。バインディングがない場合は、プログラムは終了します。 
+.ft 3
+.nf
+
+        Binding bindings[] = bl.value;
+        if (bindings.length == 0) return;
+
+.fi
+.ft 1
+残りのコードでは、バインディングに対してループ処理を行い、名前を出力します。
+.ft 3
+.nf
+
+        for (int i=0; i < bindings.length; i++) {
+
+            // get the object reference for each binding
+            org.omg.CORBA.Object obj = nc.resolve
+				 (bindings[i].binding_name);
+            String objStr = orb.object_to_string(obj);
+            int lastIx = bindings[i].binding_name.length-1;
+
+            // check to see if this is a naming context
+            if (bindings[i].binding_type == BindingType.ncontext) {
+              System.out.println
+				 ("Context: " + bindings[i].binding_name[lastIx].id);
+            } else {
+                System.out.println
+				   ("Object: " + bindings[i].binding_name[lastIx].id);
+            }
+        }
+
+       } catch (Exception e) {
+        e.printStackTrace(System.err);
+       }
+   }
+}
+
+.fi
+.ft 1
+.SH "関連項目"
+.BR kill (1)

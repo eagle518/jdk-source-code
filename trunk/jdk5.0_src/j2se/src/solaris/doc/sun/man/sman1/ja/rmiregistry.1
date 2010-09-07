@@ -1,0 +1,56 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1998, v.4001-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub Inc>
+<refentry id="rmiregistry-1"><?Pub Caret>
+<!--@(#)rmiregistry.1 1.13 01/03/14 SMI;-->
+<refmeta><refentrytitle>rmiregistry</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">2004 年 6 月 22 日</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s. </refmiscinfo>
+</refmeta>
+<refnamediv><refname>rmiregistry</refname><refpurpose>Java リモートオブジェクトレジストリ</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>rmiregistry</command><arg choice="opt"><replaceable>port</replaceable></arg><arg choice="opt"><option>J</option><replaceable>option</replaceable></arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="rmiregistry-1-indx-1"><primary sortas="Java remote object registry">Java remote object registry &mdash; rmiregistry</primary></indexterm><indexterm id="rmiregistry-1-indx-2"><primary sortas="rmiregistry">rmiregistry &mdash; Java remote object registry</primary></indexterm>
+<para>Java&trade; の <command>rmiregistry</command> コマンドは、現在のホスト上の指定されたポートに、リモートオブジェクトレジストリを作成し起動します。ポート番号が省略された場合には、ポート 1099 が使用されます。<command>rmiregistry</command> はバックグラウンドで実行され、何も出力しません。以下に指定例を示します。<informalexample>
+<para><screen>example% <userinput>rmiregistry &amp;</userinput></screen></para>
+</informalexample></para>
+<para>リモートオブジェクトレジストリはブートストラップネームサービスで、ホスト上の <acronym>RMI</acronym> サーバがリモートオブジェクトに名前をバインドするために使用します。名前がついたあとは、クライアント側でリモートオブジェクトを探してリモートメソッドを呼び出すことができます。</para>
+<para>レジストリは通常、アプリケーションがメソッドを呼び出す必要がある最初のリモートオブジェクトを指定するために使用されます。その後、そのオブジェクトを使って、アプリケーション固有の方法で他のオブジェクトを探すことが可能になります。</para>
+<para><literal>java.rmi.registry.LocateRegistry</literal> クラスのメソッドは、特定のホストまたは特定のホストとポート上で動作しているレジストリを得るために用いられます。</para>
+<para><literal>java.rmi.Naming</literal> クラスの <acronym>URL</acronym> 用のメソッドはレジストリを操作するもので、リモートオブジェクトの探索、リモートオブジェクトへの名前(文字列)のバインド、新たな名前のバインド (以前のバインドを上書き)、バインドの取り消し、およびレジストリ中でバインドされている <acronym>URL</acronym> の一覧表示が可能です。</para>
+</refsect1>
+<refsect1><title>&opts-tt;</title>
+<para>以下のオプションが使用できます。</para>
+<variablelist termlength="narrow"><varlistentry><term remap="15"><option>J</option><replaceable>option</replaceable> </term><listitem><para>java オプションと組み合わせて使います (<option>J</option> と java オプションの間にスペースは入れません)。<option>J</option> の後ろに続くオプションを java インタプリタに渡します。</para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<refsect1><title>&attr-tt;</title>
+<para>次の属性については、<citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry> のマニュアルページを参照してください。</para>
+<informaltable frame="all" orient="port"><tgroup cols="2" colsep="1" rowsep="1"><colspec colnum="1" colname="col1" colwidth="1*" colsep="1" align="left"><colspec colnum="2" colname="col2" colwidth="1*" align="left"><thead><row><entry colname="col1" align="center" valign="top">属性タイプ</entry><entry colname="col2" align="center" valign="top">属性値</entry></row></thead><tbody><row><entry>使用条件</entry><entry>SUNWj5rt, SUNWj5dev</entry></row></tbody></tgroup></informaltable>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry> </para>
+<para>次を参照、または <literal>java.sun.com</literal> を検索してください。</para>
+<variablelist termlength="wholeline"><varlistentry><term remap="5"><literal>java.rmi.Naming</literal> <literal>@</literal> </term><listitem><para><ulink url="http://java.sun.com/j2se/1.5/docs/api/java/rmi/Naming.html"></ulink>http://java.sun.com/j2se/1.5/docs/api/java/rmi/Naming.html</para>
+</listitem></varlistentry>
+<varlistentry><term remap="5"><literal>java.rmi.registry.LocateRegistry</literal> <literal>@</literal> </term><listitem><para><ulink url="http://java.sun.com/j2se/1.5/docs/api/java/rmi/registry/LocateRegistry.html"></ulink>http://java.sun.com/j2se/1.5/docs/api/java/rmi/registry/LocateRegistry.html</para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<!--+ 07/27/00 08:36:00
+    | tagMorph:  $Id: tagMorph-engine 1.54 1998/01/19 05:44:48 $
+    | tagMorph library:  $Id: libtagMorph.a 1.50 1998/01/19 22:02:51 $
+    | sunman-to-solbook 1.17
+    +-->
+</refentry>
+<?Pub *0000004605 0>

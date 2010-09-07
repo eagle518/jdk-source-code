@@ -1,0 +1,30 @@
+<!ENTITY  java-release   "J2SE @@VERSION@@">
+<!-- Division Titles -->
+<!ENTITY man1	"ユーザコマンド">
+<!-- Section Header Titles -->
+<!ENTITY  name-tt	"名前">
+<!ENTITY  synp-tt	"形式">
+<!ENTITY  intf-tt	"インタフェースレベル">
+<!ENTITY  file-tt	"ファイル">
+<!ENTITY  desc-tt	"機能説明">
+<!ENTITY  opts-tt	"オプション">
+<!ENTITY  oper-tt	"オペランド">
+<!ENTITY  parm-tt	"パラメータ">
+<!ENTITY  exde-tt	"拡張機能説明">
+<!ENTITY  exit-tt	"終了ステータス">
+<!ENTITY  rtrn-tt	"戻り値">
+<!ENTITY  erro-tt	"エラー">
+<!ENTITY  exam-tt	"使用例">
+<!ENTITY  usge-tt	"使用法">
+<!ENTITY  envr-tt	"環境">
+<!ENTITY  file-tt	"ファイル">
+<!ENTITY  also-tt	"関連項目">
+<!ENTITY  attr-tt	"属性">
+<!ENTITY  warn-tt	"警告">
+<!ENTITY  note-tt	"注意事項">
+<!ENTITY  diag-tt	"診断">
+<!ENTITY  bugs-tt	"既知の問題">
+<!ENTITY  iocl-tt	"IOCTLS">
+<!ENTITY  cntx-tt	"コンテキスト">
+<!ENTITY  strc-tt	"構造体メンバ">
+

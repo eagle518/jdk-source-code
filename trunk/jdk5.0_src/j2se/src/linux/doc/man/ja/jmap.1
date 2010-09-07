@@ -1,0 +1,87 @@
+'\" t
+.\" @(#)jmap.1 1.10 04/06/13 SMI;
+.\" Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+.\" Copyright 2004 Sun Microsystems, Inc. Tous droits r駸erv駸.
+.\" 
+.TH jmap 1 "2004 年 6 月 22 日"
+.SH 名前
+jmap \- メモリマップ
+.\"
+.SH 形式
+.B jmap 
+.BI [ option ] " pid" 
+.br
+.B jmap
+.BI [ option ] " executable core" 
+.br
+.B jmap
+.BI [ option ] " [server-id@]remote-hostname-or-IP"
+.SH 機能説明
+.B jmap
+は、指定されたプロセスまたはコアファイルまたはリモートデバッグサーバの、共有オブジェクトメモリマップまたはヒープメモリの詳細を表示します。
+.LP
+注 - このユーティリティはサポートされていないため、JDK の将来のバージョンでは使用できない可能性があります。
+.B jmap 
+は、現時点では、Windows プラットフォームまたは Linux Itanium プラットフォームでは使用できません。
+.SH パラメータ
+.if t .TP 20
+.if n .TP 15
+.BI option
+オプションは相互に排他的です。オプションを使用する場合は、コマンド名の直後に指定する必要があります。
+.if t .TP 20
+.if n .TP 15
+.I pid
+メモリマップを表示するプロセス ID。プロセスは Java プロセスでなければなりません。マシン上で実行している Java プロセスのリストを取得するには、
+.B jps 
+を使用します。
+.if t .TP 20
+.if n .TP 15
+.I executable
+コアダンプが生成された Java 実行可能ファイル。
+.if t .TP 20
+.if n .TP 15
+.I core
+メモリマップを表示するコアファイル。
+.if t .TP 20
+.if n .TP 15
+.I remote-hostname-or-IP
+リモートデバッグサーバ (
+.B jsadebugd
+を参照) のホスト名または IP アドレス。
+.if t .TP 20
+.if n .TP 15
+.I server-id
+同じリモートホスト上で複数のデバッグサーバが実行している場合、オプションの一意 ID。
+.SH オプション
+.if t .TP 20
+.if n .TP 15
+.BI " <no option>"
+オプションが使用されなかった場合、
+.B jmap 
+は共有オブジェクトマッピングを表示します。ターゲット VM に読み込まれた各共有オブジェクトについて、開始アドレス、マッピングのサイズ、および共有オブジェクトファイルのフルパスが表示されます。これは、Solaris の
+.B pmap 
+ユーティリティと同様です。
+.if t .TP 20
+.if n .TP 15
+.B \-heap
+ヒープのサマリを表示します。使用された GC アルゴリズム、ヒープ構成、および生成規模のヒープ使用率が表示されます。
+.if t .TP 20
+.if n .TP 15
+.B \-histo
+ヒープのヒストグラムを表示します。各 Java クラスについて、オブジェクト数、メモリサイズ（バイト数）、および完全修飾クラス名が表示されます。VM 内部クラス名の前には '*' が表示されます。
+.if t .TP 20
+.if n .TP 15
+.B \-permstat
+Java ヒープの永続的生成のクラスローダ規模の統計を表示します。各クラスローダについて、名前、活動性、アドレス、親クラスローダ、および読み込まれたクラスのサイズが表示されます。
+.if t .TP 20
+.if n .TP 15
+.B \-h
+ヘルプメッセージを表示します。
+.if t .TP 20
+.if n .TP 15
+.B \-help
+ヘルプメッセージを表示します。
+.SH 関連項目
+.BR pmap (1),
+.BR jps (1),
+.BR jsadebugd (1)

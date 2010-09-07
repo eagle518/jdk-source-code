@@ -1,0 +1,306 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1999, v.4002-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<refentry id="appletviewer-1">
+<!-- @(#)appletviewer.1 1.12 01/03/14 SMI; -->
+<refmeta><refentrytitle>appletviewer</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">22 Jun 2004</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All
+rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.
+ </refmiscinfo>
+</refmeta>
+<refnamediv><refname>appletviewer</refname><refpurpose>Java applet viewer
+</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>appletviewer</command><arg choice="opt"><option>debug
+</option></arg><arg choice="opt"><option>encoding</option>&nbsp;<replaceable>
+encoding_name</replaceable></arg><arg choice="opt"><option>J</option>&nbsp;<replaceable>
+javaoption</replaceable></arg><arg choice="plain" rep="repeat"><replaceable>
+urls</replaceable></arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="appletviewer-1-indx-1"><primary sortas="appletviewer">appletviewer &mdash;
+run applets</primary></indexterm><indexterm id="appletviewer-1-indx-2"><primary
+sortas="appletviewer">appletviewer &mdash; Web browser</primary></indexterm>
+<para>The <command>appletviewer</command> command runs Java&trade; applets
+outside of the context of a World Wide Web browser.</para>
+<para>The <command>appletviewer</command> command connects to the document(s)
+or resource(s) designated by <replaceable>urls</replaceable> and displays
+each applet referenced by that document in its own window. Notice that if
+the documents referred to by <replaceable>urls</replaceable> do not reference
+any applets with the <literal>OBJECT</literal>, <literal>EMBED</literal>,
+or <literal remap="small and bold">APPLET</literal> tag, <command>appletviewer
+</command> does nothing.</para>
+<refsect2>
+<title>appletviewer Tags</title>
+<para>The <command>appletviewer</command> makes it possible to run a Java
+applet without using a browser. <command>appletviewer</command> ignores any <acronym
+remap="small">HTML</acronym> that is not  immediately relevant to launching
+an applet. However, it recognizes a wide variety of  applet-launching syntax.
+The <acronym remap="small">HTML</acronym> code that appletviewer recognizes
+is shown below. All other <acronym remap="small">HTML</acronym> code is ignored.
+</para>
+<variablelist termlength="narrow">
+<varlistentry><term remap="10"><literal>object</literal> </term><listitem>
+<para>The <literal>object</literal> tag is the <acronym remap="small">HTML
+</acronym> 4.0 tag for embedding applets and mult-media objects into an <acronym
+remap="small">HTML</acronym> page. It is also an Internet Explorer 4.x extension
+to <acronym remap="small">HTML</acronym> 3.2 which allows <acronym>IE</acronym>
+to run a Java applet using the latest Java plugin from Sun.<informalexample>
+<screen> &lt;object
+   width="pixelWidth"
+   height="pixelHeight"
+ >
+   &lt;param name="code" value="yourClass.class">
+   &lt;param name="object" value="serializedObjectOrJavaBean">
+   &lt;param name="codebase" value="classFileDirectory">
+   ...
+   alternate-text
+&lt;/object></screen>
+</informalexample></para>
+<para>Please notice that:</para>
+<itemizedlist>
+<listitem><para><command>appletviewer</command> ignores the "classID" attribute,
+on the assumption that it is pointing to the Java plugin, with the value:<informalexample>
+<para><screen>classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93"</screen></para>
+</informalexample></para>
+</listitem>
+<listitem><para><command>appletviewer</command> also ignores the "codebase"
+attribute that is usually included as part of the  <literal>object</literal>
+tag, assuming that it points to a Java plugin in a network cab file with a
+value like:<informalexample><para><screen>codebase="http://java.sun.com/products/plugin/1.1/\
+		jinstall-11-win32.cab#Version=1,1,0,0"</screen></para>
+</informalexample></para>
+</listitem>
+<listitem><para>The optional codebase <literal>param</literal> tag supplies
+a relative <acronym>URL</acronym> that specifies the location of the applet
+class.</para>
+</listitem>
+<listitem><para>Either <literal>code</literal> or <literal>object</literal>
+is specified, not both.</para>
+</listitem>
+<listitem><para>The type <literal>param</literal> tag is not used by  <command>
+appletviewer</command>, but should be present so that browsers load the plugin
+properly. For an applet, the value should be something like:<informalexample>
+<para><screen>  &lt;param name="type"
+  value="application/x-java-applet;version=1.1"></screen></para>
+<para>or</para>
+<para><screen>  &lt;param name="type" value="application/x-java-applet"></screen></para>
+<para>For a serialized object or JavaBean, the type <literal>param</literal>
+value should be something like:</para>
+<para><screen>  &lt;param name="type"
+   value="application/x-java-bean;version=1.1"></screen></para>
+<para>or</para>
+<para><screen>  &lt;param name="type" value="application/x-java-bean"></screen></para>
+</informalexample></para>
+</listitem>
+<listitem><para>Other <literal>param</literal> tags are argument values supplied
+to the applet.</para>
+</listitem>
+<listitem><para>The <literal>object</literal> tag recognized by IE4.x and
+the embed tag recognized by Netscape 4.x can be combined so that an applet
+can use the latest Java plugin from Sun, regardless of the browser that downloads
+the applet.</para>
+</listitem>
+<listitem><para><command>appletviewer</command> does not recognize the <literal>
+java_code</literal>, <literal>java_codebase</literal>, <literal>java_object
+</literal>, or <literal>java_type</literal> <literal>param</literal> tags.
+These tags are only needed when the applet defines parameters with the names <literal>
+code</literal>, <literal>codebase</literal>, <literal>object</literal>, or <literal>
+type</literal>, respectively. (In that situation, the plugin recognizes and
+uses the <literal>java_</literal> version in preference to the version that
+will be used by the applet.)  If the applet requires a parameter with one
+of these four names, it may not run in <command>appletviewer</command>.</para>
+</listitem>
+</itemizedlist>
+</listitem></varlistentry>
+<varlistentry><term remap="10"><literal>embed</literal> </term><listitem>
+<para>The <literal>embed</literal> tag is the Netscape extension to <acronym
+remap="small">HTML</acronym> 3.2 that allows embedding an applet or a multimedia
+object in an <acronym remap="small">HTML</acronym> page. It allows a Netscape
+4.x browser (which supports <acronym remap="small">HTML</acronym> 3.2) to
+run a Java applet using the latest Java plugin from Sun.<informalexample>
+<screen>  &lt;embed
+    code="yourClass.class"
+    object="serializedObjectOrJavaBean"
+    codebase="classFileDirectory"
+    width="pixelWidth"
+    height="pixelHeight"
+  >
+  ...
+  &lt;/embed>
+
+</screen>
+</informalexample></para>
+<para>Please notice that:</para>
+<itemizedlist>
+<listitem><para>The <literal>object</literal> and <literal>embed</literal>
+tags can be combined so that an applet can use the latest Java plugin from
+Sun, regardless of the browser that downloads the applet. For more information,
+see the Java PlugIn <acronym remap="small">HTML</acronym> Specification</para>
+</listitem>
+<listitem><para>Unlike the <literal>object</literal> tag, all values specified
+in an <literal>embed</literal> tag are attributes (part of the tag) rather
+than parameters (between the <literal>start</literal> tag and <literal>end
+</literal> tag, specified with a <literal>param</literal> tag.</para>
+</listitem>
+<listitem><para>To supply argument values for applet parameters, you add additional
+attributes to the <literal>embed</literal> tag.</para>
+</listitem>
+<listitem><para><command>appletviewer</command> ignores the "src" attribute
+that is usually part of an <literal>embed</literal> tag.</para>
+</listitem>
+<listitem><para>Either <literal>code</literal> or  <literal>object</literal>
+is specified, not both.</para>
+</listitem>
+<listitem><para>The optional <literal>codebase</literal> attribute supplies
+a relative <acronym>URL</acronym> that specifies the location of the applet
+class.</para>
+</listitem>
+<listitem><para>The <literal>type</literal> attribute is not used by  <command>
+appletviewer</command>, but should be present so that browsers load the plugin
+properly. For an applet, the value should be something like:<informalexample>
+<screen>  &lt;type="application/x-java-applet;version=1.1">...</screen>
+<para>or</para>
+<screen>  &lt;type="application/x-java-applet">...</screen>
+</informalexample> </para>
+<para>For a serialized object or JavaBean, the type param value should be
+something like:<informalexample>
+<screen>  &lt;type="application/x-java-bean;version=1.1">...</screen>
+<para>or</para>
+<screen>  &lt;type="application/x-java-bean">...</screen>
+</informalexample></para>
+</listitem>
+</itemizedlist>
+<itemizedlist>
+<listitem><para>The <literal>pluginspage</literal> attribute is not used by <command>
+appletviewer</command>, but should be present so that browsers load the plugin
+properly. It should point to a Java plugin in a network cab file with a value
+like:<informalexample>
+<screen>pluginspage="http://java.sun.com/products/plugin/1.1/\
+           jinstall-11-win32.cab#Version=1,1,0,0"</screen>
+</informalexample></para>
+</listitem>
+</itemizedlist>
+</listitem></varlistentry>
+<varlistentry><term remap="10"><literal>applet</literal> </term><listitem>
+<para>The <literal>applet</literal> tag is the original <acronym remap="small">
+HTML</acronym> 3.2 tag for embedding an applet in an <acronym remap="small">
+HTML</acronym> page. Applets loaded using the <literal>applet</literal> tag
+are run by the browser, which may not be using the latest version of the Java
+platform. To ensure that the applet runs with the latest version, use the
+ <literal>object</literal> tag to load the Java plugin into the browser. The
+plugin will then run the applet.<informalexample>
+<screen>  &lt;applet
+    code="yourClass.class"
+    object="serializedObjectOrJavaBean"
+    codebase="classFileDirectory"
+    width="pixelWidth"
+    height="pixelHeight"
+  >
+    &lt;param name="..." value="...">
+    ...
+    alternate-text
+  &lt;/applet>
+
+</screen>
+</informalexample></para>
+<para>Please notice that:</para>
+<itemizedlist>
+<listitem><para>Either  <literal>code</literal> or <literal>object</literal>
+is specified, not both.</para>
+</listitem>
+<listitem><para>The optional <literal>codebase</literal> attribute supplies
+a relative <acronym>URL</acronym> that specifies the location of the applet
+class.</para>
+</listitem>
+<listitem><para><literal>param</literal> tags supply argument values for applet
+parameters.</para>
+</listitem>
+</itemizedlist>
+</listitem></varlistentry>
+<varlistentry><term remap="10"><literal>app</literal> </term><listitem><para>
+The  <literal>app</literal> tag was a short-lived abbreviation for applet
+that is no longer supported. <command>appletviewer</command> translates the
+tag and prints out an equivalent tag that is supported.<informalexample>
+<screen>  &lt;app
+    class="classFileName" (without a .class suffix)
+    src="classFileDirectory"
+    width="pixelWidth"
+    height="pixelHeight"
+  >
+    &lt;param name="..." value="...">
+    ...
+  &lt;/app></screen>
+</informalexample></para>
+</listitem></varlistentry>
+</variablelist></refsect2>
+</refsect1>
+<refsect1><title>&opts-tt;</title>
+<para>The following options are supported:</para>
+<variablelist termlength="medium">
+<varlistentry><term remap="10"><option>debug</option> </term><listitem><para>
+Starts the applet viewer in the Java debugger, which debugs applets in the
+document. (See <citerefentry><refentrytitle>jdb</refentrytitle><manvolnum>
+1</manvolnum></citerefentry>.)</para>
+</listitem></varlistentry>
+<varlistentry><term remap="10"><option>encoding</option> <replaceable>encoding_name
+</replaceable> </term><listitem><para>Specifies the input <acronym remap="small">
+HTML</acronym> file encoding name.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="10"><option>J</option> <replaceable>javaoption
+</replaceable> </term><listitem><para>Passes the string <replaceable>javaoption
+</replaceable> through as a single argument to <citerefentry><refentrytitle>
+java</refentrytitle><manvolnum>1</manvolnum></citerefentry> which runs the
+compiler. The argument should not contain spaces. Multiple argument words
+must all begin with the prefix <option>J</option>, which is stripped. This
+is useful for adjusting the execution environment or compiler memory usage.
+</para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>&attr-tt;</title>
+<para>See <citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>
+5</manvolnum></citerefentry> for a description of the following attributes:
+</para>
+<informaltable frame="all" orient="port">
+<tgroup cols="2" colsep="1" rowsep="1"><colspec colnum="1" colname="col1"
+colwidth="1*" colsep="1" align="left"><colspec colnum="2" colname="col2" colwidth="1*"
+align="left">
+<thead>
+<row><entry colname="col1" rowsep="1" align="center" valign="top">ATTRIBUTE
+TYPE</entry><entry colname="col2" rowsep="1" align="center" valign="top">
+ATTRIBUTE VALUE</entry></row>
+</thead>
+<tbody>
+<row><entry>Availability</entry><entry>SUNWj5dev</entry></row>
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>java</refentrytitle><manvolnum>1</manvolnum>
+</citerefentry>, <citerefentry><refentrytitle>jdb</refentrytitle><manvolnum>
+1</manvolnum></citerefentry>, <citerefentry><refentrytitle>attributes</refentrytitle>
+<manvolnum>5</manvolnum></citerefentry> </para>
+<para>For more information, see <informalexample><para><ulink url="http://java.sun.com/j2se/1.4/docs/guide/plugin/developer_guide/index.html">
+http://java.sun.com/j2se/1.5.0<?Pub Caret>/docs/guide/plugin/developer_guide/index.html
+</ulink></para>
+</informalexample></para>
+<para>or search <informalexample><para><ulink url="java.sun.com">java.sun.com
+</ulink></para>
+</informalexample> for <literal>Java Plug-In HTML Specification</literal>.
+</para>
+</refsect1>
+<!--+ 07/27/00 08:32:55
+    | tagMorph:  $Id: tagMorph-engine 1.54 1998/01/19 05:44:48 $
+    | tagMorph library:  $Id: libtagMorph.a 1.50 1998/01/19 22:02:51 $
+    | sunman-to-solbook 1.17
+    +-->
+</refentry>
+<?Pub *0000014691>

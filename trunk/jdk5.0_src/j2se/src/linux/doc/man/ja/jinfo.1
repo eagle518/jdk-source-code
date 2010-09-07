@@ -1,0 +1,75 @@
+'\" t
+.\" @(#)jinfo.1 1.10 04/06/13 SMI;
+.\" Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+.\" Copyright 2004 Sun Microsystems, Inc. Tous droits r駸erv駸.
+.\" 
+.TH jinfo 1 "2004 年 6 月 22 日"
+.SH 名前
+jinfo \- 構成情報 
+.\"
+.SH 形式
+.B jinfo 
+.BI [ option ] " pid" 
+.br
+.B jinfo
+.BI [ option ] " executable core" 
+.br
+.B jinfo
+.BI [ option ] " [server-id@]remote-hostname-or-IP"
+.SH パラメータ
+オプションは相互に排他的です。オプションを使用する場合は、コマンド名の直後に指定する必要があります。下記の「オプション」を参照してください。
+.if t .TP 20
+.if n .TP 15
+.BI pid
+構成情報を出力するプロセス ID。プロセスは Java プロセスでなければなりません。マシン上で実行している Java プロセスのリストを取得するには、
+.B jps
+を使用します。
+.if t .TP 20
+.if n .TP 15
+.BI executable
+コアダンプが生成された Java 実行可能ファイル。
+.if t .TP 20
+.if n .TP 15
+.BI core
+構成情報を出力するコアファイル。
+.if t .TP 20
+.if n .TP 15
+.BI remote-hostname-or-IP
+リモートデバッグサーバ (
+.B jsadebugd 
+を参照) のホスト名または IP アドレス。
+.if t .TP 20
+.if n .TP 15
+.BI server-id
+同じリモートホスト上で複数のデバッグサーバが実行している場合の、オプションの一意 ID。
+.SH 機能説明
+.B jinfo
+は、指定された Java プロセスまたはコアファイルまたはリモートデバッグサーバの Java 構成情報を出力します。構成情報には、Java システムプロパティと Java 仮想マシンコマンド行フラグが含まれます。
+.LP
+注 - このユーティリティはサポートされていないため、JDK の将来のバージョンでは使用できない可能性があります。
+.B jinfo 
+は、現時点では、Windows プラットフォームまたは Linux Itanium プラットフォームでは使用できません。
+.SH オプション
+.if t .TP 20
+.if n .TP 15
+.B " <no option>"
+コマンド行フラグとシステムプロパティと値のペアの両方を出力します。
+.if t .TP 20
+.if n .TP 15
+.B \-flags
+コマンド行フラグを名前と値のペアとして出力します。
+.if t .TP 20
+.if n .TP 15
+.B \-sysprops
+Java システムプロパティを名前と値のペアとして出力します。
+.if t .TP 20
+.if n .TP 15
+.B \-h
+ヘルプメッセージを出力します。
+.if t .TP 20
+.if n .TP 15
+.B \-help
+ヘルプメッセージを出力します。
+.SH 関連項目
+.BR jps (1),
+.BR jsadebugd (1)

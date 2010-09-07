@@ -1,0 +1,277 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1998, v.4001-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub Inc>
+<refentry id="jar-1">
+<!--@(#)jar.1 1.19 04/05/14 SMI;-->
+<refmeta><refentrytitle>jar</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">2004 年 6 月 22 日</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.</refmiscinfo>
+</refmeta>
+<refnamediv><refname>jar</refname><refpurpose>Java アーカイブツール</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>jar</command><arg choice="opt"><option>c[v0M] f</option></arg>
+<arg choice="opt"><replaceable>jarfile</replaceable></arg><arg choice="plain">
+[ -C <replaceable>dir</replaceable> ]</arg><arg choice="plain"><replaceable>
+inputfiles</replaceable></arg><arg choice="opt">[ -J<replaceable>option</replaceable> ]
+</arg>
+</cmdsynopsis>
+<cmdsynopsis><command>jar</command><arg choice="opt"><option>c[v0] mf</option></arg>
+<arg choice="opt"><replaceable>manifest</replaceable></arg><arg choice="opt"><replaceable>
+jarfile</replaceable></arg><arg choice="plain">[ -C <replaceable>dir</replaceable> ]
+</arg><arg choice="plain"><replaceable>inputfiles</replaceable></arg>
+<arg choice="opt">[ -J<replaceable>option</replaceable> ]
+</arg>
+</cmdsynopsis>
+<cmdsynopsis><command>jar</command><arg choice="opt"><option>c[v0M]</option></arg>
+<arg choice="plain">[ -C <replaceable>dir</replaceable> ]</arg><arg choice="plain"><replaceable>
+inputfiles</replaceable></arg><arg choice="opt">[ -J<replaceable>option</replaceable> ]
+</arg>
+</cmdsynopsis>
+<cmdsynopsis><command>jar</command><arg choice="opt"><option>c[v0] m</option></arg>
+<arg choice="opt"><replaceable>manifest</replaceable></arg><arg choice="plain">
+[ -C <replaceable>dir</replaceable> ]</arg><arg choice="plain"><replaceable>
+inputfiles</replaceable></arg><arg choice="opt">[-J<replaceable>option</replaceable> ]
+</arg>
+</cmdsynopsis>
+<cmdsynopsis><command>jar</command><arg choice="opt"><option>u[v0M] f</option></arg>
+<arg choice="opt"><replaceable>jarfile</replaceable></arg><arg choice="plain">
+[ -C <replaceable>dir </replaceable> ]</arg><arg choice="plain"><replaceable>
+inputfiles</replaceable></arg><arg choice="opt">[ -J<replaceable>option</replaceable> ]
+</arg>
+</cmdsynopsis>
+<cmdsynopsis><command>jar</command><arg choice="opt"><option>u[v0] mf</option></arg>
+<arg choice="opt"><replaceable>manifest</replaceable></arg><arg choice="opt"><replaceable>
+jarfile</replaceable></arg><arg choice="plain">[ -C <replaceable>dir</replaceable> ]
+</arg><arg choice="plain"><replaceable>inputfiles</replaceable></arg>
+<arg choice="opt">[ -J<replaceable>option</replaceable> ]
+</arg>
+</cmdsynopsis>
+<cmdsynopsis><command>jar</command><arg choice="opt"><option>u[v0M]</option></arg>
+<arg choice="plain">[ -C <replaceable>dir</replaceable> ]</arg><arg choice="plain"><replaceable>
+inputfiles</replaceable></arg><arg choice="opt">[ -J<replaceable>option</replaceable> ]
+</arg>
+</cmdsynopsis>
+<cmdsynopsis><command>jar</command><arg choice="opt"><option>u[v0] m</option></arg>
+<arg choice="opt"><replaceable>manifest</replaceable></arg><arg choice="plain">
+[ -C <replaceable>dir</replaceable> ]</arg><arg choice="plain"><replaceable>
+inputfiles</replaceable></arg><arg choice="opt">[ -J<replaceable>option</replaceable> ]
+</arg>
+</cmdsynopsis>
+<cmdsynopsis><command>jar</command><arg choice="opt"><option>x[v] f</option></arg>
+<arg choice="opt"><replaceable>jarfile</replaceable></arg><arg choice="plain"><replaceable>
+inputfiles</replaceable></arg><arg choice="opt">[ -J<replaceable>option</replaceable> ]
+</arg>
+</cmdsynopsis>
+<cmdsynopsis><command>jar</command><arg choice="opt"><option>x[v]</option><replaceable>
+inputfiles</replaceable></arg><arg choice="opt">[ -J<replaceable>option</replaceable> ]
+</arg>
+</cmdsynopsis>
+<cmdsynopsis><command>jar</command><arg choice="opt"><option>t[v] f</option></arg>
+<arg choice="opt"><replaceable>jarfile</replaceable></arg><arg choice="plain"><replaceable>
+inputfiles</replaceable>[ -J<replaceable>option</replaceable> ]</arg>
+</cmdsynopsis>
+<cmdsynopsis><command>jar</command><arg choice="opt"><option>t[v]</option></arg>
+<arg choice="plain"><replaceable>inputfiles</replaceable></arg><arg choice="opt">
+[ -J<replaceable>option</replaceable> ]</arg>
+</cmdsynopsis>
+<cmdsynopsis><command>jar</command><arg choice="opt"><option>i</option></arg>
+<arg choice="plain"><replaceable>jarfile</replaceable></arg><arg choice="opt">
+[ -J<replaceable>option</replaceable> ]</arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>パラメータ</title>
+<variablelist><varlistentry><term>cuxtiv0Mmf</term><listitem><para>jar コマンドを制御するオプション。</para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>jarfile</replaceable></term><listitem><para>作成 (<option>c</option>)、更新 (<option>u</option>)、抽出 (<option>x</option>)、または閲覧される内容の一覧を作成 (<option>t</option>) する jar ファイルです。<option>f</option> オプションとファイル名 <replaceable>jarfile</replaceable> は対になっています。使用する場合は、両方を一緒に使用します。<option>f</option> および jarfile を省略すると、標準入力から「jar ファイル」が使用されたり (<option>x</option> および <option>t</option> の場合)、標準出力にこの「jar ファイル」が送信されたりします (<option>c</option> および <option>u</option> の場合)。</para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>inputfiles </replaceable></term><listitem><para>jar ファイルに結合 (<option>c</option> および <option>u</option>の場合)、または jar ファイルから抽出 (<option>x</option> の場合) または一覧表示 (<option>t</option> の場合) されるファイルまたはディレクトリ。空白文字で区切ります。すべてのディレクトリは再帰的に処理されます。オプション <option>0</option> (ゼロ) が使用されない場合は、ファイルが圧縮されます。</para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>manifest </replaceable></term><listitem><para>jar ファイルの <literal>MANIFEST.MF</literal> に含めようとする名前:値ペアが含まれている既存の <replaceable>manifest</replaceable> ファイルです。<option>m</option> オプションと <replaceable>manifest</replaceable> のファイル名は対になっています。使用する場合は、両方を一緒に使用します。文字 <option>m</option> と <option>f</option> は、<replaceable>manifest</replaceable> と <replaceable>jarfile</replaceable> が出現する順序と同じ順序で指定する必要があります。</para>
+</listitem></varlistentry>
+<varlistentry><term>&mdash;C <replaceable>dir</replaceable></term><listitem><para>後続の入力ファイル引数の処理中、ディレクトリを <replaceable>dir</replaceable> に一時的に変更します。複数の <option>C</option> <replaceable>dir</replaceable> 入力ファイルのセットを使用できます。</para>
+</listitem></varlistentry>
+<varlistentry><term>&mdash;J<replaceable>option</replaceable></term><listitem><para>Java Runtime Environment に渡されるオプション (<option>J</option> と <replaceable>option</replaceable> の間には空白文字を入れないでください)。</para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<refsect1><title>&desc-tt;</title>
+<para>jar ツールは Java アプリケーションの 1 つで、複数個のファイルを 1 個の JAR アーカイブファイルに統合します。また、jar は汎用的なアーカイブ作成用および圧縮用のツールでもあり、圧縮は ZIP または ZLIB 形式で行います。ただし jar ツールの主な目的は、いくつかの Java アプレットやアプリケーションを 1 個のアーカイブに統合して簡略化することです。アプレットやアプリケーションのコンポーネント、たとえばクラスファイル、イメージ、サウンドなどを単一のアーカイブにまとめると、ブラウザのような Java エージェントにダウンロードするときに、一度の HTTP トランザクションで済みます。コンポーネントごとに新たに接続する必要がありません。これによりダウンロード時間が大幅に短縮できます。また jar はファイルの圧縮も行うので、ダウンロードがより高速になります。さらに、ファイル中の個々のエントリに対してアプレットの作成者が署名できるので、作成元を明確化できます。jar ツールの構文は、tar (1) コマンドの構文とほぼ同一です。jar アーカイブは、圧縮されているかどうかにかかわらず、クラスパスエントリとして使用できます。</para>
+<indexterm id="jar-1-indx-1"><primary sortas="Java archive tool">Java アーカイブツール&mdash; jar</primary></indexterm><indexterm id="jar-1-indx-2"><primary sortas="jar">jar &mdash; Java アーカイブツール</primary></indexterm>
+<para>複数のファイルを jar ファイルに統合する標準的な使い方は次のとおりです。</para>
+<informalexample><screen>example% <userinput>jar cf myjarfile *.class</userinput> </screen>
+</informalexample>
+<para>この例では、現在のディレクトリ中のすべてのクラスファイルが <literal>myFile.ja</literal>r という名前のファイルに置かれます。META-INF/MANIFEST.MF という名前の manifest ファイルは jar ツールが自動的に生成し、常に jar ファイルの先頭のエントリとなります。manifest ファイルには、アーカイブに関するすべてのメタ情報が名前:値ペアとして記録されます。どのように記録されるかについては、「Jar ファイル仕様」を参照してください。</para>
+<para>既存の manifest ファイルの名前:値ペアを含んだ新たな jar アーカイブを jar ツールで作成したいときは、<option role="nodash">m</option> オプションを使ってその manifest ファイルを指定します。以下に例を示します。</para>
+<informalexample><screen>example% <userinput>jar cmf myManifestFile myJarFile *.class</userinput></screen>
+</informalexample>
+<para>使用する既存の manifest ファイルは復帰改行で終わるようにしてください。manifest ファイルの最後の行は、復帰改行文字で終わっていないと、構文解析されません。<option>cfm</option> ではなく <option>cmf</option> を指定する場合 (つまり、m オプションと f オプションの順番を逆にする場合)、最初に jar アーカイブ名を指定し、次に manifest ファイル名を指定する必要があります。</para>
+<informalexample><screen>example% <userinput>jar cfm myJarFile myManifestFile *.class</userinput></screen>
+</informalexample>
+<para>manifest は RFC822 <acronym remap="small">ASCII</acronym> 形式に基づいたテキスト形式を使用するため、manifest ファイルの内容は簡単に表示および処理できます。</para>
+<para>jar ファイルからファイルを抽出する場合は、<option>x</option> を使用します。次に例を示します。</para>
+<informalexample><screen>example% <userinput>jar xf myFile.jar</userinput></screen>
+</informalexample>
+<para>ファイルから特定のファイルだけを抽出する場合は、そのファイル名を指定します。</para>
+<informalexample><screen>example% <userinput>jar xf myFile.jar foo bar</userinput></screen>
+</informalexample>
+<para>JDK のバージョン 1.3 から、jar ユーティリティで JarIndex をサポートするようになりました。これにより、アプリケーションのクラスローダは、jar ファイルからクラスをより高速に読み込めるようになりました。アプリケーションまたはアプレットが複数の jar ファイルにバンドルされている場合、必要な jar ファイルだけがダウンロードされて開かれ、クラスが読み込まれます。このパフォーマンスの最適化は、jar を i オプションを使用して実行すると有効になります。指定したメインの jar ファイルおよびそのファイルが依存しているすべての jar ファイルのパッケージ位置情報が生成されます。これらの情報は、メイン jar ファイルの manifest の Class-Path 属性で指定する必要があります。</para>
+<informalexample><screen>example% <userinput>jar i main.jar</userinput></screen>
+</informalexample>
+<para>この例では、INDEX.LIST ファイルが main.jar の META-INF ディレクトリに追加されます。アプリケーションのクラスローダでは、このファイルに格納された情報を使用して、クラスのロードを高速化します。インデックスファイルに位置情報を格納する方法の詳細は、「JarIndex 仕様」を参照してください。</para>
+<para>ディレクトリをコピーする標準的な方法は、まず <replaceable>dir1</replaceable> 内のファイルを標準出力に圧縮し、次に標準入力から <replaceable>dir2</replaceable> に抽出します (両方の jar コマンドから <option>f</option> を省略します)。</para>
+<informalexample><screen>example% <userinput>% (cd dir1; jar c .) | (cd dir2; jar x)</userinput></screen>
+</informalexample>
+<para>ツールを使用して jar ファイルや jar ファイルのマニフェストを操作する方法の例は、以下の説明と、「<ulink url="http://java.sun.com/docs/book/tutorial/jar">Java Tutorial</ulink>」の「Jar」節にあります。</para>
+</refsect1>
+<refsect1><title>&opts-tt;</title>
+<para>以下のオプションがサポートされています。</para>
+<variablelist termlength="xtranarrow"><varlistentry><term><option role="nodash">c</option></term><listitem><para>新規のアーカイブファイルを <literal>jarfile</literal> という名前 (<option>f</option> を指定した場合)、または標準出力上に (<option>f</option> と <replaceable> jarfile</replaceable> を省略した場合) 作成します。アーカイブには入力ファイルで指定したファイルおよびディレクトリが追加されます。</para>
+</listitem></varlistentry>
+<varlistentry><term>u</term><listitem><para>既存の <replaceable> jarfile</replaceable>  (<option>f</option> を指定した場合) を更新します。このとき、この  <replaceable> jarfile</replaceable> には <replaceable>inputfiles</replaceable> で指定されたファイルおよびディレクトリが追加されます。以下に例を示します。</para>
+<informalexample><screen><userinput>jar uf foo.jar foo.class</userinput></screen>
+</informalexample>
+<para>この例では、ファイル <literal>foo.class</literal> が既存の jar ファイル <literal>foo.jar</literal> に追加されます。<option>u</option> オプションでは、マニフェストのエントリを更新することもできます。以下に例を示します。</para>
+<informalexample><screen><userinput>jar umf manifest foo.jar</userinput></screen>
+</informalexample>
+<para><literal>foo.jar</literal> マニフェストを <replaceable>manifest</replaceable> 内の名前:値ペアで更新します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option role="nodash">x</option></term><listitem><para> ファイルおよびディレクトリを <replaceable>jarfile</replaceable> (<option>f</option> を指定した場合)、または標準入力 (<option>f</option> と <replaceable> jarfile</replaceable> を省略した場合) から抽出します。<replaceable>inputfiles</replaceable> を指定した場合、その入力ファイルで指定されたファイルおよびディレクトリだけが 抽出されます。指定しない場合は、すべてのファイルおよびディレクトリが抽出されます。</para>
+</listitem></varlistentry>
+<varlistentry><term><option role="nodash">t</option></term><listitem><para><replaceable>jarfile</replaceable> (<option>f</option> を指定した場合)、または標準入力 (<option>f</option> と <replaceable> jarfile</replaceable> を省略した場合) から内容をリストします。入力ファイルを指定した場合、その入力ファイルで指定されたファイルおよびディレクトリだけが リストされます。指定しない場合は、すべてのファイルおよびディレクトリがリストされます。</para>
+</listitem></varlistentry>
+<varlistentry><term><option role="nodash">i</option></term><listitem><para> 指定された <replaceable>jarfile</replaceable> および関連づけられている jar ファイルの インデックス情報を生成します。次に例を示します。<informalexample><screen><userinput>jar i foo.jar</userinput></screen>
+</informalexample>foo.jar に INDEX.LIST ファイルが生成されます。このファイルには、<literal>foo.jar</literal> の各パッケージおよび <literal>foo.jar</literal> の  Class-Path 属性に指定されているすべての jar ファイルの 位置情報が書き込まれています。インデックスの例を参照してください。</para>
+</listitem></varlistentry>
+<varlistentry><term><option role="nodash">f</option></term><listitem><para>作成 (<option>c</option>)、更新 (<option>u</option>)、抽出 (<option>x</option>)、インデックス作成(<option>i</option>)、または表示 (<option>t</option>) する <replaceable> jarfile</replaceable> を指定します。<option>f</option> オプションと <replaceable> jarfile</replaceable> のファイル名は対になっています。使用する場合は、両方を一緒に使用します。<option>f</option> と <replaceable>jarfile</replaceable> を省略すると、標準入力から「jar ファイル」が使用されたり (<option>x</option> および <option>t</option> の場合)、標準出力にこの「jar ファイル」が 送信されたりします (<option>c</option> および <option>u</option> の場合)。</para>
+</listitem></varlistentry>
+<varlistentry><term><option role="nodash">v</option></term><listitem><para> 標準出力に詳細な出力を生成します。次に例を示します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option role="nodash">0</option></term><listitem><para>ゼロ。ZIP 圧縮を使用せずに格納します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option role="nodash">M</option></term><listitem><para>manifest ファイルエントリを作成しません (<option>c</option> および <option>u</option> の場合)。またはすでに存在する manifest ファイルエントリを削除します (<option>u</option> の場合)。</para>
+</listitem></varlistentry>
+<varlistentry><term><option role="nodash">m</option></term><listitem><para><literal>META-INF/MANIFEST.MF</literal> 内の指定した <replaceable> manifest</replaceable> ファイルから名前:値属性をインクルードします。すでに同じ名前で存在しない限り、その名前:値ペアが追加されます。同じ名前で存在する場合は、その値が更新されます。</para>
+<para>コマンド行では、文字 <option>m</option> と <option>f</option> は、<replaceable>manifest</replaceable> と <replaceable> jarfile</replaceable> が出現するのと 同じ順序で使用します。次に例を示します。</para>
+<informalexample><screen><userinput>jar cmf myManifestFile myFile.jar *.class</userinput></screen>
+</informalexample>
+<para>manifest ファイルには、デフォルトのマニフェストに含まれていない、専用の名前:値属性ペアを追加できます。このような属性ペアの例としては、ベンダ情報、バージョン情報、パッケージシーリング、および JAR に含まれるアプリケーションを実行するための属性があります。<option>m</option> オプションの使用例については、「Java Tutorial」の「JAR Files」節と「JRE 開発者向けノート」を参照してください。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>C</option></term><listitem><para>コマンドの実行中に一時的にディレクトリを変更します (<command>cd</command> <replaceable>dir</replaceable>)。このとき、後続の入力ファイル引数が処理されます。この動作は、UNIX の tar ユーティリティの <option>-C</option> オプションと同様の動作になります。次に例を示します。<informalexample><screen><userinput>jar uf foo.jar &ndash;C classes *</userinput></screen>
+</informalexample></para>
+<para><literal>classes</literal> ディレクトリに移動し、そのディレクトリから <literal>bar.class</literal> を <literal>foo.jar</literal> に追加します。</para>
+<informalexample><screen><userinput>jar uf foo.jar -C classes . -C bin xyz.class</userinput></screen>
+</informalexample>
+<para>このコマンドでは、<literal>classes</literal> ディレクトリに移動し、<literal>classes</literal> ディレクトリ内のすべてのファイルを <literal>foo.jar</literal> に追加します (jar ファイルには <literal>classes</literal> ディレクトリを作成しません)。次に元のディレクトリに戻ってから、<literal>bin</literal> ディレクトリに移動し、<literal>xyz.class</literal> を <literal>foo.jar</literal> に追加します。<literal>classes</literal> にファイル <literal>bar1</literal> および <literal>bar2</literal> がある場合、"<command>jar tf foo.jar</command>" を実行すると、jar ファイルの内容が次のように表示されます。</para>
+<screen>META-INF/
+                   META-INF/MANIFEST.MF
+                   bar1  
+                   bar2
+                   xyz.class</screen>
+</listitem></varlistentry>
+<varlistentry><term><option role="nodash">J</option><replaceable>option</replaceable></term><listitem><para><replaceable>option</replaceable> を Java Runtime Environment に渡します。ここで、<replaceable>option</replaceable> は、Java アプリケーション起動プログラム Java(1)  のマニュアルページで説明されているオプションの 1 つです。たとえば <literal>-J-Xms48m</literal> は、起動メモリを 48M バイトに設定します。<literal>-J</literal> が基本にする仮想マシンにオプションを渡すことは、共通の規約です。</para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<refsect1><title>コマンド行引数ファイル</title>
+<para>コマンド行を短くまたは簡単にするために、jar  コマンドの引数 (<option>J</option> オプションを除く) を含むファイルを 1 つ以上指定できます。これにより、任意の長さの jar コマンドを作成でき、オペレーティングシステムによるコマンド行の制限を回避できます。</para>
+<para>引数ファイルには、オプションとファイル名を含めることができます。引数ファイル内の引数は空白文字区切りまたは改行区切りにします。引数ファイル内のファイル名は、引数ファイルの位置ではなく、現在のディレクトリに対して相対的に指定します。通常はオペレーティングシステムによって展開されるワイルドカード (*) は展開されません。ファイルを再帰的に解釈するための「@」文字は使用できません。<option>J</option> オプションは、起動プログラムに渡されるため、サポートされていません。起動プログラムでは引数ファイルを使用できないためです。</para>
+<para>jar の実行時、各引数のパスおよび名前で先頭に「@」文字を付けて渡されます。jar で先頭に文字「@」の付いた引数が出現するたびに、そのファイルの内容が引数リストに展開されます。</para>
+<para>たとえば、「classes.list」という名前の引数ファイルを使用して、ファイルの名前を保持します。</para>
+<informalexample><screen>% <userinput>find . -name '*.class' -print > classes.list</userinput></screen>
+</informalexample>
+<para>次に、引数ファイルで渡す  .B jar  コマンドを実行します。</para>
+<informalexample><screen>% <userinput>jar cf my.jar @classes.list</userinput></screen>
+</informalexample>
+<para>引数ファイルはパスで渡されますが、相対パスが記述された引数ファイル内の すべてのファイル名は、渡されたパスに相対的ではなく、現在の作業ディレクトリに相対的となります。次に例を示します。</para>
+<informalexample><screen>% <userinput>jar @path1/classes.list</userinput></screen>
+</informalexample>
+</refsect1>
+<refsect1><title>&exam-tt;</title>
+<example role="example"><title></title>
+<screen>% <userinput>ls</userinput>        
+            1.au          Animator.class    monkey.jpg             
+            2.au          Wave.class        spacemusic.au
+            3.au          at_work.gif              
+
+            % jar cvf bundle.jar *
+            added manifest
+            adding: 1.au(in = 2324) (out= 67)(deflated 97%)
+            adding: 2.au(in = 6970) (out= 90)(deflated 98%)
+            adding: 3.au(in = 11616) (out= 108)(deflated 99%)
+            adding: Animator.class(in = 2266) (out= 66)(deflated 97%)
+            adding: Wave.class(in = 3778) (out= 81)(deflated 97%)        
+            adding: at_work.gif(in = 6621) (out= 89)(deflated 98%)
+            adding: monkey.jpg(in = 7667) (out= 91)(deflated 98%) 
+            adding: spacemusic.au(in = 3079) (out= 73)(deflated 97%)</screen>
+</example>
+<example role="example"><title></title>
+<para>イメージ、オーディオファイル、およびクラス用のサブディレクトリが すでに存在する場合、単一の jar ファイルに結合できます。</para>
+<screen>% <userinput>ls -F</userinput>
+            audio/ classes/ images/       
+
+            % <userinput>jar cvf bundle.jar audio classes images</userinput>   
+            added manifest 
+            adding: audio/(in = 0) (out= 0)(stored 0%)
+            adding: audio/1.au(in = 2324) (out= 67)(deflated 97%)    
+            adding: audio/2.au(in = 6970) (out= 90)(deflated 98%)            
+            adding: audio/3.au(in = 11616) (out= 108)(deflated 99%)
+            adding: audio/spacemusic.au(in = 3079) (out= 73)(deflated 97%)
+            adding: classes/(in = 0) (out= 0)(stored 0%)
+            adding: classes/Animator.class(in = 2266) (out= 66)(deflated 97%)
+            adding: classes/Wave.class(in = 3778) (out= 81)(deflated 97%)
+            adding: images/(in = 0) (out= 0)(stored 0%)
+            adding: images/monkey.jpg(in = 7667) (out= 91)(deflated 98%)
+            adding: images/at_work.gif(in = 6621) (out= 89)(deflated 98%)
+
+            % <userinput>ls -F</userinput>
+            audio/ bundle.jar classes/ images/</screen>
+</example>
+<example role="example"><title></title>
+<para>「t」オプションを指定して、jar ファイル中のエントリ名を表示します。</para>
+<para><screen>% <userinput>jar tf bundle.jar</userinput>
+            META-INF/
+            META-INF/MANIFEST.MF
+            audio/1.au
+            audio/2.au
+            audio/3.au     
+            audio/spacemusic.au
+            classes/Animator.class            
+            classes/Wave.class
+            images/monkey.jpg
+            images/at_work.gif</screen></para>
+</example>
+<example role="example"><title></title>
+<para>クラスの読み込みを高速化するために jar ファイルにインデックスファイルを 追加する場合は、「i」オプションを使用してください。</para>
+<para>たとえば株取引アプリケーションの内部依存しているクラスを <literal>main.jar</literal>、<literal>buy.jar</literal>、および <literal>sell.jar</literal> という 3 つの jar ファイルに分割したとします。<literal>main.jar</literal> のマニフェストの Class-Path 属性に次のように指定した場合、<screen>Class-Path: buy.jar sell.jar</screen></para>
+<para><option>i</option> オプションを使用すれば、アプリケーションのクラスの 読み込みを高速化できます。</para>
+<screen>% <userinput>jar i main.jar</userinput></screen>
+<para>INDEX.LIST ファイルが META-INF ディレクトリに追加されます。この結果、アプリケーションのクラスローダによってクラスまたはリソースの検索が行われるときに、適切な jar ファイルがダウンロードされます。</para>
+</example>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<variablelist termlength="wholeline"><varlistentry><term remap="10"><citetitle>JAR Tutorial</citetitle> @</term><listitem><para><ulink url="http://java.sun.com/docs/books/tutorial/jar"> http://java.sun.com/docs/books/tutorial/jar</ulink></para>
+</listitem></varlistentry>
+<varlistentry><term remap="10"><citetitle>JAR ファイル仕様</citetitle> @</term><listitem><para><ulink url="http://java.sun.com/j2se/1.5/docs/guide/jar/index.html"> http://java.sun.com/j2se/1.5/docs/guide/jar/index.html</ulink></para>
+</listitem></varlistentry>
+<varlistentry><term remap="10"><citetitle>JAR ファイルの概要</citetitle> @</term><listitem><para><ulink url="http://java.sun.com/j2se/1.5/docs/guide/jar/jarGuide.html"> http://java.sun.com/j2se/1.5/docs/guide/jar/jarGuide.html</ulink></para>
+</listitem></varlistentry>
+<varlistentry><term remap="10"><citetitle>JARIndex 仕様</citetitle> @</term><listitem><para><ulink url="http://java.sun.com/j2se/1.5/docs/guide/jar/jar.html*Jar Index"> http://java.sun.com/j2se/1.5/docs/guide/jar/jar.html</ulink></para>
+</listitem></varlistentry>
+<varlistentry><term remap="10"><citetitle>pack200 参照ページ</citetitle> @</term><listitem><para><ulink url="http://java.sun.com/j2se/1.5/docs/tooldocs/solaris/pack200.html"> http://java.sun.com/j2se/1.5/docs/tooldocs/solaris/pack200.html</ulink></para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<!--+ 07/27/00 08:33:12
+    | tagMorph:  $Id: tagMorph-engine 1.54 1998/01/19 05:44:48 $
+    | tagMorph library:  $Id: libtagMorph.a 1.50 1998/01/19 22:02:51 $
+    | sunman-to-solbook 1.17
+    +-->
+<?Pub Caret>
+</refentry>
+<?Pub *0000022310 0>

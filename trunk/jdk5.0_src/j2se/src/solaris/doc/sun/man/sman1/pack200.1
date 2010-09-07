@@ -1,0 +1,270 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1999, v.4002-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub Inc>
+<refentry id="pack200-1">
+<!-- @(#)pack200.1	1.4 04/07/14-->
+<refmeta><refentrytitle>pack200</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">14 July 2004</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2002 Sun Microsystems, Inc. All
+rights reserved.  Copyright 2002 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.
+</refmiscinfo>
+</refmeta>
+<refnamediv><refname>pack200</refname><refpurpose>JAR Packing tool</refpurpose>
+</refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>pack200</command><arg choice="opt"><replaceable>options
+</replaceable></arg><arg choice="plain"><replaceable>output-file</replaceable></arg>
+<arg choice="plain"><replaceable>JAR-file</replaceable></arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&parm-tt;</title>
+<para>Options may be in any order. The last option on the command line or in
+a properties file supersedes all previously specified options.  
+For a discussion of the options, see &opts-tt; below.</para>
+<variablelist termlength="narrow"><varlistentry><term><replaceable>output-file
+</replaceable> </term><listitem><para>name of the output file. </para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>JAR-file</replaceable> </term><listitem>
+<para>name of the input file.</para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="java-1-indx-1"><primary sortas="Java interpreter">Pack200 &ndash;
+Packer</primary></indexterm><para>The pack200 tool is a Java application that 
+transforms a JAR file into a compressed pack200 file using the Java gzip compressor.
+The compressed packed files are highly compressed JARs that can be directly
+deployed saving bandwidth and reducing download time.</para>
+<para>The pack200 tool uses several options to fine-tune and set the compression
+engine.</para>
+<para>Typical usage:<informalexample><para><screen>% pack200 myarchive.pack.gz myarchive.jar
+</screen></para>
+</informalexample></para>
+<para>In this example, the <filename>myarchive.pack.gz</filename> is produced
+using the default pack200 settings.</para>
+</refsect1>
+<refsect1><title>&opts-tt;</title>
+<refsect2><title>Standard Options</title>
+<indexterm id="java-1-indx-3"><primary sortas="java">java &mdash; Java interpreter
+</primary><secondary>Standard Options</secondary></indexterm>
+<variablelist termlength="wholeline"><varlistentry><term remap="20"><option>
+r</option> <option>-repack</option></term><listitem><para>Produces a JAR file
+by packing the file myarchive.jar, and unpacking it. The resulting file can
+be used as an input to the jarsigner(1) tool.<informalexample><screen>% pack200 --repack myarchive-packed.jar myarchive.jar
+</screen>
+</informalexample><informalexample><screen>% pack200 --repack myarchive.jar
+</screen>
+</informalexample></para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>g</option> <option>-no-gzip</option></term>
+<listitem><para>Produces a pack200 file. With this option a suitable compressor
+must be used, and the target system must also use a corresponding
+decompressor.<informalexample><screen>% pack200 --no-gzip myarchive.pack myarchive.jar
+</screen>
+</informalexample></para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>G</option> <option>-strip-debug</option></term>
+<listitem><para>Strips the attributes used for debugging, from the output. These
+include SourceFile, LineNumberTable, LocalVariableTable and LocalVariableTypeTable. 
+Removing these attributes reduces the size of both downloads and installations but 
+reduces the usefulness of debuggers.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>O</option> <option>-no-keep-file-order
+</option></term><listitem><para>The packer will reorder and transmit all elements.
+Additionally, the packer may remove JAR directory names. This will reduce
+the download size; however certain JAR file optimizations, such as indexing,
+may not work correctly.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>Svalue</option> <option>-segment-limit=value
+</option></term><listitem><para>The value is the estimated target size N (in
+bytes) of each archive segment. If a single input file requires more than
+N bytes, it will be given its own archive segment. As a special case, a value
+of -1 will produce a single large segment with all input files, while a value
+of 0 will produce one segment for each class. Larger archive segments result
+in less fragmentation and better compression, but processing them requires
+more memory.</para>
+<para>The size of each segment is estimated by counting the size of each input
+file to be transmitted in the segment, along with the size of its name and
+other transmitted properties.</para>
+<para>The default is 1000000 (a million bytes). This allows input JAR files
+of moderate size to be transmitted in one segment. It also puts a limit on
+memory requirements for packers and unpackers.</para>
+<para>A 10MB JAR packed without this limit will typically pack about 10% smaller,
+but the packer may require a larger Java heap (about ten times the segment
+limit).</para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>Evalue</option> <option>-effort=value
+</option></term><listitem><para>If the value is set to a single decimal digit,
+the packer will use the indicated amount of effort in compressing the archive.
+Level 1 may produce somewhat larger size and faster compression speed, while
+level 9 will take much longer but may produce better compression. The special
+value 0 instructs the packer to copy through the original JAR file directly,
+with no compression. The JSR 200 standard requires any unpacker to understand
+this special case as a pass-through of the entire archive.</para>
+<para>The default is 5, investing a modest amount of time to produce reasonable
+compression.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>Hvalue</option> <option>-deflate-hint=value
+</option></term><listitem><para>Overrides the default, which preserves the
+input information, but may cause the transmitted archive to be larger. The
+possible values are:</para>
+<variablelist><varlistentry><term>true</term><listitem></listitem><?Pub Caret1>
+</varlistentry>
+<varlistentry><term>false</term><listitem><para>In either case, the packer
+will set the deflation    hint accordingly in the output archive, and will
+not transmit the individual deflation hints of archive elements.</para>
+</listitem></varlistentry>
+<varlistentry><term>keep</term><listitem><para>Preserve deflation hints observed
+in the input JAR.                 (This is the default.)</para>
+</listitem></varlistentry>
+</variablelist></listitem></varlistentry>
+<varlistentry><term remap="20"><option>mvalue</option> <option>-modification-time=value
+</option></term><listitem><para>The possible values are:</para>
+<variablelist><varlistentry><term>latest</term><listitem><para>The packer
+will attempt to determine the latest modification time, among all the 
+available entries in the original archive, or the latest modification
+time of all the available entries in that segment. This single value will
+be transmitted as part of the segment and applied to all the entries in each
+segment. This can marginally decrease the transmitted size of the archive
+at the expense of setting all installed files to a single date.</para>
+</listitem></varlistentry>
+<varlistentry><term>keep</term><listitem><para>Preserve modification times
+observed in the input JAR. (This is the default.)</para>
+</listitem></varlistentry>
+</variablelist></listitem></varlistentry>
+<varlistentry><term remap="20"><option>Pfile</option> <option>-pass-file=file
+</option></term><listitem><para>Indicates that a file should be passed through
+byte-wise with no compression. By repeating the option, multiple files may be 
+specified. There is no pathname transformation, except that the system file
+separator is replaced by the JAR file separator '/'. The resulting file names
+must match exactly as strings with their occurrences in the JAR file. If file
+is a directory name, all files under that directory will be passed.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>Uaction</option> <option>-unknown-attribute=action
+</option></term><listitem><para>Overrides the default behavior, ie. the classfile
+containing the unknown attribute will be passed through with the specified
+action. The possible values for actions are:</para>
+<variablelist><varlistentry><term>error</term><listitem><para>The pack200
+operation as a whole will fail, with a suitable explanation.</para>
+</listitem></varlistentry>
+<varlistentry><term>strip</term><listitem><para>The attribute will be dropped.
+Note: removing the VM required attributes may cause Class Loader failures.
+</para>
+</listitem></varlistentry>
+<varlistentry><term>pass</term><listitem><para>upon encountering this attribute,
+the entire class will be transmitted as though it is a resource. (This is
+the default).</para>
+</listitem></varlistentry>
+</variablelist></listitem></varlistentry>
+<varlistentry><term remap="20"><option>Cattribute-name=layout</option> <option>
+-class-attribute=attribute-name=action</option></term></varlistentry>
+<varlistentry><term remap="20"><option>Fattribute-name=layout</option> <option>
+-field-attribute=attribute-name=action</option></term></varlistentry>
+<varlistentry><term remap="20"><option>Mattribute-name=layout</option> <option>
+-method-attribute=attribute-name=action</option></term></varlistentry>
+<varlistentry><term remap="20"><option>Dattribute-name=layout</option> <option>
+-code-attribute=attribute-name=action</option></term><listitem><para><?Pub _bookmark
+Command="__to_here">With the above four options, the attribute layout can be specified
+for a class entity, such as Class attribute, Field attribute, Method attribute
+and Code attribute. The attribute-name is the name of the attribute for which
+the layout or action is being defined. The possible values for action are:<?Pub _bookmark
+Command="__from_here"></para>
+<variablelist><varlistentry><term>(some layout string)</term><listitem><para>
+The layout language is defined in the JSR 200 specification. </para>
+<informalexample><para><?Pub _bookmark Command="__to_here">Example: &ndash;class-attribute=SourceFile=RUH.
+</para>
+<?Pub _bookmark Command="__from_here"></informalexample>
+</listitem></varlistentry>
+<varlistentry><term>error</term><listitem><para>upon encountering this attribute,
+the pack200 operation will fail, with a suitable explanation.<?Pub _bookmark
+Command="__from_here"></para>
+</listitem></varlistentry>
+<varlistentry><term>strip</term><listitem><para>upon encountering this attribute,
+the attribute will be removed from the output. Note: removing the VM required
+attributes may cause Class Loader failures.<?Pub _bookmark Command="__from_here">
+</para>
+<informalexample><para><?Pub _bookmark Command="__to_here">Example: --class-attribute=CompilationID=pass, <?Pub _bookmark
+Command="__to_here">will cause the classfile containing this attribute to
+be passed through, without further action by the packer.<?Pub _bookmark Command="__from_here">
+</para>
+<?Pub _bookmark Command="__from_here"></informalexample>
+<?Pub _bookmark Command="__to_here"><?Pub _bookmark Command="__from_here">
+</listitem></varlistentry>
+</variablelist></listitem></varlistentry>
+<varlistentry><term remap="20"><option>fpack.properties</option> <option>
+-config-file=pack.properties</option></term><listitem><para>A configuration
+file, containing Java properties to initialize the packer, may be specified
+on the command line.</para>
+<informalexample><screen>% pack200 -f pack.properties myarchive.pack.gz myarchive.jar
+% cat pack.properties
+        # Generic properties for the packer.
+        modification.time=latest
+        deflate.hint=false
+        keep.file.order=false
+        # This option will cause the files bearing new attributes to
+        # be reported as an error rather than passed uncompressed.
+        unknown.attribute=error
+        # Change the segment limit to be unlimited.
+        segment.limit=-1</screen>
+</informalexample>
+</listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2><title>Non-Standard Options</title>
+<indexterm id="java-1-indx-4"><primary sortas="java">java &mdash; Java interpreter
+</primary><secondary>Non-Standard Options</secondary></indexterm>
+<variablelist termlength="wholeline"><varlistentry><term remap="20"><option>
+v</option> <option>-verbose</option> </term><listitem><para>Outputs minimal
+messages, multiple specification of this option will output more verbose messages.
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>q</option> <option>-quiet</option> </term><listitem>
+<para>Quiet operation with no messages.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>lfilename</option> <option>-log-file=filename
+</option> </term><listitem><para>A log file to output messages.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Joption</option></term><listitem><para>Passes
+option to the Java launcher called by pack200. For example, <command>-J-Xms48m
+</command> sets the startup memory to 48 megabytes. Although it does not begin
+with -X,  it is not a `standard  option'  of  pack200.  It is a common convention
+for -J to pass options to the underlying VM executing applications written
+in Java.</para>
+</listitem></varlistentry>
+</variablelist></refsect2>
+</refsect1>
+<refsect1><title>EXIT STATUS</title>
+<para>The following exit values are returned:</para>
+<variablelist termlength="narrow"><varlistentry><term remap="20">0 </term>
+<listitem><para>Successful completion.</para>
+</listitem></varlistentry>
+<varlistentry><term>>0</term><listitem><para>An error occurred.</para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>unpack200</refentrytitle><manvolnum>1</manvolnum>
+</citerefentry>, <citerefentry><refentrytitle>jar</refentrytitle><manvolnum>
+1</manvolnum></citerefentry>, <citerefentry><refentrytitle>jarsigner</refentrytitle>
+<manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>attributes
+</refentrytitle><manvolnum>5</manvolnum></citerefentry> </para>
+<para>See (or search <literal>java.sun.com</literal>) for the following:</para>
+<variablelist termlength="wholeline"><varlistentry><term remap="10"><citetitle>
+Java API Specification</citetitle> @</term><listitem><para><ulink url="http://java.sun.com/j2se/5.0/docs"></ulink>http://java.sun.com/j2se/5.0/docs
+</para>
+</listitem></varlistentry>
+<varlistentry><term><citetitle>Java Deployment Guide</citetitle> @</term>
+<listitem><para><ulink url="http://java.sun.com/j2se/5.0/docs/guide/deployment/deployment-guide/pack200.html"></ulink>http://java.sun.com/j2se/5.0/docs/guide/deployment/deployment-guide/pack200.html</para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>&note-tt;</title>
+<para>This command should not be confused with pack(1). They are distinctly
+separate products.</para>
+<para>The J2SE API Specification provided with the JDK release is the superseding
+authority, in case of discrepancies. </para>
+</refsect1>
+</refentry>
+<?Pub *0000016202>

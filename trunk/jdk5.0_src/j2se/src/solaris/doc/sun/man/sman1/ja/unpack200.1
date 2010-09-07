@@ -1,0 +1,83 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1998, v.4001-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub Inc>
+<refentry id="unpack200-1">
+<!--@(#)unpack200.1	1.6 04/04/02-->
+<refmeta><refentrytitle>unpack200</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">2004 年 7 月 14 日</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.</refmiscinfo>
+</refmeta>
+<refnamediv><refname>unpack200</refname><refpurpose>JAR アンパックツール</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>unpack200</command><arg choice="opt"><replaceable>options</replaceable></arg><arg choice="plain"><replaceable>input-file</replaceable></arg>
+<arg choice="opt" rep="repeat"><replaceable>JAR-file</replaceable></arg> 
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&parm-tt;</title>
+<para>オプションの指定順序に決まりはありません。コマンド行に指定された最後のオプションが、それ以前に指定されたすべてのオプションより優先されます。オプションについては、「&opts-tt;」の説明を参照してください。</para>
+<variablelist termlength="narrow"><varlistentry><term><replaceable>input-file</replaceable> </term><listitem><para>入力ファイルの名前。入力ファイルは通常、pack200 gzip ファイルか pack200 ファイルです。このほかに、0 を設定すれば pack200(1) から作成された JAR ファイルも入力ファイルとして使用できます。この場合、入力ファイルの内容が Pack200 マーカーとともに出力 JAR ファイルにコピーされます。</para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>JAR-file</replaceable> </term><listitem>
+<para>出力 JAR ファイル名。</para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="java-1-indx-1"><primary sortas="Java interpreter">Java interpreter &mdash; java</primary></indexterm><indexterm id="java-1-indx-2"><primary sortas="java">java &mdash; Java interpreter</primary></indexterm>
+<para>unpack200 ツールは pack200(1) で作成されたパックファイルを JAR ファイルに変換するネイティブ実装です。</para><?Pub Caret>
+<para> 一般的な使用方法:<informalexample>
+<para><screen> % unpack200 myarchive.pack.gz myarchive.jar</screen></para>
+</informalexample></para>
+<para> この例では、デフォルトの unpack200 設定で、<filename>myarchive.pack.gz</filename> から <filename>myarchive.jar</filename> が作成されます。</para>
+</refsect1>
+<refsect1><title>&opts-tt;</title>
+<refsect2><title>標準オプション</title>
+<indexterm id="java-1-indx-3"><primary sortas="java">java &mdash; Java インタプリタ</primary><secondary>標準オプション</secondary></indexterm><variablelist termlength="wholeline"><varlistentry><term remap="20"><option>Hvalue</option> <option>-deflate-hint=value</option></term><listitem><para>value = true、false、keep としてデフレーションを設定し、JAR ファイル内のすべてのエントリのデフォルトの動作をオーバーライドします。true または false の場合、デフォルトの動作をオーバーライドして、出力 JAR ファイル内のすべてのエントリのデフレーションモードを設定します。デフォルトモードは keep です。</para>
+</listitem></varlistentry>
+</variablelist>
+</refsect2>
+<refsect2><title>非標準オプション</title>
+<indexterm id="java-1-indx-4"><primary sortas="java">java &mdash; Java インタプリタ</primary><secondary>非標準オプション</secondary></indexterm><variablelist termlength="wholeline"><varlistentry><term remap="20"><option>r</option> <option>-remove-pack-file</option></term><listitem><para>入力パックファイルを削除します。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>v</option> <option>-verbose</option> </term><listitem><para>最小限のメッセージを出力します。このオプションを複数指定すると、より長いメッセージが出力されます。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>q</option> <option>-quiet</option> </term><listitem><para>メッセージを表示せずに動作します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>lfilename</option> <option>-log-file=filename</option> </term><listitem><para>メッセージを出力するログファイル。</para>
+</listitem></varlistentry>
+</variablelist>
+</refsect2>
+</refsect1>
+<refsect1><title>終了ステータス</title>
+<para>次の終了値が返されます。</para>
+<variablelist termlength="narrow"><varlistentry><term remap="20">0 </term><listitem><para>成功</para>
+</listitem></varlistentry>
+<varlistentry><term>>0</term><listitem><para>エラー</para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>pack200</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>jar</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>jarsigner</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry></para>
+<para>次の情報を参照 (または <literal>java.sun.com</literal> 内で検索) してください。</para>
+<variablelist termlength="wholeline"><varlistentry><term remap="10"><citetitle>J2SE API 仕様</citetitle> @</term><listitem><para><ulink url="http://java.sun.com/j2se/5.0/docs"></ulink>http://java.sun.com/j2se/5.0/docs</para>
+</listitem></varlistentry>
+<varlistentry><term><citetitle>Java 配備ガイド</citetitle> @</term> 
+<listitem><para><ulink url="http://java.sun.com/j2se/5.0/docs/guide/deployment/deployment-guide/pack200.html"></ulink>http://java.sun.com/j2se/5.0/docs/guide/deployment/deployment-guide/pack200.html 
+</para>
+</listitem></varlistentry>
+
+</variablelist>
+</refsect1>
+<refsect1><title>&note-tt;</title>
+<para>このコマンドと unpack(1) コマンドを混同しないでください。これらは別製品です。
+</para>
+<para>ドキュメント間に矛盾がある場合、今回の JDK リリース付属の J2SE API 仕様が最優先されます。</para>
+</refsect1>
+</refentry>
+<?Pub *0000005465 0>

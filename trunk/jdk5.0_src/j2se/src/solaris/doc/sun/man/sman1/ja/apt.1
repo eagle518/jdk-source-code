@@ -1,0 +1,76 @@
+<!--ArborText, Inc., 1988-2003, v.4002-->
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?APT Element gi="refentrytitle">
+<?APT Element gi="manvolnum">
+<?APT Element gi="refmiscinfo" attrs="class">
+<?APT Element gi="refmeta">
+<?APT Element gi="refname">
+<?APT Element gi="refpurpose">
+<?APT Element gi="refnamediv">
+<?APT Element gi="title">
+<?APT Element gi="command">
+<?APT Element gi="replaceable">
+<?APT Element gi="arg" attrs="choice">
+<?APT Element gi="cmdsynopsis">
+<?APT Element gi="refsynopsisdiv">
+<?APT Element gi="para">
+<?APT Element gi="term">
+<?APT Element gi="listitem">
+<?APT Element gi="varlistentry">
+<?APT Element gi="variablelist" attrs="termlength">
+<?APT Element gi="refsect1">
+<?APT Element gi="primary" attrs="sortas">
+<?APT Element gi="indexterm" attrs="id">
+<?APT Element gi="superscript">
+<?APT Element gi="literal">
+<?APT Element gi="ulink" attrs="url">
+<?APT Element gi="option">
+<?APT Element gi="citerefentry">
+<?APT Element gi="refentry" attrs="id">
+<?Pub Inc>
+<refentry id="apt-1"> <!--@(#)apt.1	1.1 04/06/15--><refmeta><refentrytitle>
+apt</refentrytitle><manvolnum>1</manvolnum><refmiscinfo class="date">
+2004 年 6 月 22 日</refmiscinfo><refmiscinfo class="sectdesc">&man1;</refmiscinfo><refmiscinfo
+class="software">&java-release;</refmiscinfo><refmiscinfo class="arch">generic</refmiscinfo><refmiscinfo
+class="copyright"> Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+ Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.</refmiscinfo></refmeta><refnamediv><refname>
+apt</refname><refpurpose>注釈処理ツール</refpurpose></refnamediv><refsynopsisdiv><title>&synp-tt;</title><cmdsynopsis><command>
+apt</command><arg choice="opt">-classpath <replaceable> classpath</replaceable></arg><arg>
+-sourcepath <replaceable>sourcepath</replaceable></arg><arg>-d <replaceable>
+directory</replaceable></arg><arg>-s <replaceable>directory</replaceable></arg><arg>
+-factorypath <replaceable>path</replaceable></arg><arg>-factory <replaceable>
+class</replaceable></arg><arg>-print</arg><arg> -nocompile</arg><arg>-A<replaceable>
+key</replaceable>[=<replaceable>val</replaceable>] ...]</arg><arg><replaceable>
+[javac option]</replaceable></arg><arg><replaceable> sourcefiles</replaceable></arg><arg><replaceable>
+[@files]</replaceable></arg></cmdsynopsis></refsynopsisdiv><refsect1><title>&parm-tt;</title><para>
+オプションは任意の順序で指定できます。特定のオプションに適用されるパラメータについては、「オプション」を参照してください。</para><variablelist termlength="narrow"><varlistentry><term><replaceable>
+sourcefiles</replaceable> </term><listitem><para>処理される 0 個以上のソースファイル </para></listitem></varlistentry><varlistentry><term><replaceable>
+@files</replaceable> </term><listitem><para>ソースファイルまたはオプションを含む 1 つ以上のファイル </para></listitem></varlistentry></variablelist></refsect1><refsect1><title>&desc-tt;</title><indexterm
+id="java-1-indx-1"><primary sortas="Java interpreter">Java インタプリタ&mdash; java</primary></indexterm><indexterm
+id="java-1-indx-2"><primary sortas="java"> java &mdash; Java インタプリタ</primary></indexterm><para>
+注釈処理ツール apt には、プログラム注釈を処理するための一連の新しいリフレクション API とインフラストラクチャサポートが含まれています。apt
+のリフレクション API では、プログラム構造のビューが、ビルド時のソースベースの読み取り専用として用意されています。これらのリフレクション API
+は、総称型の追加後に、Java<superscript>TM</superscript> プログラミング言語の型システムをわかりやすくモデル化できるように設計されました。はじめに、apt は注釈プロセッサを実行します。この注釈プロセッサでは、新しいソースコードおよびその他のファイルを生成します。次に、オリジナルのソースファイルと生成したソースファイルの両方をコンパイルし、開発を容易にします。ツールと対話するためのリフレクション API とその他の API は、<literal>com.sun.mirror</literal> のサブパッケージです。</para><para>
+ツールの操作方法と apt による開発手順についての詳細は、「<ulink url="http://java.sun.com/j2se/1.5.0/docs/guide/apt/GettingStarted.html">
+Getting Started with apt</ulink>」を参照してください。</para></refsect1><refsect1><title>&opts-tt;</title><para>
+apt 固有のオプション</para><variablelist><varlistentry><term>&mdash;s <replaceable>
+dir</replaceable></term><listitem><para>プロセッサが生成するソースファイルが配置されるディレクトリルートを指定します。ファイルはパッケージのネームスペースに従って、サブディレクトリに配置されます。</para></listitem></varlistentry
+><varlistentry><term>-nocompile</term><listitem><para>ソースファイルをクラスファイルにコンパイルしません。</para></listitem></varlistentry><varlistentry><term>
+-print</term><listitem><para>指定した型のテキスト表現を出力します。注釈処理やコンパイルは実行しません。</para></listitem></varlistentry><varlistentry><term>
+-A[<replaceable>key</replaceable>[=<replaceable>val</replaceable>]] </term><listitem><para>
+注釈プロセッサに渡されるオプション。-- apt は、これらのオプションを直接解釈しませんが、個別のプロセッサ によって使用可能になります。</para></listitem></varlistentry><varlistentry><term>
+-factorypath <replaceable>path</replaceable> </term><listitem><para>注釈プロセッサファクトリを検索する場所を指定します。このオプションを使用する場合、ファクトリの検索に
+クラスパスは使用されません。</para></listitem></varlistentry><varlistentry><term>-factory <replaceable>
+classname </replaceable></term><listitem><para>使用する注釈プロセッサファクトリの名前。デフォルトの検出処理をバイパスします。</para></listitem></varlistentry></variablelist><para>
+javac と共有されるオプション</para><variablelist><varlistentry><term>-d <replaceable>
+dir </replaceable></term><listitem><para>プロセッサおよび javac が生成したクラスファイルを配置する場所を指定します。</para></listitem></varlistentry><varlistentry><term>
+-cp <replaceable>path</replaceable> または -classpath <replaceable>path</replaceable> </term><listitem><para>
+ユーザクラスファイルおよび注釈プロセッサファクトリを検索する場所を指定します。<option>factorypath</option> を指定した場合、ファクトリの検索にクラスパスは使用されません。</para></listitem></varlistentry></variablelist
+><para>javac のオプシ<?Pub Caret>ョンについては、javac(1) のマニュアルページを参照してください。</para></refsect1><refsect1><title>
+注意事項</title><para>apt ツールおよび関連する API は、将来の J2SE リリースで変更または廃止される場合があります。</para></refsect1><refsect1><title>&also-tt;</title><para><citerefentry><refentrytitle
+>java</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>
+javac</refentrytitle><manvolnum>1</manvolnum></citerefentry></para></refsect1></refentry>

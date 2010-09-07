@@ -1,0 +1,481 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1999, v.4002-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<refentry id="idlj-1">
+<!--@(#)idlj.1 1.1 01/03/14 SMI;-->
+<refmeta><refentrytitle>idlj</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">22 Jun 2004</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All
+rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.
+ </refmiscinfo>
+</refmeta>
+<refnamediv><indexterm><primary sortas="idlj">idlj &mdash; IDL-to-Java compiler
+</primary></indexterm><indexterm><primary sortas="IDL-to-Java compiler">IDL-to-Java
+compiler &mdash; idlj</primary></indexterm><refname>idlj</refname><refpurpose>
+IDL-to-Java compiler</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>idlj</command><arg choice="opt">&nbsp;<replaceable>
+options</replaceable></arg><arg choice="plain">&nbsp;<replaceable>idl-file
+</replaceable></arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&desc-tt;</title>
+<para>The IDL-to-Java Compiler generates the Java bindings for a given <acronym>
+IDL</acronym> file. For binding details, see the <citetitle>OMG IDL to Java
+Language Mapping Specification</citetitle>. Some previous releases of the
+IDL-to-Java compiler were named <literal>idltojava</literal>.</para>
+<para>In the synopsis, <replaceable>idl-file</replaceable> is the name of
+a file containing Interface Definition Language (<acronym>IDL</acronym>) definitions.
+The <replaceable>options</replaceable> may appear in any order, but must precede
+the <replaceable>idl-file</replaceable>.</para>
+<refsect2>
+<title>Emitting Client and Server Bindings</title>
+<para>To generate Java bindings for an <acronym>IDL</acronym> file named <literal>
+My.idl</literal>:<informalexample>
+<screen>   example% <userinput>idlj My.idl</userinput></screen>
+</informalexample></para>
+<para>This generates the client-side bindings and is equivalent to:<informalexample>
+<screen>   example% <userinput>idlj -fclient My.idl</userinput></screen>
+</informalexample></para>
+<para>The client-side bindings do not include the server-side skeleton. If
+you want to generate the server-side bindings for the interfaces:<informalexample>
+<screen>   example% <userinput>idlj -fserver My.idl</userinput></screen>
+</informalexample></para>
+<para>Server-side bindings include the client-side bindings plus the skeleton,
+all of which are <acronym>POA</acronym> (that is, Inheritance Model) classes.
+If you want to generate both client and server-side bindings, use one of the
+following (equivalent)     commands:<informalexample>
+<screen>   example% <userinput>idlj -fclient -fserver My.idl</userinput>
+   example% <userinput>idlj -fall My.idl</userinput></screen>
+</informalexample></para>
+<para>There are two possible server-side models: the Inheritance Model and
+the Tie Model.</para>
+<para><emphasis>Inheritance Model</emphasis></para>
+<para>A new feature in 1.4: The default server-side model is the <literal>
+Portable Servant Inheritance Model</literal>. Given an interface <literal>
+My</literal> defined in <literal>My.idl</literal>, the file <literal>MyPOA.java
+</literal> is generated. You must provide the implementation for <literal>
+My</literal> and it must inherit from <literal>MyPOA</literal>.</para>
+<para><literal>MyPOA.java</literal> is a stream-based skeleton that extends <literal>
+org.omg.PortableServer.Servant</literal> and implements the <literal>InvokeHandler
+</literal> interface and the operations interface associated with the <acronym>
+IDL</acronym> interface that the skeleton implements.</para>
+<para>The <literal>PortableServer</literal> module for the Portable Object
+Adapter (<acronym>POA</acronym>) defines the native <literal>Servant</literal>
+type. In the Java programming language, the <literal>Servant</literal> type
+is mapped to the Java <literal>org.omg.PortableServer.Servant</literal> class.
+It serves as the base class for all <acronym>POA</acronym> servant implementations
+and provides a number of methods that may be invoked by the application programmer,
+as well as methods which are invoked by the <acronym>POA</acronym> itself
+and may be overridden by the user to control aspects of servant behavior.
+</para>
+<para>Another option for the Inheritance Model is to use the <option>oldImplBase
+</option> flag in order to generate server-side bindings that are compatible
+with older version of the Java programming language (prior to J2SE 1.4). To
+generate server-side bindings that are backwards compatible:<informalexample>
+<screen>   example% <userinput>idlj -fclient -fserver -oldImplBase My.idl
+</userinput>
+   example% <userinput>idlj -fall -oldImplBase My.idl</userinput></screen>
+</informalexample></para>
+<para>Given an interface <literal>My</literal> defined in <literal>My.idl
+</literal>, the file <literal>_MyImplBase.java</literal> is generated. You
+must provide the implementation for <literal>My</literal> and it must inherit
+from <literal>_MyImplBase</literal>.</para>
+<para><emphasis>Tie Model</emphasis></para>
+<para>The other server-side model is called the Tie Model. This is a delegation
+model. Because it is not possible to generate ties and skeletons at the same
+time, they must be generated separately. The following commands generate the
+bindings for the Tie Model:<informalexample>
+<screen>   example% <userinput>idlj -fall My.idl</userinput>
+   example% <userinput>idlj -fallTIE My.idl</userinput></screen>
+</informalexample></para>
+<para>For the interface <literal>My</literal>, the second command generates <literal>
+MyPOATie.java</literal>. The constructor to <literal>MyPOATie</literal> takes
+a <literal>delegate</literal>. You must provide the implementation for <literal>
+delegate</literal>, but it does not have to inherit from any other class,
+only the interface <literal>MyOperations</literal>. But to use it with the <acronym>
+ORB</acronym>, you must wrap your implementation within <literal>MyPOATie
+</literal>. For instance:<informalexample>
+<screen>   MyImpl myImpl = new MyImpl ();
+   MyPOATie tie = new MyPOATie (myImpl);
+   orb.connect (tie);</screen>
+</informalexample></para>
+<para>You might want to use the Tie Model instead of the typical Inheritance
+Model if your implementation must inherit     from some other implementation.
+Java allows any number of interface inheritance, but there is only one slot
+for class inheritance. If you use the Inheritance Model, that slot is used
+up. By using the Tie Model, that slot is freed up for your own use. The drawback
+is that it introduces a level of indirection, that is, one extra method call
+occurs when invoking a method.</para>
+<para>To generate server-side, Tie Model bindings that are compatible with
+older version of the <acronym>IDL</acronym>&mdash;to-Java language mapping
+in versions of J2SE before 1.4:<informalexample>
+<screen>   example% <userinput>idlj -oldImplBase -fall My.idl</userinput>
+   example% <userinput>idlj -oldImplBase -fallTIE My.idl</userinput></screen>
+</informalexample></para>
+<para>For the interface <literal>My</literal>, this will generate <literal>
+My_Tie.java</literal>. The constructor to <literal>My_Tie</literal> takes
+an <literal>impl</literal>. You must provide the implementation for <literal>
+impl</literal>, but it does not have to inherit from any other class, only
+the interface <literal>HelloOperations</literal>. But to use it with the <acronym>
+ORB</acronym>, you must wrap your implementation within <literal>My_Tie</literal>.
+For instance:<informalexample>
+<screen>   MyImpl myImpl = new MyImpl (); 
+   MyPOATie tie = new MyPOATie (myImpl); 
+   orb.connect (tie);</screen>
+</informalexample></para>
+</refsect2>
+<refsect2>
+<title>Specifying Alternate Locations for Emitted Files</title>
+<para>If you want to direct the emitted files to a directory other than the
+current directory, invoke the compiler as:<informalexample>
+<screen>   example% <userinput>idlj -td /altdir My.idl</userinput> </screen>
+</informalexample></para>
+<para>For the interface <literal>My</literal>, the bindings will be emitted
+to <literal>/altdir/My.java</literal>, and so forth, instead of <literal>
+./My.java</literal>.</para>
+</refsect2>
+<refsect2>
+<title>Specifying Alternate Locations for Include Files</title>
+<para>If <literal>My.idl</literal> included another idl file, <literal>MyOther.idl
+</literal>, the compiler assumes that <literal>MyOther.idl</literal> resides
+in the local directory. If it resides in <filename>/includes</filename>, for
+example, then you would invoke the compiler with the following command:<informalexample>
+<screen>   example% <userinput>idlj -i /includes My.idl</userinput> </screen>
+</informalexample></para>
+<para>If <literal>My.idl</literal> also included <literal>Another.idl</literal>
+that resided in <filename>/moreIncludes</filename>, for example, then you
+would invoke the compiler with the following command:<informalexample>
+<screen>   example% <userinput>idlj -i /includes -i /moreIncludes My.idl 
+</userinput></screen>
+</informalexample></para>
+<para>Since this form of include can become irritatingly long, another means
+of indicating to the compiler where to search for included files is provided.
+This technique is similar to the idea of an environment variable. Create a
+file named <literal>idl.config</literal> in a directory that is listed in
+your <envar>CLASSPATH</envar>. Inside of<literal> idl.config</literal>, provide
+a line with the following form:<informalexample>
+<screen>   includes=/includes;/moreIncludes</screen>
+</informalexample></para>
+<para>The compiler will find this file and read in the includes list. Notice
+that in this example the separator character between the two directories is
+a semicolon (;). This separator character is platform dependent. On NT it
+is a semicolon, on Solaris it is a colon, and so forth. For more information
+on includes, read the <envar>CLASSPATH</envar> (Solaris), <envar>CLASSPATH
+</envar> (Linux), <envar>CLASSPATH</envar> (Windows) documentation.</para>
+</refsect2>
+<refsect2>
+<title>Emitting Bindings for Include Files</title>
+<para>By default, only those interfaces, structs, and so on, that are defined
+in the idl file on the command line have Java bindings generated for them.
+The types defined in included files are not generated. For example, assume
+the following two idl files:<informalexample>
+<screen>   <emphasis>My.idl</emphasis>
+      #include &lt;MyOther.idl>
+      interface My
+      {
+      };
+
+   <emphasis>MyOther.idl</emphasis>
+      interface MyOther
+      {
+      };</screen>
+</informalexample>The following command will only generate the java bindings
+for <literal>My</literal>:<informalexample>
+<screen>   example% <userinput>idlj My.idl</userinput></screen>
+</informalexample></para>
+<para>To generate all of the types in <literal>My.idl</literal> and all of
+the types in the files that <literal>My.idl</literal> includes (in this example, <literal>
+MyOther.idl</literal>), use the following command:<informalexample>
+<screen>   example% <userinput>idlj -emitAll My.idl</userinput></screen>
+</informalexample></para>
+<para>There is a caveat to the default rule. <literal>#include</literal> statements
+which appear at global scope are treated as described. These <literal>#include
+</literal> statements can be thought of as import statements. <literal>#include
+</literal> statements which appear within some enclosing scope are treated
+as true <literal>#include</literal> statements. This means that the code within
+the included file is treated as if it appeared in the original file and, therefore,
+Java bindings are emitted for it. Here is an example:<informalexample>
+<screen>   <emphasis>My.idl</emphasis>
+      #include &lt;MyOther.idl> 
+      interface My 
+      { 
+      #include &lt;Embedded.idl> 
+      };
+
+   <emphasis>MyOther.idl</emphasis>
+      interface MyOther 
+      { 
+      };
+
+   <emphasis>Embedded.idl</emphasis>
+      enum E {one, two, three};</screen>
+</informalexample>Running the following command:<informalexample>
+<screen>   example% <userinput>idlj My.idl</userinput></screen>
+</informalexample>will generate the following list of Java files:<informalexample>
+<screen>   ./MyHolder.java 
+   ./MyHelper.java 
+   ./_MyStub.java 
+   ./MyPackage 
+   ./MyPackage/EHolder.java 
+   ./MyPackage/EHelper.java 
+   ./MyPackage/E.java 
+   ./My.java 
+
+</screen>
+</informalexample></para>
+<para>Notice that <literal>MyOther.java</literal> was not generated because
+it is defined in an import-like <literal>#include</literal>. But <literal>
+E.java</literal> was generated because it was defined in a true <literal>
+#include</literal>. Also notice that since <literal>Embedded.idl</literal>
+was included within the scope of the interface <literal>My</literal>, it appears
+within the scope of <literal>My</literal> (that is, in <literal>MyPackage
+</literal>).</para>
+<para>If the <option>emitAll</option> flag had been used in the previous example,
+then all types in all included files would be emitted.</para>
+</refsect2>
+<refsect2>
+<title>Inserting Package Prefixes</title>
+<para>Suppose that you work for a company named <literal>ABC</literal> that
+has constructed the following <acronym>IDL</acronym> file:<informalexample>
+<screen>   <emphasis>Widgets.idl</emphasis>
+      module Widgets 
+      { 
+      interface W1 {...}; 
+      interface W2 {...}; 
+      };</screen>
+</informalexample></para>
+<para>Running this file through the IDL-to-Java compiler will place the Java
+bindings for <literal>W1</literal> and <literal>W2</literal> within the package <literal>
+Widgets</literal>. But there is an industry convention that states that a
+company's packages should reside within a package named <literal>com.</literal><replaceable>
+company name</replaceable>. The <literal>Widgets</literal> package is not
+good enough. To follow convention, it should be <literal>com.abc.Widgets</literal>.
+To place this package prefix onto the <literal>Widgets</literal> module, execute
+the following:<informalexample>
+<screen>   example% <userinput>idlj -pkgPrefix Widgets com.abc Widgets.idl
+</userinput> </screen>
+</informalexample></para>
+<para>If you have an <acronym>IDL</acronym> file which includes <literal>
+Widgets.idl</literal> the <option>pkgPrefix</option> flag must appear in that
+command also. If it does not, then your <acronym>IDL</acronym> file will be
+looking for a <literal>Widgets</literal> package rather than a <literal>com.abc.Widgets
+</literal> package. If you have a number of these packages that require prefixes,
+it might be easier to place them into the <literal>idl.config</literal> file
+described above. Each package prefix line should be of the form:<informalexample>
+<screen>   PkgPrefix.&lt;type>=&lt;prefix></screen>
+</informalexample></para>
+<para>So the line for the above example would be:<informalexample>
+<screen>   PkgPrefix.Widgets=com.abc </screen>
+</informalexample></para>
+<para>The use of this option does not affect the Repository <acronym>ID</acronym>.
+</para>
+</refsect2>
+<refsect2>
+<title>Defining Symbols Before Compilation</title>
+<para>You may need to define a symbol for compilation that is not defined
+within the <acronym>IDL</acronym> file, perhaps to include debugging code
+in the bindings. The command:<informalexample>
+<screen>   example% <userinput>idlj -d MYDEF My.idl</userinput></screen>
+</informalexample>is the equivalent of putting the line <literal>#define MYDEF
+</literal> inside <literal>My.idl</literal>.</para>
+</refsect2>
+<refsect2>
+<title>Preserving Pre-Existing Bindings</title>
+<para>If the Java binding files already exist, the <option>keep</option> flag
+will keep the compiler from overwriting them. The default is to generate all
+files without considering if they already exist. If you've customized those
+files (which you should not do unless you are very comfortable with their
+contents), then the <option>keep</option> option is very useful. The command:<informalexample>
+<screen>   example% <userinput>idlj -keep My.idl</userinput></screen>
+</informalexample>emits all client-side bindings that do not already exist.
+</para>
+</refsect2>
+<refsect2>
+<title>Viewing Progress of Compilation</title>
+<para>The <acronym>IDL</acronym>-to-Java compiler will generate status messages
+as it progresses through its phases of execution. Use the <option>v</option>
+option to activate this "verbose" mode:<informalexample>
+<screen>   example% <userinput>idlj -v My.idl</userinput></screen>
+</informalexample></para>
+<para>By default, the compiler does not operate in verbose mode.</para>
+</refsect2>
+<refsect2>
+<title>Displaying Version Information</title>
+<para>To display the build version of the <acronym>IDL</acronym>-to-Java compiler,
+specify the <option>version</option> option on the command line:<informalexample>
+<screen>   example% <userinput>idlj -version</userinput> </screen>
+</informalexample></para>
+</refsect2>
+</refsect1>
+<refsect1><title>&opts-tt;</title>
+<para>The following options are supported:</para>
+<variablelist termlength="wholeline">
+<varlistentry><term remap="15"><option>d</option> <replaceable>symbol</replaceable></term>
+<listitem><para>This is equivalent to the following line in an <acronym>IDL
+</acronym> file:<informalexample>
+<screen>   #define symbol</screen>
+</informalexample></para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>emitAll</option> </term><listitem>
+<para>Emits all types, including those found in <literal>#include</literal>
+files.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>f</option><replaceable>side</replaceable> 
+</term><listitem><para>Defines what bindings to emit. <replaceable>side</replaceable>
+is one of <literal>client</literal>, <literal>server</literal>, <literal>
+serverTIE</literal>, <literal>all</literal>, or <literal>allTIE</literal>.
+The <option>f</option><literal>serverTIE</literal> and <option>f</option><literal>
+allTIE</literal> options cause delegate model skeletons to be emitted. Assumes <option>
+f</option><literal>client</literal> if the flag is not specified.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>i</option> <replaceable>include-path
+</replaceable> </term><listitem><para>By default, the current directory is
+scanned for included files. This option adds another directory. </para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>keep</option></term><listitem><para>
+If a file to be generated already exists, does not overwrite it. By default
+it is overwritten.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>noWarn</option> </term><listitem><para>
+Suppresses warning messages.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>oldImplBase</option></term><listitem>
+<para>Generates skeletons compatible with old (pre-1.4) JDK <acronym>ORB</acronym>s.
+By default, the <acronym>POA</acronym> Inheritance Model server-side bindings
+are generated. This option provides backward-compatibility with older versions
+of the Java programming language by generating server-side bindings that are <literal>
+ImplBase</literal> Inheritance Model classes.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>pkgPrefix</option> <replaceable>type
+</replaceable> <replaceable>prefix</replaceable></term><listitem><para>Wherever <replaceable>
+type</replaceable> is encountered at file scope, prefixes the generated Java
+package name with <replaceable>prefix</replaceable> for all files generated
+for that type. The <replaceable>type</replaceable> is the simple name of either
+a top-level module, or an <acronym>IDL</acronym> type defined outside of any
+module.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>pkgTranslate</option> <replaceable>
+type</replaceable> <replaceable>package</replaceable></term><listitem><para>
+Whenever the module name <replaceable>type</replaceable> is encountered in
+an identifier, this option replaces it in the identifier with <replaceable>
+package</replaceable> for all files in the generated Java package. Notice
+that <option>pkgPrefix</option> changes are made first. <replaceable>type
+</replaceable> is the simple name of either a top-level module, or an <acronym>
+IDL</acronym> type defined outside of any module, and must match the full
+package name exactly.</para>
+<para>If more than one translation matches an identifier, the longest match
+is chosen. For example, if the arguments include:<informalexample>
+<screen>   example% <userinput>-pkgTranslate foo bar -pkgTranslate foo.baz buzz.fizz
+</userinput></screen>
+</informalexample>The following translations would occur:<informalexample>
+<screen>   foo          => bar
+   foo.boo      => bar.boo
+   foo.baz      => buzz.fizz
+   foo.baz.bar  => buzz.fizz.bar</screen>
+</informalexample></para>
+<para>The following package names cannot be translated:<itemizedlist>
+<listitem><para><literal>org</literal></para>
+</listitem>
+<listitem><para><literal>org.omg</literal> or any subpackages of <literal>
+org.omg</literal></para>
+</listitem>
+</itemizedlist></para>
+<para>Any attempt to translate these packages will result in uncompilable
+code, and the use of these packages as the first argument after <option>pkgTranslate
+</option> will be treated as an error.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>skeletonName</option> <replaceable>
+xxx%yyy</replaceable></term><listitem><para>Uses <replaceable>xxx%yyy</replaceable>
+as the pattern for naming the skeleton. The defaults are:<itemizedlist>
+<listitem><para><literal>%POA</literal> for the <acronym>POA</acronym> base
+class (<option>f</option><literal>server</literal> or <option>fall</option>).
+</para>
+</listitem>
+<listitem><para><literal>_%ImplBase</literal> for the <literal>oldImplBase
+</literal> class (<option>oldImplBase</option> and either <option>f</option><literal>
+server</literal> or <option>fall</option>).</para>
+</listitem>
+</itemizedlist></para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>td</option> <replaceable>dir</replaceable></term>
+<listitem><para>Uses <replaceable>dir</replaceable> for the output directory
+instead of the current directory.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>tieName</option> <replaceable>xxx%yyy
+</replaceable></term><listitem><para>Uses <replaceable>xxx%yyy</replaceable>
+as the pattern for naming the tie. The defaults are:<itemizedlist>
+<listitem><para><literal>%POATie</literal> for the <acronym>POA</acronym>
+tie base class (<option>f</option><literal>server</literal> or <option>fallTie
+</option>).</para>
+</listitem>
+<listitem><para><literal>%_Tie</literal> for the <literal>oldImplBase</literal>
+class (<option>oldImplBase</option> and either <option>f</option><literal>
+serverTie</literal> or <option>fallTie</option>).</para>
+</listitem>
+</itemizedlist></para>
+</listitem></varlistentry>
+<varlistentry><term><option>nowarn</option></term><term remap="15"><option>
+verbose</option> </term><listitem><para>Verbose mode.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>version</option></term><listitem><para>Displays
+version information and terminates.</para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>&envr-tt;</title>
+<variablelist termlength="narrow">
+<varlistentry><term remap="15"><envar>CLASSPATH</envar> </term><listitem>
+<para>Used to provide the system with a path to user-defined classes. Directories
+are separated by colons. For example: <informalexample><para><literal>.:/home/avh/classes:/usr/local/java/classes
+</literal> </para>
+</informalexample></para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>RESTRICTIONS</title>
+<itemizedlist>
+<listitem><para>Escaped identifiers in the global scope may not have the same
+spelling as <acronym>IDL</acronym> primitive types, <literal>Object</literal>
+or <literal>ValueBase</literal>. This is because the symbol table is pre-loaded
+with these identifiers. Allowing them to be redefined would overwrite their
+original definitions. (Possible permanent restriction).</para></listitem>
+<listitem><para>The fixed <acronym>IDL</acronym> type is not supported.</para>
+</listitem>
+</itemizedlist>
+</refsect1>
+<refsect1><title>&attr-tt;</title>
+<para>See <citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>
+5</manvolnum></citerefentry> for a description of the following attributes:
+</para>
+<informaltable frame="All" orient="Port">
+<tgroup cols="2" colsep="1" rowsep="1"><colspec colnum="1" colname="col1"
+colwidth="1*" colsep="1" align="Left"><colspec colnum="2" colname="col2" colwidth="1*"
+align="Left">
+<thead>
+<row><entry colname="col1" align="center" valign="top">ATTRIBUTE TYPE</entry>
+<entry colname="col2" align="center" valign="top">ATTRIBUTE VALUE</entry>
+</row>
+</thead>
+<tbody>
+<row><entry>Availability</entry><entry>SUNWj5<?Pub Caret>dev</entry></row>
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>5
+</manvolnum></citerefentry> </para>
+<para><citetitle>OMG IDL to Java Language Mapping Specification</citetitle></para>
+</refsect1>
+<refsect1><title>&bugs-tt;</title>
+<para>No import is generated for global identifiers. If you invoke on an unexported
+local <literal>impl</literal>, you do get an exception, but it seems to be
+due to a Null Ptr Exception in the <literal>ServerDelegate</literal> <acronym>
+DSI</acronym> code.</para>
+</refsect1>
+</refentry>
+<?Pub *0000025808>

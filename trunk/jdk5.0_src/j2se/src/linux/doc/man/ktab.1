@@ -1,0 +1,125 @@
+'\" t
+.\" @(#)ktab.1 1.10 02/06/18 SMI;
+.\" Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+.\" Copyright 2004 Sun Microsystems, Inc. Tous droits réservés.
+.\" 
+.TH ktab 1 "21 Oct 2002"
+.SH NAME
+ktab \- Kerberos key table manager 
+.LP
+.BR ktab
+allows the user to manage the principal names 
+and service keys stored in a
+local key table. Principal and key 
+pairs listed in the keytab allow services running
+on a host to authenticate themselves to the 
+Key Distribution Center (KDC). Before
+a server can be setup to use Kerberos, the 
+user must setup a keytab on the host
+running the server. Note that any updates 
+made to the keytab using ktab do not
+affect the Kerberos database. If you change the 
+keys in the keytab, you must also
+make the corresponding changes to the Kerberos database.
+.SH SYNOPSIS
+.B ktab
+[
+.IR commands " ]" 
+.SH DESCRIPTION
+.BR ktab
+manages principal name and key pairs 
+in the key table. 
+.BR ktab 
+allows the user to list, add, update 
+or delete principal names and key pairs in 
+the key table. None of these operations 
+affect the Kerberos database. 
+.LP
+.ft 3
+.B Keytab
+.LP
+A keytab is a host's copy of its own 
+keylist, which is analogous to a
+user's password. An application 
+server that needs to authenticate itself
+to the Key Distribution Center (KDC) 
+must have a keytab which
+contains its own principal and key. 
+Just as it is important for users to
+protect their passwords, it is equally 
+important for hosts to protect
+their keytabs. You should always store 
+keytab files on the local disk
+and make them readable only by root. 
+You should never send a keytab
+file over a network in the clear. 
+.SH COMMANDS
+Usage: The command line options are not case 
+sensitive.
+.LP
+.B ktab
+-help
+.LP
+.B ktab
+-l [-k <keytab_name>]
+.LP
+.B ktab
+[-a <principal_name> <password>] [-k <keytab_name>]
+.LP
+.B ktab
+[-d <principal_name>] [-k <keytab_name>]
+.LP
+.TP
+.BI \-l
+List the keytab name and entries.
+.TP
+.BI \-a
+<principal_name> <password>
+Add an entry to the keytab. No changes are made
+to the Kerberos database. (DO NOT SPECIFY YOUR
+PASSWORD ON COMMAND LINE OR IN A SCRIPT.)
+.TP
+.BI \-d 
+<principal_name>
+Delete an entry from the keytab. No changes are
+made to the Kerberos database.
+.TP
+.BI \-k
+<keytab_name>
+Specify keytab name and path with prefix FILE:
+.TP
+.BI \-help
+Displays intsructions.
+.SH EXAMPLES
+To list all the entries in the default keytable:
+.LP
+.ft 3
+.nf
+ktab -l
+.fi
+.ft 1
+.LP
+To add a new principal to the key table (note
+that you will be prompted for your password):
+.LP
+.ft 3
+.nf
+ktab -a duke@java.sun.com
+.fi
+.ft 1
+.LP
+To delete a principal from the key table:
+.LP
+.ft 3
+.nf
+ktab -d duke@java.sun.com
+.fi
+.ft 1
+.LP
+.SH SECURITY ALERT
+Do not specify your password on the command line. 
+Doing so is a security hole. For example, an
+attacker could discover your password while 
+running the Unix
+.BI ps
+command.

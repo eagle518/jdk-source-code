@@ -1,0 +1,451 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1999, v.4002-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub Inc>
+<refentry id="java-1">
+<!--@(#)java.1 1.24 01/03/14 SMI;-->
+<refmeta><refentrytitle>java</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">16 Sep 2002</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2002 Sun Microsystems, Inc. All
+rights reserved.  Copyright 2002 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.
+</refmiscinfo>
+</refmeta>
+<refnamediv><refname>java</refname><refpurpose>Java application launcher</refpurpose>
+</refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>java</command><arg choice="opt"><replaceable>options
+</replaceable></arg><arg choice="plain"><replaceable>class</replaceable></arg>
+<arg choice="opt" rep="repeat"><replaceable>argument ...</replaceable></arg>
+</cmdsynopsis>
+<cmdsynopsis><command>java</command><arg choice="opt"><replaceable>options
+</replaceable></arg><arg choice="plain"><option>jar</option>&nbsp;<replaceable>
+file.jar</replaceable></arg><arg choice="opt" rep="repeat"><replaceable>argument ...
+</replaceable></arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&parm-tt;</title>
+<variablelist termlength="narrow">
+<varlistentry><term remap="15"><replaceable>options</replaceable> </term>
+<listitem><para>Command-line options. See &opts-tt; below.</para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>class</replaceable> </term><listitem><para>
+Name of the class to be invoked.</para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>file.jar</replaceable> </term><listitem>
+<para>Name of the jar  file to be invoked. Used only with the <option>jar
+</option> option.</para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>argument</replaceable></term><listitem><para>
+Argument passed to the mainfunction. </para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="java-1-indx-1"><primary sortas="Java interpreter">Java interpreter &mdash;
+java</primary></indexterm><indexterm id="java-1-indx-2"><primary sortas="java">
+java &mdash; Java interpreter</primary></indexterm><para>The <command>java
+</command> tool launches a Java application. It does this by starting a Java
+runtime environment, loading a specified class, and invoking that class's <literal>
+main</literal> method. </para>
+<para>The method must be declared <literal>public</literal> and <literal>
+static</literal>, it must not return any value, and it must accept a <literal>
+String</literal> array as a parameter. The method declaration must look like
+the following: <informalexample><para><screen>public static void main(String args[])
+</screen></para>
+</informalexample></para>
+<para>By default, the first non-option argument is the name of the class to
+be invoked. A fully-qualified class name should be used. If the <option>jar
+</option> option is specified, the first non-option argument is the name of
+a <acronym>JAR</acronym> archive containing class and resource files for the
+application, with the startup class indicated by the Main-Class manifest header.
+</para>
+<para>The Java runtime searches for the startup class, and other classes used,
+in three sets of locations: the bootstrap class path, the installed extensions,
+and the user class path.</para>
+<para>Non-option arguments after the class name or <acronym>JAR</acronym>
+file name are passed to the main function.</para>
+</refsect1>
+<refsect1><title>&opts-tt;</title>
+<para>The launcher has a set of standard options that are supported on the
+current runtime environment and will be supported in future releases. In addition,
+the current implementations of the virtual machines support a set of non-standard
+options that are subject to change in future releases. </para>
+<refsect2>
+<title>Standard Options</title>
+<indexterm id="java-1-indx-3"><primary sortas="java">java &mdash; Java interpreter
+</primary><secondary>Standard Options</secondary></indexterm>
+<variablelist termlength="wholeline">
+<varlistentry><term remap="20"><option>client</option> </term><listitem><para>
+Selects the Java HotSpot Client <acronym remap="small">VM</acronym>. For more
+information see <ulink url="http://java.sun.com/j2se/1.5.0/docs/guide/vm/server-class.html">
+Server-Class Machine Detection</ulink>.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>server</option> </term><listitem><para>Selects
+the Java HotSpot Server <acronym remap="small">VM</acronym>. For more information
+see <ulink url="http://java.sun.com/j2se/1.5.0/docs/guide/vm/server-class.html">
+Server-Class Machine Detection</ulink>.</para>
+</listitem></varlistentry>
+<varlistentry><term>agentlib:libname[=<replaceable>options</replaceable>] 
+</term><listitem><para>Load native agent library libname, e.g. <informalexample>
+<screen>-agentlib:hprof 
+
+            -agentlib:jdwp=help 
+
+            -agentlib:hprof=help </screen>
+</informalexample>For more information, see <ulink url="http://java.sun.com/j2se/1.5.0/docs/guide/jvmti/jvmti.html">
+JVMTI Agent Command Line Options</ulink>. </para>
+</listitem></varlistentry>
+<varlistentry><term>-agentpath:pathname[=<replaceable>options</replaceable>] 
+</term><listitem><para>Load a native agent library by full pathname. For more
+information, see <ulink url="http://java.sun.com/j2se/1.5.0/docs/guide/jvmti/jvmti.html">
+JVMTI Agent Command Line Options</ulink></para>
+</listitem></varlistentry>
+<varlistentry><term><option>classpath</option> <replaceable>classpath</replaceable> 
+</term><listitem><para></para>
+</listitem></varlistentry>
+<varlistentry><term><option>cp</option> <replaceable>classpath</replaceable> 
+</term><listitem><para>Specifies a list of directories, <acronym>JAR</acronym>
+archives, and <acronym>ZIP</acronym> archives to search for class files. Class
+path entries are separated by colons (:). Specifying <option>classpath</option>
+or <option>cp</option> overrides any setting of the <envar>CLASSPATH</envar>
+environment variable.</para>
+<para> If <option>classpath</option> and <option>cp</option> are not used
+and <envar>CLASSPATH</envar> is not set, the user class path consists of the
+current directory (.).</para>
+</listitem></varlistentry>
+<varlistentry><term><option>D</option><replaceable>property=value</replaceable> 
+</term><listitem><para>Sets a system property value.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>d32</option></term><term><option>d64</option></term>
+<listitem><para>Specifies whether the program is to be run in a 32&ndash;bit
+or 64&ndash;bit environment if available. </para>
+<para>Currently, only the Java HotSpot Server VM supports 64&ndash;bit operation,
+and the <option>server</option> option is implicit with the use of <option>
+d64</option>. This is subject to change in a future release.</para>
+<para>If neither <option>d32</option> nor <option>d64</option> is specified,
+the default is to run in a 32&ndash;bit environment, except for 64&ndash;bit
+only systems. This is subject to change in a future release.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>enableassertions</option>[:<replaceable>package
+name</replaceable> ". . ." | :<replaceable>class name</replaceable> ]</term>
+<term><option>ea</option>[:<replaceable>package name</replaceable> ". . .
+" | :<replaceable>class name</replaceable></term><listitem><para>Enables assertions.
+Assertions are disabled by default.</para>
+<para>With no arguments, <option>enableassertions</option> or <option>ea</option>
+enables assertions. With one argument ending in &ldquo;. . .&rdquo;, the switch
+enables assertions in the specified package and any subpackages. If the argument
+is simply &ldquo;. . .&rdquo;, the switch enables assertions in the unnamed
+package in the current working directory. With one argument not ending in &ldquo;.
+. .&rdquo;, the switch enables assertions in the specified class.</para>
+<para>If a single command line contains multiple instances of these switches,
+they are processed in order before loading any classes. So, for example, to
+run a program with assertions enabled only in package <literal>com.wombat.fruitbat
+</literal> (and any subpackages), the following command could be used:<informalexample>
+<screen>example% <userinput>java -ea:com.wombat.fruitbat... <replaceable>
+Main Class</replaceable></userinput></screen>
+</informalexample></para>
+<para>The <option>enableassertions</option> and <option>ea</option> switches
+apply to <emphasis>all</emphasis> class loaders and to system classes (which
+do not have a class loader). There is one exception to this rule: in their
+no-argument form, the switches do <emphasis>not</emphasis> apply to system.
+This makes it easy to turn on asserts in all classes except for system classes.
+A separate switch is provided to enable asserts in all system classes. See <option>
+enablesystemassertions</option> below.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>disableassertions</option>[:<replaceable>package
+name</replaceable> ". . ." | :<replaceable>class name</replaceable> ]</term>
+<term><option>da</option>[:<replaceable>package name</replaceable> ". . ."
+| :<replaceable>class name</replaceable></term><listitem><para>Disables assertions.
+This is the default.</para>
+<para>With no arguments, <option>disableassertions</option> or <option>da
+</option> disables assertions. With one argument ending in &ldquo;. . .&rdquo;,
+the switch disables assertions in the specified package and any subpackages.
+If the argument is simply &ldquo;. . .&rdquo;, the switch disables assertions
+in the unnamed package in the current working directory. With one argument
+not ending in &ldquo;. . .&rdquo;, the switch disables assertions in the specified
+class.</para>
+<para>To run a program with assertions enabled in package <literal>com.wombat.fruitbat
+</literal> but disabled in class <literal>com.wombat.fruitbat.Brickbat</literal>,
+the following command could be used:<informalexample>
+<screen>example% <userinput>java -ea:com.wombat.fruitbat...
+      -da:com.wombat.fruitbat.Brickbat <replaceable>Main Class</replaceable></userinput></screen>
+</informalexample></para>
+<para>The <option>disableassertions</option> and <option>da</option> switches
+apply to <emphasis>all</emphasis> class loaders and to system classes (which
+do not have a class loader). There is one exception to this rule: in their
+no-argument form, the switches do <emphasis>not</emphasis> apply to system.
+This makes it easy to turn on asserts in all classes except for system classes.
+A separate switch is provided to enable asserts in all system classes. See <option>
+disablesystemassertions</option> below.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>enablesystemassertions</option></term><term><option>
+esa</option></term><listitem><para>Enables asserts in all system classes (sets
+the <replaceable>default assertion status</replaceable> for system classes
+to <literal>true</literal>).</para>
+</listitem></varlistentry>
+<varlistentry><term><option>disablesystemassertions</option></term><term><option>
+dsa</option></term><listitem><para>Disables asserts in all system classes.
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>jar</option> </term><listitem><para>Executes a
+program encapsulated in a <acronym>JAR</acronym> archive. The first argument
+is the name of a <acronym>JAR</acronym> file instead of a startup class name.
+ In order for this option to work, the manifest of the <acronym>JAR</acronym>
+file must contain a line of the form <literal>Main-Class:</literal><replaceable>
+classname</replaceable>. Here, <replaceable>classname</replaceable> identifies
+the class having the <literal>public</literal> <literal>static</literal> <literal>
+void</literal> <literal>main(String[]</literal> <literal>args)</literal> method
+that serves as your application's starting point. See the Jar tool reference
+page and the Jar trail of the Java Tutorial for information about working
+with Jar files and Jar-file manifests. </para>
+<para>When you use this option, the <acronym>JAR</acronym> file is the source
+of all user classes, and other user class path settings are ignored. </para>
+<para>Note that <acronym>JAR</acronym> files that can be run with the <command>
+java</command> <option>jar</option> option can have their execute permissions
+set so they can be run without using <command>java</command> <option>jar</option>.
+Refer to <ulink url="http://java.sun.com/j2se/1.5.0/docs/guide/jar/index.html">
+Java Archive (JAR) Files</ulink></para>
+</listitem></varlistentry>
+<varlistentry><term>javaagent:jarpath[=<replaceable>options</replaceable>] 
+</term><listitem><para>Load a Java programming language agent, see <literal>
+java.lang.instrument.</literal> </para>
+</listitem></varlistentry>
+<varlistentry><term><option>verbose</option></term><term><literal>&ndash;verbose:
+</literal><replaceable>class</replaceable></term><listitem><para>Displays
+information about each class loaded.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>verbose:gc</option> </term><listitem><para>Reports
+on each garbage collection event.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>verbose:jni</option> </term><listitem><para>Reports
+information about use of native methods and other Java Native Interface activity.
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>version</option> </term><listitem><para>Displays
+version information and exit.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>showversion</option> </term><listitem><para>Displays
+version information and continues.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>?</option> </term><term><option>help</option> 
+</term><listitem><para>Displays usage information and exit.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>X</option> </term><listitem><para>Displays information
+about non-standard options and exit.</para>
+</listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title>Non-Standard Options</title>
+<indexterm id="java-1-indx-4"><primary sortas="java">java &mdash; Java interpreter
+</primary><secondary>Non-Standard Options</secondary></indexterm>
+<variablelist termlength="wholeline">
+<varlistentry><term remap="20"><option>Xint</option> </term><listitem><para>
+Operates in interpreted-only mode. Compilation to native code is disabled,
+and all bytecodes are executed by the interpreter. The performance benefits
+offered by the Java HotSpot VM's adaptive compiler will not be present in
+this mode.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xbatch</option></term><listitem><para>Disable
+background compilation. Normally the VM will compile the method as a background
+task, running the method in interpreter mode until the background compilation
+is finished. The <option>-Xbatch</option> flag disables background compilation
+so that compilation of all methods proceeds as a foreground task until completed. 
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xdebug</option></term><listitem><para>Start with
+support for JVMDI enabled. JVMDI has been deprecated and is not used for 
+debugging in J2SE 5.0, so this option isn't needed for debugging in J2SE 5.0. 
+</para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>Xbootclasspath:</option><replaceable>
+bootclasspath</replaceable> </term><listitem><para>Specifies a colon-separated
+list of directories, <acronym>JAR</acronym> archives, and <acronym>ZIP</acronym>
+archives to search for boot class files. These are used in place of the boot
+class files included in the Java 2 SDK. Note: Applications that use this option
+for the purpose of overriding a class in <literal>rt.jar</literal> should
+not be deployed as doing so would contravene the Java 2 Runtime Environment
+binary code license. </para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xbootclasspath/a:</option><replaceable>path</replaceable> 
+</term><listitem><para>Specifies a colon-separated <replaceable>path</replaceable>
+of directories, <acronym>JAR</acronym> archives, and <acronym>ZIP</acronym>
+archives to append to the default bootstrap class path.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xbootclasspath/p:</option><replaceable>path</replaceable> 
+</term><listitem><para>Specifies a colon-separated <replaceable>path</replaceable>
+of directories, <acronym>JAR</acronym> archives, and <acronym>ZIP</acronym>
+archives to prepend in front of the default bootstrap class path. <emphasis>
+Note:</emphasis> Applications that use this option for the purpose of overriding
+a class in <literal>rt.jar</literal> should not be deployed, as doing so would
+contravene the Java 2 Runtime Environment binary code license.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xcheck:jni</option></term><listitem><para>Perform
+additional check for Java Native Interface functions.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xfuture</option> </term><listitem><para>Performs
+strict class-file format checks. For purposes of backwards compatibility,
+the default format checks performed by the Java 2 SDK's virtual machine are
+no stricter than the checks performed by 1.1.x versions of the JDK software.
+The <option>Xfuture</option> flag turns on stricter class-file format checks
+that enforce closer conformance to the class-file format specification. Developers
+are encouraged to use this flag when developing new code because the stricter
+checks will become the default in future releases of the Java application
+launcher.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xnoclassgc</option> </term><listitem><para>Disables
+class garbage collection</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xincgc</option> </term><listitem><para>Enable
+the incremental garbage collector. The incremental garbage collector, which
+is off by default, will reduce the occasional long garbage-collection pauses
+during program             execution. The incremental garbage collector will
+at times execute concurrently with the program and during such times will
+reduce the processor capacity available to the program. </para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xloggc:</option><replaceable>file</replaceable> 
+</term><listitem><para>Report on each garbage collection event, as with <option>
+verbose:gc</option>, but log this data to <replaceable>file</replaceable>.
+In addition to the information <option>verbose:gc</option> gives, each reported
+event will be preceeded by the time (in seconds)  since the first garbage-collection
+event. </para>
+<para>Always use a local file system for storage of this file to avoid stalling
+the JVM due to network latency. The file may be truncated in the case of a
+full file system and logging will continue on the truncated file. This option
+overrides <option>verbose:gc</option> if both are given on the command line. 
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xms</option><replaceable>n</replaceable> </term>
+<listitem><para>Specifies the initial size of the memory allocation pool.
+This value must be greater than 1000. To modify the meaning of <replaceable>
+n</replaceable>, append either the letter <literal>k</literal> or <literal>
+K</literal> for kilobytes or the letter <literal>m</literal> or <literal>
+M</literal> for megabytes. The default value is <literal>2MB</literal>.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xmx</option><replaceable>n</replaceable> </term>
+<listitem><para>Specifies the maximum size of the memory allocation pool.
+This value must be greater than 1000. To modify the meaning of <replaceable>
+n</replaceable>, append either the letter <literal>k</literal> or <literal>
+K</literal> for kilobytes or the letter <literal>m</literal> or <literal>
+M</literal> for megabytes. The default value is <literal>64MB</literal>. <informalexample>
+<screen> -Xmx83886080
+         -Xmx81920k
+         -Xmx80m</screen>
+</informalexample>On Solaris 7 and Solaris 8 SPARC platforms, the upper limit
+for this value will be approximately <literal>4000m</literal> minus overhead
+amounts. On Solaris 2.6 and x86 platforms, the upper limit is approximately <literal>
+2000m</literal> minus overhead amounts. On Linux platforms, the upper limit
+is approximately <literal>2000m</literal> minus overhead amounts. </para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xprof</option> </term><listitem><para>Profiles
+the running program, and sends profiling data to standard output. This option
+is provided as a utility that is useful in program development and is not
+intended to be be used in production systems.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xrunhprof[:help][:</option><replaceable>suboption
+</replaceable><literal>=</literal><replaceable>value</replaceable>,...]</term>
+<listitem><para>Enables cpu, heap, or monitor profiling. This option is typically
+followed by a list of comma-separated <replaceable>suboption</replaceable>=<replaceable>
+value</replaceable> pairs. Run the command <command>java</command> <option>
+Xrunhprof:help</option> to obtain a list of suboptions and their default values.
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xrs</option></term><listitem><para>Reduces usage
+of operating system signals by Java virtual machine (JVM).</para>
+<para>In a previous release, the Shutdown Hooks facility was added to allow
+orderly shutdown of a Java application. The intent was to allow user cleanup
+code (such  as closing database connections) to run at shutdown, even if the
+JVM terminates  abruptly. </para>
+<para>Sun Microsystems Inc.'s JVM catches signals to implement shutdown hooks
+for abnormal JVM termination. The JVM uses <systemitem class="constant">SIGHUP
+</systemitem>, <systemitem class="constant">SIGINT</systemitem>, and <systemitem
+class="constant">SIGTERM</systemitem> to initiate the running of shutdown
+hooks. The JVM uses <systemitem class="constant">SIGQUIT</systemitem> to perform
+thread dumps.</para>
+<para>The JVM uses a similar mechanism to implement the pre-1.2 feature of
+dumping  thread stacks for debugging purposes. Sun's JVM uses SIGQUIT to perform
+thread dumps.</para>
+<para>Applications embedding the JVM frequently need to trap signals like <systemitem
+class="constant">SIGINT</systemitem>or <systemitem class="constant">SIGTERM
+</systemitem>, which can lead to interference with the JVM's own signal handlers.
+The  <option>-Xrs</option> command-line option is available to address this
+issue. When <option>-Xrs</option> is used on Sun's JVM, the signal masks for <systemitem
+class="constant">SIGINT</systemitem>, <systemitem class="constant">SIGTERM
+</systemitem>, <systemitem class="constant">SIGHUP</systemitem>, and <systemitem
+class="constant">SIGQUIT</systemitem> are not changed by the JVM, and signal
+handlers for these signals are not installed. </para>
+<para>There are two consequences of specifying <option>-Xrs</option>: <simplelist>
+<member><systemitem class="constant">SIGQUIT</systemitem> thread dumps are
+not available. </member>
+<member>User code is responsible for causing shutdown hooks to run, for example
+by calling <literal>System.exit()</literal> when the JVM is to be terminated. 
+</member></simplelist></para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xss</option><replaceable>n</replaceable> </term>
+<listitem><para>Each Java thread has two stacks: one for Java code and one
+for C code. The <option>Xss</option> option sets the maximum stack size that
+can be used by C code in a thread to <replaceable>n</replaceable>. Every thread
+that is spawned during the execution of the program passed to <command>java
+</command> has <replaceable>n</replaceable> as its C stack size. The default
+units for <replaceable>n</replaceable> are bytes and <replaceable>n</replaceable>
+must be > 1000 bytes. To modify the meaning of <replaceable>n</replaceable>,
+append either the letter <literal>k</literal> for kilobytes or the letter
+ <literal>m</literal> for megabytes. The default stack size is 512 kilobytes
+(<option>Xss</option><literal>512k</literal>).</para>
+</listitem></varlistentry>
+<varlistentry><term><option>XX:+UseAltSigs</option></term><listitem><para>
+The VM uses <systemitem>SIGUSR1</systemitem> and <systemitem>SIGUSR2</systemitem>
+by default, which can sometimes conflict with applications that signal-chain <systemitem>
+SIGUSR1</systemitem> and <systemitem>SIGUSR2</systemitem>. The <option>XX:+UseAltSigs
+</option> option will cause the VM to use signals other than <systemitem>
+SIGUSR1</systemitem> and <systemitem>SIGUSR2</systemitem> as the default.
+</para>
+</listitem></varlistentry>
+</variablelist></refsect2>
+</refsect1>
+<refsect1><title>&attr-tt;</title>
+<para>See <citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>
+5</manvolnum></citerefentry> for a description of the following attributes: 
+</para>
+<informaltable frame="all" orient="port">
+<tgroup cols="2" colsep="1" rowsep="1"><colspec colnum="1" colname="col1"
+colwidth="1*" colsep="1" align="left"><colspec colnum="2" colname="col2" colwidth="1*"
+align="left">
+<thead>
+<row><entry colname="col1" align="center" valign="top">ATTRIBUTE TYPE</entry>
+<entry colname="col2" align="center" valign="top">ATTRIBUTE VALUE</entry>
+</row>
+</thead>
+<tbody>
+<row><entry>Availability</entry><entry>SUNWj5rt, SUNWj5dev</entry></row>
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>javac</refentrytitle><manvolnum>1</manvolnum>
+</citerefentry>, <citerefentry><refentrytitle>jdb</refentrytitle><manvolnum>
+1</manvolnum></citerefentry>, <citerefentry><refentrytitle>javah</refentrytitle>
+<manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>jar
+</refentrytitle><manvolnum>1</manvolnum></citerefentry> </para>
+<para>See (or search <literal>java.sun.com</literal>) for the following:</para>
+<variablelist termlength="wholeline">
+<varlistentry><term remap="10"><citetitle>The Java Extensions Framework </citetitle>
+@</term><listitem><para><ulink url="http://java.sun.com/j2se/1.4/docs/tooldocs/sguide/extensions/index.html"></ulink>http://java.sun.com/j2se/1.5.0/docs/guide/extensions/index.html
+</para>
+</listitem></varlistentry>
+<varlistentry><term><citetitle>Security Features</citetitle> @</term><listitem>
+<para><ulink url="http://java.sun.com/j2se/1.4/docs/tooldocs/guide/security/index.html"></ulink>http://java.sun.com/j2se/1.5.0/docs/guide/security/index.html
+</para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<!--+ 07/27/00 08:33:40
+    | tagMorph:  $Id: tagMorph-engine 1.54 1998/01/19 05:44:48 $
+    | tagMorph library:  $Id: libtagMorph.a 1.50 1998/01/19 22:02:51 $
+    | sunman-to-solbook 1.17
+    +-->
+<?Pub Caret></refentry>
+<?Pub *0000027107>

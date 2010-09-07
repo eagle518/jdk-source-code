@@ -1,0 +1,130 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1999, v.4002-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub Inc>
+<refentry id="javaws">
+<!--@(#)javaws.1	1.8 04/04/04 SMI;-->
+<refmeta><refentrytitle>javaws</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">2004 年 6 月 22 日</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All
+rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.
+</refmiscinfo>
+</refmeta>
+<refnamediv><refname>javaws</refname><refpurpose>Java Web Start 起動コマンド</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>javaws</command><arg choice="opt">[ options ]</arg>&nbsp;
+<replaceable>[ URL ]</replaceable>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>パラメータ</title>
+<para>オプションの順序は任意です。個々のオプションについては、後述の「オプション」節を参照してください。</para>
+<varlistentry><term remap="15">options</term><listitem><para>コマンド行オプションです。後述の「オプション」節を参照してください。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15">URL</term><listitem><para>JNLP (Java Network Launching Protocol) ファイルの URL (Uniform Resource Locator) です。</para>
+</listitem></varlistentry>
+</refsect1>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="native2ascii-1-indx-1"><primary sortas="native to ASCII converter">ネイティブから ASCII への変換 &mdash; native2ascii</primary></indexterm><indexterm
+id="native2ascii-1-indx-2"><primary sortas="native2ascii">native2ascii &mdash;
+ネイティブから ASCII への変換</primary></indexterm><para><command>javaws</command> コマンドにより JNLP (Java Network Launching Protocol) のリファレンス実装である Java Web Start を起動できます。Java Web Start はネットワーク上に置かれる Java アプリケーションまたはアプレットを起動します。</para>
+<para>オプションを何も指定しないと、<command>javaws</command> は Java Web Start アプリケーションマネージャを起動します。Java Web Start アプリケーションマネージャを使用すると、ユーザはアプリケーションまたはアプレットを起動したり、Java Web Start を構成したりできます。</para>
+<para>JNLP (Java Network Launching Protocol) ファイルを指す URL を指定すると、<command>javaws</command> は JNLP ファイルに指定されている Java アプリケーションまたはアプレットを起動します。</para>
+</refsect1>
+<refsect1><title>オプション</title>
+<para>これらの <command>javaws</command> 起動ツールのオプションは現在のリリースでサポートされています。将来のリリースでは、これらのオプションは削除される可能性があります。<option>X</option> オプションはすべて非標準であるため、変更される可能性があります。</para>
+<variablelist termlength="wholeline">
+<varlistentry><term><option>online</option></term><listitem><para>オンラインモードで起動します (デフォルトの動作)。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>offline</option> </term><listitem><para>Java Web Start をオフラインモードで実行します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xclearcache</option></term><listitem><para>ユーザのキャッシュをクリアします。このコマンドが完了すると、Java Web Start は終了します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>uninstall</option><replaceable> URL</replaceable></term>
+<listitem><para>JNLP を指す <replaceable>URL</replaceable> で指定したアプリケーションまたはアプレットをユーザのキャッシュから削除します。このコマンドが完了すると、Java Web Start は終了します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>import</option></term><listitem><para><replaceable>URL</replaceable> で指定したアプリケーションをユーザのキャッシュにインポートします。実行はしません。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>silent</option></term><listitem><para><option>import</option> オプションと一緒に使用すると、サイレントモードでインポートします。UI は表示されません。プロセスの終了コードは成功が 0、失敗が 1 になります。
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>codebase</option><replaceable> URL</replaceable></term>
+<listitem><para>リソースのインポート時に指定した jnlp ファイル内の codebase を <replaceable>URL</replaceable> で置換します。<replaceable><replaceable>URL </replaceable></replaceable> は有効な URL でなければなりません。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>system</option></term><listitem><para>ユーザキャッシュの代わりにシステムキャッシュを使用します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>shortcut</option></term><listitem><para>サイレントインポート中にショートカットを作成できます。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>association</option></term><listitem><para>サイレントインポート中に関連付けを作成できます。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>open<?Pub Caret> arguments</option></term><listitem>
+<para>指定すると、jnlp ファイル内の引数を &ldquo;-open arguments&rdquo; で置換します。
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>print arguments</option></term><listitem><para>
+指定すると、jnlp ファイル内の引数を &ldquo;-print arguments&rdquo; で置換します。
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>userConfig </option><replaceable>property-name
+</replaceable></term><listitem><para>指定された配備プロパティ <replaceable>property-name</replaceable> をクリアします。このコマンドが完了すると、Java Web Start は終了します。
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>userConfig  </option><replaceable>property-name
+</replaceable> <replaceable>property-value</replaceable></term><listitem>
+<para>指定された配備プロパティ <replaceable>property-name</replaceable> を指定された値 <replaceable>property-value</replaceable> に設定します。このコマンドが完了すると、Java Web Start は終了します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>updateVersions</option></term><listitem><para>
+現在のマシンの設定に基づいて Java Web Start 構成ファイルを更新します。
+このコマンドが完了すると、Java Web Start は終了します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xnosplash</option></term><listitem><para>初期スプラッシュ画面の表示を無効にします。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>viewer</option></term><listitem><para>Java アプリケーションキャッシュビューアを実行します (URL が指定されていない場合はデフォルト)。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>wait</option></term><listitem><para>指定すると、アプリケーションが終了するまで javaws プロセスは終了しません。</para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>終了ステータス</title>
+<para>次の終了値が返されます。</para>
+<variablelist termlength="narrow">
+<varlistentry><term remap="20">0 </term><listitem><para>完了</para>
+</listitem></varlistentry>
+<varlistentry><term>>0</term><listitem><para>エラー</para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>ファイル</title>
+<variablelist>
+<varlistentry><term><filename>$HOME/.java/deployment/deployment.properties
+</filename></term><listitem><para>Java 配備製品のユーザ構成ファイル</para>
+</listitem></varlistentry>
+<varlistentry><term><filename>/etc/.java/deployment/deployment.config
+</filename></term><listitem><para>Java 配備製品のエンタープライズ構成ファイル</para>
+</listitem></varlistentry>
+<varlistentry><term><filename>$JRE_HOME/lib/deployment.config
+</filename></term><listitem><para>Java 配備製品の代替エンタープライズ構成ファイル</para>
+</listitem></varlistentry>
+<varlistentry><term><filename>$HOME/.mailcap</filename></term><listitem><para>Netscape/Mozilla ブラウザのヘルパーアプリケーションを指定するためのユーザ用 mailcap ファイル</para>
+</listitem></varlistentry>
+<varlistentry><term><filename>$HOME/.mime.types</filename></term><listitem><para>Netscape/Mozilla ブラウザでサポートされる mimetype を指定するためのユーザ用 mimetype ファイル</para>
+</listitem></varlistentry>
+<varlistentry><term><filename>/etc/mailcap</filename></term><listitem><para>Netscape/Mozilla ブラウザのヘルパーアプリケーションを指定するためのシステム用 mailcap ファイル</para>
+</listitem></varlistentry>
+<varlistentry><term><filename>/etc/mime.types</filename></term><listitem><para>Netscape/Mozilla ブラウザでサポートされる mimetype を指定するためのシステム用 mimetype ファイル</para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>java</refentrytitle><manvolnum>1</manvolnum>
+</citerefentry>, <citerefentry><refentrytitle>jar</refentrytitle><manvolnum>
+1</manvolnum></citerefentry>, <citerefentry><refentrytitle>pack200</refentrytitle>
+<manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry> </para>
+<variablelist termlength="wholeline">
+<varlistentry><listitem><para><para></para>http://java.sun.com/j2se/1.5.0/docs
+</para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+</refentry>

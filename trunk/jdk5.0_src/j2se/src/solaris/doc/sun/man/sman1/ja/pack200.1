@@ -1,0 +1,158 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1998, v.4001-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub Inc>
+<refentry id="pack200-1">
+<!-- @(#)pack200.1	1.6 04/04/02-->
+<refmeta><refentrytitle>pack200</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">2004 年 7 月 14 日</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.</refmiscinfo>
+</refmeta>
+<refnamediv><refname>pack200</refname><refpurpose>JAR パックツール</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>pack200</command><arg choice="opt"><replaceable>options</replaceable></arg><arg choice="plain"><replaceable>output-file</replaceable></arg>
+<arg choice="plain"><replaceable>JAR-file</replaceable></arg> 
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&parm-tt;</title>
+<para>オプションの指定順序に決まりはありません。コマンド行または properties ファイルに指定された最後のオプションが、それ以前に指定されたすべてのオプションより優先されます。オプションについては、以下の「&opts-tt;」の説明を参照してください。</para>
+<variablelist termlength="narrow"><varlistentry><term><replaceable>options</replaceable> </term><listitem><para>以下の「オプション」を参照してください。</para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>output-file</replaceable> </term><listitem><para>出力ファイルの名前。</para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>JAR-file</replaceable> </term><listitem><para>入力ファイルの名前。</para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="java-1-indx-1"><primary sortas="Java interpreter">Pack200 &ndash; パックツール</primary></indexterm>
+<para>pack200 ツールは、Java gzip 圧縮ツールを使って JAR ファイルを圧縮 pack200 ファイルに変換する Java アプリケーションです。圧縮パックファイルは高圧縮の JAR ファイルです。帯域幅の節約とダウンロード時間の短縮のため、直接配備できます。</para>
+<para>pack200 ツールには、圧縮エンジンの設定や微調整を行うオプションが用意されています。</para>
+<para>一般的な使用方法:<informalexample>
+<para><screen>% pack200 myarchive.pack.gz myarchive.jar</screen></para>
+</informalexample></para>
+<para>この例では、デフォルトの pack200 の設定で <filename>myarchive.pack.gz</filename> が作成されます。</para>
+</refsect1>
+<refsect1><title>&opts-tt;</title>
+<variablelist termlength="wholeline"><varlistentry><term remap="20"><option>r</option> <option>-repack</option></term><listitem><para>myarchive.jar ファイルのパックまたはアンパックにより、JAR ファイルを作成します。作成されたファイルは、jarsigner(1) ツールの入力ファイルとして使用できます。<informalexample><screen>% pack200 --repack myarchive-packed.jar myarchive.jar</screen>
+</informalexample><informalexample><screen>% pack200 --repack myarchive.jar</screen>
+</informalexample></para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>g</option> <option>-no-gzip</option></term><listitem><para>pack200 ファイルを作成します。このオプションを指定するときは、適切な圧縮ツールを使用する必要があります。また、ターゲットシステムでは、対応する圧縮解除ツールを使用する必要があります。<informalexample><screen>example% pack200 --no-gzip myarchive.pack myarchive.jar</screen>
+</informalexample></para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>G</option> <option>-strip-debug</option></term><listitem><para>出力からデバッグ用の属性を削除します。対象となる属性には、SourceFile、LineNumberTable、LocalVariableTable、および LocalVariableTypeTable などがあります。これらの属性を削除すれば、ダウンロードとインストールのサイズは小さくなりますが、デバッガの機能は制限されます。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>O</option> <option>-no-keep-file-order</option></term><listitem><para>パックツールは、すべての要素を並べ替えて転送します。また、JAR ディレクトリ名を削除します。このため、ダウンロードのサイズは小さくなりますが、インデックスをはじめとする JAR ファイルの最適化機能は正常に動作しなくなることがあります。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>Svalue</option> <option>-segment-limit=value</option></term><listitem><para>各アーカイブセグメントの予測ターゲットサイズ N (バイト) を指定します。N バイト以上を必要とする単一の入力ファイルには、独立したアーカイブセグメントが割り当てられます。たとえば、これは特殊な例ですが、値が -1 の場合、すべての入力ファイルを含む単一の巨大なセグメントが生成されます。一方、値が 0 の場合、クラスごとにセグメントが 1 つずつ生成されます。アーカイブセグメントのサイズが大きければ大きいほど断片化は起こりにくく、圧縮率も高くなります。しかし、こうしたセグメントを処理するためには、大量のメモリが必要になります。</para>
+<para>各セグメントのサイズは、セグメント内で転送される入力ファイルのサイズと、このファイルの名前のサイズ、およびその他の転送プロパティによって予測されます。</para>
+<para>デフォルトのサイズは 1000000 (百万バイト) です。これは、標準サイズの入力 JAR ファイルを単一セグメント内で転送できるサイズです。パックツールおよびアンパックツールのメモリ要件には制限が課されます。</para>
+<para>この制限が課されていない 10M バイトの JAR パックファイルは通常、元の 10% 程度のサイズにパックされます。しかし、パックツールでより大きな Java ヒープ (セグメントの制限の約 10 倍) を必要とする場合もあります。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>Evalue</option> <option>-effort=value</option></term><listitem><para>単一の 10 進数値を指定した場合、パックツールは、指定された圧縮率でアーカイブを圧縮します。レベル 1 の場合、圧縮速度は速くても圧縮率はそれほど高くありません。レベル 9 の場合、圧縮速度は遅くても圧縮率は高くなります。特殊な値 0 を指定した場合は、元の JAR ファイルを圧縮なしで直接コピーします。JSR 200 標準では、すべてのアンパックツールはこの特殊な処理をアーカイブ全体のパススルーとして理解する必要があります。</para>
+<para>デフォルト値は 5 です。この場合、標準的な時間で、適度な圧縮が行われます。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>Hvalue</option> <option>-deflate-hint=value</option></term><listitem><para>デフォルト値を上書きし、入力情報を保存します。転送されるアーカイブのサイズは大きくなります。次の値を指定できます。</para>
+<variablelist><varlistentry><term>true</term><listitem></listitem></varlistentry>
+<varlistentry><term>false</term><listitem><para>どちらの場合でも、パックツールはデフレーションヒントを出力アーカイブに設定します。アーカイブ要素の個々のデフレーションヒントは転送しません。</para>
+</listitem></varlistentry>
+<varlistentry><term>keep</term><listitem><para>入力 JAR 内のデフレーションヒントを保存します (デフォルト)。</para>
+</listitem></varlistentry>
+</variablelist>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>mvalue</option> <option>-modification-time=value</option></term><listitem><para>次の値を指定できます。</para>
+<variablelist><varlistentry><term>latest</term><listitem><para>パックツールは、元のアーカイブの全エントリの最終更新時刻か、そのセグメントのすべてのエントリの最終更新時刻を特定しようとします。この単一の値はセグメントの一部として転送され、各セグメントの全エントリに適用されます。この場合、すべてのインストールファイルに単一の日付が設定されるという問題はありますが、アーカイブの転送サイズを少し小さくすることができます。</para>
+</listitem></varlistentry>
+<varlistentry><term>keep</term><listitem><para>入力 JAR 内の更新時刻を保存します (デフォルト)。</para>
+</listitem></varlistentry>
+</variablelist>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>Pfile</option> <option>-pass-file=file</option></term><listitem><para>ファイルを圧縮せず、バイト単位で転送するように指定します。このオプションを繰り返し使用して、複数のファイルを指定できます。パス名の変換は行われません。システムファイルの区切り文字が JAR ファイルの区切り文字 '/' で置き換えられるだけです。ファイル名は、JAR ファイル内の文字列と完全に一致していなければなりません。file にディレクトリ名を指定した場合、そのディレクトリ内のすべてのファイルが転送されます。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>Uaction</option> <option>-unknown-attribute=action</option></term><listitem><para>デフォルトの動作を無効にします。たとえば、不明な属性を含むクラスファイルを指定したアクションで転送します。アクションとして次の値を指定できます。</para>
+<variablelist><varlistentry><term>error</term><listitem><para>pack200 の操作に失敗し、適切な解説が表示されます。</para>
+</listitem></varlistentry>
+<varlistentry><term>strip</term><listitem><para>属性はドロップされます。注: VM 必須属性を削除するとクラスローダの障害が発生することがあります。</para>
+</listitem></varlistentry>
+<varlistentry><term>pass</term><listitem><para>この属性が検出された場合、クラス全体が 1 つのリソースとして転送されます (デフォルト)。</para>
+</listitem></varlistentry>
+</variablelist>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>Cattribute-name=layout</option> <option>-class-attribute=attribute-name=action</option></term></varlistentry>
+<varlistentry><term remap="20"><option>Fattribute-name=layout</option> <option>-field-attribute=attribute-name=action</option></term></varlistentry>
+<varlistentry><term remap="20"><option>Mattribute-name=layout</option> <option>-method-attribute=attribute-name=action</option></term></varlistentry>
+<varlistentry><term remap="20"><option>Dattribute-name=layout</option> <option>-code-attribute=attribute-name=action</option></term><listitem><para>これら 4 つのオプションでは、クラスエンティティに Class 属性、Field 属性、Method 属性、Code 属性などの属性のレイアウトを指定できます。attribute-name には、これからレイアウトまたはアクションを定義する属性の名前を指定します。</para>
+<para>アクションとして指定可能な値:</para>
+<variablelist><varlistentry><term>(一部のレイアウト文字列)</term><listitem><para>レイアウト言語は、JSR 200 仕様に定義されています。</para>
+<informalexample>
+<para>例: &ndash;&ndash;class-attribute=SourceFile=RUH.</para>
+</informalexample>
+</listitem></varlistentry>
+<varlistentry><term>error</term><listitem><para>この属性が検出された場合、pack200 の操作に失敗し、適切な解説が表示されます。</para>
+</listitem></varlistentry>
+<varlistentry><term>strip</term><listitem><para>この属性が検出された場合、属性は出力から削除されます。注: VM 必須属性を削除するとクラスローダの障害が発生することがあります。</para>
+</listitem></varlistentry>
+<varlistentry><term>pass</term><listitem><informalexample>
+<para>この属性が検出された場合、クラス全体が 1 つのリソースとして転送されます。</para>
+<informalexample>
+<para> --class-attribute=CompilationID=pass</para>
+<para>この属性を含むクラスファイルを転送します。パックツールは、その他のアクションを行いません。</para>
+</informalexample>
+</informalexample>
+</listitem></varlistentry>
+</variablelist>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>fpack.properties</option> <option>-config-file=pack.properties</option></term><listitem><para>コマンド行に、パックツールを初期化するための Java プロパティが含まれている設定ファイルを指定できます。</para>
+<informalexample><screen> % pack200 -fpack.properties myarchive.pack.gz myarchive.jar
+        % cat pack.properties
+        # Generic properties for the packer.
+        modification.time=latest
+        deflate.hint=false
+        keep.file.order=false
+        # This option will cause the files bearing new attributes to
+        # be reported as an error rather than passed uncompressed.
+        unknown.attribute=error
+        # Change the segment limit to be unlimited.
+        segment.limit=-1</screen>
+</informalexample>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>v</option> <option>-verbose</option> </term><listitem><para>最小限のメッセージを出力します。このオプションを複数指定すると、より長いメッセージが出力されます。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>q</option> <option>-quiet</option> </term><listitem><para>メッセージを表示せずに動作します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>lfilename</option> <option>-log-file=filename</option> </term><listitem><para>出力メッセージのログファイル。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Joption</option></term><listitem><para>pack200 によって呼び出される Java コマンドにオプションを渡します。たとえば <command>-J-Xms48<?Pub Caret>m</command> と指定した場合、起動メモリが 48M バイトに設定されます。-X で始まってはいませんが、pack200 の標準オプションではありません。慣習として、-J には Java で書かれたアプリケーションを実行する VM にオプションを渡す働きがあります。</para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<refsect1><title>終了ステータス</title>
+<para>次の終了値が返されます。</para>
+<variablelist termlength="narrow"><varlistentry><term remap="20">0 </term><listitem><para>成功</para>
+</listitem></varlistentry>
+<varlistentry><term>>0</term><listitem><para>エラー</para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>unpack200</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>jar</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>jarsigner</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry> </para>
+<para>次の情報を参照、または <literal>java.sun.com</literal> で検索してください。</para>
+<variablelist termlength="wholeline"><varlistentry><term remap="10"><citetitle>Java API Specification</citetitle> @</term><listitem><para><ulink url="http://java.sun.com/j2se/5.0/docs/"></ulink>http://java.sun.com/j2se/5.0/docs/</para>
+</listitem></varlistentry>
+<varlistentry><term><citetitle>Java 配備ガイド</citetitle> @</term>
+<listitem><para><ulink url="http://java.sun.com/j2se/5.0/docs/guide/deployment/deployment-guide/pack200.html"></ulink>http://java.sun.com/j2se/5.0/docs/guide/deployment/deployment-guide/pack200.html</para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<refsect1><title>&note-tt;</title>
+<para>このコマンドと pack(1) コマンドを混同しないでください。これらは別製品です。</para>
+<para>ドキュメント間に矛盾がある場合、今回の JDK リリース付属の J2SE API 仕様が最優先されます。</para>
+</refsect1>
+</refentry>
+<?Pub *0000012319 0>

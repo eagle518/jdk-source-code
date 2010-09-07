@@ -1,0 +1,1305 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1998, v.4001-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub EntList minus bsol>
+<?Pub Inc>
+<refentry id="javadoc-1">
+<!--@(#)javadoc.1 1.16 01/03/14 SMI;-->
+<refmeta><refentrytitle>javadoc</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">2004 年 6 月 22 日</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.</refmiscinfo>
+</refmeta>
+<refnamediv><refname>javadoc</refname><refpurpose>Java API ドキュメントジェネレータ</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>javadoc</command><arg choice="opt"><replaceable>options</replaceable></arg><arg choice="opt"><replaceable>packagenames</replaceable></arg><arg choice="opt"><replaceable>sourcefilenames</replaceable></arg><arg choice="opt"><replaceable>subpackages [pkg1:pkg2:...]</replaceable></arg><arg choice="opt"><replaceable>@argfiles</replaceable></arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&parm-tt;</title>
+<para>引数の順序は任意です。</para>
+<variablelist termlength="narrow"><varlistentry><term remap="15"><replaceable>options</replaceable></term><listitem><para>このドキュメントで指定されているコマンド行オプションです。<command>javadoc</command> のオプションの一般的な使用法については、「使用例」を参照してください。</para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>packagenames</replaceable> </term><listitem><para><literal>java.lang java.lang.reflect java.awt</literal> などの、スペースで区切られた一連のパッケージ名です。ドキュメント化するパッケージごとに別個に指定する必要があります。<command>javadoc</command> ツールはこれらのパッケージ名を探すとき、<option>sourcepath</option> を使用します。<command>javadoc</command> ツールは、サブパッケージを再帰的に処理することはありません。アスタリスク (<literal>*</literal>) などのワイルドカードは使うことができません。「1 つ以上のパッケージのドキュメント化」を参照してください。</para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>sourcefilenames</replaceable> </term><listitem><para>スペースで区切られた一連のファイル名です。パス、およびアスタリスク (<literal>*</literal>) などのワイルドカードを含めることができます。<command>javadoc</command> ツールが処理するのは、ファイル名が「<literal>.java</literal>」という拡張子で終わり、その拡張子を除いた名前が実際に有効なクラス名であるすべてのファイルです。したがって、ハイフンを含む名前 (<literal>X-Buffer</literal> など) や、その他の無効な文字を含む名前を付けることによって、それらのファイルをドキュメント化の対象から除外できます。これは、テスト用のファイルや、テンプレートから生成されたファイルの場合に便利です。<command>javadoc</command> ツールは、ソースファイル名の前にあるパスを使用して、ソースファイル名を探します。<option>sourcepath</option> は使用しません。たとえば、<literal>Button.java</literal> を渡すことは <literal>./Button.java</literal> と指定することと同じです。完全パスを付けたソースファイル名の例は「<literal>/home/src/java/awt/Graphics*.java</literal>」のようになります。「1 つ以上のクラスのドキュメント化」を参照してください。また、「パッケージとクラスのドキュメント化」のように、パッケージ名とソースファイル名を組み合わせることもできます。</para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>subpackages pkg1:pkg2:...</replaceable></term><listitem><para>指定されたパッケージ内のソースファイルからドキュメントを生成し、再帰的にサブパッケージを処理します。パッケージ名またはソールファイル名を供給するための代替手段です。</para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>@argfiles</replaceable> </term><listitem><para>Javadoc オプション、パッケージ名、およびソースファイル名を任意の順序で並べたリストが含まれる 1 つ以上のファイルです。このファイルの中では、ワイルドカード (<literal>*</literal>) および <replaceable>-J</replaceable> オプションは指定できません。</para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<refsect1><title>機能説明</title>
+<para><command>javadoc</command> ツールは、一連の Java ソースファイルの宣言およびドキュメンテーションコメントを解析し、デフォルトでは public クラスと protected クラス、入れ子のクラス (匿名の内部クラスを除く) 、インタフェース、コンストラクタ、メソッド、およびフィールドについて説明した一連の HTML ページを生成します。</para>
+<para><command>javadoc</command> ツールは、パッケージ全体、個々のソースファイル、またはその両方に対して実行できます。<command>javadoc</command> をパッケージ全体に対して実行する場合は、一連のパッケージ名を <command>javadoc</command> に引数として渡します。個々のクラスに対して <command>javadoc</command> を実行する場合は、一連のソース (<literal>.java</literal>) ファイル名を渡します。具体的な例は、このドキュメントの最後で示します。</para>
+<para><emphasis>注</emphasis>: <command>javadoc</command> ツールにパッケージ名を渡すと、現在のリリースでは指定されたパッケージディレクトリ内のすべての <literal>.java</literal> クラスが処理されます。これは、<literal>.java</literal> ファイルがコード例である場合や指定されたパッケージの実際のメンバではないその他のクラスである場合も同様です。<command>javadoc</command> は、パッケージ宣言用の各 <literal>.java</literal> ファイルを解析しません。このような解析は、将来のリリースで追加される可能性があります。</para>
+<para>javadoc ツールは、処理の実行中に、ドキュメント化されるパッケージ、クラス、およびメンバの名前に対して、自動的に相互参照リンクを追加します。このようなリンクは、次のような場所に追加されます。<itemizedlist>
+<listitem><para>宣言 (戻り値の型、引数の型、フィールドの型) </para>
+</listitem><listitem><para><literal>@see</literal> タグから生成された [関連項目] セクション</para>
+</listitem><listitem><para><literal>{@link}</literal> タグから生成されたインラインテキスト</para>
+</listitem><listitem><para><literal>@throws</literal> タグから生成された例外の名前 </para>
+</listitem><listitem><para>インタフェースのメンバに対する [定義] リンクと、クラスのメンバに対する [オーバーライド] リンク</para>
+</listitem><listitem><para>パッケージ、クラス、およびメンバを列挙している概要テーブル </para>
+</listitem><listitem><para>パッケージおよびクラスの継承ツリー </para>
+</listitem><listitem><para>索引</para>
+</listitem></itemizedlist></para>
+<para>コマンド行で指定しなかったクラスについての既存のテキスト (別に生成したテキスト) に対してハイパーリンクを追加するには、<literal>link</literal> および <literal>linkoffline</literal> オプションを利用できます。</para>
+<para><command>javadoc</command> ツールは、実行のたびにひとつの完全なドキュメントを生成します。<command>javadoc</command> ツールは、追加生成は行えません。つまり、以前の <command>javadoc</command> ツール実行の結果を変更したり、それらを直接取り込んだりはできません。しかし、前述のように、以前の実行の結果にリンクすることは可能です。</para>
+<para>実装上の理由から、<command>javadoc</command> ツールは実行に java コンパイラを必要とし、java コンパイラに依存しています。<command>javadoc</command> ツールは <command>javac</command> の一部を呼び出して、宣言をコンパイルし、メンバの実装は無視します。<command>javadoc</command> は、クラス階層を含むクラスの豊富な内部表現、および「使用」関係を構築し、そこから HTML を生成します。<command>javadoc</command> は、ソースコードのドキュメンテーションコメントから、ユーザの提供するドキュメントも取得します。</para>
+<para><command>javadoc</command> ツールは、メソッド本体のない純粋なスタブファイルである <literal>.java</literal> ソースファイル上で実行されます。つまり、<acronym>API</acronym> の作成時には、コードを記述する前の設計の早い段階でドキュメンテーションコメントを記述し、<command>javadoc</command> ツールを実行できます。</para>
+<para>コンパイラに依存することによって、HTML 出力が、実際の実装に正確に対応することが保証されます。実際の実装は、明示的でなく暗黙的にソースコードに依存している場合があります。たとえば、<command>javadoc</command> ツールは、<literal>.class</literal> ファイル内には存在するが、ソースコード内には存在しないデフォルトコンストラクタをドキュメント化 (「Java 言語仕様」のセクション 8.6.7) します。</para>
+<para>多くの場合、<command>javadoc</command> ツールでは、ソースファイルのコードが不完全またはエラーを含んでいる場合でもドキュメントを生成できます。このため、デバッグや障害追跡が完了する前にドキュメントを生成できます。たとえば、Java 言語仕様によると、抽象メソッドを含むクラスはそれ自体を抽象と宣言しなければなりません。このエラーを検出すると、javac コンパイラの場合は、このエラーで停止しますが、<command>javadoc</command> ツールは警告を出さずに処理を進めます。<command>javadoc</command> ツールはドキュメンテーションコメントの基本的なチェックを行います。ドキュメンテーションコメントをより詳しくチェックする必要がある場合は、DocCheck ドックレットを使用してください。</para>
+<para><command>javadoc</command> ツールがドキュメント用の内部構造を構築するときは、参照するクラスをすべてロードします。このため、ブートストラップクラス、拡張機能、またはユーザクラスにかかわらず、<command>javadoc</command> ツールは、参照するクラスをすべて検索できなければなりません。一般的に、作成するクラスは、拡張機能としてロードされるか、<command>javadoc</command> ツールのクラスパス内にある必要があります。</para>
+<refsect2><title>Javadoc ドックレット</title>
+<para><command>javadoc</command> ツールの出力の内容と形式は、ドックレットを使ってカスタマイズできます。<command>javadoc</command> ツールには、標準ドックレットと呼ばれるデフォルトの「組み込み型」ドックレットがあり、これによって HTML 形式の <acronym>API</acronym> ドキュメントを生成します。標準ドックレットの修正やサブクラス化を行なったり、HTML、XML、MIF、RTF などの好みの出力形式を生成する独自のドックレットを記述することも可能です。ドックレットとその使用法については、次を参照してください。</para>
+<itemizedlist>
+<listitem><para><command>javadoc</command> に施された機能強化</para>
+</listitem><listitem><para><option>doclet</option> コマンド行オプション</para>
+</listitem></itemizedlist>
+<para><option>doclet</option> コマンド行オプションでカスタムドックレットが指定されていない場合、<command>javadoc</command> ツールは、デフォルトの標準ドックレットを使用します。<command>javadoc</command> ツールには、どのドックレットが使われているかには関係なく使用できるコマンド行オプションがあります。標準ドックレットでは、これらのほかに、いくつかのコマンド行オプションが追加されます。どちらのオプションについても、後述の「オプション」で説明します。</para>
+</refsect2>
+<refsect2><title>関連ドキュメントおよびドックレット</title>
+<itemizedlist>
+<listitem><para><literal>Javadoc に施された機能強化</literal> - Javadoc 1.4 で追加された改良点の詳細 </para>
+</listitem><listitem><para><literal>Javadoc FAQ</literal> - 頻繁に寄せられる質問に対する回答、Javadoc 関連のツールについての情報、およびバグの回避方法 </para>
+</listitem><listitem><para><literal>Javadoc のドキュメンテーションを作成するには</literal> - Sun で一般的なドキュメンテーションコメントの記述方法の詳細</para>
+</listitem><listitem><para><literal>API 仕様を記述するための要件</literal> - Java 2 プラットフォーム仕様を記述する際に使用された標準要件。この情報は、ソースファイルのドキュメンテーションコメント形式で API 仕様を記述する場合にも、その他の形式で記述する場合にも役立ちます。検証可能なアサーションを満たすパッケージ、クラス、インタフェース、フィールド、およびメソッドについての要件を定めています。 </para>
+</listitem><listitem><para><literal>ドキュメンテーションコメントの仕様</literal> - ドキュメンテーションコメントのオリジナル仕様については、『Java Language Specification』 (James Gosling、Bill Joy、Guy Steele 共著) の初版の第 18 章「Documentation Comments」を参照してください。この章は、第 2 版では削除されました。</para>
+</listitem><listitem><para><literal>DocCheck ドックレット</literal> - ソースファイル内のドキュメンテーションコメントを検査し、見つかったエラーや不規則な箇所を一覧にしたレポートを生成します。これは Sun Doc チェックユーティリティの一部です。</para>
+</listitem><listitem><para><literal>MIF ドックレット</literal> - MIF、FrameMaker、および PDF 形式での API ドキュメントの生成を自動化します。MIF は Adobe FrameMaker の互換形式です。 </para>
+</listitem></itemizedlist>
+</refsect2>
+<refsect2><title>用語</title>
+<para>いくつかの用語には、<command>javadoc</command> ツールのコンテキストで特定の意味があります。</para>
+<variablelist termlength="medium"><varlistentry><term remap="20">生成されるドキュメント</term><listitem><para><command>javadoc</command> ツールが Java ソースコード内の doc コメントから生成したドキュメントのことです。デフォルトの生成ドキュメントは HTML 形式で、標準ドックレットによって作成されます。</para>
+</listitem></varlistentry>
+<varlistentry><term>名前</term><listitem><para>Java 言語での名前、つまりパッケージ、クラス、インタフェース、フィールド、コンストラクタ、またはメソッドの名前のことです。名前は、<literal>java.lang.String.equals(java.lang.Object)</literal>) のように完全修飾することも、<literal>equals(Object)</literal> のように部分修飾することもできます。</para>
+</listitem></varlistentry>
+<varlistentry><term>ドキュメント化されるクラス</term><listitem><para><command>javadoc</command> の実行によって完全なドキュメントが生成されるクラスとインタフェースです。ドキュメント化するには、ソースファイルが使用可能でなければならず、ソースファイル名またはパッケージ名のどちらかを <command>javadoc</command> コマンドに渡さなければなりません。ドキュメント化されるクラスは、<command>javadoc</command> の実行で組み込まれるクラス、つまり「組み込みクラス」とも呼ばれます。</para>
+</listitem></varlistentry>
+<varlistentry><term>除外されるクラス</term><listitem><para><command>javadoc</command> コマンドにソースファイル名またはパッケージ名が渡されないクラスとインタフェースです。</para>
+</listitem></varlistentry>
+<varlistentry><term>参照クラス</term><listitem><para>ドキュメント化されるクラスおよびインタフェースの定義 (実装) またはドキュメンテーションコメントの中で明示的に参照されているクラスおよびインタフェースのことです。参照の例としては、戻り値の型、パラメータの型、キャストの型、拡張されたクラス、実装されたインタフェース、インポートされたクラス、メソッド本体で使用されるクラス、<literal>@see</literal>、<literal>{@link}</literal>、<literal>{@linkplain}</literal>、<literal>{@inheritDoc}</literal> タグなどがあります (この定義は 1.3 から変更されていることに注意してください)。<command>javadoc</command> ツールを実行するときは、<command>javadoc</command> のブートクラスパスおよびクラスパス内にあるすべての参照クラスをメモリにロードする必要があります。参照されているクラスが見つからなかった場合は、[クラスが見つかりません] という警告が表示されます。<command>javadoc</command> ツールは、クラスの存在とそのメンバの完全修飾名を決定するのに十分な情報を、<literal>.class</literal> ファイルから引き出すことができます。</para>
+</listitem></varlistentry>
+<varlistentry><term>外部参照クラス</term><listitem><para>参照されるクラスのうち、<command>javadoc</command> を実行してもドキュメントが生成されないクラスです。つまり、これらのクラスは、コマンド行で javadoc ツールに渡されていません。生成ドキュメント内でこれらのクラスにリンクしている箇所は、「外部参照」または「外部リンク」と呼ばれます。たとえば、<literal>java.awt</literal> パッケージに対してだけ <command>javadoc</command> ツールを実行した場合、Object などの <literal>java.lang</literal> 内のすべてのクラスは、外部参照クラスになります。外部参照クラスには、<option>link</option> および <option>linkoffline</option> オプションを使ってリンクすることができます。外部参照クラスには、通常そのソースコメントを javadoc の実行で利用できないという重要な特徴があります。この場合、それらのコメントを継承することはできません。</para>
+</listitem></varlistentry>
+</variablelist>
+</refsect2>
+<refsect2><title>ソースファイル</title>
+<para><command>javadoc</command> ツールは、Java 言語ソースファイル (<literal>.java</literal>)、パッケージコメントファイル、概要コメントファイル、およびその他の処理されないファイルの 4 種類の「ソース」ファイルを基にして、出力を生成します。</para>
+</refsect2>
+<refsect2><title>クラスソースコードファイル</title>
+<para>各クラスまたはインタフェース、およびそのメンバは、<literal>.java</literal> ファイルの中にそれ自身のドキュメンテーションコメントを持つことができます。ドキュメンテーションコメントの詳細については、「ドキュメンテーションコメント」の節を参照してください。</para>
+</refsect2>
+<refsect2><title>パッケージコメントファイル</title>
+<para>各パッケージは、独自のドキュメンテーションコメントを持つことができ、「ソース」ファイルに保持します。<command>javadoc</command> ツールは、生成するパッケージの要約ページにこのコメントをマージします。通常、このコメントには、パッケージ全体に適用されるドキュメントを含めます。</para>
+<para>パッケージコメントファイルを作成するには、ファイル名を <literal>package.html</literal> にして <literal>.java</literal> ファイルとともにソースツリー内のパッケージディレクトリに置く必要があります。<command>javadoc</command> ツールは、この場所でこのファイル名を自動的に検索します。ファイル名は、どのパッケージでも同一です。</para>
+<para>パッケージコメントファイルの内容は、ほかのすべてのコメントと同様に、HTML で記述された 1 つの大きなドキュメンテーションコメントですが、ほかのコメントと異なる点が 1 つだけあります。それは、このドキュメンテーションコメントには /** と */、および行頭のアスタリスクのコメント区切り文字を含めてはならないことです。コメントを書く場合は、最初の文をパッケージの要約にし、<literal>&lt;body></literal> と最初の文の間にタイトルまたはその他のテキストを含めてはなりません。パッケージタグを含めることはできますが、他のドキュメンテーションコメントと同様、{<literal>@link</literal>} 以外のタグは、説明のあとに置かなければなりません。<literal>@see</literal> タグをパッケージコメントファイルに追加する場合は、完全指定された名前を使用する必要があります。</para>
+<para><command>javadoc</command> ツールは、実行時にこのファイルを自動的に検索します。このファイルを見つけると、<command>javadoc</command> ツールは次の処理を行います。</para>
+<itemizedlist>
+<listitem><para><literal>&lt;body></literal> タグと <literal>&lt;/body></literal> タグの間にあるすべての内容を処理のためにコピーする</para>
+</listitem><listitem><para>存在するパッケージタグを処理する</para>
+</listitem><listitem><para>パッケージの要約などの Javadoc が生成するパッケージ要約ページの最後に、処理されたテキストを挿入する</para>
+</listitem><listitem><para>パッケージのコメントにある最初の文を、パッケージの要約ページの先頭にコピーする。また、概要の要約などの概要ページのパッケージリストにも、この最初の文とパッケージ名を追加する。文の末尾は、クラスやメンバの記述の最初の文に適用されるのと同じ規則によって特定される</para>
+</listitem></itemizedlist>
+</refsect2>
+<refsect2><title>概要コメントファイル</title>
+<para>ドキュメント化する各アプリケーションまたはパッケージのセットは、独自の概要ドキュメンテーションコメントを持つことができ、それは「ソース」ファイルに保持されます。<command>javadoc</command> ツールは、生成する概要ページにこのコメントをマージします。通常、このコメントには、アプリケーションまたはパッケージのセット全体に当てはまるドキュメントを含めます。</para>
+<para>概要コメントファイルを作成する場合、ファイルに好きな名前を付けて、好きな場所に置くことができますが、通常はファイル名を <literal>overview.html</literal> にして、ソースツリーの一番上の階層に置きます。異なるパッケージのセットに対して <command>javadoc</command> を複数回実行したい場合には、1 つのソースファイルのセットに対して複数の概要コメントファイルを作成できます。たとえば、<literal>java.applet</literal> パッケージのソースファイルが <literal>/home/user/src/java/applet</literal> ディレクトリに含まれているとすると、<literal>/home/user/src/overview.html</literal> に概要コメントファイルを作成することができます。</para>
+<para>概要コメントファイルの内容は、前に述べたパッケージコメントファイルと同様、HTML で記述された 1 つの大きなドキュメンテーションコメントです。詳細は、前述の説明を参照してください。繰り返しになりますが、このコメントを書く場合は、最初の文をアプリケーションまたはパッケージのセットの要約にし、<literal>&lt;body></literal> と最初の文の間にタイトルまたはその他のテキストを含めてはなりません。概要タグを含めることはできます。どのドキュメンテーションコメントについても、{<literal>@link</literal>} のようなインラインタグ以外のすべてのタグは、説明のあとに置く必要があります。<literal>@see</literal> タグを追加する場合は、完全指定の名前を使用する必要があります。</para>
+<para><command>javadoc</command> ツールの実行時に、<option>overview</option> オプションを使って概要コメントファイル名を指定します。ファイルは、パッケージコメントファイルと同じように処理されます。</para>
+<itemizedlist>
+<listitem><para><literal>&lt;body></literal> タグと <literal>&lt;/body></literal> タグとの間にあるすべての内容を処理のためにコピーする</para>
+</listitem><listitem><para>存在する概要タグを処理する</para>
+</listitem><listitem><para>概要の要約などの Javadoc が生成する概要ページの最後に、処理されたテキストを挿入する</para>
+</listitem><listitem><para>概要ページの先頭に、概要コメントの最初の文をコピーする</para>
+</listitem></itemizedlist>
+</refsect2>
+<refsect2><title>その他の処理されないファイル</title>
+<para>ソースには、<command>javadoc</command> ツールで生成先のディレクトリにコピーする、その他の任意のファイルを含めることができます。一般に、このようなファイルには、グラフィックファイル、サンプルの Java ソース (<literal>.java</literal>) およびクラス (<literal>.class</literal>) ファイル、内容が通常の Java ソースファイルのドキュメンテーションコメントの影響を受けない独立した HTML ファイルなどがあります。</para>
+<para>処理されないファイルを含めるには、それらのファイルを <literal>doc-files</literal> というディレクトリに置きます。このディレクトリは、任意のパッケージディレクトリの下に作成できます。パッケージごとにこのようなサブディレクトリを 1 つ持つことができます。このサブディレクトリには、イメージ、サンプルコード、ソースファイル、<literal>.class</literal> ファイル、アプレット、および HTML ファイルを入れることができます。たとえば、ボタンの画像 <literal>button.gif</literal> を <literal>java.awt.Button</literal> クラスドキュメントに含めたい場合は、そのファイルを <literal>/home/user/src/java/awt/doc-files/</literal> ディレクトリに置きます。<literal>doc-files</literal> ディレクトリを <literal>/home/user/src/java/awt/doc-files/</literal> に置くことはできません。これは、<literal>java</literal> はパッケージではなく、そのディレクトリそのものにソースファイルが入っていないからです。</para>
+<para>これらの処理されないファイルへのリンクはすべて明示的に記述する必要があります。これは、<command>javadoc</command> ツールがファイルを見ずに、単にディレクトリとその内容物を生成先にコピーするだけだからです。たとえば、<literal>Button.java</literal> ドキュメンテーションコメント内のリンクは、次のようになります。<informalexample><screen><userinput>/**
+* This button looks like this:
+* &lt;img src="doc-files/Button.gif">
+*/</userinput></screen>
+</informalexample></para>
+</refsect2>
+<refsect2><title>テストファイルおよびテンプレートファイル</title>
+<para>一部の開発者から、テストファイルおよびテンプレートファイルを対応するソースファイルの近くのソースツリーに保存したいという要望がありました。つまり、これらのソースファイルと同じディレクトリまたはサブディレクトリに保存したいということです。</para>
+<para>個別のソースファイル名で明示的に渡して <command>Javadoc</command> ツールを実行する場合は、テストファイルおよびテンプレートファイルを意図的に除外して、処理されないようにすることができます。ただし、パッケージ名またはワイルドカードで渡す場合は、以下のルールに従って、これらのテストファイルおよびテンプレートファイルが処理されないようにする必要があります。</para>
+<para>テストファイルとテンプレートファイルの違いは、テストファイルは、正当でコンパイル可能なソースファイルであるのに対して、テンプレートファイルは、そうではないという点です。ただし、テンプレートファイルも「.java」で終わることができます。</para>
+<para>テストファイル - 開発者の多くは、あるパッケージのコンパイル可能で実行可能なテストファイルをそのパッケージのソースファイルと同じディレクトリに配置したいと考えています。しかしテストファイルは、名前なしパッケージなど、ソースファイルパッケージとは別のパッケージに属させたいとも考えています (そのため、テストファイルには package ステートメントがないか、またはソースとは別の package ステートメントがあります)。このような状況では、コマンド行で指定されているソースのパッケージ名を指定して そのソースがドキュメント化されているときに、テストファイルは警告またはエラーを引き起こします。そのようなテストファイルはサブディレクトリに配置する必要があります。たとえばソースファイルのテストファイルを <literal>com.package1</literal> に追加する場合は、それらのテストファイルを、ハイフンが含まれるため パッケージ名としては無効になるサブディレクトリに配置します。</para>
+<screen><?Pub Lcl oneliner="yes">com/package1/test-files/</screen>
+<para>こうすると、<command>Javadoc</command> ツールでは警告なしで test ディレクトリをスキップします。</para>
+<para>テストファイルに doc コメントが含まれる場合、次のようにワイルドカードを含んだテストソースファイル名で渡して テストファイルのドキュメントを生成するように、<command>Javadoc</command> ツールを別個に実行できるように設定できます。<literal>com/package1/test-files/*.java</literal>. </para>
+<para>ソースファイルのテンプレート - テンプレートファイルの名前は「.java」で終わることもありますが、テンプレートファイルはコンパイルできません。ソースディレクトリに保持したいソースファイルの テンプレートがある場合は、このファイル名にハイフン (<literal>Buffer-Template.java</literal> など) やその他の不正な Java 文字を使用します。こうすることで、処理されないようになります。これは、<command>Javadoc</command> ツールが処理するのは、「.java」接尾辞を除いた名前が正規のクラス名であるソースファイルだけであるためです (「識別子」参照)。</para>
+</refsect2>
+<refsect2><title>生成されるファイル</title>
+<para>デフォルトでは、<command>javadoc</command> は、HTML 形式のドキュメントを生成する標準ドックレットを使います。このドックレットは、以下の種類のファイルを生成します。以下の各 HTML「ページ」は、それぞれ別のファイルに対応します。<command>javadoc</command> が生成するファイルの名前には、クラスやインタフェースの名前にちなんだものと、そうでないもの (<literal>package-summary.html</literal> など) の 2 種類があります。後者のグループには、前者のグループの名前とファイル名が競合しないように、ハイフンが含まれています。</para>
+</refsect2>
+<refsect2><title>基本内容ページ</title>
+<itemizedlist>
+<listitem><para>ドキュメント化する各クラスまたは各インタフェースに対し、1 つのクラスページまたはインタフェースページ (<literal>classname.html</literal>)</para>
+</listitem><listitem><para>ドキュメント化する各パッケージに対し、1 つのパッケージページ (<literal>package-summary.html</literal>)。<command>javadoc</command> ツールによって、ソースツリーのパッケージディレクトリ内の <literal>package.html</literal> というファイル内のすべての HTML テキストが含められる</para>
+</listitem><listitem><para>パッケージのセット全体に対して 1 つの概要ページ (<literal>overview-summary.html</literal>)。これは、生成されるドキュメントの先頭ページになる。<command>javadoc</command> ツールによって、<option>overview</option> オプションで指定されたファイル内のすべての HTML テキストが含められる。このファイルが作成されるのは、<command>javadoc</command> に 2 つ以上のパッケージ名を渡した場合だけであることに注意する。詳細は、後述の「HTML フレーム」節を参照</para>
+</listitem></itemizedlist>
+</refsect2>
+<refsect2><title>相互参照ページ</title>
+<itemizedlist>
+<listitem><para>パッケージのセット全体に対して 1 つのクラス階層ページ (<literal>overview-tree.html</literal>)。これを表示するには、ナビゲーションバーの [概要] をクリックしてから、[階層ツリー] をクリックする</para>
+</listitem><listitem><para>各パッケージに対して 1 つのクラス階層ページ (<literal>package-tree.html</literal>)。特定のパッケージページ、クラスページ、またはインタフェースページを表示し、[階層ツリー] をクリックすると、そのパッケージの階層が表示される</para>
+</listitem><listitem><para>各パッケージに対して 1 つの [使用] ページ (<literal>package-use.html</literal>) と、各クラスおよびインタフェースに対して別に 1 つの [使用] ページ (<literal>class-use/classname.html</literal>)。このページは、特定のクラス、インタフェース、またはパッケージのなんらかの部分を使っているパッケージ、クラス、メソッド、コンストラクタ、およびフィールドを記述する。クラスまたはインタフェース A について考えると、その [使用] ページには、A のサブクラス、A として宣言されたフィールド、A を返すメソッド、A 型のパラメータを持つメソッドおよびコンストラクタが表示される。このページには、パッケージ、クラス、またはインタフェースに移動してから、ナビゲーションバーの [使用] リンクをクリックすることによってアクセスできる</para>
+</listitem><listitem><para>非推奨 <acronym>API</acronym> ページ (<literal>deprecated-list.html</literal>)。推奨されない名前すべての一覧が含まれている (非推奨名は、通常は改良された API が存在するために使用が推奨されていない <acronym>API</acronym> の名前で、たいていはそれに置き換わる名前が提示されている。非推奨 <acronym>API</acronym> は、将来の実装では削除される可能性がある)</para>
+</listitem><listitem><para>定数フィールド値ページ (<literal>constant-values.html</literal>)。static フィールドの値が表示される。</para>
+</listitem><listitem><para>直列化形式ページ (<literal>serialized-form.html</literal>)。直列化可能クラスおよび外部化可能クラスの情報用。これらの各クラスには、直列化フィールドおよびメソッドに関する説明がある。これらの情報は、<acronym>API</acronym> を使う開発者ではなく、再実装者に必要な情報である。ナビゲーションバーにリンクがない場合、任意の直列化されたクラスに移動して、クラスの [関連項目] セクション内の [直列化された形式] をクリックするとこの情報を取得できる。標準ドックレットは、直列化された形式のページを自動的に生成する。 ここには、Serializable を実装する <literal>public</literal> または非 <literal>public</literal> のクラスが組み込まれており、さらに、<literal>readObject</literal> メソッド、<literal>writeObject</literal> メソッド、直列化されたフィールド、および <literal>@serial</literal> タグ、<literal>@serialField</literal> タグ、<literal>@serialData</literal> タグからのドキュメンテーションコメントが組み込まれている。直列化が可能な public クラスを除外するには、そのクラスまたはそのクラスが属するパッケージを <literal>@serial exclude</literal> タグで指定する。直列化が可能な package private クラスを含めるには、そのクラスまたはそのクラスが属するパッケージを <literal>@serial include
+</literal> タグで指定する。1.4 では、<option>private</option> オプションを指定せずに javadoc を実行することで、public クラスおよび private クラスに完全な直列化形式を生成することができる。</para>
+</listitem><listitem><para>索引 (<literal>index-*.html</literal>)。すべてのクラス名、インタフェース名、コンストラクタ名、フィールド名、およびメソッド名をアルファベット順に並べてある。索引は、Unicode を扱えるように国際化されており、1 つのファイルとして生成するか、または先頭文字 (英語の場合 A から Z) ごとに別のファイルとして生成できる</para>
+</listitem></itemizedlist>
+</refsect2>
+<refsect2><title>サポートファイル</title>
+<itemizedlist>
+<listitem><para>ヘルプページ (<literal>help-doc.html</literal>)。ナビゲーションバーおよび上記のページについて説明する。<option>helpfile</option> を使って、デフォルトのヘルプファイルに置き換わる独自のカスタムヘルプファイルを提供することもできる</para>
+</listitem><listitem><para>1 つの <literal>index.html</literal> ファイル。表示用の HTML フレームを作成する。このファイルは、フレーム付きの最初のページを表示する場合にロードする。このファイル自体は、テキスト内容を含まない</para>
+</listitem><listitem><para>複数のフレームファイル (<literal>*-frame.html</literal>)。パッケージ、クラス、およびインタフェースの一覧を含む。HTML フレームを表示するときに使われる</para>
+</listitem><listitem><para>パッケージリストファイル (<literal>package-list</literal>)。<option>link</option> オプションおよび <option>linkoffline</option> オプションで使われる。これは、HTML ファイルではなくテキストファイルのため、リンクではアクセスできない</para>
+</listitem><listitem><para>スタイルシートファイル (<literal>stylesheet.css</literal>)。生成されるページ上に表示される限られた色数、フォントファミリ、フォントサイズ、フォントのスタイルおよび配置を制御する</para>
+</listitem><listitem><para>コピー先ディレクトリにコピーしたいファイル (イメージ、サンプル、ソースファイルなど) が入っている doc ファイルのディレクトリ。<command>javadoc</command> ツールはこのようなファイルを処理しない。つまり、このようなファイル内の <command>javadoc</command> タグはすべて無視される。ソースツリーに存在しない限り、このディレクトリは生成されない</para>
+</listitem></itemizedlist>
+</refsect2>
+<refsect2><title>HTML フレーム</title>
+<para><command>javadoc</command> ツールは、次の図に示すように、2 つか 3 つの HTML フレームを生成します。ソースファイル (*<literal>.java</literal>) または単一のパッケージ名を引数として <command>javadoc</command> コマンドに渡す場合は、左側の列にクラスの一覧を表示するフレーム (C) 1 つだけが作成されます。<command>javadoc</command> に複数のパッケージ名を渡す場合は、概要ページ (Detail) に加えて、すべてのパッケージの一覧を表示する第 3 のフレーム (P) が作成されます。この概要ページのファイル名は <literal>overview-summary.html</literal> です。したがって、このファイルが作成されるのは、2 つ以上のパッケージ名を渡した場合だけです。[フレームなし] リンクをクリックするか、<literal>overview-summary.html</literal> から表示するようにすると、フレームを省略できます。</para>
+<para>HTML フレームに慣れていない場合は、フレームには、印刷およびスクロール用の「フォーカス」が必要であることに注意する必要があります。フレームにフォーカスを与えるには、そのフレームをクリックします。すると、多くのブラウザでは、矢印キーおよびページキーを使ってそのフレームをスクロールしたり、[印刷] メニューコマンドを使ってそのフレームを印刷したりできるようになります。</para>
+<para><screen>    
+    ------------                  ------------
+    |C| Detail |                  |P| Detail |
+    | |        |                  | |        |
+    | |        |                  |-|        |
+    | |        |                  |C|        |
+    | |        |                  | |        |
+    | |        |                  | |        |
+    ------------                  ------------
+   javadoc *.java           javadoc java.lang java.awt</screen></para>
+<para>HTML フレームが必要かどうかによって、次のどちらかのファイルを開始ページとしてロードします。</para>
+<itemizedlist>
+<listitem><para><literal>index.html</literal> (フレームあり)</para>
+</listitem><listitem><para><literal>overview-summary.html</literal> (フレームなし)</para>
+</listitem></itemizedlist>
+</refsect2>
+<refsect2><title>生成されるファイル構造</title>
+<para>生成されるクラスファイルおよびインタフェースファイルは、Java ソースファイルおよびクラスファイルと同じディレクトリ階層で組織されます。この構造は、1 つのサブパッケージにつき 1 つのディレクトリで構成されます。</para>
+<para>たとえば、<literal>java.applet.Applet</literal> クラスに対して生成されるドキュメントは、<literal>java/applet/Applet.html</literal> に格納されます。生成先のディレクトリの名前が <literal>apidocs</literal> だとすると、<literal>java.applet</literal> パッケージのファイル構造もこれに従います。前述したように、「frame」という語を名前に含むファイルは、すべて左上または左下のフレームに表示されます。それ以外の HTML ファイルは、すべて右側のフレームに表示されます。</para>
+<para><emphasis>注:</emphasis> ディレクトリは、太字 (bold) で示してあります。アスタリスク (*) は、<command>javadoc</command> への引数がパッケージ名でなくソースファイル名 (*<literal>.java</literal>) のときに、省略されるファイルおよびディレクトリを示しています。また、引数がソースファイル名のときには、<literal>package-list</literal> は作成されますが、空です。<literal>doc-files</literal> ディレクトリは、ソースツリー内に存在しない限り、生成先に表示されません。</para>
+<para><screen>apidocs                         最上位ディレクトリ
+   index.html                   HTML フレームを設定する初期ページ
+ * overview-summary.html        最初の文が要約になっている、全パッケージのリスト
+   overview-tree.html           全パッケージのクラス階層のリスト
+   deprecated-list.html         全パッケージの推奨されない API のリスト
+   serialized-form.html         全パッケージの直列化形式のリスト
+ * overview-frame.html          全パッケージのリスト。左上フレームに表示
+   allclasses-frame.html        全パッケージの全クラスのリスト。
+                                     左下フレームに表示
+   help-doc.html                これらのページの構成を示すユーザヘルプ
+   index-all.html               -splitindex なしで作成されたデフォルト索引
+   index-files                  -splitindex で作成されたディレクトリ
+     index-&lt;number>.html        -splitindex で作成された索引ファイル
+   package-list                 外部参照の解釈処理、パッケージ名のリスト
+   stylesheet.css               (フォント、色など) HTML スタイルシートHTML
+   java                         パッケージディレクトリ
+     applet                     サブパッケージディレクトリ
+       Applet.html              Applet クラスのページ
+       AppletContext.html       AppletContext インタフェースのページ
+       AppletStub.html          AppletStub インタフェースのページ
+       AudioClip.html           AudioClip インタフェースのページ
+     * package-summary.html     最初の文が要約である、このパッケージのクラス
+     * package-frame.html       このパッケージのクラスのリスト。
+                                     左下のフレームに表示
+     * package-tree.html        このパッケージのクラス階層のリスト
+       package-use              このパッケージが使われる場所のリスト
+       doc-files                イメージとサンプルファイルがあるディレクトリ
+       class-use                API を使用するページがあるディレクトリ
+            Applet.html         Applet クラスを使用するページ
+            AppletContext.html  AppletContext インタフェースを使用するページ
+            AppletStub.html     AppletStub インタフェースを使用するページ
+            AudioClip.html      AudioClip インタフェースを使用するページ
+            src-html            ソースコードディレクトリ
+            java                パッケージディレクトリ
+            Applet.html         アプレットソースコードのページ             
+            AppletContext.html  AppletContext ソースコードのページ
+            AppletStub.html     AppletStub ソースコードのページ
+            AudioClip.html      AudioClip ソースコードのページ
+</screen></para>
+</refsect2>
+<refsect2><title>生成される API 宣言</title>
+<para><command>javadoc</command> ツールは、各クラス、インタフェース、フィールド、コンストラクタ、およびメソッドの説明の初めで宣言を生成します。この宣言は、その <acronym>API</acronym> 項目の宣言です。たとえば、ブール型クラスの宣言は次のようになります。<informalexample>
+<screen> public final class Boolean extends Object implements Serializable</screen>
+</informalexample><literal>Boolean.valueOf</literal> メソッドの宣言は次のようになります。<informalexample><screen><?Pub Lcl oneliner="yes"> public static Boolean valueOf(String s)</screen>
+</informalexample></para>
+<para><command>javadoc</command> ツールは修飾子 <literal>public</literal>、<literal>protected</literal>、<literal>private</literal>、<literal>abstract</literal>、<literal>final</literal>、<literal>static</literal>、<literal>transient</literal>、および <literal>volatile</literal> を組み込むことができますが、<literal>synchronized</literal> と <literal>native</literal> は組み込むことができません。<literal>synchronized</literal> と <literal>native</literal> 修飾子は実装の詳細と見なされ、<acronym>API</acronym> 仕様の一部とは見なされません。</para>
+<para>キーワード  <literal>synchronized</literal> に依存するよりも、<acronym>API</acronym> は「複数のスレッドによって単一の <literal>Enumeration</literal> を並行して使用してはならない」というように、並行処理のセマンティクスをコメント説明の中でドキュメント化すべきです。ドキュメントでは、これらのセマンティクスの達成方法を説明すべきではありません。別の例を挙げると、<literal>Hashtable</literal> はスレッドに対して安全でなければなりませんが、エクスポートされるそのメソッドすべてを同期させることによってこれを実現すると明記する必要はないということです。バケットレベルで内部的に同期をとる権限を留保して、より高度な並行性を提供すべきです。</para>
+</refsect2>
+<refsect2><title>ドキュメンテーションコメント</title>
+<para>オリジナルの「ドキュメンテーションコメントの仕様」は、「関連項目」を参照してください。</para>
+<para><emphasis>ソースコードへのコメントの挿入</emphasis></para>
+<para>ソースコードの任意の宣言 (クラス、インタフェース、メソッド、コンストラクタ、またはフィールド) の前に、ドキュメンテーションコメント (doc コメント) を記述することができます。各パッケージにドキュメンテーションコメントを作成でき、構文は若干異なりますが、概要にもドキュメンテーションコメントを作成できます。ドキュメンテーションコメントは、Javadoc コメントとも呼ばれます。ドキュメンテーションコメントは、コメントの始まりを示す文字列 <literal>/**</literal> と、コメントの終わりを示す文字列 <literal>*/</literal> の間にある文字で構成されます。行頭のアスタリスクは、各行に記述できます。詳細は以下で説明します。コメントのテキストは、複数行にわたって記述できます。<informalexample>
+<para><screen>/**
+* This is the typical format of a simple documentation comment
+* that spans two lines.
+*/</screen></para>
+</informalexample></para>
+<para>次のように、コメントは 1 行にまとめることもできます。<informalexample>
+<para><screen><?Pub Lcl oneliner="yes">/** This comment takes up only one line. */</screen></para>
+</informalexample></para>
+<para><emphasis>コメントの配置</emphasis></para>
+<para>ドキュメンテーションコメントが認識されるのは、クラス、インタフェース、コンストラクタ、メソッド、またはフィールド宣言の前に置かれた場合だけです (クラス、メソッド、およびフィールドの例を参照)。メソッドの本体に置かれたドキュメンテーションコメントは無視されます。<command>javadoc</command> ツールは、宣言文ごとに 1 つのドキュメンテーションコメントだけを認識します。</para>
+<para>よく発生する間違いは、重要な文をクラスコメントとクラス宣言の間に入れてしまうことです。<command>javadoc</command> ツールはクラスコメントを無視するため、注意してください。<informalexample>
+<para><screen>/**
+ * This is the class comment for the class Whatever.
+ */
+
+ import com.sun;   // MISTAKE - Important not to put statements here
+
+ public class Whatever {
+ }</screen></para>
+</informalexample></para>
+<para><emphasis>コメントの説明のあとにタグが続く </emphasis></para>
+<para>コメントの開始区切り文字である <literal>/**</literal> のあとからタグセクションまでが説明になります。タグセクションは、先頭文字が <literal>@</literal> である行から始まります (行の先頭のアスタリスク、空白、および区切り文字の /** は除く)。説明を記述せず、タグだけのコメントを記述することもできます。説明は、タグセクション以降に続けることはできません。タグの引数は複数の行にまたがって記述できます。タグの数に制限はありません。何回も記述できるタグと、1 回しか記述できないタグがあります。次の例の <literal>@see</literal> からタグセクションが始まります。<informalexample>
+<para><screen>/**
+ * This is a doc comment.
+ * @see java.lang.Object
+ */</screen></para>
+</informalexample></para>
+<para><emphasis>標準タグとインラインタグ</emphasis></para>
+<para>タグは、<command>javadoc</command> ツールが処理できる、doc コメント内の特別なキーワードです。<command>javadoc</command> ツールには、<literal>@tag</literal> として現れる標準タグと、中括弧内に {<literal>@tag</literal>} として現れるインラインタグがあります。解釈させるためには、先頭のアスタリスク、空白、区切り文字 (/**) を除いては標準タグが行の先頭であるように配置する必要があります。つまり、ユーザはテキスト内の任意の位置で @ 文字を使用でき、この文字はタグの始めとは解釈されません。@ 文字で行を開始してこれが解釈されないようにしたい場合は、HTML エンティティの <literal>&amp;#064;</literal> を使用してください。各標準タグには関連するテキストがあります。これは、そのタグの後から次のタグの直前までまたは doc コメントの最後までの任意のテキストです。関連付けられたテキストは、複数行にまたがって記述できます。インラインタグは、そのテキストが許可される位置にはどこでも指定でき、解釈の対象となります。次の例は、標準タグ <literal>@deprecated</literal> とインラインタグ <literal>{@link}</literal> が含まれています。<informalexample>
+<screen>/**
+ * @deprecated  As of JDK 1.1, replaced by {@link #setBounds(int,int,int,int)}
+ */</screen>
+</informalexample></para>
+<para><emphasis>コメントは HTML で記述</emphasis></para>
+<para>テキストは HTML で記述しなければなりません。これは、HTML のエンティティを使う必要があること、および HTML タグを使用できることを意味します。HTML は、使用するブラウザがサポートする任意のバージョンを使うことができます。標準ドックレットは、階層式スタイルシートとフレームを含むほかの部分 (ドキュメンテーションコメント以外) は、HTML 3.2 に準拠したコードを生成するように記述されています (フレームセット対応のため、生成される各ファイルは、「HTML 4.0」で始まる)。</para>
+<para>たとえば、より小さい (&lt;) およびより大きい (>) という記号は、<literal>&amp;lt;</literal> と <literal>&amp;gt;</literal> と記述する必要があります。同様に、アンパサンド (&amp;) は、<literal>&amp;amp;</literal> と記述する必要があります。次の例では、ボールドの HTML タグ &lt;b> を示します。<informalexample>
+<para><screen>/**
+ * This is a &lt;b>doc&lt;/b> comment.
+ * @see java.lang.Object
+ */</screen></para>
+</informalexample></para>
+<para><emphasis>行頭のアスタリスク</emphasis></para>
+<para><command>javadoc</command> は、ドキュメンテーションコメントを解析するときに、各行の先頭にある文字アスタリスク (*) をすべて破棄します。また、最初のアスタリスク (*) より前の空白とタブも破棄します。1.4 以降では、行頭のアスタリスクを省略しても、先頭の空白文字は削除されなくなりました。このため、コード例を直接ドキュメンテーションコメントの &lt;PRE> タグ内にペーストしても、インデントを維持できます。通常、ブラウザは空白文字をタブよりも一律に解釈します。インデントは、区切り文字「/**」または &lt;PRE> タグよりも左寄りになります。</para>
+<para><emphasis>最初の文</emphasis></para>
+<para>各 doc コメントの最初の文は、宣言されているエンティティに関する簡潔かつ完全な説明を含む要約文でなければなりません。この文は、空白、タブ、または行末記号が続いている最初のピリオド、あるいは最初のスタンドアロンタグで終了します。<command>javadoc</command> ツールは、HTML ページの最初にあるメンバ要約に、この最初の文をコピーします。</para>
+<para><emphasis>複数のフィールドによる宣言</emphasis></para>
+<para><command>java</command> では、単一の文で複数のフィールドを宣言できます。しかし、この文のドキュメンテーションコメントは 1 つだけで、このコメントがすべてのフィールドにコピーされます。したがって、フィールドごとに個々のドキュメンテーションコメントを付けたい場合は、各フィールドを異なる文で宣言しなければなりません。たとえば、次のドキュメンテーションコメントは単一の宣言としては意味を成さず、2 つの宣言として処理するべきです。<informalexample>
+<para><screen>/**
+ * The horizontal and vertical distances of point (x,y)
+ */
+ public int x, y;      // Avoid this</screen></para>
+</informalexample></para>
+<para><command>javadoc</command> ツールは、上記コードから次のドキュメントを生成します。<informalexample>
+<screen>public int x
+     The horizontal and vertical distances of point (x,y).
+
+public int y
+     The horizontal and vertical distances of point (x,y).</screen>
+</informalexample></para>
+<para><emphasis>ヘッダタグの使用には注意が必要</emphasis></para>
+<para>メンバ用のドキュメンテーションコメントを書くときは、<literal>&lt;H1></literal> や <literal>&lt;H2></literal> などの HTML ヘッダタグを使用しないでください。これは、<command>javadoc</command> ツールが全ドキュメントを構造化して生成するため、これらの構造化タグを使用すると、ドキュメントの書式が乱れる可能性があるためです。しかし、クラスやパッケージのコメントでは、これらのヘッダタグを使用して構造化を指示してください。</para>
+<para><emphasis>メソッドコメントの自動再利用</emphasis></para>
+<para>javadoc ツールには、クラスおよびインタフェース内のメソッドのコメントを自動的に再利用する、つまり「継承」する機能があります。メソッドコメントに記述や <literal>@return</literal>、<literal>@param</literal>、<literal>@see</literal>、<literal>@throws</literal> といったタグがない場合、javadoc ツールは、そのメソッドがオーバーライドまたは実装しているメソッドのコメントとタグ (存在する場合) を代わりにコピーします。その際のアルゴリズムは、以下のとおりです。 </para>
+<para>つまり、特定のパラメータの <literal>@param</literal> タグが見つからない場合、そのパラメータのコメントがコピーされます。特定の例外の <literal>@throws</literal> タグが見つからない場合、その例外が宣言されている場合に限り、その <literal>@throws</literal> タグがコピーされます。</para>
+<para>この動作は、バージョン 1.3 以前とは対照的です。以前のバージョンでは、説明やタグが存在すれば、コメントは一切継承されませんでした。</para>
+<para>また、説明または任意のタグにインラインタグ {<literal>@inheritDoc</literal>} が含まれる場合、対応する説明またはタグがその位置にコピーされます。</para>
+<para>オーバーライドされているメソッドは、ドキュメント化されるクラスのメンバでなければならず、かつ、外部参照クラスのメンバであってはなりません。そうでないと、コピーするドキュメンテーションコメントを実際には取得できません。</para>
+<para>コメントの継承は次の場合に行われます。</para>
+<itemizedlist>
+<listitem><para>クラスのメソッドがスーパークラスのメソッドをオーバーライドした</para>
+</listitem><listitem><para>インタフェースのメソッドがスーパーインタフェースのメソッドをオーバーライドした</para>
+</listitem><listitem><para>クラスのメソッドがインタフェースのメソッドを実装した</para>
+</listitem></itemizedlist>
+<para>最初の 2 つのケース (メソッドがオーバーライドしている場合) では、Javadoc ツールは、オーバーライドしているメソッドのドキュメント内に「オーバーライド」という小見出しを生成し、オーバーライドされているメソッドへのリンクを書き込みます。</para>
+<para>3 つ目のケース (特定のクラスのメソッドがインタフェースのメソッドを実装している場合) では、javadoc ツールは、実装しているメソッドのドキュメント内に「定義」という小見出しを生成し、実装されているメソッドへのリンクを書き込みます。</para>
+<para><emphasis>メソッドの説明が継承されるアルゴリズム</emphasis></para>
+<para>あるメソッドにドキュメンテーションコメントが記述されていない場合、javadoc ツールは、次のようなアルゴリズムを使用して適切なコメントを検索します。このアルゴリズムは、もっとも適切なドキュメンテーションコメントを検索できるように設計されており、スーパークラスよりもインタフェースが優先されるようになっています。</para>
+<itemizedlist>
+<listitem><para>直接に実装されている (または、拡張されている) インタフェースを、メソッドの宣言で implements (または extends) キーワードのあとに登場する順序で、1 つずつ調べる。 このメソッドについて最初に見つかったドキュメンテーションコメントを採用する</para>
+</listitem><listitem><para>手順 1 でドキュメンテーションコメントが見つからなかった場合は、直接実装されている (または、拡張されている) インタフェースのそれぞれに対して、このアルゴリズム全体を再帰的に適用する (その際の順序は、手順 1 でインタフェースを調べたときの順序と同じ)</para>
+</listitem><listitem><para>手順 2 でドキュメンテーションコメントが見つからなかった場合で、このクラスが <literal>Object</literal> 以外のクラスである (インタフェースではない) 場合は、次のように処理する</para>
+<itemizedlist>
+<listitem><para>スーパークラスにこのメソッドについてのドキュメンテーションコメントが記述されていれば、そのコメントを採用する </para>
+</listitem><listitem><para>手順 3a でドキュメンテーションコメントが見つからなかった場合は、スーパークラスに対して、このアルゴリズム全体を適用する</para>
+</listitem></itemizedlist>
+</listitem></itemizedlist>
+</refsect2>
+<refsect2><title>javadoc のタグ</title>
+<para><command>javadoc</command> ツールは、<command>java</command> のドキュメンテーションコメント内に埋め込まれた特殊なタグを解析します。これらの特殊な doc タグを使うと、書式の整った完全な <acronym>API</acronym> ドキュメントをソースコードから自動的に生成できます。タグは、単価記号 (<literal>@</literal>) で始まり、大文字小文字が区別されます。これらのタグは、以下に示すとおりに、大文字と小文字を区別して入力する必要があります。タグは、行の先頭 (ただし先行する空白と省略可能なアスタリスクは除く) から始めなければなりません。慣習上、同じ名前のタグは 1 か所にまとめて記述します。たとえば、<literal>@see</literal> タグが複数ある場合は、すべてを 1 か所にまとめて記述します。</para>
+<para>タグは次の 2 種類あります。</para>
+<itemizedlist>
+<listitem><para><emphasis>スタンドアロンタグ</emphasis> - 説明のあとのタグセクションにのみ置くことができます。このタグは、<literal>@tag</literal> のように中括弧で囲みません。</para>
+</listitem><listitem><para><emphasis>インラインタグ</emphasis> - コメントの説明内またはスタンドアロンタグの任意の場所に置くことができます。インラインタグは、{<literal>@tag</literal>} のように中括弧で囲みます。</para>
+</listitem></itemizedlist>
+<para>現時点で有効なタグを以下に示します。</para>
+<informaltable frame="all" orient="port" remap="center"><tgroup cols="2" colsep="0" rowsep="0"><colspec colnum="1" colname="col1" colwidth="1*" colsep="1" align="left"><colspec colnum="2" colname="col2" colwidth="1*" align="left"><thead><row><entry colname="col1" align="center" valign="top">タグ</entry><entry colname="col2" align="center" valign="top">導入された JDK のバージョン</entry></row><row rowsep="1"><entry colname="col1" valign="top"> </entry><entry colname="col2" align="center" valign="top"> </entry></row></thead><tbody><row><entry>@author</entry><entry>1.0</entry></row><row><entry colname="col1"><para>{@code}</para></entry><entry colname="col2"><para>1.5</para></entry></row><row><entry>{@docRoot}</entry><entry>1.3</entry></row><row><entry>@deprecated</entry><entry>1.0</entry></row><row><entry>
+@exception</entry><entry>1.0</entry></row><row><entry colname="col1"><para>{<literal>@inheritDoc</literal>}</para></entry><entry colname="col2"><para>1.4</para></entry></row><row><entry>{@link}</entry><entry>1.2</entry></row><row><entry colname="col1"><para>{<literal>@linkplain</literal>}</para></entry><entry colname="col2"><para>1.4</para></entry></row><row><entry colname="col1"><para>{@literal}</para></entry><entry colname="col2"><para>1.5</para></entry></row><row><entry>@param</entry><entry>1.0</entry></row><row><entry>@return</entry><entry>1.0</entry></row><row><entry>@see</entry><entry>1.0</entry></row><row><entry>@serial</entry><entry>1.2</entry></row><row><entry>@serialData</entry><entry>1.2</entry></row><row><entry>@serialField</entry><entry>1.2</entry></row><row><entry>@since</entry>
+<entry>1.1</entry></row><row><entry>@throws</entry><entry>1.2</entry></row><row><entry colname="col1"><para>{<literal>@value</literal>}</para></entry><entry colname="col2"><para>1.4</para></entry></row><row><entry>@version</entry><entry>1.0</entry></row></tbody></tgroup></informaltable>
+<para>カスタムタグについては、<option>tag</option> オプションを参照してください。</para>
+<variablelist termlength="wholeline"><varlistentry><term><literal>@author</literal> <replaceable>name-text</replaceable></term><listitem><para><option>author</option> オプションが使われている場合、生成されるドキュメントに、指定された name-text を持つ Author エントリを追加します。1 つの doc コメントに複数の <literal>@author</literal> タグを含めることができます。<literal>@author</literal> タグごとに 1 つ、またはタグごとに複数の名前を指定できます。前者の場合は、<command>javadoc</command> ツールは、名前と名前の間にコンマ (<literal>,</literal>) とスペースを挿入します。後者の場合、テキスト全体が解析されることなく生成されるドキュメントにコピーされます。このため、コンマ以外の現地仕様の名前区切り文字を使う場合は、1 行に複数の名前を指定します。</para>
+</listitem></varlistentry>
+<varlistentry><term><literal>@deprecated</literal> <replaceable>deprecated-text</replaceable></term><listitem><para>この API は動作し続けますが、この API を使用するべきではないことを示すコメントを追加します。javadoc ツールは、<replaceable>deprecated-text</replaceable> を説明の前に移動してイタリックにし、その前にボールドで「推奨されない」という警告を追加します。</para>
+<para><replaceable>deprecated-text</replaceable> の最初の文では、少なくとも、その API が推奨されなくなった時期と、代替使用するべき API をユーザに提示する必要があります。javadoc ツールは、この最初の文だけを、概要セクションと索引にコピーします。そのあとの文では、その API が推奨されない理由を説明することもできます。また、代わりの API を指し示す {<literal>@link</literal>} タグ (Javadoc 1.2 以降の場合) を含める必要があります。次のように記述します。</para>
+<itemizedlist>
+<listitem><para>Javadoc 1.2 以降では、{<literal>@link</literal>} タグを使用します。これにより、必要な場所にインラインでリンクを作成できます。例を示します。<screen>
+/**
+ * @deprecated  As of JDK 1.1, replaced by {@link #setBounds(int,int,int,int)}
+ */</screen></para>
+</listitem><listitem><para>Javadoc 1.1 では、各 <literal>@deprecated</literal> タグに対して <literal>@see</literal> タグ (インラインにはできない) を記述するのが標準の形式です。</para>
+</listitem></itemizedlist>
+<para>推奨されないタグについての詳細は、<literal>@deprecated</literal> タグのドキュメントを参照してください。</para>
+</listitem></varlistentry>
+<varlistentry><term><literal>{@code <replaceable>text</replaceable>}</literal></term><listitem><para>&lt;code>{@literal}&lt;/code> と同等です。</para>
+<para>テキストを HTML マークアップまたは 入れ子になった javadoc タグとして解釈せずに、テキストをコードフォントで表示します。これにより doc コメントでは、パラメータタイプ (&lt;Object&gt;)、不等号 (3 &lt; 4)、または矢印 (&lt;-) などで、HTML エンティティ (&amp;lt; および &amp;gt;) ではなく、通常の山括弧 (&lt; および &gt;) を使用できます。たとえば、次のような doc コメントのテキストは、</para>
+<screen>{@code A&lt;B&gt;C}
+
+</screen>
+<para>生成された HTML ページで、次のようにそのまま表示されます。</para>
+<screen>A&lt;B&gt;C</screen>
+<para>注目すべき点として、&lt;B> は太字であると解釈されませんが、コードフォントになります。</para>
+<para>コードフォントなしで同じ機能を実現するには、<literal>{@literal}</literal> を使用します。</para>
+</listitem></varlistentry>
+<varlistentry><term><literal>{@docRoot}</literal></term><listitem><para>生成された任意のページを起点とした、ドキュメントの (出力先) ルートディレクトリの相対パスを表します。このタグは、著作権ページまたは会社のロゴなど、生成されるすべてのページから参照するファイルを取り込むときに使います。通常は、各ページの最下部から著作権ページにリンクします。</para>
+<para>この <literal>{@docRoot}</literal> タグは、コマンド行および doc コメントで使うことができます。</para>
+<orderedlist>
+<listitem><para>コマンド行では、次のようにヘッダ (header)、フッタ (footer)、またはページの最下部 (bottom) を定義します。<informalexample>
+<screen><userinput>javadoc -bottom '&lt;a href="{@docRoot}/copyright.html">Copyright&lt;/a>'</userinput></screen>
+</informalexample></para>
+<para>注 - Makefile の中で {<literal>@docRoot</literal>} をこのように利用する場合、一部の Makefile プログラムでは、中括弧 <literal>{}</literal> 文字をエスケープする必要があります。たとえば、Inprise MAKE バージョン 5.2 を Windows 上で実行する場合は、{{<literal>@docRoot</literal>}} のように、中括弧を二重にする必要があります。さらに、<option>bottom</option> などのオプションに対する引数を、単一引用符ではなく、二重引用符で囲む必要があります。href 引数の値を囲む引用符は省略します。</para>
+</listitem><listitem><para>doc コメントには次のように記述します。<informalexample>
+<screen>/**
+ * See the &lt;a href="{@docRoot}/copyright.html">Copyright&lt;/a>.
+ */</literal></screen>
+</informalexample></para>
+</listitem></orderedlist>
+<para>このタグが必要な理由は、生成されるドキュメントが、サブパッケージと同じ階層のディレクトリに格納されるためです。たとえば、次のように指定します。<informalexample><screen><?Pub Lcl oneliner="yes">&lt;a href="{@docRoot}/copyright.html"></screen>
+</informalexample> <literal>java/lang/Object.java</literal> の場合、次のように解決されます。<informalexample><screen><?Pub Lcl oneliner="yes">&lt;a href="../../copyright.html"></screen>
+</informalexample>また、<literal>java/lang/ref/Reference.java</literal> の場合、次のようにも解決されます。<informalexample><screen><?Pub Lcl oneliner="yes">&lt;a href="../../../copyright.html"></screen>
+</informalexample></para>
+</listitem></varlistentry>
+</variablelist>
+<variablelist termlength="wholeline"><varlistentry><term><literal>@exception</literal> <replaceable>class-name description</replaceable> </term><listitem><para><literal>@exception</literal> タグは、<literal>@throws</literal> と同義です。</para>
+</listitem></varlistentry>
+<varlistentry><term>{<literal>@inheritDoc</literal>}</term><listitem><para>最も近いスーパークラスから現在のドキュメンテーションコメントに、ドキュメントを継承します。この機能により、コメントは継承ツリーの上位に移動し、開発者はコピーしたテキストに記述を追加することができます。コメントの継承もあわせて参照してください。</para>
+<para>このタグは次の 2 つの位置に配置できます。</para>
+<itemizedlist>
+<listitem><para>コメント本文 (最初のスタンドアロンタグの前)。ここで、スーパークラスからコメント全体をコピーします。</para>
+</listitem><listitem><para>スタンドアロンタグのテキスト引数内。ここで、スーパークラスからタグのテキストをコピーします。</para>
+</listitem></itemizedlist>
+</listitem></varlistentry>
+<varlistentry><term>{<literal>@link</literal> <replaceable>package.class#member label</replaceable>}</term><listitem><para>参照クラスの、指定された名前を持つパッケージ、クラス、またはメンバについてのドキュメントを指すインラインリンクを、表示テキスト label とともに挿入します。</para>
+<para>このタグは、<literal>@see</literal> タグとよく似ています。どちらのタグも、<replaceable>package.class#member</replaceable> および <replaceable>label</replaceable> の参照の仕方が同じで、有効な構文もまったく同じです。大きな違いは、{<literal>@link</literal>} は、リンクを [関連項目] セクションに置くのではなく、インラインリンクを生成するということです。また、インラインテキストのほかの部分と区別するために、{<literal>@link</literal>} タグの最初と最後に中括弧を記述します。ラベルの中で「}」を使う必要がある場合は、HTML エンティティの「<literal>&amp;#125;</literal>」を使います。</para>
+<para>1 つの文の中で使用できる <literal>{@link}</literal> タグの数に制限はありません。このタグは、ドキュメンテーションコメントの説明部分、または <literal>@deprecated</literal>、<literal>@return</literal>、<literal>@param</literal> などの任意のタグのテキスト部分で使うことができます。</para>
+<para>たとえば、次のコメントでは、<literal>getComponentAt(int, int)</literal> メソッドを参照しています。<informalexample><screen><?Pub Lcl oneliner="yes">Use the {@link #getComponentAt(int, int) getComponentAt} method.</screen>
+</informalexample></para>
+<para>標準ドックレットでは、上記のコメントから次の HTML が生成されます (このコメントが同じパッケージの別のクラスを参照している場合)。<informalexample>
+<screen>Use the
+&lt;a href="Component.html#getComponentAt(int, int)"&gt; &bsol;
+               getComponentAt&lt;/a&gt;method.</screen>
+</informalexample></para>
+<para>この HTML は、Web ページ上では次のように表示されます。<informalexample><screen><?Pub Lcl oneliner="yes">Use the getComponentAt method.</screen>
+</informalexample></para>
+<para><literal>{@link}</literal> を、ドキュメント化の対象にしていないクラスにまで拡張するには、<option>link</option> オプションを使用します。</para>
+</listitem></varlistentry>
+<varlistentry><term><literal>{@linkplain</literal> <replaceable>package.class#member  label</replaceable>}</term><listitem><para>リンクのラベルがコードフォントではなくプレーンテキストで表示されている点以外は、<literal>{@link}</literal> と同じです。ラベルがプレーンテキストで記述されている場合に便利です。次の例を参照してください。</para>
+<informalexample><screen><?Pub Lcl oneliner="yes"> Refer to {@linkplain add() the overridden method}.</screen>
+</informalexample>
+<para>これは以下のように表示されます。</para>
+<informalexample><screen><?Pub Lcl oneliner="yes">Refer to the overridden method. </screen>
+</informalexample>
+</listitem></varlistentry>
+<varlistentry><term><literal>{@literal<replaceable>text</replaceable>}</literal></term><listitem><para>テキストを HTML マークアップまたは 入れ子になった javadoc タグとして解釈せずに、テキストをコードフォントで表示します。これにより doc コメントでは、パラメータタイプ (&lt;Object&gt;)、不等号 (3 &lt; 4)、または矢印 (&lt;-) などで、HTML エンティティ (&amp;lt; および &amp;gt;) ではなく、通常の山括弧 (&lt; および &gt;) を使用できます。たとえば、次のような doc コメントのテキストは、</para>
+<screen>{@literal A&lt;B&gt;C}</screen>
+<para>生成された HTML ページはブラウザで次のようにそのまま表示されます。</para>
+<screen><?Pub Lcl oneliner="yes">A&lt;B&gt;C</screen>
+<para>注目すべき点として、&lt;B> は太字であると解釈され、コードフォントになりません。</para>
+<para>コードフォントで同じ機能を実現するには、<literal>{@code}</literal> を使用します。</para>
+</listitem></varlistentry>
+<varlistentry><term><literal>@param</literal> <replaceable>parameter-name description</replaceable> </term><listitem><para>指定した parameter-name と指定した description を使用して パラメータを「Parameters」セクションに追加します。doc コメントを記述するときは、description を複数行に 続けることができます。このタグは、メソッド、コンストラクタ、またはクラスの doc コメント内でのみ有効です。</para>
+<para>パラメータ名は、メソッドかコンストラクタのパラメータ名、またはクラスの型パラメータの名前です。山括弧でパラメータ名を囲むと、型パラメータを使用することを 指定します。</para>
+<screen>/**
+ * @param &lt;E> Type of element stored in a list
+ */
+ public interface List&lt;E> extends Collection&lt;E> {
+ }</screen>
+<para>詳細については、@param タグの説明を参照してください。</para>
+</listitem></varlistentry>
+<varlistentry><term><literal>@return</literal> <replaceable>description</replaceable></term><listitem><para>description で指定されたテキストを持つ戻り値セクションを追加します。テキストでは、戻り値の型と取り得る値の範囲について記述する必要があります。</para>
+</listitem></varlistentry>
+<varlistentry><term><literal>@see</literal> <replaceable>reference</replaceable></term><listitem><para><replaceable>reference</replaceable> を指すリンクまたはテキストエントリを持つ [関連項目] 見出しを追加します。doc コメントには任意の数の <literal>@see</literal> タグを含めることができ、これらのタグはすべて同じ見出しの下にまとめられます。<literal>@see</literal> タグには次の 3 つの形式があります。3 番目がもっとも一般的な形式です。パッケージ、クラス、またはメンバに対するインラインリンクを文中に挿入する方法は、<literal>{@link}</literal> を参照してください。</para>
+</listitem></varlistentry>
+<varlistentry><term><literal>@see</literal> <replaceable>string</replaceable></term><listitem><para>string のテキストエントリを追加します。リンクは生成されません。string は、書籍、または URL ではアクセスできない情報の参照先です。<command>javadoc</command> ツールは、最初の文字が二重引用符 (") かどうかを調べて、上の 2 つの形式とこの形式とを区別します。次に例を示します。<informalexample><screen><?Pub Lcl oneliner="yes">@see "The Java Programming Language"</screen>
+</informalexample></para>
+<para>これは次のようなテキストを生成します。<informalexample>
+<screen>関連項目: "The Java Programming Language"</screen>
+</informalexample></para>
+</listitem></varlistentry>
+<varlistentry><term><literal>@see &lt;a href="</literal><replaceable>URL#value</replaceable><literal>"></literal><replaceable>label</replaceable><literal>&lt;/a></literal></term><listitem><para><replaceable>URL#value</replaceable> で定義されたとおりにリンクを追加します。<replaceable>URL#value</replaceable> は、相対 URL または絶対 URL です。<command>javadoc</command> ツールは、最初の文字として、小なり括弧 (<literal>&lt;</literal>) を探すことで、このリンクをその他の場合と区別します。<informalexample><screen><?Pub Lcl oneliner="yes">@see &lt;a href="spec.html#section">Java Spec&lt;/a></screen>
+</informalexample>これは次のようなリンクを生成します。<informalexample>
+<screen>関連項目: Java Spec</screen>
+</informalexample></para>
+</listitem></varlistentry>
+<varlistentry><term><literal>@see</literal> <replaceable>package.class#member label</replaceable></term><listitem><para>Java 言語で指定された名前のドキュメントを指す、表示テキスト label を持つリンクを追加します。label は省略可能です。label を省略した場合は、該当する名前が適切に短くされて (「名前の表示方法」を参照)、表示テキストとして代わりに表示されます。ラベルは、表示テキストを短縮する場合や、該当する名前と異なる表示テキストを指定する場合に使います。</para>
+</listitem></varlistentry>
+</variablelist>
+<para>バージョン 1.2 では、ラベルではなく、名前だけが HTML タグ <literal>&lt;code></literal> に囲まれて自動的に表示されます。バージョン 1.2.2 以降は、<literal>&lt;code></literal> は常に、ラベルが使用されているかどうかにかかわらず、表示可能なテキストを囲みます。</para>
+<itemizedlist>
+<listitem><para><replaceable>package.class#member</replaceable> には、Java 言語で有効な任意の名前、つまりパッケージ、クラス、インタフェース、コンストラクタ、メソッド、またはフィールドの名前を指定します。ただし、メンバ名の前のドットは、ハッシュ文字 (#) で置き換えます。指定した名前が、ドキュメント化されるクラスにある場合、<command>javadoc</command> ツールは該当する名前へのリンクを自動的に作成します。外部参照クラスへのリンクを作成するには、<option>link</option> オプションを使います。参照されるクラスに属していない名前のドキュメントを参照するには、ほかの 2 つの形式の <literal>@see</literal> タグを使います。1 番目の引数については、「名前の指定」で詳しく説明します。</para>
+</listitem><listitem><para><replaceable>label</replaceable> は省略可能なテキストで、リンクのラベルとして表示されます。label には空白を含めることができます。label を省略した場合は、<replaceable>package.class.member</replaceable> が、現在のクラスおよびパッケージに応じて適切に短くされて表示されます。「名前の表示方法」を参照してください。</para>
+</listitem><listitem><para>空白文字は <replaceable>package.class#member</replaceable> と <replaceable>label</replaceable> の間の区切り文字です。括弧内の空白文字は、ラベルの開始を意味しないため、メソッドのパラメータ間の区切り文字として使うことができます。</para>
+</listitem></itemizedlist>
+<para>この例では、Character クラスの <literal>@see</literal> タグが String クラスの equals メソッドを参照しています。タグには、名前 <literal>String#equals(Object)</literal> とラベル <literal>equals</literal> の両方の引数が含まれています。<informalexample>
+<screen>     /**
+      * @see String#equals(Object) equals
+      */</screen>
+</informalexample></para>
+<para>標準ドックレットは、次のような HTML を生成します。<informalexample>
+<screen>    &lt;dl>
+    &lt;dt>&lt;b>関連項目:&lt;/b>
+    &lt;dd>&lt;a href="../../java/lang/String#equals&bsol;
+                 (java.lang.Object)">&lt;code>equals&lt;/code>&lt;/a>
+    &lt;/dl></screen>
+</informalexample></para>
+<para>これは、ブラウザでは次のように表示され、ラベルがリンクテキストになります。<informalexample>
+<screen>関連項目:
+     equals</screen>
+</informalexample></para>
+<para><emphasis>名前の指定:</emphasis> この <replaceable>package.class#member</replaceable> の名前は、<literal>java.lang.String#toUpperCase()</literal> のように完全指定することも、<literal>String#toUpperCase()</literal> や <literal>#toUpperCase()</literal> などのように完全指定しないことも可能です。完全指定しない場合、<command>javadoc</command> は、通常の Java コンパイラの検索順序で検索を行います。詳細は、以下の「<literal>@see</literal> の検索順序」を参照してください。指定する名前では、メソッドの複数の引数の型の間など、括弧内に空白を含めることができます。</para>
+<para>短い部分修飾名を指定することの利点は、入力する文字数が減ることと、ソースコードが読みやすくなることです。以下の表に示すのは、さまざまな形式の名前です。Class には クラスかインタフェース、Type にはクラス、インタフェース、配列、または基本データ型、method にはメソッドまたはコンストラクタを指定できます。</para>
+<informaltable frame="all" orient="port"><tgroup cols="1" colsep="0" rowsep="0"><colspec colnum="1" colname="col1" colwidth="1*" align="left"><thead><row valign="top"><entry colname="col1" rowsep="1" align="left">一般的な形式 @see <replaceable>package.class#member</replaceable></entry></row></thead><tbody><row><entry><para> </para></entry></row><row><entry>現在のクラスのメンバを参照する</entry></row><row><entry><literal>@see</literal> <replaceable>#field</replaceable></entry></row><row><entry><literal>@see</literal> <replaceable>#method(Type, Type,...)</replaceable></entry></row><row><entry>@see <replaceable>#method(Type argname, Type argname,...)</replaceable></entry></row><row><entry><para> </para></entry></row><row><entry>現在の、またはインポートされたパッケージの別のクラスを参照する</entry></row><row><entry><literal>@see</literal> <replaceable>
+Class#field</replaceable></entry></row><row><entry><literal>@see</literal> <replaceable>Class#method(Type, Type,...)</replaceable></entry></row><row><entry><literal>@see</literal> <replaceable>Class#method(Type argname, Type argname,...)</replaceable></entry></row><row><entry><literal>@see</literal> <replaceable>Class</replaceable></entry></row><row><entry><para> </para></entry></row><row><entry>別のパッケージを参照する (完全修飾)</entry></row><row><entry><literal>@see</literal> <replaceable>package.Class#field</replaceable></entry></row><row><entry><literal>@see</literal> <replaceable>package.Class#method(Type, Type,...)</replaceable></entry></row><row><entry><literal>@see</literal> <replaceable>package.Class#method(Type argname, Type argname,...)</replaceable></entry></row><row><entry><literal>@see</literal> <replaceable>
+package.Class</replaceable></entry></row><row><entry><literal>@see</literal> <replaceable>package</replaceable></entry></row></tbody></tgroup></informaltable>
+<para>上の表に対する注を以下に示します。</para>
+<itemizedlist>
+<listitem><para>クラスまたはパッケージを省いた最初の形式のセットでは、<command>javadoc</command> ツールは現在のクラス階層だけで検索を行います。<command>javadoc</command> は、現在のクラスかインタフェースのメンバ、スーパークラスかスーパーインタフェースの 1 つ、または親クラスかインタフェースの 1 つ (検索手順 1 〜 3) を検索します。現在のパッケージのほかの部分やほかのパッケージ (検索手順 4 〜 5) は 検索しません。</para>
+</listitem><listitem><para>メソッドまたはコンストラクタが、<literal>getValue</literal> のように括弧を付けずに名前として入力され、かつ同じ名前のフィールドがない場合は、<command>javadoc</command> ツールは正確にリンクを作成しますが、括弧と引数を追加するように促す警告メッセージを出力します。このメソッドをオーバーロードした場合、<command>javadoc</command> ツールは、指定されたメソッドではなく、検索で見つかった最初のメソッドにリンクします。</para>
+</listitem><listitem><para>入れ子のクラスは、どの形式の場合でも、単に <literal>inner</literal> という形ではなく、<literal>outer.inner</literal> という形で指定しなければなりません。</para>
+</listitem><listitem><para>すでに述べたとおり、クラスとメンバを区切るのに、ドット (<literal>.</literal>) ではなくハッシュ文字 (<literal>#</literal>) が使われていることに注意してください。ドットは、クラス、内部クラス、パッケージ、およびサブパッケージを区切るのにも使われます。ただし、javadoc ツールでは一般に許容範囲が広く、あいまいさがなければ、ドットでも正しく解析されます。その場合でも警告は表示されます。</para>
+</listitem></itemizedlist>
+<para><emphasis>@see の検索順序:</emphasis> <command>javadoc</command> ツールは、ソースファイル (<literal>.java</literal>)、パッケージファイル (<literal>package.html</literal>)、または概要ファイル (<literal>overview.html</literal>) 内で使われる <literal>@see</literal> タグを処理します。あとの 2 つのファイルでは、<literal>@see</literal> を使って指定する名前を完全修飾する必要があります。ソースファイルでは、完全修飾名と部分修飾名のどちらを指定することもできます。</para>
+<para><command>javadoc</command> ツールが、完全修飾されていない <literal>.java</literal> ファイルで <literal>@see</literal> タグを見つけた場合、指定された名前を Java コンパイラと同じ順序で検索します。ただし、<command>javadoc</command> ツールは、一部の名前空間のあいまいさは検出しません。これは、<command>javadoc</command> ツールが、ソースコードにこれらのエラーが存在していないことを前提として動作するためです。検索順序は、「Java Language Specification」第 2 版の第 6 章「Names」で正式に定義されています。javadoc ツールは、関連するクラスとパッケージ、およびインポートされたクラスとパッケージのすべてから名前を検索します。具体的には、検索は次の順序で行われます。</para>
+<orderedlist>
+<listitem><para>現在のクラスまたはインタフェース</para>
+</listitem><listitem><para>名前を囲むクラスとインタフェース。もっとも近いものを最初に検索</para>
+</listitem><listitem><para>スーパークラスとスーパーインタフェース。もっとも近いものを最初に検索</para>
+</listitem><listitem><para>現在のパッケージ</para>
+</listitem><listitem><para>インポートされるパッケージ、クラス、およびインタフェース。import 文の順序に従って検索</para>
+</listitem></orderedlist>
+<para><command>javadoc</command> ツールは、一致する名前が見つかるまで、各クラスについて手順 1 〜 3 を繰り返して検索を続けます。つまり、現在のクラスとそのクラスを囲むクラス E を検索したあと、E のスーパクラスを検索し、最後に E を囲むクラスを検索します。手順 4 と 5 では、<command>javadoc</command> ツールは、1 つのパッケージ内でのクラスまたはインタフェースの検索を、なんらかの決まった順序で行うわけではありません (この検索順序はコンパイラに依存します)。手順 5 では、<command>javadoc</command> ツールは、<literal>java.lang</literal> を検索します。これは、<literal>java.lang</literal> がすべてのプログラムによって自動的にインポートされるためです。</para>
+<para><command>javadoc</command> ツールは、必ずしもサブクラスを検索するわけではなく、Javadoc の実行中にほかのパッケージのドキュメントが生成される場合でも、ほかのパッケージの検索は行いません。たとえば、<literal>@see</literal> タグが <literal>java.awt.event.KeyEvent</literal> クラスにあって、<literal>java.awt</literal> パッケージにある名前を参照する場合、<command>javadoc</command> は、そのクラスがインポートしない限りそのパッケージを検索しません。</para>
+<para><literal>名前の表示方法:</literal> <replaceable>label</replaceable> が省略された場合は、<replaceable>package.class.member</replaceable> が表示されます。通常、<replaceable>package.class.member</replaceable> は、現在のクラスおよびパッケージに応じて適切に短くされます。「短くされる」とは、<command>javadoc</command> ツールが必要最小限の名前を表示するということです。たとえば、<literal>String.toUpperCase()</literal> メソッドが同じクラスのメンバへの参照と、別のクラスのメンバへの参照を含んでいる場合、クラス名は後者の場合だけ表示されます。</para>
+<para><screen><replaceable>参照の種類</replaceable>           <replaceable>
+例</replaceable>                                 <replaceable>表示</replaceable>
+
+@see タグが同じク    @see String#toLowerCase()         toLowerCase()
+ラスのメンバを参照                                     (クラス名を省略)  
+
+@see タグが別のク    @see Character#toLowerCase(char)  Character.to
+ラスのメンバを参照                                     LowerCase(char)
+                                                       (クラス名を含む)</screen></para>
+<para><emphasis>@see の例:</emphasis> 右側のコメントは、<literal>@see</literal> タグが <literal>java.applet.Applet</literal> などの別のパッケージのクラス内にある場合に名前が表示される方法を示しています。</para>
+<informaltable orient="port"><tgroup cols="2" colsep="0" rowsep="0"><colspec colnum="1" colname="col1" colwidth="1*" align="left"><colspec colnum="2" colname="col2" colwidth="1*" align="left"><tbody><row><entry><replaceable>例</replaceable></entry><entry><replaceable>関連項目:</replaceable></entry></row><row><entry></entry><entry></entry></row><row><entry><literal>@see java.lang.String</literal></entry><entry>// String</entry></row><row><entry><literal>@see java.lang.String The String class</literal></entry><entry>// The String class</entry></row><row><entry><literal>@see String</literal></entry><entry>// String</entry></row><row><entry><literal>@see String#equals(Object)</literal></entry><entry>// String.equals(Object)</entry></row><row><entry><literal>@see String#equals</literal></entry><entry>// String.equals(java.lang.Object)</entry></row><row><entry><literal>@see java.lang.Object#wait(long)</literal></entry><entry>// java.lang.Object.wait(long)</entry></row><row><entry><literal>@see Character#MAX_RADIX</literal></entry><entry>// Character.MAX_RADIX</entry></row><row><entry><literal>@see &lt;a href="spec.html"&gt;Java Spec&lt;/a&gt;</literal></entry><entry>// Java Spec</entry></row><row><entry><literal>@see "The Java Programming Language"</literal></entry><entry>// "The Java Programming Language"</entry></row></tbody></tgroup></informaltable>
+<para><option>link</option> オプションを使用することにより、ドキュメント化されていないクラスにリンクするように <literal>@see</literal> を拡張できます。これは、「リンクを表示させるために除外クラスを参照する方法」で説明されている特定の方法で参照されているクラスに対してだけ有効です。</para>
+<variablelist termlength="wholeline"><varlistentry><term><literal>@since</literal> <replaceable>since-text</replaceable> </term><listitem><para>生成されるドキュメントに、指定された <replaceable>since-text</replaceable> を持つ [導入されたバージョン] 見出しを追加します。このテキストには、特別な内部構造はありません。このタグは、特定の変更または機能が、<replaceable>since-text</replaceable> によって指定されたソフトウェアのリリース以来、継続して存在することを意味します。たとえば、次のとおりです。<informalexample>
+<para><screen><?Pub Lcl oneliner="yes">@since 1.4</screen></para>
+</informalexample></para>
+<para>Java プラットフォームのソースコードの場合、このタグは、Java プラットフォーム <acronym>API</acronym> 仕様のバージョンを示します。その変更や機能がリファレンス実装に追加された時期を示すとは限りません。</para>
+</listitem></varlistentry>
+<varlistentry><term><literal>@serial</literal> <replaceable>field-description</replaceable> | <literal>include</literal> | <literal>exclude</literal></term><listitem><para>デフォルトの直列化可能フィールドの doc コメントで使用します。</para>
+<para>省略可能な <replaceable>field-description</replaceable> は、フィールドの意味を説明し、取り得る値のリストを指定しなければなりません。必要な場合には、複数の行にまたがって説明を記述することができます。標準ドックレットは、この情報を直列化された形式のページに追加します。</para>
+<para>クラスが直列化可能になってからしばらくしたのち、そのクラスに直列化可能フィールドが追加された場合、追加を行なったバージョンを識別するための文をその記述に追加する必要があります。</para>
+<para><literal>include</literal> と <literal>exclude</literal> 引数は、直列化された形式のページにクラスまたはパッケージを含めるべきか、あるいはこれらの引数を除くべきかを指定します。これらは、次のように動作します。<itemizedlist>
+<listitem><para><literal>Serializable</literal> を実装する public クラスまたは protected クラスは、そのクラス (またはそのパッケージ) が <literal>@serial exclude</literal> とマークされていない限り含められます。</para>
+</listitem><listitem><para><literal>Serializable</literal> を実装する private クラスまたは package-private クラスは、そのクラス (またはそのパッケージ) が <literal>@serial include</literal> とマークされていない限り除かれます。</para>
+</listitem></itemizedlist></para>
+<para><emphasis>例:</emphasis> <literal>javax.swing</literal> パッケージは、(<literal>package.html</literal> 内で) <literal>@serial exclude</literal> とマークされます。public クラスである <literal>java.security.BasicPermission</literal> は、<literal>@serial exclude</literal> とマークされます。package-private クラスである <literal>java.util.PropertyPermissionCollection</literal> は、<literal>@serial include</literal> とマークされます。</para>
+<para>クラスレベルのタグ <literal>@serial</literal> は、パッケージレベルの <literal>@serial</literal> をオーバーライドします。</para>
+<para><literal>Serializable</literal> クラスの初期バージョン以降に加えられている各直列化可能フィールドには、追加された時点を確認できるように <literal>@since</literal> タグを追加すべきです。</para>
+<para>これらのタグの使用法についての詳細と使用例は、「<citetitle>Java オブジェクト直列化仕様</citetitle>」の 1.6 節「クラスの直列化可能なフィールドおよびデータの文書化」を参照してください。また、「<citetitle>直列化の FAQ</citetitle>」も参照してください。ここには、「<command>javadoc</command> を <option>private</option> スイッチで実行していない場合、なぜ <command>javadoc</command> は private フィールドの <literal>@serial</literal> タグがないことについて警告を出すのか」というような質問とその回答があります。</para>
+</listitem></varlistentry>
+<varlistentry><term><literal>@serialField</literal> <replaceable>field-name  field-type  field-description</replaceable> </term><listitem><para><literal>Serializable</literal> クラスの <literal>serialPersistentFields</literal> メンバの <literal>ObjectStreamField</literal> コンポーネントをドキュメント化します。各 <literal>ObjectStreamField</literal> コンポーネントに対して <literal>@serialField</literal> タグを 1 つ使う必要があります。</para>
+</listitem></varlistentry>
+<varlistentry><term><literal>@serialData</literal> <replaceable>data-description</replaceable> </term><listitem><para><replaceable>data-description</replaceable> は、直列化された形式でのデータの型と順序を説明するテキストです。このデータには、特に、<literal>writeObject</literal> メソッドによって書き込まれる省略可能なデータ、および <literal>Externalizable.writeExternal</literal> メソッドによって書き込まれるすべてのデータ (基底クラスを含む) が含まれます。</para>
+<para><literal>@serialData</literal> タグは、<literal>writeObject</literal>、<literal>readObject</literal>、<literal>writeExternal</literal>、および <literal>readExternal</literal> の各メソッドの doc コメントで使用できます。</para>
+</listitem></varlistentry>
+</variablelist>
+<variablelist termlength="wholeline"><varlistentry><term><literal>@throws</literal> <replaceable>class-name  description</replaceable> </term><listitem><para><literal>@throws</literal> タグと <literal>@exception</literal> タグは同義です。生成されるドキュメン テーションに、<replaceable>class-name</replaceable> および <replaceable>description</replaceable> テキストを持つ [例外] 小見出しを追加します。<replaceable>class-name</replaceable> は、該当するメソッドによってスローされる可能性のある例外の名前です。このクラスが完全修飾されていない場合、<command>javadoc</command> ツールは検索順序に従ってクラスを探します。スーパークラスまたはインタフェース内にドキュメント化されている <literal>@throws</literal> タグのコメントは、（1） サブクラスの throws 節で宣言されている例外と （2） すべての実行時の例外に継承されます。こうした例外が存在しない場合、ドキュメントを強制的に継承させるには、<literal>{@inheritDoc}</literal> を使用します。</para>
+</listitem></varlistentry>
+<varlistentry><term><literal>{@value <replaceable>package.class#field</replaceable>} </literal></term><listitem><para><literal>{@value}</literal> が静的フィールドの doc コメントで 引数なしで使用されている場合、その定数の値が表示されます。</para>
+<screen>/**
+ * The value of this constant is {@value}.
+ */
+ public static final String SCRIPT_START = "&lt;script>"</screen>
+<para>任意の doc コメント内で引数 <literal>package.class#field</literal> ありで使用されている場合は、指定した定数の値が表示されます。</para>
+<screen>/**
+ * Evaluates the script starting with {@value #SCRIPT_START}.         
+ */
+ public String evalScript(String script) {
+ }</screen>
+<para>引数 <literal>package.class#field</literal> は、<literal>@see</literal> 引数と同一の形式になります。ただし、メンバは静的フィールドにある必要がある点が異なります。</para>
+<para>これらの定数での値は、「定数フィールド値」ページにも表示されます。</para>
+</listitem></varlistentry>
+<varlistentry><term><literal>@version</literal> <replaceable>version-text</replaceable> </term><listitem><para><option>version</option> オプションが使われている場合、生成されるドキュメントに、指定された <replaceable>version-text</replaceable> を持つ [バージョン] 小見出しを追加します。このテキストには、特別な内部構造はありません。1 つの doc コメントに含めることのできる <literal>@version</literal> タグは 1 つ以下です。通常、バージョンは、該当するクラスまたはメンバを含むソフトウェア (Java 2 SDK など) のバージョンを指します。</para>
+</listitem></varlistentry>
+</variablelist>
+</refsect2>
+<refsect2><title>タグを使用できる場所</title>
+<para>以下では、タグを使用できる場所について説明します。<literal>@see</literal>、<literal>@link</literal>、<literal>@since</literal>、および <literal>@deprecated</literal> の 4 つのタグは、すべての doc コメントで使用できます。</para>
+</refsect2>
+<refsect2><title>概要ドキュメントタグ</title>
+<para>概要タグは、概要ページのドキュメンテーションコメント (通常は <literal>overview.html</literal> という名前のソースファイル内にある) で使用できるタグです。ほかのドキュメンテーションコメントと同様に、これらのタグは、説明のあとで使う必要があります。</para>
+<para><emphasis>注:</emphasis> バージョン 1.2 では、概要ドキュメント内の <literal>{@link}</literal> タグにバグがあります。テキストは適切に表示されますが、リンクが設定されません。現在のところ、<literal>{@docRoot}</literal> タグは、概要ドキュメント内では動作しません。<informalexample>
+<screen><emphasis>概要タグ</emphasis>
+
+@see
+@since
+@author
+@version
+{@link}
+{@linkplain}
+{@docRoot}</screen>
+</informalexample></para>
+</refsect2>
+<refsect2><title>パッケージドキュメントタグ</title>
+<para>パッケージタグは、パッケージのドキュメンテーションコメント (<literal>package.html</literal> という名前のソースファイルに存在) で使用できるタグです。<literal>@serial</literal> タグをここで使用するためには、<literal>include</literal> または <literal>exclude</literal> 引数と共に使用する必要があります。<informalexample>
+<screen><emphasis>パッケージタグ</emphasis>
+
+@see
+@since
+@deprecated
+@serial
+@author
+@version
+{@link}
+{@linkplain}
+{@docRoot}</screen>
+</informalexample></para>
+</refsect2>
+<refsect2><title>クラスおよびインタフェースドキュメントタグ</title>
+<para>次に示すのは、クラスまたはインタフェースのドキュメンテーションコメントで使用できるタグです。<literal>@serial</literal> タグをここで使用するためには、<literal>include</literal> または <literal>exclude</literal> 引数と共に使用する必要があります。<informalexample>
+<screen><emphasis>クラスおよびインタフェースタグ</emphasis>
+
+@see
+@since
+@deprecated
+@serial
+@author
+@version
+{@link}
+{@linkplain}
+{@docRoot}</screen>
+</informalexample></para>
+<para>次は、クラスコメントの例です。<informalexample>
+<para><screen>/**
+ * A class representing a window on the screen.
+ * For example:
+ * &lt;pre>
+ *    Window win = new Window(parent);
+ *    win.show();
+ * &lt;/pre>
+ *
+ * @author  Sami Shaio
+ * @version 1.8, 04/02/04
+ * @see     java.awt.BaseWindow
+ * @see     java.awt.Button
+ */
+ class Window extends BaseWindow {
+ }</screen></para>
+</informalexample></para>
+</refsect2>
+<refsect2><title>フィールドドキュメントタグ</title>
+<para>次に示すのは、フィールドのドキュメンテーションコメントで使用できるタグです。<informalexample>
+<screen><emphasis>フィールドタグ</emphasis>
+
+@see
+@since
+@deprecated
+@serial
+@serialField
+{@link}
+{@linkplain}
+{@docRoot}
+{@value}</screen>
+
+</informalexample></para>
+<para>次は、フィールドコメントの例です。<informalexample>
+<para><screen>/**
+ * The X-coordinate of the component.
+ *
+ * @see #getLocation()
+ */
+ int x = 1263732;</screen></para>
+</informalexample></para>
+</refsect2>
+<refsect2><title>コンストラクタおよびメソッドドキュメントタグ</title>
+<para>次に、コンストラクタまたはメソッドのドキュメンテーションコメント内で表示できるタグを示します。ただし、<literal>{@inheritDoc}</literal> はコンストラクタ内では表示できません。<informalexample>
+<screen><emphasis>メソッドおよびコンストラクタタグ</emphasis>
+@see
+@since
+@deprecated
+@param
+@return
+@throws (@exception)
+@serialData
+{@link}
+{@linkplain}
+{@inheritDoc}
+{@docRoot}</screen>
+</informalexample></para>
+<para>次はメソッドの doc コメントの例です。<informalexample>
+<para><screen>/**
+ * Returns the character at the specified index. An index
+ * ranges from &lt;code>0&lt;/code> to &lt;code>length() - 1&lt;/code>.
+ *
+ * @param     index  the index of the desired character.
+ * @return    the desired character.
+ * @exception StringIndexOutOfRangeException
+ *              if the index is not in the range &lt;code>0&lt;/code>
+ *              to &lt;code>length()-1&lt;/code>.
+ * @see       java.lang.Character#charValue()
+ */
+ public char charAt(int index) {
+ }</screen></para>
+</informalexample></para>
+</refsect2>
+</refsect1>
+<refsect1><title>&opts-tt;</title>
+<para><command>javadoc</command> ツールは、ドックレットを使って出力を決定します。<command>javadoc</command> ツールは、<option>doclet</option> オプションでカスタムドックレットが指定されている場合以外は、デフォルトの標準ドックレットを使います。<command>javadoc</command> ツールには、任意のドックレットとともに使用できるコマンド行オプションがあります。これらのオプションについては、後述の「<literal>javadoc</literal> のオプション」で説明します。標準ドックレットでは、このほかに、いくつかの追加のコマンド行オプションが提供されます。これらのオプションについては、後述の「標準ドックレットが提供するオプション」で説明します。どのオプション名も大文字と小文字を区別しません。ただし、オプションの引数では大文字と小文字が区別されることがあります。</para>
+<para>オプションを以下に示します。</para>
+<para><screen>        -1.1                   -header            -private
+        -author                -help              -protected
+        -bootclasspath         -helpfile          -public
+        -bottom                -J                 -quiet
+        -breakiterator         -link              -serialwarn 
+        -charset               -linkoffline       -source
+        -classpath             -linksource        -sourcepath
+        -d                     -locale            -splitindex
+        -docencoding           -nocomment         -stylesheetfile
+        -docfilessubedir       -nodeprecated      -subpackages
+        -doclet                -nodeprecatedlist  -tag
+        -docletpath            -nohelp            -taglet
+        -doctitle              -noindex           -tagletpath
+        -encoding              -nonavbar          -title
+        -exclude               -noqualifier       -use
+        -excludedocfilessubdir -nosince           -verbose
+        -extdirs               -notree            -version
+        -footer                -overview          -windowtitle
+        -group                 -package           -notimestamp 
+        -keywords                                                                                   
+</screen></para>
+<refsect2><?Pub Caret1><title>Javadoc のオプション</title>
+<variablelist termlength="wholeline"><varlistentry><term><option>overview</option> <replaceable>path/filename</replaceable> </term><listitem><para><command>javadoc</command> に対して、<replaceable>path/filename</replaceable> で指定された「ソース」ファイルから概要ドキュメント用のテキストを取得し、概要ページ (<literal>overview-summary.html</literal>) に配置することを指示します。<replaceable>path/filename</replaceable> は、<option>sourcepath</option> への相対パスです。</para>
+<para><replaceable>filename</replaceable> と <replaceable>path</replaceable> には、それぞれ任意の名前と場所を指定できますが、通常は、<literal>overview.html</literal> という名前を付けて、ソースツリー内の最上位のパッケージディレクトリを含むディレクトリに配置します。この場所では、<option>sourcepath</option> がこのファイルを指すので、パッケージをドキュメント化する際に path が必要ありません。たとえば、<literal>java.lang</literal> パッケージのソースツリーが <literal>/src/classes/java/lang/</literal> の場合、概要ファイルを <literal>/src/classes/overview.html</literal> に配置できます。「使用例」を参照してください。</para>
+<para><replaceable>path/filename</replaceable> で指定するファイルについては、「概要コメントファイル」を参照してください。</para>
+<para>概要ページが作成されるのは、<command>javadoc</command> に 2 つ以上のパッケージ名を渡した場合だけです。詳細は、「HTML フレーム」節を参照してください。</para>
+<para>概要ページ上のタイトルは、<option>doctitle</option> で設定します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>public</option> </term><listitem><para>public なクラスとメンバだけを表示します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>protected</option> </term><listitem><para>protected および public なクラスとメンバだけを表示します。これはデフォルトの動作です。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>package</option> </term><listitem><para>パッケージ、および protected と public な クラスとメンバだけを表示します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>private</option> </term><listitem><para>すべてのクラスとメンバを表示します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>help</option> </term><listitem><para>オンラインヘルプを表示します。<command>javadoc</command> とドックレットのコマンド行オプションの一覧が表示されます。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>doclet</option> <replaceable>class</replaceable> </term><listitem><para>ドキュメントの生成に使うドックレットを起動するためのクラスファイルを指定します。完全指定の名前を指定してください。ドックレットでは、出力の内容と形式を定義します。<option>doclet</option> オプションが使われていない場合、<command>javadoc</command> は標準ドックレットを使ってデフォルトの HTML 形式を生成します。このクラスには、<literal>start(Root)</literal> メソッドが含まれていなければなりません。この起動クラスへのパスは、<option>docletpath</option> オプションによって定義されます。</para>
+<para>たとえば、MIF ドックレットを呼び出すには、次のコマンドを使用します。<informalexample><screen><?Pub Lcl oneliner="yes">-doclet com.sun.tools.doclets.mif.MIFDoclet</screen>
+</informalexample></para>
+</listitem></varlistentry>
+<varlistentry><term><option>docletpath</option> <replaceable>classpathlist</replaceable> </term><listitem><para>ドックレットを起動するクラスファイル (<option>doclet</option> オプション指定時) へのパス、およびこのクラスファイルが依存する <acronym>jar</acronym> ファイルを指定します。起動クラスファイルが jar ファイル内にある場合、例に従って、その jar ファイルへのパスを指定します。絶対パス、または現在のディレクトリからの相対パスを指定できます。<replaceable>classpathlist</replaceable> に複数のパスまたは <acronym>jar</acronym> ファイルを指定する場合は、Solaris ではコロン (:)、Windows ではセミコロン (;) で区切ってください。目的のドックレットが検索パス内にある場合は、このオプションは不要です。</para>
+<para>jar ファイルへのパスの例には、ドックレットの開始クラスファイルが含まれています。jar ファイル名が含まれている点に注意してください。<informalexample><screen><?Pub Lcl oneliner="yes"> -docletpath /home/user/mifdoclet/lib/mifdoclet.jar</screen>
+</informalexample></para>
+<para>ドックレットの開始クラスファイルのパスの例。クラスファイル名が省略されていることに注意してください。<informalexample><screen><?Pub Lcl oneliner="yes"> -docletpath /home/user/mifdoclet/classes/com/sun/tools/doclets/mif/</screen>
+</informalexample></para>
+</listitem></varlistentry>
+<varlistentry><term><option>1.1</option> </term><listitem><para>この機能は、<command>javadoc</command> 1.4 から削除されました。代替の機能は存在しません。このオプションは、<command>javadoc</command> 1.1 で生成されるドキュメントの外観と機能 (サポートされなくなった、入れ子になったクラスを含む) を備えたドキュメントを作成するためのものでした。このオプションが必要であれば、代わりに <command>javadoc</command> 1.2 または 1.3 を使用してください。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>sourcepath</option> <replaceable>sourcepathlist</replaceable> </term><listitem><para><command>javadoc</command> コマンドにパッケージ名を渡す際に、ソースファイル (<literal>.java</literal>) 検索用のパスを指定します。sourcepathlist には、コロン (:) で区切って複数のパスを含めることができます。Javadoc ツールは、指定されたパス以下のすべてのサブディレクトリを検索します。このオプションを使って、ドキュメント化されるソースファイルの位置だけでなく、それ自体はドキュメント化されていないがドキュメント化されているソースファイルから継承されたコメントをもつソースファイルの位置も確認できます。</para>
+<para><option>sourcepath</option> オプションは、<command>javadoc</command> コマンドを使ってパッケージ名を指定するときにだけ使用でき、<command>javadoc</command> コマンドに渡される <literal>.java</literal> ファイルは検索できないことに注意してください。<literal>.java</literal> ファイルを検索するには、そのディレクトリに移動するか、各ファイルの前にそのパスを付けます (「1 つ以上のパッケージのドキュメント化」を参照)。<option>sourcepath</option> が省略された場合は、<command>javadoc</command> はクラスパスを使ってソースファイルを検索します (<option>classpath</option> を参照)。したがって、<option>sourcepath</option> のデフォルトは <option>classpath</option> の値です。<option>classpath</option> を省略してパッケージ名を <command>javadoc</command> に渡した場合、<command>javadoc</command> は、ソースファイルの現在のディレクトリ (およびサブディレクトリ) を検索します。</para>
+<para><replaceable>sourcepathlist</replaceable> では、ドキュメント化するパッケージ名のソースツリーのルートディレクトリを設定します。たとえば、ソースファイルが次の場所にある <literal>com.mypackage</literal> という名前のパッケージをドキュメント化するとします。<informalexample>
+<para><screen><?Pub Lcl oneliner="yes">/home/user/src/com/mypackage/*.java</screen></para>
+</informalexample>この場合、次のようにしてソースパスを <literal>/home/user/src</literal>、つまり <literal>com/mypackage</literal> を含むディレクトリに指定し、それからパッケージ名 <literal>com/mypackage</literal> を指定します。<informalexample>
+<para><screen><?Pub Lcl oneliner="yes">example% <userinput>javadoc -sourcepath /home/user/src/ com.mypackage</userinput></screen></para>
+</informalexample>これは、ソースパスの値とパッケージ名をつなげて、ドットをスラッシュ (/) に変えると、以下のパッケージのフルパスになることに注目すると覚えやすいでしょう。<informalexample>
+<para><literal>/home/user/src/com/mypackage</literal></para>
+</informalexample></para>
+<para>2 つのソースパスを指定するには、次のようにします。<informalexample>
+<screen>example% <userinput>javadoc -sourcepath /home/user1/src:/home/user2/src\          com.mypackage</userinput></screen>
+</informalexample></para>
+</listitem></varlistentry>
+<varlistentry><term><option>classpath</option> <replaceable>classpathlist</replaceable> </term><listitem><para><command>javadoc</command> が参照されるクラスの検索を行うパスを指定します。参照されるクラス (<literal>.class</literal>) とは、ドキュメント化されるクラスとそれらのクラスによって参照される任意のクラスのことです。<command>javadoc</command> ツールは、指定されたパス以下のすべてのサブディレクトリで検索を行います。クラスパスリストには、パス間をコロンで区切って複数のパスを含めることができます。javadoc ツールは、指定されたパス以下のすべてのサブディレクトリを検索します。<replaceable>classpathlist</replaceable> の指定については、クラスパスのドキュメントを参照してください。</para>
+<para><option>sourcepath</option> を省略した場合は、<command>javadoc</command> ツールは、クラスファイル (下位互換用) とともに、<option>classpath</option> を使ってソースファイルを検索します。このため、異なるパス内のソースファイルおよびクラスファイルを検索する場合は、<option>sourcepath</option> と <option>sourcepath</option> の両方を使います。</para>
+<para>たとえば、<literal>com.mypackage</literal> をドキュメント化したい場合に、パッケージのクラスがディレクトリ <literal>/home/user/src/com/mypackage</literal> にあり、このパッケージが <literal>/home/user/lib</literal> 内のライブラリを使う場合は、次のように指定します。<informalexample>
+<para><screen>example% <userinput>
+javadoc -classpath /home/user/lib -sourcepath \
+                /home/user/src com.mypackage</userinput></screen></para>
+</informalexample></para>
+<para>ほかのツールと同様に、<option>classpath</option> を指定しない場合は、<envar>CLASSPATH</envar> 環境変数が設定されていれば、<command>javadoc</command> ツールはこの環境変数を使います。どちらも設定されていない場合は、<command>javadoc</command> ツールは現在のディレクトリでクラスを検索します。</para>
+<para><command>javadoc</command> ツールが拡張機能クラスおよびブートストラップクラスと通信する際に、<option>classpath</option> を使ってユーザクラスを検索する方法についての詳細は、「クラスの検索方法」を参照してください。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>bootclasspath</option> <replaceable>classpathlist</replaceable> </term><listitem><para>ブートクラスが存在するパスを指定します。ブートクラスとは、Java コアクラスのことです。<literal>bootclasspath</literal> は、<command>javadoc</command> ツールがソースファイルとクラスファイルを探すときに使う検索パスの一部です。詳細は、「Javac と javadoc ツールがクラスを検索する方法」を参照してください。<replaceable>classpathlist</replaceable> 内の複数のクラスパスリストは、コロン (:) で区切ります。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>extdirs</option> <replaceable>dirlist</replaceable> </term><listitem><para>拡張機能クラスが存在するディレクトリを指定します。拡張機能クラスは、Java 拡張機能機構を使うすべてのクラスです。拡張機能ディレクトリ (<literal>extdirs</literal>) は、<command>javadoc</command> ツールがソースファイルとクラスファイルを探すときに使う検索パスの一部です。詳細は、前述の <option>classpath</option> を参照してください。<replaceable>dirlist</replaceable> 内の複数のディレクトリは、コロン (:) で区切ります。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>verbose</option> </term><listitem><para><command>javadoc</command> の実行中に詳細なメッセージを表示します。<option>verbose</option> オプションを指定しない場合は、ソースファイルのロード時、ドキュメントの生成時 (ソースファイルごとに 1 つのメッセージ)、およびソート時にメッセージが表示されます。<option>verbose</option> オプションを指定した場合は、各 java ソースファイルの解析に要したミリ秒数などの追加メッセージを表示します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>quiet</option></term><listitem><para>エラーメッセージ以外および警告メッセージ以外のメッセージを除外し、エラーメッセージおよび警告メッセージのみを表示して見つけやすくします。また、バージョン文字列も抑制します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>breakiterator</option></term><listitem><para>英語のロケール固有のアルゴリズムではなく、<literal>java.text.BreakIterator</literal> の国際化された文境界を使用して、英文の最初の文の終端を判断できます (その他の 全言語ではすでに <literal>BreakIterator</literal> を使用しています)。ここで「最初の文」とは、パッケージ、クラス、またはメンバのメイン記述の最初の文のことです。この文はパッケージ、クラス、またはメンバのサマリにコピーされ、アルファベット順のインデックスにもコピーされます。</para>
+<para>JDK 1.2 以降、英語以外の言語では、<literal>BreakIterator</literal> クラスを使用して文の終端を判別していました。そのため 1.2 以降では、<option>breakiterator</option> オプションは英文以外では無効です。英語には、独自のデフォルトアルゴリズムがあります。</para>
+<simplelist>
+<member>英語のデフォルトの文のブレークアルゴリズム -  ピリオドのあとの空白文字または 段落レベルの HTML タグ (&lt;P> など) の位置で停止</member>
+<member>ブレーク反復子による文のブレークアルゴリズム -  次の単語が大文字で始まる場合、ピリオド、疑問符、感嘆符と空白文字の位置で停止。このアルゴリズムでは、ほとんどの省略記号が 処理されます (「The serial no. is valid」は処理されるが、「Mr. Smith」は処理されない)。HTML タグや、数字または記号で始まる文では停止しません。HTML タグに埋め込まれている場合でも、「../filename」の最後のピリオドで停止。</member></simplelist><note><para>注: 1.4.x にあったブレーク反復子警告メッセージは、1.5.0 で削除されました。しかし、デフォルトの文ブレークアルゴリズムに変更はありません。つまり、<option>breakiterator</option> オプションは 1.5.0 でのデフォルトではなく、今後デフォルトとなる予定もありません。これは「次期メジャーリリース」(1.5.0) でデフォルトが変更される、という弊社の以前の方針の変更を意味します。つまり、1.4.x でのブレーク反復子を削除するようにソースコードを変更しなかった場合は、1.5.0 以降では何もする必要なく、警告は表示されません。このように方針を変更した理由は、ブレーク反復子をデフォルトにすることによる利点よりも、必要なソース変更による非互換性の問題のほうが大きいと判断したからです。これにより、追加作業や混乱が発生したことをお詫びいたします。</para>
+</note>
+</listitem></varlistentry>
+<varlistentry><term><option>locale</option> <replaceable>language_country_variant</replaceable> </term><listitem><para><emphasis>重要:</emphasis> <option>locale</option> オプションは、標準ドックレットやその他のドックレットによって提供されるオプションよりも前に (左側に) 指定する必要があります。そうでなければ、ナビゲーションバーは英語で表示されます。順序に依存するコマンド行オプションは、このオプションのみです。</para>
+<para><command>javadoc</command> がドキュメントを生成するときに使用するロケールを指定します。引数には、<literal>java.util.Locale</literal> のドキュメントで説明されているロケールを指定します。たとえば、<literal>en_US</literal> (英語、米国)、<literal>en_US_WIN</literal> (Windows で使用される英語) などを指定します。</para>
+<para>ロケールを指定すると、<command>javadoc</command> は指定されたロケールのリソースファイルを選択してメッセージ (ナビゲーションバー、リストと表の見出し、ヘルプファイルの目次、<literal>stylesheet.css</literal> のコメントなどの文字列) に使います。また、アルファベット順にソートされるリストのソート順、および最初の文の末尾を決定する文の区切り文字も、指定したロケールによって決まります。このオプションは、ドキュメント化されるクラスのソースファイル内で指定されている doc コメントテキストのロケールを決定するものではありません。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>encoding</option> <replaceable>name</replaceable> </term><listitem><para>ソースファイルのエンコーディング名 (EUCJIS/SJIS など) を指定します。このオプションが指定されていない場合は、プラットフォームのデフォルトコンバータが使われます。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>J</option><replaceable>flag</replaceable> </term><listitem><para><command>javadoc</command> を実行する実行システム java に flag を直接渡します。<option>J</option> と flag の間に空白を入れてはなりません。たとえば、生成ドキュメントを処理するためにシステムで 32M バイトのメモリを確保しておく必要がある場合は、<command>java</command> の <option>Xmx</option> オプションを次のように呼び出します。<option>Xmx</option> は、省略可能です。これは、初期メモリのサイズを設定するだけのオプションで、必要なメモリの最小サイズがわかっている場合に便利です。<informalexample>
+<para><screen><?Pub Lcl oneliner="yes">example% <userinput>javadoc &ndash;J&ndash;Xmx32m &ndash;J&ndash;Xms32m com.mypackage</userinput></screen></para>
+</informalexample></para>
+<para>使用している javadoc のバージョンを確認するには、次のように java の「<option>version</option>」オプションを呼び出します。<informalexample>
+<screen>% javadoc -J-version
+java version "1.2"
+Classic VM (build JDK-1.2-V, green threads, sunwjit)</screen>
+</informalexample></para>
+<para>(標準ドックレットのバージョン番号は出力ストリームに表示されます。) </para>
+</listitem></varlistentry>
+</variablelist>
+</refsect2>
+<refsect2><title>標準ドックレットが提供するオプション</title>
+<variablelist termlength="wholeline"><varlistentry><term><option>d</option> <replaceable>directory</replaceable> </term><listitem><para>生成された HTML ファイルを保存するディレクトリを指定します (d は「生成先 (destination)」の意味)。このオプションを省略すると、生成されたファイルは現在のディレクトリに保存されます。値 <replaceable>directory</replaceable> には、絶対ディレクトリまたは現在の作業ディレクトリからの相対ディレクトリを指定できます。1.4 では、javadoc の実行時に自動的に生成先ディレクトリが作成されます。</para>
+<para>たとえば、次の例は、<literal>com.mypackage</literal> パッケージのドキュメントを生成し、結果を <literal>/home/user/doc/</literal> ディレクトリに保存します。<informalexample>
+<para><screen><?Pub Lcl oneliner="yes">example% <userinput>javadoc -d /home/user/doc com.mypackage</userinput></screen></para>
+</informalexample></para>
+</listitem></varlistentry>
+<varlistentry><term><option>use</option> </term><listitem><para>ドキュメント化されるクラスとパッケージごとに 1 つの [使用] ページを含めます。このページには、ドキュメント化されるクラスまたはパッケージの <acronym>API</acronym> を使っているパッケージ、クラス、メソッド、コンストラクタ、およびフィールドが記述されます。たとえば、クラス C およびクラス C を使うものは、C のサブクラス、C として宣言されているフィールド、C を返すメソッド、および、型 C のパラメータを持つメソッドとコンストラクタがページに含まれます。</para>
+<para>たとえば、<literal>String</literal> について、[使用] ページに何が表示されるかを見てみましょう。<literal>java.awt.Font</literal> クラスの <literal>getName()</literal> メソッドは、<literal>String</literal> 型を返します。このため、<literal>getName()</literal> は <literal>String</literal> を使うので、[使用] ページの <literal>String</literal> でこのメソッドを見つけることができます。</para>
+<para>このページでは <acronym>API</acronym> の使用だけがドキュメント化され、実装はドキュメント化されません。あるメソッドが実装内に <literal>String</literal> を使っているが、引数として文字列をとったり、文字列を返したりしない場合は、<literal>String</literal> の「使用」とはみなされません。</para>
+<para>生成された [使用] ページにアクセスするには、目的のクラスまたはパッケージを表示して、ナビゲーションバーの [使用] リンクをクリックします。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>version</option> </term><listitem><para>生成されるドキュメントに <literal>@version</literal> テキストを含めます。このテキストは、デフォルトでは省略されます。使用している javadoc ツールのバージョンを確認するには、<option>J-version</option> オプションを使用します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>author</option> </term><listitem><para>生成されるドキュメントに <literal>@author</literal> テキストを含めます。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>splitindex</option> </term><listitem><para>索引ファイルをアルファベットごとに複数のファイルに分割し、文字ごとに 1 つのファイルと、アルファベット以外の文字で始まる索引エントリ用のファイルを 1 つ作成します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>windowtitle</option> <replaceable>title</replaceable> </term><listitem><para>HTML の <literal>&lt;title></literal> タグで使うタイトルを指定します。指定したタイトルは、ウィンドウタイトルと、該当するページに対して作成されたブラウザのブックマーク (よくアクセスする場所) に表示されます。タイトルには HTML タグを含めないでください。タイトルに HTML タグが 含まれていると、ブラウザによるタグの解釈が不適切になる可能性があります。<replaceable>title</replaceable> の中で引用符を使う場合は、引用符をエスケープする必要があります。<option>windowtitle</option> が省略されている場合、<command>javadoc</command> ツールはこのオプションの代わりに <option>doctitle</option> の値を使います。</para>
+<informalexample><screen>% javadoc -windowtitle "Java 2 Platform" com.mypackage</screen>
+</informalexample>
+</listitem></varlistentry>
+<varlistentry><term><option>doctitle</option> <replaceable>title</replaceable> </term><listitem><para>概要ファイルの最上部近くに配置するタイトルを指定します。タイトルは中央揃えされ、レベル 1 の見出しとして上部ナビゲーションバーのすぐ下に置かれます。<replaceable>title</replaceable> には、HTML タグと空白を含めることができますが、これらを含める場合は全体を引用符で囲まなければなりません。<replaceable>title</replaceable> の中で引用符を使う場合は、引用符をエスケープする必要があります。</para>
+<informalexample><screen><?Pub Lcl oneliner="yes"> % javadoc -doctitle "Java &lt;sup>&lt;font size=\\"-2\\">TM&lt;/font>&lt;/sup>" com.mypackage</screen>
+</informalexample>
+</listitem></varlistentry>
+<varlistentry><term><option>title</option> <replaceable>title</replaceable> </term><listitem><para>このオプションは、現在は存在しません。<command>javadoc</command> 1.2 のベータ版にだけ存在しました。このオプションは、ウィンドウタイトルではなくドキュメントタイトルを定義することを明確にするため、<option>doctitle</option> に名前が変更されました。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>header</option> <replaceable>header</replaceable> </term><listitem><para>各出力ファイルの上部に配置するヘッダテキストを指定します。ヘッダは、上部ナビゲーションバーの右側に配置されます。<replaceable>header</replaceable> には、HTML タグと空白を含めることができますが、これらを含める場合は全体を引用符で囲まなければなりません。<replaceable>header</replaceable> の中で引用符を使う場合は、引用符をエスケープする必要があります。</para>
+<informalexample>
+<screen> % javadoc -header "&lt;b>Java 2 Platform&lt;/b>&lt;br>v1.4" com.mypackage
+
+</screen>
+</informalexample>
+</listitem></varlistentry>
+<varlistentry><term><option>footer</option> <replaceable>footer</replaceable> </term><listitem><para>各出力ファイルの下部に配置するフッタテキストを指定します。フッタは、下部ナビゲーションバーの右側に配置されます。<replaceable>footer</replaceable> には、HTML タグと空白を含めることができますが、これらを含める場合は全体を引用符で囲まなければなりません。<replaceable>footer</replaceable> の中で引用符を使う場合は、引用符をエスケープする必要があります。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>bottom</option> <replaceable>text</replaceable> </term><listitem><para>各出力ファイルの最下部に配置するテキストを指定します。このテキストは、下部ナビゲーションバーの下のページの最下部に配置されます。<replaceable>text</replaceable> には、HTML タグと空白を含めることができますが、これらを含める場合は全体を引用符で囲まなければなりません。<replaceable>text</replaceable> の中で引用符を使う場合は、引用符をエスケープする必要があります。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>link</option> <replaceable>extdocURL</replaceable> </term><listitem><para><command>javadoc</command> ツールにより生成された既存の外部参照クラスのドキュメンテーションへのリンクを作成します。引数は 1 つです。</para>
+<itemizedlist>
+<listitem><para><replaceable>extdocURL</replaceable> は、javadoc によって生成され、リンク先として指定する外部ドキュメントがあるディレクトリの絶対 URL または相対 URL です。あとで例を示します。このディレクトリ内に package-list ファイルが存在していなければなりません。存在しない場合は、<literal>linkoffline</literal> を使用します。javadoc ツールは package-list ファイルからパッケージ名を読み取り、それを URL のパッケージにリンクします。javadoc ツールを実行すると、<replaceable>extdocURL</replaceable> 値は作成された &lt;A HREF> リンクにそのままコピーされます。したがって、<replaceable>extdocURL</replaceable> はファイルではなく、<replaceable>extdocURL</replaceable> の URL である必要があります。</para>
+<para>ドキュメントを任意の Web サイト上のドキュメントにリンクするには <replaceable>extdocURL</replaceable> の絶対リンクを、相対ロケーションのみを指定するには相対リンクを使用できます。相対リンクを使用する場合、生成先ディレクトリ (<option>d</option> で指定) からの相対パスを、リンク先パッケージがあるディレクトリに渡す必要があります。</para>
+<para>通常、絶対リンクを指定する場合は、<literal>http:</literal> リンクを使用します。ただし、Web サーバをもたないファイルシステムにリンクする場合は、<literal>file:</literal> リンクを使用できます。ただし、この方法は、生成されたドキュメントにアクセスするすべてのユーザが同じファイルシステムを共有している場合以外は使用しないでください。</para>
+</listitem></itemizedlist>
+<para><option>linkoffline</option> または <option>link</option> の選択</para>
+<para>現在実行中の javadoc の外部にある <acronym>API</acronym> ドキュメントにリンクするとき、いずれかのオプションを使用します。</para>
+<para><option>link</option> を使用する場合:</para>
+<para><itemizedlist>
+<listitem><para>外部 <acronym>API</acronym> ドキュメントへの相対パスを使用している</para>
+</listitem><listitem><para>外部 <acronym>API</acronym> ドキュメントへの絶対 URL を使用している (プログラムがその URL に接続し、読み取りを行うことがシェルによって許可されている場合) </para>
+</listitem></itemizedlist></para>
+<para><option>linkoffline</option> を使用する場合:</para>
+<itemizedlist>
+<listitem><para>外部 <acronym>API</acronym> ドキュメントへの絶対 URL を使用している (プログラムがその URL に接続し、読み取りを行うことがシェルによって許可されていない場合) 。このような状況は、リンク先のドキュメントがファイアウォールの向こう側にある場合に発生します。</para>
+</listitem></itemizedlist>
+<para><emphasis>外部ドキュメントへの絶対リンクの使用例</emphasis></para>
+<para><literal>java.lang</literal>、<literal>java.io</literal>、および他の Java 2 プラットフォームパッケージ (http://java.sun.com/j2se/1.4/docs/api) にリンクしたい場合があります。次のコマンドは、Java 2 プラットフォームパッケージへのリンクを持つ <literal>com.mypackage</literal> パッケージのドキュメントを生成します。生成されたドキュメントには、たとえばクラスツリー内の <literal>Object</literal> クラスへのリンクが含まれています (<option>sourcepath</option> や <option>d</option> などの他のオプションは表示されません)。</para>
+<informalexample><screen> % javadoc -link http://java.sun.com/j2se/1.4/docs/api com.mypackage</screen>
+</informalexample>
+<para><emphasis>外部ドキュメントへの相対リンクの使用例</emphasis></para>
+<para>javadoc ツールの異なる実行で生成されたドキュメントをもつ 2 つのパッケージがあり、それらが別々の相対パスをもっているとします。この例では、2 つのパッケージを <literal>com.apipackage</literal> (<acronym>API</acronym>) および <literal>com.spipackage</literal> (<acronym>SPI</acronym> - Service Provide Interface) とします。ドキュメントの置き場所は <literal>docs/api/com/apipackage</literal> および <literal>docs/spi/com/spipackage</literal> です。<acronym>API</acronym> パッケージドキュメントはすでに生成され、docs が現在のディレクトリ内にある場合、次のように実行することで、<acronym>API</acronym> ドキュメントにリンクした <acronym>SPI</acronym> パッケージをドキュメント化できます。</para>
+<informalexample><screen> % javadoc -d ./spi -link ../api com.spipackage</screen>
+</informalexample>
+<para><option>link</option> 引数が生成先ディレクトリの相対パス (<literal>docs/spi</literal>) であることに注意してください。</para>
+<para><emphasis>詳細</emphasis> </para>
+<para><option>link</option> オプションを使うと、コードからは参照されていても、javadoc の現在の実行ではドキュメント化されないクラスにリンクできるようになります。リンクから有効なページに移動できるようにするには、それらの HTML ページがある場所を調べ、その場所を <replaceable>extdocURL</replaceable> に指定する必要があります。このオプションを使うと、たとえば、サードパーティのドキュメントから、http://java.sun.com にある <literal>java.*</literal> のドキュメントにリンクすることができます。</para>
+<para>今回の実行で Javadoc によって生成されるドキュメント内の <acronym>API</acronym> だけを対象にリンクを作成する場合は、<option>link</option> オプションを省略します。<option>link</option> オプションが指定されていない場合、javadoc ツールは、外部参照されたドキュメントへのリンクを作成しません。これは、そのドキュメントが存在するかどうか、または存在するとしてもどこに存在しているかを判別できないからです。</para>
+<para>javadoc を実行するときに複数の <option>link</option> オプションを指定すると、複数のドキュメントにリンクできます。</para>
+<para>また、このオプションを使うと、複数のパッケージ群の間にクロスリンクを作成することもできます。つまり、ある一式のパッケージに対して <command>javadoc</command> を実行したあと、別の一式のパッケージに対して <command>javadoc</command> を実行し、これら 2 つのパッケージ群の間にクロスリンクを作成できます。3 番目の使い方は、ドキュメントを更新するための「ハック」用です。つまり、まず、パッケージ全体に <command>javadoc</command> を実行して、次に、変更されたパッケージだけに <command>javadoc</command> をもう一度実行します。すると、変更されたファイルだけをオリジナルのパッケージに挿入し直すことになります。</para>
+<para><emphasis>参照クラスのバグ修正</emphasis> </para>
+<para>1.4 では、次のバグが修正されました。<itemizedlist>
+<listitem><para>1.2 および 1.3 でのリンクに関するバグ - <literal>@see</literal> または <literal>{@link}</literal> で 除外クラスを参照し、<option>link</option> を使用した場合、実際にハイパーリンクが作成されるのは、そのクラスが import 文か宣言のどちらかで参照されている場合に限られます。メソッドの本体で参照されているだけでは不十分です。対策としては、その参照クラスの import 文を明示的に (またはワイルドカードを使用して) 追加します。</para>
+</listitem></itemizedlist></para>
+<para><literal>@see</literal> または <option>link</option> を使った <literal>{@link}</literal> 参照により、参照クラスを読み込み、リンクを作成できるようになりました。以前に回避策として追加した import 文は削除できます。この import 文には、次の例のようにコメントを追加することを推奨していました。</para>
+<informalexample>
+<screen> import java.lang.SecurityManager; // workaround to force @see/@link hyperlink
+
+</screen>
+</informalexample>
+<para><emphasis>パッケージリスト: </emphasis> <option>link</option> オプションでは、javadoc によって生成された <literal>package-list</literal> という名前のファイルが、このオプションで指定する URL に存在している必要があります。<literal>package-list</literal> ファイルは、その場所でドキュメント化されているパッケージの名前のリストを含む単純なテキストファイルです。前の例では、javadoc ツールは、指定された URL にある <literal>package-list</literal> という名前のファイルを探し、パッケージ名を読み込んで、その URL にあるそれらのパッケージへのリンクを作成しました。</para>
+<para>たとえば、Java 2 プラットフォーム v1.4 <acronym>API</acronym> のパッケージリストは以下にあり、<informalexample>
+<para><ulink url="http://java.sun.com/products/jdk/1.2/docs/api/package-list">http://java.sun.com/products/jdk/1.2/docs/api/package-list</ulink></para>
+</informalexample></para>
+<para>次のような内容で始まっています。<informalexample>
+<para><screen>java.applet
+java.awt
+java.awt.color
+java.awt.datatransfer
+java.awt.dnd
+java.awt.event
+java.awt.font
+など</screen></para>
+</informalexample></para>
+<para><option>link</option> オプションを指定せずに <command>javadoc</command> を実行した場合、ドキュメントの生成時に外部参照クラスに属する名前を見つけると、<command>javadoc</command> はその名前をリンクを持たない形で出力します。一方、<option>link</option> オプションが指定されている場合、<command>javadoc</command> は、指定された <replaceable>extdocURL</replaceable> の場所にある <literal>package-list</literal> ファイルから、該当する名前のパッケージを探します。パッケージ名が見つかった場合は、その URL を名前の前に付けます。</para>
+<para>すべてのリンクが正しく機能するためには、外部参照のドキュメントのすべてが、指定された URL に存在していなければなりません。<command>javadoc</command> ツールは、<literal>package-list</literal> が存在するかどうかを調べるだけで、指定された URL に目的のページが存在するかどうかはチェックしません。</para>
+<para>javadoc に渡される引数がパッケージ名ではなくソースファイル名の場合、<literal>package-list</literal> ファイルは作成されますが、中身は空です。</para>
+<para><emphasis>複数のリンク:</emphasis> 複数の <option>link</option> オプションを提供して、外部で生成されたドキュメントに任意数のリンクを設定できます。Javadoc 1.2 には、複数の <option>link</option> コマンドを提供できないというバグがあります。このバグは、1.2.2 で修正されました。</para>
+<para>リンクする外部ドキュメントごとに別のリンクオプションを指定します。<informalexample>
+<para><screen>example% <userinput>javadoc &ndash;link extdocURL1 &ndash;link extdocURL2 ...&bsol;
+                 &ndash;link extdocURLn com.mypackage</userinput></screen></para>
+</informalexample><literal>extdocURL1</literal>、<literal>extdocURL2</literal>、... <literal>... extdocURLn</literal> は、それぞれ外部ドキュメントのルートを指し、各ルートには、<literal>package-list</literal>という名前のファイルが含まれています。</para>
+<para><emphasis>クロスリンク:</emphasis> まだ生成されていない 2 つ以上のドキュメントをクロスリンクする場合は、「ブートストラッピング」が必要になることに注意してください。言い換えると、どのドキュメントの <literal>package-list</literal> も存在していない場合、最初のドキュメントに対して <command>javadoc</command> ツールを実行した時点では、2 番目のドキュメントの <literal>package-list</literal> はまだ存在していません。したがって、外部リンクを作成するには、2 番目のドキュメントを生成したあと、最初のドキュメントを生成し直す必要があります。</para>
+<para>この場合、最初に行うドキュメント生成の目的は、<literal>package-list</literal> を作成することです。パッケージ名をすべて把握している場合は、<literal>package-list</literal> を手動で作成することもできます。次に、2 番目のドキュメントとその外部リンクを生成します。<command>javadoc</command> ツールは、必要な外部の <literal>package-list</literal> ファイルが存在しない場合は、警告を表示します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>linkoffline</option> <replaceable>extdocURL  packagelistLoc</replaceable> </term><listitem><para>このオプションは、<option>link</option> オプションを変えたものです。どちらも、外部参照クラスのドキュメントへのリンクを作成します。Javadoc ツールが「オフライン」で、Web 上のドキュメントにリンクする場合は、Web 接続経由ではドキュメントにアクセスできないため、<option>linkoffline</option> オプションを使用します。</para>
+<para>つまり、外部ドキュメントの <literal>package-list</literal> ファイルがアクセスできない、または <replaceable>extdocURL</replaceable> ロケーションに存在しないが packageListLoc  で指定できる別のロケーション(通常はローカル) に存在する場合には、<option>linkoffline</option> を使用するということです。したがって、<replaceable>extdocURL</replaceable> に WWW 上でしかアクセスできない場合は、<option>linkoffline</option> を指定することにより、ドキュメントの生成時に javadoc ツールが Web に接続できなければならないという制約がなくなります。</para>
+<para><option>linkoffline</option> オプションは 2 つの引数を使用します。1 番目の引数は &lt;a href> リンクに埋め込む文字列です。2 番目の引数は <literal>package-list</literal> の検索場所です。</para>
+<para><variablelist termlength="narrow"><varlistentry><term><replaceable>extdocURL</replaceable></term><listitem><para><command>javadoc</command> によって生成され、リンク先として指定する外部ドキュメントがあるディレクトリの絶対 URL または相対 URL です。相対リンクの場合、生成先ディレクトリ (<option>d</option> で指定) からの相対パスを、リンク先パッケージのルートに渡す必要があります。詳細は、<option>link</option> オプションの <replaceable>extdocURL</replaceable> を参照してください。</para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>packagelistLoc</replaceable></term><listitem><para>外部ドキュメントの <literal>package-list</literal> ファイルが入っているディレクトリのパスまたは URL を指定します。URL (http: または file:) またはファイルパスを指定できます。また、絶対パスと相対パスのどちらでもかまいません。相対パスの場合は、javadoc が実行される現在のディレクトリからの相対パスとして指定します。<literal>package-list</literal> というファイル名は含めないでください。</para>
+</listitem></varlistentry>
+</variablelist></para>
+<para>javadoc の 1 回の実行で、複数の <option>linkoffline</option> オプションを指定できます。1.2.2 より前は、複数のオプションは指定できませんでした。</para>
+<para><emphasis>外部ドキュメントへの絶対リンクを使った例</emphasis></para>
+<para><literal>java.lang</literal>、<literal>java.io</literal>、およびその他の Java 2 プラットフォームパッケージ (http://java.sun.com/j2se/1.4/docs/api) にリンクしたくても、Web にアクセスできない場合について考えてみます。<literal>package-list</literal> ファイルをブラウザで開き(http://java.sun.com/j2se/1.4/docs/api/package-list)、ローカルディレクトリに保存します。次に、2 番目の引数 <replaceable>packagelistLoc</replaceable> でそのローカルコピーを指します。このとき、パッケージリストファイルは現在のディレクトリ 「.」に保存されています。次のコマンドで、Java 2 プラットフォーム API へのリンクを含む、<literal>com.mypackage </literal> パッケージのドキュメントを生成します。生成されたドキュメントには、たとえばクラスツリー内の <literal>Object</literal> クラスへのリンクが含まれています (<option>sourcepath</option> などの他の必要なオプションは表示されません)。<informalexample><screen>% javadoc -linkoffline http://java.sun.com/j2se/1.4/docs/api . com.mypackage</screen>
+</informalexample></para>
+<para><emphasis>外部ドキュメントへの相対リンクを使った例</emphasis> </para>
+<para><option>linkoffline</option> を相対パスで使うのはあまり一般的ではありません。通常は、<option>link</option> で十分だからです。<option>linkoffline</option> を使用している場合、<literal>package-list</literal> ファイルは通常ローカルで、相対リンクを使用している場合は、リンク先のファイルもローカルであるのが普通です。そのため、<option>linkoffline</option> に 2 つの異なる引数のパスを与える必要はありません。2 つの引数が同じである場合、<option>link</option> を使用できます。<option>link</option> の相対リンクの使用例を参照してください。</para>
+<para><literal>package-list</literal><emphasis> ファイルの手動作成</emphasis></para>
+<para><literal>package-list</literal> ファイルがまだ存在しなくても、ドキュメントのリンク先のパッケージ名がわかっている場合は、このファイルのコピーを自分で作成し、<replaceable>packagelistLoc</replaceable> でそのパスを指定することができます。<literal>com.apipackage</literal> が最初に作成されたときに <literal>com.spipackage</literal> のパッケージリストが存在しなかった、以前の場合がその例です。この方法は、<literal>package-list</literal> ファイルが生成されなかった古いバージョン (<command>javadoc</command> 1.0 または 1.1) で生成されたドキュメントにリンクするために <literal>package-list</literal> ファイルを作成する場合も使用できます。この方法を使用すれば、2 つの企業で未公開の <literal>package-list</literal> ファイルを共有し、クロスリンクされたドキュメントを同時にリリースすることができます。</para>
+<para><emphasis>複数のドキュメントにリンク</emphasis></para>
+<para>次に示すように、<option>linkoffline</option> は参照先である各生成ドキュメントごとに指定できます (この例では、わかりやすいように各オプションを個別の行で示しています)。<informalexample>
+<screen>example% <userinput>javadoc -linkoffline extdocURL1 packagelistLoc1&bsol;
+                 -linkoffline extdocURL2 packagelistLoc2&bsol;
+                 ...</userinput></screen>
+</informalexample></para>
+<para><emphasis>ドキュメントの更新:</emphasis> <option>linkoffline</option> オプションの 3 つ目の用途は、プロジェクトで多数のパッケージを使い、すでにツリー全体に対して <command>javadoc</command> を実行してある場合に、次の実行では、すばやく細かい変更を行なってから、ソースツリーの一部に対してだけ <command>javadoc</command> を実行し直したい場合に便利です。これは、変更がドキュメンテーションコメントに対してであり、シグニチャに対してではない場合にだけ正常に処理されるので、ハッキングのようなものです。ソースコードに対してシグニチャを追加、削除または変更した場合は、索引、パッケージツリー、継承されるメンバのリスト、[使用] ページなどの場所で壊れたリンクが表示されます。</para>
+<para>まず、新しい実行のため、新規の生成先ディレクトリ (update) を作成します。<option>linkoffline</option> の 1 番目の引数に現在のディレクトリ「.」を設定し、2 番目の引数に package-list を検索する場所であるオリジナルのドキュメントへの相対パス (html) を設定します。<informalexample>
+<para><screen><?Pub Lcl oneliner="yes">example% <userinput>javadoc &ndash;d update &ndash;linkoffline . html com.mypackage</userinput></screen></para>
+</informalexample></para>
+<para><command>javadoc</command> の実行が終了したとき、<literal>update</literal> 内に生成されたクラスページ (概要や索引ではない) をコピーし、<literal>html</literal> 内にあるオリジナルのファイルに上書きします。</para>
+</listitem></varlistentry>
+</variablelist>
+<variablelist><varlistentry><term><option>linksource</option></term><listitem><para>各ソースファイル (行番号付き) の HTML バージョンを作成し、標準の HTML ドキュメントからのリンクを追加します。このオプションにより、含まれるソースファイル内のすべての private 実装の詳細が開示されます。開示されるものには、private クラス、private フィールド、private メソッドの本文 (<option>public</option>、<option>package</option>、<option>protected</option>、<option>private</option> といったオプションにかかわらず) が含まれます。<option>private</option> オプションを指定していない場合、すべての private クラスまたはインタフェースがリンクを介してアクセスできるわけではありません。</para>
+</listitem></varlistentry>
+</variablelist>
+<variablelist termlength="wholeline"><varlistentry><term><option>group</option> <replaceable>groupheading  packagepattern:packagepattern:..</replaceable> </term><listitem><para>概要ページの複数のパッケージを指定のグループに分け、グループ単位で表を作成します。各グループは、それぞれ別の <option>group</option> オプションで指定します。これらのグループは、コマンド行で指定した順序でページに表示されます。パッケージは、1 つのグループ内ではアルファベット順に並べられます。各 <option>group</option> オプションでは、<replaceable>packagepattern</replaceable> 式のリストに一致するパッケージが、見出し <replaceable>groupheading</replaceable> を持つ 1 つの表にまとめて表示されます。<itemizedlist>
+<listitem><para><replaceable>groupheading</replaceable> には任意のテキストを指定でき、空白を含めることができます。指定したテキストは、グループの表見出しになります。</para>
+</listitem><listitem><para><replaceable>packagepattern</replaceable> には、任意のパッケージ名、または任意のパッケージ名の先頭部分とそれに続く 1 つのアスタリスク (*)を指定できます。アスタリスクは、「任意の文字に一致する」という意味のワイルドカードです。ワイルドカードとして許容されるのは、アスタリスクだけです。1 つのグループには、コロン (:) で区切った複数のパターンを含めることができます。</para>
+</listitem></itemizedlist><emphasis>注:</emphasis> パターンやパターンリスト内でアスタリスクを使う場合は、"java.lang*:java.util" のように、パターンリストを引用符で囲む必要があります。</para>
+<para><option>group</option> オプションが 1 つも指定されていない場合は、すべてのパッケージが、[パッケージ] という見出しを持つ 1 つのグループに入れられます。ドキュメント化されるパッケージの中に、指定したグループのどのグループにも入らないパッケージがある場合、このようなパッケージは [その他のパッケージ] という見出しを持つ独立したグループに入れられます。</para>
+<para>たとえば、次のようにオプションを指定すると、ドキュメント化される 4 つのパッケージは、コアパッケージ、拡張機能パッケージ、およびその他のパッケージに分かれます。<literal>java.lang*</literal> では、後続のドットがないことに注意してください。<literal>java.lang*</literal> のようにドットを入れると、<literal>java.lang*</literal> パッケージは含まれないことになります。<informalexample>
+<para><screen>example% <userinput>javadoc -group "Core Packages" "java.lang*:java.util" &bsol;
+     -group "Extension Packages" "javax.*" &bsol;
+     java.lang java.lang.reflect java.util javax.servlet java.new</userinput></screen></para>
+</informalexample></para>
+<para>この結果、次のようなグループ化が行われます。</para>
+<informalexample>
+<para><screen>Core Packages
+  java.lang
+  java.lang.reflect
+  java.util
+Extension Packages
+  javax.servlet
+Other Packages
+  java.new</screen></para>
+</informalexample>
+</listitem></varlistentry>
+<varlistentry><term><option>nodeprecated</option> </term><listitem><para>推奨されない <acronym>API</acronym> をドキュメントに生成することを禁止します。これは、<option>nodeprecatedlist</option> オプションを指定した場合の動作に加えて、ドキュメントのほかの部分を通じて、推奨されない <acronym>API</acronym> を生成しないことと同じです。このオプションは、コードを記述していて、推奨されないコードを無視したい場合に便利です。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>nodeprecatedlist</option> </term><listitem><para>推奨されない <acronym>API</acronym> のリストを含むファイル (<literal>deprecated-list.html</literal>) の生成を禁止します。また、このページへのリンクをナビゲーションバーに生成することを禁止します。ただし、ドキュメントのほかの部分では、推奨されない <acronym>API</acronym> の生成を続行します。このオプションは、推奨されない <acronym>API</acronym> がソースコードに含まれておらず、ナビゲーションバーをすっきりと見せたい場合に便利です。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>nosince</option></term><listitem><para>生成されるドキュメントから、<literal>@since</literal> タグに関連した「Since」セクションを削除します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>notree</option> </term><listitem><para>生成されるドキュメントからクラスおよびインタフェース階層を省略します。デフォルトでは、階層が作成されます。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>noindex</option> </term><listitem><para>生成されるドキュメントから索引を省略します。デフォルトでは、索引が作成されます。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>nohelp</option> </term><listitem><para>各出力ページの最上部と最下部のナビゲーションバーから [ヘルプ] リンクを 省略します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>nonavbar</option> </term><listitem><para>生成されるページの最上部と最下部に表示されるナビゲーションバー、ヘッダ、およびフッタの生成を禁止します。このオプションは、bottom オプションには影響しません。<option>nonavbar</option> オプションは、印刷するためだけにファイルを PostScript または PDF に変換する場合など、内容だけが重要でナビゲーションの必要性がない場合に便利です。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>helpfile</option> <replaceable>path/filename</replaceable> </term><listitem><para>上部と下部のナビゲーションバーの [ヘルプ] リンクのリンク先となる代替ヘルプファイル <replaceable>path/filename</replaceable> のパスを指定します。このオプションが指定されていない場合、<command>javadoc</command> ツールは、<command>javadoc</command> ツールにハードコードされているヘルプファイル <literal>help-doc.html</literal> を自動的に作成します。このオプションを使えば、デフォルトの設定をオーバーライドできます。ファイル名にはどのような名前も指定でき、<literal>help-doc.html</literal> には限定されません。<command>javadoc</command> ツールは、それに従って、ナビゲーションバーにあるリンクに調整を加えます。次に例を示します。<informalexample>
+<para><screen><?Pub Lcl oneliner="yes">example% <userinput>javadoc -helpfile /home/doc/myhelp.html java.awt</userinput></screen></para>
+</informalexample></para>
+</listitem></varlistentry>
+<varlistentry><term><option>stylesheetfile</option> <replaceable>path/filename</replaceable> </term><listitem><para>代替 HTML スタイルシートファイルのパスを指定します。このオプションが指定されていない場合、<command>javadoc</command> ツールは、内部的にハードコードされているスタイルシートファイル <literal>stylesheet.css</literal> を自動的に作成します。このオプションを使えば、デフォルトの設定をオーバーライドできます。<replaceable>filename</replaceable> にはどんなファイル名でも指定でき、<literal>stylesheet.css</literal> には限定されません。次に例を示します。<informalexample><para> <screen>example% <userinput>javadoc -stylesheetfile &bsol;
+            /home/doc/mystylesheet.css java.awt</userinput></screen></para>
+</informalexample></para>
+</listitem></varlistentry>
+<varlistentry><term><option>serialwarn</option> </term><listitem><para><literal>@serial</literal> タグがない場合、コンパイル時に警告を生成します。デフォルトでは、<command>javadoc</command> 1.2.2 (およびそれ以降) は <literal>@serial</literal> の警告を生成しません。(これは、以前のバージョンとは逆です。) <literal>@serial</literal> の警告を生成するには、このオプションを使用してください。このオプションは、デフォルトの直列化可能なフィールドと writeExternal メソッドを正しくドキュメント化するのに役立ちます。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>charset</option> <replaceable>name</replaceable> </term><listitem><para>このドキュメント用の HTML 文字セットを指定します。たとえば次の指定は、<informalexample>
+<para><screen><?Pub Lcl oneliner="yes">example% <userinput>javadoc -charset "iso-8859-1" mypackage</userinput></screen></para>
+</informalexample>次の行を、生成される各ページの先頭に挿入します。<informalexample><screen><?Pub Lcl oneliner="yes">&lt;META http-equiv="Content-Type" content="text/html; charset=iso-8859-1"></screen>
+</informalexample>この META タグについては、HTML 標準 (4197265 と 4137321) で説明されています。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>docencoding</option> <replaceable>name</replaceable> </term><listitem><para>生成される HTML ファイルのエンコーディングを指定します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>keywords</option></term><listitem><para>各クラスに生成したファイルに HTML meta キーワードタグを 追加します。これらのタグを使用すると、meta タグを探す検索エンジンでページを調べることができます (インターネット全体を検索するほとんどの検索エンジンでは、meta タグを調べません。これは、ページが meta タグを誤用する可能性があるからです。しかし、企業が提供する検索エンジンの中にはそれぞれの Web サイトに制限している場合があり、その場合は、meta タグを調べることによる利点があります)。</para>
+<para>meta タグにはクラスの完全修飾名と、フィールドおよびメソッドの非完全修飾名が含まれていますが、コンストラクタは含まれていません。コンストラクタはクラス名と同一であるためです。たとえばクラス <literal>String</literal> は次のキーワードで始まります。</para>
+<para><screen>&lt;META NAME="keywords" CONTENT="java.lang.String class">
+&lt;META NAME="keywords" CONTENT="CASE_INSENSITIVE_ORDER">
+&lt;META NAME="keywords" CONTENT="length()">
+&lt;META NAME="keywords" CONTENT="charAt()"></para>
+</listitem></varlistentry>
+<varlistentry><term><option>tag</option><replaceable>tagname:Xaoptcmf:"taghead"</replaceable></term><listitem><para>1 つの引数をもつ簡単なカスタムスタンドアロンタグである、ドキュメンテーションコメント内の <literal>@tagname</literal> を javadoc で 解釈できるようにします。したがって、javadoc ツールはタグ名をスペルチェックできます。ソースコードに存在するすべてのカスタムタグに <option>tag</option> オプションを付け、現在の実行で出力されていないものを無効化 (Xを使用) しておくことが重要です。</para>
+<para>区切り文字は常にコロン (:) です。コロンを使用するには、「タグ名にコロンを使用する」を参照してください。</para>
+<para><option>tag</option> オプションはタグの見出しである taghead を太字で出力し、そのあとに 1 つの引数からのテキストを出力します。その例はこのあとで表示します。他のスタンドアロンタグと同様に、この引数のテキストにインラインタグを含め、解釈させることができます。出力結果は、<literal>@return</literal> や <literal>@author</literal> といった標準の 1 つの引数をもつタグと似ています。</para>
+<para><emphasis>タグの配置</emphasis> </para>
+<para>引数の <replaceable>Xaoptcmf</replaceable> 部分は、ソースコードのどこにタグの配置が許可されているか、またタグを無効化 (X を使用) できるかどうかを判断します。タグの配置を全体に許可する場合は a、それ以外の場合についてはその他の文字を組み合わせて指定できます。</para>
+<para><screen> X (タグの無効化)
+ a (全部)
+ o (概要)
+ p (パッケージ)
+ t (タイプ、つまりクラスおよびインタフェース)
+ c (コンストラクタ)
+ m (メソッド)
+ f (フィールド)</para>
+<para><emphasis>シングルタグの例</emphasis> - ソースコードの任意の場所で使用できるタグのタグオプションの例を示します。</para>
+<informalexample><screen><?Pub Lcl oneliner="yes"> -tag todo:a:"To Do:"</screen>
+</informalexample>
+<para>コンストラクタ、メソッド、フィールドだけで <literal>@todo</literal> を使用させるには、次のようにします。</para>
+<informalexample><screen><?Pub Lcl oneliner="yes"> -tag todo:cmf:"To Do:"</screen>
+</informalexample>
+<para>上記では、末尾のコロン (:) がパラメータの区切り記号ではなく、表示のとおり、見出しテキストの一部であることに注意してください。次のように、<literal>@todo</literal> タグを含むソースコードにどちらかのタグオプションを使用します。</para>
+<informalexample><screen><?Pub Lcl oneliner="yes"> @todo The documentation for this method needs work.</screen>
+</informalexample>
+<para>この行は次のように出力されます。</para>
+<informalexample>
+<screen> To Do:
+      The documentation for this method needs work.</screen>
+</informalexample>
+<para><emphasis>タグ名にコロンを使用する</emphasis> - コロン (:) をバックスラッシュでエスケープすると、コロンをタグ名に使用することができます。</para>
+<screen> /**
+ * @ejb:bean
+ */</screen>
+<para>上記には以下のタグオプションを使用します。</para>
+<screen><?Pub Lcl oneliner="yes"> -tag ejb\\:bean:a:"EJB Bean:"</screen>
+<para><emphasis>タグ名のスペルチェック (タグの無効化)</emphasis> -  開発者は、ソースコードの中で出力できないカスタムタグを使用することがあります。その場合、ソースタグに存在するすべてのタグをリストし、出力するタグを有効化し、出力しないタグを無効化することが重要です。X を使用するとタグを無効化でき、これがない場合はタグが有効となります。この文字の存在によって、javadoc ツールは、検出したタグが未知のタグで、おそらく綴り間違いであると判断できます。この場合、警告メッセージが表示されます。</para>
+<para>すでに存在する、配置を指定する引数の値に X を追加した場合、タグを有効にしたいときに X を削除できます。たとえば、<literal>@todo</literal> が出力しないタグの場合、次のようにします。</para>
+<informalexample><screen><?Pub Lcl oneliner="yes"> -tag todo:Xcmf:"To Do:"</screen>
+</informalexample>
+<para>または、次のようにより簡単にすることもできます。</para>
+<informalexample><screen><?Pub Lcl oneliner="yes"> -tag todo:X</screen>
+</informalexample>
+<para><option>tag todo:X</option> の構文は、<literal>@todo</literal> がタグレットで定義されている場合も有効です。</para>
+<para><emphasis>タグの順序</emphasis> - <option>tag</option> (および <option>taglet</option>) オプションの順序に従ってタグが出力されます。カスタムタグと標準タグを混在させることができます。標準タグのタグオプションは、順序を決定するためだけのプレースホルダです。これらは標準タグ名だけを使用します (標準タグの小見出しは変更できません)。これを次の例に示します。</para>
+<para><option>tag</option> がない場合、<option>taglet</option> の場所によってその順序が決まります。この 2 つが両方ある場合は、コマンド行の最後に使用された方が順序を決定します (これは、タグとタグレットが、コマンド行で使用された順に処理されるためです)。たとえば、<option>taglet</option> と <option>tag</option> が両方とも todo という名前である場合、コマンド行の最後で使用された方が順序を決定します。</para>
+<para><emphasis>タグの完全なセットの例</emphasis> - この例では、出力の Parameters と Throws の間に ToDo を挿入します。「X」を使用して、<literal>@example</literal> がソースコード内の今回の実行で出力されないタグであることを指定できます。<literal>@argfile</literal> を使用すると、次のように行の継続文字なしで、引数ファイルの異なる行にタグを配置できます。</para>
+<informalexample>
+<screen> -tag param
+ -tag return
+ -tag todo:a:"To Do:"
+ -tag throws
+ -tag see
+ -tag example:X</screen>
+</informalexample>
+<para>javadoc が doc コメントを解析する際に、検出されたタグのうち、標準タグでもなく、<option>tag</option> や <option>taglet</option> で渡されるタグでもないものは、不明なタグとして認識し、警告がスローされます。</para>
+<para>標準タグは、最初、デフォルトの順序でリスト内部的に格納されます。<option>tag</option> オプションを使用すると、このタグがリストに追加されます。標準タグはデフォルトの位置から移動します。そのため、標準タグで <option>tag</option> オプションが省略されると、デフォルトの位置に配置されたままになります。</para>
+<para><emphasis>競合の回避</emphasis> - 固有のネームスペースを細かく分けるには、パッケージに使用されている <literal>com.mycompany.todo</literal> という名前のように、ドット (.) を区切り記号とする名前を使います。Sun は今後もドットを含まない標準タグを作成します。ユーザが作成したタグは、Sun が定義した同じ名前のタグの動作をオーバーライドします。つまり、ユーザが <literal>@todo</literal> という名前のタグまたはタグレットを作成していた場合、そのあとで Sun が同じ名前の標準タグを作成しても、ユーザが定義した動作はそのまま維持されます。</para>
+<para><option>taglet</option> オプションを使用して、より複雑なスタンドアロンタグやカスタムインラインタグを作成することができます。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>taglet</option>  <replaceable>class</replaceable> </term><listitem><para>タグのドキュメントの生成に使うタグレットを起動するためのクラスファイルを指定します。クラスの完全修飾名を指定してください。このタグレットは、カスタムタグが持っているテキスト引数の数も定義します。タグレットはこれらの引数を受け取り、処理し、出力を生成します。タグレットの例の詳細については、「タグレットの概要」を参照してください。</para>
+<para>タグレットはスタンドアロンタグまたはインラインタグに使用すると便利です。タグレットでは任意の数の引数を持つことができ、カスタムの動作を実装できます。たとえば、テキストを太字にしたり、箇条書き形式にしたり、テキストをファイルに書き出したり、他のプロセスを起動したりすることができるのです。</para>
+<para>タグレットで指定できるのは、タグが表示される場所と形式だけです。他の決定はすべてドックレットによって行います。したがって、タグレットは「含まれるクラスのリストからクラス名を削除する」といったことはできません。ただし、タグのテキストをファイルに出力したり、別のプロセスをトリガするなどの動作は実行できます。</para>
+<para>タグレットへのパスを指定するには、<option>tagletpath</option> オプションを使用します。生成されたページの Parameters と Throws の間に To Do タグレットを挿入する例を示します。</para>
+<informalexample>
+<screen> -taglet com.sun.tools.doclets.ToDoTaglet
+ -tagletpath /home/taglets
+ -tag return
+ -tag param
+ -tag todo
+ -tag throws
+ -tag see</screen>
+</informalexample>
+<para><option>taglet</option> オプションを <option>tag</option> オプションの代わりに使用することもできますが、その結果、読みにくくなります。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>tagletpath</option>  <replaceable>tagletpathlist</replaceable></term><listitem><para>taglet クラスファイル (.class) を探すための検索パスを指定します。<replaceable>tagletpathlist</replaceable> には、コロン (:) で区切って複数のパスを含めることができます。javadoc ツールは、指定されたパス以下のすべてのサブディレクトリを検索します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>subpackages</option>  <replaceable>package1:package2:...</replaceable> </term><listitem><para>指定されたパッケージ内のソースファイルからドキュメントを生成し、再帰的にサブパッケージを処理します。このオプションは、ソースコードに新しいサブパッケージを追加するのを自動化するのに便利です。各パッケージはトップレベルのパッケージ (<literal>java</literal>) または完全修飾されたサブパッケージ (<literal>javax.swing</literal>) であり、ソースファイルを含む必要はありません。ワイルドカードは不要で、かつ許可されていません。パッケージの検索場所を指定するには、<option>sourcepath</option> を使用します。例を示します。</para>
+<informalexample><screen><?Pub Lcl oneliner="yes"> % javadoc -sourcepath /home/user/src -subpackages java -exclude java.net:java.lang</screen>
+</informalexample>
+<para>このコマンドにより、java および javax.swing という名前のパッケージと、そのすべてのサブパッケージのドキュメントを生成します。</para>
+<para>また、サブパッケージを処理するとき、サブパッケージを除外するためのオプションもあります。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>exclude</option>  <replaceable>packagename1:packagename2:...</replaceable> </term><listitem><para><option>subpackages</option> で作成されたリストから、指定されたパッケージとそのサブパッケージを無条件で除外します。それらのパッケージが前後の <option>subpackages</option> オプションに含まれている場合でも、除外処理を行います。例を示します。</para>
+<informalexample><screen> % javadoc -sourcepath /home/user/src -subpackages java -exclude java.net:java.lang</screen>
+</informalexample>
+<para>この例は <literal>java.io</literal>、<literal>java.util</literal>、<literal>java.math</literal> を含みますが、<literal>java.net</literal> および <literal>java.lang</literal> にルートをもつパッケージを除外します。これによって <literal>java.lang.ref</literal> (<literal>java.lang</literal> のサブパッケージ) が除外されることに注意してください。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>docfilessubdirs</option>  </term><listitem><para>doc-files ディレクトリを、下の階層を含めてコピーできるようにします。つまり、サブディレクトリとすべてのコンテンツが、生成先ディレクトリに再帰的にコピーされます。たとえば、<literal>doc-files/example/images</literal> ディレクトリとその中のファイルがコピーされます。サブディレクトリを除外するためのオプションもあります。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>excludedocfilessubdir</option> <replaceable>name1:name2...</replaceable> </term><listitem><para>doc-files のサブディレクトリで、指定された名前のものを除外します。このオプションを使用すると、SCCS およびその他のソースコード管理のサブディレクトリをコピーしないようにできます。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>noqualifier</option>  <literal>all</literal>  |  <replaceable>packagename1:packagename2:...</replaceable> </term><listitem><para>修飾パッケージ名を、出力のクラス名の前から削除します。<option>noqualifier</option> の引数は all (すべてのパッケージ修飾子を削除) またはコロンで区切られたパッケージリストのいずれかで、修飾子として削除されます。ワイルドカードも使用できます。パッケージ名はクラス名またはインタフェース名が表示されたところから削除されます。</para>
+<para>次の例では、すべてのパッケージ修飾子を省略します。</para>
+<informalexample><screen><?Pub Lcl oneliner="yes">  -noqualifier all</screen>
+</informalexample>
+<para>次の例では、パッケージ修飾子 java.lang および java.io を省略します。</para>
+<informalexample><screen><?Pub Lcl oneliner="yes">  -noqualifier java.lang:java.io</screen>
+</informalexample>
+<para>次の例では、java および com.sun から始まるサブパッケージ ( javax を除く) のパッケージ修飾子を削除します。</para>
+<informalexample><screen><?Pub Lcl oneliner="yes">  -noqualifier java.*:com.sun.*</screen>
+</informalexample>
+<para>パッケージ修飾子が上記の動作に従って表示される場合、1.3 での次の動作も有効であり、さらに修飾子を削除します。<literal>p.C</literal> クラスのページでは、<literal>p</literal> パッケージに所属するクラスのパッケージ修飾子を削除します。この規則は、<option>noqualifier</option> が使用されているかどうかにかかわらず存在します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>notimestamp</option></term><listitem><para>タイムスタンプが抑制されます。各ページ先頭近くにある、生成された HTML 内の HTML コメントでタイムスタンプが隠されます。<command>Javadoc</command> を 2 つのソースベースで実行し、それらに対して diff を実行するときにこのオプションを使用すると、タイムスタンプによって diff が発生しなくなるので便利です (このオプションを使用しないと、各ページで diff になります)。タイムスタンプには <command>Javadoc</command> のバージョン番号が含まれており、次のようになります。</para>
+<screen><?Pub Lcl oneliner="yes">&lt;!-- Generated by javadoc (build 1.5.0-internal) on Tue Jun 22 09:57:24 PDT 2004 --></screen>
+</listitem></varlistentry>
+<varlistentry><term><option>nocomment</option> </term><listitem><para>記述およびすべてのタグを含むコメント本文全体を抑制し、宣言だけを生成します。このオプションにより、元は異なる目的のためだったソースファイルを再利用し、新しいプロジェクトのためのスケルトンを作成できるようになりました。</para>
+</listitem></varlistentry>
+</variablelist>
+</refsect2>
+</refsect1>
+<refsect1><title>コマンド行引数ファイル</title>
+<para><command>javadoc</command> のコマンド行を短くしたり簡潔にしたりするために、<command>javadoc</command> コマンドに対する引数 (<option>J</option> オプションを除く) が入った 1 つ以上のファイルを指定することができます。これを利用することで、どのオペレーティングシステム上でも、任意の長さの javadoc コマンドを作成できます。</para>
+<para>引数ファイルには、Javadoc オプション、ソースファイル名、およびパッケージ名を自由に組み合わせて記述できます。また、Javadoc オプションに対する引数だけを記述してもかまいません。ファイル内の各引数は、空白文字または改行で区切ります。引数ファイル内のファイル名は、現在のディレクトリから見た相対パスになります。引数ファイルの位置から見た相対パスではありません。引数ファイル内のファイル名リストでは、ワイルドカード (*) は使用できません。たとえば、*.java とは指定できません。引数ファイル内の引数で @ 文字を使用して、複数のファイルを再帰的に解釈することはサポートされていません。また、<option>J</option> オプションもサポートされていません。このオプションは起動ツールに渡されますが、起動ツールでは引数ファイルをサポートしていないからです。</para>
+<para><command>javadoc</command> を実行するときに、各引数ファイルのパスとファイル名の先頭に <literal>@</literal> 文字を付けて渡します。<command>javadoc</command> は、<literal>@</literal> 文字で始まる引数を見つけると、そのファイルの内容を展開して引数リストに挿入します。</para>
+<example><title>引数ファイルを 1 つ指定する例</title>
+<para>argfile という名前の引数ファイルにすべての Javadoc 引数を格納し、次のように使用することができます。</para>
+<informalexample><screen> % javadoc @argfile</screen>
+</informalexample>
+<para>この引数ファイルには、次の例で示されている 2 つのファイルの内容を両方とも入れることができます。</para>
+</example>
+<example><title>引数ファイルを 2 つ指定する例</title>
+<para>Javadoc オプション用に 1 つ、パッケージ名またはソースファイル名用に 1 つというように、2 つの引数ファイルを作成し、次のようにして使用することができます。なお、このあとのリストでは、行の継続文字を使用していません。</para>
+<para>以下の内容を含む options という名前のファイルを作成します。</para>
+<informalexample>
+<screen> -d docs-filelist
+ -use
+ -splitindex
+ -windowtitle 'Java 2 Platform v1.3 API Specification'
+ -doctitle 'Java&lt;sup&gt;&lt;font size="-2&gt;TM&lt;/font&gt;&lt;/sup&gt; 2 Platform v1.4 API Specification'
+ -header '&lt;b&gt;Java 2 Platform &lt;/b&gt;&lt;br&gt;&lt;font size="-1"&gt;v1.4&lt;/font&gt;'
+ -bottom 'Copyright 1993-2000 Sun Microsystems, Inc. All Rights Reserved.'
+ -group "Core Packages" "java.*"
+ -overview /java/pubs/ws/1.3/src/share/classes/overview-core.html
+ -sourcepath /java/pubs/ws/1.3/src/share/classes</screen>
+</informalexample>
+<para>以下の内容を含む packages という名前のファイルを作成します。</para>
+<informalexample>
+<screen> com.mypackage1
+ com.mypackage2
+ com.mypackage3</screen>
+</informalexample>
+<para>そのあと、次のコマンドを使用して javadoc を実行します。</para>
+<informalexample><screen> % javadoc @options @packages</screen>
+</informalexample>
+</example>
+<example><title>パス付きの引数ファイルの例</title>
+<para>引数ファイルには、パスを指定できます。ただし、そのファイル内に指定されたファイル名は、現在の作業ディレクトリから見た相対パスになります。つまり、下の例の場合は、path1 や path2 から見た相対パスではありません。</para>
+<informalexample><screen> % javadoc @path1/options @path2/packages</screen>
+</informalexample>
+</example>
+<example><title>オプションの引数の例</title>
+<para>次に、Javadoc オプションに対する引数だけを引数ファイルに格納する例を示します。ここでは、<option>bottom</option> オプションを例に取り上げます。そのオプションには、かなり長い引数を指定することがあるからです。まず、このオプションのテキスト引数になる次のような内容を含む、bottom という名前のファイルを作成します。</para>
+<informalexample><screen>'&lt;font size="-1"&gt;&lt;a href="http://java.sun.com/cgi-bin/bugreport.cgi"&gt;&bsol;
+Submit a bug or feature&lt;/a&gt;&lt;/br&gt;&lt;/br&gt;Java is a trademark or registered&bsol;
+trademark of Microsystems, Inc. 901 San Antonio Road,&lt;br&gt;Palo Alto,&bsol;
+California, 94303, U.S.A. All Rights Reserved.&lt;/font&gt;'</screen>
+</informalexample>
+<para>そのあと、次のようにして javadoc ツールを実行します。</para>
+<informalexample><screen> % javadoc -bottom @bottom @packages</screen>
+</informalexample>
+<para>また、引数ファイルの先頭に <option>bottom</option> オプションを組み込んでおけば、次のようにして実行できます。</para>
+<informalexample><screen><?Pub Lcl oneliner="yes"> % javadoc @bottom @packages</screen>
+</informalexample>
+</example>
+</refsect1>
+<refsect1><title>Javadoc の実行</title>
+<para><emphasis>バージョン番号</emphasis> - <command>javadoc</command> のバージョン番号は <command>javadoc</command> <option>J-version</option> を使用することで確認できます。標準ドックレットのバージョン番号は出力ストリームに表示されます。これは <option>quiet</option> オプションでオフにできます。</para>
+<para><emphasis>プログラムから利用できる public インタフェース</emphasis> - Java 言語で書かれたプログラム内から Javadoc ツールを呼び出します。このインタフェースは <literal>com.sun.tools.javadoc.Main</literal> (javadoc は再入) にあります。詳細は、「標準ドックレット」を参照してください。</para>
+</refsect1>
+<refsect1><title>簡単な例</title>
+<para><command>javadoc</command> は、パッケージ全体に対して実行することも、個々のクラスに対して実行することもできます。各パッケージ名は、それぞれのパッケージ名に対応するディレクトリ名を持ちます。次の例では、ソースファイルは <literal>/home/src/java/awt/*java</literal> にあります。生成先ディレクトリは <literal>/home/html</literal> です。</para>
+<example role="example"><title>1 つ以上のパッケージのドキュメント化</title>
+<para>パッケージをドキュメント化するには、そのパッケージのソースファイル (*<literal>.java</literal>) が、パッケージと同じ名前を持つディレクトリ内に存在していなければなりません。パッケージ名が複数の識別子で構成されている (<literal>java.awt.color</literal> のように、各識別子はドットで区切られている) 場合は、後続の各識別子が下位のサブディレクトリに対応していなければなりません (<literal>java/awt/color</literal> など)。1 つのパッケージのための複数のソースファイルを、異なる場所にある 2 つのディレクトリツリーに分けて格納することも可能です (<literal>src1/java/awt/color</literal> と <literal>src2/java/awt/color</literal> など)。ただし、その場合は、<option>sourcepath</option> によって、その両方の場所を指定しなければなりません。</para>
+<para><command>javadoc</command> を実行するには、cd コマンドを使ってディレクトリを変更するか、または <option>sourcepath</option> オプションを使用します。それぞれの例を次に示します。</para>
+<itemizedlist>
+<listitem><para><emphasis>ケース 1 - 1 つ以上のパッケージからの起動を再帰的に実行 - </emphasis> この例では javadoc が任意のディレクトリから実行できるように、<option>sourcepath</option> を使用します。これは、java (<literal>java.net</literal> および <literal>java.lang</literal> をルートとするパッケージを除く) を処理します。これによって <literal>java.lang.ref</literal> (<literal>java.lang</literal> のサブパッケージ) が除外されることに注意してください。<informalexample><para><screen> % javadoc  -d /home/html -sourcepath /home/src -subpackages java -exclude java.net:java.lang</screen></para>
+</informalexample></para>
+<para>他のパッケージツリーを処理するには、<literal>java:javax:org.xml.sax</literal> のように、その名前を <option>subpackages</option> 引数に追加します。</para>
+</listitem><listitem><para><emphasis>ケース 2 - ルートソースディレクトリに移ってから明示的なパッケージを実行 -</emphasis> 完全修飾パッケージの親ディレクトリに移動します。次に、ドキュメント化する 1 つ以上のパッケージ名を指定して <command>javadoc</command> を実行します。<informalexample><para><screen>
+% cd /home/src/
+% javadoc -d /home/html java.awt java.awt.event
+</screen></para>
+</informalexample></para>
+</listitem><listitem><para><emphasis>ケース 3 - 任意のディレクトリから実行。ソースファイルは 1 つのディレクトリツリー内にある -</emphasis> このケースでは、現在のディレクトリがどこであってもかまいません。トップレベルのパッケージの親ディレクトリを <option>sourcepath</option> に指定し、ドキュメント化する 1 つ以上のパッケージ名を指定して、<command>javadoc</command> を実行します。</para>
+<informalexample><screen> % javadoc -d /home/html -sourcepath /home/src java.awt java.awt.event</screen>
+</informalexample>
+</listitem><listitem><para><emphasis>ケース 4 - 任意のディレクトリから実行。ソースファイルは複数のディレクトリツリー内にある -</emphasis> これはケース 3 と似ていますが、パッケージが複数のディレクトリツリーに存在します。各ツリーのルートへのパスを <option>sourcepath</option> に指定し (コロンで区切る)、ドキュメント化する 1 つ以上のパッケージ名を指定して、<command>javadoc</command> を実行します。1 つのパッケージのすべてのソースファイルが、1 つのルートディレクトリの下に存在しなければならない、ということはありません。ソースパスとして指定された場所のどこかで見つかれば十分です。</para>
+</listitem></itemizedlist>
+<para>いずれのケースでも、パッケージ <literal>java.awt</literal> と <literal>java.awt.event</literal> の public および protected なクラスとインタフェースを対象に、HTML 形式のドキュメントが生成され、指定された生成先ディレクトリ (<literal>/home/html</literal>) に HTML ファイルが保存されます。2 つ 以上のパッケージが生成されるので、ドキュメントは、パッケージのリスト、クラスのリスト、およびメインページの 3 つのフレームを持つことになります。</para>
+</example>
+<example role="example"><title>1 つ以上のクラスのドキュメント化</title>
+<para><command>javadoc</command> ツールを実行する 2 番目の方法は、1 つ以上のソースファイル (<literal>.java</literal>) を渡すことです。<command>javadoc</command> は、次の 2 つのどちらかの方法で実行できます。1 つは、(<command>cd</command> によって) ディレクトリを変更する方法、もう 1 つは <literal>.java</literal> ファイルへのパスを完全指定する方法です。相対パスは、現在のディレクトリからの相対パスです。ソースファイルを渡した場合、<option>sourcepath</option> オプションは無視されます。アスタリスク (*) のようなコマンド行ワイルドカードを使用すると、クラスのグループを指定できます。</para>
+<itemizedlist>
+<listitem><para><emphasis>ケース 1 &mdash;  ソースディレクトリへの移動:</emphasis> <literal>.java</literal> ファイルのあるディレクトリに移動します。次に、ドキュメント化する 1 つ以上のソースファイルの名前を指定して <command>javadoc</command> を実行します。<informalexample><para><screen>example% <userinput>
+cd /home/src/java/awt</userinput>
+example% <userinput>javadoc -d /home/html Button.java Canvas.java &bsol;
+               Graphics*.java</userinput></screen></para>
+</informalexample></para>
+<para>この例では、クラス <literal>Button</literal> と <literal>Canvas</literal>、および先頭が <literal>Graphics</literal> で始まるクラスの HTML 形式のドキュメントが生成されます。<command>javadoc</command> の引数として渡されているのは、パッケージ名ではなくソースファイルなので、ドキュメントは、クラスのリストとメインページの 2 つのフレームを持つことになります。</para>
+</listitem><listitem><para><emphasis>ケース 2 - パッケージのルートディレクトリへの移動:</emphasis> これは、同じルート内にある複数のサブパッケージのソースファイルを個々にドキュメント化する場合に便利です。パッケージのルートディレクトリに移動し、各ソースファイルをルートからのパスで指定します。<informalexample><para><screen>
+example% <userinput>cd /home/src/</userinput>
+example% <userinput>javadoc -d /home/html java/awt/Button.java &bsol;
+                 java/applet/Applet.java</userinput></screen></para>
+</informalexample></para>
+<para>この例では、<literal>Button</literal> クラスおよび <literal>Applet</literal> クラス用の HTML 形式のドキュメントが生成されます。</para>
+</listitem><listitem><para><emphasis>ケース 3 - すべてのディレクトリから:</emphasis> このケースでは、現在のディレクトリがどのディレクトリでも問題はありません。ドキュメント化する <literal>.java</literal> ファイルへの絶対パスまたは相対パスを指定して <command>javadoc</command> を実行します。<informalexample><para><screen>
+example% <userinput>javadoc -d /home/html /home/src/java/awt/Button.java &bsol;
+                /home/src/java/awt/Graphics*.java</userinput></screen></para>
+</informalexample></para>
+<para>この例では、クラス <literal>Button</literal> および先頭が <literal>Graphics</literal> で始まるクラスの HTML 形式のドキュメントが生成されます。</para>
+</listitem></itemizedlist>
+</example>
+<example role="example"><title>パッケージとクラスのドキュメント化</title>
+<para>パッケージ全体と個々のクラスを同時にドキュメント化できます。次に示すのは、上に示した 2 つの例を組み合わせた例です。<option>sourcepath</option> は、パッケージへのパスに対しては使用できますが、個々のクラスのパスに対しては使用できません。<informalexample><para><screen>
+example% <userinput>javadoc -d /home/html -sourcepath /home/src java.awt &bsol;
+                /home/src/java/applet/Applet.java</userinput></screen></para>
+</informalexample></para>
+<para>この例では、パッケージ <literal>java.awt</literal> とクラス <literal>Applet</literal> の HTML 形式のドキュメントが生成されます。<command>javadoc</command> は、Applet のパッケージ名を、<literal>Applet.java</literal> ソースファイル内のパッケージの宣言 (宣言がある場合) から決定します。</para>
+</example>
+<example role="example"><title>使用例</title>
+<para><command>javadoc</command> ツールには多くの便利なオプションがあり、その中のいくつかは、ほかのオプションよりもよく使用されます。以下に、Java プラットフォーム <acronym>API</acronym> 上で <command>javadoc</command> ツールを実行し、180M バイトのメモリを使用して Java 2 Platform, Standard Edition, v1.2 内の約 1500 個の public クラスおよび protected クラスのドキュメントを生成するコマンドの例を示します。</para>
+<para>同じ例が 2 度示されていますが、初めの例はコマンド行での実行で、2 つめは <emphasis>makefile</emphasis> からの実行です。オプション引数では絶対パスが使用されているため、同じ <command>javadoc</command> コマンドを任意のディレクトリから実行できます。</para>
+<para><emphasis>コマンド行の例</emphasis></para>
+<para>このコマンド行の例は 900 文字を超えており、これは一部のシェル (<acronym>DOS</acronym> など) には長すぎます。この制限を回避するには、コマンド行引数ファイルを使用します。または、シェルスクリプトを記述します。</para>
+<informalexample>
+<screen>example% <userinput>javadoc -sourcepath /jdk/src/share/classes &bsol;
+      -overview /java/jdk/src/share/classes/overview.html &bsol;
+      -d /java/jdk/build.api &bsol;
+      -use &bsol;
+      -splitIndex &bsol;
+      -windowtitle 'Java 2 Platform v1.2 API Specification' &bsol;
+      -doctitle 'Java&lt;sup&gt;&lt;font size="-2"&gt;TM&lt;/font&gt;&lt;/sup&gt; 2 &bsol;
+                Platform v1.2 API Specification' &bsol;
+      -header '&lt;b&gt;Java 2 Platform &lt;/b&gt;&lt;br&gt;&lt;font size="-1"&gt;v1.2&lt;/font&gt;' &bsol;
+      -bottom '&lt;font size="-1"&gt;&lt;a href="http://java.sun.com/cgi-bin/&bsol;
+              bugreport.cgi"&gt;Submit a bug or feature&lt;/a&gt;&lt;br&gt;&lt;br&gt;Java is a trademark &bsol;
+              or registered trademark of Sun Microsystems, Inc. in the US and other &bsol;
+              countries.&lt;br&gt;Copyright 1993-1999 Sun Microsystems, Inc. 901 San Antonio &bsol;
+              Road,&lt;br&gt;Palo Alto, California, 94303, U.S.A. All Rights Reserved.&lt;/font&gt;' &bsol;
+      -group "Core Packages" "java.*:com.sun.java.*:org.omg.*" &bsol;
+      -group "Extension Packages" "javax.*" &bsol;
+      -J-Xmx180m &bsol;
+      @filelist</userinput></screen>
+</informalexample>
+<para>ここで <literal>packages</literal> は、処理するパッケージが入っているファイルの名前です (例: <literal>java.applet</literal> <literal>java.lang</literal>)。オプションの単一引用符間に改行文字が入ってはなりません (たとえば、この例をコピーしてペーストする場合は、<option>bottom</option> オプションから改行文字を削除する必要があります)。さらにこのあとの「注」も参照してください。</para>
+<para><emphasis>Makefile の例</emphasis></para>
+<para>これは、GNU の Makefile の例です。Windows の Makefile の例は、「<literal>Creating a Makefile for Windows</literal>」を参照してください。</para>
+<informalexample><screen><userinput>javadoc &ndash;sourcepath $(SRCDIR)        /* Sets path for source files      */
+  &ndash;overview $(SCRDIR)/overview.html  /* Sets file for overview text     */
+  &ndash;d /jdk/build/api                  /* Sets destination directory      */
+  &ndash;use                               /* Adds "Use" files                */
+  &ndash;splitIndex                        /* Splits index A-Z                */
+  &ndash;windowtitle $(WINDOWTITLE)        /* Adds a window title             */
+  &ndash;doctitle $(DOCTITLE)              /* Adds a doc title                */
+  &ndash;header $(HEADER)                  /* Adds running header text        */
+  &ndash;bottom $(BOTTOM)                  /* Adds text at bottom             */
+  &ndash;group $(GROUPCORE)                /* First subhead on overview page  */
+  &ndash;group $(GROUPEXT)                 /* Second subhead on overview page */
+  &ndash;J&ndash;Xmx180m                         /* Sets memory to 180MB            */
+  java.lang java.lang.reflect        /* Sets packages to document       */
+  java.util java.io java.net
+  java.applet
+
+WINDOWTITLE = 'Java 2 Platform v1.2 API Specification'
+DOCTITLE = 'Java&lt;sup&gt;&lt;font size="-2"&gt;TM&lt;/font&gt;&lt;/sup&gt; 2 Platform v1.2 &bsol;
+           API Specification'
+HEADER = '&lt;b&gt;Java 2 Platform&lt;/b&gt;&lt;br&gt;&lt;font size="-1"&gt;v1.2&lt;/font&gt;'
+BOTTOM = '&lt;font size="-1"&gt;&lt;a href="http://java.sun.com/cgi-bin/  &bsol;
+         bugreport.cgi"&gt;Submit a bug or feature&lt;/a&gt;&lt;br&gt;&lt;br&gt;Java  &bsol;
+         is a trademark or registered trademark of Sun           &bsol;
+         Microsystems, Inc. in the US and other countries.&lt;br&gt;   &bsol;
+         Copyright 1993-1999 Sun Microsystems, Inc. 901 San      &bsol;
+         Antonio Road,&lt;br&gt;Palo Alto, California, 94303, U.S.A.   &bsol;
+         All Rights Reserved.&lt;/font&gt;'
+GROUPCORE = '"Core Packages" "java.*:com.sun.java.*:org.omg.*"'
+GROUPEXT  = '"Extension Packages" "javax.*"'
+SRCDIR = '/java/jdk/1.2/src/share/classes'</userinput>
+</screen>
+</informalexample>
+<para>Makefile の引数は、単一引用符で囲みます。</para>
+<para><emphasis>注:</emphasis><itemizedlist>
+<listitem><para><option>windowtitle</option> オプションを省略した場合は、<command>javadoc</command> ツールは、ウィンドウタイトルにドキュメントタイトルをコピーします。<option>windowtitle</option> のテキストは、基本的に <option>doctitle</option> と同じです。ただし、HTML タグは使用しません。HTML タグは、ウィンドウタイトルにそのままのテキストとして表示されてしまいます。</para>
+</listitem><listitem><para>この例のように <option>footer</option> オプションを省略した場合は、<command>javadoc</command> ツールは、ヘッダテキストをフッタにコピーします。</para>
+</listitem><listitem><para>この例では必要なかったオプションで、重要なオプションには <option>classpath</option> と <option>link</option> があります。</para>
+</listitem></itemizedlist></para>
+</example>
+</refsect1>
+<refsect1><title>障害追跡</title>
+<para><emphasis>一般的な障害追跡</emphasis></para>
+<itemizedlist>
+<listitem><para>Javadoc FAQ - よく問題となるバグや障害追跡のヒントは <citetitle>Javadoc FAQ</citetitle> にあります。</para>
+</listitem><listitem><para>バグおよび制限事項  - また、バグの一部は、「<citetitle>Important Bug Fixes and Changes</citetitle>」でも参照できます。</para>
+</listitem><listitem><para>バージョン番号 - <citetitle>バージョン番号</citetitle>を参照してください。</para>
+</listitem><listitem><para>有効なクラスだけをドキュメント化 - <command>javadoc</command> がパッケージをドキュメント化するとき、有効なクラス名で構成されているファイルだけを読み込むようになりました。ファイル名にハイフン (-) などを含めることで、<command>javadoc</command> がファイルを解析しないようにできます。</para>
+</listitem></itemizedlist>
+<para><emphasis>エラーと警告</emphasis></para>
+<para>エラーメッセージおよび警告メッセージには、ファイル名と宣言行に対する行番号が含まれますが、doc コメントの特定の行に対する行番号は含まれません。</para>
+<itemizedlist>
+<listitem><para>"<literal>error: cannot read: Class1.java</literal>" - javadoc ツールは現在のディレクトリの <literal>Class1.java</literal> クラスを読み込もうとしています。クラス名は、絶対パスまたは相対パスで表示されます。この場合、<literal>./Class1.java</literal> と同じです。</para>
+</listitem></itemizedlist>
+</refsect1>
+<refsect1><title>&envr-tt;</title>
+<variablelist termlength="medium"><varlistentry><term remap="20"><envar>CLASSPATH</envar> </term><listitem><para>環境変数は、<command>javadoc</command> がユーザクラスファイルを探すときに使う、パスを指定します。環境変数は、<option>classpath</option> オプションによってオーバーライドされます。ディレクトリはコロンで分割します。たとえば、次のとおりです。<informalexample>
+<para><screen>.:/home/classes:/usr/local/java/classes</screen> </para>
+</informalexample></para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>javac</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>java</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>jdb</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>javah</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>javap</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry> </para>
+<para>次については、<literal>java.sun.com</literal> を参照または検索してください。</para>
+<variablelist termlength="wholeline"><varlistentry><term remap="10"><citetitle>Javadoc ホームページ :</citetitle></term><listitem><para><ulink url="http://java.sun.com/products/jdk/javadoc/index.html">http://java.sun.com/products/jdk/javadoc/index.html</ulink></para>
+</listitem></varlistentry>
+<varlistentry><term remap="10"><citetitle>Javadoc の機能拡張 (Javadoc Enhancements) :</citetitle></term><listitem><comment><ulink url="http://java.sun.com/j2se/1.4/ja/docs/tooldocs/javadoc/index.html">http://java.sun.com/j2se/1.4/ja/docs/tooldocs/javadoc/index.html</ulink></comment><para><ulink url="http://java.sun.com/j2se/1.4/docs/tooldocs/javadoc/index.html">http://java.sun.com/j2se/1.4/docs/tooldocs/javadoc/index.html</ulink> : 英語版</para>
+</listitem></varlistentry>
+<varlistentry><term remap="10"><citetitle>Javadoc FAQ :</citetitle></term><listitem><para><ulink url="http://java.sun.com/products/jdk/javadoc/faq.html">http://java.sun.com/products/jdk/javadoc/faq.html</ulink></para>
+</listitem></varlistentry>
+<varlistentry><term remap="10"><citetitle>ドキュメンテーションコメントの記述方法 :</citetitle></term><listitem><para><ulink url="http://java.sun.com/products/jdk/javadoc/writingdoccomments.html">http://java.sun.com/products/jdk/javadoc/writingdoccomments.html</ulink></para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<!--+ 08/03/00 16:09:09
+    | tagMorph:  $Id: tagMorph-engine 1.54 1998/01/19 05:44:48 $
+    | tagMorph library:  $Id: libtagMorph.a 1.50 1998/01/19 22:02:51 $
+    | sunman-to-solbook 1.17
+    +-->
+</refentry>
+<?Pub *0000133412 0>

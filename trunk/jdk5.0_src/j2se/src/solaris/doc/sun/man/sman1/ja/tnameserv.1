@@ -1,0 +1,156 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1998, v.4001-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<refentry id="tnameserv-1">
+<!--@(#)tnameserv.1 1.9 01/03/14 SMI;-->
+<refmeta><refentrytitle>tnameserv</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">2004 年 6 月 22 日</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.</refmiscinfo>
+</refmeta>
+<refnamediv><refname>tnameserv</refname><refpurpose>Java IDL ネームサーバの起動スクリプト</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>tnameserv</command><arg choice="plain"><option><replaceable>ORBInitialPort</replaceable></option></arg><arg choice="plain"><replaceable>port_number</replaceable></arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="tnameserv-1-indx-1"><primary sortas="Java IDL name server starter script">Java IDL name server starter script &mdash; tnameserv</primary></indexterm><indexterm id="tnameserv-1-indx-2"><primary sortas="tnameserv">tnameserv &mdash; Java IDL name server starter script</primary></indexterm>
+<para><acronym>CORBA</acronym> の <acronym>COS</acronym>  (Common Object Services) ネームサービス は、ファイルシステムがファイルに対してディレクトリ構造を提供しているのと同じように、オブジェクト参照に対してツリー構造のディレクトリを提供します。Java <acronym remap="small">IDL</acronym> のネームサービスは、<acronym remap="small">COS</acronym> ネームサービスの仕様を単純な形で実装したものです。</para>
+<para>オブジェクト参照は名前空間に名前で格納され、オブジェクト参照と名前の組は、それぞれ「ネームバインディング」と呼ばれます。ネームバインディングは「ネーミングコンテキスト」に組み込むことができます。ネーミングコンテキストはそれ自体がネームバインディングであり、ファイルシステムのサブディレクトリと同じ編成機能を持ちます。すべてのバインディングは「初期ネーミングコンテキスト」に格納されます。名前空間において、初期ネーミングコンテキストは唯一の持続的バインディングです。それ以外のネーミングコンテキストは、Java <acronym>IDL</acronym> のネームサーバプロセスが停止し、再起動されると失われます。</para>
+<para>アプレットまたは<?Pub Caret>アプリケーションから <acronym>COS</acronym> ネームサービスを使用するためには、その <acronym>ORB</acronym> はネームサービスが動作しているホストの名前とポートを知っているか、そのネームサーバの文字列化された初期ネーミングコンテキストにアクセスできなければなりません。ネームサービスは、Java <acronym>IDL</acronym> のネームサーバでもその他の <acronym>COS</acronym> 準拠のネームサービスでもかまいません。</para>
+</refsect1>
+<refsect1><title>&usge-tt;</title>
+<refsect2><title>Java IDL ネームサーバの起動</title>
+<indexterm id="tnameserv-1-indx-3"><primary sortas="tnameserv">tnameserv &mdash; Java IDL name server starter script</primary><secondary>Starting the Java IDL Name Server</secondary></indexterm>
+<para><acronym>IDL</acronym> ネームサーバは、ネームサービスを使用するアプリケーションまたはアプレットより前に起動しておかなければなりません。Java <acronym>IDL</acronym> 製品をインストールすると、Java <acronym>IDL</acronym> ネームサーバを起動するスクリプト (<literal>tnameserv</literal>) が作成されます。バックグラウンドで動作するように、ネームサーバを起動してください。</para>
+<para>特に指定しない場合、Java <acronym>IDL</acronym> ネームサーバは、<acronym>ORB</acronym> の <function>resolve_initial_references</function> メソッドと <function>list_initial_references</function> メソッドの実装に使用するブートストラッププロトコルに対してポート 900 で待機します。ほかのポート (<literal>1050</literal>など) を指定するには、次のようにします。<informalexample>
+<para><screen>example% <userinput>tnameserv -ORBInitialPort 1050</userinput></screen></para>
+</informalexample></para>
+<para>ネームサーバのクライアントには、新しいポート番号を知らせる必要があります。このため、<acronym>ORB</acronym> オブジェクトの作成時に <literal>org.omg.CORBA.ORBInitialPort</literal> プロパティに新しいポート番号を設定します。</para>
+</refsect2>
+<refsect2><title>Java IDL ネームサーバの停止</title>
+<indexterm id="tnameserv-1-indx-4"><primary sortas="tnameserv">tnameserv &mdash; Java IDL name server starter script</primary><secondary>Stopping the Java IDL Name Server</secondary></indexterm>
+<para><acronym remap="small">IDL</acronym> ネームサーバを停止するには、<citerefentry><refentrytitle>kill</refentrytitle><manvolnum>1</manvolnum></citerefentry> などのオペレーティングシステムのコマンドを使います。なお、ネームサーバを終了させると、Java <acronym remap="small">IDL</acronym> ネームサービスに登録されている名前は失われます。</para>
+</refsect2>
+<refsect2><title>サンプルクライアント: オブジェクトの追加</title>
+<indexterm id="tnameserv-1-indx-5"><primary sortas="tnameserv">tnameserv &mdash; Java IDL name server starter script</primary><secondary>Sample Client: Browsing the Namespace</secondary></indexterm><indexterm id="tnameserv-1-indx-6"><primary sortas="tnameserv">tnameserv &mdash; Java IDL name server starter script</primary><secondary>Sample Client: Adding Objects to the Namespace</secondary></indexterm>
+<para>以下に示すサンプルプログラムは、名前を名前空間に追加する方法を示すものです。このサンプルプログラムは、このままの状態で完全に動作するネームサーバクライアントで、次のような単純なツリーを作成するものです。<informalexample><screen>        初期
+     ネーミングコンテキスト
+      /      &bsol;
+     /        &bsol;
+   plans      personal
+               /&bsol;
+              /  &bsol;
+        calendar   schedule
+
+</screen>
+</informalexample>この例で、<literal>plans</literal> はオブジェクト参照、<literal>personal</literal> は <literal>calendar</literal> と <literal>schedule</literal> の 2 つのオブジェクト参照が含まれるネーミングコンテキストです。<informalexample><screen>import java.util.Properties;
+import org.omg.CORBA.*;
+import org.omg.CosNaming.*;
+
+public class NameClient
+{
+   public static void main(String args[])
+   {
+      try {
+
+</screen>
+</informalexample>前述の「Java IDL ネームサーバの起動」では、ネームサーバはポート <literal>1050</literal> を使用して起動しました。次のコードで、このポート番号をクライアントプログラムに知らせます。<informalexample><screen>        Properties props = new Properties();
+        props.put("org.omg.CORBA.ORBInitialPort", "1050");
+        ORB orb = ORB.init(args, props);
+
+</screen>
+</informalexample>次のコードでは、初期ネーミングコンテキストを取得し、それを <literal>ctx</literal> に代入します。2 行目では、<literal>ctx</literal> をダミーのオブジェクト参照 <literal>objref</literal> にコピーします。この <literal>objref</literal> には、あとでさまざまな名前を割り当てて名前空間に追加します。<informalexample><screen>        NamingContext ctx = NamingContextHelper.narrow
+            (orb.resolve_initial_references("NameService"));
+        NamingContext objref = ctx;
+
+</screen>
+</informalexample>次のコードでは、<literal>text</literal> 型の名前 <literal>plans</literal> を作成し、それをダミーのオブジェクト参照にバインドします。その後、<literal>rebind</literal> を使用して初期ネーミングコンテキストの下に <literal>plans</literal> を追加しています。<literal>rebind</literal> メソッドを使用すれば、<literal>bind</literal> を使用した場合に発生する例外を発生させずに、このプログラムを何度も繰り返し実行できます。<informalexample><screen>        NameComponent nc1 = new NameComponent("plans", "text");
+        NameComponent[] name1 = {nc1};
+        ctx.rebind(name1, objref);
+        System.out.println("plans rebind sucessful!");
+
+</screen>
+</informalexample>次のコードでは、<literal>directory</literal> 型の <literal>Personal</literal> というネーミングコンテキストを作成します。その結果得られるオブジェクト参照 <literal>ctx2</literal> をこの名前にバインドし、初期ネーミングコンテキストに追加します。<informalexample><screen>        NameComponent nc2 = new NameComponent("Personal", "directory");
+        NameComponent[] name2 = {nc2};
+        NamingContext ctx2 = ctx.bind_new_context(name2);
+        System.out.println("new naming context added..");</screen>
+</informalexample>残りのコードでは、ダミーのオブジェクト参照を <literal>schedule</literal> と <literal>calendar</literal> という名前でネーミングコンテキスト <literal>Personal</literal> (<literal>ctx2</literal>) にバインドします。<informalexample><screen>        NameComponent nc3 = new NameComponent("schedule", "text");
+        NameComponent[] name3 = {nc3};
+        ctx2.rebind(name3, objref);
+        System.out.println("schedule rebind sucessful!");
+
+        NameComponent nc4 = new NameComponent("calender", "text");
+        NameComponent[] name4 = {nc4};
+        ctx2.rebind(name4, objref);
+        System.out.println("calender rebind sucessful!");
+
+    } catch (Exception e) {
+        e.printStackTrace(System.err);
+    }
+  }
+}</screen>
+</informalexample></para>
+</refsect2>
+<refsect2><title>サンプルクライアント: 名前空間のブラウズ</title>
+<para>次のサンプルプログラムでは、名前空間をブラウズする方法を示します。<informalexample><screen>import java.util.Properties;
+import org.omg.CORBA.*;
+import org.omg.CosNaming.*;
+
+public class NameClientList
+{
+   public static void main(String args[])
+   {
+      try {</screen>
+</informalexample>前述の「Java IDL ネームサーバの起動」で、ネームサーバはポート <literal>1050</literal> を使用して起動しました。次のコードで、このポート番号をクライアントプログラムに知らせます。<informalexample><screen>        Properties props = new Properties();
+        props.put("org.omg.CORBA.ORBInitialPort", "1050");
+        ORB orb = ORB.init(args, props);</screen>
+</informalexample>次のコードでは、初期ネーミングコンテキストを取得しています。<informalexample><screen>        NamingContext nc = NamingContextHelper.narrow
+           (orb.resolve_initial_references("NameService"));</screen>
+</informalexample>list メソッドは、ネーミングコンテキストに追加されているバインディングをリストします。この場合、最大 1000 個までのバインディングが初期ネーミングコンテキストから <literal>BindingListHolder</literal> に返されます。残りのバインディングは、<literal>BindingIteratorHolder</literal> に返されます。<informalexample><screen>        BindingListHolder bl = new BindingListHolder();
+        BindingIteratorHolder blIt= new BindingIteratorHolder();
+        nc.list(1000, bl, blIt);</screen>
+</informalexample>次のコードでは、返された <literal>BindingListHolder</literal> からバインディングの配列を取得します。バインディングがない場合は、プログラムは終了します。<informalexample><screen>        Binding bindings[] = bl.value;
+        if (bindings.length == 0) return;</screen>
+</informalexample>残りのコードでは、バインディングに対してループ処理を行い、名前を出力します。<screen>        for (int i=0; i &lt; bindings.length; i++) {
+
+            // get the object reference for each binding
+            org.omg.CORBA.Object obj = nc.resolve
+				 (bindings[i].binding_name);
+            String objStr = orb.object_to_string(obj);
+            int lastIx = bindings[i].binding_name.length-1;
+
+            // check to see if this is a naming context
+            if (bindings[i].binding_type == BindingType.ncontext) {
+              System.out.println
+				 ("Context: " + bindings[i].binding_name[lastIx].id);
+            } else {
+                System.out.println
+				   ("Object: " + bindings[i].binding_name[lastIx].id);
+            }
+        }
+
+       } catch (Exception e) {
+        e.printStackTrace(System.err);
+       }
+   }
+}</screen></para>
+</refsect2>
+</refsect1>
+<refsect1><title>&attr-tt;</title>
+<para>次の属性については、<citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry> のマニュアルページを参照してください。</para>
+<informaltable frame="all" orient="port"><tgroup cols="2" colsep="1" rowsep="1"><colspec colname="col1" colwidth="198*" align="left"><colspec colname="col2" colwidth="198*" align="left"><thead><row><entry align="center" valign="top">属性タイプ</entry><entry align="center" valign="top">属性値</entry></row></thead><tbody><row><entry>使用条件</entry><entry>SUNWj5dev</entry></row></tbody></tgroup></informaltable>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>kill</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry> </para>
+</refsect1>
+<!--+ 07/27/00 08:36:13
+    | tagMorph:  $Id: tagMorph-engine 1.54 1998/01/19 05:44:48 $
+    | tagMorph library:  $Id: libtagMorph.a 1.50 1998/01/19 22:02:51 $
+    | sunman-to-solbook 1.17
+    +-->
+</refentry>
+<?Pub *0000010830 0>

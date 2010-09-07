@@ -1,0 +1,777 @@
+'\" t
+.\" @(#)jar.1 1.16 00/06/13 SMI;
+.\" Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+.\" Copyright 2004 Sun Microsystems, Inc. Tous droits r\351serv\351s.
+.\" `
+.TH jar 1 "2004 年 6 月 22 日"
+.SH "名前"
+jar \- Java アーカイブツール
+.\" 
+.\"  This document was created by saving an HTML file as text
+.\"  from the JavaSoft web site:
+.\" 
+.\" http://java.sun.com/j2se/1.5/docs/tooldocs/tools.html
+.\" 
+.\"  and adding appropriate troff macros.  Because the JavaSoft web site 
+.\"  man pages can change without notice, it may be helpful to diff
+.\"  files to identify changes other than new functionality. 
+.\" 
+.SH "形式"
+jar ファイルの作成
+.br
+.B jar 
+.BI c[v0M]f
+.I jarfile
+[
+.BI \-C " dir"
+]
+.I inputfiles
+[
+.BI \-J option
+]
+.br
+.B jar 
+.BI c[v0]mf
+.I manifest
+.I jarfile
+[
+.BI \-C " dir"
+]
+.I inputfiles
+[
+.BI \-J option
+]
+.br
+.B jar
+.BI c[v0M]
+[
+.BI \-C " dir"
+]
+.I inputfiles
+[
+.BI \-J option
+]
+.br
+.B jar
+.BI c[v0]m
+.I manifest
+[
+.BI \-C " dir"
+]
+.I inputfiles
+[
+.BI \-J option
+]
+.LP
+.B jar ファイルの更新
+.br
+.B jar
+.BI u[v0M]f
+.I jarfile
+[
+.BI \-C " dir"
+]
+.I inputfiles
+[
+.BI \-J option
+]
+.br
+.br
+.B jar
+.BI u[v0]mf
+.I manifest
+.I jarfile
+[
+.BI \-C " dir"
+]
+.I inputfiles
+[
+.BI \-J option
+]
+.br
+.br
+.B jar
+.BI u[v0M]
+[
+.BI \-C " dir"
+]
+.I inputfiles
+[
+.BI \-J option
+]
+.br
+.B jar
+.BI u[v0]m
+.I manifest
+[
+.BI \-C " dir"
+]
+.I inputfiles
+[
+.BI \-J option
+]
+.LP
+.B jar 
+ファイルの抽出
+.br
+.B jar
+.BI x[v]f
+.I jarfile
+[
+.I inputfiles
+]
+[
+.BI \-J option
+]
+.br
+.B jar
+.BI x[v]
+[
+.I inputfiles
+] [
+.BI \-J option
+]
+.LP
+.B jar 
+ファイルの内容の一覧を作成
+.br
+.B jar
+.BI t[v]f
+.I jarfile
+[
+.I inputfiles
+] [
+.BI \-J option
+]
+.br
+.B jar
+.BI t[v]
+[
+.I inputfiles
+] [
+.BI \-J option
+]
+.LP
+.B jar 
+ファイルにインデックスを追加
+.br
+.B jar
+.BI i 
+.I jarfile
+[
+.BI \-J option
+]
+.SH "パラメータ"
+.if t .TP 20
+.if n .TP 15
+.B cuxtivOMmf
+.B jar 
+コマンドを制御するオプション。
+.if t .TP 20
+.if n .TP 15
+.I jarfile
+作成 (c)、更新 (u)、抽出 (x)、または閲覧される内容の一覧を作成 (t) する
+jar ファイルです。
+.B f 
+オプションとファイル名
+.I jarfile 
+は対になっています。
+使用する場合は、両方を一緒に使用します。
+.B f 
+および 
+.I jarfile 
+を省略すると、標準入力から「jar ファイル」が
+使用されたり (x および t の場合)、標準出力にこの「jar ファイル」が
+送信されたりします (c および u の場合)。
+.if t .TP 20
+.if n .TP 15
+.I inputfiles
+jar ファイルに結合 (c および u の場合)、または jar ファイルから
+抽出 (x の場合) または一覧表示 (t の場合) されるファイル
+またはディレクトリ。空白文字で区切ります。
+すべてのディレクトリは再帰的に処理されます。
+オプション 0 (ゼロ) が使用されない場合は、ファイルが圧縮されます。
+.if t .TP 20
+.if n .TP 15
+.I manifest
+jar ファイルの MANIFEST.MF に含めようとする名前:値ペアが含まれている
+既存の manifest ファイルです。
+.B m 
+オプションと
+.I manifest 
+のファイル名は対になっています。
+使用する場合は、両方を一緒に使用します。
+文字 
+.B m 
+と 
+.B f 
+は、
+.I manifest 
+と 
+.I jarfile 
+が出現する順序と
+同じ順序で指定する必要があります。
+.if t .TP 20
+.if n .TP 15
+.BI \-C " dir"
+後続の入力ファイル引数の処理中、
+ディレクトリを 
+.I dir 
+に一時的に変更します。
+複数の 
+.BI \-C " dir" 
+入力ファイルのセットを使用できます。
+.if t .TP 20
+.if n .TP 15
+.BI \-J "option"
+Java Runtime Environment に渡されるオプション
+(
+.B \-J 
+と
+.I option 
+の間には空白文字を入れないでください)。
+.SH "機能説明"
+.IX "Java archive tool" "" "Java archive tool \(em \fLjar\fP"
+.IX "jar" "" "\fLjar\fP \(em Java archive tool"
+.B jar
+ツールは
+Java 
+アプリケーションの
+1
+つで、複数個のファイルを
+1
+個の
+JAR
+アーカイブファイルに統合します。また、
+jar は汎用的なアーカイブ作成用
+および圧縮用のツールでもあり、圧縮は
+.SM ZIP
+または
+.SM ZLIB
+形式で行います。ただし
+.B jar
+ツールの主な目的は、いくつかの
+Java
+アプレットやアプリケーションを
+1
+個のアーカイブに統合して簡略化することです。
+アプレットやアプリケーションのコンポーネント、たとえば
+クラスファイル、イメージ、サウンドなどを単一のアーカイブに
+まとめると、ブラウザのような
+Java
+エージェントにダウンロードするときに、一度の
+HTTP
+トランザクションで済みます。コンポーネントごとに
+新たに接続する必要がありません。
+これによりダウンロード時間が大幅に短縮できます。
+また
+.B jar
+はファイルの圧縮も行うので、ダウンロードがより高速になります。
+さらに、ファイル中の個々のエントリに対してアプレットの作成者が
+署名できるので、作成元を明確化できます。
+.B jar
+ツールの構文は、
+.BR tar (1)
+コマンドの構文とほぼ同一です。
+.B jar
+アーカイブは、圧縮されているかどうかにかかわらず、
+クラスパスエントリとして使用できます。
+.LP
+複数のファイルを jar ファイルに統合する標準的な使い方は次のとおりです。
+.LP
+.RS
+.ft 3
+.nf
+% jar cf myFile.jar *.class
+.fi
+.ft 1
+.RE
+.LP
+この例では、現在のディレクトリ中のすべてのクラスファイルが
+.BR myjarfile
+という名前のファイルに置かれます。
+META-INF/MANIFEST.MF という名前の manifest ファイルは 
+.B jar 
+ツールが
+自動的に生成し、常に jar ファイルの先頭のエントリとなります。
+manifest ファイルには、アーカイブに関するすべてのメタ情報が
+名前:値ペアとして記録されます。
+どのように記録されるかについては、
+「Jar ファイル仕様」
+を参照してください。
+.LP
+既存の manifest ファイルの名前:値ペアを含んだ新たな jar アーカイブを
+jar ツールで作成したいときは、
+.B m 
+オプションを使ってその manifest ファイルを
+指定します。以下に例を示します。
+.LP
+.RS 5
+.B % jar cmf myManifestFile myJarFile *.class
+.RE
+.LP
+使用する既存の manifest ファイルは復帰改行で終わるようにしてください。
+manifest ファイルの最後の行は、復帰改行文字で終わっていないと、
+構文解析されません。
+.B cmf 
+ではなく 
+.B cfm 
+を指定する場合 (つまり、
+.B m 
+オプションと 
+.B f 
+オプションの順番を
+逆にする場合)、最初に jar アーカイブ名を指定し、次に manifest ファイル名を指定する
+必要があります。
+.LP
+.RS 5
+.B % jar cfm myJarFile myManifestFile *.class
+.RE
+.LP
+manifest は RFC822 
+.SM ASCII 
+形式に基づいたテキスト形式を使用するため、manifest ファイルの内容は
+簡単に表示および処理できます。
+.LP
+jar ファイルからファイルを抽出する場合は、
+.B x 
+を使用します。次に例を示します。
+.LP
+.RS 5
+% jar xf myFile.jar
+.RE
+.LP
+jar ファイルから特定のファイルだけを抽出する場合は、
+そのファイル名を指定します。
+.LP
+.RS 5
+% jar xf myFile.jar foo bar
+.RE
+.LP
+JDK のバージョン 1.3 から、jar ユーティリティで 
+JarIndex をサポートするようになりました。これにより、
+アプリケーションのクラスローダは、jar ファイルから
+クラスをより高速に読み込めるようになりました。
+アプリケーションまたはアプレットが複数の jar ファイルに
+バンドルされている場合、必要な jar ファイルだけがダウンロードされて
+開かれ、クラスが読み込まれます。
+このパフォーマンスの最適化は、
+.B jar を 
+.B i 
+オプションを使用して実行すると
+有効になります。指定したメインの jar ファイルおよびそのファイルが
+依存しているすべての jar ファイルのパッケージ位置情報が生成されます。
+これらの情報は、メイン jar ファイルの manifest の Class-Path 属性で
+指定する必要があります。
+.LP
+.RS 5
+% jar i main.jar
+.RE
+.LP
+この例では、INDEX.LIST ファイルが main.jar の
+META-INF ディレクトリに追加されます。
+アプリケーションのクラスローダでは、このファイルに格納された情報を
+使用して、クラスのロードを高速化します。
+インデックスファイルに位置情報を格納する方法の詳細は、
+「JarIndex 仕様」を参照してください。
+.LP
+ディレクトリをコピーする標準的な方法は、まず 
+.I dir1 
+内のファイルを標準出力に圧縮し、
+次に標準入力から 
+.I dir2 
+に抽出します (両方の 
+.B jar 
+コマンドから 
+.B f 
+を省略します)。
+.LP
+.RS 5
+% (cd dir1; jar c .) | (cd dir2; jar x)
+.RE
+.LP
+.B jar 
+ツールを使用して jar ファイルや jar ファイルのマニフェストを操作する方法の例は、
+以下の説明と、「Java Tutorial」の「Jar」節にあります。
+.SH "オプション"
+.if t .TP 10
+.if n .TP 5
+.B c
+新規のアーカイブファイルを 
+.I jarfile 
+という名前 (
+.B f 
+を指定した場合)、または標準出力上に (
+.B f 
+と 
+.I jarfile 
+を省略した場合) 作成します。
+アーカイブには入力ファイルで指定したファイルおよびディレクトリが追加されます。
+.if t .TP 10
+.if n .TP 5
+.B u
+既存の 
+.I jarfile 
+(
+.B f 
+を指定した場合) を更新します。
+このとき、この 
+.I jarfile 
+には入力ファイルで指定されたファイルおよびディレクトリが追加されます。以下に例を示します。
+.LP
+.RS 5
+% jar uf foo.jar foo.class
+.RE
+.LP
+この例では、ファイル foo.class が既存の jar ファイル foo.jar に追加されます。
+.B u 
+オプションでは、マニフェストのエントリを更新することもできます。以下に例を示します。
+.LP
+.RS 5
+% jar umf manifest foo.jar
+.RE
+.LP
+foo.jar マニフェストをマニフェスト内の名前:値ペアで更新します。
+.if t .TP 10
+.if n .TP 5
+.B x
+ファイルおよびディレクトリを 
+.I jarfile 
+(
+.B f 
+を指定した場合)、
+または標準入力 (
+.B f 
+と 
+.I jarfile 
+を省略した場合) から抽出します。
+入力ファイルを指定した場合、その入力ファイルで指定されたファイルおよびディレクトリだけが
+抽出されます。指定しない場合は、すべてのファイルおよびディレクトリが抽出されます。
+.if t .TP 10
+.if n .TP 5
+.B t
+.I jarfile 
+(
+.B f 
+を指定した場合)、または標準入力 (
+.B f 
+と 
+.I jarfile 
+を省略した場合) から内容をリストします。入力ファイルを指定した場合、
+その入力ファイルで指定されたファイルおよびディレクトリだけが
+リストされます。指定しない場合は、すべてのファイルおよびディレクトリがリストされます。
+.if t .TP 10
+.if n .TP 5
+.B i
+指定された 
+.I jarfile 
+および関連づけられている jar ファイルの
+インデックス情報を生成します。次に例を示します。 
+.LP
+.RS 5
+% jar i foo.jar
+.RE
+.LP
+foo.jar に INDEX.LIST ファイルが生成されます。
+このファイルには、foo.jar の各パッケージおよび foo.jar の 
+Class-Path 属性に指定されているすべての jar ファイルの
+位置情報が書き込まれています。
+インデックスの例を参照してください。
+.if t .TP 10
+.if n .TP 5
+.B f
+作成 (c)、更新 (u)、抽出 (x)、インデックス作成(i)、
+または表示 (t) する 
+.I jarfile 
+を指定します。
+.b f 
+オプションと 
+.I jarfile 
+のファイル名は対になっています。
+使用する場合は、両方を一緒に使用します。
+.B f 
+と 
+.I jarfile 
+を省略すると、標準入力から「jar ファイル」が
+使用されたり (x および t の場合)、標準出力にこの「jar ファイル」が
+送信されたりします (c および u の場合)。
+.if t .TP 10
+.if n .TP 5
+.B v
+標準出力に詳細な出力を生成します。次に例を示します。
+.if t .TP 10
+.if n .TP 5
+.B 0
+ゼロ。ZIP 圧縮を使用せずに格納します。
+.if t .TP 10
+.if n .TP 5
+.B M
+manifest ファイルエントリを作成しません (c および u の場合)。または
+すでに存在する manifest ファイルエントリを削除します (u の場合)。 
+.if t .TP 10
+.if n .TP 5
+.B m
+META-INF/MANIFEST.MF 内の指定した manifest ファイルから
+名前:値属性をインクルードします。
+すでに同じ名前で存在しない限り、その名前:値ペアが追加されます。同じ名前で存在する場合は、その値が更新されます。
+.LP
+コマンド行では、文字 
+.B m 
+と 
+.B f 
+は、
+.I manifest 
+と 
+.I jarfile
+が出現するのと
+同じ順序で使用します。次に例を示します。
+.LP
+.RS 5
+% jar cmf myManifestFile myFile.jar *.class
+.RE
+.LP
+manifest ファイルには、デフォルトのマニフェストに含まれていない、
+専用の名前:値属性ペアを追加できます。このような属性ペアの
+例としては、ベンダ情報、バージョン情報、パッケージシーリング、
+および JAR に含まれるアプリケーションを実行するための属性が
+あります。
+.B m 
+オプションの使用例については、「Java Tutorial」の「JAR Files」節と
+「JRE 開発者向けノート」を参照してください。
+.if t .TP 10
+.if n .TP 5
+.B \-C
+.B jar 
+コマンドの実行中に一時的にディレクトリを変更します (
+.BI cd " dir"
+)。
+このとき、後続の入力ファイル引数が処理されます。
+この動作は、UNIX の 
+.B tar 
+ユーティリティの 
+.B \-C 
+オプションと
+同様の動作になります。次に例を示します。
+.LP
+.if t .RS 15
+.if n .RS 8
+.ft 3
+% jar uf foo.jar \-C classes bar.classes
+.ft 1
+.RE
+.LP
+classes ディレクトリに移動し、そのディレクトリから bar.classes を
+foo.jar に追加します。
+.LP
+.if t .RS 15
+.if n .RS 8
+.ft 3
+% jar uf foo.jar -C classes . -C bin xyz.class
+.ft 1
+.RE
+.LP
+このコマンドでは、classes ディレクトリに移動し、classes ディレクトリ内のすべてのファイルを
+foo.jar に追加します (jar ファイルには classes ディレクトリを作成しません)。
+次に元のディレクトリに戻ってから、bin ディレクトリに移動し、xyz.class を foo.jar に追加します。
+classes にファイル bar1 および bar2 がある場合、
+.B "jar tf foo.jar" 
+を実行すると、
+jar ファイルの内容が次のように表示されます。
+.LP
+.if t .RS 15
+.if n .RS 8
+.ft 3
+.nf
+META-INF/
+META-INF/MANIFEST.MF
+bar1
+bar2
+xyz.class
+.fi
+.ft 1
+.RE
+.if t .TP 10
+.if n .TP 5
+.BI J " option"
+.I option
+を Java Runtime Environment に渡します。ここで、
+.I option
+は、Java アプリケーション起動プログラム 
+.BR java(1) 
+のマニュアルページで
+説明されているオプションの 1 つです。たとえば
+.B \-J-Xms48m
+は、起動メモリを 48M バイトに設定します。
+.B \-J
+が基本にする仮想マシンにオプションを渡すことは、共通の規約です。
+.SH "コマンド行引数ファイル"
+.B jar 
+コマンド行を短くまたは簡単にするために、
+.B jar 
+コマンドの引数 (
+.B \-J 
+オプションを除く) を含むファイルを 1 つ以上指定できます。
+これにより、任意の長さの 
+.B jar 
+コマンドを作成でき、
+オペレーティングシステムによるコマンド行の制限を
+回避できます。
+.LP
+引数ファイルには、オプションとファイル名を含めることができます。
+引数ファイル内の引数は空白文字区切りまたは改行区切りにします。
+引数ファイル内のファイル名は、引数ファイルの位置ではなく、
+現在のディレクトリに対して相対的に指定します。
+通常はオペレーティングシステムによって展開されるワイルドカード (*) は
+展開されません。ファイルを再帰的に解釈するための「@」文字は使用できません。
+.B \-J 
+オプションは、起動プログラムに渡されるため、サポートされていません。
+起動プログラムでは引数ファイルを使用できないためです。
+.LP
+.B jar 
+の実行時、各引数のパスおよび名前で先頭に「@」文字を付けて渡されます。
+.B jar 
+で先頭に文字「@」の付いた引数が出現するたびに、
+そのファイルの内容が引数リストに展開されます。
+.LP
+たとえば、「classes.list」という名前の引数ファイルを使用して、
+ファイルの名前を保持します。
+.LP
+.RS 5
+% find . -name '*.class' -print > classes.list
+.RE
+.LP
+次に、引数ファイルで渡す 
+.B jar 
+コマンドを実行します。 
+.LP
+.RS 5
+% jar cf my.jar @classes.list
+.RE
+.LP
+引数ファイルはパスで渡されますが、相対パスが記述された引数ファイル内の
+すべてのファイル名は、渡されたパスに相対的ではなく、
+現在の作業ディレクトリに相対的となります。次に例を示します。
+.LP
+.RS 5
+% jar @path1/classes.list
+.RE
+.SH "使用例"
+あるディレクトリ中のファイルをすべてアーカイブに追加する例を示します 
+(アーカイブがすでに存在する場合は、内容が上書きされます)。
+詳細に列挙するようにすると (「v」オプションを使用)、
+サイズや最終更新日など、
+アーカイブ内のファイルに関して詳しい情報が得られます。
+.RS 
+\f3
+.nf
+% ls
+1.au          Animator.class    monkey.jpg
+2.au          Wave.class        spacemusic.au
+3.au          at_work.gif
+% jar cvf bundle.jar *
+added manifest
+adding: 1.au(in = 2324) (out= 67)(deflated 97%)
+adding: 2.au(in = 6970) (out= 90)(deflated 98%)
+adding: 3.au(in = 11616) (out= 108)(deflated 99%)
+adding: Animator.class(in = 2266) (out= 66)(deflated 97%)
+adding: Wave.class(in = 3778) (out= 81)(deflated 97%)
+adding: at_work.gif(in = 6621) (out= 89)(deflated 98%)
+adding: monkey.jpg(in = 7667) (out= 91)(deflated 98%)
+adding: spacemusic.au(in = 3079) (out= 73)(deflated 97%)
+\f1
+.fi
+.RE
+イメージ、オーディオファイル、およびクラス用のサブディレクトリが
+すでに存在する場合、単一の 
+.B jar 
+ファイルに結合できます。
+.RS 
+\f3
+.nf
+% ls -F
+audio/ classes/ images/
+
+% jar cvf bundle.jar audio classes images
+added manifest
+adding: audio/(in = 0) (out= 0)(stored 0%)
+adding: audio/1.au(in = 2324) (out= 67)(deflated 97%)
+adding: audio/2.au(in = 6970) (out= 90)(deflated 98%)
+adding: audio/3.au(in = 11616) (out= 108)(deflated 99%)
+adding: audio/spacemusic.au(in = 3079) (out= 73)(deflated 97%)
+adding: classes/(in = 0) (out= 0)(stored 0%)
+adding: classes/Animator.class(in = 2266) (out= 66)(deflated 97%)
+adding: classes/Wave.class(in = 3778) (out= 81)(deflated 97%)
+adding: images/(in = 0) (out= 0)(stored 0%)
+adding: images/monkey.jpg(in = 7667) (out= 91)(deflated 98%)
+adding: images/at_work.gif(in = 6621) (out= 89)(deflated 98%)
+
+% ls -F
+audio/ bundle.jar classes/ images/
+.fi
+\f1
+.RE
+次の例では、
+.B t 
+オプションを指定して、jar ファイル中のエントリ名を表示します。
+.RS 
+\f3
+.nf
+% jar tf bundle.jar
+META-INF/
+META-INF/MANIFEST.MF
+audio/1.au
+audio/2.au
+audio/3.au
+audio/spacemusic.au
+classes/Animator.class
+classes/Wave.class
+images/monkey.jpg
+images/at_work.gif
+.fi
+\f1
+.RE
+クラスの読み込みを高速化するために jar ファイルにインデックスファイルを
+追加する場合は、「i」オプションを使用してください。
+.LP
+たとえば株取引アプリケーションの内部依存しているクラスを 
+main.jar、buy.jar、および sell.jar という 3 つの jar ファイル
+に分割したとします。
+main.jar のマニフェストの Class-Path
+属性に次のように指定した場合、 
+.LP
+.RS 5
+Class-Path: buy.jar sell.jar
+.RE
+.LP
+.B i 
+オプションを使用すれば、アプリケーションのクラスの
+読み込みを高速化できます。
+.LP
+.RS 5
+% jar i main.jar
+.RE
+.LP
+INDEX.LIST ファイルが META-INF ディレクトリに追加されます。
+この結果、アプリケーションのクラスローダによってクラスまたは
+リソースの検索が行われるときに、適切な jar ファイルがダウンロードされます。 
+.SH "関連項目"
+.LP
+.TP 2
+\f2JAR Overview\fP @
+http://java.sun.com/j2se/1.5.0/docs/guide/jar/jarGuide.html/
+.LP
+.TP 2
+\f2JAR Files Specification\fP @
+http://java.sun.com/j2se/1.5.0/docs/guide/jar/jar.html/
+.LP
+.TP 2
+\f2JARIndex Spec\fP @
+http://java.sun.com/j2se/1.5.0/docs/guide/jar/jar.html/
+.LP
+.TP 2
+\f2JAR Tutorial\fP @
+http://java.sun.com/docs/books/tutorial/jar/
+.LP
+.TP 2
+\f2pack200 Reference Page\fP @
+http://java.sun.com/j2se/1.5.0/tooldocs/solaris/pack200.html/

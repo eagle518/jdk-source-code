@@ -1,0 +1,736 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1999, v.4002-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub Inc>
+<refentry id="jstat-1">
+<!--@(#)jstat.1	1.1 04/06/15-->
+<refmeta><refentrytitle>unpack200</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">22 Jun 2004</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All
+rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.
+</refmiscinfo>
+</refmeta>
+<refnamediv><refname>jps</refname><refpurpose>Java Virtual Machine Statistics
+Monitoring Tool</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>jstat</command><arg choice="opt"><replaceable>[ generalOption | outputOptions vmid [interval[s|ms] [count]] ]
+</replaceable></arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&parm-tt;</title>
+<variablelist termlength="narrow">
+<varlistentry><term><replaceable>generalOption</replaceable> </term><listitem>
+<para>A single general command-line option (<option>-help</option>, <option>
+-options</option>, or <option>-version</option>) </para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>outputOptions</replaceable> </term><listitem>
+<para>One or more output options, consisting of a single <replaceable>statOption
+</replaceable>, plus any of the <option>-t</option>, <option>-h</option>,
+and <option>-J</option> options. </para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>vmid</replaceable> </term><listitem><para>
+Virtual machine identifier, a string indicating the target Java virtual machine
+(JVM). The general syntax is <screen>[protocol:][//]lvmid[@hostname[:port]/servername]
+</screen>The syntax of the vmid string largely corresponds to the syntax of
+a URI. The vmid can vary from a simple integer representing a local JVM to
+a more complex construction specifying a communications protocol, port number,
+and other implementation-specific values. See <ulink url="http://java.sun.com/j2se/1.5.0/docs/tooldocs/share/jstat.html">
+Virtual Machine Identifier</ulink> for details. </para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>interval[s|ms]</replaceable> </term><listitem>
+<para> Sampling interval in the specified units, seconds (s) or milliseconds
+(ms). Default units are milliseconds.  Must be a positive integer.  If specified,
+jstat will produce its output at each interval. </para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>count</replaceable> </term><listitem><para>
+Number of samples to display. Default value is infinity; that is, jstat displays
+statistics until the target JVM terminates or the jstat command is terminated.
+ Must be a positive integer. </para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="java-1-indx-1"><primary sortas="Java interpreter">Java interpreter &mdash;
+java</primary></indexterm><indexterm id="java-1-indx-2"><primary sortas="java">
+java &mdash; Java interpreter</primary></indexterm><para>The jstat tool displays
+performance statistics for an instrumented HotSpot Java virtual machine (JVM).
+       The target JVM is identified by its virtual machine identifier, or
+vmid option described below. </para>
+<note><para>NOTE - This utility is unsupported and may or may not be available
+in future versions of the JDK. It is not currently available on Windows 98
+and Windows ME platforms. </para>
+</note>
+</refsect1>
+<refsect1><title>VIRTUAL MACHINE IDENTIFIER</title>
+<para>The syntax of the vmid string largely corresponds to the syntax of a
+URI: <screen>[protocol:][//]lvmid[@hostname][:port][/servername]</screen></para>
+<variablelist>
+<varlistentry><term>protocol</term><listitem><para>The communications protocol.
+If the protocol is omitted and a hostname is not specified, the default protocol
+is a platform specific optimized local protocol. If the protocol is omitted
+and a hostname is specified, then the default protocol is rmi. </para>
+</listitem></varlistentry>
+<varlistentry><term>lvmid</term><listitem><para>The communications protocol.
+If the protocol is omitted and a hostname is not specified, the default protocol
+is a platform specific optimized local protocol. If the protocol is omitted
+and a hostname is specified, then the default protocol is rmi. </para>
+</listitem></varlistentry>
+<varlistentry><term>hostname</term><listitem><para>A hostname or IP address
+indicating the target host. If hostname is omitted, then the target host is
+the local host. </para>
+</listitem></varlistentry>
+<varlistentry><term>port</term><listitem><para>The default port for communicating
+with the remote server. If the hostname is omitted or the protocol specifies
+an optimized, local protocol, then port is ignored. Otherwise, treatment of
+the port parameter is implementation specific. For the default rmi protocol,
+the port indicates the port number for the rmiregistry on the remote host.
+If port is omitted, and protocol indicates rmi, then the default rmiregistry
+port (1099) is used. </para>
+</listitem></varlistentry>
+<varlistentry><term>servername</term><listitem><para>The treatment of this
+parameter depends on implementation. For the optimized local protocol, this
+field is ignored. For the rmi protocol, it represents the name of the RMI
+remote object on the remote host. </para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>&opts-tt;</title>
+<para>The jstat command supports two types of options, general options and
+output options. General options        cause jstat to display simple usage
+and version information. Output options determine the content and format of
+the statistical output. </para>
+<note><para>NOTE: All options, and their functionality are subject to change
+or removal in future releases.</para>
+</note>
+</refsect1>
+<refsect1><title>GENERAL OPTIONS</title>
+<para>If you specify one of the general options, you cannot specify any other
+option or parameter. </para>
+<variablelist>
+<varlistentry><term>&mdash;help</term><listitem><para>Display help message.
+</para>
+</listitem></varlistentry>
+<varlistentry><term>&mdash;version</term><listitem><para>Display version information.
+</para>
+</listitem></varlistentry>
+<varlistentry><term>&mdash;options</term><listitem><para>Display list of statistics
+options. See the Output Options section below. </para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>OUTPUT OPTIONS</title>
+<para>If you do not specify a general option, then you can specify output
+options. Output options determine        the content and format of jstat's
+output, and consist of a single <option>statOption</option>, plus any of the
+other output options (<option>-h</option>, <option>-t</option>, and <option>
+-J</option>).  The <option>statOption</option> must come first. </para>
+<para>Output is formatted as a table, with columns are separated by spaces.
+A header row with titles        describes the columns.  Use the <option>-h
+</option> option to set the frequency at which the header is displayed. Column
+header names are generally consistent between the different options. In general,
+if two options provide a column with the same name, then the data source for
+the two columns are the same.</para>
+<para>Use the<option> -t</option> option to display a time stamp column, labeled
+Timestamp as the first column of output. The Timestamp column contains the
+elapsed time, in seconds, since startup of the target JVM. The resolution
+of the time stamp is dependent on various factors and is subject to variation
+due to delayed thread scheduling on heavily loaded systems. </para>
+<para>Use the<parameter> interval</parameter> and <parameter>count </parameter>parameters
+to determine how frequently and how many times, respectively, jstat displays
+its output.</para>
+<note><para>NOTE: You are advised not to write scripts to parse jstat's output
+since the format may change in future releases. If you choose to write scripts
+that parse jstat output, expect to modify them for future releases of this
+tool. </para>
+</note>
+<variablelist>
+<varlistentry><term>-statOption</term><listitem><para>Determines the statistics
+information that jstat displays. The following table lists the available options.
+ Use the <option>-options</option> general option to display the list of options
+for a particular platform installation.</para>
+<informaltable frame="topbot">
+<tgroup cols="2" colsep="0" rowsep="0"><colspec colname="COLSPEC2" colwidth="50*">
+<colspec colname="COLSPEC3" colwidth="50*">
+<thead>
+<row><entry colname="COLSPEC2" valign="top"><para>Option</para></entry><entry
+colname="COLSPEC3" valign="top"><para>Displays...</para></entry></row>
+</thead>
+<tbody>
+<row><entry><para>class</para></entry><entry><para>Statistics on the behavior
+of the class loader.</para></entry></row>
+<row><entry><para>compiler</para></entry><entry><para>Statistics of the behavior
+of the HotSpot Just-in-Time compiler.</para></entry></row>
+<row><entry><para>gc</para></entry><entry><para>Statistics of the behavior
+of the garbage collected heap.</para></entry></row>
+<row><entry><para>gccapacity</para></entry><entry><para>Statistics of the
+capacities of the generations and their corresponding spaces.</para></entry>
+</row>
+<row><entry><para>gccause</para></entry><entry><para>Summary of garbage collection
+statistics (same as -gcutil), with the cause of the last and current (if applicable)
+garbage collection events.</para></entry></row>
+<row><entry><para>gcnew</para></entry><entry><para>Statistics of the behavior
+of the new generation.</para></entry></row>
+<row><entry><para>gcnewcapacity</para></entry><entry><para>Statistics of the
+sizes of the new generations and its corresponding spaces.</para></entry>
+</row>
+<row><entry><para>gcold</para></entry><entry><para>Statistics of the behavior
+of the old and permanent generations.</para></entry></row>
+<row><entry><para>gcoldcapacity</para></entry><entry><para>Statistics of the
+sizes of the old generation.</para></entry></row>
+<row><entry><para>gcpermcapacity</para></entry><entry><para>Statistics of
+the sizes of the permanent generation.</para></entry></row>
+<row><entry><para>gcutil</para></entry><entry><para>Summary of garbage collection
+statistics.</para></entry></row>
+<row><entry><para>printcompilation</para></entry><entry><para>HotSpot compilation
+method statistics. </para></entry></row>
+</tbody>
+</tgroup>
+</informaltable>
+</listitem></varlistentry>
+<varlistentry><term>&mdash;h <replaceable>n</replaceable></term><listitem>
+<para>Display a column header every <replaceable>n </replaceable>samples (output
+rows), where n is a positive integer. Default value is 0, which displays the
+column header above the first row of data. </para>
+</listitem></varlistentry>
+<varlistentry><term>&mdash;t <replaceable>n</replaceable></term><listitem>
+<para>Display a timestamp column as the first column of output. The timestamp
+is the the time since the start time of the target JVM. </para>
+</listitem></varlistentry>
+<varlistentry><term>&mdash;J<replaceable>javaOption</replaceable></term><listitem>
+<para>Pass <replaceable>javaOption</replaceable> to the java application launcher.
+For example, <literal>-J-Xms48m</literal> sets the startup memory to 48 megabytes.
+For a complete list of options, see the following documents: <simplelist>
+<member><ulink url="http://java.sun.com/j2se/1.5.0/docs/tooldocs/solaris/java.html">
+java - the Java application launcher (Solaris)</ulink></member>
+<member><ulink url="http://java.sun.com/j2se/1.5.0/docs/tooldocs/linux/java.html">
+java - the Java application launcher (Linux)</ulink></member>
+<member><ulink url="http://java.sun.com/j2se/1.5.0/docs/tooldocs/windows/java.html">
+java - the Java application launcher (Windows)</ulink></member></simplelist></para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>STATOPTIONS AND OUTPUT</title>
+<para>The following tables summarize the columns that jstat outputs for each <option>
+statOption</option>. <variablelist>
+<varlistentry><term>&mdash;class Option</term><listitem>
+<table frame="topbot">
+<title>Class Loader Statistics</title>
+<tgroup cols="2" colsep="0" rowsep="0"><colspec colname="COLSPEC0" colwidth="50*">
+<colspec colname="COLSPEC1" colwidth="50*">
+<thead>
+<row><entry colname="COLSPEC0" valign="top"><para>Column</para></entry><entry
+colname="COLSPEC1" valign="top"><para>Description</para></entry></row>
+</thead>
+<tbody>
+<row><entry><para>Loaded</para></entry><entry><para>Number of classes loaded
+</para></entry></row>
+<row><entry><para>Bytes</para></entry><entry><para>Number of Kbytes loaded
+</para></entry></row>
+<row><entry><para>Unloaded</para></entry><entry><para>Numberof classes unloaded
+</para></entry></row>
+<row><entry><para>Bytes</para></entry><entry><para>Number of Kbytes unloaded
+</para></entry></row>
+<row><entry><para>Time</para></entry><entry><para>Time spent performing class
+load and unload operations</para></entry></row>
+</tbody>
+</tgroup>
+</table>
+</listitem></varlistentry>
+<varlistentry><term>&mdash;compiler Option</term><listitem>
+<table frame="topbot">
+<title>HotSpot Just-In-Time Compiler Statistics </title>
+<tgroup cols="2" colsep="0" rowsep="0"><colspec colwidth="50*"><colspec colwidth="50*">
+<thead>
+<row rowsep="1"><entry><para>Header</para></entry><entry><para>Header</para></entry>
+</row>
+</thead>
+<tbody>
+<row><entry><para>Compiled</para></entry><entry><para>Number of compilation
+tasks performed.</para></entry></row>
+<row><entry><para>Failed</para></entry><entry><para>Number of compilation
+tasks that failed.</para></entry></row>
+<row><entry><para>Invalid</para></entry><entry><para>Number of compilation
+tasks that were invalidated.</para></entry></row>
+<row><entry><para>Time</para></entry><entry><para>Time spent performing compilation
+tasks.</para></entry></row>
+<row><entry><para>FailedType</para></entry><entry><para>Compile type of the
+last failed compilation.</para></entry></row>
+<row><entry><para>FailedMethod</para></entry><entry><para>Class name and method
+for the last failed compilation.</para></entry></row>
+</tbody>
+</tgroup>
+</table>
+</listitem></varlistentry>
+<varlistentry><term>&mdash;gc Option</term><listitem>
+<table frame="topbot">
+<title>Garbage-collected heap statistics </title>
+<tgroup cols="2" colsep="0" rowsep="0"><colspec colwidth="50*"><colspec colwidth="50*">
+<thead>
+<row rowsep="1"><entry><para>Column</para></entry><entry><para>Description
+</para></entry></row>
+</thead>
+<tbody>
+<row><entry><para>S0C                                 </para></entry><entry><para>
+Current survivor space 0 capacity (KB).</para></entry></row>
+<row><entry><para>S1C                                                    
+                                                                         
+            </para></entry><entry><para>Current survivor space 1 capacity
+(KB). </para></entry></row>
+<row><entry><para>S0U </para></entry><entry><para>Survivor space 0 utilization
+(KB).   </para></entry></row>
+<row><entry><para>S1U </para></entry><entry><para>Survivor space 1 utilization
+(KB).</para></entry></row>
+<row><entry><para>EC                                                     
+                                                                         
+                                                                         
+                                                                         
+                                         </para></entry><entry><para>Current
+eden space capacity (KB). </para></entry></row>
+<row><entry><para>EU</para></entry><entry><para>Eden space utilization (KB). 
+</para></entry></row>
+<row><entry><para>OC</para></entry><entry><para>Current old space capacity
+(KB).</para></entry></row>
+<row><entry><para>OU</para></entry><entry><para>Old space utilization (KB).
+</para></entry></row>
+<row><entry><para>PC</para></entry><entry><para>Current permanent space capacity
+(KB).</para></entry></row>
+<row><entry><para>PU</para></entry><entry><para>Permanent space utilization
+(KB).  </para></entry></row>
+<row><entry><para>YGC</para></entry><entry><para>Number of young generation
+GC Events.                                                               
+                                                                         
+        </para></entry></row>
+<row><entry><para> YGCT</para></entry><entry><para>Young generation garbage
+collection time. </para></entry></row>
+<row><entry><para>FGC</para></entry><entry><para>Number of full GC events. 
+</para></entry></row>
+<row><entry><para>FGCT</para></entry><entry><para>Full garbage collection
+time. </para></entry></row>
+<row><entry><para>GCT</para></entry><entry><para>Total garbage collection
+time. </para></entry></row>
+</tbody>
+</tgroup>
+</table>
+</listitem></varlistentry>
+<varlistentry><term>&mdash;gccapacity Option</term><listitem>
+<table frame="topbot">
+<title>Memory Pool Generation and Space Capacities </title>
+<tgroup cols="2" colsep="0" rowsep="0"><colspec colwidth="50*"><colspec colwidth="50*">
+<thead>
+<row rowsep="1"><entry><para>Column</para></entry><entry><para>Description
+</para></entry></row>
+</thead>
+<tbody>
+<row><entry><para>NGCMN                                               </para></entry>
+<entry><para>Minimum new generation capacity (KB). </para></entry></row>
+<row><entry><para>NGCMX                                               </para></entry>
+<entry><para>Maximum new generation capacity (KB). </para></entry></row>
+<row><entry><para>NGC                                                    
+                                                                         
+                                                            </para></entry>
+<entry><para>Current new generation capacity (KB).</para></entry></row>
+<row><entry><para>S0C</para></entry><entry><para>Current survivor space 0
+capacity (KB).</para></entry></row>
+<row><entry><para>S1C</para></entry><entry><para>Current survivor space 1
+capacity (KB). </para></entry></row>
+<row><entry><para>EC</para></entry><entry><para>Current eden space capacity
+(KB).</para></entry></row>
+<row><entry><para>OGCMN                                                  
+                                                                         
+                                                                         
+                                                                         
+                                                                         
+                                                                    </para></entry>
+<entry><para>Minimum old generation capacity (KB). </para></entry></row>
+<row><entry><para>OGCMX</para></entry><entry><para>Maximum old generation
+capacity (KB). </para></entry></row>
+<row><entry><para>OGC</para></entry><entry><para>Current old generation capacity
+(KB).</para></entry></row>
+<row><entry><para>OC</para></entry><entry><para>Current old space capacity
+(KB).</para></entry></row>
+<row><entry><para>PGCMN</para></entry><entry><para>Minimum permanent generation
+capacity (KB). </para></entry></row>
+<row><entry><para>PGCMX</para></entry><entry><para>Maximum Permanent generation
+capacity (KB). </para></entry></row>
+<row><entry><para>PGC</para></entry><entry><para>Current Permanent generation
+capacity (KB). </para></entry></row>
+<row><entry><para>PC</para></entry><entry><para>Current Permanent space capacity
+(KB).</para></entry></row>
+<row><entry><para>YGC</para></entry><entry><para>Number of Young generation
+GC Events. </para></entry></row>
+<row><entry><para>FGC  </para></entry><entry><para>Number of Full GC Events.
+</para></entry></row>
+</tbody>
+</tgroup>
+</table>
+</listitem></varlistentry>
+<varlistentry><term>&mdash;gccause Option</term><listitem><para>This option
+displays the same summary of garbage collection statistics as the <option>
+-gcutil </option>option, but includes the causes of the last garbage collection
+event and (if applicable) the current garbage collection event. In addition
+to the columns listed for <option>-gcutil</option>, this option adds the following
+columns:</para>
+<table frame="topbot">
+<title>Garbage Collection Statistics, Including GC Events </title>
+<tgroup cols="2" colsep="0" rowsep="0"><colspec colwidth="50*"><colspec colwidth="50*">
+<thead>
+<row rowsep="1"><entry><para>Column</para></entry><entry><para>Description
+</para></entry></row>
+</thead>
+<tbody>
+<row><entry><para>LGCC                                                   
+                             </para></entry><entry><para>Cause of last Garbage
+Collection.  </para></entry></row>
+<row><entry><para>GCC</para></entry><entry><para>Cause of current Garbage
+Collection.</para></entry></row>
+</tbody>
+</tgroup>
+</table>
+</listitem></varlistentry>
+<varlistentry><term>&mdash;gcnew Option</term><listitem>
+<table frame="topbot">
+<title>New Generation Statistics </title>
+<tgroup cols="2" colsep="0" rowsep="0"><colspec colwidth="50*"><colspec colwidth="50*">
+<thead>
+<row rowsep="1"><entry><para>Column</para></entry><entry><para>Description
+</para></entry></row>
+</thead>
+<tbody>
+<row><entry><para>S0C                                                    
+                                                                         
+                                                           </para></entry>
+<entry><para>Current survivor space 0 capacity (KB).</para></entry></row>
+<row><entry><para>S1C</para></entry><entry><para>Current survivor space 1
+capacity (KB).</para></entry></row>
+<row><entry><para>S0U</para></entry><entry><para>Survivor space 0 utilization
+(KB). </para></entry></row>
+<row><entry><para>S1U</para></entry><entry><para>Survivor space 1 utilization
+(KB).  </para></entry></row>
+<row><entry><para>TT                                                     
+                                                                         
+                                                                         
+                                                                         
+                                       </para></entry><entry><para>Tenuring
+threshold.</para></entry></row>
+<row><entry><para>MTT</para></entry><entry><para>Maximum tenuring threshold.
+</para></entry></row>
+<row><entry><para>DSS</para></entry><entry><para>Desired survivor size (KB).
+</para></entry></row>
+<row><entry><para>EC</para></entry><entry><para>Current eden space capacity
+(KB).</para></entry></row>
+<row><entry><para>EU</para></entry><entry><para>Eden space utilization (KB).
+</para></entry></row>
+<row><entry><para>YGC</para></entry><entry><para>Number of young generation
+GC events. </para></entry></row>
+<row><entry><para>YGCT</para></entry><entry><para>Young generation garbage
+collection time.</para></entry></row>
+</tbody>
+</tgroup>
+</table>
+</listitem></varlistentry>
+<varlistentry><term>-gcnewcapacity Option</term><listitem>
+<table frame="topbot">
+<title>New Generation Space Size Statistics </title>
+<tgroup cols="2" colsep="0" rowsep="0"><colspec colwidth="49.24*"><colspec
+colwidth="50.76*">
+<thead>
+<row rowsep="1"><entry><para>Column</para></entry><entry><para>Description
+</para></entry></row>
+</thead>
+<tbody>
+<row><entry><para>NGCMN                                                  
+                                                                         
+                                                                         
+                                                                         
+                                                                         
+                        </para></entry><entry><para>Minimum new generation
+capacity (KB).</para></entry></row>
+<row><entry><para>NGCMX</para></entry><entry><para>Maximum new generation
+capacity (KB).</para></entry></row>
+<row><entry><para>NGC</para></entry><entry><para>Current new generation capacity
+(KB).</para></entry></row>
+<row><entry><para>S0CMX</para></entry><entry><para>Maximum survivor space
+0 capacity (KB). </para></entry></row>
+<row><entry><para>S0C</para></entry><entry><para>Current survivor space 0
+capacity (KB).</para></entry></row>
+<row><entry><para>S1CMX</para></entry><entry><para>Maximum survivor space
+1 capacity (KB). </para></entry></row>
+<row><entry><para>S1C</para></entry><entry><para>Current survivor space 1
+capacity (KB).</para></entry></row>
+<row><entry><para>ECMX                                                   
+                                                      </para></entry><entry><para>
+Maximum eden space capacity (KB).</para></entry></row>
+<row><entry><para>EC</para></entry><entry><para>Current eden space capacity
+(KB).</para></entry></row>
+<row><entry><para>YGC</para></entry><entry><para>Number of young generation
+GC events.</para></entry></row>
+<row><entry><para>FGC</para></entry><entry><para>Number of Full GC Events.
+</para></entry></row>
+</tbody>
+</tgroup>
+</table>
+</listitem></varlistentry>
+<varlistentry><term>-gcold Option</term><listitem>
+<table frame="topbot">
+<title>Old and Permanent Generation Statistics </title>
+<tgroup cols="2" colsep="0" rowsep="0"><colspec colwidth="50*"><colspec colwidth="50*">
+<thead>
+<row rowsep="1"><entry><para>Column</para></entry><entry><para>Description
+</para></entry></row>
+</thead>
+<tbody>
+<row><entry><para>PC                                                     
+                                                                         
+                                                                         
+                                                                         
+        </para></entry><entry><para>Current permanent space capacity (KB).
+ </para></entry></row>
+<row><entry><para>PU</para></entry><entry><para>Permanent space utilization
+(KB). </para></entry></row>
+<row><entry><para>OC</para></entry><entry><para>Current old space capacity
+(KB). </para></entry></row>
+<row><entry><para>OU</para></entry><entry><para>old space utilization (KB).
+</para></entry></row>
+<row><entry><para>YGC</para></entry><entry><para>Number of young generation
+GC events.</para></entry></row>
+<row><entry><para>FGC</para></entry><entry><para>Number of full GC events. 
+</para></entry></row>
+<row><entry><para>FGCT                                                   
+                            </para></entry><entry><para>Full garbage collection
+time. </para></entry></row>
+<row><entry><para>GCT</para></entry><entry><para>Total garbage collection
+time.</para></entry></row>
+</tbody>
+</tgroup>
+</table>
+</listitem></varlistentry>
+<varlistentry><term> -gcoldcapacity Option</term><listitem>
+<table frame="topbot">
+<title>Old Generation Statistics </title>
+<tgroup cols="2" colsep="0" rowsep="0"><colspec colwidth="50*"><colspec colwidth="50*">
+<thead>
+<row rowsep="1"><entry><para>Column</para></entry><entry><para>Description
+</para></entry></row>
+</thead>
+<tbody>
+<row><entry><para>OGCMN                                                  
+                                                                         
+                                                                         
+                                                                         
+                                                       </para></entry><entry><para>
+Minimum old generation capacity (KB). </para></entry></row>
+<row><entry><para>OGCMX</para></entry><entry><para>Maximum old generation
+capacity (KB).</para></entry></row>
+<row><entry><para>OGC</para></entry><entry><para>Current old generation capacity
+(KB). </para></entry></row>
+<row><entry><para>OC</para></entry><entry><para>Current old space capacity
+(KB).    </para></entry></row>
+<row><entry><para>YGC</para></entry><entry><para>Number of young generation
+GC events.</para></entry></row>
+<row><entry><para>FGC</para></entry><entry><para>Number of full GC events.
+ </para></entry></row>
+<row><entry><para>FGCT</para></entry><entry><para>Full garbage collection
+time. </para></entry></row>
+<row><entry><para>GCT </para></entry><entry><para> Total garbage collection
+time.</para></entry></row>
+</tbody>
+</tgroup>
+</table>
+</listitem></varlistentry>
+<varlistentry><term>-gcpermcapacity Option</term><listitem>
+<table frame="topbot">
+<title>Permanent Generation Statistics </title>
+<tgroup cols="2" colsep="0" rowsep="0"><colspec colwidth="50*"><colspec colwidth="50*">
+<thead>
+<row rowsep="1"><entry><para>Column</para></entry><entry><para>Description
+</para></entry></row>
+</thead>
+<tbody>
+<row><entry><para>PGCMN                                                  
+                                                                         
+                                                                         
+                                                                         
+                                           </para></entry><entry><para>Minimum
+permanent generation capacity (KB). </para></entry></row>
+<row><entry><para>PGCMX</para></entry><entry><para>Maximum permanent generation
+capacity (KB). </para></entry></row>
+<row><entry><para>PGC</para></entry><entry><para>Current permanent generation
+capacity (KB). </para></entry></row>
+<row><entry><para>PC</para></entry><entry><para>Current permanent space capacity
+(KB).  </para></entry></row>
+<row><entry><para>YGC</para></entry><entry><para>Number of young generation
+GC events. </para></entry></row>
+<row><entry><para>FGC</para></entry><entry><para>Number of full GC events.
+</para></entry></row>
+<row><entry><para>FGCT</para></entry><entry><para>Full garbage collection
+time. </para></entry></row>
+<row><entry><para>GCT </para></entry><entry><para>Total garbage collection
+time.</para></entry></row>
+</tbody>
+</tgroup>
+</table>
+</listitem></varlistentry>
+<varlistentry><term>-gcutil Option</term><listitem>
+<table frame="topbot">
+<title>Summary of Garbage Collection Statistics </title>
+<tgroup cols="2" colsep="0" rowsep="0"><colspec colwidth="50*"><colspec colwidth="50*">
+<thead>
+<row rowsep="1"><entry><para>Column</para></entry><entry><para>Description
+</para></entry></row>
+</thead>
+<tbody>
+<row><entry><para>S0                                                     
+                                                                         
+                                                                         
+                                         </para></entry><entry><para>Survivor
+space 0 utilization as a percentage of the space's current capacity. </para></entry>
+</row>
+<row><entry><para>S1</para></entry><entry><para>Survivor space 1 utilization
+as a percentage of the space's current capacity. </para></entry></row>
+<row><entry><para>E</para></entry><entry><para>Eden space utilization as a
+percentage of the space's current capacity.</para></entry></row>
+<row><entry><para>O</para></entry><entry><para>Old space utilization as a
+percentage of the space's current capacity. </para></entry></row>
+<row><entry><para>P</para></entry><entry><para>Permanent space utilization
+as a percentage of the space's current capacity. </para></entry></row>
+<row><entry><para>YGC</para></entry><entry><para>Number of young generation
+GC events.</para></entry></row>
+<row><entry><para>YGCT                                                   
+                                                                         
+                   </para></entry><entry><para>Young generation garbage collection
+time.</para></entry></row>
+<row><entry><para>FGC</para></entry><entry><para>Number of full GC events. 
+</para></entry></row>
+<row><entry><para>FGCT</para></entry><entry><para>Full garbage collection
+time.   </para></entry></row>
+<row><entry><para>GCT</para></entry><entry><para>Total garbage collection
+time.</para></entry></row>
+</tbody>
+</tgroup>
+</table>
+</listitem></varlistentry>
+<varlistentry><term>&mdash;printcompilation Option</term><listitem>
+<table frame="topbot">
+<title>HotSpot Compiler Method Statistics</title>
+<tgroup cols="2" colsep="0" rowsep="0"><colspec colwidth="50*"><colspec colwidth="50*">
+<thead>
+<row rowsep="1"><entry><para>Column</para></entry><entry><para>Description
+</para></entry></row>
+</thead>
+<tbody>
+<row><entry><para>Compiled                                               
+                                                                         
+                    </para></entry><entry><para>Number of compilation tasks
+performed. </para></entry></row>
+<row><entry><para>Size</para></entry><entry><para>Number of bytes of bytecode
+for the method.</para></entry></row>
+<row><entry><para>Type</para></entry><entry><para>Compilation type.</para></entry>
+</row>
+<row><entry><para>Method</para></entry><entry><para>Class name and method
+name identifying the compiled method. Class name uses "/" instead of "." as
+namespace separator. Method name is the method within the given class. The
+format for these two fields is consistent with  the HotSpot - XX:+PrintComplation
+option. </para></entry></row>
+</tbody>
+</tgroup>
+</table>
+</listitem></varlistentry>
+</variablelist></para>
+</refsect1>
+<refsect1><title>EXAMPLES</title>
+<para>This section presents some examples of monitoring a local JVM with a
+lvmid of 21891. </para>
+<example>
+<title>Using the gcutil option</title>
+<para>This example attaches to lvmid 21891 and takes 7 samples at 250 millisecond
+intervals and displays        the output as specified by the <option>-gcutil
+</option> option. </para>
+<screen>jstat -gcutil 21891 250 7
+            S0     S1     E      O      P     YGC    YGCT    FGC    FGCT     GCT
+           12.44   0.00  27.20   9.49  96.70    78    0.176     5    0.495    0.672
+           12.44   0.00  62.16   9.49  96.70    78    0.176     5    0.495    0.672
+           12.44   0.00  83.97   9.49  96.70    78    0.176     5    0.495    0.672
+            0.00   7.74   0.00   9.51  96.70    79    0.177     5    0.495    0.673
+            0.00   7.74  23.37   9.51  96.70    79    0.177     5    0.495    0.673
+            0.00   7.74  43.82   9.51  96.70    79    0.177     5    0.495    0.673
+            0.00   7.74  58.11   9.51  96.71    79    0.177     5    0.495    0.673
+</screen>
+<para>The output of this example shows that a young generation collection
+occurred between the 3rd and        4th sample. The collection took 0.001
+seconds and promoted objects from the eden space (E) to the old        space
+(O), resulting in an increase of old space utilization from 9.49% to 9.51%.
+Before the collection, the survivor space was 12.44% utilized, but after this
+collection it is only 7.74% utilized. </para>
+</example>
+<example>
+<title>Repeating the column header string</title>
+<para>This example attaches to lvmid 21891 and takes samples at 250 millisecond
+intervals and displays the        output as specified by<option> -gcutil</option>
+option. In addition, it uses the <option>-h3</option> option to output the
+column header  after every 3 lines of data. </para>
+<screen>jstat -gcnew -h3 21891 250
+           S0C    S1C    S0U    S1U   TT MTT  DSS      EC       EU     YGC     YGCT
+            64.0   64.0    0.0   31.7 31  31   32.0    512.0    178.6    249    0.203
+            64.0   64.0    0.0   31.7 31  31   32.0    512.0    355.5    249    0.203
+            64.0   64.0   35.4    0.0  2  31   32.0    512.0     21.9    250    0.204
+           S0C    S1C    S0U    S1U   TT MTT  DSS      EC       EU     YGC     YGCT
+            64.0   64.0   35.4    0.0  2  31   32.0    512.0    245.9    250    0.204
+            64.0   64.0   35.4    0.0  2  31   32.0    512.0    421.1    250    0.204
+            64.0   64.0    0.0   19.0 31  31   32.0    512.0     84.4    251    0.204
+           S0C    S1C    S0U    S1U   TT MTT  DSS      EC       EU     YGC     YGCT
+            64.0   64.0    0.0   19.0 31  31   32.0    512.0    306.7    251    0.204
+</screen>
+<para>In addition to showing the repeating header string, this example shows
+that between the 2nd and 3rd        samples, a young GC occurred. Its duration
+was 0.001 seconds. The collection found enough live data that the survivor
+space 0 utilization (S0U) would would have exceeded the desired survivor Size
+(DSS). As a result, objects were promoted to the old generation (not visible
+in this output), and the tenuring  threshold (TT) was lowered from 31 to 2. 
+</para>
+<para>Another collection occurs between the 5th and 6th samples. This collection
+found very few survivors        and returned the tenuring threshold to 31. 
+</para>
+</example>
+<example>
+<title> Including a time stamp for each sample</title>
+<para>This example attaches to lvmid 21891 and takes 3 samples at 250 millisecond
+intervals. The <option>-t</option> option is used to generate a time stamp
+for each sample in the first column</para>
+<screen>jstat -gcoldcapacity -t 21891 250 3
+          Timestamp          OGCMN        OGCMX         OGC           OC       YGC   FGC    FGCT    GCT
+                    150.1       1408.0      60544.0      11696.0      11696.0   194    80    2.874   3.799
+                    150.4       1408.0      60544.0      13820.0      13820.0   194    81    2.938   3.863
+                    150.7       1408.0      60544.0      13820.0      13820.0   194    81    2.938   3.863
+</screen>
+<para>The Timestamp column reports the elapsed time in seconds since the start
+of the target JVM. In        addition, the <option>-gcoldcapacity</option>
+output shows the old generation capacity (OGC) and the old space capacity
+(OC) increasing as the heap expands to meet allocation and/or promotion demands.
+The old <?Pub Caret>generation capacity (OGC) has grown to from 11696 KB to
+13820 KB after the 81st Full GC (FGC). The maximum capacity of the generation
+(and space) is 60544 KB (OGCMX), so it still has room to expand. </para>
+</example>
+<example>
+<title>Monitor instrumentation for a remote JVM</title>
+<para>This example attaches to lvmid 40496 on the system named remote.domain
+using the <option>-gcutil</option> option, with samples taken every second
+indefinitely. </para>
+<screen>jstat -gcutil 40496@remote.domain 1000
+          ... output omitted</screen>
+</example>
+<para>The lvmid is combined with the name of the remote host to construct
+a vmid of        40496@remote.domain. This vmid results in the use of the
+rmi protocol to communicate to the default jstatd server on the remote host.
+The jstatd server is located using the rmiregistry on remote.domain that is
+bound to the default rmiregistry port (port 1099). </para>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>java</refentrytitle><manvolnum>1</manvolnum>
+</citerefentry>, <citerefentry><refentrytitle>jps</refentrytitle><manvolnum>
+1</manvolnum></citerefentry>, <citerefentry><refentrytitle>jstatd</refentrytitle>
+<manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>rmiregistry
+</refentrytitle><manvolnum>1</manvolnum></citerefentry> </para>
+</refsect1>
+</refentry>
+<?Pub *0000038908>

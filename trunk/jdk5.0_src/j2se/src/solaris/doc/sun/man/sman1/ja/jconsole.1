@@ -1,0 +1,55 @@
+<!--ArborText, Inc., 1988-2003, v.4002-->
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?APT Element gi="refentrytitle">
+<?APT Element gi="manvolnum">
+<?APT Element gi="refmiscinfo" attrs="class">
+<?APT Element gi="refmeta">
+<?APT Element gi="refname">
+<?APT Element gi="refpurpose">
+<?APT Element gi="refnamediv">
+<?APT Element gi="title">
+<?APT Element gi="command">
+<?APT Element gi="arg">
+<?APT Element gi="cmdsynopsis">
+<?APT Element gi="refsect1">
+<?APT Element gi="term">
+<?APT Element gi="option">
+<?APT Element gi="ulink" attrs="url">
+<?APT Element gi="para">
+<?APT Element gi="listitem">
+<?APT Element gi="varlistentry">
+<?APT Element gi="variablelist">
+<?APT Element gi="note">
+<?APT Element gi="replaceable">
+<?APT Element gi="refentry" attrs="id">
+<?Pub Inc>
+<refentry id="jconsole-1"> <!--@(#)jconsole.1	1.1 04/06/15--><refmeta><refentrytitle>
+jconsole</refentrytitle><manvolnum>1</manvolnum><refmiscinfo class="date">
+2004 年 6 月 22 日</refmiscinfo><refmiscinfo class="sectdesc">&man1;</refmiscinfo><refmiscinfo
+class="software">&java-release;</refmiscinfo><refmiscinfo class="arch">generic</refmiscinfo><refmiscinfo
+class="copyright"> Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+ Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.</refmiscinfo></refmeta><refnamediv><refname>
+jconsole</refname><refpurpose>J2SE 監視/管理コンソール</refpurpose></refnamediv><refsect1><title>
+名前</title><cmdsynopsis><command>jconsole</command><arg> [ options ]</arg><arg>
+[ pid | [ host:port ... ]]</arg></cmdsynopsis></refsect1><refsect1><title>
+パラメータ</title><variablelist><varlistentry><term>pid</term><listitem><para>
+同じマシン上で <option>Dcom.sun.management.jmxremote</option> オプションを付けて開始された Java
+VM のプロセス ID。詳細については、「<ulink url="http://java.sun.com/j2se/1.5.0/docs/guide/management/agent.html">
+ JMX 監視および管理</ulink>」を参照してください。</para></listitem></varlistentry><varlistentry><term>
+host:port </term><listitem><para>Java VM を実行しているホストの名前と、Java VM の JMX コネクタが公開されているポート番号。詳細については、「<ulink
+url="http://java.sun.com/j2se/1.5.0/docs/guide/management/agent.html"> JMX
+監視および管理</ulink>」を参照してください。</para></listitem></varlistentry></variablelist></refsect1><refsect1><title>
+機能説明</title><para><command>jconsole</command> コマンドは、ローカルまたはリモートマシン上の Java
+アプリケーションと仮想マシンを監視および管理するためのグラフィカルコンソールツールを起動します。</para><note><para>このツールは試験的なものであり、JDK
+の将来のバージョンでは使用できない可能性があります。</para></note></refsect1><refsect1><title>オプション</title><variablelist><varlistentry><term>
+-interval=<replaceable>n</replaceable></term><listitem><para>更新間隔を <replaceable>
+n</replaceable> 秒に設定します (デフォルトは 4 秒)。</para></listitem></varlistentry><varlistentry><term>
+-notile</term><listitem><para>初期状態でウィンドウを並べて表示しません (接続が 2 つ以上ある場合)。</para></listitem></varlistentry><varlistentry><term>
+-version</term><listitem><para>バージョン情報を出力して終了します。</para></listitem></varlistentry><varlistentry><term>
+-help  </term><listitem><para>ヘルプメッセージを出力して終了します。</para></listitem></varlistentry></variablelist></refsect1><refsect1><title>
+関連項目</title><para><ulink url="http://java.sun.com/j2se/1.5.0/docs/guide/management/index.html">
+ Java プラットフォームの監視と管理<?Pub Caret></ulink></para></refsect1></refentry>

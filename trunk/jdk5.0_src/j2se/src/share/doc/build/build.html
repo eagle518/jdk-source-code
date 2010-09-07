@@ -1,0 +1,226 @@
+<html><head>
+<!-- @(#)build.html	1.21 04/10/11 -->
+<title>Build Overview</title>
+</head>
+<body bgcolor="#ffffff">
+
+<!-- ====================================================== -->
+
+<TABLE BORDER="0" WIDTH="100%">
+<TR>
+  <TD WIDTH=40>
+    <IMG SRC="javalogo52x88.gif" ALT="Java" BORDER=0 WIDTH=52 HEIGHT=88>
+  </TD>
+
+  <TD ALIGN=CENTER>
+    <center><h1>
+    Build Overview
+    </h1>
+    <h2>
+    Java<sup><font size=-2>TM</font></sup> 2 Platform Standard Edition, v#VERSION# #MILESTONE#
+    <br>
+    </h2></center>
+  </TD>
+
+  <TD ALIGN=RIGHT VALIGN=TOP> 
+    <!-- The following &nbsp; line enables the title above to be centered -->
+    <FONT SIZE="-1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT> 
+  </TD>
+</TR>
+
+</TABLE>
+
+<HR SIZE=3 NOSHADE>
+
+<!-- ------------------------------------------------------ -->
+
+<h2>Contents</h2>
+
+<ul>
+  <li><a href=#directories>The Directory Structure</a>
+  <li><a href=#building>Building Java 2 Platform Standard Edition, v#VERSION# #MILESTONE# </a>
+  <ul type=disc>
+     <li><a href="build-solaris.html">Solaris</a>
+     <li><a href="build-linux.html">Linux</a>
+     <li><a href="build-windows-i586.html">Windows-i586</a>
+  </ul>
+  <li><a href=#testing>Testing the Build</a>
+  <li><a href=#troubleshooting>Troubleshooting Build Problems</a>
+</ul>
+
+<!-- ------------------------------------------------------ -->
+<a name=directories>
+<h2>The Directory Structure</h2></a>
+<blockquote>
+
+The source code for the Java 2 Platform Standard Edition, v#VERSION# #MILESTONE# is
+delivered in three sibling directories named
+<code>hotspot</code>, <code>j2se</code> and <code>control</code>.
+
+The <code>hotspot</code> directory contains the source code and make files for
+building the Java(tm) Hotspot Virutal Machine. 
+
+The <code>j2se</code> directory contains the source code and make files for
+building the JDK runtime libraries, tools and demos. 
+
+The <code>control</code> directory contains make files to build the entire
+JDK release including building the hotspot
+VM, staging the VM binaries, and building the JDK runtime libraries, tools and demos. 
+Building using the <code>control</code> workspace is the recommended manner of
+building the JDK.
+
+</blockquote>
+
+
+<!-- ------------------------------------------------------ -->
+
+
+<a name=building>
+<h2>Building Java 2 Platform Standard Edition, v#VERSION# #MILESTONE#</h2></a>
+<blockquote>
+
+For step-by-step instructions on building the JDK #VERSION#, 
+choose a platform:
+
+<ul>
+  <li><a href="build-solaris.html">Solaris</a>
+  <li><a href="build-linux.html">Linux</a>
+  <li><a href="build-windows-i586.html">Windows-i586</a>
+</ul>
+
+</blockquote>
+
+<!-- ------------------------------------------------------ -->
+
+<a name=testing>
+<h2>Testing the Build</h2></a>
+<blockquote>
+When the build is completed, you should see the generated binaries 
+and associated files in the
+<tt>control/build/&lt;platform&gt;/j2sdk-image</tt> directory 
+of your source installation. In particular, 
+the <tt>control/build/&lt;platform&gt;/j2sdk-image/bin</tt> directory 
+should contain executables for the JDK tools and utilities. 
+If you set ALT_OUTPUTDIR variable during your build then you should cd to 
+$(ALT_OUTPUTDIR) to find the JDK tools and utilities.
+<p>
+You can test that the build completed properly by using the 
+build to run the various demos that you will find in the 
+<tt>control/build/&lt;platform&gt;/j2sdk-image/demo</tt> directory.
+For example to run the Java 2D<sup><font size=-2>TM</font></sup> 
+technology demo, change directories to 
+<tt>control/build/&lt;platform&gt;/j2sdk-image/demo/jfc/Java2D</tt>
+and launch the demo with this command:
+<blockquote><pre>
+../../../bin/java -jar Java2Demo.jar
+</pre></blockquote>
+</blockquote>
+
+<!-- ------------------------------------------------------ -->
+
+<a name=troubleshooting>
+<h3>Troubleshooting Build Problems</h3></a>
+<blockquote>
+A build can fail for any number of reasons.  Most failures 
+are a result of trying to build in an environment in which all 
+the pre-build requirements have not been met. The first step 
+in troubleshooting a build failure is to recheck that you 
+have satisfied all the pre-build requirements for your platform.
+<p>
+You can validate your build environment by building the <tt>sanity</tt>
+target from the <tt>control/make</tt> directory. Any errors listed
+will stop the build from starting, and any warnings may result in
+a flawed product build.We strongly encourage you to evaluate every
+sanity check warning and fix it if required, before you proceed
+further with your build.
+
+<p>
+Some of the more common problems with builds are briefly descibed 
+below, with suggestions for remedies.
+<ul>
+<li><i>Can't find the ODBC library</i> -- Use the <tt>ALT_ODBCDIR</tt> 
+environment variable to point to the location of the 
+appropriate ODBC library (ISLIodbc 2.11). 
+<p>
+<li>If your build machine seems to be overloaded from too many 
+simultaneous C++ compiles, try setting the <tt>HOTSPOT_BUILD_JOBS</tt> 
+environment variable to <tt>1</tt> (or, if you're using a 
+multiple CPU machine, set it to the largest integer that is less than 
+or equal to 1.5 times the number of CPUs).
+<p>
+<li><i>Error message:</i><tt> Your Microsoft Visual C++ compiler predates the 6.0 release</tt> --
+    (Windows only) To do a build on a Windows system, you must use 
+    version 6.0 of Microsoft Visual C++ with Visual C++ Service Pack 3
+    (<em>not</em> Service Pack 4). If you have version 6 on 
+    your path and you still get this error, if may be due to your 
+    tools having been mounted via the Solstice NFS client rather 
+    than by a local installation.  Install the tools locally, update 
+    your path, and the problem should go away.
+<p>
+<li><i>Warning message:</i><tt> File `xxx' has modification time 
+in the future.</tt><br><i>Warning message:</i> 
+<tt> Clock skew detected.  
+Your build may be incomplete.</tt>
+<br>
+These warnings can occur 
+when the clock on the build machine is out of sync with the timestamps 
+on the source files.  Other errors, apparently unrelated but in 
+fact caused by the clock skew, can occur along with the clock 
+skew warnings. These secondary errors may tend to obscure the fact 
+that the true root cause of the problem is an out-of-sync clock. 
+For example, an out-of-sync clock has been known to cause an old 
+version of javac to be used to compile some files, resulting in 
+errors when the pre-1.4 compiler ran across the new <tt>assert</tt> 
+keyword in the 1.4 source code.
+<p>
+If you see these warnings, reset the clock 
+on the build machine, run "<tt>gnumake clobber</tt>" or delete the 
+directory containing the build output, and restart the build from the 
+beginning.
+<p>
+<li><i>Warning message:</i><tt> as of release 1.4, assert is a keyword </tt> --
+See note on clock skew above.
+<p>
+<li><i>Error message:</i><tt>
+ internal: Space Manager: Trouble writing out table to disk </tt><br>
+<i>Error message:</i><tt> make[3]: *** [ad_i486.o] Error 154 </tt><br>
+(Solaris only)
+Increase the amount of swap space on your build machine.
+</ul>
+</blockquote>
+
+<!-- ====================================================== -->
+
+<HR SIZE=3 NOSHADE>
+<FONT SIZE=-2>
+Copyright  2004 Sun Microsystems, Inc., 4150 Network Circle, Santa Clara, 
+California 95054, U.S.A. All rights reserved.
+</FONT>
+
+<P ALIGN=RIGHT>
+   <IMG SRC="sunlogo64x30.gif" ALT="Sun" BORDER=0 WIDTH=64 HEIGHT=30>
+</P>
+
+
+
+<pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+
+</BODY>
+</HTML>
+

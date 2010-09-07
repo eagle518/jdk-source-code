@@ -1,0 +1,109 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1999, v.4002-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub Inc>
+<refentry id="apt-1">
+<!--@(#)apt.1	1.1 04/06/15-->
+<refmeta><refentrytitle>unpack200</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">22 Jun 2004</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All
+rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.
+</refmiscinfo>
+</refmeta>
+<refnamediv><refname>apt</refname><refpurpose>annotation processing tool</refpurpose>
+</refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>apt</command><arg choice="opt">-classpath <replaceable>
+classpath</replaceable></arg><arg>-sourcepath <replaceable>sourcepath</replaceable></arg>
+<arg>-d <replaceable>directory</replaceable></arg><arg>-s <replaceable>directory
+</replaceable></arg><arg>-factorypath <replaceable>path</replaceable></arg>
+<arg>-factory <replaceable>class</replaceable></arg><arg>-print</arg><arg>
+-nocompile</arg><arg>-A<replaceable>key</replaceable>[=<replaceable>val</replaceable>] ...]
+</arg><arg><replaceable>[javac option]</replaceable></arg><arg><replaceable>
+sourcefiles</replaceable></arg><arg><replaceable>[@files]</replaceable></arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&parm-tt;</title>
+<para>Options may be in any order. For a discussion of parameters which apply
+to a specific option, see OPTIONS below.</para>
+<variablelist termlength="narrow">
+<varlistentry><term><replaceable>sourcefiles</replaceable> </term><listitem>
+<para>Zero or more source files to be processed. </para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>@files</replaceable> </term><listitem><para>
+One or more files that list source files or other options </para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="java-1-indx-1"><primary sortas="Java interpreter">Java interpreter &mdash;
+java</primary></indexterm><indexterm id="java-1-indx-2"><primary sortas="java">
+java &mdash; Java interpreter</primary></indexterm><para>The tool apt, annotation
+processing tool, includes a set of new reflective APIs and supporting infrastructure
+to process program annotations. The apt reflective APIs provide a build-time,
+source-based, read-only view of program structure. These reflective APIs are
+designed to cleanly model the Java<superscript>TM</superscript> programming
+language's type system after the addition of generics. First, apt runs annotation
+processors that can produce new source code and other files. Next, apt can
+cause compilation of both original and generated source files, easing development.
+The reflective APIs and other APIs used to interact with the tool are subpackages
+of <literal>com.sun.mirror</literal>. </para>
+<para>A fuller discussion of how the tool operates as well as instructions
+for developing with apt are in <ulink url="http://java.sun.com/j2se/1.5.0/docs/guide/apt/GettingStarted.html">
+Getting Started with apt</ulink> .</para>
+</refsect1>
+<refsect1><title>&opts-tt;</title>
+<para>apt specific options</para>
+<variablelist>
+<varlistentry><term>&mdash;s <replaceable>dir</replaceable></term><listitem>
+<para>Specify the directory root under which processor-generated source files
+will be placed; files are placed in subdirectories based on package namespace. 
+</para>
+</listitem></varlistentry>
+<varlistentry><term>-nocompile</term><listitem><para> Do not compile source
+files to class files. </para>
+</listitem></varlistentry>
+<varlistentry><term>-print</term><listitem><para>Print out textual representation
+of specified types; perform no annotation processing or compilation. </para>
+</listitem></varlistentry>
+<varlistentry><term>-A[<replaceable>key</replaceable>[=<replaceable>val</replaceable>]] 
+</term><listitem><para>Options to pass to annotation processors -- these are
+not interpreted by apt directly, but are made       available for use by individual
+processors </para>
+</listitem></varlistentry>
+<varlistentry><term>-factorypath <replaceable>path</replaceable> </term><listitem>
+<para>Specify where to find annotation processor factories; if this option
+is used, the classpath is not searched       for factories. </para>
+</listitem></varlistentry>
+<varlistentry><term>-factory <replaceable>classname </replaceable></term>
+<listitem><para>Name of annotation processor factory to use; bypasses default
+discovery process </para>
+</listitem></varlistentry>
+</variablelist><para>Options shared with javac</para>
+<variablelist>
+<varlistentry><term>-d <replaceable>dir </replaceable></term><listitem><para>
+Specify where to place processor and javac generated class files </para>
+</listitem></varlistentry>
+<varlistentry><term>-cp <replaceable>path</replaceable> or -classpath <replaceable>
+path</replaceable> </term><listitem><para>Specify where to find user class
+files and annotation processor factories. If <option>-factorypath</option>
+is given, the classpath is not searched for factories. </para>
+</listitem></varlistentry>
+</variablelist><para>Consult the javac(1) man page for information on javac
+options. </para>
+</refsect1>
+<refsect1><title>NOTES</title>
+<para>The apt tool and its associated APIs may be changed or superseded in
+future j2se releases. </para>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>java</refentrytitle><manvolnum>1</manvolnum>
+</citerefentry>,<citerefentry><refentrytitle>javac</refentrytitle><manvolnum>
+1</manvolnum></citerefentry></para><?Pub Caret1>
+</refsect1>
+</refentry>
+<?Pub *0000005886>

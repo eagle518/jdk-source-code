@@ -1,0 +1,807 @@
+'\" t
+.\" @(#)javac.1 1.9 00/06/13 SMI;
+.\" Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+.\" Copyright 2004 Sun Microsystems, Inc. Tous droits r駸erv駸.
+.\" 
+'\"macro stdmacro
+.TH javac 1 "2004 年 6 月 22 日"
+.SH "名前"
+javac \- Java コンパイラ
+.SH "形式"
+.B javac 
+[ 
+.BI options
+]
+[
+.BI sourcefiles
+]
+[
+.BI @argfiles
+]
+.SH パラメータ
+引数は任意の順番で指定できます。
+.TP 15
+.I options
+コマンド行オプション
+.TP 15
+.I sourcefiles
+コンパイルされる 1 つ以上のソースファイル (\f3MyClass.java\f1 など) 
+.TP 15
+\f3@\f1\f2argfiles\f1
+ソースファイルを一覧表示する 1 つ以上のファイル
+これらのファイルでは、
+.B \-J 
+オプションは許可されていません。
+.SH "機能説明"
+.B javac
+ツールは、Java プログラミング言語で記述されたクラスとインタフェース
+の定義を読み取り、バイトコードクラスファイルにコンパイルします。 
+.LP
+ソースコードのファイル名を 
+.BR javac
+に渡すには、次の 2 つの方法があります。 
+.TP 2
+\(bu
+ソースファイルの数が少ない場合は、ファイル名をコマンド行で
+直接指定します。 
+.TP 2
+\(bu
+ソースファイルの数が多い場合は、ファイル名を空白または行ブレークで
+区切ってファイルに記述します。次に、このリストファイル名の先頭に @ を
+付けて
+.B javac
+のコマンド行で指定します。 
+.LP
+ソースコードのファイル名は 
+.B .java 
+拡張子、クラスのファイル名は .class 拡張子を持たなければなりません。
+また、ソースファイルとクラスファイルのどちらも、該当するクラスに対応した
+ルート名を持たなければなりません。たとえば、
+.B MyClass
+という名前の
+クラスは、
+.B MyClass.java 
+という名前のソースファイルに記述します。このソースファイルは、
+.BR MyClass.class
+という名前のバイトコードクラスファイルにコンパイルされます。 
+.LP
+内部クラス定義は、追加のクラスファイルを生成します。これらのクラスファ
+イルの名前は、
+.BR MyClass$MyInnerClass.class
+のように、内部クラス名と外部クラス名を組み合わせたものになります。 
+.LP
+ソースファイルは、パッケージツリーを反映したディレクトリツリーに配置
+する必要があります。たとえば、すべてのソースファイルを
+.BR /workspace
+に置いている場合、
+.B com.mysoft.mypack.MyClass
+のソースコードは 
+.BR /workspace/com/mysoft/mypack/MyClass.java
+にある必要があります。 
+.LP
+デフォルトでは、コンパイラは各クラスファイルを対応するソースファイルと
+同じディレクトリに置きます。
+.B -d
+(後述の「オプション」を参照) を使うと、ソースファイルのある場所とは異
+なる出力先ディレクトリを指定できます。 
+.LP
+.SS "型の検索"
+.IX "javac" "Searching for Types" "\fLjavac\fP \(em Java compiler"
+.LP
+ソースファイルをコンパイルするとき、コンパイラは
+その定義がコマンド行で指定されたソースファイル中に現れなかった
+型についての情報を必要とします。コンパイラには、ソース
+ファイルで使われているクラスまたはインタフェース、拡張されているクラス
+またはインタフェース、あるいは実装されているクラスまたはインタフェース
+それぞれの型情報が必要です。これには、ソースファイルで明示的には
+言及されていなくても、継承を通じて情報を提供するクラスとインタフェース
+も含まれます。 
+.LP
+たとえば、java.applet.Applet をサブクラス化する場合は、Applet の上位クラスである 
+.BR java.awt.Panel、
+.BR java.awt.Container、
+.BR java.awt.Component
+、および
+.BR java.awt.Object
+も使っていることになります。 
+.LP
+コンパイラは、型情報が必要になると、該当する型を定義しているソース
+ファイルまたはクラスファイルを探します。コンパイラは、まず、ブートス
+トラップクラスと拡張機能クラスを検索し、次にユーザクラスパス
+(デフォルトでは現在のディレクトリ) を検索します。
+ユーザクラスパスは、
+.SB CLASSPATH
+環境変数を設定するか、あるいは
+.B -classpath
+コマンド行オプションを使って設定します (詳細は、「
+.BR "クラスパスの設定"
+」
+を参照)。
+.LP
+.B -sourcepath 
+オプションが指定されている場合、コンパイラは、指定されたパスでソース
+ファイルを検索します。それ以外の場合は、ユーザクラスパスでクラス
+ファイルとソースファイルの両方を検索します。
+.B -bootclasspath
+オプションと
+.B -extdirs
+オプションを使うと、別のブートストラップクラスや拡張機能クラスを指定
+できます。後述の「
+.BR "クロスコンパイルオプション"
+」を参照してください。 
+.LP
+型の検索に成功したときに得られる結果は、クラスファイル、ソースファイル、またはその両方である場合があります。それぞれの場合に
+.B javac
+がどのように処理を行うかを次に示します。 
+.TP 2
+\(bu 
+検索で見つかったものがソースファイルではなく、クラスファイルである
+場合、
+.B javac 
+はクラスファイルを使用します。 
+.TP 2
+\(bu
+検索で見つかったものがクラスファイルではなく、ソースファイルである
+場合、
+.B javac
+は、該当するソースファイルをコンパイルし、その結果作成されるクラスファイルを使用します。 
+.TP 2
+\(bu
+検索で見つかったものがソースファイルとクラスファイルの両方である
+場合、
+.B javac
+は、クラスファイルが古くなっているかどうかを調べます。クラスファイルが
+古くなっている場合は、ソースファイルを再コンパイルし、更新後の
+クラスファイルを使用します。それ以外の場合は、見つかったクラスファイ
+ルを使用します。 
+.RS 2
+.LP
+デフォルトでは、クラスファイルがソースファイルより古い場合にのみ、
+.B javac
+はクラスファイルが古くなっていると判断します。
+.RE
+.LP
+.B javac 
+は、コマンド行に指定されていないソースファイルをコンパイルするときで
+も、そのことを示すメッセージを表示しません。自動コンパイルをトレースす
+るには、
+.B -verbose
+オプションを使ってください。 
+.LP
+.SH "オプション"
+コンパイラには、現在の開発環境でサポートされ、将来のリリースでも
+サポートされる標準オプションのセットがあります。非標準オプションの
+補足的なセットは、現在の Virtual Machine の実装特有のもので、将来
+変更される可能性があります。非標準オプションは、
+.BR \-X 
+で始まります。 
+.SS "標準オプション"
+.IX "javac" "Standard Options" "\fLjavac\fP \(em Java compiler"
+.TP
+.BI \-classpath " classpath"
+ユーザクラスパスを設定し、
+.SB CLASSPATH
+環境変数のユーザクラスパスを上書きします。
+.SB CLASSPATH 
+と 
+.B \-classpath 
+のどちらも指定されていない場合、ユーザクラスパスは現在のディレクトリになります。詳細は、「
+.B クラスパスの設定
+」を参照してください。 
+.RS
+.LP
+.B \-sourcepath 
+オプションが指定されていない場合、クラスファイルとソースファイルの
+両方がユーザクラスパスで検索されます。 
+.RE
+.TP
+.BI \-Djava.ext.dirs=directories
+インストールされた拡張機能の場所をオーバーライドします。
+.TP
+.BI \-Djava.endorsed.dirs=directories
+承認された標準パスの場所をオーバーライドします。
+.TP
+.BI -d " directory"
+クラスファイルの出力先ディレクトリを設定します。
+出力先ディレクトリはすでに存在している必要があります。javac は出力先ディレクトリを作成しません。
+クラスがパッケージの
+一部である場合、
+.B javac
+は、必要に応じてディレクトリを作成し、パッケージ名を反映したサブディ
+レクトリにクラスファイルを置きます。たとえば、
+.B -d /home/myclasses
+と指定し、クラスの名前が 
+.BR com.mypackage.MyClass
+である場合、クラスファイルは 
+.BR /home/myclasses/com/mypackage/MyClass.class
+になります。 
+.RS
+.LP
+.B -d
+が指定されていない場合、
+.B javac
+はソースファイルと同じディレクトリにクラスファイルを置きます。 
+.LP
+.B -d
+で指定されたディレクトリがユーザクラスパスに自動的に追加されるわけ
+ではないことに注意してください。 
+.RE
+.TP
+.B -deprecation
+推奨されないメンバやクラスが、使用あるいはオーバーライドされるたびに説明を表示します。
+.BR -deprecation
+が指定されていない場合、
+.B javac
+は、推奨されないメンバやクラスを使用あるいはオーバーライドしているソースファイルの名前を表示します。 
+.BR -deprecation
+は
+.BR \-Xlint:deprecation の短縮形です。
+.TP
+.BI \-encoding " encoding"
+ソースファイルのエンコーディング名 (EUCJIS/SJIS/ISO8859-1/UTF8 など) を指定します。
+.B -encoding
+が指定されていない場合は、プラットフォームのデフォルトコンバータが
+使われます。 
+.TP
+.B -g
+局所変数を含むすべてのデバッグ情報を生成します。デフォルトでは、
+行番号およびソースファイル情報だけが生成されます。 
+.TP
+.B -g:none
+デバッグ情報を生成しません。 
+.TP
+.BI -g: keyword-list
+カンマで区切られたキーワードリストにより指定された、特定の種類の
+デバッグ情報だけを生成します。次のキーワードが有効です。 
+.RS
+.TP
+.B source
+ソースファイルのデバッグ情報 
+.TP
+.B lines
+行番号のデバッグ情報 
+.TP
+.B vars
+局所変数のデバッグ情報 
+.RE
+.TP 
+.B \-help
+標準オプションの形式を表示します。
+.TP
+.B -nowarn
+警告メッセージを無効にします。これは、
+.BR \-Xlint:none 
+と同じ意味です。
+.TP
+.BI \-source " release"
+宣言を含むソースコードのコンパイルのサポートを有効にします。
+次の値を
+.I release
+で指定することができます。
+.if t .TP 20
+.if n .TP 15
+1.5
+コンパイラは、JDK 1.5 から導入された総称型 
+および他の言語機能を含むコードを受け入れます。 
+.B \-source 
+フラグが使用されない場合、
+1.5 の動作がコンパイラの
+デフォルトに設定されます。
+.if t .TP 20
+.if n .TP 15
+5
+1.5 と同義。
+.if t .TP 20
+.if n .TP 15
+1.4 
+コンパイラは、JDK 1.4 で導入された宣言を含む
+コードを受け入れます。
+.if t .TP 20
+.if n .TP 15
+1.3
+コンパイラは、JDK 1.3 より後に導入された、宣言、総称型 
+およびその他の言語機能をサポートしません。
+.RE
+.TP
+.BI -sourcepath " sourcepath"
+クラスまたはインタフェースの定義を検索するソースコードパスを指定
+します。ユーザクラスパス同様、ソースパスの複数のエントリはコロン (:) 
+で区切ります。ソースパスのエントリには、ディレクトリ、JAR アーカイブ、
+または ZIP アーカイブを指定できます。パッケージを使っている場合は、
+ディレクトリまたはアーカイブ内のローカルパス名がパッケージ名を反映
+していなければなりません。 
+.RS
+.LP
+注: ソースが見つかった場合、クラスパスで見つかったクラスは、自動再
+コンパイルの対象になります。 
+.TP
+.B -verbose
+冗長出力を指定します。ロードされるクラスおよびコンパイルされる
+ソースファイルごとに情報を出力します。 
+.TP
+.B \-X
+非標準オプションについての情報を表示し、終了します。
+.SS "クロスコンパイルオプション"
+.IX "javac" "Cross-Compilation Options" "\fLjavac\fP \(em Java compiler"
+.LP
+デフォルトでは、クラスのコンパイルは、
+.B javac
+が添付されている JDK のブートストラップクラスおよび拡張機能クラスに対
+して行われます。しかし、
+.B javac
+は、異なる Java プラットフォームの実装のブートストラップクラスおよび拡張
+機能クラスに対してコンパイルを行う「
+.B クロスコンパイル
+」もサポートしていま
+す。クロスコンパイルを行う場合は、
+.B -bootclasspath 
+および 
+.B -extdirs
+を使うことが重要です。以下の「クロスコンパイルの例」を参照してください。 
+.TP
+.BI -target " version"
+指定されたバージョンの VM 上で動作するクラスファイルを生成します。
+デフォルトでは、1.2 VM と互換性のあるクラスファイル
+を生成します。1 つだけ例外があり、
+.BR -source " 1.4"
+オプションを使用すると、デフォルトのターゲットは 1.4 になります。
+javac でサポートされているバージョンは以下のとおりです。
+.RS
+.TP
+1.1
+生成するクラスファイルが、1.1 VM 以降に互換性があることを
+保証します。
+.TP
+1.2
+1.2 VM 以降では動作するが、1.1 VM 上では動作しないクラスファイル
+を生成します。
+.TP
+1.3
+Java 2 SDK, バージョン 1.3 およびそれ以降の VM では
+動作するが、1.1 VM または 1.2 VM 上では動作しないクラスファイルを
+生成します。
+.TP
+1.4
+JDK 1.4 以降の VM 上で動作するクラスファイルを
+生成します。ただし、1.1、1.2、または 1.3 VM 上では
+動作しません。
+.TP
+1.5
+JDK 1.5 VM 上のみでコンパイル可能なクラスファイルを生成します。
+.TP
+5
+1.5 と同じです。
+.RE
+.TP
+.BI \-bootclasspath " bootclasspath"
+指定された一連のブートクラスをクロスコンパイルします。
+ユーザクラスパスと同様に、ブートクラスパスエントリは
+コロン
+.RB ( : )
+で区切られます。また、ディレクトリ、
+JAR 
+アーカイブまたは
+ZIP 
+アーカイブにすることができます。
+.TP
+.BI \-cldc1.0
+CLDC プログラムをコンパイルします。このコンパイラはスタックマップを
+生成し、プリベリファイヤの使用を不要にします。
+.TP
+.BI \-extdirs " directories"
+指定された拡張ディレクトリをクロスコンパイルします。
+ディレクトリは、コロンで区切られたディレクトリのリストです。
+指定されたディレクトリの各
+JAR 
+アーカイブは、クラスファイルを検索します。
+.RE
+.SS 非標準オプション
+.IX "javac" "Non-Standard Options" "\fLjavac\fP \(em Java compiler"
+.TP
+.B \-Xbootclasspath/p:path
+ブートストラップクラスパスの前に付加します。
+.TP
+.B \-Xbootclasspath/a:path
+ブートストラップクラスパスの後に追加します。
+.TP
+.B \-Xbootclasspath/:path
+ブートストラップクラスパスの場所をオーバーライドします。
+.TP
+.B \-Xlint
+すべての推奨された警告を有効にします。このリリースでは、
+すべての使用可能な警告が推奨されています。
+.TP
+.B \-Xlint:none
+Java 言語仕様によって義務付けられていない、すべての警告を無効にします。
+.TP
+.B \-Xlint:-xxx
+警告 xxx を無効にします。ここで xxx は、下記に示す
+\-Xlint:xxx でサポートされる警告の名前です。
+.TP
+.B \-Xlint:unchecked 
+Java 言語仕様で義務付けられているチェックが行われていない、
+変換警告についての詳細を表示します。
+.TP
+.B \-Xlint:path 
+存在しないパス (クラスパス、ソースパスなど) ディレクトリについて警告します。
+.TP
+.B \-Xlint:serial
+直列化可能クラスの失われた serialVersionUID 定義について警告します。
+.TP
+.B \-Xlint:finally
+正常に完了できない finally 句について警告します。
+.TP
+.B \-lint:fallthrough 
+fall-through 文のスイッチブロックを検査し
+検出されたすべての警告メッセージを表示します。
+Fall-through case はスイッチブロック内の case で、
+ブロックの最後の case を除く、break 文を含まない
+コードを持つ case は、その case から次の case へ 
+"fall through" のコード実行を行うことを可能にします。
+たとえば、このスイッチブロックの case 1 レベルに続く
+コードは、break 文を含みません。
+.LP
+.RS
+.ft 3
+.nf
+switch (x) {
+case 1:
+	   System.out.println("1");
+		//  No  break;  statement here.
+case 2:
+	   System.out.println("2");
+}
+.fi
+.ft 1
+.RE
+.LP
+このコードをコンパイルするときに 
+.B \-Xlint:fallthrough 
+フラグが使用されると、コンパイラは "possible fall-through 
+into case" についての警告を、問題になっている case
+の番号とともに表示します。
+.TP
+.B \-Xmaxerrors " number"
+表示するエラーの最大数を設定します。
+.TP
+.B \-Xmaxwarns " number"
+表示する警告の最大数を設定します。
+.B \-Xstdout " filename" 
+指定されたファイルのコンパイラメッセージを送信します。
+デフォルトでは、コンパイラメッセージは
+次のファイルに出力されます。
+.BR System.err
+.SH \-J オプション
+.TP
+.BI \-J option
+javac によって呼び出された Java 起動ツールにオプションを渡します。
+たとえば、
+.B \-J-Xms48m 
+は起動メモリを
+48M バイトに設定します。これは 
+.B \-X 
+で始まってはいませんが、
+.B javac 
+の `標準オプション` ではありません。
+.B \-J 
+の変換では、オプションを Java で記述された
+アプリケーションを実行する背後の VM に渡すことは
+一般的に行われています。
+.LP
+注: 
+.B CLASSPATH
+、
+.B \-classpath
+、
+.B \-bootclasspath
+、
+および 
+.B \-extdirs 
+は 
+.B javac 
+の実行に使用する
+クラスを指定しません。このような、コンパイラの
+不必要な実装は、通常、無意味であるだけでなく、
+常に危険が伴います。クラスを指定する必要がある
+場合は、
+.B \-J 
+オプションを使用して、オプションを
+基本となる Java 起動ツールに渡します。
+.SH コマンド行引数ファイル
+javac コマンド行を短縮、あるいは簡潔にするため、
+.BR javac
+コマンドに対する引数を含むファイルを 1 つ以上指定できます。
+これにより、任意のオペレーティングシステム上で任意の長さの
+javac コマンドを作成できます。
+.LP
+引数ファイルには、javac オプションとソースファイル名を
+任意の組み合わせで入れることができます。ファイル中の引数は、
+空白文字または改行で区切ります。
+引数ファイル中のファイル名は、引数ファイルの位置ではなく、
+現在のディレクトリとの相対位置で表します。
+引数のリストに、ワイルドカード (*) 
+は使用できません ( 
+.BR *.java 
+のような指定)。
+ファイルを再帰的に解釈する
+.BR @ 
+文字の使用はサポートされていません。
+.LP
+javac を実行すると、各引数ファイルのパスおよび名前に「
+.BR @
+」で始まる文字列が渡されます。javac が「
+.BR @
+」文字で始まる引数を検出すると、そのファイルの内容が属性リストに
+展開されます。
+.SS "例" - "引数ファイルを 1 つ使用"
+すべての javac 引数を持つ
+.BR argfile 
+という名前の引数ファイルを 1 つ使用します。
+.LP
+.RS
+.ft 3
+.nf
+  example% javac @argfile
+.fi
+.ft 1
+.RE
+.LP
+この引数ファイルには、次の例で示す両方のファイルの内容を入れることができます。
+.SS "例" - "引数ファイルを 2 つ使用"
+2 つの引数ファイルを作成できます。1 つは javac オプション用、もう 1 つは
+ソースファイル用です (次のリストには、行をつなぐ文字列が使用されて
+いないことに注意してください)。
+.LP
+以下のものを含む
+.BR options 
+という名前のファイルを作成します。
+.LP
+.RS
+.ft 3
+.nf
+\-d classes
+\-g
+\-sourcepath \\java\\pubs\\ws\\1.3\\src\\share\\classes
+.fi
+.ft 1
+.RE
+.TP
+以下のものを含む
+.BR classes
+という名前のファイルを作成します。
+.LP
+.RS
+.ft 3
+.nf
+MyClass1.java
+MyClass2.java
+MyClass3.java
+.fi
+.ft 1
+.RE
+.TP
+次のコマンドで、javac を実行します。
+.LP
+.RS
+.ft 3
+.nf
+% javac @options @classes
+.fi
+.ft 1
+.RE
+.SS "例" - "パスを指定した引数ファイル"
+引数ファイルにはパスを指定できますが、引数ファイル内の
+ファイル名はすべて、現在の作業用ディレクトリ (
+.BR path1
+でも
+.BR path2
+でもなく) との相対位置で表します。
+.LP
+.RS
+.ft 3
+.nf
+% javac @path1/options @path2/classes
+.fi
+.ft 1
+.RE
+.SH "使用例"
+.SS "簡単なプログラムのコンパイル"
+.IX "javac" "Compiling a Simple Program" "\fLjavac\fP \(em Java compiler"
+.LP
+次に示すソースファイル 
+.BR Hello.java
+では、
+.BR greetings.Hello
+という名前のクラスを定義しています。greetings ディレクトリは、ソース
+ファイルとクラスファイルの両方のパッケージディレクトリで、現在のディレ
+クトリのすぐ下にあります。このため、この例ではデフォルトユーザクラスパ
+スを使用できます。また、
+.BR -d 
+を使って別の出力先ディレクトリを指定する必要もありません。 
+.LP
+.ft 3
+.nf
+   % ls
+      greetings/
+   % ls greetings
+      Hello.java
+   % cat greetings/Hello.java
+      package greetings;
+   
+      public class Hello {
+           public static void main(String[] args) {
+              for (int i=0; i < args.length; i++) {
+                  System.out.println("Hello " + args[i]);
+              }
+           }
+      }
+   % javac greetings/Hello.java
+   % ls greetings
+      Hello.class   Hello.java
+   % java greetings.Hello World Universe Everyone
+      Hello World
+      Hello Universe
+      Hello Everyone
+.fi
+.ft 1
+.SS "複数のソースファイルのコンパイル"
+.IX "javac" "Compiling Multiple Source Files" "\fLjavac\fP \(em Java compiler"
+.LP
+次の例は、パッケージ greetings 内のすべてのソースファイルを
+コンパイルします。 
+.LP
+.ft 3
+.nf
+   % ls
+      greetings/
+   % ls greetings
+      Aloha.java     GutenTag.java     Hello.java      Hi.java
+   % javac greetings/*.java
+   % ls greetings
+      Aloha.class    GutenTag.class    Hello.class     Hi.class
+      Aloha.java     GutenTag.java     Hello.java      Hi.java
+.fi
+.ft 1
+.LP
+.SS "ユーザクラスパスの指定"
+.IX "javac" "Specifying a User Class Path" "\fLjavac\fP \(em Java compiler"
+.LP
+上の例のソースファイルのうち、1 つを変更し、変更後のファイルを
+再コンパイルします。 
+.LP
+.ft 3
+.nf
+   % pwd
+      /examples
+   % javac greetings/Hi.java
+.fi
+.ft 1
+.LP
+.B greetings.Hi
+は、greetings パッケージ内のほかのクラスを参照している
+ため、コンパイラはこれらのほかのクラスを探す必要があります。上の例で
+は、デフォルトユーザクラスパスが、パッケージディレクトリを含むディレクト
+リと同じなので、コンパイルは適切に行われます。ただし、現在どのディレ
+クトリにいるかに関係なくファイルをコンパイルしたい場合は、ユーザクラス
+パスに 
+.B /examples
+を追加する必要があります。ユーザクラスパスにエントリを追加するには 
+.B CLASSPATH 
+を設定する方法もありますが、ここでは 
+.B -classpath
+オプションを使います。 
+.LP
+.ft 3
+.nf
+   % javac \-classpath \\examples /examples/greetings/Hi.java
+.fi
+.ft 1
+.LP
+再度 
+.B greetings.Hi
+を変更し、バナーユーティリティを使うようにした場合
+は、このバナーユーティリティもユーザクラスパスを通じてアクセスできる
+ようになっている必要があります。 
+.LP
+.ft 3
+.nf
+   % javac \-classpath /examples:/lib/Banners.jar \\
+                     /examples/greetings/Hi.java
+.fi
+.ft 1
+.LP
+greetings 内のクラスを実行するには、greetings と、greetings が使う
+クラスの両方にアクセスできる必要があります。 
+.LP
+.ft 3
+.nf
+   % java \-classpath /examples:/lib/Banners.jar greetings.Hi
+.fi
+.ft 1
+.LP
+.SS "ソースファイルとクラスファイルの分離"
+.IX "javac" "Separating Source Files and Class Files" "\fLjavac\fP \(em Java compiler"
+.LP
+特に大規模プロジェクトの場合は、ソースファイルとクラスファイルを別の
+ディレクトリに置くと便利なことがあります。クラスファイル出力先を別個に
+指定するには、
+.B -d 
+を使います。ソースファイルがユーザクラスパスにはないので、
+.B -sourcepath 
+を使って、コンパイラがソースファイルを見つけることができるようにし
+ます。 
+.LP
+.ft 3
+.nf
+   % ls
+      classes/  lib/      src/
+   % ls src
+      farewells/
+   % ls src/farewells
+      Base.java      GoodBye.java
+   % ls lib
+      Banners.jar
+   % ls classes
+   % javac \-sourcepath src \-classpath classes:lib/Banners.jar \\
+      src/farewells/GoodBye.java \-d classes
+   % ls classes
+      farewells/
+   % ls classes/farewells
+      Base.class      GoodBye.class
+.fi
+.ft 1
+.LP
+注: コマンド行では src/farewells/Base.java を指定していませんが、この
+ファイルもコンパイラによってコンパイルされます。
+自動コンパイルをトレースするには、
+.B -verbose オプションを使ってください。 
+.LP
+.SS "クロスコンパイルの例"
+.IX "javac" "Cross-Compilation Example" "\fLjavac\fP \(em Java compiler"
+.LP
+ここでは、
+.B javac
+を使って 1.4 VM 上で実行するコードをコンパイルします。 
+.LP
+.ft 3
+.nf
+   % javac \-target 1.4 \-bootclasspath jdk1.4.2/lib/classes.zip \\
+        -extdirs "" OldCode.java
+.fi
+.ft 1
+.LP
+.B \-target 1.4 
+オプションにより、生成されるクラスファイルが 1.4 VM に互換性がある
+ことが保証されます。デフォルトでは、
+.B javac
+は 1.5 への互換性を維持してコンパイルを行います。
+.LP
+JDK の 
+.B javac 
+は、デフォルトでは、ブートストラップクラスに対してコンパイルを行う
+ので、JDK 1.4 のブートストラップクラスに対してコンパイ
+ルを行うように指定する必要があります。これは、
+.B -bootclasspath
+および
+.BR -extdirs
+を使って行います。この指定を行わないと、1.4 VM には存在しない Java 2 プラットフォーム 
+API に対応したコンパイルが行われるため、実行中に障害が発生する可
+能性があります。 
+.br
+.ne 11
+.sp
+.SH "関連項目"
+.BR jar (1),
+.BR java (1),
+.BR javadoc (1),
+.BR javah (1),
+.BR javap (1),
+.BR jdb (1)
+.LP
+次については、Java の Web サイトを参照または検索してください。
+.LP
+.TP 10
+.B Java Extensions Mechanism @
+.\" http://java.sun.com/j2se/1.4/ja/docs/ja/guide/extensions/index.html
+
+http://java.sun.com/j2se/1.5/docs/guide/extensions/index.html ：英語版
