@@ -1,0 +1,76 @@
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL.  Use is subject to license terms.
+
+#
+# @(#)motif-rules.gmk	1.31 10/03/05
+
+################################################################
+# MOTIF TARGETS
+################################################################
+
+
+motif-refresh motif-bringover:
+	@$(call RefreshFiles,$(MOTIF_TOPDIR),$(MOTIF_MASTER),$(MOTIF_SOURCE))
+
+ifeq ($(PLATFORM), linux)
+# LINUX vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv LINUX
+
+ifeq ($(BUILD_MOTIF), true)
+  dummy := $(shell $(MKDIR) -p $(MOTIF_DIR))
+  ABS_MOTIF_DIR :=$(call FullPath,$(MOTIF_DIR))
+endif
+
+MOTIF = $(MOTIF_LIB)/libXm.a 
+
+motif: motif-build motif-install
+
+$(MOTIF): motif-build motif-install
+
+motif-build:
+	$(CD) $(MOTIF_TOPDIR)/lib/Xm ; \
+	$(MAKE) ARCH_DATA_MODEL=$(ARCH_DATA_MODEL) ARCH=$(ARCH); \
+	$(MAKE) includes ARCH_DATA_MODEL=$(ARCH_DATA_MODEL) ARCH=$(ARCH)
+
+motif-install: motif-install-lib motif-install-include
+
+motif-install-lib: $(MOTIF_LIB) 
+	$(CD) $(MOTIF_LIB); \
+	$(RM) libXm.a ; \
+	$(LN) -s $(ABS_MOTIF_TOPDIR)/lib/libXm.a .
+
+motif-install-include: $(MOTIF_DIR)/include 
+	$(CD) $(MOTIF_DIR)/include; \
+	$(RM) Xm ; \
+	$(LN) -s $(ABS_MOTIF_TOPDIR)/lib/Xm/exports/include/Xm .
+#
+# clobber the workspace, but note that the motif code misses some
+# clobber files in $(MOTIF_TOPDIR), so clean them up too. 
+# Also, remove the staging area - $(MOTIF_DIR)
+#
+motif-clobber:
+	( $(CD) $(MOTIF_TOPDIR)/lib/Xm ; \
+		$(MAKE) clean ARCH_DATA_MODEL=$(ARCH_DATA_MODEL) ARCH=$(ARCH); ); \
+	$(RM) $(MOTIF_TOPDIR)/lib/libXm.a \
+	      $(MOTIF_TOPDIR)/lib/Xm/Xm.msg 
+	$(RM) -r $(MOTIF_TOPDIR)/lib/Xm/exports
+	$(RM) -r $(MOTIF_LIB) $(MOTIF_DIR)/include $(MOTIF_DIR)
+	$(RM) $(MOTIF_TOPDIR)/include 
+
+$(MOTIF_DIR) $(MOTIF_LIB) $(MOTIF_DIR)/include:
+	$(MKDIR) -p $@
+
+# LINUX ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ LINUX
+else
+# NON-LINUX vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv NON-LINUX
+
+motif:
+
+motif-clobber:
+
+.PHONY: motif motif-build motif-install motif-install-lib \
+	motif-bringover motif-refresh motif-install-include motif-clobber 
+
+
+# NON-LINUX ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ NON-LINUX
+endif

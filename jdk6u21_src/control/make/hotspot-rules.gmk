@@ -1,0 +1,90 @@
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# @(#)hotspot-rules.gmk	1.79 10/03/05
+
+################################################################
+# HOTSPOT TARGETS
+################################################################
+
+# All the output from a hotspot build should be re-located to the
+#    control build output area.
+#
+HOTSPOT_OUTPUTDIR = $(HOTSPOT_DIR)/outputdir
+
+# HOTSPOT_EXPORT_PATH points to a dir that contains files
+# that are needed in an SDK build, in the same relative positions as
+# these files are in an SDK image.
+# The SDK java/redist/Makefile will copy files from HOTSPOT_EXPORT_PATH
+# into the SDK being built.
+# This is the export path supplied to the hotspot makefiles.
+#
+HOTSPOT_EXPORT_PATH = $(HOTSPOT_DIR)/import
+
+# Default targets
+HOTSPOT = hotspot-sanity hotspot-build
+
+hotspot:: $(HOTSPOT)
+
+# Hotspot clobber is just removal of the output directory and exported files
+hotspot-clobber::
+	$(RM) -r $(HOTSPOT_OUTPUTDIR)
+	$(RM) -r $(HOTSPOT_EXPORT_PATH)
+
+hotspot-sanity::
+	@$(MKDIR) -p $(HOTSPOT_OUTPUTDIR)
+	@$(MKDIR) -p $(HOTSPOT_EXPORT_PATH)
+	@$(ECHO) "Hotspot Settings: \n" \
+	    "     HOTSPOT_BUILD_JOBS  = $(HOTSPOT_BUILD_JOBS) \n"  \
+	    "     HOTSPOT_OUTPUTDIR   = $(HOTSPOT_OUTPUTDIR) \n"  \
+	    "     HOTSPOT_EXPORT_PATH = $(HOTSPOT_EXPORT_PATH) \n"  \
+	    "\n"  >> $(MESSAGE_FILE)
+
+hotspot-refresh hotspot-bringover:
+	@$(call RefreshFiles,$(HOTSPOT_TOPDIR),$(HOTSPOT_MASTER),$(HOTSPOT_SOURCE))
+
+#
+# Basic hotspot build and export of it's files
+#
+
+HOTSPOT_TARGET = all_product
+ifeq ($(DEBUG_NAME), debug)
+  HOTSPOT_TARGET = all_debug
+endif
+ifeq ($(DEBUG_NAME), fastdebug)
+  HOTSPOT_TARGET = all_fastdebug
+endif
+
+HOTSPOT_MAKE_ARGS += ALT_SLASH_JAVA=$(SLASH_JAVA)
+HOTSPOT_MAKE_ARGS += ARCH_DATA_MODEL=$(ARCH_DATA_MODEL)
+HOTSPOT_MAKE_ARGS += ALT_OUTPUTDIR=$(HOTSPOT_OUTPUTDIR)
+HOTSPOT_MAKE_ARGS += ALT_EXPORT_PATH=$(HOTSPOT_EXPORT_PATH)
+HOTSPOT_MAKE_ARGS += PREVIOUS_JDK_VERSION=$(PREVIOUS_JDK_VERSION)
+HOTSPOT_MAKE_ARGS += ALT_BOOTDIR=$(BOOTDIR)
+HOTSPOT_MAKE_ARGS += FULL_VERSION="$(FULL_VERSION)"
+HOTSPOT_MAKE_ARGS += JDK_VERSION=$(JDK_VERSION)
+ifdef COOKED_JDK_UPDATE_VERSION
+  HOTSPOT_MAKE_ARGS += COOKED_JDK_UPDATE_VERSION=$(COOKED_JDK_UPDATE_VERSION)
+endif
+ifdef COOKED_BUILD_NUMBER
+  HOTSPOT_MAKE_ARGS += COOKED_BUILD_NUMBER=$(COOKED_BUILD_NUMBER)
+endif
+HOTSPOT_MAKE_ARGS += JDK_MKTG_VERSION=$(JDK_MKTG_VERSION)
+HOTSPOT_MAKE_ARGS += JDK_MAJOR_VERSION=$(JDK_MAJOR_VERSION)
+HOTSPOT_MAKE_ARGS += JDK_MINOR_VERSION=$(JDK_MINOR_VERSION)
+HOTSPOT_MAKE_ARGS += JDK_MICRO_VERSION=$(JDK_MICRO_VERSION)
+
+hotspot-build::
+	$(MKDIR) -p $(HOTSPOT_OUTPUTDIR)
+	$(MKDIR) -p $(HOTSPOT_EXPORT_PATH)
+	$(CD) $(HOTSPOT_TOPDIR)/make ; \
+	    $(MAKE) $(HOTSPOT_MAKE_ARGS) $(HOTSPOT_TARGET)
+
+#####################
+# .PHONY
+#####################
+.PHONY: hotspot-build hotspot-bringover hotspot-refresh hotspot-clobber hotspot-sanity 
+

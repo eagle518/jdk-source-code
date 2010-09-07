@@ -1,0 +1,47 @@
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# @(#)control-rules.gmk	1.13 10/03/05
+#
+
+################################################################
+# CONTROL TARGET
+################################################################
+
+dev : dev-build
+scsl: scsl-build
+
+SCSL_BUILD_TARGETS = all
+
+SCSL_BUILD_ARGUMENTS = \
+		     DEV_ONLY=true
+
+clean-check:
+	@$(call CleanCheck,$(CONTROL_TOPDIR))
+
+control-refresh control-bringover:
+	@$(call RefreshFiles,$(CONTROL_TOPDIR),$(CONTROL_MASTER),$(CONTROL_SOURCE))
+
+dev-build scsl-build:
+	$(CD) $(CONTROL_TOPDIR)/make 
+	$(MAKE) $(SCSL_BUILD_TARGETS) $(SCSL_BUILD_ARGUMENTS)
+
+dev-sanity scsl-sanity:
+	$(CD) $(CONTROL_TOPDIR)/make 
+	$(MAKE) sanity $(SCSL_BUILD_ARGUMENTS)
+
+dev-clobber scsl-clobber:
+	$(CD) $(CONTROL_TOPDIR)/make 
+	$(MAKE) clobber $(SCSL_BUILD_ARGUMENTS)
+
+################################################################
+#  PHONY
+################################################################
+
+.PHONY: control-bringover clean-check \
+	scsl scsl-build scsl-sanity scsl-clobber \
+	dev  dev-build  dev-sanity  dev-clobber
+

@@ -1,0 +1,228 @@
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# @(#)deploy-rules.gmk	1.43 10/03/05
+
+################################################################
+# DEPLOY TARGETS
+################################################################
+
+deploy:  deploy-build
+
+DEPLOY = deploy
+
+BUILD_DEPLOY=true
+
+# Default to build 64bit JRE on Window and Linux
+BUILD_DEPLOY_AMD64=true
+
+ifeq ($(ARCH), ia64) 
+ifndef DEPLOY_IA64
+BUILD_DEPLOY=false
+endif
+endif
+
+ifeq ($(ARCH), sparcv9)
+BUILD_DEPLOY=false;
+endif
+
+ifeq ($(ARCH), amd64)
+ifeq ($(PLATFORM), solaris)
+BUILD_DEPLOY=false
+endif
+endif
+
+ifeq ($(ARCH), amd64)
+ifeq ($(PLATFORM), linux)
+BUILD_DEPLOY=true
+endif
+endif
+
+# put the generated bundles in their own place in OUTPUTDIR
+DEPLOY_OUTPUTDIR = $(ABS_OUTPUTDIR)
+
+# NO_IMAGES may be set in conjunction with DEV_ONLY
+ifdef NO_IMAGES
+  IMAGES_TARGET =
+else
+  IMAGES_TARGET = images
+endif
+
+DEPLOY_BUILD_TARGETS = sanity javaws-all 
+
+# Only build 7-Zip LZMA file compression if it is available
+
+EC_TMP = $(shell if [ -d $(DEPLOY_TOPDIR)/make/lzma ] ; then \
+    $(ECHO) true ; \
+  else \
+    $(ECHO) false ; \
+  fi )
+ifeq ($(EC_TMP), true)
+  DEPLOY_BUILD_TARGETS += extra-comp-all
+endif
+
+DEPLOY_BUILD_TARGETS += plugin-all
+
+ifeq ($(PLATFORM), windows)
+  ifeq ($(ARCH_DATA_MODEL), 32)
+    DEPLOY_BUILD_TARGETS += jqs-all
+  endif
+endif
+
+ifndef DEV_ONLY
+  DEPLOY_BUILD_TARGETS += images
+else
+  DEPLOY_BUILD_TARGETS += $(IMAGES_TARGET)
+endif
+
+ifneq ($(KERNEL), off)
+  ifeq ($(PLATFORM), windows)
+
+    # Only set up to use UPX compression if it is available
+
+    UP_TMP = $(shell if [ -d $(DEPLOY_TOPDIR)/make/upx ] ; then \
+      $(ECHO) true ; \
+    else \
+      $(ECHO) false ; \
+    fi )
+    ifeq ($(UP_TMP), true)
+      DEPLOY_BUILD_TARGETS += cmd-comp-all
+    endif
+
+    ifeq ($(KERNEL), only)
+      DEPLOY_BUILD_TARGETS = kernel-all
+    else
+      DEPLOY_BUILD_TARGETS += kernel-all
+    endif
+  endif
+endif
+
+DEPLOY_BUILD_ARGUMENTS = \
+			EXTERNALSANITYCONTROL=true \
+			CONTROL_TOPDIR=$(ABS_CONTROL_TOPDIR) \
+			CONTROL_TOPDIR_NAME=$(CONTROL_TOPDIR_NAME) \
+			ALT_OUTPUTDIR=$(DEPLOY_OUTPUTDIR) 
+
+ifdef ARCH_DATA_MODEL
+DEPLOY_BUILD_ARGUMENTS += ARCH_DATA_MODEL=$(ARCH_DATA_MODEL)
+endif
+
+ifeq ($(DEBUG_NAME), debug)
+DEPLOY_BUILD_ARGUMENTS += VARIANT=DBG
+endif
+
+ifeq ($(DEBUG_NAME), fastdebug)
+DEPLOY_BUILD_ARGUMENTS += VARIANT=DBG FASTDEBUG=true
+endif
+
+ifdef MILESTONE
+DEPLOY_BUILD_ARGUMENTS += MILESTONE=$(MILESTONE)
+endif
+
+ifdef BUILD_NUMBER
+DEPLOY_BUILD_ARGUMENTS += BUILD_NUMBER=$(BUILD_NUMBER)
+endif
+
+ifdef ALT_IMAGE_DIR
+DEPLOY_BUILD_ARGUMENTS += ALT_IMAGE_DIR=$(ALT_IMAGE_DIR)
+endif
+
+ifdef ALT_BUNDLE_DATE
+DEPLOY_BUILD_ARGUMENTS += ALT_BUNDLE_DATE=$(ALT_BUNDLE_DATE)
+endif
+
+ifdef ALT_JAVAWS_BOOTDIR
+DEPLOY_BUILD_ARGUMENTS += ALT_JAVAWS_BOOTDIR=$(ALT_JAVAWS_BOOTDIR)
+endif
+
+ifdef CERT
+DEPLOY_BUILD_ARGUMENTS += CERT=$(CERT)
+endif
+
+ifdef PKEY
+DEPLOY_BUILD_ARGUMENTS += PKEY=$(PKEY)
+endif
+
+ifdef JDK_BUILD_NUMBER
+DEPLOY_BUILD_ARGUMENTS += JDK_BUILD_NUMBER=$(JDK_BUILD_NUMBER)
+endif
+
+deploy-build:
+ifeq ($(BUILD_DEPLOY), true)
+	if [ -r $(DEPLOY_TOPDIR)/make/Makefile ]; then \
+	  ( $(CD) $(DEPLOY_TOPDIR)/make; $(MAKE) $(DEPLOY_BUILD_TARGETS) $(DEPLOY_BUILD_ARGUMENTS) ); \
+	fi
+endif
+
+deploy-clobber: deploy-source-clobber
+ifneq ($(ARCH), sparcv9)
+ifneq ($(ARCH), ia64)
+	if [ -r $(DEPLOY_TOPDIR)/make/Makefile ]; then \
+	  ( $(CD) $(DEPLOY_TOPDIR)/make; $(MAKE) clobber $(DEPLOY_BUILD_ARGUMENTS) ; ); \
+	fi
+endif 
+endif
+
+deploy-sanity::
+ifneq ($(ARCH), sparcv9)
+ifneq ($(ARCH), ia64)
+	@if [ -r $(DEPLOY_TOPDIR)/make/Makefile ]; then \
+	  ( $(CD) $(DEPLOY_TOPDIR)/make; $(MAKE) sanity $(DEPLOY_BUILD_ARGUMENTS) ; ); \
+	fi
+endif
+endif
+
+deploy-refresh deploy-bringover:
+	@$(call RefreshFiles,$(DEPLOY_TOPDIR),$(DEPLOY_MASTER),$(DEPLOY_SOURCE))
+
+deploy-source: $(ABS_SRC_BUNDLEDIR) $(PLUGIN_WINDOWS_SRCLICBUNDLE_NAME)
+	if [ -r $(DEPLOY_TOPDIR)/make/Makefile ]; then \
+	  ( $(CD) $(TOPDIR) ; \
+	    $(FIND) $(subst $(TOPDIR)/,,$(DEPLOY_SOURCE_DIRS)) \
+	    -name SCCS -prune -o -name .hg -prune \
+	    -o -print | grep -v upx | grep -v lzma | grep -v plugin | \
+	    $(ZIPEXE) -q@ $(JAVAWEBSTART_SRCLICBUNDLE_NAME) ); \
+	fi	
+
+
+deploy-source-clobber:
+	$(RM) $(JAVAWEBSTART_SRCLICBUNDLE_NAME) $(PLUGIN_WINDOWS_SRCLICBUNDLE_NAME)
+
+# the allplugin.txt files contains all the names of all the deploy ws plugin files.
+# This file is used only generating the windows-plugin bundle. allfiles.txt cannot
+# be used because the exclude list becomes too long for processing.
+$(TEMP_DIR)/pluginfiles.txt :
+	$(call ListFiles,$(DEPLOY_TOPDIR),) >> $@
+	$(SORT) -u -o $@ $@
+
+# note that the windows plugin bundle does not use the exclude-all file...
+$(PLUGIN_WINDOWS_SRCLICBUNDLE_NAME)::   $(SRCLIC_TOOLS_FILEPATH)/exclude-plugin-windows
+	$(CAT) $^ | $(GREP) -v '^#' > $(TEMP_DIR)/excludepaths.txt
+
+# The plugin bundle contains all the plugin code required to build the windows 
+# plugin. It is built in the same manner as above, but the allfiles.txt file 
+# generates too many excludes and blows a buffer in $(COMM), so the list is 
+# pared down to the candidate files when building pluginfiles.txt. The windows
+# plugin bundle is intended to be additive (without overlap) to the windows 
+# j2se source bundle.
+$(PLUGIN_WINDOWS_SRCLICBUNDLE_NAME)::  $(TEMP_DIR)/pluginfiles.txt
+	$(RM) $(TEMP_DIR)/excludefiles.txt
+	for file in `$(CAT) $(TEMP_DIR)/excludepaths.txt`; do \
+	    if [ -f $(TOPDIR)/$$file ]; then \
+		$(ECHO) $$file >> $(TEMP_DIR)/excludefiles.txt ; \
+	    elif [ -d $(TOPDIR)/$$file ]; then \
+		$(FIND) $(TOPDIR)/$$file \
+		  -name SCCS -prune -o -name .hg -prune -o -type f -print \
+		  | $(SED) 's#^$(TOPDIR)/##' >> $(TEMP_DIR)/excludefiles.txt ; \
+	    fi \
+	done
+	$(SORT) -u -o $(TEMP_DIR)/excludefiles.txt  $(TEMP_DIR)/excludefiles.txt 
+	$(CD) $(TOPDIR) ; \
+	    $(COMM) -2 -3 $(ABS_TEMP_DIR)/pluginfiles.txt $(ABS_TEMP_DIR)/excludefiles.txt \
+	    | $(ZIPEXE) -q@ $@  ;
+
+.PHONY: deploy deploy-build deploy-clobber deploy-sanity deploy-source \
+	deploy-bringover deploy-refresh deploy-source-clobber

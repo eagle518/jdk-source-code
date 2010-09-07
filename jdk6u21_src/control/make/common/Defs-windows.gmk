@@ -1,0 +1,22 @@
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL.  Use is subject to license terms.
+#
+# @(#)Defs-windows.gmk	1.112 10/03/05
+#
+
+#
+# Control definitions for Windows. Should not contain any rules.
+#
+
+#
+# WARNING: This file is shared with other workspaces.
+#          So when it includes other files, it must use *_TOPDIR vars.
+#
+
+# Set default values for where to find the other workspaces.
+MASTER_ROOT=K:/$(JDK_VERSION)/ws/MASTER
+
+# Get shared JDK settings
+include $(J2SE_SHARED_DIR)/Defs.gmk
+

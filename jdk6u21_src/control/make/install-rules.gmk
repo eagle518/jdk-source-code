@@ -1,0 +1,89 @@
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# @(#)install-rules.gmk	1.13 03/04/18
+#
+# 
+
+################################################################
+# INSTALL  TARGETS
+################################################################
+
+install:  install-build
+
+# The generated java files are generated as a set, so instead of
+# setting the INSTALL variable to that list of files, set it to
+# the .PHONY target that generates the set of files.
+INSTALL = install
+
+# put the generated patch in their own place in OUTPUTDIR
+INSTALL_OUTPUTDIR = $(ABS_OUTPUTDIR)
+
+INSTALL_BUILD_TARGETS = sanity all
+INSTALL_BUILD_ARGUMENTS = \
+			EXTERNALSANITYCONTROL=true \
+			ALT_CONTROL_TOPDIR=$(ABS_CONTROL_TOPDIR) \
+			ALT_J2SE_TOPDIR=$(ABS_J2SE_TOPDIR) \
+			ALT_OUTPUTDIR=$(INSTALL_OUTPUTDIR) \
+			ALT_RTPATCH_DIR=$(ALT_RTPATCH_DIR) \
+			ALT_BASE_IMAGE_ZIP=$(ALT_BASE_IMAGE_ZIP) \
+			ALT_BASE_IMAGE_DIR=$(ALT_BASE_IMAGE_DIR) \
+			ALT_NEW_IMAGE_DIR=$(ALT_NEW_IMAGE_DIR) \
+			ALT_BUNDLE_DATE=$(BUNDLE_DATE)
+
+ifeq ($(DEBUG_NAME), debug)
+INSTALL_BUILD_ARGUMENTS += VARIANT=DBG
+endif
+
+ifeq ($(DEBUG_NAME), fastdebug)
+INSTALL_BUILD_ARGUMENTS += VARIANT=DBG FASTDEBUG=true
+endif
+
+install: install-build
+
+install-build: prime_debug_area
+	if [ -r $(INSTALL_TOPDIR)/make/Makefile ]; then \
+	  ( $(CD) $(INSTALL_TOPDIR)/make; $(MAKE) $(INSTALL_BUILD_TARGETS) $(INSTALL_BUILD_ARGUMENTS) ); \
+	fi
+
+update-patcher:
+	if [ -r $(INSTALL_TOPDIR)/make/update/Makefile ]; then \
+	  ( $(CD) $(INSTALL_TOPDIR)/make/update; $(MAKE) all $(INSTALL_BUILD_ARGUMENTS) ); \
+	fi
+
+update-patchgen:
+	if [ -r $(INSTALL_TOPDIR)/make/update/Makefile ]; then \
+	  ( $(CD) $(INSTALL_TOPDIR)/make/update; $(MAKE) patchgen $(INSTALL_BUILD_ARGUMENTS) ); \
+	fi
+
+installer:
+	if [ -r $(INSTALL_TOPDIR)/make/installer/Makefile ]; then \
+	  ( $(CD) $(INSTALL_TOPDIR)/make/installer; $(MAKE) all $(INSTALL_BUILD_ARGUMENTS) ); \
+	fi
+
+install-clobber:
+	if [ -r $(INSTALL_TOPDIR)/make/Makefile ]; then \
+	  ( $(CD) $(INSTALL_TOPDIR)/make; $(MAKE) clobber $(INSTALL_BUILD_ARGUMENTS) ; ); \
+	fi
+
+
+install-sanity:: prime_debug_area
+	@if [ -r $(INSTALL_TOPDIR)/make/Makefile ]; then \
+	  ( $(CD) $(INSTALL_TOPDIR)/make; $(MAKE) sanity $(INSTALL_BUILD_ARGUMENTS) ; ); \
+	fi
+
+install-refresh install-bringover:
+	@$(call RefreshFiles,$(INSTALL_TOPDIR),$(INSTALL_MASTER),$(INSTALL_SOURCE))
+
+#
+# Install process seems to always want SOMETHING in this debug image area
+prime_debug_area:
+	@$(MKDIR) -p $(OUTPUTDIR)/j2sdk-debug-image/fastdebug
+
+######################################
+# Rules for making the install
+######################################
+
+.PHONY: install install-build install-clobber install-sanity \
+	install-bringover update-refresh update-installer update-patchgen installer

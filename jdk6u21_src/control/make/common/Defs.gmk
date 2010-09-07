@@ -1,0 +1,447 @@
+#
+# Copyright (c) 2009, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL.  Use is subject to license terms.
+#
+
+#
+# @(#)Defs.gmk	1.226 10/03/05
+#
+# Common variables used by all the Java makefiles.  This file should
+# not contain rules.
+#
+
+# WARNING: This file is shared with other workspaces.
+#          So when it includes other files, it must use *_TOPDIR vars.
+#
+
+# Change to TOPDIR but be careful with ALT_TOPDIR when it's non-empty
+ifneq ($(ALT_TOPDIR), )
+  # Bringover/Pull commands need to use *.gmk files from this workspace, not 
+  #     ALT_TOPDIR, which might not exist yet.
+  #  WARNING: ONLY set CONTROL_COMMON_DIR and J2SE_SHARED_DIR here 
+  #           when ALT_TOPDIR is non-empty and 
+  #           TOPDIR is set. The ':=' is important, we need to fix this
+  #           value here so it doesn't change when TOPDIR gets set to
+  #           ALT_TOPDIR.  Note, the name ALT_TOPDIR was a poor choice
+  #           and probably should have been called NEW_TOPDIR when used
+  #           with the bringover/pull rules, or NEW_WORKSPACE_AREA maybe.
+  #           If the docs and RE scripts were fixed to not use ALT_TOPDIR
+  #           with the bringover/pull command, this could be fixed.
+  #
+  # Only define CONTROL_COMMON_DIR and J2SE_SHARED_DIR once
+  #
+  ifndef CONTROL_COMMON_DIR
+    ifdef TOPDIR
+      CONTROL_COMMON_DIR := $(TOPDIR)/control/make/common
+    else
+      CONTROL_COMMON_DIR = $(CONTROL_TOPDIR)/make/common
+    endif
+  endif
+  ifndef J2SE_SHARED_DIR
+    ifdef TOPDIR
+      J2SE_SHARED_DIR := $(TOPDIR)/j2se/make/common/shared
+    else
+      J2SE_SHARED_DIR = $(J2SE_TOPDIR)/make/common/shared
+    endif
+  endif
+  # Now set TOPDIR to this location
+  TOPDIR = $(ALT_TOPDIR)
+else
+  # Only define CONTROL_COMMON_DIR and J2SE_SHARED_DIR once
+  ifndef CONTROL_COMMON_DIR
+    CONTROL_COMMON_DIR = $(CONTROL_TOPDIR)/make/common
+  endif
+  ifndef J2SE_SHARED_DIR
+    J2SE_SHARED_DIR = $(J2SE_TOPDIR)/make/common/shared
+  endif
+endif
+
+ifndef CONTROL_TOPDIR
+  ifdef ALT_CONTROL_TOPDIR
+    CONTROL_TOPDIR=$(ALT_CONTROL_TOPDIR)
+  else
+    ifndef CONTROL_TOPDIR_NAME
+      CONTROL_TOPDIR_NAME=control
+    endif #CONTROL_TOPDIR_NAME
+    CONTROL_TOPDIR=$(TOPDIR)/$(CONTROL_TOPDIR_NAME)
+  endif
+endif #CONTROL_TOPDIR
+
+# set default values for where to find the other workspaces. Allow
+# overrides to reset
+ifndef HOTSPOT_TOPDIR
+  HOTSPOT_TOPDIR_NAME = hotspot
+  HOTSPOT_TOPDIR=$(TOPDIR)/$(HOTSPOT_TOPDIR_NAME)
+  ifdef ALT_HOTSPOT_TOPDIR
+    HOTSPOT_TOPDIR=$(ALT_HOTSPOT_TOPDIR)
+  endif
+endif
+
+ifndef MOTIF_TOPDIR
+  MOTIF_TOPDIR_NAME = motif
+  MOTIF_TOPDIR=$(TOPDIR)/$(MOTIF_TOPDIR_NAME)
+  ifdef ALT_MOTIF_TOPDIR
+    MOTIF_TOPDIR=$(ALT_MOTIF_TOPDIR)
+  endif
+endif
+
+ifndef J2SE_TOPDIR
+  J2SE_TOPDIR_NAME = j2se
+  J2SE_TOPDIR=$(TOPDIR)/$(J2SE_TOPDIR_NAME)
+  ifdef ALT_J2SE_TOPDIR
+    J2SE_TOPDIR=$(ALT_J2SE_TOPDIR)
+  endif
+endif
+
+ifndef INSTALL_TOPDIR
+  INSTALL_TOPDIR_NAME = install
+  INSTALL_TOPDIR=$(TOPDIR)/$(INSTALL_TOPDIR_NAME)
+  ifdef ALT_INSTALL_TOPDIR
+    INSTALL_TOPDIR=$(ALT_INSTALL_TOPDIR)
+  endif
+endif
+
+ifndef SPONSORS_TOPDIR
+  SPONSORS_TOPDIR_NAME = sponsors
+  SPONSORS_TOPDIR=$(TOPDIR)/$(SPONSORS_TOPDIR_NAME)
+  ifdef ALT_SPONSORS_TOPDIR
+    SPONSORS_TOPDIR=$(ALT_SPONSORS_TOPDIR)
+  endif
+endif
+
+ifndef DEPLOY_TOPDIR
+  DEPLOY_TOPDIR_NAME = deploy
+  DEPLOY_TOPDIR=$(TOPDIR)/$(DEPLOY_TOPDIR_NAME)
+  ifdef ALT_DEPLOY_TOPDIR
+    DEPLOY_TOPDIR=$(ALT_DEPLOY_TOPDIR)
+  endif
+endif
+
+ifndef PUBS_TOPDIR
+  PUBS_TOPDIR_NAME = pubs
+  PUBS_TOPDIR=$(TOPDIR)/$(PUBS_TOPDIR_NAME)
+  ifdef ALT_PUBS_TOPDIR
+    PUBS_TOPDIR=$(ALT_PUBS_TOPDIR)
+  endif
+endif
+
+ALL_TOPDIRS = \
+	$(CONTROL_TOPDIR) \
+	$(J2SE_TOPDIR) \
+	$(HOTSPOT_TOPDIR) \
+	$(MOTIF_TOPDIR) \
+	$(INSTALL_TOPDIR) \
+	$(SPONSORS_TOPDIR) \
+	$(DEPLOY_TOPDIR) \
+	$(PUBS_TOPDIR)
+
+ALL_TOPDIR_NAMES = \
+	$(CONTROL_TOPDIR_NAME) \
+	$(J2SE_TOPDIR_NAME) \
+	$(HOTSPOT_TOPDIR_NAME) \
+	$(MOTIF_TOPDIR_NAME) \
+	$(INSTALL_TOPDIR_NAME) \
+	$(SPONSORS_TOPDIR_NAME) \
+	$(DEPLOY_TOPDIR_NAME) \
+	$(PUBS_TOPDIR_NAME)
+
+# Get shared platform settings
+include $(J2SE_SHARED_DIR)/Platform.gmk
+
+# Default output directory
+_OUTPUTDIR=$(CONTROL_TOPDIR)/build/$(PLATFORM)-$(ARCH)
+
+# Get platform specific settings
+include $(CONTROL_COMMON_DIR)/Defs-$(PLATFORM).gmk
+
+# Define absolute paths to TOPDIRs
+ABS_CONTROL_TOPDIR:=$(call OptFullPath,"$(CONTROL_TOPDIR)")
+ABS_J2SE_TOPDIR:=$(call OptFullPath,"$(J2SE_TOPDIR)")
+ABS_HOTSPOT_TOPDIR:=$(call OptFullPath,"$(HOTSPOT_TOPDIR)")
+ABS_MOTIF_TOPDIR:=$(call OptFullPath,"$(MOTIF_TOPDIR)")
+ABS_INSTALL_TOPDIR:=$(call OptFullPath,"$(INSTALL_TOPDIR)")
+ABS_SPONSORS_TOPDIR:=$(call OptFullPath,"$(SPONSORS_TOPDIR)")
+ABS_DEPLOY_TOPDIR:=$(call OptFullPath,"$(DEPLOY_TOPDIR)")
+ABS_PUBS_TOPDIR:=$(call OptFullPath,"$(PUBS_TOPDIR)")
+
+#
+# Source directories - all the directories managed by the workspace
+#
+CONTROL_SOURCE       = make
+CONTROL_SOURCE_DIRS  = $(addprefix $(CONTROL_TOPDIR)/, $(CONTROL_SOURCE))
+HOTSPOT_SOURCE       = make src build agent
+HOTSPOT_SOURCE_DIRS  = $(addprefix $(HOTSPOT_TOPDIR)/, $(HOTSPOT_SOURCE))
+MOTIF_SOURCE         = lib
+MOTIF_SOURCE_DIRS    = $(addprefix $(MOTIF_TOPDIR)/, $(MOTIF_SOURCE))
+J2SE_SOURCE          = make src
+J2SE_SOURCE_DIRS     = $(addprefix $(J2SE_TOPDIR)/, $(J2SE_SOURCE))
+INSTALL_SOURCE	     = make src
+INSTALL_SOURCE_DIRS  = $(addprefix $(INSTALL_TOPDIR)/, $(INSTALL_SOURCE))
+SPONSORS_SOURCE	     = make src
+SPONSORS_SOURCE_DIRS  = $(addprefix $(SPONSORS_TOPDIR)/, $(SPONSORS_SOURCE))
+DEPLOY_SOURCE	     = make src
+DEPLOY_SOURCE_DIRS   = $(addprefix $(DEPLOY_TOPDIR)/, $(DEPLOY_SOURCE))
+PUBS_SOURCE	     = Templates docs gendocs make
+PUBS_SOURCE_DIRS   = $(addprefix $(PUBS_TOPDIR)/, $(PUBS_SOURCE))
+
+TEMP_DIR = $(OUTPUTDIR)/tmp
+ABS_TEMP_DIR = $(ABS_OUTPUTDIR)/tmp
+
+BUILD_HOTSPOT := $(shell if [ -r $(HOTSPOT_TOPDIR)/make/Makefile ]; then \
+                          $(ECHO) true; \
+                        else \
+                          $(ECHO) false; \
+                        fi)
+
+ifdef ALT_HOTSPOT_IMPORT_PATH
+  BUILD_HOTSPOT := false
+endif
+
+BUILD_MOTIF := $(shell if [ -r $(MOTIF_TOPDIR)/lib/Xm/Makefile ]; then \
+                          $(ECHO) true; \
+                        else \
+                          $(ECHO) false; \
+                        fi)
+ifdef ALT_MOTIF_DIR
+  BUILD_MOTIF := false
+endif
+
+BUILD_J2SE := $(shell if [ -r $(J2SE_TOPDIR)/make/Makefile ]; then \
+	                   $(ECHO) true; \
+                        else \
+                          $(ECHO) false; \
+                        fi)
+
+BUILD_DEPLOY := $(shell if [ -r $(DEPLOY_TOPDIR)/make/Makefile ]; then \
+	                   $(ECHO) true; \
+                        else \
+                          $(ECHO) false; \
+                        fi)
+
+BUILD_INSTALL := $(shell if [ -r $(INSTALL_TOPDIR)/make/Makefile ]; then \
+	                   $(ECHO) true; \
+                        else \
+                          $(ECHO) false; \
+                        fi)
+BUILD_SPONSORS := $(shell if [ -r $(SPONSORS_TOPDIR)/make/Makefile ]; then \
+	                   $(ECHO) true; \
+                        else \
+                          $(ECHO) false; \
+                        fi)
+BUILD_PUBS := false
+
+ifdef DEV_ONLY
+  BUILD_INSTALL := false
+  BUILD_SPONSORS := false
+endif
+
+
+HOTSPOT_DIR = $(ABS_OUTPUTDIR)/hotspot
+
+# The MESSAGE, WARNING and ERROR files are used to store sanityck and 
+# SCCS check messages, warnings and errors. 
+export ERROR_FILE   := $(ABS_OUTPUTDIR)/sanityCheckErrors.txt
+export WARNING_FILE := $(ABS_OUTPUTDIR)/sanityCheckWarnings.txt
+export MESSAGE_FILE := $(ABS_OUTPUTDIR)/sanityCheckMessages.txt
+
+# using *_SOURCE_DIRS in the workspace scan gives erroneous results 
+# because those lists contain files and the scan must contain directories.
+# It is OK for the control workspace to have a build dir, so just limit
+# the scan to the make directory for that workspace.
+CONTROL_SCAN_DIRS  = $(CONTROL_TOPDIR)/make
+HOTSPOT_SCAN_DIRS  = $(HOTSPOT_TOPDIR)
+MOTIF_SCAN_DIRS    = $(MOTIF_TOPDIR)
+J2SE_SCAN_DIRS     = $(J2SE_TOPDIR)
+DEPLOY_SCAN_DIRS   = $(DEPLOY_TOPDIR)
+PUBS_SCAN_DIRS   = $(PUBS_TOPDIR)
+
+# Get list of files
+define ListFiles # list excl
+( \
+  excl="deleted_files/"; \
+  if [ "$(strip $2)" != "" ]; then \
+    excl="$(strip $2)"; \
+  fi; \
+  if [ -d $1/Codemgr_wsdata ]; then \
+    $(CAT) $1/Codemgr_wsdata/nametable \
+      | $(SED) -e '1,1d' \
+      | $(CUT) -d' ' -f1 \
+      | $(GREP) -v "^$$excl" \
+      | $(GREP) -v "^deleted_files" \
+      | $(SED) -e 's/ .*$$//' -e "s@^@`$(BASENAME) $1`/@" ; \
+  elif [ -d $1/.hg ]; then \
+    $(HG) locate --repository $1 \
+      | $(GREP) -v "^$$excl" \
+      | $(SED) -e "s@^@`$(BASENAME) $1`/@" ; \
+  fi \
+)
+endef
+
+# source bundle generation definitions
+# Only used on teamware workspaces
+CLEAN_WS_CHECK = $(FIND) $(CONTROL_SCAN_DIRS) $(HOTSPOT_SCAN_DIRS) \
+   $(MOTIF_SCAN_DIRS) $(J2SE_SCAN_DIRS) \
+   $(DEPLOY_SCAN_DIRS) $(PUBS_SCAN_DIRS) \
+   -name Codemgr_wsdata -prune -o -type f -print | \
+   $(SED) 's+SCCS/[ps]\.++' | $(SORT) | $(UNIQ) -c | \
+   $(NAWK) '$$1<2 {print $$2;}'
+
+# Only used with mercurial
+CLEAN_HG_CHECK = ( \
+  ( cd $(CONTROL_TOPDIR) && $(HG) status | $(SED) -e 's@^@control/@' ) ; \
+  ( cd $(HOTSPOT_TOPDIR) && $(HG) status | $(SED) -e 's@^@hotspot/@' ) ; \
+  ( cd $(MOTIF_TOPDIR)   && $(HG) status | $(SED) -e 's@^@motif/@'   ) ; \
+  ( cd $(J2SE_TOPDIR)    && $(HG) status | $(SED) -e 's@^@j2se/@'    ) ; \
+  ( cd $(DEPLOY_TOPDIR)  && $(HG) status | $(SED) -e 's@^@deploy/@'  ) ; \
+  ( cd $(PUBS_TOPDIR)    && $(HG) status | $(SED) -e 's@^@pubs/@'    ) ; \
+)
+
+# Generic clean check
+define CleanCheck # child
+if [ -d $1/Codemgr_wsdata ]; then \
+  $(ECHO) '\nPerforming workspace scan for remnant files.\n' \
+  '  Any files listed below are not under SCCS control in the workspace\n' \
+  '  and you should review them and possibly remove them manually:' ; \
+  $(CLEAN_WS_CHECK) ; \
+  $(ECHO) 'End of workspace scan.' ; \
+fi
+if [ -d $1/.hg ]; then \
+  $(ECHO) '\nPerforming repository scan for remnant files.\n' \
+  '  Any files listed below are not under SCM control\n' \
+  '  and you should review them and possibly remove them manually:' ; \
+  $(CLEAN_HG_CHECK) ; \
+  $(ECHO) 'End of repository scan.' ; \
+fi
+endef
+
+# Generic bringover/pull (loop over sourcelist, teamware&linux capacity issues)
+define RefreshFiles # child parent sourcelist
+if [ -d $1/Codemgr_wsdata ]; then \
+  for i in $3 ; do \
+    $(BRINGOVER) -p $2 -w $1 $${i} ; \
+  done ; \ 
+elif [ -d $1/.hg ]; then \
+  $(HG) pull --repository $1 --update ; \
+elif [ -d $2/Codemgr_wsdata ]; then \
+  for i in $3 ; do \
+    $(BRINGOVER) -C -q -p $2 -w $1 $${i} ; \
+  done ; \ 
+elif [ -d $2/.hg ]; then \
+  $(HG) clone $2 $1 ; \
+fi
+endef
+
+BUNDLE_DATE := $(shell $(DATE) '+%d_%b_%Y' | $(TR) "[A-Z]" "[a-z]")
+ifdef ALT_BUNDLE_DATE
+  BUNDLE_DATE := $(ALT_BUNDLE_DATE)
+endif
+
+SRC_BUNDLEDIR       = $(OUTPUTDIR)/source-bundles
+ABS_SRC_BUNDLEDIR   = $(ABS_OUTPUTDIR)/source-bundles
+BIN_BUNDLEDIR       = $(OUTPUTDIR)/bundles
+ABS_BIN_BUNDLEDIR   = $(ABS_OUTPUTDIR)/bundles
+JRL_BUNDLEDIR 	    = $(OUTPUTDIR)/java.net
+ABS_JRL_BUNDLEDIR   = $(ABS_OUTPUTDIR)/java.net
+
+dummy := $(shell $(MKDIR) -p $(BIN_BUNDLEDIR))
+dummy := $(shell $(MKDIR) -p $(SRC_BUNDLEDIR) )
+dummy := $(shell $(MKDIR) -p $(JRL_BUNDLEDIR) )
+
+# product names
+# Set a few internal names depending if this is "Java for Business" or not.
+# This is currently only used to name the appropriate licensee src bundles
+# (in control).
+ifeq ($(J4B), true)
+  JRE_NAME = jrefb
+  JDK_NAME = jdkfb
+else
+  JRE_NAME = jre
+  JDK_NAME = jdk
+endif
+
+PLUGIN_NAME = java_plugin
+JRL_COMPONENT_NAME=-jrl
+RHINO_COMPONENT_NAME=-javascript_rhino
+SRCLIC_COMPONENT_NAME=
+INTERNAL_COMPONENT_NAME=-internal
+JAVAWS_NAME = javaws
+SPONSORS_NAME=sponsors
+
+# Source License (SRCLIC) bundle names
+J2RE_SOLWIN_SRCLICBUNDLE_NAME   = $(ABS_SRC_BUNDLEDIR)/$(JRE_NAME)-$(JDK_MKTG_UNDERSCORE_VERSION)-$(MILESTONE)-src-$(BUILD_NUMBER)-solwin$(SRCLIC_COMPONENT_NAME)-$(BUNDLE_DATE).zip
+J2RE_WINDOWS_SRCLICBUNDLE_NAME   = $(ABS_SRC_BUNDLEDIR)/$(JRE_NAME)-$(JDK_MKTG_UNDERSCORE_VERSION)-$(MILESTONE)-src-$(BUILD_NUMBER)-windows$(SRCLIC_COMPONENT_NAME)-$(BUNDLE_DATE).zip
+J2RE_SOLARIS_SRCLICBUNDLE_NAME    = $(ABS_SRC_BUNDLEDIR)/$(JRE_NAME)-$(JDK_MKTG_UNDERSCORE_VERSION)-$(MILESTONE)-src-$(BUILD_NUMBER)-solaris$(SRCLIC_COMPONENT_NAME)-$(BUNDLE_DATE).zip
+J2RE_LINUX_SRCLICBUNDLE_NAME    = $(ABS_SRC_BUNDLEDIR)/$(JRE_NAME)-$(JDK_MKTG_UNDERSCORE_VERSION)-$(MILESTONE)-src-$(BUILD_NUMBER)-linux$(SRCLIC_COMPONENT_NAME)-$(BUNDLE_DATE).zip
+
+J2SDK_SOLWIN_SRCLICBUNDLE_NAME  = $(ABS_SRC_BUNDLEDIR)/$(JDK_NAME)-$(JDK_MKTG_UNDERSCORE_VERSION)-$(MILESTONE)-src-$(BUILD_NUMBER)-solwin$(SRCLIC_COMPONENT_NAME)-$(BUNDLE_DATE).zip
+J2SDK_WINDOWS_SRCLICBUNDLE_NAME  = $(ABS_SRC_BUNDLEDIR)/$(JDK_NAME)-$(JDK_MKTG_UNDERSCORE_VERSION)-$(MILESTONE)-src-$(BUILD_NUMBER)-windows$(SRCLIC_COMPONENT_NAME)-$(BUNDLE_DATE).zip
+J2SDK_SOLARIS_SRCLICBUNDLE_NAME   = $(ABS_SRC_BUNDLEDIR)/$(JDK_NAME)-$(JDK_MKTG_UNDERSCORE_VERSION)-$(MILESTONE)-src-$(BUILD_NUMBER)-solaris$(SRCLIC_COMPONENT_NAME)-$(BUNDLE_DATE).zip
+J2SDK_LINUX_SRCLICBUNDLE_NAME   = $(ABS_SRC_BUNDLEDIR)/$(JDK_NAME)-$(JDK_MKTG_UNDERSCORE_VERSION)-$(MILESTONE)-src-$(BUILD_NUMBER)-linux$(SRCLIC_COMPONENT_NAME)-$(BUNDLE_DATE).zip
+
+PLUGIN_WINDOWS_SRCLICBUNDLE_NAME = $(ABS_SRC_BUNDLEDIR)/$(PLUGIN_NAME)-$(JDK_MKTG_UNDERSCORE_VERSION)-$(MILESTONE)-src-$(BUILD_NUMBER)-windows$(SRCLIC_COMPONENT_NAME)-$(BUNDLE_DATE).zip
+
+SPONSORS_SRCLICBUNDLE_NAME = $(ABS_SRC_BUNDLEDIR)/$(SPONSORS_NAME)-$(JDK_UNDERSCORE_VERSION)-$(MILESTONE)-src-$(BUILD_NUMBER)-windows$(SRCLIC_COMPONENT_NAME)-$(BUNDLE_DATE).zip
+
+PUBS_SRCLICBUNDLE_NAME  = $(ABS_SRC_BUNDLEDIR)/pubs-$(JDK_MKTG_UNDERSCORE_VERSION)-$(MILESTONE)-src-$(BUILD_NUMBER)-$(BUNDLE_DATE).zip
+
+J2SDK_ALL_JRLBUNDLE_NAME    = $(ABS_JRL_BUNDLEDIR)/$(JDK_NAME)-$(JDK_MKTG_UNDERSCORE_VERSION)-$(MILESTONE)-src-$(BUILD_NUMBER)$(JRL_COMPONENT_NAME)-$(BUNDLE_DATE).zip
+J2SDK_BIN_JRLBUNDLE_NAME    = $(ABS_JRL_BUNDLEDIR)/$(JDK_NAME)-$(JDK_MKTG_UNDERSCORE_VERSION)-$(MILESTONE)-bin-$(BUILD_NUMBER)$(JRL_COMPONENT_NAME)-$(BUNDLE_DATE).zip
+
+# Rhino source should not be included into our source bundles..
+# We should create a separate bundle for Rhino.
+RHINO_BUNDLE_NAME = $(ABS_SRC_BUNDLEDIR)/$(JDK_NAME)-$(JDK_MKTG_UNDERSCORE_VERSION)-$(MILESTONE)-src-$(BUILD_NUMBER)$(RHINO_COMPONENT_NAME)-$(BUNDLE_DATE).zip
+
+JDK_ALL_JRL_JARBUNDLE_NAME    = $(ABS_JRL_BUNDLEDIR)/$(JDK_NAME)-$(JDK_MKTG_UNDERSCORE_VERSION)-$(MILESTONE)-src-$(BUILD_NUMBER)$(JRL_COMPONENT_NAME)-$(BUNDLE_DATE).jar
+JDK_BIN_JRL_JARBUNDLE_NAME    = $(ABS_JRL_BUNDLEDIR)/$(JDK_NAME)-$(JDK_MKTG_UNDERSCORE_VERSION)-$(MILESTONE)-bin-$(BUILD_NUMBER)$(JRL_COMPONENT_NAME)-$(BUNDLE_DATE).jar
+
+JAVAWEBSTART_SRCLICBUNDLE_NAME = $(ABS_SRC_BUNDLEDIR)/$(JAVAWS_NAME)-$(JDK_MKTG_UNDERSCORE_VERSION)-$(MILESTONE)-src-$(BUILD_NUMBER)-$(BUNDLE_DATE).zip
+
+# internal bundle name
+INTERNAL_BUNDLE_NAME = $(ABS_SRC_BUNDLEDIR)/internal.zip
+
+JRL_README_BUNDLE_NAME = $(ABS_JRL_BUNDLEDIR)/jrl-$(BUILD_NUMBER)-readme.zip
+
+# how to perform bringovers (note that the bringover command is pulled
+# from the PATH)
+
+BRINGOVER = bringover
+
+# Path to hg command
+
+HG = hg
+
+# If the update version contains non-numeric characters, we need
+# to massage it into a numeric format.  Unfortunately, the
+# Windows VERSIONINFO resource that we stick in jvm.dll cannot
+# handle non-numeric characters.  We have to do this here because
+# Hotspot workspace nmake cannot handle calculations.  So we use the
+# following formula:
+# COOKED_JDK_UPDATE_VERSION = JDK_UPDATE_VERSION * 10 + EXCEPTION_VERSION
+# 
+# Here are some examples:
+#     1.5.0    b01  ->  5,0,0,1
+#     1.5.0_10 b01  ->  5,0,100,1 
+#     1.4.2 b01     ->  4,2,0,1
+#     1.4.2_02 b01  ->  4,2,20,1
+#     1.4.2_02a b01 ->  4,2,21,1
+#     1.4.2_02b b01 ->  4,2,22,1
+ifdef JDK_UPDATE_VERSION
+  VTMP := $(shell $(ECHO) $(JDK_UPDATE_VERSION) | $(TR) "abcde" "12345")
+  CHAR1 := $(shell $(ECHO) $(VTMP) | $(NAWK) '{print substr($$1, 1, 1);}')
+  CHAR2 := $(shell $(ECHO) $(VTMP) | $(NAWK) '{print substr($$1, 2, 1);}')
+  CHAR3 := $(shell $(ECHO) $(VTMP) | $(NAWK) '{print substr($$1, 3, 1);}')
+  ifeq ($(CHAR3),)
+    CHAR3 := 0
+  endif
+  ifeq ($(CHAR1), 0)
+    COOKED_JDK_UPDATE_VERSION := $(CHAR2)$(CHAR3)
+  else
+    COOKED_JDK_UPDATE_VERSION := $(CHAR1)$(CHAR2)$(CHAR3)
+  endif
+endif
+
+ifneq ($(JDK_BUILD_NUMBER),)
+ COOKED_BUILD_NUMBER = $(shell $(ECHO) $(JDK_BUILD_NUMBER) | $(SED) -e 's/^b//' | $(SED) -e 's/^0//')
+else
+ COOKED_BUILD_NUMBER = 0
+endif

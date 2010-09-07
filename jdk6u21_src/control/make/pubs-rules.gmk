@@ -1,0 +1,27 @@
+#
+# Copyright (c) 2009, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# @(#)pubs-rules.gmk	1.2 09/02/27
+# 
+
+################################################################
+# PUBS TARGETS
+################################################################
+
+pubs-source: $(TEMP_DIR)/pubs_docs_include_files.txt
+	$(CAT) $< | \
+	  ($(CD) $(TOPDIR)/pubs && $(ZIPEXE) -@ $(PUBS_SRCLICBUNDLE_NAME)) 
+
+$(TEMP_DIR)/pubs_docs_include_files.txt: $(SRCLIC_TOOLS_FILEPATH)/include-pubs
+	$(RM) $@
+	$(MKDIR) -p $(@D)
+	for path in `$(CAT) $< | $(GREP) -v '^#'`; do \
+	  ($(CD) $(TOPDIR)/pubs; $(FIND) $$path -name SCCS -prune -o -print \
+	  ) >> $@ ; \
+	done 
+	$(SORT) -o $@ $@
+
+pubs-bringover:
+	@$(call RefreshFiles,$(PUBS_TOPDIR),$(PUBS_MASTER),.)
+

@@ -1,0 +1,32 @@
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL.  Use is subject to license terms.
+#
+# @(#)Defs-linux.gmk	1.108 10/03/05
+#
+
+#
+# Control definitions for Linux. Should not contain any rules.
+#
+
+#
+# WARNING: This file is shared with other workspaces.
+#          So when it includes other files, it must use *_TOPDIR vars.
+#
+
+# Set default value for where to find the MASTER workspaces.
+MASTER_ROOT=$(SLASH_JAVA)/java/jdk/$(JDK_VERSION)/ws/MASTER
+
+# Get shared JDK settings
+include $(J2SE_SHARED_DIR)/Defs.gmk
+
+# Where to get motif for linux
+ifdef ALT_MOTIF_DIR
+  BUILD_MOTIF := false
+else
+  # If the motif workspace exists, use it.
+  ifeq ($(shell if [ -r $(MOTIF_TOPDIR)/lib/Xm/Makefile ]; then $(ECHO) true; fi), true)
+    MOTIF_DIR = $(OUTPUTDIR)/motif-$(ARCH)
+  endif
+endif
+
