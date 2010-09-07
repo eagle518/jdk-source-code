@@ -1,0 +1,37 @@
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# @(#)jprt.gmk	1.1 06/12/09
+#
+
+################################################################
+# JPRT rule to build this workspace
+################################################################
+
+JPRT_ARCHIVE_BUNDLE=$(ABS_OUTPUTDIR)/$(JPRT_BUILD_FLAVOR)-bundle.zip
+
+jprt_build_product:  product_build
+	( $(CD) $(OUTPUTDIR)/j2sdk-image && \
+	  $(ZIPEXE) -q -r $(JPRT_ARCHIVE_BUNDLE) . )
+ifdef HAVE_JPRT_SAVE_BUNDLES
+	( $(CD) $(OUTPUTDIR)/bundles && \
+          $(ZIPEXE) -q -r $(JPRT_ARCHIVE_INSTALL_BUNDLE) . )
+endif
+
+jprt_build_fastdebug: fastdebug_build
+	( $(CD) $(OUTPUTDIR)-fastdebug/j2sdk-image && \
+	  $(ZIPEXE) -q -r $(JPRT_ARCHIVE_BUNDLE) . )
+
+jprt_build_debug: debug_build
+	( $(CD) $(OUTPUTDIR)-debug/j2sdk-image && \
+	  $(ZIPEXE) -q -r $(JPRT_ARCHIVE_BUNDLE) . )
+
+################################################################
+#  PHONY
+################################################################
+
+.PHONY: jprt_build_product jprt_build_fastdebug jprt_build_debug
+
