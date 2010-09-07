@@ -1,0 +1,321 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1999, v.4002-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub Inc>
+<refentry id="jdb-1">
+<!--@(#)jdb.1 1.13 01/03/14 SMI;-->
+<refmeta><refentrytitle>jdb</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">22 Jun 2004</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All
+rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.
+</refmiscinfo>
+</refmeta>
+<refnamediv><refname>jdb</refname><refpurpose>Java debugger</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>jdb</command><arg choice="opt"><replaceable>options
+</replaceable></arg><arg choice="opt"><replaceable>class</replaceable></arg>
+<arg choice="opt"><replaceable>arguments</replaceable></arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&parm-tt;</title>
+<variablelist termlength="narrow">
+<varlistentry><term remap="15"><replaceable>options</replaceable> </term>
+<listitem><para>Command-line options.</para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>class</replaceable> </term><listitem><para>
+Name of the class to begin debugging.</para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>arguments</replaceable> </term><listitem>
+<para>Arguments passed to the <function>main</function> method of <replaceable>
+class</replaceable>. </para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="jdb-1-indx-1"><primary sortas="Java debugger">Java debugger &mdash;
+jdb</primary></indexterm><indexterm id="jdb-1-indx-2"><primary sortas="jdb">
+jdb &mdash; Java debugger</primary></indexterm><para>The Java&trade; debugger, <command>
+jdb</command>, is a simple command-line debugger for Java classes. It is a
+demonstration of the <literal>Java Platform Debugger Architecture</literal>
+that provides inspection and debugging of a local or remote Java Virtual Machine.
+</para>
+<refsect2>
+<title>Starting a jdb Session</title>
+<indexterm id="jdb-1-indx-3"><primary sortas="jdb">jdb &mdash; Java debugger
+</primary><secondary>Starting a jdb Session</secondary></indexterm><para>
+There are many ways to start a  jdb session. The most frequently used way
+is to have <command>jdb</command> launch a new Java Virtual Machine (VM) with
+the main class of the application to be debugged. This is done by substituting
+the command <command>jdb</command> for <command>java</command> (see <citerefentry>
+<refentrytitle>java</refentrytitle><manvolnum>1</manvolnum></citerefentry>)
+in the command line. For example, if your application's main class is <literal>
+MyClass</literal>, you use the following command to debug it under <command>
+jdb</command>:<informalexample><para><screen>example% <userinput>jdb MyClass
+</userinput></screen> </para>
+</informalexample></para>
+<para>When started this way, <command>jdb</command> invokes a second Java
+VM with any specified parameters, loads the specified class, and stops the
+VM before executing that class's first instruction.</para>
+<para>Another way to use <command>jdb</command> is by attaching it to a Java
+VM that is already running. A VM that is to be debugged with <command>jdb
+</command> must be started with the following options:</para>
+<variablelist>
+<varlistentry><term>-agentlib:jdwp=transport=dt_socket,server=y,suspend=n
+</term><listitem><para>Loads                                             
+           in-process debugging libraries and  specifies the kind of connection
+to be made.</para>
+</listitem></varlistentry>
+</variablelist><para>For example, the following command will run the <literal>
+MyClass</literal> application and allow <command>jdb</command> to connect
+to it at a later time:<informalexample><para><screen>example% <userinput>
+java -agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n MyClass
+</userinput></screen></para>
+</informalexample></para>
+<para>You can then attach <command>jdb</command> to the VM with the following
+commmand:<informalexample><para><screen>example% <userinput>jdb &ndash;attach 8000
+</userinput></screen></para>
+</informalexample></para>
+<para>Note that <command>MyClass</command> is not specified in the <literal>
+jdb</literal> command line in this case because <command>jdb</command> is
+connecting to an existing VM instead of launching a new one.</para>
+<para>There are many other ways to connect the debugger to a VM, and all of
+them are supported by <command>jdb</command>. The Java Platform Debugger Architecture
+has additional documentation on these connection options. For information
+on starting a J2SE 1.4.2 or early VM for use with jdb see <ulink url="http://java.sun.com/j2se/1.4.2/docs/guide/jpda/conninv.html">
+1.4.2 documentation</ulink>.</para>
+</refsect2>
+<refsect2>
+<title>Basic jdb Commands</title>
+<indexterm id="jdb-1-indx-4"><primary sortas="jdb">jdb &mdash; Java debugger
+</primary><secondary>Basic jdb Commands</secondary></indexterm><para>The following
+is a list of the basic <command>jdb</command> commands. The Java debugger
+supports other commands listed with the <command>help</command> command.</para>
+<para>Notice that to display local (stack) variables, the class  must have
+been compiled with the <command>javac</command> <option>g</option> option.
+</para>
+<variablelist termlength="narrow">
+<varlistentry><term remap="15"><command>cont</command> </term><listitem><para>
+Continues execution of the debugged application after a breakpoint, exception,
+or step.</para>
+</listitem></varlistentry>
+<varlistentry><term><command>dump</command> </term><listitem><para>For primitive
+values, this command is identical to <command>print</command>. For objects,
+it prints the current value of each field defined in the object. Static and
+instance fields are included. The <command>dump</command> command supports
+the same set of expressions as the <command>print</command> command. </para>
+</listitem></varlistentry>
+<varlistentry><term><command>help</command></term><term><command>?</command></term>
+<listitem><para>As the most important <command>jdb</command> command, <command>
+help</command> displays the list of recognized commands with a brief description.
+</para>
+</listitem></varlistentry>
+<varlistentry><term><command>print</command> </term><listitem><para>Displays
+Java objects and primitive values. For variables or fields of primitive types,
+the actual value is printed. For objects, a short description is printed.
+See the <command>dump</command> command for getting more information about
+an object. <command>print</command> supports many simple Java expressions
+including those with method invocations. For example:  <itemizedlist>
+<listitem><para><userinput>print MyClass.myStaticField</userinput></para>
+</listitem>
+<listitem><para><userinput>print myObj.myInstanceField</userinput></para>
+</listitem>
+<listitem><para><userinput>print <replaceable>i</replaceable> <literal>+</literal> <replaceable>
+j</replaceable> <literal>+</literal> <replaceable>k</replaceable></userinput>
+ ... where <replaceable>i</replaceable>, <replaceable>j</replaceable>, and <replaceable>
+k</replaceable> are primitives and either fields or local variables.</para>
+</listitem>
+<listitem><para><userinput>print myObj.myMethod(&thinsp;)</userinput>  ...
+if <literal>myMethod</literal> returns a non-null.</para>
+</listitem>
+<listitem><para><userinput>print new java.lang.String("Hello").length(&thinsp;)
+</userinput></para>
+</listitem>
+</itemizedlist></para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><command>thread</command> </term><listitem>
+<para>Selects a thread to be the current thread. Many <literal>jdb</literal>
+commands are based on the setting of the current thread. The thread is specified
+with the thread index described in the <command>threads</command> command.
+</para>
+</listitem></varlistentry>
+<varlistentry><term><command>threads</command> </term><listitem><para>Lists
+the threads that are currently running. For each thread, its name and current
+status are printed, as well as an index that can be used for other commands.
+For example:  <informalexample><para><computeroutput>4. (java.lang.Thread)0x1
+main running</computeroutput></para>
+</informalexample>In this example, the thread index is <literal>4</literal>,
+the thread is an instance of <literal>java.lang.Thread</literal>, the thread
+name is <literal>main</literal>, and it is currently running.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><command>run</command> </term><listitem><para>
+After starting <command>jdb</command>, and setting any necessary breakpoints,
+use this command to start the execution of the debugged application. This
+command is available only when <command>jdb</command> launches the debugged
+application (as opposed to attaching to an existing VM).</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><command>where</command> </term><listitem>
+<para>The <literal>where</literal> subcommand with no arguments dumps the
+stack of the current thread (which is set with the <command>thread</command>
+command). Using <command>where</command> <literal>all</literal> dumps the
+stack of all threads in the current thread group. Using <command>where</command> <replaceable>
+threadindex</replaceable> dumps the stack of the specified thread. If the
+current thread is suspended (either through an event such as a breakpoint
+or through the  <command>suspend</command> command), local variables and fields
+can be displayed with the <command>print</command> and  <command>dump</command>
+commands. The <command>up</command> and  <command>down</command> commands
+select which stack frame is current.</para>
+</listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title>Breakpoint Commands</title>
+<indexterm id="jdb-1-indx-5"><primary sortas="jdb">jdb &mdash; Java debugger
+</primary><secondary>Breakpoints</secondary></indexterm><para>Breakpoints
+are set in <command>jdb</command> at line numbers or at the first instruction
+of a method. For example:</para>
+<variablelist termlength="wholeline">
+<varlistentry><term remap="25"><userinput>stop at MyClass:22</userinput></term>
+<listitem><para>Sets a breakpoint at the first instruction for line <literal>
+22</literal> of the source file containing <literal>MyClass</literal>.</para>
+</listitem></varlistentry>
+<varlistentry><term><userinput>stop in java.lang.String.length</userinput></term>
+<listitem><para>Sets a breakpoint at the beginning of the method <literal>
+java.lang.String.length</literal>.</para>
+</listitem></varlistentry>
+<varlistentry><term><userinput>stop in MyClass.<replaceable>init</replaceable></userinput></term>
+<listitem><para><replaceable>init</replaceable> identifies the <literal>MyClass
+</literal> constructor.</para>
+</listitem></varlistentry>
+<varlistentry><term><userinput>stop in MyClass.<replaceable>clinit</replaceable></userinput> 
+</term><listitem><para><replaceable>clinit</replaceable> identifies the static
+initialization code for <literal>MyClass</literal>.</para>
+</listitem></varlistentry>
+</variablelist><para>If a method is overloaded, you must also specify its
+argument types so that the proper method can be selected for a breakpoint.
+For example,<informalexample><para><screen><userinput>MyClass.myMethod(int,java.lang.String)
+</userinput></screen></para>
+</informalexample>or<informalexample><para><screen><userinput>MyClass.myMethod()
+</userinput></screen></para>
+</informalexample></para>
+<para>The <command>clear</command> command removes breakpoints using a syntax
+as in <command>clear</command><literal>MyClass:45</literal>. Using the <command>
+clear</command> command with no argument displays a list of all breakpoints
+currently set. The <command>cont</command> command continues execution.</para>
+</refsect2>
+<refsect2>
+<title>Stepping Commands</title>
+<indexterm id="jdb-1-indx-6"><primary sortas="jdb">jdb &mdash; Java debugger
+</primary><secondary>Stepping</secondary></indexterm><para>The <command>step
+</command> command advances execution to the next line, whether it is in the
+current stack frame or a called method. The <command>next</command> command
+advances execution to the next line in the current stack frame.</para>
+</refsect2>
+<refsect2>
+<title>Exception Commands</title>
+<indexterm id="jdb-1-indx-7"><primary sortas="jdb">jdb &mdash; Java debugger
+</primary><secondary>Exceptions</secondary></indexterm><para>When an exception
+occurs for which there is no catch statement anywhere in the throwing thread's
+call stack, the VM normally prints an exception trace and exits. When running
+under <command>jdb</command>, however, control returns to <command>jdb</command>
+at the offending throw. Use <command>jdb</command> to determine the cause
+of the exception.</para>
+<variablelist termlength="narrow">
+<varlistentry><term remap="15"><command>catch</command> </term><listitem>
+<para>Causes the debugged application to stop at other thrown exceptions.
+For example:<informalexample><para><screen><userinput>catch java.io.FileNotFoundException
+</userinput></screen></para>
+</informalexample>or<informalexample><para><screen><userinput>catch mypackage.BigTroubleException
+</userinput></screen></para>
+</informalexample></para>
+</listitem></varlistentry>
+</variablelist>
+<informalexample><para>Any exception which is an instance of the specified
+class (or of a subclass) will stop the application at the point where it is
+thrown.</para>
+</informalexample>
+<variablelist termlength="narrow">
+<varlistentry><term remap="15"><command>ignore</command> </term><listitem>
+<para>Negates the effect of a previous <command>catch</command> command. Notice
+that the <command>ignore</command> command does not cause the debugged VM
+to ignore specific exceptions, only the debugger.</para>
+</listitem></varlistentry>
+</variablelist></refsect2>
+</refsect1>
+<refsect1><title>&opts-tt;</title>
+<para>When using <command>jdb</command> in place of the Java application launcher
+on the command line, <command>jdb</command> accepts many of the same options
+as the <citerefentry><refentrytitle>java</refentrytitle><manvolnum>1</manvolnum>
+</citerefentry> command, including <option>D</option>, <option>classpath</option>,
+and <option>X</option><replaceable>option.</replaceable></para>
+<para>The following additional options are accepted by <command>jdb</command>:
+</para>
+<variablelist termlength="medium">
+<varlistentry><term remap="15"><option>sourcepath</option> <replaceable>dir1:
+</replaceable><replaceable>dir2</replaceable> . . .</term><listitem><para>
+Uses the given path in searching for source files in the specified path. If
+this option is not specified, the default path of "." is used.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>attach</option> <replaceable>address</replaceable> 
+</term><listitem><para>Attaches the debugger to previously running VM using
+the default connection mechanism.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>launch</option> </term><listitem><para>Launches
+the debugged application immediately upon startup of <command>jdb</command>.
+This option removes the need for using the <literal>run</literal> command.
+The debuged application is launched and then stopped just before the initial
+application class is loaded. At that point, you can set any necessary breakpoints
+and use the <command>cont</command> command to continue execution.</para>
+</listitem></varlistentry>
+<varlistentry><term><option role="nodash">listconnectors</option></term><listitem>
+<para>List the connectors available in this VM </para>
+</listitem></varlistentry>
+<varlistentry><term><option role="nodash">J</option><replaceable>option</replaceable></term>
+<listitem><para>Pass <replaceable>option</replaceable> to the Java virtual
+machine, where option is one of the options described on the man page for
+the java application launcher, java (1). For example, <literal>-J-Xms48m</literal>
+sets the startup memory to 48 megabytes. It is a common convention for <literal>
+-J</literal> to pass options to the underlying virtual machine.</para>
+</listitem></varlistentry>
+</variablelist><para>Other options are supported for alternate mechanisms
+for connecting the debugger and the VM it is to debug. The Java Platform Debugger
+Architecture has additional documentation on these connection alternatives.
+</para>
+</refsect1>
+<refsect1><title>&attr-tt;</title>
+<para>See <citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>
+5</manvolnum></citerefentry> for a description of the following attributes:
+</para>
+<informaltable frame="all" orient="port">
+<tgroup cols="2" colsep="1" rowsep="1"><colspec colnum="1" colname="col1"
+colwidth="1*" colsep="1" align="left"><colspec colnum="2" colname="col2" colwidth="1*"
+align="left">
+<thead>
+<row><entry colname="col1" align="center" valign="top">ATTRIBUTE TYPE</entry>
+<entry colname="col2" align="center" valign="top">ATTRIBUTE VALUE</entry>
+</row>
+</thead>
+<tbody>
+<row><entry>Availability</entry><entry>SUNWj5<?Pub Caret>dev</entry></row>
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>java</refentrytitle><manvolnum>1</manvolnum>
+</citerefentry>, <citerefentry><refentrytitle>javac</refentrytitle><manvolnum>
+1</manvolnum></citerefentry>, <citerefentry><refentrytitle>javadoc</refentrytitle>
+<manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>javah
+</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>
+javap</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry>
+<refentrytitle>attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry> 
+</para>
+</refsect1>
+<!--+ 07/27/00 08:34:48
+    | tagMorph:  $Id: tagMorph-engine 1.54 1998/01/19 05:44:48 $
+    | tagMorph library:  $Id: libtagMorph.a 1.50 1998/01/19 22:02:51 $
+    | sunman-to-solbook 1.17
+    +-->
+</refentry>

@@ -1,0 +1,167 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1999, v.4002-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub EntList minus bsol>
+<?Pub Inc>
+<refentry id="servertool-1">
+<!--@(#)servertool.1 1.1 01/03/14 SMI;-->
+<refmeta><refentrytitle>servertool</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">22 Jun 2004</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All
+rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.
+ </refmiscinfo>
+</refmeta>
+<refnamediv><indexterm><primary sortas="servertool">servertool &mdash; Java
+IDL Server Tool</primary></indexterm><indexterm><primary sortas="Java server tool">
+Java IDL Server Tool &mdash; servertool</primary></indexterm><refname>servertool
+</refname><refpurpose>Java IDL Server Tool</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>servertool</command><arg>-ORBInitialPort </arg><arg>
+nameserverport</arg><arg choice="opt">&nbsp;<replaceable>options</replaceable></arg>
+<arg choice="opt">&nbsp;<replaceable>commands</replaceable></arg>
+</cmdsynopsis>
+<funcsynopsis>
+<funcsynopsisinfo>If you did not enter a command when starting servertool, the command-line tool displays with
+      a <literal>servertool ></literal> prompt. Enter commands at the <literal>
+servertool ></literal> prompt. </funcsynopsisinfo></funcsynopsis>
+<funcsynopsis>
+<funcsynopsisinfo>If you enter a command when starting servertool, the Java IDL Server Tool starts, runs the
+      command, and exits. </funcsynopsisinfo></funcsynopsis>
+<funcsynopsis>
+<funcsynopsisinfo>The <option>-ORBInitialPort</option><replaceable> nameserverport
+</replaceable> option is required. 
+     The value for nameserverport must  specify the port on which orbd is running and listening for incoming requests. 
+     When using Solaris software, you must become root to start a process on a port under 1024. For this reason, we
+      recommend that you use a port number greater than or equal to 1024 for the nameserverport. 
+</funcsynopsisinfo></funcsynopsis>
+</refsynopsisdiv>
+<refsect1><title>&desc-tt;</title>
+<para>The <command>servertool</command>, provides the command&mdash;line interface
+for the application programmers to <command>register</command>, <command>
+unregister</command>, <command>startup</command>, and <command>shutdown</command>
+a server. Other commands are provided to obtain various statistical information
+about the server.</para>
+</refsect1>
+<refsect1><title>OPTIONS</title>
+<variablelist>
+<varlistentry><term><option>-ORBInitialHost <replaceable>nameserverhost</replaceable> 
+</option></term><listitem><para>Specifies the host machine on which the name
+server is running and listening for incoming             requests. The <replaceable>
+nameserverhost</replaceable> defaults to <replaceable>localhost</replaceable>
+if this option is not specified. If orbd and servertool are running on different
+machines, you must specify the name or IP address of the host on which orbd
+is running. </para>
+</listitem></varlistentry>
+<varlistentry><term>-J<replaceable>option </replaceable></term><listitem>
+<para>Pass option to the Java virtual machine, where option is one of the
+options described on the reference page for the java application launcher.
+For example, <option>-J-Xms48m</option> sets the startup memory to 48 megabytes.
+It is a common convention for <option>-J</option> to pass options to the underlying
+virtual machine. </para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>COMMANDS</title>
+<para>The following options are supported:</para>
+<cmdsynopsis><command>register</command><arg choice="plain"><option>server
+</option>&nbsp;<replaceable>server-class-name</replaceable></arg><arg choice="plain"><option>
+classpath</option> <replaceable>classpath-to-server</replaceable></arg><arg
+choice="plain"><option>applicationName</option> <replaceable>alternate-server-name
+</replaceable></arg><arg choice="plain"><option>args</option> <replaceable>
+args-to-server</replaceable></arg><arg choice="plain"><option>vmargs</option> <replaceable>
+flags-to-be-passed-to-Java-VM</replaceable></arg>
+</cmdsynopsis><para><simplelist><member>Registers a new server with the Object
+Request Broker Daemon (<acronym>ORBD</acronym>). If the server is not already
+registered, it is registered and activated. This command causes an install
+method to be invoked in the main class of the server identified by the <option>
+-server</option>             option. The install method must be <literal>
+public static void install(org.omg.CORBA.ORB)</literal>. The install method
+is optional and enables the developer to provide their own server installation
+behavior (for example, creating database schema). </member></simplelist></para>
+<cmdsynopsis><command>unregister</command><group><arg choice="plain"><option>
+serverid</option>&nbsp;<replaceable>server-id</replaceable></arg><arg choice="plain"><option>
+applicationName</option> <replaceable>application name</replaceable></arg>
+</group>
+</cmdsynopsis><para><simplelist><member>Unregisters a server from the <acronym>
+ORBD</acronym> by using either its server id or its application name. This
+command causes an uninstall method to be invoked in the main class of the
+server identified by the <option>-server</option> option. The uninstall method
+must be <literal>public static void uninstall(org.omg.CORBA.ORB)</literal>.
+The uninstall method is optional and enables the  developer to provide their
+own server uninstall behavior (for example, undoing the  behavior of the install
+method). </member></simplelist></para>
+<cmdsynopsis><command>getserverid</command><arg choice="plain"><option>applicationName
+</option>&nbsp;<replaceable>application name</replaceable></arg>
+</cmdsynopsis><para><simplelist><member>Returns the server id that corresponds
+with an application.</member></simplelist></para>
+<cmdsynopsis><command>list</command>
+</cmdsynopsis><para><simplelist><member>Lists all information about allpersistent
+servers registered with the <acronym>ORBD</acronym>. </member></simplelist></para>
+<cmdsynopsis><command>listappnames</command>
+</cmdsynopsis><para><simplelist><member>Lists the application names for all
+servers currently registered with the <acronym>ORBD</acronym>.</member></simplelist></para>
+<cmdsynopsis><command>listactive</command>
+</cmdsynopsis><para><simplelist><member>List information about all persistent
+servers that have been launched by the ORBD and are currently running. </member>
+</simplelist></para>
+<cmdsynopsis><command>locate</command><group><arg choice="plain"><option>
+serverid</option>&nbsp;<replaceable>server-id</replaceable></arg><arg choice="plain"><option>
+applicationName</option> <replaceable>application name</replaceable></arg>
+</group><arg><option>endpointType</option> <replaceable>endpointType</replaceable></arg>
+</cmdsynopsis><para><simplelist><member>Locates the endpoints (ports) of a
+specific type for all <acronym>ORB</acronym>s created by a registered server.
+If a server is not already running, it is activated. If an endpoint type is
+not specified, then the plain/non-protected endpoint associated with each <acronym>
+ORB</acronym> in a server is returned.</member></simplelist></para>
+<cmdsynopsis><command>locateperorb</command><group><arg choice="plain"><option>
+serverid</option>&nbsp;<replaceable>server-id</replaceable></arg><arg choice="plain"><option>
+applicationName</option> <replaceable>application name</replaceable></arg>
+</group><arg><option>orbid</option> <replaceable>ORB-name</replaceable></arg>
+</cmdsynopsis><para><simplelist><member>Locates all the endpoints (ports)
+registered by a specific <acronym>ORB</acronym> of registered server. If a
+server is not already running, then it is activated. If an <replaceable>orbid
+</replaceable> is not specified, the default value of "" is assigned to the <replaceable>
+orbid</replaceable>. If any <acronym>ORBs</acronym> are created with an <replaceable>
+orbid</replaceable> of empty string, all ports registered by it are returned.
+</member></simplelist></para>
+<cmdsynopsis><command>orblist</command><group><arg choice="plain"><option>
+serverid</option>&nbsp;<replaceable>server-id</replaceable></arg><arg choice="plain"><option>
+applicationName</option> <replaceable>application name</replaceable></arg>
+</group>
+</cmdsynopsis><para><simplelist><member>Lists the ORBId of the ORBs defined
+on a server. An ORBId is the string name for the ORB created by the server.
+If the server is not already running, it is activated. </member></simplelist></para>
+<cmdsynopsis><command>shutdown</command><group><arg choice="plain"><option>
+serverid</option>&nbsp;<replaceable>server-id</replaceable></arg><arg choice="plain"><option>
+applicationName</option> <replaceable>application name</replaceable></arg>
+</group>
+</cmdsynopsis><para><simplelist><member>Shutdown an active server that is
+registered with ORBD. During execution of this command, the shutdown() method
+defined in the class specified by either the <option>-serverid</option> or <option>
+-applicationName</option> parameter is also invoked to shutdown the server
+process appropriately. </member></simplelist></para>
+<cmdsynopsis><command>startup</command><group><arg choice="plain"><option>
+serverid</option>&nbsp;<replaceable>server-id</replaceable></arg><arg choice="plain"><option>
+applicationName</option> <replaceable>application name</replaceable></arg>
+</group>
+</cmdsynopsis><para><simplelist><member>Startup or activate a server that
+is registered with ORBD. If the server is not running, this  command launches
+the server. If the server is already running, an error message is        
+    returned to the user. </member></simplelist></para>
+<cmdsynopsis><command>help</command>
+</cmdsynopsis><para><simplelist><member>Lists all the commands available to
+the server through the server tool.</member></simplelist></para>
+<cmdsynopsis><command>quit</command>
+</cmdsynopsis><para><simplelist><member>Exits the server tool.</member></simplelist></para>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>orbd</refentrytitle><manvolnum>1</manvolnum>
+</citerefentry> </para>
+</refsect1><?Pub Caret1>
+</refentry>
+<?Pub *0000010533>

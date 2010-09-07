@@ -1,0 +1,232 @@
+'\t" t
+.\" @(#)pack200.1 1.0 04/01/21/SMI;
+.\" Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+.\" Copyright 2004 Sun Microsystems, Inc. Tous droits r駸erv駸.
+.\"
+.TH pack200 1 "2004 年 6 月 22 日"
+.SH 名前
+pack200 \- JAR パックツール
+.SH 形式
+.B pack200 
+[ 
+.IB オプション 
+] 
+.I output\-file 
+.I JAR\-file
+.SH パラメータ
+オプションの指定順序に決まりはありません。コマンド行または properties ファイルに指定された最後のオプションが、それ以前に指定されたすべてのオプションより優先されます。オプションについては、以下の「オプション」の説明を参照してください。
+.TP 15
+.I オプション      
+以下の「オプション」を参照してください。
+.TP
+.I output\-file  
+出力ファイルの名前。
+.TP
+.I JAR\-file     
+入力ファイルの名前。
+.SH 機能説明
+Pack200 ツールは、Java gzip 圧縮ツールを使って JAR ファイルを圧縮 pack200 ファイルに変換する Java アプリケーションです。
+圧縮パックファイルは高圧縮の JAR ファイルです。帯域幅の節約とダウンロード時間の短縮のため、直接配備できます。
+.LP     
+Pack200 ツールには、圧縮エンジンの設定や微調整を行うオプションが用意されています。
+.TP
+一般的な使用方法:
+.LP
+.ft 3
+.nf     
+% pack200 myarchive.pack.gz myarchive.jar
+.fi
+.ft 1
+.LP
+この例では、デフォルトの
+.B pack200 
+および
+.B gzip 
+設定で、myarchive.pack.gz が作成されます。
+.SS オプション
+.TP 
+.B \-r \--repack
+myarchive.jar ファイルのパックまたはアンパックにより、JAR ファイルを作成します。作成されたファイルは、jarsigner(1) ツールの入力ファイルとして使用できます。
+.LP
+.RS
+.ft 3
+.nf
+% pack200 --repack myarchive-packed.jar myarchive.jar
+% pack200 --repack myarchive.jar
+.fi
+.ft 1
+.RE
+.TP
+.B \-g \--no-gzip
+pack200 ファイルを作成します。このオプションを指定するときは、適切な圧縮ツールを使用する必要があります。また、ターゲットシステムでは、対応する圧縮解除ツールを使用する必要があります。
+.LP
+.RS
+.ft 3
+.nf
+% pack200 --no-gzip myarchive.pack myarchive.jar
+.fi
+.ft 1
+.RE
+.TP
+.B \-G \--strip-debug
+出力からデバッグ用の属性を削除します。対象となる属性には、SourceFile、LineNumberTable、LocalVariableTable、および LocalVariableTypeTable などがあります。これらの属性を削除すれば、ダウンロードとインストールのサイズは小さくなりますが、デバッガの機能は制限されます。
+.TP
+.B \-O \--no-keep-file-order
+パックツールは、すべての要素を並べ替えて転送します。また、JAR ディレクトリ名を削除します。このため、ダウンロードのサイズは小さくなりますが、インデックスをはじめとする JAR ファイルの最適化機能は正常に動作しなくなることがあります。
+.TP     
+.B \-Svalue \--segment-limit=value
+各アーカイブセグメントの予測ターゲットサイズ N (バイト) を指定します。N バイト以上を必要とする単一の入力ファイルには、独立したアーカイブセグメントが割り当てられます。たとえば、これは特殊な例ですが、値が -1 の場合、すべての入力ファイルを含む単一の巨大なセグメントが生成されます。一方、値が 0 の場合、クラスごとにセグメントが 1 つずつ生成されます。アーカイブセグメントのサイズが大きければ大きいほど断片化は起こりにくく、圧縮率も高くなります。しかし、こうしたセグメントを処理するためには、大量のメモリが必要になります。
+
+各セグメントのサイズは、セグメント内で転送される入力ファイルのサイズと、このファイルの名前のサイズ、およびその他の転送プロパティによって予測されます。
+
+デフォルトのサイズは 1000000 (百万バイト) です。これは、標準サイズの入力 JAR ファイルを単一セグメント内で転送できるサイズです。パックツールおよびアンパックツールのメモリ要件には制限が課されます。
+
+この制限が課されていない 10M バイトの JAR パックファイルは通常、元の 10% 程度のサイズにパックされます。しかし、パックツールでより大きな Java ヒープ (セグメントの制限の約 10 倍) を必要とする場合もあります。
+.TP     
+.B \-Evalue \--effort=value
+単一の 10 進数値を指定した場合、パックツールは、指定された圧縮率でアーカイブを圧縮します。レベル 1 の場合、圧縮速度は速くても圧縮率はそれほど高くありません。レベル 9 の場合、圧縮速度は遅くても圧縮率は高くなります。
+特殊な値 0 を指定した場合は、元の JAR ファイルを圧縮なしで直接コピーします。JSR 200 標準では、すべてのアンパックツールはこの特殊な処理をアーカイブ全体のパススルーとして理解する必要があります。
+
+デフォルト値は 5 です。この場合、標準的な時間で、適度な圧縮が行われます。
+.TP	
+.B \-Hvalue \--deflate-hint=value
+デフォルト値を上書きし、入力情報を保存します。転送されるアーカイブのサイズは大きくなります。
+
+可能な値:
+
+true
+
+false
+.in 15
+どちらの場合でも、パックツールはデフレーションヒントを出力アーカイブに設定します。アーカイブ要素の個々のデフレーションヒントは転送しません。
+.in
+keep
+.in 15
+入力 JAR 内のデフレーションヒントを保存します (デフォルト)。
+.in
+.TP
+.B \-mvalue \--modification-time=value
+可能な値:
+
+latest
+.in 15
+パックツールは、元のアーカイブの全エントリの最終更新時刻か、そのセグメントのすべてのエントリの最終更新時刻を特定しようとします。この単一の値はセグメントの一部として転送され、各セグメントの全エントリに適用されます。この場合、すべてのインストールファイルに単一の日付が設定されるという問題はありますが、アーカイブの転送サイズを少し小さくすることができます。
+.in
+keep
+.in 15
+入力 JAR 内の更新時刻を保存します (デフォルト)。
+.in
+.TP
+.B \-Pfile \--pass-file=file
+ファイルを圧縮せず、バイト単位で転送するように指定します。このオプションを繰り返し使用して、複数のファイルを指定できます。
+パス名の変換は行われません。システムファイルの区切り文字が JAR ファイルの区切り文字 '/' で置き換えられるだけです。ファイル名は、JAR ファイル内の文字列と完全に一致していなければなりません。file にディレクトリ名を指定した場合、そのディレクトリ内のすべてのファイルが転送されます。
+.TP	
+.B \-Uaction \--unknown-attribute=action
+デフォルトの動作を無効にします。たとえば、不明な属性を含むクラスファイルを指定したアクションで転送します。
+
+アクションとして指定可能な値:
+
+error
+.in 15
+pack200 の操作に失敗し、適切な解説が表示されます。
+.in
+strip
+.in 15
+属性はドロップされます。注: VM 必須属性を削除するとクラスローダの障害が発生することがあります。
+.in
+pass
+.in 15
+この属性が検出された場合、クラス全体が 1 つのリソースとして転送されます (デフォルト)。
+.in
+.LP
+.B \-Cattribute-name=layout 
+.B \--class-attribute=attribute-name=action 
+
+.B \-Fattribute-name=layout 
+.B \--field-attribute=attribute-name=action  
+
+.B \-Mattribute-name=layout 
+.B \--method-attribute=attribute-name=action 
+
+.B \-Dattribute-name=layout 
+.B \--code-attribute=attribute-name=action 
+.in 15
+これら 4 つのオプションでは、クラスエンティティに Class 属性、Field 属性、Method 属性、Code 属性などの属性のレイアウトを指定できます。attribute-name には、これからレイアウトまたはアクションを定義する属性の名前を指定します。
+
+アクションとして指定可能な値:
+
+(一部のレイアウト文字列)
+.in 20 
+レイアウト言語は、JSR 200 仕様に定義されています。
+例\: --class-attribute=SourceFile=RUH.
+.in
+error
+.in 20 
+この属性が検出された場合、pack200 の操作に失敗し、適切な解説が表示されます。
+.in
+strip
+.in 20 
+この属性が検出された場合、属性は出力から削除されます。注: VM 必須属性を削除するとクラスローダの障害が発生することがあります。
+.an
+pass
+.in 20
+この属性が検出された場合、クラス全体が 1 つのリソースとして転送されます。
+
+例\: --class-attribute=CompilationID=pass, この属性を含むクラスファイルを転送します。パックツールは、その他のアクションを行いません。
+.in
+.TP
+.B \-fpack.properties \--config-file=pack.properties
+コマンド行に、パックツールを初期化するための Java プロパティが含まれている設定ファイルを指定できます。
+.LP
+.RS
+.ft 3
+.nf
+% pack200 -f pack.properties myarchive.pack.gz myarchive.jar
+% cat pack.properties
+# Generic properties for the packer.
+modification.time=latest
+deflate.hint=false
+keep.file.order=false
+# This option will cause the files bearing new attributes to
+# be reported as an error rather than passed uncompressed.
+unknown.attribute=error
+# Change the segment limit to be unlimited.
+segment.limit=-1
+.fi
+.ft 1
+.RE
+.TP        
+.SH 非標準オプション
+.TP 20
+.B \-v \--verbose
+最小限のメッセージを出力します。このオプションを複数指定すると、より長いメッセージが出力されます。
+.TP	
+.B \-q \--quiet
+メッセージを表示せずに動作します。
+.TP    	
+.B \-lfilename \--log-file=filename
+出力メッセージのログファイル。
+.TP    	
+.BI \-J option
+pack200 によって呼び出される Java 起動ツールにオプションを渡します。
+たとえば -J-Xms48m と指定した場合、起動メモリが 48M バイトに設定されます。
+-X で始まってはいませんが、pack200 の標準オプションではありません。慣習として、-J には、Java で書かれたアプリケーションを実行する VM にオプションを渡す働きがあります。
+.SS 終了ステータス
+次の終了値が返されます。
+.TP
+.B 0 " 成功"
+.TP
+.B >0 " エラー"
+.SH 関連項目
+.BR unpack200 (1),
+.BR jar (1),
+.BR jarsigner (1),
+.BR attributes (5)
+.TP
+API 仕様および関連情報については以下を参照してください。
+http://java.sun.com/j2se/5.0/docs
+http://java.sun.com/j2se/5.0/docs/guide/deployment/deployment-guide/pack200.html
+.SH 注意事項
+このコマンドと pack(1) コマンドを混同しないでください。これらは別製品です。
+.TP
+ドキュメント間に矛盾がある場合、今回の JDK リリース付属の J2SE API 仕様が最優先されます。	 

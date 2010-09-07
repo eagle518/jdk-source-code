@@ -1,0 +1,53 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1998, v.4001-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub Inc>
+<refentry id="serialver-1"><?Pub Caret>
+<!--@(#)serialver.1 1.13 01/03/14 SMI;-->
+<refmeta><refentrytitle>serialver</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">2004 年 6 月 22 日</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.   </refmiscinfo>
+</refmeta>
+<refnamediv><refname>serialver</refname><refpurpose>シリアルバージョンコマンド</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>serialver</command><arg choice="opt">[ options ]</arg>
+<arg choice="opt"><replaceable>classnames</replaceable></arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="serialver-1-indx-1"><primary sortas="serial version command">serial version command &mdash; serialver</primary></indexterm><indexterm id="serialver-1-indx-2"><primary sortas="serialver">serialver &mdash; serial version command</primary></indexterm>
+<para><command>serialver</command> コマンドは、指定された 1個または複数個のクラスの<literal>シリアルバージョン UID</literal> を、展開しているクラスへコピーするのに適した形式で返します。引数なしで呼び出した場合、<command>serialver</command> は使用方法を説明する行を表示します。</para>
+</refsect1>
+<refsect1><title>&opts-tt;</title>
+<para>次のオプションがサポートされています。</para>
+<variablelist termlength="narrow"><varlistentry><term remap="15"><option>classpath</option> <replaceable>directories and zip/jar files separated by :</replaceable></term><listitem><para>アプリケーションのクラスおよびリソースの検索パスを設定します。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>show</option> </term><listitem><para>単なるユーザインタフェースを表示します。ここで完全クラス名を入力し、Enter キーまたは Show ボタンを押すと、<literal>シリアルバージョン UID</literal> が表示されます。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>J</option><replaceable>option</replaceable></term><listitem><para>オプションを Java 仮想マシンに渡します。ここで <replaceable>option</replaceable> は、Java アプリケーション起動ツール java(1) のマニュアルページに記載されたオプションの 1 つです。たとえば、<literal>-J-Xms48m</literal> と指定すると、スタートアップメモリは 48M バイトに設定されます。<literal>-J</literal> を使って基本となる仮想マシンにオプションを渡すことはよく行われています。 </para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<refsect1><title>&attr-tt;</title>
+<para>次の属性については、<citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry> のマニュアルページを参照してください。</para>
+<informaltable frame="all" orient="port"><tgroup cols="2" colsep="1" rowsep="1"><colspec colnum="1" colname="col1" colwidth="1*" colsep="1" align="left"><colspec colnum="2" colname="col2" colwidth="1*" align="left"><thead><row><entry colname="col1" align="center" valign="top">属性タイプ</entry><entry colname="col2" align="center" valign="top">属性値</entry></row></thead><tbody><row><entry>使用条件</entry><entry>SUNWj5dev</entry></row></tbody></tgroup></informaltable>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry></para>
+<para>次については、<literal>java.sun.com</literal> を参照または検索してください。</para>
+<variablelist termlength="wholeline"><varlistentry><term remap="5"><literal>java.io.ObjectStreamClass</literal> @</term><listitem><para><ulink url="http://java.sun.com/j2se/1.5/docs/api/java/io/ObjectStreamClass.html">http://java.sun.com/j2se/1.5/docs/api/java/io/ObjectStreamClass.html</ulink></para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<!--+ 07/27/00 08:36:07
+    | tagMorph:  $Id: tagMorph-engine 1.54 1998/01/19 05:44:48 $
+    | tagMorph library:  $Id: libtagMorph.a 1.50 1998/01/19 22:02:51 $
+    | sunman-to-solbook 1.17
+    +-->
+</refentry>
+<?Pub *0000004047 0>

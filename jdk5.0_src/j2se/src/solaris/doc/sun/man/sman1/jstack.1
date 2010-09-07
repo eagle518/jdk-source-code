@@ -1,0 +1,94 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1999, v.4002-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub Inc>
+<refentry id="jstack-1">
+<!--@(#)jstack.1	1.1 04/06/15-->
+<refmeta><refentrytitle>unpack200</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">22 Jun 2004</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All
+rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.
+</refmiscinfo>
+</refmeta>
+<refnamediv><refname>jstack</refname><refpurpose>stack trace</refpurpose>
+</refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>jstack</command><arg choice="opt"><replaceable>[ option ]
+</replaceable></arg><arg choice="plain"><replaceable>pid</replaceable></arg>
+</cmdsynopsis>
+<cmdsynopsis><command>jstack</command><arg choice="opt" rep="repeat"><replaceable>
+[ option ]</replaceable></arg><arg>executable core</arg>
+</cmdsynopsis>
+<cmdsynopsis><command>jstack</command><arg choice="opt" rep="repeat"><replaceable>
+[ option ]</replaceable></arg><arg>[server-id@]remote-hostname-or-IP</arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&parm-tt;</title>
+<para>Options are mutually exclusive. Option, if used, should follow immediately
+after the command       name. See OPTIONS. </para>
+<variablelist termlength="narrow">
+<varlistentry><term><replaceable>pid</replaceable> </term><listitem><para>
+process id for which the stack trace is to be printed. The process must be
+a Java process. To get a list of Java processes running on a machine, jps
+may be used.</para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>executable</replaceable> </term><listitem>
+<para>Java executable from which the core dump was produced. </para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>core</replaceable> </term><listitem><para>
+ core file for which the stack trace is to be printed.</para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>remote-hostname-or-IP</replaceable> </term>
+<listitem><para>remote debug server's (see jsadebugd) hostname or IP address. 
+</para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>server-id</replaceable> </term><listitem>
+<para>optional unique id, if multiple debug servers are running on the same
+remote host.</para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="java-1-indx-1"><primary sortas="Java interpreter">Java interpreter &mdash;
+java</primary></indexterm><indexterm id="java-1-indx-2"><primary sortas="java">
+java &mdash; Java interpreter</primary></indexterm><para>jstack prints Java
+stack traces of Java threads for a given Java process or core file or  a remote
+debug server. For each Java frame, the full class name, method name, 'bci'
+(byte code index) and line number, if available, are printed. With the -m
+option, jstack prints both Java and native frames of all threads along with
+the 'pc' (program counter). For each native frame, the closest native symbol
+to 'pc', if available, is printed. C++ mangled names are not demangled. To
+demangle C++ names, the output of this command may be piped to <command>c++filt
+</command>. </para>
+<note><para>NOTE - This utility is unsupported and may or may not be available
+in future versions of the J2SE SDK. jstack is not currently available on Windows
+platforms or on the Linux Itanium platform. <?Pub Caret></para>
+</note>
+</refsect1>
+<refsect1><title>OPTIONS</title>
+<variablelist>
+<varlistentry><term>-m </term><listitem><para>prints mixed mode (both Java
+and native C/C++ frames) stack trace. </para>
+</listitem></varlistentry>
+<varlistentry><term>-h</term><listitem><para>prints a help message. </para>
+</listitem></varlistentry>
+<varlistentry><term>-help</term><listitem><para>prints a help message. </para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>pstack</refentrytitle><manvolnum>1</manvolnum>
+</citerefentry>,<citerefentry><refentrytitle>c++filt</refentrytitle><manvolnum>
+1</manvolnum></citerefentry>,<citerefentry><refentrytitle>jps</refentrytitle>
+<manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>jsadebugd
+</refentrytitle><manvolnum>1</manvolnum></citerefentry></para>
+</refsect1>
+<refsect1><title>KNOWN BUGS</title>
+<para>Mixed mode stack trace, the -m option, does not work with the remote
+debug server. </para>
+</refsect1>
+</refentry>
+<?Pub *0000004762>

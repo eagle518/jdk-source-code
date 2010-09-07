@@ -1,0 +1,241 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1999, v.4002-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub Inc>
+<refentry id="orbd-1">
+<!--@(#)orbd.1 1.1 01/03/14 SMI;-->
+<refmeta><refentrytitle>orbd</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">22 Jun 2004</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All
+rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.
+ </refmiscinfo>
+</refmeta>
+<refnamediv><indexterm><primary sortas="orbd">orbd &mdash; Object Request
+Broker Daemon</primary></indexterm><indexterm><primary sortas="Object Request Broker Daemon">
+Object Request Broker Daemon &mdash; orbd</primary></indexterm><refname>orbd
+</refname><refpurpose>Object Request Broker Daemon</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>orbd</command><arg choice="opt">&nbsp;<replaceable>
+options</replaceable></arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&desc-tt;</title>
+<para>The Server Manager included with the orbd tool is used to enable clients
+to transparently locate and invoke persistent objects on servers in the CORBA
+environment. The persistent servers,       while publishing the persistent
+object references in the Naming Service, include the port number of the ORBD
+in the object reference instead of the port number of the Server. The inclusion
+of an ORBD port number in the object reference for persistent object references
+has the following advantages: <itemizedlist>
+<listitem><para>The object reference in the Naming Service remains independent
+of the server life cycle. For example, the object reference could be published
+by the server in the Naming Service when it is first installed, and then,
+independent of how many times the server is started or shut down, the <acronym>
+ORBD</acronym> will always return the correct object reference to the invoking
+client.</para></listitem>
+<listitem><para>The client needs to look up the object reference in the Naming
+Service only once, and can keep reusing this reference independent of the
+changes introduced due to server life cycle.</para></listitem>
+</itemizedlist></para>
+<para>To access ORBD's Server Manager, the server must be started using servertool,
+which is a       command-line interface for application programmers to register,
+unregister, startup, and       shutdown a persistent server. For more information
+on the Server Manager, see the section in       this document titled Server
+Manager. </para>
+<para>When orbd starts up, it also starts a naming service. For more information
+on the naming service,  link to Naming Service. </para>
+</refsect1>
+<refsect1><title>REQUIRED OPTIONS</title>
+<variablelist>
+<varlistentry><term><option>-ORBInitialPort nameserverport </option></term>
+<listitem><para>Specifies the port on which the name server should be started.
+Once started, orbd will listen for incoming requests on this port. Note that
+when using Solaris software, you must             become root to start a process
+on a port under 1024. For this reason, we recommend that you use a port number
+greater than or equal to 1024. (required) </para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>OTHER &opts-tt;</title>
+<variablelist termlength="wholeline">
+<varlistentry><term remap="15"><option>port</option> <replaceable>port</replaceable></term>
+<listitem><para>(Optional) Specifies the activation port where the <acronym>
+ORBD</acronym> should be started. The default value for this port is <literal>
+1049</literal>. This port number is added to the port field of the persistent <acronym>
+IOR</acronym>s.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>defaultdb</option> <replaceable>directory
+</replaceable></term><listitem><para>(Optional) Specifies the base where the <acronym>
+ORBD</acronym> persistent storage directory <literal>orb.db</literal> is created.
+If this option is not specified, the default value is "<literal>./orb.db</literal>".
+</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>serverPollingTime</option> <replaceable>
+milliseconds </replaceable></term><listitem><para>Specifies how often ORBD
+checks for the health of persistent servers registered via servertool. The
+default value is 1,000 ms. The value specified for milliseconds must be a
+valid positive integer. (optional) </para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>serverStartupDelay</option> <replaceable>
+ milliseconds </replaceable></term><listitem><para>Specifies how long ORBD
+waits before sending a location forward exception after a persistent server
+that is registered via servertool is restarted. The default value is 1,000
+ms. The value specified for milliseconds must be a valid positive integer.
+(optional) </para>
+</listitem></varlistentry>
+<varlistentry><term><option role="nodash">J</option><replaceable>option</replaceable></term>
+<listitem><para>Pass <replaceable>option</replaceable> to the Java virtual
+machine, where option is one of the options described on the man page for
+the java application launcher, java (1). For example, <literal>-J-Xms48m</literal>
+sets the startup memory to 48 megabytes. It is a common convention for <literal>
+-J</literal> to pass options to the underlying virtual machine.</para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>Starting and Stopping the Naming Service</title>
+<para>A Naming Service is a CORBA service that allows CORBA objects to be
+named by means of binding a name to an object reference. The name binding
+may be stored in the naming service, and a client may supply the name to obtain
+the desired object reference. </para>
+<para>Prior to running a client or a server, you will start ORBD. ORBD includes
+a persistent Naming Service and a transient Naming Service, both of which
+are an implementation of the COS Naming Service. </para>
+<simplelist>
+<member>The Persistent Naming Service provides persistence for naming contexts.
+This means that this information is persistent across service shutdowns and
+startups, and is recoverable in the event of a service failure. If ORBD is
+restarted, the Persistent Naming Service will restore the naming context graph,
+so that the binding of all clients' and servers' names remains intact (persistent). 
+</member>
+<member>For backward compatibility, tnameserv, a Transient Naming Service
+shipped with older versions of the JDK, is also included in this release of
+J2SE. A transient naming service retains naming contexts as long as it is
+running. If there is a service interruption, the naming context graph is lost. 
+</member></simplelist><para>The <option>-ORBInitialPort</option> argument
+is a required command-line argument for orbd, and is used to set the port
+number on which the Naming Service will run. The following instructions assume
+you can use port 1050 for the Java IDL Object Request Broker Daemon. When
+using Solaris software, you must become root to start a process on a port
+under 1024. For this reason, we recommend that you use a port number greater
+than or equal to 1024. You can substitute a different port if necessary. 
+</para>
+<para>To start orbd from a UNIX command shell, enter: </para>
+<screen> orbd -ORBInitialPort 1050&amp;</screen>
+<para>From an MS-DOS system prompt (Windows), enter: </para>
+<screen>start orbd -ORBInitialPort 1050</screen>
+<para>Now that ORBD is running, you can run your server and client applications.
+When running the client and server applications, they must be made aware of
+the port number (and machine name, if applicable) where the Naming Service
+is running. One way to do this is to add the following code to your application: 
+</para>
+<screen>Properties props = new Properties();
+        props.put("org.omg.CORBA.ORBInitialPort", "1050");
+        props.put("org.omg.CORBA.ORBInitialHost", "MyHost");
+        ORB orb = ORB.init(args, props);</screen>
+<para>In this example, the Naming Service is running on port 1050 on host
+"MyHost". Another way is to specify the port number and/or machine name when
+running the server or client application from the command line. For example,
+you would start your "HelloApplication" with the following command line: 
+</para>
+<screen>java HelloApplication -ORBInitialPort 1050 -ORBInitialHost MyHost
+</screen>
+<para>To stop the naming service, use the relevant operating system command,
+such as pkill orbd on Solaris, or Ctrl+C in the DOS window in which orbd is
+running. Note that names registered with the naming service may disappear
+when the service is terminated if the naming service is transient. The Java
+IDL naming service will run until it is explicitly stopped.</para>
+<para>For more information on the Naming Service included with ORBD, see Naming
+Service. </para>
+</refsect1>
+<refsect1><title>Server Manager</title>
+<para>To access ORBD's Server Manager and run a persistent server, the server
+must be started using servertool, which is a command-line interface for application
+programmers to register, unregister, startup, and shutdown a persistent server.
+When a server is started using servertool, it must be started on the same
+host and port on which orbd is executing. If the server is run on a different
+port, the information stored in the database for local contexts will be invalid
+and the service will not work properly. </para>
+<example>
+<title>Server Manager: an Example</title>
+<para>Using the sample tutorial for our demonstration, you would run the idlj
+compiler and javac compiler as shown in the tutorial. To run the Server Manager,
+follow these steps for running the application: </para>
+<itemizedlist>
+<listitem><para>1.Start orbd. </para>
+<para>To start orbd from a UNIX command shell, enter: </para>
+<screen>orbd -ORBInitialPort 1050 </screen>
+<para>From an MS-DOS system prompt (Windows), enter: </para>
+<screen>start orbd -ORBInitialPort 1050</screen>
+<para>Note that 1050 is the port on which you want the name server to run. <option>
+-ORBInitialPort</option> is a required command-line argument. When using Solaris
+software, you must become root to start a process on a port under 1024. For
+this reason, we recommend that you use a port number greater than or equal
+to 1024. </para></listitem>
+<listitem><para>2.Start the servertool: </para>
+<para>To start the Hello server, enter: </para>
+<screen>servertool -ORBInitialPort 1050</screen>
+<para>Make sure the name server (orbd) port is the same as in the previous
+step, for example,       -ORBInitialPort 1050. The servertool must be started
+on the same port as the name server. </para></listitem>
+<listitem><para>3.Start the Hello server from the servertool prompt: </para>
+<screen>servertool  > register -server HelloServer -classpath . -applicationName
+                      HelloServerApName</screen>
+<para>The servertool registers the server, assigns it the name of "HelloServerApName",
+and displays its server id.</para></listitem>
+<listitem><para>4.Run the client application from another terminal window
+or prompt:</para>
+<screen> java HelloClient -ORBInitialPort 1050 -ORBInitialHost localhost</screen>
+<para>For this example, you can omit -ORBInitialHost localhost since the name
+server is running on the same host as the Hello client. If the name server
+is running on a different host, use -ORBInitialHost nameserverhost to specify
+the host on which the IDL name server is running. </para>
+<para>Specify the name server (orbd) port as done in the previous step, for
+example, -ORBInitialPort 1050. </para></listitem>
+<listitem><para>5.When you have finished experimenting with the Server Manager,
+be sure to shut down or kill the name server (orbd) and servertool. </para>
+<para>To shut down orbd from a DOS prompt, select the window that is running
+the server and enter Ctrl+C to shut it down. To shut down orbdfrom a Unix
+shell, find the process, and kill it. The server will continue to wait for
+invocations until it is explicitly stopped. </para>
+<para>To shut down the servertool, type quit and press the Enter key on the
+keyboard. </para></listitem>
+</itemizedlist>
+</example>
+</refsect1>
+<refsect1><title>&attr-tt;</title>
+<para>See <citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>
+5</manvolnum></citerefentry> for a description of the following attributes:
+</para>
+<informaltable frame="All" orient="Port">
+<tgroup cols="2" colsep="1" rowsep="1"><colspec colnum="1" colname="col1"
+colwidth="1*" colsep="1" align="Left"><colspec colnum="2" colname="col2" colwidth="1*"
+align="Left">
+<thead>
+<row><entry colname="col1" align="center" valign="top">ATTRIBUTE TYPE</entry>
+<entry colname="col2" align="center" valign="top">ATTRIBUTE VALUE</entry>
+</row>
+</thead>
+<tbody>
+<row><entry>Availability</entry><entry>SUNWj5dev</entry></row>
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1><?Pub Caret>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>java</refentrytitle><manvolnum>1</manvolnum>
+</citerefentry>, <citerefentry><refentrytitle>javac</refentrytitle><manvolnum>
+1</manvolnum></citerefentry>, <citerefentry><refentrytitle>servertool</refentrytitle>
+<manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>attributes
+</refentrytitle><manvolnum>5</manvolnum></citerefentry> </para>
+<para>See (or search <literal>java.sun.com</literal>) for the following:</para>
+<variablelist termlength="wholeline">
+<varlistentry><term remap="10"><citetitle>Setting the Classpath</citetitle>
+@</term><listitem><para><ulink url="http://java.sun.com/j2se/1.5/docs/tooldocs/solaris/classpath.html">
+http://java.sun.com/j2se/1.5/docs/tooldocs/solaris/classpath.html</ulink></para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+</refentry>
+<?Pub *0000014022>

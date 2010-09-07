@@ -1,0 +1,311 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1998, v.4001-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub EntList minus bsol>
+<refentry id="javac-1">
+<!--@(#)javac.1 1.12 01/03/14 SMI;-->
+<refmeta><refentrytitle>javac</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">2004 年 6 月 22 日</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.</refmiscinfo>
+</refmeta>
+<refnamediv><refname>javac</refname><refpurpose>Java コンパイラ</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>javac</command><arg choice="opt"><option>bootclasspath</option>&nbsp;<replaceable>bootclasspath</replaceable></arg><arg choice="opt"><option>classpath</option>&nbsp;<replaceable>classpath</replaceable></arg><arg choice="opt"><option>d</option>&nbsp;<replaceable>directory</replaceable></arg><arg choice="opt"><option>deprecation</option></arg><arg choice="opt"><option>encoding</option>&nbsp;<replaceable>encoding</replaceable></arg><arg choice="opt"><option>extdirs</option>&nbsp;<replaceable>directories</replaceable></arg><group><arg choice="plain"><option>g</option></arg><arg choice="plain"><option>g:none</option></arg><arg choice="plain"><option>g:</option>&nbsp;<replaceable>keyword-list</replaceable></arg></group><arg choice="opt"><option>J</option><replaceable>option</replaceable></arg>
+<arg><option>help</option></arg><arg choice="opt"><option>nowarn</option></arg><arg choice="opt"><option>O</option></arg><arg><option>source</option> <replaceable>release</replaceable></arg><arg choice="opt"><option>sourcepath</option>&nbsp;<replaceable>sourcepath</replaceable></arg><arg choice="opt"><option>target</option>&nbsp;<replaceable>version</replaceable></arg><arg choice="opt"><option>verbose</option></arg><arg choice="opt"><option>X</option></arg><arg choice="opt"><option>Xstdout</option> <replaceable>filename</replaceable></arg><arg choice="opt"><replaceable>sourcefiles</replaceable></arg><arg choice="opt"><replaceable>@files</replaceable></arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&parm-tt;</title>
+<para>オプションの順序は任意です。特定のオプションに適用されるパラメータについては、下記を参照してください。</para>
+<variablelist termlength="narrow"><varlistentry><term remap="15"><replaceable>sourcefiles</replaceable> </term><listitem><para>コンパイルされる 1 つ以上のソースファイル (<literal>MyClass.java</literal> など) </para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><literal>@</literal><replaceable>files</replaceable></term><listitem><para>ソースファイルを一覧表示する 1 つ以上のファイル</para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="javac-1-indx-1"><primary sortas="Java compiler">Java compiler &mdash; javac</primary></indexterm><indexterm id="javac-1-indx-2"><primary sortas="javac">javac &mdash; Java compiler</primary></indexterm>
+<para><command>javac</command> ツールは、<trademark>Java</trademark> プログラミング言語で記述されたクラスとインタフェースの定義を読み取り、バイトコードクラスファイルにコンパイルします。</para>
+<para>ソースコードのファイル名を <command>javac</command> に渡すには、次の 2 つの方法があります。</para>
+<itemizedlist>
+<listitem><para>ソースファイルの数が少ない場合は、ファイル名をコマンド行で直接指定します。</para>
+</listitem><listitem><para>ソースファイルの数が多い場合は、ファイル名を空白または行ブレークで区切ってファイルに記述します。次に、このリストファイル名の先頭に @ を付けて <command>javac</command> のコマンド行で指定します。</para>
+</listitem></itemizedlist>
+<para>ソースコードのファイル名は <literal>.java</literal> 拡張子、クラスのファイル名は <literal>.class</literal> 拡張子を持たなければなりません。また、ソースファイルとクラスファイルのどちらも、該当するクラスに対応したルート名を持たなければなりません。たとえば、<literal>MyClass</literal> という名前のクラスは、<literal>MyClass.java</literal> という名前のソースファイルに記述します。このソースファイルは、<literal>MyClass.class</literal> という名前のバイトコードクラスファイルにコンパイルされます。</para>
+<para>内部クラス定義は、追加のクラスファイルを生成します。これらのクラスファイルの名前は、<literal>MyClass$MyInnerClass.class</literal> のように、内部クラス名と外部クラス名を組み合わせたものになります。</para>
+<para>ソースファイルは、パッケージツリーを反映したディレクトリツリーに配置する必要があります。たとえば、すべてのソースファイルを <literal>/workspace</literal> に置いている場合、<literal>com.mysoft.mypack.MyClass</literal> のソースコードは <literal>/workspace/com/mysoft/mypack/MyClass.java</literal> にある必要があります。</para>
+<para>デフォルトでは、コンパイラは各クラスファイルを対応するソースファイルと同じディレクトリに置きます。<option>d</option> (後述を参照) を使うと、ソースファイルのある場所とは異なる出力先ディレクトリを指定できます。</para>
+<refsect2><title>型の検索</title>
+<indexterm id="javac-1-indx-3"><primary sortas="javac">javac &mdash; Java compiler</primary><secondary>Searching for Types</secondary></indexterm>
+<para>ソースファイルをコンパイルするとき、コンパイラはその定義がコマンド行で指定されたソースファイル中に現れなかった型についての情報を必要とします。コンパイラには、ソースファイルで使われているクラスまたはインタフェース、拡張されているクラスまたはインタフェース、あるいは実装されているクラスまたはインタフェースそれぞれの型情報が必要です。これには、ソースファイルで明示的には言及されていなくても、継承を通じて情報を提供するクラスとインタフェースも含まれます。</para>
+<para>たとえば、<literal>java.applet.Applet</literal> をサブクラス化する場合は、Applet の上位クラスである <literal>java.awt.Panel</literal>、<literal>java.awt.Container</literal>、<literal>java.awt.Component</literal>、および <literal>java.awt.Object</literal> も使っていることになります。</para>
+<para>コンパイラは、型情報が必要になると、該当する型を定義しているソースファイルまたはクラスファイルを探します。コンパイラは、まず、ブートストラップクラスと拡張機能クラスを検索し、次にユーザクラスパス (デフォルトでは現在のディレクトリ) を検索します。ユーザクラスパスは、<envar>CLASSPATH</envar> 環境変数を設定するか、あるいは <option>classpath</option> コマンド行オプションを使って設定します (詳細は、「クラスパスの設定」を参照)。</para>
+<para>オプションが指定されている場合、コンパイラは、指定されたパスでソースファイルを検索します。それ以外の場合は、ユーザクラスパスでクラスファイルとソースファイルの両方を検索します。<option>bootclasspath</option> オプションと <option>extdirs</option> オプションを使うと、別のブートストラップクラスや拡張機能クラスを指定できます。後述の「クロスコンパイルオプション」を参照してください。</para>
+<para>型の検索に成功したときに得られる結果は、クラスファイル、ソースファイル、またはその両方である場合があります。それぞれの場合に <command>javac</command> がどのように処理を行うかを次に示します。</para>
+<itemizedlist>
+<listitem><para>検索で見つかったものがソースファイルではなく、クラスファイルである場合、<command>javac</command> はクラスファイルを使用します。</para>
+</listitem><listitem><para>検索で見つかったものがクラスファイルではなく、ソースファイルである場合、<command>javac</command> は、該当するソースファイルをコンパイルし、その結果作成されるクラスファイルを使用します。</para>
+</listitem><listitem><para>検索で見つかったものがソースファイルとクラスファイルの両方である場合、<command>javac</command> は、クラスファイルが古くなっているかどうかを調べます。クラスファイルが古くなっている場合は、ソースファイルを再コンパイルし、更新後のクラスファイルを使用します。それ以外の場合は、見つかったクラスファイルを使用します。</para>
+<para>デフォルトでは、クラスファイルがソースファイルより古い場合にのみ、<command>javac</command> はクラスファイルが古くなっていると判断します。</para>
+</listitem></itemizedlist>
+<note>
+<para><command>javac</command> は、コマンド行に指定されていないソースファイルをコンパイルするときでも、そのことを示すメッセージを表示しません。自動コンパイルをトレースするには、<option>verbose</option> オプションを使ってください。</para>
+</note>
+</refsect2>
+</refsect1>
+<refsect1><title>&opts-tt;</title>
+<para>コンパイラには、現在の開発環境でサポートされ、将来のリリースでもサポートされる標準オプションのセットがあります。非標準オプションの補足的なセットは、現在の仮想マシンの実装特有のもので、将来変更される可能性があります。非標準オプションは、<option>X</option> で始まります。</para>
+<refsect2><title>標準オプション</title>
+<indexterm id="javac-1-indx-5"><primary sortas="javac">javac &mdash; Java compiler</primary><secondary>Standard Options</secondary></indexterm><variablelist termlength="wholeline"><varlistentry><term><option>classpath</option> <replaceable>classpath</replaceable> </term><listitem><para>ユーザクラスパスを設定し、<envar>CLASSPATH</envar> 環境変数のユーザクラスパスをオーバーライドします。<envar>CLASSPATH</envar> と <option>classpath</option> のどちらも指定されていない場合、ユーザクラスパスは現在のディレクトリになります。詳細は、「<citetitle>クラスパスの設定</citetitle>」を参照してください。</para>
+<para><option>sourcepath</option> オプションが指定されていない場合、クラスファイルとソースファイルの両方がユーザクラスパスで検索されます。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Djava.ext.dirs</option>=<replaceable>directories</replaceable> </term><listitem><para>インストールされた拡張機能の場所をオーバーライドします。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Djava.endorsed.dirs</option>=<replaceable>directories</replaceable> </term><listitem><para>承認された標準パスの場所をオーバーライドします。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>d</option> <replaceable>directory</replaceable> </term><listitem><para>クラスファイルの出力先ディレクトリを設定します。出力先ディレクトリはすでに存在している必要があります。<command>javac</command> は出力先ディレクトリを作成しません。クラスがパッケージの一部である場合、<command>javac</command>は、必要に応じてディレクトリを作成し、パッケージ名を反映したサブディレクトリにクラスファイルを置きます。たとえば、<option>d</option> <literal>/home/myclasses</literal> と指定し、クラスの名前が <literal>com.mypackage.MyClass</literal> である場合、クラスファイルは <literal>/home/myclasses/com/mypackage/MyClass.class</literal> になります。</para>
+<para><option>d</option> が指定されていない場合、<command>javac</command> はソースファイルと同じディレクトリにクラスファイルを置きます。</para>
+<note><para><option>d</option> で指定されたディレクトリがユーザクラスパスに自動的に追加されるわけではないことに注意してください。</para>
+</note>
+</listitem></varlistentry>
+<varlistentry><term><option>deprecation</option> </term><listitem><para>推奨されないメンバやクラスが、使用あるいはオーバーライドされるたびに説明を表示します。<option>deprecation</option> が指定されていない場合、<command>javac</command> は、推奨されないメンバやクラスを使用あるいはオーバーライドしているソースファイルの名前を表示します。<option>deprecation</option> は <option>Xlint:deprecation</option> の短縮形です。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>encoding</option> </term><listitem><para>ソースファイルのエンコーディング名 (EUCJIS/SJIS/ISO8859-1/UTF8 など) を指定します。<option>encoding</option> が指定されていない場合は、プラットフォームのデフォルトコンバータが使われます。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>g</option> </term><listitem><para>局所変数を含むすべてのデバッグ情報を生成します。デフォルトでは、行番号およびソースファイル情報だけが生成されます。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>g:none</option> </term><listitem><para>デバッグ情報を生成しません。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>g:</option><replaceable>keyword-list</replaceable> </term><listitem><para>カンマで区切られたキーワードリストにより指定された、特定の種類のデバッグ情報だけを生成します。次のキーワードが有効です。<variablelist termlength="narrow"><varlistentry><term remap="10"><literal>source</literal> </term><listitem><para>ソースファイルのデバッグ情報</para>
+</listitem></varlistentry>
+<varlistentry><term><literal>lines</literal> </term><listitem><para>行番号のデバッグ情報</para>
+</listitem></varlistentry>
+<varlistentry><term><literal>vars</literal> </term><listitem><para>局所変数のデバッグ情報</para>
+</listitem></varlistentry>
+</variablelist></para>
+</listitem></varlistentry>
+<varlistentry><term remap="7"><option>help</option> </term><listitem><para>標準オプションの形式を表示します。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="7"><option>nowarn</option> </term><listitem><para>警告メッセージを無効にします。これは、<option>Xlint:none</option> と同じ意味です。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="7"><option>source</option> <replaceable>release</replaceable></term><listitem><para>宣言を含むソースコードのコンパイルのサポートを有効にします。次の値を <replaceable>release</replaceable> で指定することができます。</para>
+<variablelist><varlistentry><term>5</term><listitem><para>1.5 と同義。</para>
+</listitem></varlistentry>
+<varlistentry><term>1.5</term><listitem><para>コンパイラは、JDK 1.5 から導入された総称型および他の言語機能を含むコードを受け入れます。<option>source</option> フラグが使用されない場合、1.5 の動作がコンパイラのデフォルトに設定されます。</para>
+</listitem></varlistentry>
+<varlistentry><term>1.4</term><listitem><para>コンパイラは、JDK 1.4 で導入された宣言を含むコードを受け入れます。</para>
+</listitem></varlistentry>
+<varlistentry><term>1.3</term><listitem><para>コンパイラは、JDK 1.3 より後に導入された、宣言、総称型およびその他の言語機能をサポートしません。</para>
+</listitem></varlistentry>
+</variablelist>
+</listitem></varlistentry>
+<varlistentry><term><option>sourcepath</option> <replaceable>sourcepath</replaceable> </term><listitem><para>クラスまたはインタフェースの定義を検索するソースコードパスを指定します。ユーザクラスパス同様、ソースパスの複数のエントリはコロン (<literal>:</literal>) で区切ります。ソースパスのエントリには、ディレクトリ、<acronym remap="small">JAR</acronym> アーカイブ、または <acronym remap="small">ZIP</acronym> アーカイブを指定できます。パッケージを使っている場合は、ディレクトリまたはアーカイブ内のローカルパス名がパッケージ名を反映していなければなりません。</para>
+<note><para>ソースが見つかった場合、クラスパスで見つかったクラスは、自動再コンパイルの対象になります。</para>
+</note>
+</listitem></varlistentry>
+<varlistentry><term><option>verbose</option> </term><listitem><para>冗長出力を指定します。ロードされるクラスおよびコンパイルされるソースファイルごとに情報を出力します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>X</option></term><listitem><para>非標準オプションについての情報を表示し、終了します。</para>
+</listitem></varlistentry>
+</variablelist>
+</refsect2>
+<refsect2><title>クロスコンパイルオプション</title>
+<indexterm id="javac-1-indx-6"><primary sortas="javac">javac &mdash; Java compiler</primary><secondary>Cross-Compilation Options</secondary></indexterm>
+<para>デフォルトでは、クラスのコンパイルは、<command>javac</command> が添付されている JDK のブートストラップクラスおよび拡張機能クラスに対して行われます。しかし、<command>javac</command> は、異なる Java プラットフォームの実装のブートストラップクラスおよび拡張機能クラスに対してコンパイルを行う「クロスコンパイル」もサポートしています。クロスコンパイルを行う場合は、<option>bootclasspath</option> および <option>extdirs</option> を使うことが重要です。後述の「クロスコンパイルの例」を参照してください。</para>
+<variablelist termlength="wholeline"><varlistentry><term><option>target</option> <replaceable>version</replaceable> </term><listitem><para>指定されたバージョンの VM 上で動作するクラスファイルを生成します。デフォルトでは、1.2 VM と互換性のあるクラスファイルを生成します。1 つだけ例外があり、<option>source 1.4</option> オプションを使用すると、デフォルトのターゲットは 1.4 になります。javac でサポートされているバージョンは以下のとおりです。<variablelist termlength="xtranarrow"><varlistentry><term>1.1</term><listitem><para>生成するクラスファイルが、1.1 <acronym remap="small">VM</acronym> 以降に互換性があることを保証します。</para>
+</listitem></varlistentry>
+<varlistentry><term>1.2</term><listitem><para>1.2 <acronym remap="small">VM</acronym> 以降では動作するが、1.1 <acronym remap="small">VM</acronym> 上では動作しないクラスファイルを生成します。</para>
+</listitem></varlistentry>
+<varlistentry><term>1.3</term><listitem><para>JDK バージョン 1.3 およびそれ以降の <acronym remap="small">VM</acronym> では 動作するが、1.1 <acronym remap="small">VM</acronym> または 1.2 <acronym remap="small">VM</acronym> 上では動作しないクラスファイルを生成します。</para>
+</listitem></varlistentry>
+<varlistentry><term>1.4</term><listitem><para>JDK 1.4 以降の <acronym remap="small">VM</acronym> 上で動作するクラスファイルを生成します。ただし、1.1、1.2、または 1.3 <acronym remap="small">VM</acronym> 上では動作しません。</para>
+</listitem></varlistentry>
+<varlistentry><term>1.5</term><listitem><para>JDK 1.5 <acronym remap="small">VM</acronym> 上のみでコンパイル可能なクラスファイルを生成します。</para>
+</listitem></varlistentry>
+</variablelist></para>
+</listitem></varlistentry>
+<varlistentry><term><option>bootclasspath</option> <replaceable>bootclasspath</replaceable> </term><listitem><para>指定された一連のブートクラスをクロスコンパイルします。ユーザクラスパスと同様に、ブートクラスパスエントリはコロン .RB (<literal>:</literal>) で区切られます。また、ディレクトリ、<acronym remap="small">JAR</acronym> アーカイブまたは <acronym remap="small">ZIP</acronym> アーカイブにすることができます。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>cldc1.0 </option></term><listitem><para>CLDC プログラムをコンパイルします。このコンパイラはスタックマップを生成し、プリベリファイヤの使用を不要にします。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>extdirs</option> <replaceable>directories</replaceable> </term><listitem><para>指定された拡張ディレクトリをクロスコンパイルします。ディレクトリは、コロンで区切られたディレクトリのリストです。指定されたディレクトリの各 <acronym remap="small">JAR</acronym> アーカイブは、クラスファイルを検索します。</para>
+</listitem></varlistentry>
+</variablelist>
+</refsect2>
+<refsect2><title>標準ではないオプション</title>
+<indexterm id="javac-1-indx-7"><primary sortas="javac">javac &mdash; Java compiler</primary><secondary>Non-Standard Options</secondary></indexterm><variablelist termlength="wholeline"><varlistentry><term><option>Xbootclasspath/p:<replaceable>path </replaceable></option></term><listitem><para>ブートストラップクラスパスの前に付加します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xbootclasspath/a:<replaceable>path</replaceable> </option></term><listitem><para>ブートストラップクラスパスの後に追加します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xbootclasspath/:<replaceable>path</replaceable> </option></term><listitem><para>ブートストラップクラスパスの場所をオーバーライドします。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xlint </option></term><listitem><para>すべての推奨された警告を有効にします。このリリースでは、すべての使用可能な警告が推奨されています。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xlint:none </option></term><listitem><para>Java 言語仕様によって義務付けられていない、すべての警告を無効にします。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xlint:-xxx </option></term><listitem><para>警告 <replaceable> xxx</replaceable> を無効にします。ここで <replaceable> xxx</replaceable> は、下記に示す <option>Xlint:xxx</option> でサポートされる警告の名前です。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xlint:unchecked </option></term><listitem><para>Java 言語仕様で義務付けられているチェックが行われていない、変換警告についての詳細を表示します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xlint:path </option></term><listitem><para>存在しないパス (クラスパス、ソースパスなど) ディレクトリについて警告します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xlint:serial </option></term><listitem><para>直列化可能クラスの失われた serialVersionUID 定義について警告します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xlint:finally </option></term><listitem><para>正常に完了できない <literal>finally</literal> 句について警告します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xlint:fallthrough </option></term><listitem><para>fall-through 文のスイッチブロックを検査し検出されたすべての警告メッセージを表示します。Fall-through case はスイッチブロック内の case で、ブロックの最後の case を除く、break 文を含まない コードを持つ case は、その case から次の case へ "fall through" のコード実行を行うことを可能にします。たとえば、このスイッチブロックの case 1 レベルに続く コードは、break 文を含みません。</para>
+<screen>switch (x) {
+                  case 1:
+                         System.out.println("1");
+                         //  No  break;  statement here.
+                  case 2:
+                         System.out.println("2");
+                  }</screen>
+<para>このコードをコンパイルするときに <option>Xlint:fallthrough</option> フラグが使用されると、コンパイラは "possible fall-through  into case" についての警告を、問題になっている case の番号とともに表示します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xmaxerrors</option><replaceable>number</replaceable></term><listitem><para>表示するエラーの最大数を設定します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xmaxwarns</option><replaceable>number</replaceable></term><listitem><para>表示する警告の最大数を設定します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xstdout</option> <replaceable>filename</replaceable></term><listitem><para>指定されたファイルのコンパイラメッセージを送信します。デフォルトでは、コンパイラメッセージは <literal>System.err</literal> ファイルに出力されます。</para>
+</listitem></varlistentry>
+</variablelist>
+</refsect2>
+<refsect2><title>-J オプション</title>
+<variablelist><varlistentry><term><option>J</option><replaceable>option</replaceable></term><listitem><para>javac によって呼び出された Java 起動ツールに <replaceable>option</replaceable> を渡します。たとえば、<option>J-Xms48m</option> は起動メモリを 48M バイトに設定します。これは <option>X</option> で始まってはいませんが、<command>javac</command> の `標準オプション` ではありません。<option>J</option> の変換では、オプションを Java で記述されたアプリケーションを実行する基本となる VM に渡すことは一般的に行われています。</para>
+<note><para><literal>CLASSPATH</literal>、<option>classpath</option>、<option>bootclasspath</option>、および <option>extdirs</option> の実行に使用するクラスを指定しません。このような、コンパイラの不必要な実装は、通常、無意味であるだけでなく、常に危険が伴います。クラスを指定する必要がある場合は、<option>J</option> オプションを使用して、オプションを基本となる Java 起動ツールに渡します。</para>
+</note>
+</listitem></varlistentry>
+</variablelist>
+</refsect2>
+<refsect2><title>コマンド行引数ファイル</title>
+<indexterm id="javac-1-indx-4"><primary sortas="javac">javac &mdash; Java compiler</primary><secondary>File List</secondary></indexterm>
+<para>javac コマンド行を短縮、あるいは簡潔にするため、 <command>javac</command> コマンドに対する引数を含むファイルを 1 つ以上指定できます。これにより、任意のオペレーティングシステム上で任意の長さの <command>javac</command> コマンドを作成できます。</para>
+<para>引数ファイルには、javac オプションとソースファイル名を任意の組み合わせで入れることができます。ファイル中の引数は、空白文字または改行で区切ります。引数ファイル中のファイル名は、引数ファイルの位置ではなく、現在のディレクトリとの相対位置で表します。引数のリストに、ワイルドカード (*) は使用できません (<command>*.java</command> のような指定)。ファイルを再帰的に解釈する「@」文字の使用はサポートされていません。</para>
+<para>javac を実行すると、各引数ファイルのパスおよび名前に「@」で始まる文字列が渡されます。javac が「@」文字で始まる引数を検出すると、そのファイルの内容が属性リストに展開されます。</para>
+<para>例 &mdash; 引数ファイルを 1 つ使用</para>
+<para>すべての javac 引数を持つ <filename>argfile</filename> という名前の引数ファイルを 1 つ使用します。 <informalexample><screen>example% <userinput>javac @argfile</userinput></screen>
+</informalexample></para>
+<para>この引数ファイルには、次の例で示す両方のファイルの内容を入れることができます。</para>
+<para>例 &mdash; 引数ファイルを 2 つ使用</para>
+<para>2 つの引数ファイルを作成できます。1 つは javac オプション用、もう 1 つはソースファイル用です (次のリストには、行をつなぐ文字列が使用されていないことに注意してください)。</para>
+<para>以下のものを含む <filename>options</filename> という名前のファイルを作成します。<informalexample><screen>-d classes
+-g
+-sourcepath \java\pubs\ws\1.3\src\share\classes</screen>
+</informalexample></para>
+<para>以下のものを含む <filename>classes</filename> という名前のファイルを作成します。<informalexample><screen>MyClass1.java
+MyClass2.java
+MyClass3.java</screen>
+</informalexample></para>
+<para>次のコマンドで、javac を実行します。<informalexample><screen>% <userinput>javac @options @classes</userinput></screen>
+</informalexample></para>
+<para>例 &mdash; パスを指定した引数ファイル</para>
+<para>引数ファイルにはパスを指定できますが、引数ファイル内のファイル名はすべて、現在の作業用ディレクトリ (<command>path1</command> でも <command>path2</command> でもなく) との相対位置で表します。 <informalexample><screen>% <userinput>javac @path1/options @path2/classes</userinput></screen>
+</informalexample></para>
+</refsect2>
+</refsect1>
+<refsect1><title>&exam-tt;</title>
+<example role="example"><title>簡単なプログラムのコンパイル</title>
+<para>次に示すソースファイル <literal>Hello.java</literal> では、<literal>greetings.Hello</literal> という名前のクラスを定義しています。<literal>greetings</literal> ディレクトリは、ソースファイルとクラスファイルの両方のパッケージディレクトリで、現在のディレクトリのすぐ下にあります。このため、この例ではデフォルトユーザクラスパスを使用できます。また、<option>d</option> を使って別の出力先ディレクトリを指定する必要もありません。<informalexample><screen>   % <userinput>ls</userinput>
+      <computeroutput>greetings/</computeroutput>
+   % <userinput>ls greetings</userinput>
+      <computeroutput>Hello.java
+
+</computeroutput>   % <userinput>cat greetings/Hello.java</userinput>
+      <computeroutput>package greetings;
+   
+      public class Hello {
+           public static void main(String[] args) {
+              for (int i=0; i &lt; args.length; i++) {
+                  System.out.println("Hello " + args[i]);
+              }
+           }
+      }</computeroutput>
+    % <userinput>javac greetings/Hello.java</userinput>
+    % <userinput>ls greetings</userinput>
+      <computeroutput>Hello.class   Hello.java</computeroutput>
+    % <userinput>java greetings.Hello World Universe Everyone</userinput>
+      <computeroutput>Hello World
+      Hello Universe
+      Hello Everyone</computeroutput></screen>
+</informalexample></para>
+</example>
+<example role="example"><title>複数のソースファイルのコンパイル</title>
+<para>次の例は、パッケージ <literal>greetings</literal> 内のすべてのソースファイルをコンパイルします。<informalexample><screen>   % <userinput>ls</userinput>
+      <computeroutput>greetings/</computeroutput>
+   % <userinput>ls greetings</userinput>
+      <computeroutput>Aloha.java     GutenTag.java     Hello.java      Hi.java</computeroutput>
+   % <userinput>javac greetings/*.java</userinput>
+   % <userinput>ls greetings</userinput>
+      <computeroutput>Aloha.class    GutenTag.class    Hello.class     Hi.class
+      Aloha.java     GutenTag.java     Hello.java      Hi.java</computeroutput></screen>
+</informalexample></para>
+</example>
+<example role="example"><title>ユーザクラスパスの指定</title>
+<para>上の例のソースファイルのうち、1 つを変更し、変更後のファイルを再コンパイルします。<informalexample>
+<screen>   % <userinput>pwd</userinput>
+      <computeroutput>/examples</computeroutput>
+   % <userinput>javac greetings/Hi.java</userinput></screen>
+</informalexample><literal>greetings.Hi</literal> は、greetings パッケージ内のほかのクラスを参照している ため、コンパイラはこれらのほかのクラスを探す必要があります。上の例では、デフォルトユーザクラスパスが、パッケージディレクトリを含むディレクトリと同じなので、コンパイルは適切に行われます。ただし、現在どのディレクトリにいるかに関係なくファイルをコンパイルしたい場合は、ユーザクラスパスに <literal>/examples</literal> を追加する必要があります。ユーザクラスパスにエントリを追加するには <envar>CLASSPATH</envar> を設定する方法もありますが、ここでは <option>classpath</option> オプションを使います。<informalexample><screen>   % <userinput>javac &ndash;classpath /examples /examples/greetings/Hi.java</userinput></screen>
+</informalexample></para>
+<para>再度 <literal>greetings.Hi</literal> を変更し、バナーユーティリティを使うようにした場合は、このバナーユーティリティもユーザクラスパスを通じてアクセスできるようになっている必要があります。 <informalexample>
+<screen>   % <userinput>javac &ndash;classpath /examples:/lib/Banners.jar &bsol;
+                      /examples/greetings/Hi.java</userinput></screen>
+</informalexample></para>
+<para><literal>greetings</literal> 内のクラスを実行するには、<literal>greetings</literal> と、<literal>greetings</literal> が使うクラスの両方にアクセスできる必要があります。<informalexample><screen>   % <userinput>java &ndash;classpath /examples:/lib/Banners.jar greetings.Hi</userinput></screen>
+</informalexample></para>
+</example>
+<example role="example"><title>ソースファイルとクラスファイルの分離</title>
+<para>特に大規模プロジェクトの場合は、ソースファイルとクラスファイルを別のディレクトリに置くと便利なことがあります。クラスファイル出力先を別個に指定するには、<option>d</option> を使います。ソースファイルがユーザクラスパスにはないので、<option>sourcepath</option> を使って、コンパイラがソースファイルを見つけることができるようにします。<informalexample><screen>   % <userinput>ls</userinput>
+      <computeroutput>classes/  lib/      src/</computeroutput>
+   % <userinput>ls src</userinput>
+      <computeroutput>farewells/</computeroutput>
+   % <userinput>ls src/farewells</userinput>
+      <computeroutput>Base.java      GoodBye.java</computeroutput>
+   % <userinput>ls lib</userinput>
+      <computeroutput>Banners.jar</computeroutput>
+   % ls classes
+   % <userinput>javac &ndash;sourcepath src &ndash;classpath classes:lib/Banners.jar &bsol;
+      src/farewells/GoodBye.java &ndash;d classes</userinput>
+   % <userinput>ls classes</userinput>
+      <computeroutput>farewells/</computeroutput>
+   % <userinput>ls classes/farewells</userinput>
+      <computeroutput>Base.class      GoodBye.class</computeroutput></screen>
+</informalexample></para>
+<para>注: コマンド行では <literal>src/farewells/Base.java</literal> を指定していませんが、このファイルもコンパイラによってコンパイルされます。自動コンパイルをトレースするには、<option>verbose</option> オプションを使ってください。</para>
+</example>
+<example role="example"><title>クロスコンパイルの例</title>
+<para>ここでは、<command>javac</command> を使って 1.4 VM 上で実行するコードをコンパイルします。<informalexample>
+<screen>% <userinput>javac -target 1.4 -bootclasspath jdk1.4.2/lib/classes.zip &bsol;
+                    -extdirs "" OldCode.java
+
+</userinput></screen>
+</informalexample></para>
+<para><option>target 1.4</option> オプションにより、生成されるクラスファイルが 1.4 VM に互換性があることが保証されます。デフォルトでは、<command>javac</command> は 1.5 への互換性を維持してコンパイルを行います。</para>
+<para>JDK の <command>javac</command> は、デフォルトでは、ブートストラップクラスに対してコンパイルを行うので、JDK 1.4 のブートストラップクラスに対してコンパイルを行うように指定する必要があります。これは、<option>bootclasspath</option> および <option>extdirs</option> を使って行います。この指定を行わないと、1.4 VM には存在しない Java 2 プラットフォーム API に対応したコンパイルが行われるため、実行中に障害が発生する可能性があります。</para>
+</example>
+</refsect1>
+<refsect1><title>&attr-tt;</title>
+<para>次の属性については、<citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry> のマニュアルページを参照してください。</para>
+<informaltable frame="all" orient="port"><tgroup cols="2" colsep="1" rowsep="1"><colspec colnum="1" colname="col1" colwidth="1*" colsep="1" align="left"><colspec colnum="2" colname="col2" colwidth="1*" align="left"><thead><row><entry colname="col1" rowsep="1" align="center" valign="top">属性タイプ</entry><entry colname="col2" rowsep="1" align="center" valign="top">属性値</entry></row></thead><tbody><row><entry>使用条件</entry><entry>SUNWj5dev</entry></row></tbody></tgroup></informaltable>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>jar</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>java</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>javadoc</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>javah</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>javap</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>jdb</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry> </para>
+<para>次については、Java の Web サイトを参照または検索してください。</para>
+<variablelist termlength="wholeline"><varlistentry><term remap="10"><citetitle>Java エクステンション機構</citetitle> @</term><listitem><para><ulink url="http://java.sun.com/j2se/1.5/docs/guide/extensions/index.html">http://java.sun.com/j2se/1.5/docs/guide/extensions/index.html</ulink></para>
+</listitem></varlistentry>
+<varlistentry><term remap="10"><citetitle>クラスパスの設定</citetitle> @</term><listitem><para><ulink url="http://java.sun.com/j2se/1.5/docs/tooldocs/solaris/classpath.html">http://java.sun.com/j2se/1.5/docs/tooldocs/solaris/classpath.html</ulink></para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<!--+ 07/27/00 08:33:52
+    | tagMorph:  $Id: tagMorph-engine 1.54 1998/01/19 05:44:48 $
+    | tagMorph library:  $Id: libtagMorph.a 1.50 1998/01/19 22:02:51 $
+    | sunman-to-solbook 1.17
+    +-->
+</refentry><?Pub Caret>
+<?Pub *0000028041 0>

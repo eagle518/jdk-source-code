@@ -1,0 +1,77 @@
+'\" t
+.\" @(#)jstack.1 1.10 04/06/13 SMI;
+.\" Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+.\" Copyright 2004 Sun Microsystems, Inc. Tous droits r駸erv駸.
+.\" 
+.TH jstack 1 "2004 年 6 月 22 日" 
+.SH 名前
+jstack \- スタックトレース
+.\"
+.SH 形式
+.B jstack
+.BI [ option ] " pid" 
+.br 
+.B jstack
+.BI [ option ] " executable core" 
+.br
+.B jstack
+.BI [ option ] " [server-id@]remote-hostname-or-IP"
+.SH 機能説明
+.B jstack 
+は、指定された Java プロセスまたはコアファイルまたはリモートデバッグサーバの Java スレッドの Java スタックトレースを出力します。それぞれの Java フレームについて、完全なクラス名、メソッド名、'bci' (バイトコードインデックス) 、および行番号 (入手可能な場合) が出力されます。
+.B \-m 
+オプションを指定した場合、
+.B jstack 
+は、すべてのスレッドの Java とネイティブの両方のフレームを 'pc' (プログラムカウンタ) とともに出力します。それぞれのネイティブフレームについて、'pc' に最も近いネイティブシンボル (入手可能な場合) が出力されます。C++ の符号化された (mangled) 名前は復号化 (demangled) されません。C++ 名を復号化するには、このコマンドの出力を c++filt にパイプで渡します。
+.LP
+注 - このユーティリティはサポートされていないため、JDK の将来のバージョンでは使用できない可能性があります。
+.B jstack 
+は、現時点では、Windows プラットフォームまたは Linux Itanium プラットフォームでは使用できません。
+.SH パラメータ
+オプションは相互に排他的です。オプションを使用する場合は、コマンド名の直後に指定する必要があります。
+.if t .TP 20
+.if n .TP 15
+.I pid
+スタックトレースを出力するプロセス ID。プロセスは Java プロセスでなければなりません。マシン上で実行している Java プロセスのリストを取得するには、
+.B jps 
+を使用します。
+.if t .TP 20
+.if n .TP 15
+.I executable
+コアダンプが生成された Java 実行可能ファイル。
+.if t .TP 20
+.if n .TP 15
+.I core
+スタックトレースを出力するコアファイル。
+.if t .TP 20
+.if n .TP 15
+.BI remote-hostname-or-IP
+リモートデバッグサーバ (
+.B jsadebugd 
+を参照) のホスト名または IP アドレス。
+.if t .TP 20
+.if n .TP 15
+.I server-id
+同じリモートホスト上で複数のデバッグサーバが動作している場合の、オプションの一意 ID。
+.SH オプション
+.if t .TP 20
+.if n .TP 15
+.B \-m 
+混合モード (Java とネイティブの両方の C/C++ フレーム) のスタックトレースを出力します。
+.if t .TP 20
+.if n .TP 15
+.B \-h
+ヘルプメッセージを出力します。
+.if t .TP 20
+.if n .TP 15
+.B \-help
+ヘルプメッセージを出力します。
+.SH 関連項目
+.BR pstack (1),
+.BR c++filt (1),
+.BR jps (1),
+.BR jsadebugd (1)
+.SH 既知の問題
+混合モードのスタックトレース (
+.B \-m 
+オプション) は、リモートデバッグサーバでは機能しません。

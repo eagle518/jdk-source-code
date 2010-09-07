@@ -1,0 +1,89 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1999, v.4002-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub Inc>
+<refentry id="jinfo-1">
+<!--@(#)jinfo.1	1.1 04/06/15-->
+<refmeta><refentrytitle>unpack200</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">22 Jun 2004</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All
+rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.
+</refmiscinfo>
+</refmeta>
+<refnamediv><refname>jinfo</refname><refpurpose>configuration info</refpurpose>
+</refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>jinfo</command><arg choice="opt"><replaceable>[ option ]
+</replaceable></arg><arg choice="plain"><replaceable>pid</replaceable></arg>
+</cmdsynopsis>
+<cmdsynopsis><command>jinfo</command><arg choice="opt" rep="repeat"><replaceable>
+[ option ]</replaceable></arg><arg>executable core</arg>
+</cmdsynopsis>
+<cmdsynopsis><command>jinfo</command><arg choice="opt" rep="repeat"><replaceable>
+[ option ]</replaceable></arg><arg>[server-id@]remote-hostname-or-IP </arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&parm-tt;</title>
+<para>Options are mutually exclusive. Option, if used, should follow immediately
+after the command       name. See OPTIONS. </para>
+<variablelist termlength="narrow">
+<varlistentry><term><replaceable>pid</replaceable> </term><listitem><para>
+process id for which the configuration info is to be printed. The process
+must be a Java process. To get a list of Java processes running on a machine,
+jps may be used. </para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>executable</replaceable> </term><listitem>
+<para>Java executable from which the core dump was produced. </para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>core</replaceable> </term><listitem><para>
+ core file for which the configuration info is to be printed. </para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>remote-hostname-or-IP</replaceable> </term>
+<listitem><para>remote debug server's (see jsadebugd) hostname or IP address.
+</para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>server-id</replaceable> </term><listitem>
+<para>optional unique id, if multiple debug servers are running on the same
+remote host.</para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="java-1-indx-1"><primary sortas="Java interpreter">Java interpreter &mdash;
+java</primary></indexterm><indexterm id="java-1-indx-2"><primary sortas="java">
+java &mdash; Java interpreter</primary></indexterm><para>jinfo prints Java
+configuration information for a given Java process or core file or a remote
+debug server. Configuration information includes Java System properties and
+Java virtual machine <?Pub Caret>command line flags. </para>
+<note><para>NOTE - This utility is unsupported and may or may not be available
+in future versions of the J2SE SDK. jinfo is not currently available on Windows
+platforms or on the Linux Itanium platform. </para>
+</note>
+</refsect1>
+<refsect1><title>&opts-tt;</title>
+<variablelist>
+<varlistentry><term>&lt;no option></term><listitem><para>prints both command
+line flags as well as System properties name, value pairs. </para>
+</listitem></varlistentry>
+<varlistentry><term>-flags</term><listitem><para>prints command line flags
+as name, value pairs. </para>
+</listitem></varlistentry>
+<varlistentry><term>-sysprops</term><listitem><para>prints Java System properties
+as name, value pairs. </para>
+</listitem></varlistentry>
+<varlistentry><term>-h </term><listitem><para>prints a help message.</para>
+</listitem></varlistentry>
+<varlistentry><term>-help</term><listitem><para>prints a help message.</para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>jps</refentrytitle><manvolnum>1</manvolnum>
+</citerefentry>, <citerefentry><refentrytitle>jsadebugd</refentrytitle><manvolnum>
+1</manvolnum></citerefentry></para>
+</refsect1>
+</refentry>
+<?Pub *0000004386>

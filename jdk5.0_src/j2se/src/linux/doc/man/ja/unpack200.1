@@ -1,0 +1,73 @@
+'\" t
+.\" @(#)unpack200.1 1.0 04/01/21 SMI;
+.\" Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+.\" Copyright 2004 Sun Microsystems, Inc. Tous droits r駸erv駸.
+.\"
+.TH unpack200 1 "2004 年 7 月 14 日"
+.SH 名前
+unpack200 \- JAR アンパックツール
+.SH 形式
+.B unpack200 
+[ 
+.IB option 
+] 
+.I input\-file 
+.I JAR\-file
+.SH パラメータ
+オプションの指定順序に決まりはありません。コマンド行に指定された最後のオプションが、それ以前に指定されたすべてのオプションより優先されます。オプションについては、「オプション」の説明を参照してください。
+.TP
+.I input\-file  
+入力ファイルの名前。入力ファイルは通常、pack200 gzip ファイルか pack200 ファイルです。このほかに、0 を設定すれば pack200(1) から作成された JAR ファイルも入力ファイルとして使用できます。この場合、入力ファイルの内容が Pack200 マーカーとともに出力 JAR ファイルにコピーされます。
+.TP
+.I JAR\-file    
+出力 JAR ファイル名。
+.SH 機能説明
+unpack200 ツールは pack200(1) で作成されたパックファイルを JAR ファイルに変換するネイティブ実装です。
+.TP
+一般的な使用方法:
+.LP
+.RS
+.ft 3
+.nf
+% unpack200 myarchive.pack.gz myarchive.jar
+.fi
+.ft 1
+.RE
+.LP
+この例では、デフォルトの unpack200 設定で、myarchive.pack.gz から myarchive.jar が作成されます。
+.SH オプション
+.TP
+.B \-Hvalue \--deflate-hint=value
+value = true、false、keep としてデフレーションを設定し、JAR ファイル内のすべてのエントリのデフォルトの動作をオーバーライドします。true または false の場合、デフォルトの動作をオーバーライドして、出力 JAR ファイル内のすべてのエントリのデフレーションモードを設定します。デフォルトモードは keep です。
+.SH 非標準オプション
+.TP
+.B \-r \--remove-pack-file
+入力パックファイルを削除します。
+.TP
+.B \-v \--verbose
+最小限のメッセージを出力します。このオプションを複数指定すると、より長いメッセージが出力されます。
+.TP	
+.B \-q \--quiet
+メッセージを表示せずに動作します。
+.TP    	
+.B \-lfilename \--log-file=filename
+メッセージを出力するログファイル。
+.SH 終了ステータス
+次の終了値が返されます。
+.TP
+.B 0 " 成功"
+.TP
+.B >0  " エラー"
+.SH 関連項目
+.BR pack200 (1),
+.BR jar (1),
+.BR jarsigner (1),
+.BR attributes (5)
+.TP
+API 仕様および関連情報については以下を参照してください。
+http://java.sun.com/j2se/5.0/docs
+http://java.sun.com/j2se/5.0/docs/guide/deployment/deployment-guide/pack200.html 
+.SH 注意事項
+このコマンドと unpack(1) コマンドを混同しないでください。これらは別製品です。
+.TP
+ドキュメント間に矛盾がある場合、今回の JDK リリース付属の J2SE API 仕様が最優先されます。	 

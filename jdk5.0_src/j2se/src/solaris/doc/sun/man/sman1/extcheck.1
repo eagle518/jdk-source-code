@@ -1,0 +1,97 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1999, v.4002-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<refentry id="extcheck-1">
+<!--@(#)extcheck.1 1.11 01/03/14 SMI;-->
+<refmeta><refentrytitle>extcheck</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">22 Jun 2004</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All
+rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.
+</refmiscinfo>
+</refmeta>
+<refnamediv><refname>extcheck</refname><refpurpose>jar conflict detection
+utility</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>extcheck</command><arg choice="opt"><option>verbose
+</option></arg><arg choice="plain"><replaceable>targetfile.jar</replaceable></arg>
+<arg choice="opt"><option>J</option></arg><arg choice="plain"><replaceable>
+option</replaceable></arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="extcheck-1-indx-1"><primary sortas="jar conflict detection utility">
+jar conflict detection utility &mdash; extcheck</primary></indexterm><indexterm
+id="extcheck-1-indx-2"><primary sortas="extcheck">extcheck &mdash; jar conflict
+detection utility</primary></indexterm><para>The <command>extcheck</command>
+utility checks a specified <literal>jar</literal> file for title and version
+conflicts with any extensions installed in the JDK&trade; software. Before
+installing an extension, you can use this utility to see if the same or a
+more recent version of the extension is already installed.</para>
+<para>The <command>extcheck</command> utility compares the Specification-title
+and Specification-version headers in the manifest of the <replaceable>targetfile.jar
+</replaceable> file against the corresponding headers in all <literal>jar
+</literal> files currently installed in the extension directory. (The extension
+directory is <literal>jre/lib/ext</literal> by default.) The <command>extcheck
+</command> utility compares version numbers in the same way as the method <literal>
+java.lang.Package.isCompatibleWith</literal>. </para>
+</refsect1>
+<refsect1><title>&opts-tt;</title>
+<para>The following options are supported:</para>
+<variablelist termlength="narrow">
+<varlistentry><term remap="15"><option>verbose</option> </term><listitem>
+<para>Lists <literal>jar</literal> files in the extension directory as they
+are checked. Additionally, manifest attributes of the target  <literal>jar
+</literal> file and any conflicting <literal>jar</literal> files are also
+reported.</para>
+</listitem></varlistentry>
+<varlistentry><term><option role="nodash">J</option><replaceable>option</replaceable></term>
+<listitem><para>Pass <replaceable>option</replaceable> to the Java virtual
+machine, where option is one of the options described on the man page for
+the java application launcher, java (1). For example, <literal>-J-Xms48m</literal>
+sets the startup memory to 48 megabytes. It is a common convention for <literal>
+-J</literal> to pass options to the underlying virtual machine.</para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>&exit-tt;</title>
+<para>The following exit values are returned:</para>
+<variablelist termlength="narrow">
+<varlistentry><term remap="15"><returnvalue>0</returnvalue> </term><listitem>
+<para>No conflict is detected.</para>
+</listitem></varlistentry>
+<varlistentry><term>non-zero</term><listitem><para>If the manifest of any
+of the <literal>jar</literal> files in the extensions directory has the same
+Specification-title and the same or a newer Specification-version number,
+or if <replaceable>targetfile.jar</replaceable> does not have the Specification-title
+or Specification-version attributes in its manifest.</para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>&attr-tt;</title>
+<para>See <citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>
+5</manvolnum></citerefentry> for a description of the following attributes:
+</para>
+<informaltable frame="all" orient="port">
+<tgroup cols="2" colsep="1" rowsep="1"><colspec colnum="1" colname="col1"
+colwidth="1*" colsep="1" align="left"><colspec colnum="2" colname="col2" colwidth="1*"
+align="left">
+<thead>
+<row><entry colname="col1" rowsep="1" align="center" valign="top">ATTRIBUTE
+TYPE</entry><entry colname="col2" rowsep="1" align="center" valign="top">
+ATTRIBUTE VALUE</entry></row>
+</thead>
+<tbody>
+<row><entry>Availability</entry><entry>SUNWj5<?Pub Caret>dev</entry></row>
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>jar</refentrytitle><manvolnum>1</manvolnum>
+</citerefentry> </para>
+</refsect1>
+</refentry>
+<?Pub *0000005011>

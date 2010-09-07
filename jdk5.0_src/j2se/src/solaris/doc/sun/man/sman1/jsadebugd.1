@@ -1,0 +1,77 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1999, v.4002-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub Inc>
+<refentry id="jsadebugd-1">
+<!--@(#)jsadebugd.1	1.1 04/06/15-->
+<refmeta><refentrytitle>unpack200</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">22 Jun 2004</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All
+rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.
+</refmiscinfo>
+</refmeta>
+<refnamediv><refname>jsadebugd</refname><refpurpose>Serviceability Agent Debug
+Daemon</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>jsadebugd</command><arg choice="opt"><replaceable>pid
+</replaceable></arg><arg choice="plain"><replaceable>[ server-id ]</replaceable></arg>
+</cmdsynopsis>
+<cmdsynopsis><command>jsadebugd</command><arg choice="opt" rep="repeat"><replaceable>
+executable core</replaceable></arg><arg>[ server-id ]</arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&parm-tt;</title>
+<variablelist termlength="narrow">
+<varlistentry><term><replaceable>pid</replaceable> </term><listitem><para>
+process id to which the debug server should attach. The process must be a
+Java process. To get a list of Java processes running on a machine, jps may
+be used. At most one instance of the debug server may be attached to a single
+process. </para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>executable</replaceable> </term><listitem>
+<para>Java executable from which the core dump was produced. </para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>core</replaceable> </term><listitem><para>
+ core file to which the debug server should attach.</para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>server-id</replaceable> </term><listitem>
+<para>Optional unique id, needed if multiple debug servers are started on
+the same machine. This ID must be used by remote clients to identify the particular
+debug server to attach.  Within a single machine, this ID must be unique. 
+</para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="java-1-indx-1"><primary sortas="Java interpreter">Java interpreter &mdash;
+java</primary></indexterm><indexterm id="java-1-indx-2"><primary sortas="java">
+java &mdash; Java interpreter</primary></indexterm><para>jsadebugd attaches
+to a Java process or core file and acts as a debug server. Remote clients
+such as jstack, jmap, and jinfo can attach to the server using Java Remote
+Method Invocation (RMI). Before starting jsadebugd, rmiregistry must be started
+with: <screen><command>rmiregistry -J-Xbootclasspath/p:$JAVA_HOME/lib/sajdi.jar
+
+</command></screen></para>
+<para>where $JAVA_HOME is the J2SE SDK installation directory. If rmiregistry
+was not started, jsadebugd will start an rmiregistry in a standard (1099)
+port internally. Debug server may be stopped by sending SIGINT (pressing Ctrl-C)
+to it. </para>
+<note><para>NOTE - This utility is unsupported and may or may not be available
+in future versions <?Pub Caret>of the J2SE SDK. jsadebug is not currently
+available on Windows platforms or on the Linux Itanium platform. </para>
+</note>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>jinfo</refentrytitle><manvolnum>1</manvolnum>
+</citerefentry>,<citerefentry><refentrytitle>jmap</refentrytitle><manvolnum>
+1</manvolnum></citerefentry>,<citerefentry><refentrytitle>jps</refentrytitle>
+<manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>jstack
+</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>
+rmiregistry</refentrytitle><manvolnum>1</manvolnum></citerefentry></para>
+</refsect1>
+</refentry>
+<?Pub *0000004070>

@@ -1,0 +1,275 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1999, v.4002-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub Inc>
+<refentry id="rmic-1">
+<!--@(#)rmic.1 1.13 01/03/14 SMI;-->
+<refmeta><refentrytitle>rmic</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">22 Jun 2004</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All
+rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.
+ </refmiscinfo>
+</refmeta>
+<refnamediv><refname>rmic</refname><refpurpose>Java RMI stub compiler</refpurpose>
+</refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>rmic</command><arg>[ options ]</arg><arg choice="plain"><replaceable>
+package-qualified-class-names</replaceable></arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="rmic-1-indx-1"><primary sortas="Java RMI stub compiler">Java
+RMI stub compiler &mdash; rmic</primary></indexterm><indexterm id="rmic-1-indx-2">
+<primary sortas="rmic">rmic &mdash; Java RMI stub compiler</primary></indexterm>
+<para>The <command>rmic</command> compiler generates stub and skeleton class
+files (JRMP protocol) and stub and tie class files (IIOP protocol) for remote
+objects. These classes files are generated from compiled Java programming
+language classes that are remote object implementation classes. A remote object
+is one that implements the interface <literal>java.rmi.Remote</literal>. The
+class names in the <command>rmic</command> command must be fore classes that
+have been compiled successfully with the <citerefentry><refentrytitle>javac
+</refentrytitle><manvolnum>1</manvolnum></citerefentry> command and be fully
+package qualified. For example, running <command>rmic</command> on the class
+file name <literal>HelloImpl</literal> as shown here:<informalexample><para><screen>
+example% <userinput>rmic hello.HelloImpl</userinput></screen> </para>
+</informalexample></para>
+<para>creates the <literal>HelloImpl_Stub.class</literal> in the <literal>
+Hello</literal> subdirectory (named for the class's package).</para>
+<para>A skeleton for a remote object is a JRMP protocol server-side entity
+ that has a method that dispatches calls to the remote object implementation.
+</para>
+<para>A tie for a remote object is a server-side entity similar to a skeleton,
+but which communicates  with the client using the IIOP protocol. </para>
+<para>A stub is a client-side proxy for a remote object that is responsible
+for forwarding method invocations on remote objects to the server where the
+actual remote object implementation resides. Therefore, a client's reference
+to a remote object is actually a reference to a local stub.</para>
+<para>By default, rmic generates stub classes that use the 1.2 JRMP stub protocol
+version only, as if the <option>-v1.2</option> option had been specified.
+(Note that the <option>-vcompat</option> option was the default in releases
+prior to 1.5.) Use the <option>-iiop</option> option to generate stub and
+tie classes for the IIOP protocol. </para>
+<para>A stub implements only the remote interfaces, not any local interfaces
+that the remote object also implements. Because a JRMP stub implements the
+same set of remote interfaces as the remote object itself, a client can use
+the Java programming language's built-in operators for casting and  type checking.
+For IIOP, the<literal> PortableRemoteObject.narrow</literal> method must be
+used. </para>
+</refsect1>
+<refsect1><title>&opts-tt;</title>
+<para>The following options are supported:</para>
+<variablelist termlength="wholeline">
+<varlistentry><term remap="20"><option>bootclasspath</option> <replaceable>
+path</replaceable></term><listitem><para>Overrides location of bootstrap class
+files.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>classpath</option> <replaceable>path
+</replaceable></term><listitem><para>Specifies the path <command>rmic</command>
+uses to look up classes. Setting this option overrides the default or the <envar>
+CLASSPATH</envar> environment variable. Directories are separated by colons.
+Thus, the general format for <replaceable>path</replaceable> is:<informalexample>
+<para><literal>.:&lt;</literal><replaceable>your_path</replaceable><literal>
+></literal></para>
+</informalexample></para>
+<para>For example:<informalexample><para><literal>.:/usr/local/java/classes
+</literal></para>
+</informalexample></para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>d</option> <replaceable>directory</replaceable></term>
+<listitem><para>Specifies the root destinaion directory for the generated
+class hierarchy. You can use this option to specify a destination directory
+for the stub, skeleton, and tie files. For example,  the command <screen>
+% <userinput>rmic -d /java/classes foo.MyClass</userinput></screen></para>
+<para>would place the stub and skeleton classes derived from <literal>MyClass
+</literal> into the directory<literal> /java/classes/foo</literal>. If the <option>
+-d</option> option is not specified, the default behavior is as if <option>
+-d .</option>  were specified: the package hierarchy of the target class is
+created in the current directory, and stub/tie/skeleton files are placed within
+it. (Note that in some previous versions of rmic, if <option>-d</option> was
+not specified, then the package hierarchy was not created, and all of the
+            output files were placed directly in the current directory.) 
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>extdirs</option> <replaceable>path</replaceable> 
+</term><listitem><para>Overrides location of installed extensions.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>g</option></term><listitem><para>Enables
+generation of all debugging information, including local variables. By default,
+only line number information is generated. </para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>idl</option></term><listitem><para>
+Causes <command>rmic</command> to generate <acronym remap="small">OMG IDL
+</acronym> for the classes specified and any classes referenced. <acronym
+remap="small">IDL</acronym> provides a purely declarative, programming language-independent
+way of specifying an object's <acronym remap="small">API</acronym>. The <acronym
+remap="small">IDL</acronym> is used as a specification for methods and data
+that can be written in and invoked from any language that provides <acronym
+remap="small">CORBA</acronym> bindings. This includes Java and C++ among others.See
+the <ulink url="http://www.omg.org/technology/documentation/formal/java_language_mapping_to_omg_idl.html">
+Java Language to IDL Mapping</ulink> (OMG) document for a complete description.
+</para>
+<para> When the <option>idl</option> option is used, other options also include: <variablelist
+termlength="wholeline">
+<varlistentry><term remap="5"><option>always</option></term><term><option>
+alwaysgenerate</option></term><listitem><para>Forces re-generation even when
+existing stubs/ties/<acronym>IDL</acronym> are newer than the input class.
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>factory</option> </term><listitem><para>Uses factory
+keyword in generated <acronym remap="small">IDL</acronym>.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>idlModule</option> <literal>fromJavaPackage[.class]
+</literal> <literal>toIDLModule</literal> </term><listitem><para>Specifies <literal>
+IDLEntity</literal> package mapping. For example:<informalexample>
+<screen><userinput>&ndash;idlModule foo.bar my::real::idlmod.</userinput></screen>
+</informalexample></para>
+</listitem></varlistentry>
+<varlistentry><term><option>idlFile</option> <literal>fromJavaPackage[.class]
+</literal> <literal>toIDLFile</literal> </term><listitem><para>Specifies <literal>
+IDLEntity</literal> file mapping. For example:<informalexample>
+<screen><userinput>&ndash;idlFile test.pkg.X TEST16.idl</userinput></screen>
+</informalexample></para>
+</listitem></varlistentry>
+</variablelist></para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>iiop</option></term><listitem><para>
+Causes <command>rmic</command> to generate <acronym remap="small">IIOP</acronym>
+stub and tie classes, rather than <acronym remap="small">JRMP</acronym> stub
+and skeleton classes. A stub class is a local proxy for a remote object and
+is used by clients to send calls to a server. Each remote interface requires
+a stub class, which implements that remote interface. A client's reference
+to a remote object is actually a reference to a stub. Tie classes are used
+on the server side to process incoming calls and dispatch the calls to the
+proper implementation class. Each implementation class requires a tie class.
+Invoking <command>rmic</command> with <option>iiop</option> generates stubs
+and ties that conform to this naming convention:<informalexample>
+<screen>_&lt;implementationName>_stub.class
+_&lt;interfaceName>_tie.class</screen>
+</informalexample>When the <option>iiop</option> option is used, other options
+also include: <variablelist termlength="wholeline">
+<varlistentry><term remap="5"><option>always</option></term><term><option>
+alwaysgenerate</option></term><listitem><para>Forces re-generation even when
+existing stubs/ties/<acronym>IDL</acronym> are newer than the input class.
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>nolocalstubs</option></term><listitem><para>Does
+not create stubs optimized for same-process clients and servers.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>noValueMethods</option></term><listitem><para>
+Must be used with the <option>idl</option> option. Prevents addition of valuetype
+methods and initializers to emitted <acronym remap="small">IDL</acronym>.
+These methods and initializers are optional for valuetypes and are generated
+unless the <option>noValueMethods</option> option is specified when using
+the <option>idl</option> option.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>poa</option></term><listitem><para>Changes the
+inheritance from <literal>org.omg.CORBA_2_3.portable.ObjectImpl</literal>
+to <literal>org.omg.PortableServer.Servant.</literal></para>
+<para>The <literal>PortableServer</literal> module for the Portable Object
+Adapter (<acronym>POA</acronym>) defines the native Servant type. In the Java
+programming language, the <literal>Servant</literal> type is mapped to the
+Java <literal>org.omg.PortableServer.Servant</literal> class. It serves as
+the base class for all <acronym>POA</acronym> servant implementations and
+provides a number of methods that may be invoked by the application programmer,
+as well as methods which are invoked by the <acronym>POA</acronym> itself
+and may be overridden by the user to control aspects of servant behavior.
+Based on the OMG IDL to Java Language Mapping Specification, CORBA V 2.3.1
+ptc/00-01-08.pdf.</para>
+</listitem></varlistentry>
+</variablelist></para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>J</option></term><listitem><para>Used
+in conjunction with the <option>D</option> option, the <option>J</option>
+option passes the option following it (no spaces between <option>J</option>
+and <option>D</option>) on to the java interpreter.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>keepg</option></term><term> or </term>
+<term remap="20"><option>keepgenerated</option></term><listitem><para>Retains
+the generated <literal>.java</literal> source files for the stub, skeleton,
+and/or tie classes and writes them to the same directory as the <literal>
+.class</literal> files.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>nowarn</option></term><listitem><para>
+Turns off warnings. If used, the compiler does not print  warnings.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>sourcepath</option> <replaceable>path
+</replaceable></term><listitem><para>Specifies where to find user source files.
+</para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>vcompat</option></term><listitem><para>
+Generates stub and skeleton classes compatible with both the 1.1 and 1.2 JRMP
+stub protocol versions. (This option was the default in releases prior to
+1.5.) The generated stub classes will use the 1.1 stub protocol version when
+loaded in a JDK 1.1 virtual machine and will use the 1.2 stub protocol version
+when loaded into a 1.2 (or later) virtual machine. The generated skeleton
+classes will support both 1.1 and 1.2 stub protocol versions. The  generated
+classes are relatively large in order to support both modes of operation.
+</para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>verbose</option></term><listitem><para>
+Causes the compiler and linker to display messages about the classes being
+compiled and what class files  being loaded.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>v1.1</option></term><listitem><para>
+Generates stub and skeleton classes for the 1.1 JRMP stub protocol version
+only. Note that this option is only useful for generating stub classes that
+are serialization-compatible with pre-existing, statically-deployed stub classes
+that were generated by the rmic tool from JDK 1.1 and that cannot be upgraded
+(and dynamic class loading is not being used). </para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>v1.2</option></term><listitem><para>
+(default) Generates stub classes for the 1.2 JRMP stub protocol version only.
+No skeleton classes are generated with this option because skeleton classes
+are not used with the 1.2 stub protocol version. The generated stub classes
+will not work if they are loaded into a   JDK 1.1 virtual machine. </para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>&envr-tt;</title>
+<variablelist termlength="medium">
+<varlistentry><term remap="20"><envar>CLASSPATH</envar></term><listitem><para>
+Used to provide the system with a path to user-defined classes. Directories
+are separated by colons. For example, <literal>.:/usr/local/java/classes</literal></para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>&attr-tt;</title>
+<para>See <citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>
+5</manvolnum></citerefentry> for a description of the following attributes:
+</para>
+<informaltable frame="all" orient="port">
+<tgroup cols="2" colsep="1" rowsep="1"><colspec colnum="1" colname="col1"
+colwidth="1*" colsep="1" align="left"><colspec colnum="2" colname="col2" colwidth="1*"
+align="left">
+<thead>
+<row><entry colname="col1" align="center" valign="top">ATTRIBUTE TYPE</entry>
+<entry colname="col2" align="center" valign="top">ATTRIBUTE VALUE</entry>
+</row>
+</thead>
+<tbody>
+<row><entry>Availability</entry><entry>SUNWj5dev</entry></row>
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>javac</refentrytitle><manvolnum>1</manvolnum>
+</citerefentry>, <citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>
+5</manvolnum></citerefentry></para>
+<para>See (or search <literal>java.sun.com</literal>) for the following:</para>
+<variablelist termlength="wholeline">
+<varlistentry><term remap="10"><citetitle>Setting the Classpath</citetitle>
+@</term><listitem><para><ulink url="http://java.sun.com/j2se/1.5/docs/tooldocs/solaris/classpath.html">
+http://java.sun.com/j2se/1.5/docs/tooldocs/solaris/classpath.html</ulink><?Pub Caret></para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<!--+ 07/27/00 08:35:39
+    | tagMorph:  $Id: tagMorph-engine 1.54 1998/01/19 05:44:48 $
+    | tagMorph library:  $Id: libtagMorph.a 1.50 1998/01/19 22:02:51 $
+    | sunman-to-solbook 1.17
+    +-->
+</refentry>
+<?Pub *0000016091>

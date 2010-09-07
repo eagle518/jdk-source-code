@@ -1,0 +1,173 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1999, v.4002-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<refentry id="javah-1">
+<!--@(#)javah.1 1.12 01/03/14 SMI;-->
+<refmeta><refentrytitle>javah</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">22 Jun 2004</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All
+rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.
+ </refmiscinfo>
+</refmeta>
+<refnamediv><refname>javah</refname><refpurpose>C header and stub file generator
+</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>javah</command><arg choice="opt">options</arg><arg choice="plain"
+rep="repeat"><replaceable>fully-qualified-classname</replaceable></arg>
+</cmdsynopsis>
+<cmdsynopsis><command>javah_g</command><arg choice="opt">options</arg><arg
+choice="plain" rep="repeat"><replaceable>fully-qualified-classname</replaceable></arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="javah-1-indx-1"><primary sortas="stub file generator">stub
+file generator &mdash; javah</primary></indexterm><indexterm id="javah-1-indx-2">
+<primary sortas="C header and stub file generator">C header and stub file
+generator &mdash; javah</primary></indexterm><indexterm id="javah-1-indx-3">
+<primary sortas="javah">javah &mdash; C header and stub file generator</primary>
+</indexterm><para>The <command>javah</command> command generates C header
+and source files that are needed to implement native methods. The generated
+header and source files are used by C programs to reference instance variables
+of an object from native source code. The <literal>.h</literal> file contains
+a structure definition whose layout parallels that of the corresponding class.
+The fields in the structure correspond to instance variables in the class.
+</para>
+<para>The name of the header file and the structure declared within it are
+derived from the name of the class. If the class passed to <command>javah
+</command> is inside a package, the package name is prepended to both the
+header file name and the structure name. Underscores ( _ ) are used as name
+delimiters.</para>
+<para>By default, <command>javah</command> creates a header file for each
+class listed on the command line and puts the files in the current directory.
+Use the <option>stubs</option> option to create source files. Use the <option>
+o</option> option to concatenate the results for all listed classes into a
+single file.</para>
+<para>The new native method interface, Java&trade; Native Interface (JNI),
+does not require header information or stub files. The <command>javah</command>
+command can still be used  to generate native method function prototypes needed
+for JNI-style native methods. <command>javah</command> produces JNI-style
+output by default and places the result in the <literal>.h</literal> file.
+</para>
+<para>The <command>javah_g</command> version is a non-optimized version of <command>
+javah</command> suitable for use with debuggers like <command>jdb</command>. 
+</para>
+</refsect1>
+<refsect1><title>&opts-tt;</title>
+<para>The following options are supported:</para>
+<variablelist termlength="medium">
+<varlistentry><term remap="15"><option>bootclasspath</option> <replaceable>
+path</replaceable></term><listitem><para>Specifies path from which to load
+bootstrap classes. By default, the bootstrap classes are the classes implementing
+the core Java platform located in <filename>jre/lib/rt.jar</filename> and
+other important jar files. </para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>classpath</option> <replaceable>path
+</replaceable></term><listitem><para>Specifies the path <command>javah</command>
+uses to look up classes. Overrides the default of the <envar>CLASSPATH</envar>
+environment variable if it is set. Directories are separated by colons. Thus,
+the general format for path is: <informalexample><para><literal>.:</literal><replaceable>
+your_path</replaceable> </para>
+</informalexample> <informalexample><para>For example:</para>
+</informalexample> <informalexample><para><literal>.:/home/avh/classes:/usr/local/java/classes
+</literal> </para>
+</informalexample></para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>d</option> <replaceable>directory</replaceable></term>
+<listitem><para>Sets the directory where <command>javah</command> saves the
+header files or the stub files.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>force</option></term><listitem><para>
+Specifies that output files should always be written.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>help</option></term><listitem><para>
+Prints help message for <command>javah</command> usage.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>jni</option></term><listitem><para>
+Causes <command>javah</command> to create an output file containing JNI-style
+native method function prototypes. This is the default output, so use of <option>
+jni</option> is optional.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>o</option> <replaceable>outputfile
+</replaceable></term><listitem><para>Concatenates the resulting header or
+source files for all the classes listed on the command line into <replaceable>
+outputfile</replaceable>. Only the <option>o</option> or <option>d</option>
+option may be used.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>old</option></term><listitem><para>
+Specifies the old JDK1.0-style header files should be generated.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>stubs</option></term><listitem><para>
+Causes <command>javah</command> to generate C declarations from the Java object
+file. Only the <option>o</option> or <option>d</option> option may be used.
+</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>trace</option></term><listitem><para>
+Tracing is no longer supported. Instead, use the <literal>&ndash;verbose:jni
+</literal> option of the virtual machine.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>verbose</option></term><listitem><para>
+Indicates verbose output and causes <command>javah</command> to print a message
+to <literal>stdout</literal> concerning the status of the generated files.
+</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>version</option></term><listitem><para>
+Prints build version.</para>
+</listitem></varlistentry>
+<varlistentry><term><option role="nodash">J</option><replaceable>option</replaceable></term>
+<listitem><para>Pass <replaceable>option</replaceable> to the Java virtual
+machine, where option is one of the options described on the man page for
+the java application launcher, java (1). For example, <literal>-J-Xms48m</literal>
+sets the startup memory to 48 megabytes. It is a common convention for <literal>
+-J</literal> to pass options to the underlying virtual machine.</para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>&envr-tt;</title>
+<variablelist termlength="narrow">
+<varlistentry><term remap="15"><envar>CLASSPATH</envar> </term><listitem>
+<para>Used to provide the system with a path to user-defined classes. Directories
+are separated by colons, for example, <informalexample><para><literal>.:/home/avh/classes:/usr/local/java/classes
+</literal> </para>
+</informalexample></para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>&attr-tt;</title>
+<para>See <citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>
+5</manvolnum></citerefentry> for a description of the following attributes:
+</para>
+<informaltable frame="all" orient="port">
+<tgroup cols="2" colsep="1" rowsep="1"><colspec colnum="1" colname="col1"
+colwidth="1*" colsep="1" align="left"><colspec colnum="2" colname="col2" colwidth="1*"
+align="left">
+<thead>
+<row><entry colname="col1" rowsep="1" align="center" valign="top">ATTRIBUTE
+TYPE</entry><entry colname="col2" rowsep="1" align="center" valign="top">
+ATTRIBUTE VALUE</entry></row>
+</thead>
+<tbody>
+<row><entry>Availability</entry><entry>SUNWj5<?Pub Caret>dev</entry></row>
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>java</refentrytitle><manvolnum>1</manvolnum>
+</citerefentry>, <citerefentry><refentrytitle>javac</refentrytitle><manvolnum>
+1</manvolnum></citerefentry>, <citerefentry><refentrytitle>javadoc</refentrytitle>
+<manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>javap
+</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>
+jdb</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry>
+<refentrytitle>attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry> 
+</para>
+</refsect1>
+<!--+ 07/27/00 08:34:19
+    | tagMorph:  $Id: tagMorph-engine 1.54 1998/01/19 05:44:48 $
+    | tagMorph library:  $Id: libtagMorph.a 1.50 1998/01/19 22:02:51 $
+    | sunman-to-solbook 1.17
+    +-->
+</refentry>
+<?Pub *0000009395>

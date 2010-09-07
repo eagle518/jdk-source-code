@@ -1,0 +1,163 @@
+'\" t
+.\" @(#)kinit.1 1.10 02/06/18 SMI;
+.\" Copyright 2003 Sun Microsystems, Inc. All rights reserved.
+.\" Copyright 2003 Sun Microsystems, Inc. Tous droits réservés.
+.\" 
+.TH kinit 1 "18 June 2002"
+.SH NAME
+kinit \- kinit is used to obtain and cache Kerberos 
+ticket-granting tickets. This tool is
+similar in functionality to the kinit tool that 
+are commonly found in other
+Kerberos implementations, such as SEAM and MIT Reference implementations.
+.LP
+The use must be registered as a principal with the Key Distribution Center
+(KDC) prior to running kinit.
+.SH SYNOPSIS
+.B kinit
+[
+.IR commands " ]" 
+<principal name>
+.SH DESCRIPTION
+By default, for all Unix platforms a cache file 
+named /tmp/krb5cc_<uid> 
+will  be
+generated. 
+<uid> is the user identification number 
+of the user logged into the
+system. For all other platforms, a cache file named
+<USER_HOME>/krb5cc_<USER_NAME> 
+would be generated.
+.LP
+<USER_HOME> is obtained from the 
+.BR java.lang.System 
+property 
+.BR user.home .
+<USER_NAME> is obtained from 
+.BR java.lang.System 
+property 
+.BR user.name . 
+If <USER_HOME> 
+is null, the cache file would be stored in 
+the current directory that
+the program is running from. 
+<USER_NAME> is the operating system's login
+username. This username could be different than 
+the user's principal name. For
+example on Solaris, it could be 
+/home/duke/krb5cc_duke, 
+in which duke is the <USER_NAME> 
+and  /home/duke is the 
+<USER_HOME>.
+.LP
+By default, the keytab name is retrieved from 
+the Kerberos configuration file. If
+the keytab name is not specifed in the Kerberos 
+configuration file, the name is
+assumed to be <USER_HOME>/krb5.keytab
+.LP
+If you do not specify the password using 
+the password option on the command
+line, kinit will prompt you for the password.
+.LP
+.B Note:
+password is provided only for testing purposes. Do not place
+your password in a script or provide your password on the command
+line. Doing so will compromise your password.
+.LP
+For more information see the man pages for kinit.
+.SH COMMANDS
+.B kinit \-fp
+[
+\-c <cache_name> ]
+[
+\-k ]
+[
+\-t <keytab_filename> ]
+[
+<principal> ]
+[
+<password> ]
+[
+\-help ]
+.TP
+.BI \-f
+Issue a forwardable ticket.
+.TP
+.BI \-p
+Issue a proxiable ticket.
+.TP
+.BI \-c 
+<cache_name>
+The cache name (i.e., FILE:/temp/mykrb5cc).
+.TP
+.BI \-k
+Use keytab
+.TP
+.BI \-t 
+<keytab_filename>
+The keytab name (i.e., /home/duke/krb5.keytab).
+.TP
+.BI <principal>
+The principal name (i.e., duke@java.sun.com).
+.TP
+.BI <password>
+The principal's Kerberos password.
+(DO NOT SPECIFY ON COMMAND LINE OR IN A SCRIPT.)
+.TP
+.BI \-help
+Display instructions.
+.SH EXAMPLES
+Requesting credentials valid for authentication 
+from the current client host, for
+the default services, storing the credentials 
+cache in the default location
+(/home/duke/krb5cc_duke):
+.LP
+.ft 3
+.nf
+kinit duke@JAVA.SUN.COM
+.fi
+.ft 1
+.LP
+Requesting proxiable credentials for a different
+principal and storing these credentials in a
+specified file cache:
+.LP
+.ft 3
+.nf
+kinit -p -c FILE:/home/duke/credentials/krb5cc_cafebeef 
+cafebeef@JAVA.SUN.COM
+.fi
+.ft 1
+.LP
+Requesting proxiable and forwardable credentials 
+for a different principal and
+storing these credentials in a specified file cache:
+.LP
+.ft 3
+.nf
+kinit -f -p -c
+FILE:/home/duke/credentials/krb5cc_cafebeef
+cafebeef@JAVA.SUN.COM
+.fi
+.ft 1
+.LP
+Displaying the help menu for kinit:
+.LP
+.ft 3
+.nf
+kinit -help
+.fi
+.ft 1
+.LP
+.SH SECURITY ALERT
+The 
+.BR password
+flag is for testing purposes only. Do not
+specify your password on the command line.
+Doing so is a security hole since an attacker
+could discover your password while running the Unix
+.BR ps
+command, for example.
+

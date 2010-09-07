@@ -1,0 +1,231 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1998, v.4001-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub Inc>
+<?APT Element gi="refentrytitle">
+<?APT Element gi="manvolnum">
+<?APT Element gi="refmiscinfo" attrs="class">
+<?APT Element gi="refmeta">
+<?APT Element gi="refname">
+<?APT Element gi="refpurpose">
+<?APT Element gi="refnamediv">
+<?APT Element gi="title">
+<?APT Element gi="command">
+<?APT Element gi="replaceable">
+<?APT Element gi="arg" attrs="choice">
+<?APT Element gi="cmdsynopsis">
+<?APT Element gi="refsynopsisdiv">
+<?APT Element gi="term">
+<?APT Element gi="option">
+<?APT Element gi="para">
+<?APT Element gi="listitem">
+<?APT Element gi="varlistentry">
+<?APT Element gi="screen">
+<?APT Element gi="ulink" attrs="url">
+<?APT Element gi="variablelist" attrs="termlength">
+<?APT Element gi="refsect1">
+<?APT Element gi="primary" attrs="sortas">
+<?APT Element gi="indexterm" attrs="id">
+<?APT Element gi="note">
+<?APT Element gi="parameter">
+<?APT Element gi="entry" attrs="colname valign">
+<?APT Element gi="row" attrs="rowsep">
+<?APT Element gi="thead">
+<?APT Element gi="tbody">
+<?APT Element gi="colspec" empty="yes" attrs="colname colwidth">
+<?APT Element gi="tgroup" attrs="cols colsep rowsep">
+<?APT Element gi="informaltable" attrs="frame">
+<?APT Element gi="literal">
+<?APT Element gi="member">
+<?APT Element gi="simplelist">
+<?APT Element gi="table" attrs="frame">
+<?APT Element gi="example">
+<?APT Element gi="citerefentry">
+<?APT Element gi="refentry" attrs="id">
+<refentry id="jstat-1">
+<!--@(#)jstat.1	1.1 04/06/15-->
+<refmeta><refentrytitle>jstat</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">2004 年 6 月 22 日</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.</refmiscinfo>
+</refmeta>
+<refnamediv><refname>jstat</refname><refpurpose>Java 仮想マシン統計監視ツール</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>jstat</command><arg choice="opt"><replaceable>[ generalOption |
+outputOptions vmid [interval[s|ms] [count]] ]</replaceable></arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&parm-tt;</title>
+<variablelist termlength="narrow"><varlistentry><term><replaceable>generalOption</replaceable> </term><listitem><para>単一の汎用コマンド行オプション (<option>help</option>、<option>options</option>、または <option>version</option>) </para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>outputOptions</replaceable> </term><listitem><para>1 つ以上の出力オプション。1 つの <replaceable>statOption</replaceable> と <option>t</option>、<option>h</option>、および <option>J</option> オプションのいずれかで構成されます。</para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>vmid</replaceable> </term><listitem><para>仮想マシン識別子。ターゲットの Java 仮想マシン (JVM) を示す文字列。一般的な構文は、次のとおりです。 <screen><?Pub Lcl oneliner="yes">[protocol:][//]lvmid[@hostname[:port]/servername]</screen>vmid 文字列の構文は、URI の構文とほぼ同じです。vmid は、ローカル JVM を表す単純な整数から、通信プロトコル、ポート番号、およびその他の実装固有の値を指定する複雑な構造までさまざまです。詳細については、「<ulink url="http://java.sun.com/j2se/1.5.0/docs/tooldocs/share/jstat.html">仮想マシン識別子</ulink>」を参照してください。</para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>interval[s|ms]</replaceable> </term><listitem><para>指定された単位 (秒 (s) またはミリ秒 (ms)) でのサンプリング間隔。デフォルトの単位はミリ秒です。正の整数でなければなりません。これが指定された場合、jstat は interval ごとに出力を生成します。</para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>count</replaceable> </term><listitem><para>表示するサンプル数。デフォルトの値は infinity です。すなわち、jstat はターゲット JVM が終了するか jstat コマンドが終了されるまで統計を表示します。正の整数でなければなりません。</para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="java-1-indx-1"><primary sortas="Java interpreter">Java インタプリタ&mdash; java</primary></indexterm><indexterm id="java-1-indx-2"><primary sortas="java"> java &mdash; Java インタプリタ</primary></indexterm>
+<para>jstat ツールは、計測機構付き HotSpot Java 仮想マシン (JVM) のパフォーマンス統計を表示します。ターゲット JVM は、仮想マシン識別子、すなわち、下記の vmid オプションによって識別されます。</para>
+<note>
+<para>このユーティリティはサポートされていないため、JDK の将来のバージョンでは使用できない可能性があります。現時点では、Windows 98 および Windows ME プラットフォームでは使用できません。 </para>
+</note>
+</refsect1>
+<refsect1><title>仮想マシン識別子</title>
+<para>vmid 文字列の構文は、URI の構文とほぼ同じです。<screen><?Pub Lcl oneliner="yes">[protocol:][//]lvmid[@hostname][:port][/servername]</screen></para>
+<variablelist><varlistentry><term>protocol</term><listitem><para>通信プロトコル。protocol が省かれ、hostname が指定されなかった場合、デフォルトのプロトコルは、プラットフォームに固有の最適化されたローカルプロトコルです。protocol が省かれ、hostname が指定された場合、デフォルトのプロトコルは rmi です。</para>
+</listitem></varlistentry>
+<varlistentry><term>lvmid</term><listitem><para>ターゲット JVM のローカル仮想マシン識別子。lvmid は、プラットフォーム固有の値であり、システム上の JVM を一意に識別します。lvmid は、仮想マシン識別子の唯一の必須コンポーネントです。lvmid は、一般に、ターゲット JVM プロセスのオペレーティングシステムのプロセス識別子ですが、必ずしもそうとは限りません。jps コマンドを使用して、lvmid を調べることができます。また、Unix プラットフォームでは ps コマンドで、Windows ではタスクマネージャで lvmid を調べることができます。</para>
+</listitem></varlistentry>
+<varlistentry><term>hostname</term><listitem><para>ターゲットホストを示すホスト名または IP アドレス。hostname が省かれた場合、ターゲットホストはローカルホストです。</para>
+</listitem></varlistentry>
+<varlistentry><term>port</term><listitem><para>リモートサーバと通信するためのデフォルトポート。hostname が省かれるか、protocol が最適化されたローカルプロトコルを指定している場合、port は無視されます。そうでない場合、port パラメータの扱いは、実装に固有です。デフォルトの rmi プロトコルの場合、port はリモートホスト上の rmiregistry のポート番号を示します。port が省かれ、protocol が rmi を示す場合は、デフォルトの rmiregistry ポート (1099) が使用されます。</para>
+</listitem></varlistentry>
+<varlistentry><term>servername</term><listitem><para>このパラメータの取り扱いは、実装によって異なります。最適化されたローカルプロトコルの場合、このフィールドは無視されます。rmi プロトコルの場合、このパラメータは、リモートホスト上の RMI リモートオブジェクトの名前を表します。</para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<refsect1><title>&opts-tt;</title>
+<para>コマンドは、汎用オプションと出力オプションの 2 種類のオプションをサポートしています。汎用オプションを指定すると、jstat は簡単な使用法とバージョン情報を表示します。出力オプションによって、統計出力の内容と形式が決まります。</para>
+<note>
+<para>オプションとそれらの機能は、将来のリリースで変更または削除されることがあります。</para>
+</note>
+</refsect1>
+<refsect1><title>汎用オプション</title>
+<para>汎用オプションの 1 つを指定した場合、他のオプションやパラメータを指定することはできません。</para>
+<variablelist><varlistentry><term>&mdash;help</term><listitem><para>ヘルプメッセージを表示します。</para>
+</listitem></varlistentry>
+<varlistentry><term>&mdash;version</term><listitem><para>バージョン情報を表示します。</para>
+</listitem></varlistentry>
+<varlistentry><term>&mdash;options</term><listitem><para>統計オプションのリストを表示します。下記の「出力オプション」を参照してください。</para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<refsect1><title>出力オプション</title>
+<para>汎用オプションを指定しなかった場合は、出力オプションを指定することができます。出力オプションは、jstat の出力の内容と形式を決め、1 つの <option>statOption</option> と他のオプション (<option>h</option>、<option>t</option>、および <option>J</option>) のいずれかで構成されます。<option>statOption</option> は最初に指定する必要があります。</para>
+<para>出力は、列がスペースで区切られた表として書式化されます。タイトルの付いた見出し行が列の内容を表します。<option>h</option> オプションを使用すると、見出しを表示する頻度を設定できます。列見出しの名前は、一般にオプション間で整合性が取れています。一般に、2 つのオプションで列の名前が同じになる場合、2 つの列のデータソースは同じです。</para>
+<para><option>t</option> オプションを使用すると、出力の最初の列として、Timestamp というラベルの付いたタイムスタンプ列が表示されます。Timestamp 列には、ターゲット JVM の起動からの経過時間が秒単位で表示されます。タイムスタンプの分解能は、さまざまな要因によって異なり、高負荷システムでは、遅延スレッドスケジューリングによって変動が生じることがあります。</para>
+<para><parameter>interval</parameter> および <parameter>count</parameter> パラメータは、それぞれ jstat が出力を表示する頻度と回数を決めます。</para>
+<note>
+<para>将来のリリースで形式が変更される可能性があるので、jstat の出力を解析するスクリプトは書かない方がよいでしょう。jstat 出力を解析するスクリプトを書く場合は、このツールの将来のリリースでは修正が必要になることを予期しておいてください。</para>
+</note>
+<variablelist><varlistentry><term>-statOption</term><listitem><para>jstat が表示する統計情報を決めます。次の表に、使用可能なオプションを示します。<option>options</option> 汎用オプションを使用すると、特定のプラットフォームインストールでのオプションのリストが表示されます。</para>
+<informaltable frame="topbot"><tgroup cols="2" colsep="0" rowsep="0"><colspec colname="colspec2" colwidth="50*"><colspec colname="colspec3" colwidth="50*"><thead><row><entry colname="colspec2" valign="top"><para>オプション</para></entry><entry colname="colspec3" valign="top"><para>表示される情報</para></entry></row></thead><tbody><row><entry><para>class</para></entry><entry><para>クラスローダの動作に関する統計</para></entry></row><row><entry><para>compiler</para></entry><entry><para>HotSpot Just-In-Time コンパイラの動作に関する統計</para></entry></row><row><entry><para>gc</para></entry><entry><para>ガベージコレクトされたヒープの動作に関する統計</para></entry></row><row><entry><para>gccapacity</para></entry><entry><para>世代の容量とそれらに対応する空間の統計</para></entry></row><row><entry><para>gccause</para></entry><entry><para>ガベージコレクション統計の要約 (\-gcutil と同じ) と、前回および現在 (該当する場合) のガベージコレクションイベントの原因</para></entry></row><row><entry><para>gcnew</para></entry><entry><para>新しい世代の動作の統計</para></entry></row><row><entry><para>gcnewcapacity</para></entry><entry><para>新しい世代とそれらに対応する空間のサイズの統計</para></entry></row><row><entry><para>gcold</para></entry><entry><para>古い永続的世代の動作の統計</para></entry></row><row><entry><para>gcoldcapacity</para></entry><entry><para>古い世代のサイズの統計</para></entry></row><row><entry><para>gcpermcapacity</para></entry><entry><para>永続的世代のサイズの統計</para></entry></row><row><entry><para>gcutil</para></entry><entry><para>ガベージコレクション統計の要約</para></entry></row><row><entry><para>printcompilation</para></entry><entry><para>HotSpot コンパイルメソッドの統計</para></entry></row></tbody></tgroup></informaltable>
+</listitem></varlistentry>
+<varlistentry><term>&mdash;h <replaceable>n</replaceable></term><listitem><para><replaceable>n </replaceable>個のサンプル (出力行 n 行) ごとに列見出しを表示します。n は正の整数です。デフォルト値は 0 であり、データの最初の行の上に列見出しを表示します。</para>
+</listitem></varlistentry>
+<varlistentry><term>&mdash;t <replaceable>n</replaceable></term><listitem><para>出力の最初の列としてタイムスタンプ列を表示します。タイムスタンプは、ターゲット JVM が起動してからの時間です。</para>
+</listitem></varlistentry>
+<varlistentry><term>&mdash;J<replaceable>javaOption</replaceable></term><listitem><para><replaceable>javaOption</replaceable> を Java アプリケーション起動ツールに渡します。たとえば、-\J-Xms48m は、起動メモリを 48 M バイトに設定します。オプションの完全なリストについては、下記のマニュアルを参照してください。<simplelist>
+<member><ulink url="http://java.sun.com/j2se/1.5.0/docs/tooldocs/solaris/java.html"> java - the Java application launcher (Solaris)</ulink></member>
+<member><ulink url="http://java.sun.com/j2se/1.5.0/docs/tooldocs/linux/java.html"> java - the Java application launcher (Linux)</ulink></member>
+<member><ulink url="http://java.sun.com/j2se/1.5.0/docs/tooldocs/windows/java.html"> java - the Java application launcher (Windows)</ulink></member></simplelist></para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<refsect1><title>statOption と出力</title>
+<para>次の表に、各 <option> statOption</option> に対して jstat が出力する列の要約を示します。<variablelist><varlistentry><term>&mdash;class オプション</term><listitem><table frame="topbot"><title>クラスローダ統計</title>
+<tgroup cols="2" colsep="0" rowsep="0"><colspec colname="colspec0" colwidth="50*"><colspec colname="colspec1" colwidth="50*"><thead><row><entry colname="colspec0" valign="top"><para>列</para></entry><entry colname="colspec1" valign="top"><para>説明</para></entry></row></thead><tbody><row><entry><para>Loaded</para></entry><entry><para>ロードされたクラスの数</para></entry></row><row><entry><para>Bytes</para></entry><entry><para>ロードされた K バイト数</para></entry></row><row><entry><para>Unloaded</para></entry><entry><para>アンロードされたクラスの数</para></entry></row><row><entry><para>Bytes</para></entry><entry><para>アンロードされた K バイト数</para></entry></row><row><entry><para>Time</para></entry><entry><para>クラスのロードおよびアンロード操作の実行に要した時間</para></entry></row></tbody></tgroup></table>
+</listitem></varlistentry>
+<varlistentry><term>&mdash;compiler オプション</term><listitem><table frame="topbot"><title>HotSpot Just-In-Time コンパイラ統計</title>
+<tgroup cols="2" colsep="0" rowsep="0"><colspec colwidth="50*"><colspec colwidth="50*"><thead><row rowsep="1"><entry><para>列</para></entry><entry><para>説明</para></entry></row></thead><tbody><row><entry><para>Compiled</para></entry><entry><para>実行されたコンパイルタスクの数</para></entry></row><row><entry><para>Failed</para></entry><entry><para>失敗したコンパイルタスクの数</para></entry></row><row><entry><para>Invalid</para></entry><entry><para>無効化されたコンパイルタスクの数</para></entry></row><row><entry><para>Time</para></entry><entry><para>コンパイルタスクの実行に要した時間</para></entry></row><row><entry><para>FailedType</para></entry><entry><para>前回失敗したコンパイルのコンパイルタイプ</para></entry></row><row><entry><para>FailedMethod</para></entry><entry><para>前回失敗したコンパイルのクラス名とメソッド</para></entry></row></tbody></tgroup></table>
+</listitem></varlistentry>
+<varlistentry><term>&mdash;gc オプション</term><listitem><table frame="topbot"><title>ガベージコレクトされたヒープの統計</title>
+<tgroup cols="2" colsep="0" rowsep="0"><colspec colwidth="50*"><colspec colwidth="50*"><thead><row rowsep="1"><entry><para>列</para></entry><entry><para>説明</para></entry></row></thead><tbody><row><entry><para>S0C</para></entry><entry><para> 現在のサバイバースペース 0 の容量 (K バイト)。</para></entry></row><row><entry><para>S1C</para></entry><entry><para>現在のサバイバースペース 1 の容量 (K バイト)。</para></entry></row><row><entry><para>S0U </para></entry><entry><para>サバイバースペース 0 の使用量 (K バイト)。</para></entry></row><row><entry><para>S1U </para></entry><entry><para>サバイバースペース 1 の使用量 (K バイト)。</para></entry></row><row><entry><para>EC</para></entry><entry><para>現在のエデンスペースの容量 (K バイト)。</para></entry></row><row><entry><para>EU</para></entry><entry><para>エデンスペースの使用量 (K バイト)。</para></entry></row><row><entry><para>OC</para></entry><entry><para>現在のオールドスペースの容量 (K バイト)。</para></entry></row><row><entry><para>OU</para></entry><entry><para>オールドスペースの使用量 (K バイト)。</para></entry></row><row><entry><para>PC</para></entry><entry><para>現在の永続的スペースの容量 (K バイト)。</para></entry></row><row><entry><para>PU</para></entry><entry><para>永続的スペースの使用量 (K バイト)。</para></entry></row><row><entry><para>YGC</para></entry><entry><para>若い世代の GC イベントの数。</para></entry></row><row><entry><para> YGCT</para></entry><entry><para>若い世代のガベージコレクション時間。</para></entry></row><row><entry><para>FGC</para></entry><entry><para>フル GC イベントの数。</para></entry></row><row><entry><para>FGCT</para></entry><entry><para>フルガベージコレクション時間。</para></entry></row><row><entry><para>GCT</para></entry><entry><para>ガベージコレクション合計時間。</para></entry></row></tbody></tgroup></table>
+</listitem></varlistentry>
+<varlistentry><term>&mdash;gccapacity オプション</term><listitem><table frame="topbot"><title>メモリプール世代とスペース容量</title>
+<tgroup cols="2" colsep="0" rowsep="0"><colspec colwidth="50*"><colspec colwidth="50*"><thead><row rowsep="1"><entry><para>列</para></entry><entry><para>説明</para></entry></row></thead><tbody><row><entry><para>NGCMN</para></entry><entry><para>新世代の最小容量 (K バイト)。</para></entry></row><row><entry><para>NGCMX</para></entry><entry><para>新世代の最大容量 (K バイト)。</para></entry></row><row><entry><para>NGC</para></entry><entry><para>新世代の現在の容量 (K バイト)。</para></entry></row><row><entry><para>S0C</para></entry><entry><para>現在のサバイバースペース 0 の容量 (K バイト)。</para></entry></row><row><entry><para>S1C</para></entry><entry><para>現在のサバイバースペース 1 の容量 (K バイト)。</para></entry></row><row><entry><para>EC</para></entry><entry><para>現在のエデンスペースの容量 (K バイト)。</para></entry></row><row><entry><para>OGCMN</para></entry><entry><para>旧世代の最小容量 (K バイト)。</para></entry></row><row><entry><para>OGCMX</para></entry><entry><para>旧世代の最大容量 (K バイト)。</para></entry></row><row><entry><para>OGC</para></entry><entry><para>旧世代の現在の容量 (K バイト)。</para></entry></row><row><entry><para>OC</para></entry><entry><para>現在のオールドスペースの容量 (K バイト)。</para></entry></row><row><entry><para>PGCMN</para></entry><entry><para>永続的世代の最小容量 (K バイト)。</para></entry></row><row><entry><para>PGCMX</para></entry><entry><para>永続的世代の最大容量 (K バイト)。</para></entry></row><row><entry><para>PGC</para></entry><entry><para>永続的世代の現在の容量 (K バイト)。</para></entry></row><row><entry><para>PC</para></entry><entry><para>永続的スペースの現在の容量 (K バイト)。</para></entry></row><row><entry><para>YGC</para></entry><entry><para>若い世代の GC イベントの数。</para></entry></row><row><entry><para>FGC  </para></entry><entry><para>フル GC イベントの数。</para></entry></row></tbody></tgroup></table>
+</listitem></varlistentry>
+<varlistentry><term>&mdash;gccause オプション</term><listitem><para>このオプションは、<option> -gcutil </option> オプションと同じガベージコレクション統計の要約を表示しますが、前回のガベージコレクションイベントと (該当する場合は) 現在のガベージコレクションイベントの原因も表示します。<option>gcutil</option> でリストされる列に加えて、このオプションでは以下の列が追加されます。</para>
+<table frame="topbot"><title>ガベージコレクション統計 (GC イベントを含む)</title>
+<tgroup cols="2" colsep="0" rowsep="0"><colspec colwidth="50*"><colspec colwidth="50*"><thead><row rowsep="1"><entry><para>列</para></entry><entry><para>説明</para></entry></row></thead><tbody><row><entry><para>LGCC</para></entry><entry><para>前回のガベージコレクションの原因</para></entry></row><row><entry><para>GCC</para></entry><entry><para>現在のガベージコレクションの原因</para></entry></row></tbody></tgroup></table>
+</listitem></varlistentry>
+<varlistentry><term>&mdash;gcnew オプション</term><listitem><table frame="topbot"><title>新世代統計</title>
+<tgroup cols="2" colsep="0" rowsep="0"><colspec colwidth="50*"><colspec colwidth="50*"><thead><row rowsep="1"><entry><para>列</para></entry><entry><para>説明</para></entry></row></thead><tbody><row><entry><para>S0C</para></entry><entry><para>現在のサバイバースペース 0 の容量 (K バイト)。</para></entry></row><row><entry><para>S1C</para></entry><entry><para>現在のサバイバースペース 1 の容量 (K バイト)。</para></entry></row><row><entry><para>S0U</para></entry><entry><para>サバイバースペース 0 の使用量 (K バイト)。</para></entry></row><row><entry><para>S1U</para></entry><entry><para>サバイバースペース 1 の使用量 (K バイト)。</para></entry></row><row><entry><para>TT</para></entry><entry><para>保有しきい値。</para></entry></row><row><entry><para>MTT</para></entry><entry><para>最大保有しきい値。</para></entry></row><row><entry><para>DSS</para></entry><entry><para>目標サバイバーサイズ (K バイト)。</para></entry></row><row><entry><para>EC</para></entry><entry><para>現在のエデンスペースの容量 (K バイト)。</para></entry></row><row><entry><para>EU</para></entry><entry><para>エデンスペースの使用量 (K バイト)。</para></entry></row><row><entry><para>YGC</para></entry><entry><para>若い世代の GC イベントの数。</para></entry></row><row><entry><para>YGCT</para></entry><entry><para>若い世代のガベージコレクション時間。</para></entry></row></tbody></tgroup></table>
+</listitem></varlistentry>
+<varlistentry><term>-gcnewcapacity オプション</term><listitem><table frame="topbot"><title>新世代のスペースサイズ統計</title>
+<tgroup cols="2" colsep="0" rowsep="0"><colspec colwidth="49.24*"><colspec colwidth="50.76*"><thead><row rowsep="1"><entry><para>列</para></entry><entry><para>説明</para></entry></row></thead><tbody><row><entry><para>NGCMN</para></entry><entry><para>新世代の最小容量 (K バイト)。</para></entry></row><row><entry><para>NGCMX</para></entry><entry><para>新世代の最大容量 (K バイト)。</para></entry></row><row><entry><para>NGC</para></entry><entry><para>現在の新世代容量 (K バイト)。</para></entry></row><row><entry><para>S0CMX</para></entry><entry><para>サバイバースペース 0 の最大容量 (K バイト)。</para></entry></row><row><entry><para>S0C</para></entry><entry><para>現在のサバイバースペース 0 の容量 (K バイト)。</para></entry></row><row><entry><para>S1CMX</para></entry><entry><para>サバイバースペース 1 の最大容量 (K バイト)。</para></entry></row><row><entry><para>S1C</para></entry><entry><para>現在のサバイバースペース 1 の容量 (K バイト)。</para></entry></row><row><entry><para>ECMX</para></entry><entry><para>エデンスペースの最大容量 (K バイト)。</para></entry></row><row><entry><para>EC</para></entry><entry><para>現在のエデンスペースの容量 (K バイト)。</para></entry></row><row><entry><para>YGC</para></entry><entry><para>若い世代の GC イベントの数。</para></entry></row><row><entry><para>FGC</para></entry><entry><para>フル GC イベントの数。</para></entry></row></tbody></tgroup></table>
+</listitem></varlistentry>
+<varlistentry><term>-gcold オプション</term><listitem><table frame="topbot"><title>旧および永続世代統計</title>
+<tgroup cols="2" colsep="0" rowsep="0"><colspec colwidth="50*"><colspec colwidth="50*"><thead><row rowsep="1"><entry><para>列</para></entry><entry><para>説明</para></entry></row></thead><tbody><row><entry><para>PC</para></entry><entry><para>現在の永続スペースの容量 (K バイト)。</para></entry></row><row><entry><para>PU</para></entry><entry><para>永続スペースの使用量 (K バイト)。</para></entry></row><row><entry><para>OC</para></entry><entry><para>現在のオールドスペースの容量 (K バイト)。</para></entry></row><row><entry><para>OU</para></entry><entry><para>オールドスペースの使用量 (K バイト)。</para></entry></row><row><entry><para>YGC</para></entry><entry><para>若い世代の GC イベントの数。</para></entry></row><row><entry><para>FGC</para></entry><entry><para>フル GC イベントの数。</para></entry></row><row><entry><para>FGCT</para></entry><entry><para>フルガベージコレクション時間。</para></entry></row><row><entry><para>GCT</para></entry><entry><para>ガベージコレクション合計時間。</para></entry></row></tbody></tgroup></table>
+</listitem></varlistentry>
+<varlistentry><term> -gcoldcapacity オプション</term><listitem><table frame="topbot"><title>旧世代統計</title>
+<tgroup cols="2" colsep="0" rowsep="0"><colspec colwidth="50*"><colspec colwidth="50*"><thead><row rowsep="1"><entry><para>列</para></entry><entry><para>説明</para></entry></row></thead><tbody><row><entry><para>OGCMN</para></entry><entry><para>旧世代の最小容量 (K バイト)。</para></entry></row><row><entry><para>OGCMX</para></entry><entry><para>旧世代の最大容量 (K バイト)。</para></entry></row><row><entry><para>OGC</para></entry><entry><para>旧世代の現在の容量 (K バイト)。</para></entry></row><row><entry><para>OC</para></entry><entry><para>現在のオールドスペースの容量 (K バイト)。</para></entry></row><row><entry><para>YGC</para></entry><entry><para>若い世代の GC イベントの数。</para></entry></row><row><entry><para>FGC</para></entry><entry><para>フル GC イベントの数。</para></entry></row><row><entry><para>FGCT</para></entry><entry><para>フルガベージコレクション時間。</para></entry></row><row><entry><para>GCT </para></entry><entry><para> ガベージコレクション合計時間。</para></entry></row></tbody></tgroup></table>
+</listitem></varlistentry>
+<varlistentry><term>-gcpermcapacity オプション</term><listitem><table frame="topbot"><title>永続世代統計</title>
+<tgroup cols="2" colsep="0" rowsep="0"><colspec colwidth="50*"><colspec colwidth="50*"><thead><row rowsep="1"><entry><para>列</para></entry><entry><para>説明</para></entry></row></thead><tbody><row><entry><para>PGCMN</para></entry><entry><para>永続世代の最小容量 (K バイト)。</para></entry></row><row><entry><para>PGCMX</para></entry><entry><para>永続世代の最大容量 (K バイト)。</para></entry></row><row><entry><para>PGC</para></entry><entry><para>永続世代の現在の容量 (K バイト)。</para></entry></row><row><entry><para>PC</para></entry><entry><para>永続スペースの現在の容量 (K バイト)。 </para></entry></row><row><entry><para>YGC</para></entry><entry><para>若い世代の GC イベントの数。</para></entry></row><row><entry><para>FGC</para></entry><entry><para>フル GC イベントの数。</para></entry></row><row><entry><para>FGCT</para></entry><entry><para>フルガベージコレクション時間。</para></entry></row><row><entry><para>GCT </para></entry><entry><para>ガベージコレクション合計時間。</para></entry></row></tbody></tgroup></table>
+</listitem></varlistentry>
+<varlistentry><term>-gcutil オプション</term><listitem><table frame="topbot"><title>ガベージコレクション統計の要約</title>
+<tgroup cols="2" colsep="0" rowsep="0"><colspec colwidth="50*"><colspec colwidth="50*"><thead><row rowsep="1"><entry><para>列</para></entry><entry><para>説明</para></entry></row></thead><tbody><row><entry><para>S0</para></entry><entry><para>サバイバースペース 0 の使用率 (スペースの現在の容量に対するパーセンテージ) 。</para></entry></row><row><entry><para>S1</para></entry><entry><para>サバイバースペース 1 の使用率 (スペースの現在の容量に対するパーセンテージ) 。</para></entry></row><row><entry><para>E</para></entry><entry><para>エデンスペースの使用率 (スペースの現在の容量に対するパーセンテージ) 。</para></entry></row><row><entry><para>O</para></entry><entry><para>オールドスペースの使用率 (スペースの現在の容量に対するパーセンテージ) 。</para></entry></row><row><entry><para>P</para></entry><entry><para>永続スペースの使用率 (スペースの現在の容量に対するパーセンテージ) 。</para></entry></row><row><entry><para>YGC</para></entry><entry><para>若い世代の GC イベントの数。</para></entry></row><row><entry><para>YGCT</para></entry><entry><para>若い世代のガベージコレクション時間。</para></entry></row><row><entry><para>FGC</para></entry><entry><para>フル GC イベントの数。</para></entry></row><row><entry><para>FGCT</para></entry><entry><para>フルガベージコレクション時間。</para></entry></row><row><entry><para>GCT</para></entry><entry><para>ガベージコレクション合計時間。</para></entry></row></tbody></tgroup></table>
+</listitem></varlistentry>
+<varlistentry><term>&mdash;printcompilation Option</term><listitem><table frame="topbot"><title>HotSpot コンパイラメソッド統計</title>
+<tgroup cols="2" colsep="0" rowsep="0"><colspec colwidth="50*"><colspec colwidth="50*"><thead><row rowsep="1"><entry><para>列</para></entry><entry><para>説明</para></entry></row></thead><tbody><row><entry><para>Compiled</para></entry><entry><para>実行されたコンパイルタスクの数。</para></entry></row><row><entry><para>Size</para></entry><entry><para>メソッドのバイトコードのバイト数。</para></entry></row><row><entry><para>Type</para></entry><entry><para>コンパイルタイプ。</para></entry></row><row><entry><para>Method</para></entry><entry><para>コンパイルされたメソッドを識別するクラス名とメソッド名。クラス名では、名前空間セパレータとして "." の代わりに "/" を使用します。メソッド名は、指定されたクラス内のメソッドです。この 2 つのフィールドの形式は、HotSpot \- XX:+PrintComplation オプションと同じです。</para></entry></row></tbody></tgroup></table>
+</listitem></varlistentry>
+</variablelist></para>
+</refsect1>
+<refsect1><title>例</title>
+<para>このセクションでは、lvmid が 21891 であるローカル JVM の監視例をいくつか示します。</para>
+<example><title>gcutil オプションの使用</title>
+<para>この例では、lvmid 21891 にアタッチして、250 ミリ秒間隔で 7 つのサンプルを採取し、<option>gcutil</option> オプションでの指定に従って出力を表示します。</para>
+<screen>jstat -gcutil 21891 250 7
+            S0     S1     E      O      P     YGC    YGCT    FGC    FGCT     GCT
+           12.44   0.00  27.20   9.49  96.70    78    0.176     5    0.495    0.672
+           12.44   0.00  62.16   9.49  96.70    78    0.176     5    0.495    0.672
+           12.44   0.00  83.97   9.49  96.70    78    0.176     5    0.495    0.672
+            0.00   7.74   0.00   9.51  96.70    79    0.177     5    0.495    0.673
+            0.00   7.74  23.37   9.51  96.70    79    0.177     5    0.495    0.673
+            0.00   7.74  43.82   9.51  96.70    79    0.177     5    0.495    0.673
+            0.00   7.74  58.11   9.51  96.71    79    0.177     5    0.495    0.673
+</screen>
+
+<para>この例の出力は、3 番目と 4 番目のサンプルの間に若い世代のコレクションが発生したことを示しています。コレクションの所要時間は 0.001 秒であり、オブジェクトがエデンスペース (E) からオールドスペース (O) に昇格されたため、オールドスペースの使用率が 9.49% から 9.51% に増加しています。コレクションの前のサバイバースペースの使用率は 12.44% でしたが、このコレクションの後の使用率は、わずか 7.74% です。</para>
+</example>
+<example><title>列見出し文字列の繰り返し</title>
+<para>この例では、lvmid 21891 にアタッチして、250 ミリ秒間隔でサンプルを採取し、<option> -gcutil</option> オプションでの指定に従って出力を表示します。また、<option>h3</option> オプションを使用して、3 行のデータごとに列見出しを出力します。</para>
+<screen>jstat -gcnew -h3 21891 250
+           S0C    S1C    S0U    S1U   TT MTT  DSS      EC       EU     YGC     YGCT
+            64.0   64.0    0.0   31.7 31  31   32.0    512.0    178.6    249    0.203
+            64.0   64.0    0.0   31.7 31  31   32.0    512.0    355.5    249    0.203
+            64.0   64.0   35.4    0.0  2  31   32.0    512.0     21.9    250    0.204
+           S0C    S1C    S0U    S1U   TT MTT  DSS      EC       EU     YGC     YGCT
+            64.0   64.0   35.4    0.0  2  31   32.0    512.0    245.9    250    0.204
+            64.0   64.0   35.4    0.0  2  31   32.0    512.0    421.1    250    0.204
+            64.0   64.0    0.0   19.0 31  31   32.0    512.0     84.4    251    0.204
+           S0C    S1C    S0U    S1U   TT MTT  DSS      EC       EU     YGC     YGCT
+            64.0   64.0    0.0   19.0 31  31   32.0    512.0    306.7    251    0.204
+</screen>
+
+<para>見出し文字列の繰り返しを示しているほかに、この例は、2 番目と 3 番目のサンプルの間に若い世代の GC が発生したことを示しています。その所要時間は 0.001 秒でした。コレクションによって、サバイバースペース 0 の使用量 (S0U) が目標サバイバーサイズ (DSS) を超える十分なライブデータが見つかりました。結果として、オブジェクトは旧世代に昇格され (この出力には示されていません) 、保有しきい値 (TT) が 31 から 2 に下がっています。</para>
+<para>5 番目と 6 番目のサンプルの間にもう 1 つのコレクションが発生しています。このコレクションでは、ごくわずかのサバイバーが見つかり、保有しきい値が 31 に戻っています。</para>
+</example>
+<example><title> 各サンプルのタイムスタンプの表示</title>
+<para>この例では、lvmid 21891 にアタッチして、250 ミリ秒間隔で 3 つのサンプルを採取します。<option>t</option> オプションを使用して、最初の列に各サンプルのタイムスタンプを生成します。</para>
+<screen>jstat -gcoldcapacity -t 21891 250 3
+          Timestamp          OGCMN        OGCMX         OGC           OC       YGC   FGC    FGCT    GCT
+                    150.1       1408.0      60544.0      11696.0      11696.0 194    80    2.874   3.799
+                    150.4       1408.0      60544.0      13820.0      13820.0 194    81    2.938   3.863
+                    150.7       1408.0      60544.0      13820.0      13820.0 194    81    2.938   3.863
+</screen>
+
+<para>タイムスタンプ列は、ターゲット JVM が起動されてからの経過時間を表示します。加えて、<option>gcoldcapacity</option> 出力は、ヒープがアロケーションやプロモーションデマンドに合わせて拡張されるたびに旧世代の現在の容量 (OGC) および 現在のオールドスペースの容量 (OC) を増加して表示しします。81 番目のフル GC 以降では、旧世代の現在の容量 (OGC) は 11696 K バイトから 13820 K バイトに増加しています。この世代の最大容量は 60544 K バイト (OGCMX) で、まだ拡張の余地があります。</para>
+</example>
+<example><title>リモート JVM の計測機構の監視</title>
+<para>remote.domain という名前のシステム上の lvmid 40496 にアタッチして、<option>gcutil</option> オプションを使用して、サンプルを 1 秒ごとに無制限に採取します。</para>
+<screen>jstat -gcutil 40496@remote.domain 1000
+           ... output omitted</screen>
+</example>
+<para>lvmid とリモートホストの名前を組み合わせることによって、40496@remote.domain という vmid が構成されています。この vmid の結果として、リモートホスト上のデフォルトの jstatd サーバへの通信に rmi プロトコルが使用されます。jstatd サーバは、rmiregistry を使用することによって remote.domain 上に置かれ、デフォルトの rmiregistry ポート (ポート 1099) にバインドされます。</para><?Pub Caret1>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>java</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>jps</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>jstatd</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>rmiregistry</refentrytitle><manvolnum>1</manvolnum></citerefentry> </para>
+</refsect1>
+</refentry>
+<?Pub *0000030122 74231>

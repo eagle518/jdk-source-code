@@ -1,0 +1,306 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1999, v.4002-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub Inc>
+<refentry id="java-1">
+<!--@(#)java.1 1.24 01/03/14 SMI;-->
+<refmeta><refentrytitle>java</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">2004 年 6 月 22 日</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All
+rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.
+</refmiscinfo>
+</refmeta>
+<refnamediv><refname>java</refname><refpurpose>Java アプリケーション起動ツール</refpurpose>
+</refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>java</command><arg choice="opt"><replaceable>options
+</replaceable></arg><arg choice="plain"><replaceable>class</replaceable></arg>
+<arg choice="opt" rep="repeat"><replaceable>argument ...</replaceable></arg>
+</cmdsynopsis>
+<cmdsynopsis><command>java</command><arg choice="opt"><replaceable>options
+</replaceable></arg><arg choice="plain"><option>jar</option>&nbsp;<replaceable>
+file.jar</replaceable></arg><arg choice="opt" rep="repeat"><replaceable>argument ...
+</replaceable></arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&parm-tt;</title>
+<variablelist termlength="narrow">
+<varlistentry><term remap="15"><replaceable>options</replaceable> </term>
+<listitem><para>コマンド行オプション。以下を参照</para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>class</replaceable> </term><listitem><para>
+呼び出されるクラスの名前</para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>file.jar</replaceable> </term><listitem>
+<para>呼び出される jar ファイルの名前。必ず <option>jar
+</option> オプションと同時に使用される</para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>argument</replaceable></term><listitem><para>
+メインファンクションに渡される引数</para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="java-1-indx-1"><primary sortas="Java interpreter">Java インタプリタ &mdash;
+java</primary></indexterm><indexterm id="java-1-indx-2"><primary sortas="java">
+java &mdash; Java インタプリタ</primary></indexterm><para><command>java
+</command> ツールは、Java アプリケーションを起動します。<command>java</command> ツールは、Java Runtime Environment を起動したあと、指定されたクラスをロードし、このクラスの <literal> main</literal> メソッドを呼び出して Java アプリケーションを起動します。</para>
+<para>このメソッドは <literal>public</literal> および <literal>static</literal> で宣言され、値を返さず、パラメータとして<literal> String</literal> 配列を使用できる必要があります。メソッドの宣言は以下のようになります。<informalexample><para><screen>public static void main(String args[])
+</screen></para>
+</informalexample></para>
+<para>デフォルトでは、最初のオプションではない引数は呼び出されるクラスの名前です。完全修飾クラス名を使用する必要があります。<option>jar </option> オプションを指定する場合、最初のオプションではない引数は、<acronym>JAR</acronym> アーカイブの名前です。このアーカイブには、アプリケーションのクラスおよびリソースファイルが含まれ、Main-Class マニフェストヘッダで起動クラスが示されています。
+</para>
+<para>Java Runtime は、ブートストラップクラスパス、インストール型拡張機能、およびユーザクラスパスの 3 つの場所から、起動クラスとその他の使用するクラスを探します。
+</para>
+<para>クラス名または <acronym>JAR</acronym> ファイル名のあとにあるオプションではない引数は、main 関数に渡されます。
+</para>
+</refsect1>
+<refsect1><title>&opts-tt;</title>
+<para>起動コマンドには、現在の実行環境および将来のリリースでサポートされる 標準オプションがあります。加えて、現在の仮想マシンの実装は非標準オプションをサポートしていますが、将来のリリースでは変更される可能性があります。
+</para>
+<refsect2>
+<title>標準オプション</title>
+<indexterm id="java-1-indx-3"><primary sortas="java">java &mdash; Java インタプリタ
+</primary><secondary>標準オプション</secondary></indexterm>
+<variablelist termlength="wholeline">
+<varlistentry><term remap="20"><option>client</option> </term><listitem><para>
+Java HotSpot Client <acronym remap="small">VM</acronym> を選択します。詳細については、『 <ulink url="http://java.sun.com/j2se/1.5.0/docs/guide/vm/server-class.html"> Server-Class Machine Detection</ulink>』を参照してください。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>server</option> </term><listitem><para>
+Java HotSpot Server <acronym remap="small">VM</acronym> を選択します。詳細については、『<ulink url="http://java.sun.com/j2se/1.5.0/docs/guide/vm/server-class.html">
+Server-Class Machine Detection</ulink>』を参照してください。</para>
+</listitem></varlistentry>
+<varlistentry><term>agentlib:libname[=<replaceable>options</replaceable>] 
+</term><listitem><para>ネイティブエージェントライブラリ libname を次のように読み込みます。<informalexample>
+<screen>-agentlib:hprof 
+
+-agentlib:jdwp=help 
+
+-agentlib:hprof=help </screen>
+</informalexample>詳細については、『<ulink url="http://java.sun.com/j2se/1.5.0/docs/guide/jvmti/jvmti.html"> JVMTI Agent Command Line Options</ulink>』を参照してください。 </para>
+</listitem></varlistentry>
+<varlistentry><term>-agentpath:pathname[=<replaceable>options</replaceable>] 
+</term><listitem><para>完全なパス名によってネイティブエージェントライブラリを読み込みます。詳細については、『<ulink url="http://java.sun.com/j2se/1.5.0/docs/guide/jvmti/jvmti.html"> JVMTI Agent Command Line Options</ulink>』を参照してください。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>classpath</option> <replaceable>classpath</replaceable> 
+</term><listitem><para></para>
+</listitem></varlistentry>
+<varlistentry><term><option>cp</option> <replaceable>classpath</replaceable> 
+</term><listitem><para>クラスファイルを探すディレクトリ、<acronym>JAR</acronym> アーカイブ、および <acronym>ZIP</acronym> アーカイブのリストを指定します。クラスパスの各エントリはコロン (:) で区切ります。<option>classpath</option> または <option>cp</option> を指定すると、<envar>CLASSPATH</envar> 環境変数の設定はオーバーライドされます。</para>
+<para><option>classpath</option> と <option>cp</option> を使用せず、<envar>CLASSPATH</envar> も設定されていない場合、ユーザクラスパスは現在のディレクトリ (.) になります。
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>D</option><replaceable>property=value</replaceable> 
+</term><listitem><para>システムプロパティの値を設定します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>d32</option></term><term><option>d64</option></term>
+<listitem><para>プログラムを 32 ビットまたは 64 ビット環境 (利用可能な場合) で動作させるかを指定します。</para>
+<para>現在、64 ビットのオペレーションをサポートするのは Java HotSpot Server VM だけであり、<option>server</option> オプションは <option>d64</option> の使用を暗黙的に示しています。この点は、将来のリリースで変更される可能性があります。
+</para>
+<para><option>d32</option>、<option>d64</option> のどちらも指定されない場合、64 ビットのみのシステムを除き、デフォルトは 32 ビット環境での実行になります。この点は、将来のリリースで変更される可能性があります。
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>enableassertions</option>[:<replaceable>package name</replaceable> ". . ." | :<replaceable>class name</replaceable> ]</term>
+<term><option>ea</option>[:<replaceable>package name</replaceable> ". . ." | :<replaceable>class name</replaceable> ]</term><listitem><para>アサーションを有効にします。
+アサーションは、デフォルトでは無効です。</para>
+<para>引数が指定されない場合、<option>enableassertions</option> または <option>ea</option> はアサーションを有効にします。引数が &ldquo;. . .&rdquo; で終わっている場合、スイッチは指定されたパッケージおよび任意のサブパッケージでアサーションを有効にします。引数が単に &ldquo;. . .&rdquo; の場合、スイッチは現在の作業ディレクトリの命名されていなパッケージでアサーションを有効にします。引数が  &ldquo;. . .&rdquo; で終わっていない場合、スイッチは指定されたクラスでアサーションを有効にします。
+</para>
+<para>単一のコマンド行にこれらのスイッチの複数のインスタンスが含まれている場合は、クラスをロードする前に順番に処理されます。たとえば、パッケージ <literal>com.wombat.fruitbat </literal> (および任意のサブパッケージ) でのみアサーションが有効なプログラムを実行するには、次のコマンドを使用できます。<informalexample>
+<screen>example% <userinput>java -ea:com.wombat.fruitbat... <replaceable>
+Main Class</replaceable></userinput></screen>
+</informalexample></para>
+<para><option>enableassertions</option> と <option>ea</option> スイッチは、<emphasis>すべての</emphasis>クラスローダおよびシステムクラス (クラスローダを持たないもの) に適用されます。この規則には 1 つ例外があります。引数が指定されないフォームでは、スイッチはシステムに適用されません。この例外は、システムクラス以外の全クラス内のアサーションを有効にする上で便利です。すべてのシステムクラス内のアサーションを有効にするスイッチは別に用意されています。以下の <option>enablesystemassertions</option> を参照してください。
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>disableassertions</option>[:<replaceable>package name</replaceable> ". . ." | :<replaceable>class name</replaceable> ]</term>
+<term><option>da</option>[:<replaceable>package name</replaceable> ". . ." | :<replaceable>class name</replaceable> ]</term><listitem><para>アサーションを無効にします。
+これはデフォルトです。</para>
+<para>引数が指定されないと、<option>disableassertions</option> または <option>da
+</option> はアサーションを無効にします。引数が &ldquo;. . .&rdquo; で終わる場合、スイッチは指定されたパッケージおよび任意のサブパッケージでアサーションを無効にします。引数が単に &ldquo;. . .&rdquo; の場合、スイッチは現在の作業ディレクトリ内の命名されていないパッケージでアサーションを無効にします。引数が  &ldquo;. . .&rdquo; で終了していない場合、スイッチは指定されたクラスでアサーションを無効にします。
+</para>
+<para>パッケージ <literal>com.wombat.fruitbat </literal> でアサーションが有効で、クラス <literal>com.wombat.fruitbat.Brickbat</literal> で無効なプログラムを実行するには、以下のコマンドを使用できます。
+<informalexample>
+<screen>example% <userinput>java -ea:com.wombat.fruitbat...
+      -da:com.wombat.fruitbat.Brickbat <replaceable>Main Class</replaceable></userinput></screen>
+</informalexample></para>
+<para><option>disableassertions</option> と <option>da</option> スイッチは、<emphasis>すべての</emphasis>クラスローダおよびシステムクラス (クラスローダを持たないもの) に適用されます。この規則には 1 つ例外があります。引数が指定されないフォームでは、スイッチはシステムに適用されません。この例外は、システムクラス以外のすべてのクラス内のアサーションを有効にする上で便利です。すべてのシステムクラス内のアサーションを有効にするスイッチは別に用意されています。以下の <option>disablesystemassertions</option> を参照してください。
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>enablesystemassertions</option></term><term><option>
+esa</option></term><listitem><para>すべてのシステムクラス内のアサーションを有効にします
+(システムクラスに対する <replaceable>default assertion status</replaceable> を <literal>true</literal> に設定する)。
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>disablesystemassertions</option></term><term><option>
+dsa</option></term><listitem><para>すべてのシステムクラス内のアサーションを無効にします。
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>jar</option> </term><listitem><para><acronym>JAR</acronym> アーカイブの中にカプセル化されたプログラムを実行します。最初の引数は、起動クラスの名前ではなく、<acronym>JAR</acronym> ファイルの名前になります。
+ このオプションが動作するためには、<acronym>JAR</acronym> ファイルのマニフェストに形式 <literal>Main-Class:</literal><replaceable>classname</replaceable> の行が含まれている必要があります。<replaceable>classname</replaceable> は、ユーザのアプリケーションの開始点となる <literal>public</literal> <literal>static</literal> <literal>void</literal> <literal>main(String[]</literal> <literal>args)</literal> メソッドを持つクラスを識別します。JAR ファイルと JAR ファイルのマニフェストを扱う方法については、Jar ツールのリファレンスページと「Java Tutorial」の「Jar Files」を参照してください。</para>
+<para>このオプションを使用するときは、<acronym>JAR</acronym> ファイルがすべてのユーザクラスのソースとなるため、他のユーザクラスパスの設定は無視されます。</para>
+<para><command>java</command> <option>jar</option> を使用しないで <acronym>JAR</acronym> ファイルを実行できるように、<command>java</command> <option>jar</option> オプションで実行可能な <acronym>JAR</acronym> ファイルにアクセス権のセットを含
+めることができます。『<ulink url="http://java.sun.com/j2se/1.5.0/docs/guide/jar/index.html">Java Archive (JAR) Files</ulink>』を参照してください。
+</para>
+</listitem></varlistentry>
+<varlistentry><term>javaagent:jarpath[=<replaceable>options</replaceable>] 
+</term><listitem><para>Java プログラミング言語エージェントを読み込みます。「<literal>java.lang.instrument</literal>」を参照してください。
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>verbose</option></term><term><literal>&ndash;verbose:
+</literal><replaceable>class</replaceable></term><listitem><para>ロードされるクラスの情報を表示します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>verbose:gc</option> </term><listitem><para>ガベージコレクションイベントを報告します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>verbose:jni</option> </term><listitem><para>ネイティブメソッドおよびその他の Java Native Interface (JNI) アクティビティの使用に関する情報を報告します。
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>version</option> </term><listitem><para>バージョン情報を表示して終了します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>showversion</option> </term><listitem><para>バージョン情報を表示して継続します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>?</option> </term><term><option>help</option> 
+</term><listitem><para>使用法を表示して終了します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>X</option> </term><listitem><para>非標準オプションに関する情報を表示して終了します。</para>
+</listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title>非標準オプション</title>
+<indexterm id="java-1-indx-4"><primary sortas="java">java &mdash; Java インタプリタ</primary><secondary>非標準オプション</secondary></indexterm>
+<variablelist termlength="wholeline">
+<varlistentry><term remap="20"><option>Xint</option> </term><listitem><para>
+インタプリタ専用モードで動作します。ネイティブコードへのコンパイルは 無効になり、すべてのバイトコードがインタプリタによって実行されます。Java HotSpot VM 適応型コンパイラによって得られるパフォーマンス上の利点は、このモードでは実現されません。
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xbatch</option></term><listitem><para>バックグラウンドのコンパイルを無効にします。通常、VM はメソッドをバックグラウンドタスクとしてコンパイルし、バックグラウンドのコンパイルが終了するまでインタプリタモードでメソッドを実行します。<option>Xbatch</option> フラグはバックグラウンドのコンパイルを無効にし、すべてのメソッドのコンパイルは終了するまでフォアグラウンドのタスクとして処理されます。
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xdebug</option></term><listitem><para>JVMDI が有効なサポートを開始します。JVMDI は 非推奨で、J2SE 5.0 のデバッグには使用されません。このオプションは、J2SE 5.0 のデバッグには必要ありません。
+</para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>Xbootclasspath:</option><replaceable>
+bootclasspath</replaceable> </term><listitem><para>ブートクラスファイルを探すために、ディレクトリ、<acronym>JAR</acronym> アーカイブ、および <acronym>ZIP</acronym> アーカイブをコロンで区切ったリストを指定します。ブートクラスファイルは、JDK に含まれるブートクラスファイルの代わりに使われます。
+注: このオプションを、<literal>rt.jar</literal> 内のクラスをオーバーライドする目的で使用するアプリケーションは指定しないでください。指定すると、JRE バイナリコードライセンス違反になることがあります。
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xbootclasspath/a:</option><replaceable>path</replaceable> 
+</term><listitem><para>デフォルトのブートストラップクラスパスに追加するディレクトリ、<acronym>JAR</acronym> アーカイブ、および <acronym>ZIP</acronym> アーカイブのパスをコロンで区切って指定します。
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xbootclasspath/p:</option><replaceable>path</replaceable> 
+</term><listitem><para>デフォルトのブートストラップクラスパスの前に追加するディレクトリ、<acronym>JAR</acronym> アーカイブ、および <acronym>ZIP</acronym> アーカイブのパスをコロンで区切って指定します。注: このオプションを、<literal>rt.jar</literal> 内のクラスをオーバーライドする目的で使用するアプリケーションは指定しないでください。指定すると、JRE バイナリコードライセンス違反になることがあります。
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xcheck:jni</option></term><listitem><para>Java Native Interface 機能のための追加チェックを実行します。
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xfuture</option> </term><listitem><para>厳密なクラス
+ファイル形式の検査を実行します。下位互換性を維持するため、JDK の仮想マシンで実行されるデフォルトの形式検査は、JDK ソフトウェアの 1.1.x バージョンで実行される検査よりも 厳密ではありません。<option>Xfuture</option> フラグを使用すると、クラスファイル形式をより仕様に準拠したものにするための、さらに厳密なクラスファイル形式検査が有効になります。開発者が新しいコードを開発する際には、このフラグの使用を推奨します。Java アプリケーション起動ツールの将来のリリースでは、より厳密な検査がデフォルトになるからです。
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xnoclassgc</option> </term><listitem><para>クラスのガベージコレクションを無効にします。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xincgc</option> </term><listitem><para>インクリメンタルガベージコレクタを有効にします。 デフォルトでは、インクリメンタルガベージコレクタはオフになっています。インクリメンタルガベージコレクタは、プログラム実行中に時折発生するガベージコレクションの長時間の中断を減らします。インクリメンタルガベージコレクタは、プログラムと同時に実行されることがあり、その間はプログラムで利用可能なプロセッサ容量が少なくなります。
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xloggc:</option><replaceable>file</replaceable> 
+</term><listitem><para><option>verbose:gc</option> と同様、各ガベージコレクションイベントでレポートを作成し、このデータを <replaceable>file</replaceable> に記録し
+ます。 <option>verbose:gc</option> により入手できる情報に加えて、レポートされるイベントには最初のガベージコレクションイベントからの経過時間 (秒数) が付けられます。</para>
+<para>ネットワークの遅延による JVM の停止を避けるために、このファイルの記憶域として常にローカルファイルシステムを使用します。このファイルは、フルファイルシステ
+ムおよびロギングが不完全なファイルに追加される場合、切り詰められることがあります
+。 コマンド行で <option>verbose:gc</option> といっしょに指定された場合、このオプ
+ションが優先されます。</para>
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xms</option><replaceable>n</replaceable> </term>
+<listitem><para>メモリ割り当てプールの初期サイズを指定します。指定する値は、1000 より大きくなければなりません。<replaceable>n</replaceable> の単位を変更するには、K バイトには文字 <literal>k</literal> を、M バイトには文字 <literal>m</literal> を数値の後に付けます。デフォルトは <literal>2m</literal> です。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xmx</option><replaceable>n</replaceable> </term>
+<listitem><para>メモリ割り当てプールの最大サイズを指定します。指定する値は、1000 より大きくなければなりません。<replaceable>n</replaceable> の単位を変更するには、K バイトには文字 <literal>k</literal> を、M バイトには文字 <literal>m</literal> を数値の後に付けます。デフォルトは <literal>64m</literal> です。
+<informalexample>
+<screen> -Xmx83886080
+ -Xmx81920k
+ -Xmx80m</screen>
+</informalexample>Solaris 7 および Solaris 8 SPARC プラットフォームの場合、この値の上限はおよそ <literal>4000m</literal> からオーバーヘッドの量を引いた値です。Solaris 2.6 および x86 プラットフォームの場合、上限はおよそ <literal>2000m</literal> からオーバーヘッドの量を引いた値です。Linux プラットフォームの場合、上限はおよそ <literal>2000m</literal> からオーバーヘッドの量を引いた値です。
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xprof</option> </term><listitem><para>実行中のプログラムのプロファイルを生成し、プロファイリングデータを標準出力に送ります。このオプションは、プログラム開発に役立つユーティリティとして提供されているもので、本番稼動システムでの使用を目的としたものではありません。
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xrunhprof[:help][:</option><replaceable>suboption
+</replaceable><literal>=</literal><replaceable>value</replaceable>,...]</term>
+<listitem><para>CPU、ヒープ、またはモニターのプロファイリングを有効にします。通常、このオプションのあとには、コンマで区切られた「<replaceable>suboption</replaceable>=<replaceable>value</replaceable>」のペアが続きます。サブオプションおよびそれらのデフォルト値の一覧を取得するには、コマンド <command>java</command> <option>Xrunhprof:help</option> を実行します。
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xrs</option></term><listitem><para>Java 仮想マシン (JVM) によるオペレーティングシステムシグナルの利用を減らします。
+</para>
+<para>シャットダウンフック機能は、Java アプリケーションを適正に停止するために、以前のリリースで追加されました。この目的は、JVM が突然終了しても、シャットダウン時にユーザクリーンアップコード (データベース接続を閉じるなど) を実行できるようにすることです。 
+</para>
+<para>Sun の JVM は、シグナルをキャッチして異常な JVM 終了に対するシャットダウンフックを実装します。JVM は、<systemitem class="constant">SIGHUP</systemitem>、<systemitem class="constant">SIGINT</systemitem>、<systemitem class="constant">SIGTERM</systemitem> を使用してシャットダウンフックの実行を開始します。JVM はスレッドダンプの実行には、<systemitem class="constant">SIGQUIT</systemitem> を使用します。
+</para>
+<para>VM は同様の機構を使用して、デバッグ用に 1.2 以前のスレッドスタックのダンプ機能を実装します。Sun の JVM は、SIGQUIT を使用してスレッドダンプを実行します。
+</para>
+<para>JVM を組み込むアプリケーションは、<systemitem class="constant">SIGINT</systemitem> や <systemitem class="constant">SIGTERM</systemitem> などのシグナルのトラップが頻繁に必要になります。これは、JVM 独自のシグナルハンドラの障害となる可能性があります。 <option>Xrs</option> コマンド行オプションは、この問題を解決するために使用できます。Sun の JVM で <option>Xrs</option> が使用されると、<systemitem class="constant">SIGINT</systemitem>、<systemitem class="constant">SIGTERM</systemitem>、<systemitem class="constant">SIGHUP</systemitem>、および <systemitem class="constant">SIGQUIT</systemitem> のシグナルマスクは、JVM によって変更されず、これらのシグナルのシグナルハンドラはインストールされません。 
+</para>
+<para><option>Xrs</option> を指定すると、次の結果が生じます。<simplelist>
+<member><systemitem class="constant">SIGQUIT</systemitem>スレッドダンプは使用できません。</member>
+<member>ユーザコードは、JVM 終了時の <literal>System.exit()</literal> の呼び出し
+などで、シャットダウンフックを実行します。
+</member></simplelist></para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xss</option><replaceable>n</replaceable> </term>
+<listitem><para>Java スレッドはそれぞれ 2 つのスタックを持っています。1 つは Java コード用で、もう 1 つは C コード用です。<option>Xss</option> オプションは、1 つのスレッド内の C コードが使用できる最大スタックサイズを <replaceable>n</replaceable> に設定します。<command>java</command> に渡されたプログラムの実行中に生成されたスレッドはそれぞれ、独自の C スタックサイズとして <replaceable>n</replaceable> を持っています。<replaceable>n</replaceable> のデフォルトの単位はバイトで、<replaceable>n</replaceable> は 1000 バイトよりも大きくなければなりません。<replaceable>n</replaceable> の意味を変更する場合、キロバイトにするには文字 <literal>k</literal> を、メガバイトにするには文字 <literal>m</literal> を追加します。デフォルトのスタックサイズは 512 K バイトです (<option>Xss</option><literal>512k</literal>)。
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>XX:+UseAltSigs</option></term><listitem><para>
+VM は 、デフォルトで <systemitem>SIGUSR1</systemitem> と <systemitem>SIGUSR2</systemitem> を使用するため、<systemitem>SIGUSR1</systemitem> と <systemitem>SIGUSR2</systemitem> をシグナル連鎖するアプリケーションと競合する場合があります。<option>XX:
++UseAltSigs</option> オプションは、VM にデフォルトとして <systemitem>SIGUSR1</systemitem> と <systemitem>SIGUSR2</systemitem> 以外のシグナルを使用させます。
+</para>
+</listitem></varlistentry>
+</variablelist></refsect2>
+</refsect1>
+<refsect1><title>&attr-tt;</title>
+<para>次の属性については、<citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry> のマニュアルページを参照してください。
+</para>
+<informaltable frame="all" orient="port">
+<tgroup cols="2" colsep="1" rowsep="1"><colspec colnum="1" colname="col1"
+colwidth="1*" colsep="1" align="left"><colspec colnum="2" colname="col2" colwidth="1*"
+align="left">
+<thead>
+<row><entry colname="col1" align="center" valign="top">属性タイプ</entry>
+<entry colname="col2" align="center" valign="top">属性値</entry>
+</row>
+</thead>
+<tbody>
+<row><entry>使用条件</entry><entry>SUNWj5rt, SUNWj5dev</entry></row>
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>javac</refentrytitle><manvolnum>1</manvolnum>
+</citerefentry>, <citerefentry><refentrytitle>jdb</refentrytitle><manvolnum>
+1</manvolnum></citerefentry>, <citerefentry><refentrytitle>javah</refentrytitle>
+<manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>jar
+</refentrytitle><manvolnum>1</manvolnum></citerefentry> </para>
+<para>次を参照、または <literal>java.sun.com</literal> を検索してください。
+</para>
+<variablelist termlength="wholeline">
+<varlistentry><term remap="10"><citetitle>Java 拡張機能機構</citetitle> @</term><listitem><para><ulink url="http://java.sun.com/j2se/1.5.0/docs/guide/extensions/index.html"></ulink>http://java.sun.com/j2se/1.5.0/docs/guide/extensions/index.html
+</para>
+</listitem></varlistentry>
+<varlistentry><term><citetitle>セキュリティ</citetitle> @</term><listitem><para><ulink url="http://java.sun.com/j2se/1.5.0/docs/guide/security/index.html"></ulink>http://java.sun.com/j2se/1.5.0/docs/guide/security/index.html
+</para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<!--+ 07/27/00 08:33:40
+    | tagMorph:  $Id: tagMorph-engine 1.54 1998/01/19 05:44:48 $
+    | tagMorph library:  $Id: libtagMorph.a 1.50 1998/01/19 22:02:51 $
+    | sunman-to-solbook 1.17
+    +-->
+<?Pub Caret></refentry>
+<?Pub *0000027107>

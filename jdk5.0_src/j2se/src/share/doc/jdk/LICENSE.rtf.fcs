@@ -1,0 +1,156 @@
+{\rtf1\ansi\ansicpg1252\uc1 \deff0\deflang1033\deflangfe1033{\fonttbl{\f0\froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f1\fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial;}
+{\f27\fswiss\fcharset0\fprq2{\*\panose 020b0604030504040204}Tahoma;}{\f28\froman\fcharset0\fprq2{\*\panose 02020603050405020304}Thorndale{\*\falt Times New Roman};}
+{\f29\fmodern\fcharset0\fprq1{\*\panose 02070309020205020404}Cumberland{\*\falt Courier New};}{\f36\froman\fcharset238\fprq2 Times New Roman CE;}{\f37\froman\fcharset204\fprq2 Times New Roman Cyr;}{\f39\froman\fcharset161\fprq2 Times New Roman Greek;}
+{\f40\froman\fcharset162\fprq2 Times New Roman Tur;}{\f41\froman\fcharset177\fprq2 Times New Roman (Hebrew);}{\f42\froman\fcharset178\fprq2 Times New Roman (Arabic);}{\f43\froman\fcharset186\fprq2 Times New Roman Baltic;}
+{\f44\fswiss\fcharset238\fprq2 Arial CE;}{\f45\fswiss\fcharset204\fprq2 Arial Cyr;}{\f47\fswiss\fcharset161\fprq2 Arial Greek;}{\f48\fswiss\fcharset162\fprq2 Arial Tur;}{\f49\fswiss\fcharset177\fprq2 Arial (Hebrew);}
+{\f50\fswiss\fcharset178\fprq2 Arial (Arabic);}{\f51\fswiss\fcharset186\fprq2 Arial Baltic;}{\f252\fswiss\fcharset238\fprq2 Tahoma CE;}{\f253\fswiss\fcharset204\fprq2 Tahoma Cyr;}{\f255\fswiss\fcharset161\fprq2 Tahoma Greek;}
+{\f256\fswiss\fcharset162\fprq2 Tahoma Tur;}{\f257\fswiss\fcharset177\fprq2 Tahoma (Hebrew);}{\f258\fswiss\fcharset178\fprq2 Tahoma (Arabic);}{\f259\fswiss\fcharset186\fprq2 Tahoma Baltic;}
+{\f260\froman\fcharset238\fprq2 Thorndale CE{\*\falt Times New Roman};}{\f261\froman\fcharset204\fprq2 Thorndale Cyr{\*\falt Times New Roman};}{\f263\froman\fcharset161\fprq2 Thorndale Greek{\*\falt Times New Roman};}
+{\f264\froman\fcharset162\fprq2 Thorndale Tur{\*\falt Times New Roman};}{\f267\froman\fcharset186\fprq2 Thorndale Baltic{\*\falt Times New Roman};}{\f268\fmodern\fcharset238\fprq1 Cumberland CE{\*\falt Courier New};}
+{\f269\fmodern\fcharset204\fprq1 Cumberland Cyr{\*\falt Courier New};}{\f271\fmodern\fcharset161\fprq1 Cumberland Greek{\*\falt Courier New};}{\f272\fmodern\fcharset162\fprq1 Cumberland Tur{\*\falt Courier New};}
+{\f275\fmodern\fcharset186\fprq1 Cumberland Baltic{\*\falt Courier New};}}{\colortbl;\red0\green0\blue0;\red0\green0\blue255;\red0\green255\blue255;\red0\green255\blue0;\red255\green0\blue255;\red255\green0\blue0;\red255\green255\blue0;
+\red255\green255\blue255;\red0\green0\blue128;\red0\green128\blue128;\red0\green128\blue0;\red128\green0\blue128;\red128\green0\blue0;\red128\green128\blue0;\red128\green128\blue128;\red192\green192\blue192;}{\stylesheet{
+\ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 \snext0 Normal;}{\*\cs10 \additive Default Paragraph Font;}{\s15\ql \li0\ri0\nowidctlpar\faauto\rin0\lin0\itap0 
+\fs24\lang1033\langfe255\loch\f28\hich\af27\dbch\af0\cgrid\langnp1033\langfenp255 \snext15 Default;}{\s16\ql \li0\ri0\sa120\nowidctlpar\faauto\rin0\lin0\itap0 \fs24\lang1033\langfe255\loch\f28\hich\af27\dbch\af0\cgrid\langnp1033\langfenp255 
+\sbasedon15 \snext16 Text body;}{\s17\ql \li0\ri0\nowidctlpar\faauto\rin0\lin0\itap0 \fs24\lang1033\langfe255\loch\f28\hich\af27\dbch\af0\cgrid\langnp1033\langfenp255 \sbasedon16 \snext17 List;}{
+\s18\ql \li0\ri0\sb120\sa120\nowidctlpar\faauto\rin0\lin0\itap0 \i\fs20\lang1033\langfe255\loch\f28\hich\af27\dbch\af0\cgrid\langnp1033\langfenp255 \sbasedon15 \snext18 caption;}{\s19\ql \li0\ri0\nowidctlpar\faauto\rin0\lin0\itap0 
+\fs24\lang1033\langfe255\loch\f28\hich\af27\dbch\af0\cgrid\langnp1033\langfenp255 \sbasedon15 \snext19 Index;}{\s20\ql \li0\ri0\nowidctlpar\faauto\rin0\lin0\itap0 \f29\fs20\lang1033\langfe255\cgrid\langnp1033\langfenp255 \sbasedon15 \snext20 
+Preformatted Text;}}{\info{\title Sun Microsystems, Inc}{\author kgray}{\operator kgray}{\creatim\yr2004\mo9\dy3\hr12\min21}{\revtim\yr2004\mo9\dy3\hr12\min28}{\printim\yr2113\mo1\dy1}{\version3}{\edmins0}{\nofpages4}{\nofwords2259}{\nofchars12878}
+{\*\company Merrill Corporation}{\nofcharsws0}{\vern8269}}\paperw10800\paperh12960 \deftab709\widowctrl\ftnbj\aenddoc\noxlattoyen\expshrtn\noultrlspc\dntblnsbdb\nospaceforul\hyphcaps0\horzdoc\dghspace120\dgvspace120\dghorigin1701\dgvorigin1984\dghshow0
+\dgvshow3\jcompress\viewkind1\viewscale100\nolnhtadjtbl \fet0\sectd \sbknone\linex0\sectdefaultcl {\*\pnseclvl1\pnucrm\pnstart1\pnindent720\pnhang{\pntxta .}}{\*\pnseclvl2\pnucltr\pnstart1\pnindent720\pnhang{\pntxta .}}{\*\pnseclvl3
+\pndec\pnstart1\pnindent720\pnhang{\pntxta .}}{\*\pnseclvl4\pnlcltr\pnstart1\pnindent720\pnhang{\pntxta )}}{\*\pnseclvl5\pndec\pnstart1\pnindent720\pnhang{\pntxtb (}{\pntxta )}}{\*\pnseclvl6\pnlcltr\pnstart1\pnindent720\pnhang{\pntxtb (}{\pntxta )}}
+{\*\pnseclvl7\pnlcrm\pnstart1\pnindent720\pnhang{\pntxtb (}{\pntxta )}}{\*\pnseclvl8\pnlcltr\pnstart1\pnindent720\pnhang{\pntxtb (}{\pntxta )}}{\*\pnseclvl9\pnlcrm\pnstart1\pnindent720\pnhang{\pntxtb (}{\pntxta )}}\pard\plain 
+\s20\ql \li0\ri0\nowidctlpar\faauto\rin0\lin0\itap0 \f29\fs20\lang1033\langfe255\cgrid\langnp1033\langfenp255 {\f1\fs16 Sun Microsystems, Inc. Binary Code License Agreement
+\par 
+\par for the JAVA 2 PLATFORM STANDARD EDITION DEVELOPMENT KIT 5.0
+\par 
+\par SUN MICROSYSTEMS, INC. ("SUN") IS WILLING TO LICENSE THE SOFTWARE IDENTIFIED BELOW TO YOU ONLY UPON THE CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS BINARY CODE LICENSE AGREEMENT AND SUPPLEMENTAL LICENSE TERMS (COLLECTIVELY "AGREEMENT").\~
+ PLEASE READ THE AGREEMENT CAREFULLY.\~
+ BY DOWNLOADING OR INSTALLING THIS SOFTWARE, YOU ACCEPT THE TERMS OF THE AGREEMENT. INDICATE ACCEPTANCE BY SELECTING THE "ACCEPT" BUTTON AT THE BOTTOM OF THE AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY ALL THE TERMS
+, SELECT THE "DECLINE" BUTTON AT THE BOTTOM OF THE AGREEMENT AND THE DOWNLOAD OR INSTALL PROCESS WILL NOT CONTINUE. 
+\par 
+\par 1. DEFINITIONS. "Software" means the identified above in binary form, any other machine readable materials (including, but not limited to,
+ libraries, source files, header files, and data files), any updates or error corrections provided by Sun, and any user manuals, programming guides and other documentation provided to you by Sun under this Agreement. "Programs" mean Java applets and appli
+cations intended to run on the Java 2 Platform Standard Edition (J2SE platform) platform on Java-enabled general purpose desktop computers and servers.
+\par 
+\par 2. LICENSE TO USE. Subject to the terms and conditions of this Agreement, including, but not limited to 
+the Java Technology Restrictions of the Supplemental License Terms, Sun grants you a non-exclusive, non-transferable, limited license without license fees to reproduce and use internally Software complete and unmodified for the sole purpose of running Pro
+grams. Additional licenses for developers and/or publishers are granted in the Supplemental License Terms.
+\par 
+\par 3. RESTRICTIONS. Software is confidential and copyrighted. Title to Software and all associated intellectual property rights is retained by Sun and/o
+r its licensors. Unless enforcement is prohibited by applicable law, you may not modify, decompile, or reverse engineer Software.\~
+ You acknowledge that Licensed Software is not designed or intended for use in the design, construction, operation or maintena
+nce of any nuclear facility. Sun Microsystems, Inc. disclaims any express or implied warranty of fitness for such uses. No right, title or interest in or to any trademark, service mark, logo or trade name of Sun or its licensors is granted under this Agre
+ement. Additional restrictions for developers and/or publishers licenses are set forth in the Supplemental License Terms.
+\par 
+\par 4. LIMITED WARRANTY.\~ Sun warrants to you that for a period of ninety (90) days from the date of purchase, as evidenced by a copy of t
+he receipt, the media on which Software is furnished (if any) will be free of defects in materials and workmanship under normal use.\~ Except for the foregoing, Software is provided "AS IS".\~
+ Your exclusive remedy and Sun's entire liability under this limit
+ed warranty will be at Sun's option to replace Software media or refund the fee paid for Software. Any implied warranties on the Software are limited to 90 days. Some states do not allow limitations on duration of an implied warranty, so the above may not
+ apply to you. This limited warranty gives you specific legal rights. You may have others, which vary from state to state. 
+\par 
+\par 5. DISCLAIMER OF WARRANTY.\~ UNLESS SPECIFIED IN THIS AGREEMENT, ALL EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND WARRANTIES, I
+NCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT ARE DISCLAIMED, EXCEPT TO THE EXTENT THAT THESE DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. 
+\par 
+\par 6. LIMITATION OF LIABILITY.\~ TO THE EXTENT NOT PROHIBITED B
+Y LAW, IN NO EVENT WILL SUN OR ITS LICENSORS BE LIABLE FOR ANY LOST REVENUE, PROFIT OR DATA, OR FOR SPECIAL, INDIRECT, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER CAUSED REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF OR RELATED TO THE US
+E OF OR INABILITY TO USE SOFTWARE, EVEN IF SUN HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.\~
+ In no event will Sun's liability to you, whether in contract, tort (including negligence), or otherwise, exceed the amount paid by you for Software under this Agreement.\~
+ The foregoing limitations will apply even if the above stated warranty fails of its essential purpose. Some states do not allow the exclusion of incidental or consequential damages, so some of the terms above may not be applicable to you. 
+\par 
+\par 7. TERMINATION.\~ This Agreement is effective until terminated.\~ You may terminate this Agreement at any time by destroying all copies of Software.\~
+ This Agreement will terminate immediately without notice from Sun if you fail to comply with any provision of this Agreement.\~
+ Either party may terminate this Agreement immediately should any Software become, or in either party's opinion be likely to become, the subject of a claim of infringement of any intellectual property right. Upon Termination, you must des
+troy all copies of Software. 
+\par 
+\par 8. EXPORT REGULATIONS. All Software and technical data delivered under this Agreement are subject to US export control laws and may be subject to export or import regulations in other countries.\~ You agree to comply strictly 
+with all such laws and regulations and acknowledge that you have the responsibility to obtain such licenses to export, re-export, or import as may be required after delivery to you. 
+\par 
+\par 9. TRADEMARKS AND LOGOS. You acknowledge and agree as between you and Su
+n that Sun owns the SUN, SOLARIS, JAVA, JINI, FORTE, and iPLANET trademarks and all SUN, SOLARIS, JAVA, JINI, FORTE, and iPLANET-related trademarks, service marks, logos and other brand designations ("Sun Marks"), and you agree to comply with the Sun Trad
+emark and Logo Usage Requirements currently located at http://www.sun.com/policies/trademarks. Any use you make of the Sun Marks inures to Sun's benefit. 
+\par 
+\par 10. U.S. GOVERNMENT RESTRICTED RIGHTS.\~ If Software is being acquired by or on behalf of the U.S. Gov
+ernment or by a U.S. Government prime contractor or subcontractor (at any tier), then the Government's rights in Software and accompanying documentation will be only as set forth in this Agreement; this is in accordance with 48 CFR 227.7201 through 227.72
+02-4 (for Department of Defense (DOD) acquisitions) and with 48 CFR 2.101 and 12.212 (for non-DOD acquisitions). 
+\par 
+\par 11. GOVERNING LAW.\~ Any action related to this Agreement will be governed by California law and controlling U.S. federal law.\~ No choice of law rules of any jurisdiction will apply. 
+\par 
+\par 12. SEVERABILITY. If any provision of this Agreement is held to be unenforceable, this Agreement will remain in effect with the provision omitted, unless omission would frustrate the intent of the parties, in which
+ case this Agreement will immediately terminate. 
+\par 
+\par 13. INTEGRATION.\~ This Agreement is the entire agreement between you and Sun relating to its subject matter.\~ It supersedes all prior or contemporaneous oral or written communications, proposals, represent
+ations and warranties and prevails over any conflicting or additional terms of any quote, order, acknowledgment, or other communication between the parties relating to its subject matter during the term of this Agreement.\~
+ No modification of this Agreement will be binding, unless in writing and signed by an authorized representative of each party. 
+\par 
+\par SUPPLEMENTAL LICENSE TERMS
+\par 
+\par These Supplemental License Terms add to or modify the terms of the Binary Code License Agreement. Capitalized terms not defined in t
+hese Supplemental Terms shall have the same meanings ascribed to them in the Binary Code License Agreement . These Supplemental Terms shall supersede any inconsistent or conflicting terms in the Binary Code License Agreement, or in any license contained w
+ithin the Software. 
+\par 
+\par A. Software Internal Use and Development License Grant. Subject to the terms and conditions of this Agreement and restrictions and exceptions set forth in the Software "README" file, including, but not limited to the Java Technology Re
+strictions of these Supplemental Terms, Sun grants you a non-exclusive, non-transferable, limited license without fees to reproduce internally and use internally the Software complete and unmodified for the purpose of designing, developing, and testing yo
+ur Programs. 
+\par 
+\par B. License to Distribute Software. Subject to the terms and conditions of this Agreement and restrictions and exceptions set forth in the Software README file, including, but not limited to the Java Technology Restrictions of these Supplement
+al Terms, Sun grants you a non-exclusive, non-transferable, limited license without fees to reproduce and distribute the Software, provided that (i) you distribute the Software complete and unmodified and only bundled as part of, and for the sole purpose 
+o
+f running, your Programs, (ii) the Programs add significant and primary functionality to the Software, (iii) you do not distribute additional software intended to replace any component(s) of the Software, (iv) you do not remove or alter any proprietary le
+g
+ends or notices contained in the Software, (v) you only distribute the Software subject to a license agreement that protects Sun's interests consistent with the terms contained in this Agreement, and (vi) you agree to defend and indemnify Sun and its lice
+n
+sors from and against any damages, costs, liabilities, settlement amounts and/or expenses (including attorneys' fees) incurred in connection with any claim, lawsuit or action by any third party that arises or results from the use or distribution of any an
+d all Programs and/or Software.
+\par 
+\par C. License to Distribute Redistributables. Subject to the terms and conditions of this Agreement and restrictions and exceptions set forth in the Software README file, including but not limited to the Java Technology Restric
+tions of these Supplemental Terms, Sun grants you a non-exclusive, non-transferable, limited license without fees to reproduce and distribute those files specifically identified as redistributable in the Software "README" file ("Redistributables") provide
+d
+ that: (i) you distribute the Redistributables complete and unmodified, and only bundled as part of Programs, (ii) the Programs add significant and primary functionality to the Redistributables, (iii) you do not distribute additional software intended to 
+s
+upersede any component(s) of the Redistributables (unless otherwise specified in the applicable README file), (iv) you do not remove or alter any proprietary legends or notices contained in or on the Redistributables, (v) you only distribute the Redistrib
+u
+tables pursuant to a license agreement that protects Sun's interests consistent with the terms contained in the Agreement, (vi) you agree to defend and indemnify Sun and its licensors from and against any damages, costs, liabilities, settlement amounts an
+d/or expenses (including attorneys' fees) incurred in connection with any claim, lawsuit or action by any third party that arises or results from the use or distribution of any and all Programs and/or Software.
+\par 
+\par D. Java Technology Restrictions.  You may not
+ create, modify, or change the behavior of, or authorize your licensees to create, modify, or change the behavior of, classes, interfaces, or subpackages that are in any way identified as "java", "javax", "sun" or similar convention as specified by Sun in
+ any naming convention designation.
+\par 
+\par E. Distribution by Publishers. This section pertains to your distribution of the Software with your printed book or magazine (as those terms are commonly used in the industry) relating to Java technology ("Publication").
+ Subject to and conditioned upon your compliance with the restrictions and obligations contained in the Agreement, in addition to the license granted in Paragraph 1 above, Sun hereby grants to you a non-exclusive, nontransferable limited right to reproduc
+e
+ complete and unmodified copies of the Software on electronic media (the "Media") for the sole purpose of inclusion and distribution with your Publication(s), subject to the following terms: (i) You may not distribute the Software on a stand-alone basis; 
+i
+t must be distributed with your Publication(s); (ii) You are responsible for downloading the Software from the applicable Sun web site; (iii) You must refer to the Software as JavaTM 2 Platform Standard Edition Development Kit 5.0; (iv) The Software must 
+b
+e reproduced in its entirety and without any modification whatsoever (including, without limitation, the Binary Code License and Supplemental License Terms accompanying the Software and proprietary rights notices contained in the Software); (v) The Media 
+l
+abel shall include the following information: Copyright 2004, Sun Microsystems, Inc. All rights reserved. Use is subject to license terms. Sun, Sun Microsystems, the Sun logo, Solaris, Java, the Java Coffee Cup logo, J2SE , and all trademarks and logos ba
+s
+ed on Java are trademarks or registered trademarks of Sun Microsystems, Inc. in the U.S. and other countries. This information must be placed on the Media label in such a manner as to only apply to the Sun Software; (vi) You must clearly identify the Soft
+w
+are as Sun's product on the Media holder or Media label, and you may not state or imply that Sun is responsible for any third-party software contained on the Media; (vii) You may not include any third party software on the Media which is intended to be a 
+r
+eplacement or substitute for the Software; (viii) You shall indemnify Sun for all damages arising from your failure to comply with the requirements of this Agreement. In addition, you shall defend, at your expense, any and all claims brought against Sun b
+y
+ third parties, and shall pay all damages awarded by a court of competent jurisdiction, or such settlement amount negotiated by you, arising out of or in connection with your use, reproduction or distribution of the Software and/or the Publication. Your o
+b
+ligation to provide indemnification under this section shall arise provided that Sun: (i) provides you prompt notice of the claim; (ii) gives you sole control of the defense and settlement of the claim; (iii) provides you, at your expense, with all availa
+b
+le information, assistance and authority to defend; and (iv) has not compromised or settled such claim without your prior written consent; and (ix) You shall provide Sun with a written notice for each Publication; such notice shall include the following i
+n
+formation: (1) title of Publication, (2) author(s), (3) date of Publication, and (4) ISBN or ISSN numbers. Such notice shall be sent to Sun Microsystems, Inc., 4150 Network Circle, M/S USCA12-110, Santa Clara, California 95054, U.S.A , Attention: Contract
+s Administration.
+\par 
+\par F. Source Code. Software may contain source code that, unless expressly licensed for other purposes, is provided solely for reference purposes pursuant to the terms of this Agreement. Source code may not be redistributed unless expressly 
+provided for in this Agreement.
+\par 
+\par G. Third Party Code. Additional copyright notices and license terms applicable to portions of the Software are set forth in the THIRDPARTYLICENSEREADME.txt file. In addition to any terms and conditions of any third party op
+ensource/freeware license identified in the THIRDPARTYLICENSEREADME.txt file, the disclaimer of  warranty and limitation of liability provisions in paragraphs 5 and 6 of the  Binary Code License Agreement shall apply to all Software in this distribution.
+
+\par 
+\par For inquiries please contact: Sun Microsystems, Inc., 4150 Network Circle, Santa  Clara, California 95054, U.S.A.
+\par (LFI#141623/Form ID#011801)
+\par 
+\par }}

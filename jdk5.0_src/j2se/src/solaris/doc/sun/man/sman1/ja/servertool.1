@@ -1,0 +1,85 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1998, v.4001-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub EntList minus bsol>
+<?Pub Inc>
+<refentry id="servertool-1">
+<!--@(#)servertool.1 1.1 01/03/14 SMI;-->
+<refmeta><refentrytitle>servertool</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">2004 年 6 月 22 日</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.  </refmiscinfo>
+</refmeta>
+<refnamediv><indexterm><primary sortas="servertool">servertool &mdash; Java IDL Server Tool</primary></indexterm><indexterm><primary sortas="Java server tool">Java IDL Server Tool &mdash; servertool</primary></indexterm><refname>servertool</refname><refpurpose>Java IDL サーバツール</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>servertool</command><arg>-ORBInitialPort</arg><arg>nameserverport</arg><arg choice="opt">&nbsp;<replaceable>options</replaceable></arg><arg choice="opt">&nbsp;<replaceable>commands</replaceable></arg>
+</cmdsynopsis><funcsynopsis>
+<funcsynopsisinfo>servertool の起動時にコマンドを入力しなかった場合は、コマンド行ツールが <literal>servertool ></literal> プロンプトを表示します。<literal>servertool ></literal> プロンプトでコマンドを入力します。</funcsynopsisinfo></funcsynopsis>
+<funcsynopsis>
+<funcsynopsisinfo>servertool の起動時にコマンドを入力した場合は、Java IDL サーバツールが起動し、コマンドを実行して終了します。</funcsynopsisinfo></funcsynopsis>
+<funcsynopsis>
+<funcsynopsisinfo><option>ORBInitialPort</option><replaceable> nameserverport</replaceable> オプションは必須です。
+nameserverport の値は、orbd を実行し、着信要求を待機しているポートを指定します。Solaris ソフトウェアを使用する場合は、スーパーユーザになって 1024 未満のポートでプロセスを開始する必要があります。このため、1024 以上のポート番号の使用を推奨します。</funcsynopsisinfo></funcsynopsis>
+</refsynopsisdiv>
+<refsect1><title>&desc-tt;</title>
+<para><command>servertool</command> はアプリケーションプログラマが、サーバの登録、登録解除、起動、停止を行うためのコマンド行インタフェースです。サーバに関するさまざまな統計情報を取得するためにその他のコマンドが用意されています。</para>
+</refsect1>
+<refsect1><title>オプション</title>
+<variablelist><varlistentry><term><option>ORBInitialHost <replaceable>nameserverhost</replaceable> </option></term><listitem><para>ネームサーバを実行し、着信要求を待機しているホストマシンを指定します。このオプションを指定しない場合、<replaceable>nameserverhost</replaceable> はデフォルトの <replaceable>localhost</replaceable> になります。<command>orbd</command> と <command>servertool</command> が異なるマシンで実行されている場合は、<command>orbd</command> が実行されているホストの名前または IP アドレスを指定する必要があります。</para>
+</listitem></varlistentry>
+<varlistentry><term>-J<replaceable>option </replaceable></term><listitem><para>オプションを Java 仮想マシンに渡します。ここで <replaceable>option</replaceable> は、Java アプリケーション起動プログラムのリファレンスページで説明されているオプションの 1 つです。たとえば、<option>J-Xms48m</option> は、起動メモリを 48M バイトに設定します。<option>J</option> が基本となる仮想マシンにオプションを渡すことは、共通の規約です。</para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<refsect1><title>コマンド</title>
+<para>次のコマンドがサポートされています。</para>
+<cmdsynopsis><command>register</command><arg choice="plain"><option>server</option>&nbsp;<replaceable>server-class-name</replaceable></arg><arg choice="plain"><option>classpath</option> <replaceable>classpath-to-server</replaceable></arg><arg choice="plain"><option>applicationName</option> <replaceable>alternate-server-name</replaceable></arg><arg choice="plain"><option>args</option> <replaceable>args-to-server</replaceable></arg><arg choice="plain"><option>vmargs</option> <replaceable>flags-to-be-passed-to-Java-VM</replaceable></arg>
+</cmdsynopsis>
+<para><simplelist><member>新しいサーバを Object Request Broker Daemon (<acronym>ORBD</acronym>) に登録します。まだ登録されていない場合は、サーバが登録され、有効化されます。このコマンドを使用すると、<option>server</option> オプションによって識別されるサーバのメインクラスでインストールメソッドが呼び出されます。インストールメソッドは、<literal>public static void install(org.omg.CORBA.ORB)</literal> でなければなりません。このインストールメソッドをオプションで使用すると、開発者は独自のサーバインストール動作 (データベーススキーマの作成など) を指定できます。</member></simplelist></para>
+<cmdsynopsis><command>unregister</command><group><arg choice="plain"><option>serverid</option>&nbsp;<replaceable>server-id</replaceable></arg><arg choice="plain"><option>applicationName</option> <replaceable>application name</replaceable></arg></group>
+</cmdsynopsis>
+<para><simplelist><member>サーバ ID またはアプリケーション名を使用して、<acronym>ORBD</acronym> からサーバを登録解除します。このコマンドを使用すると、<option>server</option> オプションによって識別されたサーバのメインクラスでアンインストールメソッドが呼び出されます。アンインストールメソッドは、<literal>public static void uninstall(org.omg.CORBA.ORB)</literal> でなければなりません。このアンインストールメソッドをオプションで使用すると、開発者は独自のサーバアンインストール動作 (インストールメソッドの動作の取り消しなど) を指定できます。</member></simplelist></para>
+<cmdsynopsis><command>getserverid</command><arg choice="plain"><option>applicationName</option>&nbsp;<replaceable>application name</replaceable></arg>
+</cmdsynopsis>
+<para><simplelist><member>アプリケーションに対応するサーバ ID を返します。</member></simplelist></para>
+<cmdsynopsis><command>list</command>
+</cmdsynopsis>
+<para><simplelist><member><acronym>ORBD</acronym> に登録されているすべての持続サーバに関する情報を一覧表示します。 </member></simplelist></para>
+<cmdsynopsis><command>listappnames</command>
+</cmdsynopsis>
+<para><simplelist><member><acronym>ORBD</acronym> に現在登録されているすべてのサーバのアプリケーション名を一覧表示します。</member></simplelist></para>
+<cmdsynopsis><command>listactive</command>
+</cmdsynopsis>
+<para><simplelist><member><acronym>ORBD</acronym> によって起動され、稼動しているすべての持続サーバに関する情報をすべて一覧表示します。</member></simplelist></para>
+<cmdsynopsis><command>locate</command><group><arg choice="plain"><option>serverid</option>&nbsp;<replaceable>server-id</replaceable></arg><arg choice="plain"><option>applicationName</option> <replaceable>application name</replaceable></arg></group><arg><option>endpointType</option> <replaceable>endpointType</replaceable></arg>
+</cmdsynopsis>
+<para><simplelist><member>登録されているサーバによって作成されたすべての <acronym>ORB</acronym> の特定のタイプのエンドポイント (ポート) を特定します。サーバがまだ稼動していない場合は、起動されます。エンドポイントタイプが指定されないと、サーバ内の各 <acronym>ORB</acronym> に関連したプレーン/非保護のエンドポイントが返されます。</member></simplelist></para>
+<cmdsynopsis><command>locateperorb</command><group><arg choice="plain"><option>serverid</option>&nbsp;<replaceable>server-id</replaceable></arg><arg choice="plain"><option>applicationName</option> <replaceable>application name</replaceable></arg></group><arg><option>orbid</option> <replaceable>ORB-name</replaceable></arg>
+</cmdsynopsis>
+<para><simplelist><member>登録されているサーバの特定の <acronym>ORB</acronym> によって登録されたすべてのエンドポイント (ポート) を特定します。サーバがまだ動作していない場合は、起動されます。<replaceable>orbid</replaceable> が指定されないと、デフォルト値である "" が <replaceable>orbid</replaceable> に割り当てられます。空の文字列の <replaceable>orbid</replaceable> を使用して <acronym>ORB</acronym> が作成されると、それによって登録されているすべてのポートが返されます。</member></simplelist></para>
+<cmdsynopsis><command>orblist</command><group><arg choice="plain"><option>serverid</option>&nbsp;<replaceable>server-id</replaceable></arg><arg choice="plain"><option>applicationName</option> <replaceable>application name</replaceable></arg></group>
+</cmdsynopsis>
+<para><simplelist><member>サーバで定義されている ORB の ORBId を一覧表示します。ORBId は、サーバによって作成された ORB の文字列名です。サーバがまだ稼動していない場合は、サーバを起動します。 </member></simplelist></para>
+<cmdsynopsis><command>shutdown</command><group><arg choice="plain"><option>serverid</option>&nbsp;<replaceable>server-id</replaceable></arg><arg choice="plain"><option>applicationName</option> <replaceable>application name</replaceable></arg></group>
+</cmdsynopsis>
+<para><simplelist><member>ORBD に登録されているアクティブなサーバを停止します。このコマンドの実行中に、サーバプロセスを適切に停止するために、<option>serverid</option> または <option>applicationName</option> パラメータで指定されたクラスで定義されている <command>shutdown()</command> メソッドも呼び出されます。</member></simplelist></para>
+<cmdsynopsis><command>startup</command><group><arg choice="plain"><option>serverid</option>&nbsp;<replaceable>server-id</replaceable></arg><arg choice="plain"><option>applicationName</option> <replaceable>application name</replaceable></arg></group>
+</cmdsynopsis>
+<para><simplelist><member>ORBD に登録されているサーバを起動します。サーバが稼動していない場合、このコマンドはサーバを起動します。サーバが既に稼動している場合は、エラーメッセージがユーザに返されます。</member></simplelist></para>
+<cmdsynopsis><command>help</command>
+</cmdsynopsis>
+<para><simplelist><member>このサーバツールを使用してサーバに対して実行できるすべてのコマンドを一覧表示します。</member></simplelist></para>
+<cmdsynopsis><command>quit</command>
+</cmdsynopsis>
+<para><simplelist><member>このサーバツールを終了します。<?Pub Caret></member></simplelist></para>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>orbd</refentrytitle><manvolnum>1</manvolnum></citerefentry> </para>
+</refsect1>
+</refentry>
+<?Pub *0000008655 0>

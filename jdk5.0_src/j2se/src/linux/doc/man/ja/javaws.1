@@ -1,0 +1,145 @@
+'\" t
+.\"
+.\" Copyright 2003 Sun Microsystems, Inc. All rights reserved.
+.\" SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+.\"
+.TH javaws 1 "2004 年 6 月 22 日"
+.SH 名前
+\fBjavaws \fP- Java Web Start 起動コマンド
+\fB
+.SH 形式
+.nf
+.fam C
+\fBjavaws\fP [ \fIoptions\fP ] [ \fIURL\fP ]
+.fam T
+.fi
+.SH パラメータ
+.if t .TP 20
+.if n .TP 15
+.B options
+コマンド行オプション。
+オプションの順序は任意です。個々のオプションについては、後述の「オプション」節を参照してください。
+.if t .TP 20
+.if n .TP 15
+.B URL
+JNLP (Java Network Launching Protocol) ファイルの URL (Uniform Resource Locator) です。
+.SH 機能説明
+\fBjavaws\fP コマンドにより JNLP (Java Network Launching Protocol) のリファレンス実装である Java Web Start を起動できます。Java Web Start はネットワーク上に置かれる Java アプリケーションまたはアプレットを起動します。
+.PP
+\fIoptions\fP を指定しないと、\fBjavaws\fP は Java JNLP アプリケーションマネージャを起動します。
+Java JNLP アプリケーションマネージャを使用すると、ユーザは Java アプリケーションまたはアプレットを
+起動したり、Java Web Start を構成したりできます。
+.PP
+JNLP ファイルの \fIURL\fP を指定すると、\fBjavaws\fP は JNLP ファイルに指定されている Java アプリケーションまたはアプレットを起動します。
+.SH オプション
+これらの \fBjavaws\fP 起動ツールのオプションは現在のリリースでサポートされています。将来のリリースでは、これらの\fIオプション\fPは削除される可能性があります。
+\fB\-X\fP オプションはすべて非標準であるため、変更される可能性があります。
+.SS                          
+.TP
+.B
+\fB\-offline\fP
+Java Web Start をオフラインモードで実行します。
+.SS
+.TP
+.B
+\fB\-uninstall \fIURL\fP\fP
+\fBJNLP\fP を指す \fIURL\fP で指定したアプリケーションまたはアプレットを
+ユーザのキャッシュから削除します。このコマンドが完了すると、Java Web Start は終了します。
+.SS
+.TP
+.B
+\fB\-updateVersions\fP
+現在のマシンの設定に基づいて Java Web Start 構成ファイルを更新します。
+このコマンドが完了すると、Java Web Start は終了します。
+.SS                          
+.TP
+.B
+\fB\-Xclearcache\fP
+ユーザのキャッシュをクリアします。このコマンドが完了すると、Java Web Start は終了します。
+.SS        
+.TP
+.B
+\fB\-Xnosplash\fP
+初期スプラッシュ画面の表示を無効にします。
+.SS
+.TP
+.B
+\fB\-import\fP
+\fIURL\fP で指定したアプリケーションをユーザのキャッシュにインポートします。実行はしません。
+.SS
+.TP
+.B
+\fB\-silent\fP
+.B \-import 
+オプションと一緒に使用すると、サイレントモードでインポートします。UI は表示されません。
+プロセスの終了コードは成功が 0、失敗が 1 になります。
+.SS
+.TP
+.B
+\fB\-codebase \fIURL\fP\fP
+リソースのインポート時に指定した jnlp ファイル内の codebase を \fIURL\fP で置換します。
+\fIURL\fP は有効な URL でなければなりません。
+.SS
+.TP
+.B
+\fB\-system\fP
+ユーザキャッシュの代わりにシステムキャッシュを使用します。
+.SS
+.TP
+.B
+\fB\-shortcut\fP
+サイレントインポート中にショートカットを作成できます。
+.SS
+.TP
+.B
+\fB\-association\fP
+サイレントインポート中に関連付けを作成できます。
+.SS
+.TP
+.B
+\fB\-open \fIarguments\fP\fP
+指定すると、jnlp ファイル内の引数を 
+.B \-open \fIarguments\fP 
+で置換します。
+.SS
+.TP
+.B
+\fB\-print \fIarguments\fP\fP
+指定すると、jnlp ファイル内の引数を 
+.B \-print \fIarguments\fP 
+で置換します。
+.SS
+.TP
+.B 
+\fB\-online\fP
+オンラインモードで実行します (デフォルトの動作)。
+.SS
+.TP
+.B
+\fB\-viewer\fP
+Java アプリケーションキャッシュビューアを実行します (URL が指定されていない場合はデフォルト)。
+.SS
+.TP
+.B
+\fB\-userConfig \fIproperty-name\fP\fP
+指定された配備プロパティをクリアします。
+.SS
+.TP
+.B
+\fB\-userConfig \fIproperty-name\fP \fIproperty-value\fP\fP
+指定された配備プロパティを指定された値に設定します。
+.SS
+.TP
+.B
+\fB\-wait\fP
+指定すると、アプリケーションが終了するまで 
+.B javaws 
+プロセスは終了しません。
+.SH ファイル
+ユーザキャッシュ、システムキャッシュ、および deployment.properties ファイルの詳細は、
+http://java.sun.com/j2se/1.5.0/docs/guide/deployment/deployment-guide/properties.html
+を参照してください。
+.SH 詳細情報
+Java Web Start の詳細は、
+http://java.sun.com/j2se/1.5.0/docs/guide/javaws/index.html
+を参照してください。

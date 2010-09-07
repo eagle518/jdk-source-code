@@ -1,0 +1,67 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1999, v.4002-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub Inc>
+<refentry id="jconsole-1">
+<!--@(#)jconsole.1	1.1 04/06/15-->
+<refmeta><refentrytitle>unpack200</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">22 Jun 2004</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All
+rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.
+</refmiscinfo>
+</refmeta>
+<refnamediv><refname>jconsole</refname><refpurpose>J2SE Monitoring and Management
+Console</refpurpose></refnamediv>
+<refsect1><title>SYNOPSIS</title>
+<cmdsynopsis><command>jconsole</command><arg> [ options ]</arg><arg>[ pid | [ host:port ... ]]
+</arg>
+</cmdsynopsis></refsect1>
+<refsect1><title>PARAMETERS</title>
+<variablelist>
+<varlistentry><term>pid</term><listitem><para>Process ID of a Java VM that
+was started with <option>-Dcom.sun.management.jmxremote</option> option on
+the same machine. See <ulink url="http://java.sun.com/j2se/1.5.0/docs/guide/management/agent.html">
+JMX Monitoring and Management</ulink> for details. </para>
+</listitem></varlistentry>
+<varlistentry><term>host:port </term><listitem><para>Host name on which the
+Java VM is running and the port number through which the Java VM's JMX Connector
+is published. See <ulink url="http://java.sun.com/j2se/1.5.0/docs/guide/management/agent.html">
+JMX Monitoring and Management</ulink> for details. </para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>DESCRIPTION</title>
+<para>The <command>jconsole</command> command launches a graphical console
+tool that enables you to monitor and manage Java applications and virtual
+machines on a local or remote machine. </para>
+<note><para>NOTE: This tool is experimental and may not be available in future
+versions of the JDK.</para>
+</note>
+</refsect1>
+<refsect1><title>OPTIONS</title>
+<variablelist>
+<varlistentry><term>-interval=<replaceable>n</replaceable></term><listitem>
+<para>Set the update interval to <replaceable>n</replaceable> seconds (default
+is 4 seconds). </para>
+</listitem></varlistentry>
+<varlistentry><term>-notile</term><listitem><para>Do not tile windows initially
+(for two or more connections). </para>
+</listitem></varlistentry>
+<varlistentry><term>-version</term><listitem><para>Output version information
+and exit. </para>
+</listitem></varlistentry>
+<varlistentry><term>-help  </term><listitem><para>Output help message and
+exit.<?Pub Caret></para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>SEE ALSO</title>
+<para><ulink url="http://java.sun.com/j2se/1.5.0/docs/guide/management/index.html">
+Monitoring and Management for Java Platform </ulink></para>
+</refsect1>
+</refentry>
+<?Pub *0000003061>

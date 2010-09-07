@@ -1,0 +1,446 @@
+<html><head>
+    <!-- @(#)build-windows-i586.html	1.41 04/10/15 -->
+    <title>Windows Build Instructions</title>
+  </head>
+  <body bgcolor="#ffffff">
+    
+    <!-- ------------------------------------------------------ -->
+    
+  <TABLE BORDER="0" WIDTH="100%">
+  <TR>
+  <TD WIDTH=40>
+  <IMG SRC="javalogo52x88.gif" ALT="Java" BORDER=0 WIDTH=52 HEIGHT=88>
+  </TD>
+    
+  <TD ALIGN=CENTER>
+  <center><h1>
+    Windows Build Instructions
+  </h1>
+  <h2>
+    Java<sup><font size=-2>TM</font></sup> 2 Platform Standard Edition, v#VERSION# #MILESTONE#
+  <br>
+  </h2></center>
+  </TD>
+    
+  <TD ALIGN=RIGHT VALIGN=TOP>
+  <FONT SIZE="-1"><a href=build.html>Build Overview</a></FONT> 
+  </TD>
+  </TR>
+    
+  </TABLE>
+    
+  <HR SIZE=3 NOSHADE>
+    
+    <!-- ------------------------------------------------------ -->
+    
+    <h2>Contents</h2>
+    <ul>
+      <li><a href="#intro">Introduction</a></li>
+      <li><a href="#setup">Windows System Setup</a></li>
+      <li><a href="#buildtools">Windows Build Tools and Libraries Setup</a></li>
+      <li><a href="#environmentvariables">Windows Build Environment Variables</a></li>
+      <li><a href="#build">Windows Build</a></li>
+    </ul>
+    
+    <!-- ------------------------------------------------------ -->
+    
+  <a name="intro">
+  <h2>Introduction</h2></a>
+  <blockquote>
+    This README file contains build instructions for the 
+    Java<sup><font size=-2>TM</font></sup> 2 Platform 
+    Standard Edition, v#VERSION# (JDK #VERSION#) Community Source Release.  Building the 
+    source code for the JDK requires a high level of technical 
+    expertise.  Sun provides the source code primarily for 
+    technical experts who want to conduct research, port the platform 
+    to new operating systems and hardware, or add enhancements that 
+    require access to platform internals.  If you are not a technical 
+    professional in one of these categories, this release is probably 
+    not for you.  
+  </blockquote>
+    
+    <!-- ------------------------------------------------------ -->
+    
+    <a name="setup">
+    <h2>Windows System Setup</h2></a>
+    <blockquote>
+      The official build platform for the JDK #VERSION# is Windows Professional 2000
+	with Service Pack 2 or greater installed and Microsoft Security Patch MS03-026 installed.
+      <p>
+	The minimum recommended hardware for building the Windows version 
+	is a Pentium class processor or better, at least 256 MB 
+	of RAM, and approximately 600 MB of free disk space.
+    </blockquote>
+      
+      <a name="buildtools">
+    <h2>Windows Build Tools and Libraries Setup</h2></a>
+    <blockquote>
+      Once the Windows OS is set up, you will need to install additional tools and libraries
+      for building the JDK.
+    </blockquote>
+      
+	<a name="msvc">
+    <h4>Microsoft Visual C++ Compiler</h4></a>
+    <blockquote>
+      The Microsoft Visual C++ 6.0 Professional Edition compiler,
+      with Visual C++ 6.0 Service Pack 3 installed
+      (<em>not</em> Service Pack 4),
+      is required for building the JDK.
+      The compiler and other tools are expected to reside in the locations
+      defined by the variables <tt>MSVCDir</tt> and <tt>MSDevDir</tt>,
+      which are set by the setup utility
+      <tt>VCVARS32.BAT</tt> (usually found in
+      <tt>C:\Program Files\Microsoft Visual Studio\VC98\Bin\</tt>).
+      It is highly recommended that you run <tt>VCVARS32.BAT</tt> to set
+      <tt>MSVCDir</tt>, <tt>MSDevDir</tt>, <tt>INCLUDE</tt>, <tt>LIB</tt>,
+      and the <tt>PATH</tt> prior to building the JDK.
+      If your compiler resides in a place other than the default, you can set
+      <tt>ALT_COMPILER_PATH</tt> to point to the location of the <tt>cl</tt>
+      compiler binary, and <tt>ALT_MSDEVTOOLS_PATH</tt> to point to the
+      location of the development tools.
+      The compiler and tools binaries must be in the <tt>PATH</tt>.
+    <p>
+    </blockquote>
+
+	<a name="unix">
+    <h4>MKS Unix Command Binaries</h4></a>
+    <blockquote>
+      The JDK build requires access to Unix command binaries supplied by MKS Toolkit version 6.1a or
+      later. Information about the MKS Toolkit can be obtained from the MKS website at 
+      <a href="http://www.mks.com">http://www.mks.com</a>.
+      If the binaries are not installed in <tt>C:\mksnt\</tt>,
+      set the <tt>ALT_UNIXCOMMAND_PATH</tt> environment variable
+      to their location.
+    <p>
+    </blockquote>
+
+        <a name="msvcrt">
+    <h4>msvcrt.dll</h4></a>
+    <blockquote>
+      The JDK build requires access to msvcrt.dll version 6.00.8337.0 (version that we use )
+      supplied by Microsoft Visual C++ 6.0 Service Pack 2 (usually found in
+      <tt>C:\WINNT\System32\</tt>).
+      If the msvcrt.dll is not installed in <tt>$(J2SE_TOPDIR)\make\redist\i586</tt>,
+      set the <tt>ALT_MSVCRT_DLL_PATH</tt> environment variable
+      to their location.
+    <p>
+    </blockquote>
+
+    
+      
+      <a name="bootdir">
+    <h4>Bootstrap JDK</h4></a>
+    <blockquote>
+      You will need access to a JDK 1.4.2 for Windows installation. The 1.4.2 binaries can be downloaded
+      from Sun's <a href="http://java.sun.com/j2se/1.4.2/download.html">JDK 1.4.2</a> download site.
+      Set <tt>ALT_BOOTDIR</tt> to point to the location of the bootstrap JDK
+      installation, and place its <tt>bin</tt> directory in the <tt>PATH</tt>.
+    </blockquote>
+    <p>
+
+    <a name="gnumake">
+    <h4>GNU Make</h4></a>
+  <blockquote>
+      GNU make version 3.78.1 or later, built for the MKS shell per the
+      instructions in its documentation, is required to build the JDK.
+      Information on GNU make, and access to ftp download sites,
+      are available on the
+      <a href="http://www.gnu.org/software/make/make.html">GNU make
+      web site</a>.
+      Place the location of the GNU make binary in the <tt>PATH</tt>.
+  </blockquote>
+    <p>
+         
+      <a name="zip">
+    <h4><tt>Zip and Unzip</tt></tt></h4></a>
+  <blockquote>
+    <tt>ZIP.EXE</tt> and <tt>UNZIP.EXE</tt>
+    should be installed in <tt>C:\UTILS</tt>. If you have them
+    installed elsewhere set the environment variable
+    <tt>ALT_DEVTOOLS_PATH</tt> to their location.
+    ZIP.EXE version should be 2.2 or 2.[2-9]. UNZIP.EXE version should be 5.12 or 5.1[2-9].
+    Information and the source code for ZIP.EXE and UNZIP.EXE is available
+    on the <a href="http://www.info-zip.org">info-zip web site</a>.
+  </blockquote>
+    <p>
+     
+      <a name="cacerts">
+    <h4>cacerts</h4>
+    <blockquote>
+      A certificates file named "cacerts" represents a system-wide keystore 
+      with CA certificates. In JDK and JRE binary bundles, the "cacerts"
+      file contains root CA certificates from several public CAs (e.g., VeriSign,
+      Thawte, and Baltimore). 
+      <p>      
+	The source bundles contain a cacerts file without CA root certificates. 
+	JDK builders will need to secure permission from each public CA and
+	include the certificates into their own custom cacerts file. Failure to
+	provide a populated cacerts file will result in verification of a
+	certificate chain during runtime.
+      <p>      
+	The <tt>ALT_CACERTS_FILE</tt> should be set to point to the location of 
+	the populated cacerts file.</font>
+    </blockquote>
+    <p>
+
+      <a name="mozilla">
+      <h4>Mozilla Headers and Libraries</h4>
+      <blockquote>
+      Note:  The Java Plug-in product for Windows cannot be built from
+      the Community Source Release.  This section applies only to those
+      with a separate source license for that product.  The Mozilla
+      Headers and Libraries are only required for building the Java Plug-in.
+      If you do not build Java Plug-in, the headers and libraries are not
+      required.
+      <p>
+          Mozilla headers and libraries are required for building Java Plug-in.
+	  Since Netscape 7 has been widely adopted, we decided to stop building OJI 
+          plugin for Netscape 6.x in JDK release. As a result, the JDK build requires set 
+          of header files as shown below. <a href=http://wwws.sun.com/software/java2/download.html>Download</a>
+          and unpack the headers and libraries into a directory
+          similar to the one shown below, and set the
+          <tt>ALT_MOZILLA_PATH</tt> environment variable to the
+          absolute path of the top-level directory.
+
+        <pre>
+            +- devtools\                (set ALT_MOZILLA_PATH to this level)
+               +- share\
+                    +- plugin\
+                         +- mozilla_headers_ns7.win32\
+        </pre>
+    The name of the top-level directory is 
+    not significant; it is not required to be named <tt>devtools</tt>.
+    </blockquote>
+   <p>
+
+      <a name="dxsdk">
+      <h4>Microsoft DirectX 7 or DirectX 9 SDK header files and libraries</h4>
+      <blockquote>
+          Microsoft DirectX 7 or DirectX 9 SDK (Summer 2004 Update or newer) headers are required for building JDK.
+	  The DirectX 7 is no longer available, DirectX 9 SDK (Summer 2004 Update or newer) can be downloaded from
+	      <a href="http://msdn.microsoft.com/library/default.asp?url=/downloads/list/directx.asp">
+		       http://msdn.microsoft.com/library/default.asp?url=/downloads/list/directx.asp</a>.
+	  If the link above becomes obsolete, the SDK can be obtained from
+	      <a href="http://download.microsoft.com">http://download.microsoft.com</a>
+	  (search with the keywords "directx 9 sdk").
+	  If the SDK is not installed to <code>c:\dxsdk</code>, set the <code>ALT_DXSDK_PATH</code> 
+	  environment variable to its location.
+        <pre>
+	  c:\ 			(set ALT_DXSDK_DRIVE to this level)
+            +- DXSDK\		(set ALT_DXSDK_PATH to this level)
+                 +- Include\    (set ALT_DXSDK_INCLUDE_PATH to this level)
+                 +- Libs\       (set ALT_DXSDK_LIBS_PATH to this level)
+        </pre>
+	  Note: the ALT_DXSDK_* variables have the following order of precedence
+	  (from most to least):
+	  <ul>
+	   <li>ALT_DXSDK_INCLUDE_PATH, ALT_DXSDK_LIBS_PATH</li>
+	   <li>ALT_DXSDK_PATH</li>
+	   <li>ALT_DXSDK_DRIVE</li>
+	  </ul>
+	  For example, ALT_DXSDK_DRIVE will be ignored if ALT_DXSDK_PATH is set.
+    </blockquote>
+   <p>
+
+           <a name="mssdk">
+    <h4>Microsoft Platform Software Development Kit (SDK), November 2001 Edition</h4></a>
+    <blockquote>
+      The Microsoft Platform Software Development Kit (SDK), November 2001 Edition compiler,
+      is required for building the Java Plug-in and/or Java Web Start. You will need to minimally install the
+      <tt>Core SDK</tt> and the <tt>Windows Installer SDK</tt> features of this compiler.
+        <p>
+      If your compiler resides in a place other than the default (usually found in 
+      <tt>C:\Program Files\Microsoft SDK\</tt>), you can set
+      <tt>ALT_PLUGIN_MSSDK</tt> to point to the location of the <tt>MSSDK</tt>
+        <p>
+        Because GNU Make has problems with spaces in command PATHS, it may
+        be required that you set <tt>ALT_PLUGIN_MSSDK</tt> to point to the locations of the
+        SDK using the Microsoft Mangled Path name convention. For example,
+        if the Microsoft SDK is installed in <tt>C:\Progam Files\Microsoft SDK</tt>
+        then the settings using mangled path names on the system may be:
+           <tt>SET ALT_PLUGIN_MSSDK=C:\Progra~1\Micros~3</tt>, depending on
+        the unique situation of your build machine.
+    </blockquote>
+    <p>
+
+
+      <a name="mslu">
+      <h4>Microsoft Layer for Unicode on Windows 95, 98 and Me Systems libraries</h4>
+      <blockquote>
+          Microsoft Layer for Unicode on Windows 95, 98 and Me Systems (MSLU) libraries
+          are required for building JDK.  The MSLU libraries consist of two files.  
+          One is the runtime binary (UnicoWS.dll) and the other is the static library
+          (UnicoWS.lib).  The runtime binary can be downloaded from here (
+          <a href="http://go.microsoft.com/fwlink/?LinkId=14851">
+          http://go.microsoft.com/fwlink/?LinkId=14851</a> ), and the static
+          library is included in the Microsoft Platform SDK.  The version of the runtime 
+          binary DLL is: 1.0.4018.0, and the static library should be the one in November
+          2002 edition (October 2002 update) of the Microsoft Platform SDK (Build 5.2.3718.1).<br><br>
+
+          If the UnicoWS.dll and the UnicoWS.lib are not installed in 
+          <tt>%SystemDrive%\MSLU</tt>, you can specify those locations by
+          setting the <tt>ALT_UNICOWS_DLL_PATH</tt> and the <tt>ALT_UNICOWS_LIB_PATH</tt>
+          for each file.
+    </blockquote>
+   <p>
+
+    
+    <a name=environmentvariables>
+    <h2>Windows Build Environment Variables</h2></a>
+    <blockquote>
+      This section describes environment variables that you can set to 
+      influence various aspects of the build.  Some of these variables 
+      are mentioned specifically in the setup and build instructions 
+      above.  Others you may set at your discretion.
+      <p>
+	Environment variables may be set in the shell environment
+	or on the GNU make command line.
+      <p>
+      <dl>
+	<p><dt><tt>PATH</tt>
+	<dd>Set the <code>PATH</code> to contain:
+         <ul>
+	    <li>The location of the GNU make binary</li>
+	    <li>The location of the MKS Unix command binaries
+	        (see <tt>ALT_UNIXCOMMAND_PATH</tt> below)</li>
+	    <li>The location of the JDK bootstrap installation
+	        (see <tt>ALT_BOOTDIR</tt> below)</li>
+	    <li>The locations of the Windows NT system commands
+	        (usually <tt>C:\WINNT</tt> and <tt>C:\WINNT\system32</tt>)</li>
+	  </ul>
+	  <p>
+	  In addition, execute the setup utility
+	  <a href="#msvc"><tt>VCVARS32.BAT</tt></a>.
+
+	    
+	  <p><dt><tt>ALT_BOOTDIR</tt>
+	<dd>The location of the JDK 1.4.2
+	  <a href="#bootdir">bootstrap installation</a>.
+	  
+	  <p><dt><tt>ALT_OUTPUTDIR</tt>
+	<dd>An override for specifying
+	  the (absolute) path of where the build output is to go. 
+	  
+	  <a name="unixcommand">
+	  <p><dt><tt>ALT_UNIXCOMMAND_PATH</tt>
+	<dd>An override for specifying the location of the
+          MKS Unix command binaries, needed only if they are not installed
+	  in <tt>C:\mksnt\</tt>
+
+	  <p><dt><tt>ALT_COMPILER_PATH</tt>
+	<dd>An override for specifying the location of the
+	  <a href="#msvc">Microsoft Visual C++</a> compiler.
+          By default the build uses a path based on <tt>MSVCDir</tt>,
+	  which is set by the <tt>VCVARS32.BAT</tt> setup utility.
+
+	  <p><dt><tt>ALT_MSDEVTOOLS_PATH</tt>
+	<dd>An override for specifying the location of the
+	  <a href="#msvc">Microsoft Visual C++</a> development tools.
+          By default the build uses a path based on <tt>MSDevDir</tt>,
+	  which is set by the <tt>VCVARS32.BAT</tt> setup utility.
+
+	  <p><dt><tt>ALT_DEVTOOLS_PATH</tt>
+	<dd>The location of the <tt>zip</tt> and <tt>unzip</tt> binaries.
+	   See <a href="#zip">Zip and Unzip</a> for details.
+
+          <p><dt><tt>ALT_CACERTS_FILE</tt>
+        <dd>The location of the <tt>cacerts</tt> file.
+          See <a href="#cacerts">cacerts file</a> for details.
+           
+	  <p><dt><tt>ALT_MOZILLA_PATH</tt>
+	<dd>The location of the
+	  <a href="#mozilla">Mozilla headers and libraries</a>,
+	  needed only if building Java Plug-in.
+	  
+	  <p><dt><tt>ALT_PLUGIN_MSSDK</tt>
+	<dd>The location of the
+	  <a href="#mssdk">Microsoft SDK</a> development tools,
+          needed only if building Java Plug-in and/or Java Web Start.
+
+	  <p><dt><tt>ALT_DXSDK_PATH</tt>
+	<dd>The location of the
+	  <a href="#dxsdk">Microsoft DirectX SDK headers and libraries</a>.
+
+          <p><dt><tt>ALT_MSVCRT_DLL_PATH</tt>
+        <dd>The location of the
+          <a href="#msvcrt">msvcrt.dll</a>.
+
+	  <p><dt><tt>ALT_UNICOWS_DLL_PATH</tt>
+	<dd>The location of the
+	  <a href="#mslu">Microsoft Layer for Unicode runtime binary path</a>.
+
+	  <p><dt><tt>ALT_UNICOWS_LIB_PATH</tt>
+	<dd>The location of the
+	  <a href="#mslu">Microsoft Layer for Unicode static library path</a>.
+
+<!-- ARCH_DATA_MODEL need not be set, and if set has only one valid value
+     at this time.  No need to document it.
+	  <p><dt><tt>ARCH_DATA_MODEL</tt> 
+	<dd>The <tt>ARCH_DATA_MODEL</tt> variable is used to specify...
+-->
+	  
+	  <p><dt><tt>MILESTONE</tt> 
+	<dd>The milestone name for the build (<i>e.g.</i> "beta").
+	  
+	  <p><dt><tt>BUILD_NUMBER</tt> 
+	<dd>The build number for the build (<i>e.g.</i> "b27").
+
+      </dl>
+    </blockquote>
+
+
+
+    <a name="build">
+    <h2>Windows Build</h2></a>
+      <ol>
+	<li>cd into the <tt>control/make</tt> directory.</li>
+	
+	<li>Start the build with the command:<br>
+	  &nbsp;&nbsp;&nbsp;&nbsp;<code>make scsl [ALT_OUTPUTDIR=directory-name-for-output] [MILESTONE=<i>milestone_name</i>] [BUILD_NUMBER=<i>build_number</i>] [other "ALT_" overrides]</code></li>
+      <p>	
+      </ol>
+      <blockquote>
+      Please be sure to use the GNU version of <tt>make</tt>. 
+      </blockquote>
+
+    <!-- ====================================================== -->
+    
+    <HR SIZE=3 NOSHADE>
+<table width=100%>
+<tr>
+<td valign=top>
+    <FONT SIZE=-2>
+Copyright  2004 Sun Microsystems, Inc., 4150 Network Circle, Santa Clara, 
+California 95054, U.S.A. All rights reserved.
+    </FONT>
+</td>
+<td>    
+    <P ALIGN=RIGHT>
+      <IMG SRC="sunlogo64x30.gif" ALT="Sun" BORDER=0 WIDTH=64 HEIGHT=30>
+    </P>
+</td>
+</table>
+
+    
+    
+    <pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </pre>
+    
+  </BODY>
+</HTML>
+

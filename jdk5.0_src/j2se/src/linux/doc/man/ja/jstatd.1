@@ -1,0 +1,201 @@
+'\" t
+.\" @(#)jstatd.1 1.10 04/06/13 SMI;
+.\" Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+.\" Copyright 2004 Sun Microsystems, Inc. Tous droits r駸erv駸.
+.\" 
+.TH jstatd 1 "2004 年 6 月 22 日" 
+.SH 名前
+jstatd \- 仮想マシン jstat デーモン
+.\"
+.SH 形式
+.B jstatd 
+.BI [ options ]  
+.SH 機能説明
+.B jstatd 
+ツールは、計測機構付き HotSpot Java 仮想マシン (JVM) の作成と終了を監視する RMI サーバアプリケーションであり、リモート監視ツールがローカルホスト上で実行している JVM にアタッチするためのインタフェースを備えています。
+.LP
+jstatd サーバが機能するためには、ローカルホスト上に RMI レジストリが存在する必要があります。jstatd サーバは、デフォルトポートまたは 
+.BI \-p " port" 
+オプションによって示されたポート上の RMI レジストリへのアタッチを試みます。RMI レジストリが見つからなかった場合は、
+.BI \-p " port" 
+オプションによって示されたポート、または 
+.BI \-p " port" 
+が省かれた場合はデフォルトの RMI レジストリにバインドされた jstatd アプリケーション内で作成されます。内部 RMI レジストリの作成は、
+.B \-nr 
+オプションを指定することによって禁止できます。
+.LP
+注 - このユーティリティはサポートされていないため、JDK の将来のバージョンでは使用できない可能性があります。現時点では、Windows 98 および Windows ME プラットフォームでは使用できません。
+.SH パラメータ
+.if t .TP 20
+.if n .TP 15
+.BI options
+コマンド行オプション。オプションは任意の順序で指定できます。冗長または矛盾するオプションがあった場合は、最後に指定されたオプションが優先されます。
+.SH オプション
+.B jstatd 
+コマンドは、以下のオプションをサポートします。
+.if t .TP 20
+.if n .TP 15
+.BI \-nr
+既存の RMI レジストリが見つからないときに、
+.B jstatd 
+プロセス内での内部 RMI レジストリの作成を試みません。
+.if t .TP 20
+.if n .TP 15
+.BI \-p " port" 
+RMI レジストリを探すポート番号。または、RMI レジストリが見つからず、
+.B \-nr 
+が指定されなかった場合に、RMI レジストリが作成されるポート番号。
+.if t .TP 20
+.if n .TP 15
+.BI \-n " rminame"
+RMI レジストリでリモート RMI オブジェクトがバインドされる名前。デフォルトの名前は、JStatRemoteHost です。同じホスト上で複数の 
+.B jstatd 
+サーバが起動している場合、各サーバのエクスポート RMI オブジェクトの名前を一意にするには、このオプションを指定します。ただし、そのためには、監視クライアントの hostid および vmid 文字列に一意のサーバ名が含まれている必要があります。
+.if t .TP 20
+.if n .TP 15
+.BI \-J option
+.I option 
+を 
+.B javac 
+によって呼び出された java 起動ツールに渡します。たとえば、
+.B \-J-Xms48m 
+は、起動メモリを 48M バイトに設定します。Java で作成された下層の VM 実行アプリケーションにオプションを渡すのが、
+.B \-J 
+の一般的規則です。
+.SH セキュリティ
+.B jstatd 
+サーバは、他にセキュリティマネージャがインストールされていない場合は、RMISecurityPolicy のインスタンスをインストールするので、セキュリティポリシーファイルを指定する必要があります。ポリシーファイルは、デフォルトのポリシー実装のポリシーファイル構文に従う必要があります。ポリシーファイルは、
+.BI \-J-Djava.security.policy= file で指定できます。
+.LP
+次のポリシーファイルでは、
+.B jstatd 
+サーバはセキュリティ例外を起こさずに実行できます。このポリシーは、
+すべてのコードベースへのすべてのアクセス権を許可するよりは自由度が低いですが、
+.B jstatd 
+サーバの実行に必要な最小限度のアクセス権を許可するポリシーよりは自由度が高いです。
+.LP
+.RS
+.ft 3
+.nf
+grant codebase "file:${java.home}/../lib/tools.jar" {
+	 permission java.security.AllPermission;
+};
+.fi
+.ft 1
+.RE
+.LP
+このポリシーを使用するには、テキストを jstatd.all.policy という名前のファイルにコピーしたあと、次のようにして 
+.B jstatd 
+サーバを実行します。
+.LP
+.RS
+.ft 3
+.nf
+jstatd -J-Djava.security.policy=jstatd.all.policy
+.fi
+.ft 1
+.RE
+.LP
+より厳格なセキュリティを採用しているサイトでは、具体的なニーズに合わせて jstatd セキュリティポリシーをカスタマイズすることをお奨めします。
+.LP
+.B jstatd 
+サーバは、適切なアクセス権を持っている JVM だけを監視できます。ただし、
+.B jstatd 
+はユーザレベルの認証や承認チェックは行いません。したがって、
+.B jstatd
+ サーバが適切なアクセス権を持っている JVM によってエクスポートされた計測機構へのアクセスを開きます。これにより、ネットワーク上の任意のユーザが、通常はアクセスできない JVM でも監視できます。環境によっては、このような露出が受け入れられない場合もあります。UNIX ベースのシステム上で root アクセス権でサーバを実行するなど、幅広い露出が可能なクレデンシャルで 
+.B jstatd 
+サーバを実行するときには、特に注意してください。
+.LP
+.B jstatd 
+サーバによってもたらされる露出をなくすには、サーバを実行しないことですが、そのためには、あらゆる監視活動をローカルで行う必要があります。あるいは、セキュリティポリシーファイルをカスタマイズして、アクセスを特定の信頼できるホストに制限してください。
+.SH リモートインタフェース
+.B jstatd 
+プロセスによってエクスポートされるインタフェースはプロプライエタリであり、変更が保証されています。ユーザおよび開発者は、このインタフェースに書き込まないようにしてください。
+.SH 使用例
+.B jstatd 
+の起動例をいくつか示します。これらの 
+.B jstatd 
+スクリプトは、バックグラウンドで自動的にサーバを起動します。
+.SS 内部 RMI レジストリの使用
+この例は、内部 RMI レジストリを使用した 
+.B jstatd 
+の起動を示しています。この例では、他のサーバがデフォルトの RMI レジストリポート (ポート 1099) にバインドされていないことを前提としています。
+.LP
+.RS
+.ft 3
+.nf
+jstatd -J-Djava.security.policy=all.policy
+.fi
+.ft 1
+.RE
+.SS 外部 RMI レジストリの使用
+この例は、外部 RMI レジストリを使用した 
+.B jstatd 
+の起動を示しています。
+.LP
+.RS
+.ft 3
+.nf
+rmiregistry&
+jstatd -J-Djava.security.policy=all.policy
+.fi
+.ft 1
+.RE
+.LP
+この例は、ポート 2020 上の外部 RMI レジストリサーバを使用した 
+.B jstatd 
+の起動を示しています。
+.LP
+.RS
+.ft 3
+.nf
+rmiregistry 2020&
+jstatd -J-Djava.security.policy=all.policy -p 2020
+.fi
+.ft 1
+.RE
+.LP
+この例は、ポート 2020 上の、AlternateJstatdServerName という名前にバインドされた外部 RMI レジストリを使用した 
+.B jstatd 
+の起動を示しています。
+.LP
+.RS
+.ft 3
+.nf
+rmiregistry 2020&
+jstatd -J-Djava.security.policy=all.policy -p 2020 -n AlternateJstatdServerName
+.fi
+.ft 1
+.RE
+.SS プロセス内 RMI レジストリの作成の禁止
+この例は、RMI レジストリが見つからない場合も RMI レジストリを作成しないように 
+.B jstatd 
+を起動する例を示しています。この例では、RMI がすでに実行していることを前提としています。実行していなかった場合は、適切なエラーメッセージが表示されます。
+.LP
+.RS
+.ft 3
+.nf
+jstatd -nr
+.fi
+.ft 1
+.RE
+.SS RMI ロギング機能の有効化
+この例は、RMI ロギング機能を有効にして 
+.B jstatd 
+を起動する例を示しています。この方法は、障害追跡やサーバ活動の監視に役立ちます。
+.LP
+.RS
+.ft 3
+.nf
+jstatd -J-Djava.security.policy=all.policy -J-Djava.rmi.server.logCalls=true
+.fi
+.ft 1
+.RE
+.LP
+この例では、環境変数を設定するための Bourne シェル構文を使用しています。他のシェルやコマンドインタプリタでは別の構文が必要な場合があります。
+.SH 関連項目
+.BR java (1),
+.BR jps (1),
+.BR jstat (1),
+.BR rmiregistry (1)

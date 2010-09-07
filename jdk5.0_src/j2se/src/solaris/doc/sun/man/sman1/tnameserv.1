@@ -1,0 +1,276 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1999, v.4002-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<refentry id="tnameserv-1">
+<!--@(#)tnameserv.1 1.9 01/03/14 SMI;-->
+<refmeta><refentrytitle>tnameserv</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">22 Jun 2004</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All
+rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.
+ </refmiscinfo>
+</refmeta>
+<refnamediv><refname>tnameserv</refname><refpurpose>Java IDL name server starter
+script</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>tnameserv</command><arg choice="plain"><option><replaceable>
+ORBInitialPort</replaceable></option></arg><arg choice="plain"><replaceable>
+port_number</replaceable></arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="tnameserv-1-indx-1"><primary sortas="Java IDL name server starter script">
+Java IDL name server starter script &mdash; tnameserv</primary></indexterm>
+<indexterm id="tnameserv-1-indx-2"><primary sortas="tnameserv">tnameserv &mdash;
+Java IDL name server starter script</primary></indexterm><para>The <acronym>
+CORBA</acronym> <acronym>COS</acronym> (Common Object Services) Naming Service
+provides a tree-like directory for object references much like a filesystem
+provides a directory structure for files. The Naming Service provided with
+Java <acronym remap="small">IDL</acronym> is a simple implementation of the <acronym
+remap="small">COS</acronym> Naming Service specification.</para>
+<para>Object references are stored in the namespace by name and each object
+reference-name pair is called a name binding. Name bindings may be organized
+under naming contexts. Naming contexts are themselves name bindings and serve
+the same organizational function as a file system subdirectory. All bindings
+are stored under the initial naming context. The initial naming context is
+the only persistent binding in the namespace; the rest of the namespace is
+lost if the Java <acronym>IDL</acronym> name server process halts and restarts.
+</para>
+<para>For an applet or application to use <acronym>COS</acronym> naming, its <acronym>
+ORB</acronym> must know the name and port of a host running a naming service
+or have access to a stringified initial naming context for that name server.
+The naming service can either be the Java <acronym>IDL</acronym> name server
+or another <acronym>COS</acronym>-compliant name service.</para>
+</refsect1>
+<refsect1><title>&usge-tt;</title>
+<refsect2>
+<title>Starting the Java IDL Name Server</title>
+<indexterm id="tnameserv-1-indx-3"><primary sortas="tnameserv">tnameserv &mdash;
+Java IDL name server starter script</primary><secondary>Starting the Java
+IDL Name Server</secondary></indexterm><para>You must start the Java <acronym>
+IDL</acronym> name server before an application or applet that uses its naming
+service. Installation of the Java <acronym>IDL</acronym> product creates a
+script named <literal>tnameserv</literal>  that starts the Java <acronym>
+IDL</acronym> name server. Start the name server so it runs in the background.
+</para>
+<para>If you do not specify otherwise, the Java <acronym>IDL</acronym> name
+server listens on port 900 for the bootstrap protocol used to implement the <acronym>
+ORB</acronym> <function>resolve_initial_references</function> and <function>
+list_initial_references</function> methods. Specify a different port, for
+example <literal>1050</literal>, as follows:<informalexample><para><screen>
+example% <userinput>tnameserv &ndash;ORBInitialPort 1050</userinput></screen></para>
+</informalexample></para>
+<para>Clients of the name server must be made aware of the new port number.
+Do this by setting the <literal>org.omg.CORBA.ORBInitialPort</literal> property
+to the new port number when creating the <acronym>ORB</acronym> object.</para>
+</refsect2>
+<refsect2>
+<title>Stopping the Java IDL Name Server</title>
+<indexterm id="tnameserv-1-indx-4"><primary sortas="tnameserv">tnameserv &mdash;
+Java IDL name server starter script</primary><secondary>Stopping the Java
+IDL Name Server</secondary></indexterm><para>To stop the Java <acronym remap="small">
+IDL</acronym> name server, use the relevant operating system command, such
+as <citerefentry><refentrytitle>kill</refentrytitle><manvolnum>1</manvolnum>
+</citerefentry>. Notice that names registered with the Java <acronym remap="small">
+IDL</acronym> name service disappear when the server is terminated.</para>
+</refsect2>
+<refsect2>
+<title>Sample Client: Adding Objects</title>
+<indexterm id="tnameserv-1-indx-5"><primary sortas="tnameserv">tnameserv &mdash;
+Java IDL name server starter script</primary><secondary>Sample Client: Browsing
+the Namespace</secondary></indexterm><indexterm id="tnameserv-1-indx-6"><primary
+sortas="tnameserv">tnameserv &mdash; Java IDL name server starter script</primary>
+<secondary>Sample Client: Adding Objects to the Namespace</secondary></indexterm>
+<para>The following sample program illustrates how to add names to the namespace.
+It is a self-contained Name Server client that creates the following simple
+tree.<informalexample>
+<screen>        Initial
+     Naming Context
+      /      \
+     /        \
+   plans      personal
+               /\
+              /  \
+        calendar   schedule
+
+</screen>
+</informalexample>In this example, <literal>plans</literal> is an object reference
+and <literal>personal</literal> is a naming context that contains two object
+references, <literal>calendar</literal> and <literal>schedule</literal>.<informalexample>
+<screen>import java.util.Properties;
+import org.omg.CORBA.*;
+import org.omg.CosNaming.*;
+
+public class NameClient
+{
+   public static void main(String args[])
+   {
+      try {
+
+</screen>
+</informalexample>In the above section, <literal>Starting the Java IDL Name
+Server</literal>, the nameserver was started on port <literal>1050</literal>.
+The following code ensures that the client program is aware of this port number.<informalexample>
+<screen>        Properties props = new Properties();
+        props.put("org.omg.CORBA.ORBInitialPort", "1050");
+        ORB orb = ORB.init(args, props);
+
+</screen>
+</informalexample>The following code obtains the initial naming context and
+assigns it to <literal>ctx</literal>. The second line copies <literal>ctx
+</literal> into a dummy object reference, <literal>objref</literal>, that
+we will attach to various names and add into the namespace.<informalexample>
+<screen>        NamingContext ctx = NamingContextHelper.narrow
+            (orb.resolve_initial_references("NameService"));
+        NamingContext objref = ctx;
+
+</screen>
+</informalexample>The following code creates a name <literal>plans</literal>
+of type <literal>text</literal> and binds it to our dummy object reference. <literal>
+plans</literal> is then added under the initial naming context using <literal>
+rebind</literal>. The <literal>rebind</literal> method allows us to run this
+program over and over again without getting the exceptions we would get from
+using <literal>bind</literal>.<informalexample>
+<screen>        NameComponent nc1 = new NameComponent("plans", "text");
+        NameComponent[] name1 = {nc1};
+        ctx.rebind(name1, objref);
+        System.out.println("plans rebind sucessful!");
+
+</screen>
+</informalexample>The following code creates a naming context called <literal>
+Personal</literal> of type <literal>directory</literal>. The resulting object
+reference, <literal>ctx2</literal>, is bound to the name and added under the
+initial naming context.<informalexample>
+<screen>        NameComponent nc2 = new NameComponent("Personal", "directory");
+        NameComponent[] name2 = {nc2};
+        NamingContext ctx2 = ctx.bind_new_context(name2);
+        System.out.println("new naming context added..");
+
+</screen>
+</informalexample>The remainder of the code binds the dummy object reference
+using the names <literal>schedule</literal> and <literal>calendar</literal>
+under the <literal>Personal</literal> naming context (<literal>ctx2</literal>).<informalexample>
+<screen>        NameComponent nc3 = new NameComponent("schedule", "text");
+        NameComponent[] name3 = {nc3};
+        ctx2.rebind(name3, objref);
+        System.out.println("schedule rebind sucessful!");
+
+        NameComponent nc4 = new NameComponent("calender", "text");
+        NameComponent[] name4 = {nc4};
+        ctx2.rebind(name4, objref);
+        System.out.println("calender rebind sucessful!");
+
+    } catch (Exception e) {
+        e.printStackTrace(System.err);
+    }
+  }
+}
+
+</screen>
+</informalexample></para>
+</refsect2>
+<refsect2>
+<title>Sample Client: Browsing the Namespace</title>
+<para>The following sample program illustrates how to browse the namespace.<informalexample>
+<screen>import java.util.Properties;
+import org.omg.CORBA.*;
+import org.omg.CosNaming.*;
+
+public class NameClientList
+{
+   public static void main(String args[])
+   {
+      try {
+
+</screen>
+</informalexample>In the above section, <literal>Starting the Java IDL Name
+Server</literal>, the nameserver was started on port <literal>1050</literal>.
+The following code ensures that the client program is aware of this port number.<informalexample>
+<screen>        Properties props = new Properties();
+        props.put("org.omg.CORBA.ORBInitialPort", "1050");
+        ORB orb = ORB.init(args, props);
+
+</screen>
+</informalexample>The following code obtains the initial naming context.<informalexample>
+<screen>        NamingContext nc = NamingContextHelper.narrow
+           (orb.resolve_initial_references("NameService"));
+
+</screen>
+</informalexample>The list method lists the bindings in the naming context.
+In this case, up to 1000 bindings from the initial naming context will be
+returned in the <literal>BindingListHolder</literal>. Any remaining bindings
+are returned in the <literal>BindingIteratorHolder</literal>.<informalexample>
+<screen>        BindingListHolder bl = new BindingListHolder();
+        BindingIteratorHolder blIt= new BindingIteratorHolder();
+        nc.list(1000, bl, blIt);
+
+</screen>
+</informalexample>The following code gets the array of bindings out of the
+returned <literal>BindingListHolder</literal>. If there are no bindings, the
+program ends.<informalexample>
+<screen>        Binding bindings[] = bl.value;
+        if (bindings.length == 0) return;
+
+</screen>
+</informalexample>The remainder of the code loops through the bindings and
+prints the names out. <screen>        for (int i=0; i &lt; bindings.length; i++) {
+
+            // get the object reference for each binding
+            org.omg.CORBA.Object obj = nc.resolve
+				 (bindings[i].binding_name);
+            String objStr = orb.object_to_string(obj);
+            int lastIx = bindings[i].binding_name.length-1;
+
+            // check to see if this is a naming context
+            if (bindings[i].binding_type == BindingType.ncontext) {
+              System.out.println
+				 ("Context: " + bindings[i].binding_name[lastIx].id);
+            } else {
+                System.out.println
+				   ("Object: " + bindings[i].binding_name[lastIx].id);
+            }
+        }
+
+       } catch (Exception e) {
+        e.printStackTrace(System.err);
+       }
+   }
+}
+
+</screen></para>
+</refsect2>
+</refsect1>
+<refsect1><title>&attr-tt;</title>
+<para>See <citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>
+5</manvolnum></citerefentry> for a description of the following attributes:
+</para>
+<informaltable frame="all" orient="port">
+<tgroup cols="2" colsep="1" rowsep="1"><colspec colnum="1" colname="col1"
+colwidth="1*" colsep="1" align="left"><colspec colnum="2" colname="col2" colwidth="1*"
+align="left">
+<thead>
+<row><entry colname="col1" align="center" valign="top">ATTRIBUTE TYPE</entry>
+<entry colname="col2" align="center" valign="top">ATTRIBUTE VALUE</entry>
+</row>
+</thead>
+<tbody>
+<row><entry>Availability</entry><entry>SUNWj5<?Pub Caret>dev</entry></row>
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>kill</refentrytitle><manvolnum>1</manvolnum>
+</citerefentry>, <citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>
+5</manvolnum></citerefentry> </para>
+</refsect1>
+<!--+ 07/27/00 08:36:13
+    | tagMorph:  $Id: tagMorph-engine 1.54 1998/01/19 05:44:48 $
+    | tagMorph library:  $Id: libtagMorph.a 1.50 1998/01/19 22:02:51 $
+    | sunman-to-solbook 1.17
+    +-->
+</refentry>
+<?Pub *0000012766>

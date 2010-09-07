@@ -1,0 +1,224 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1998, v.4001-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<refentry id="idlj-1">
+<!--@(#)idlj.1 1.1 01/03/14 SMI;-->
+<refmeta><refentrytitle>idlj</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">2004 年 6 月 22 日</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.  </refmiscinfo>
+</refmeta>
+<refnamediv><indexterm><primary sortas="idlj">idlj &mdash; IDL-to-Java compiler</primary></indexterm><indexterm><primary sortas="IDL-to-Java compiler">IDL-to-Java compiler &mdash; idlj</primary></indexterm><refname>idlj</refname><refpurpose>IDL-to-Java コンパイラ</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>idlj</command><arg choice="opt">&nbsp;<replaceable>options</replaceable></arg><arg choice="plain">&nbsp;<replaceable>idl-file</replaceable></arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&desc-tt;</title>
+<para>IDL-to-Java コンパイラは、指定された <acronym>IDL</acronym> ファイルに対して Java バインディングを生成します。バインディングの詳細は、『<citetitle>OMG IDL to Java Language Mapping Specification</citetitle>』を参照してください。IDL-to-Java コンパイラの旧リリースの中には、<literal>idltojava</literal> という名前が付けられていたものがあります。</para>
+<para><replaceable>idl-file</replaceable> には、Interface Definition Language (<acronym>IDL</acronym>) 定義が格納されているファイルの名前を指定します。<replaceable>options</replaceable> は任意の順序で指定できますが、<replaceable>idl-file</replaceable> よりも前に指定する必要があります。</para>
+<refsect2><title>クライアントバインディングとサーババインディングの発行</title>
+<para><literal>My.idl</literal> という名前の <acronym>IDL</acronym> ファイルに対して Java バインディングを生成するには、次のように指定します。<informalexample><screen>   example% <userinput>idlj My.idl</userinput></screen>
+</informalexample></para>
+<para>クライアント側のバインディングを生成する上記のコマンドは、次のようにも指定できます。<informalexample><screen>   example% <userinput>idlj -fclient My.idl</userinput></screen>
+</informalexample></para>
+<para>クライアント側のバインディングには、サーバ側のスケルトンは取り込まれていません。インタフェースに対してサーバ側のバインディングを生成するには、次のように指定します。<informalexample><screen>   example% <userinput>idlj -fserver My.idl</userinput></screen>
+</informalexample></para>
+<para>サーバ側のバインディングには、クライアント側のバインディングのほかにスケルトンが取り込まれています。これらはすべて、<acronym>POA</acronym> (継承モデル) クラスです。クライアント側とサーバ側の両方のバインディングを生成するには、以下の等価コマンドのどちらか一方を使用してください。<informalexample><screen>   example% <userinput>idlj -fclient -fserver My.idl</userinput>
+   example% <userinput>idlj -fall My.idl</userinput></screen>
+</informalexample></para>
+<para>サーバ側モデルとしては、継承モデルと Tie モデルの 2 種類を利用できます。</para>
+<para><emphasis>継承モデル</emphasis></para>
+<para>1.4 における新機能: デフォルトのサーバ側モデルは、<literal>Portable Servant Inheritance Model</literal> です。<literal>My.idl</literal> でインタフェース <literal>My</literal> が定義されていると、ファイル <literal>MyPOA.java</literal> が生成されます。ユーザは、<literal>My</literal> に対してその実装を提供する必要があります。この実装は、<literal>MyPOA</literal> から継承しなければなりません。</para>
+<para><literal>MyPOA.java</literal> は、<literal>org.omg.PortableServer.Servant</literal> を拡張するストリームベースのスケルトンであり、このスケルトンが実装する IDL インタフェースに関連した <literal>InvokeHandler</literal> インタフェースとオペレーションインタフェースを実装します。</para>
+<para>Portable Object Adapter (<acronym>POA</acronym>) の <literal>PortableServer</literal> モジュールは、ネイティブ <literal>Servant</literal> 型を定義します。Java プログラミング言語では、<literal>Servant</literal> 型は、Java <literal>org.omg.PortableServer.Servant</literal> クラスにマップされます。これはすべての <acronym>POA</acronym> サーバント実装の基底クラスとして機能し、アプリケーション開発者が呼び出せる多数のメソッドを提供します。また、<acronym>POA</acronym> 自体が呼び出したり、サーバント動作を制御するためにユーザが上書きしたりできるメソッドも提供します。</para>
+<para>継承モデルには、旧バージョンの Java プログラミング言語 (J2SE 1.4 より前) と互換性のあるサーバ側バインディングを生成するために <option>oldImplBase</option> フラグを使用するというオプションもあります。下位互換を維持したサーバ側バインディングを生成するには、次のように指定します。<informalexample><screen>   example% <userinput>idlj -fclient -fserver -oldImplBase My.idl</userinput>
+   example% <userinput>idlj -fall -oldImplBase My.idl</userinput></screen>
+</informalexample></para>
+<para><literal>My.idl</literal> 内でインタフェース <literal>My</literal> が定義されていると、ファイル <literal>_MyImplBase.java</literal> が生成されます。ユーザは、<literal>My</literal> に対してその実装を提供する必要があります。この実装は、<literal>_MyImplBase</literal> から継承しなければなりません。</para>
+<para><emphasis>Tie モデル</emphasis></para>
+<para>もう一方のサーバ側モデルは、Tie モデルと呼ばれます。これは、委譲モデルです。Tie モデルは Tie とスケルトンを同時には生成できないため、これらは別々に生成する必要があります。次のコマンドは、Tie モデルに対してバインディングを生成します。<informalexample><screen>   example% <userinput>idlj -fall My.idl</userinput>
+   example% <userinput>idlj -fallTIE My.idl</userinput></screen>
+</informalexample></para>
+<para>インタフェース <literal>My</literal> の場合、2 つめのコマンドは <literal>MyPOATie.java</literal> を生成します。<literal>MyPOATie</literal> のコンストラクタは、<literal>delegate</literal> を受け取ります。ユーザは、<literal>delegate</literal> に対して実装を提供する必要があります。ただし、インタフェース <literal>MyOperations</literal> を継承すればよく、ほかのクラスから継承する必要はありません。しかし、この実装を <acronym>ORB</acronym> と共に使用するには、<literal>MyPOATie</literal> 内に実装をラップする必要があります。例を示します。<informalexample><screen>   MyImpl myImpl = new MyImpl ();
+   MyPOATie tie = new MyPOATie (myImpl);
+   orb.connect (tie);</screen>
+</informalexample></para>
+<para>実装をほかの実装から継承しなければならない場合は、標準の継承モデルの代わりに Tie モデルを使用することもできます。Java は任意の数のインタフェース継承を認めていますが、クラスの継承に使用できるスロットは 1 つだけです。継承モデルを使用すると、このスロットが占有されます。Tie モデルを使用すると、スロットをユーザ自身の使用のために解放できます。ただし、一定レベルの間接参照を引き起こすという欠点があります。つまり、メソッドを呼び出すと、余分なメソッド呼び出しが 1 つ発生します。</para>
+<para>1.4 よりも前の J2SE バージョンで旧バージョンの <acronym>IDL</acronym>-to-Java 言語マッピングと互換性があるサーバ側の Tie モデルバインディングを生成するには、次のように指定します。<informalexample><screen>   example% <userinput>idlj -oldImplBase -fall My.idl</userinput>
+   example% <userinput>idlj -oldImplBase -fallTIE My.idl</userinput></screen>
+</informalexample></para>
+<para>インタフェース <literal>My</literal> の場合、このコマンドは <literal>My_Tie.java</literal> を生成します。<literal>My_Tie</literal> のコンストラクタは、<literal>impl</literal> を受け取ります。ユーザは、<literal>impl</literal> に対して実装を提供する必要があります。ただし、インタフェース <literal>HelloOperations</literal> を継承すればよく、ほかのクラスから継承する必要はありません。しかし、この実装を <acronym>ORB</acronym> と共に使用するには、<literal>My_Tie</literal> 内に実装をラップする必要があります。例を示します。<informalexample><screen>   MyImpl myImpl = new MyImpl (); 
+   MyPOATie tie = new MyPOATie (myImpl); 
+   orb.connect (tie);</screen>
+</informalexample></para>
+</refsect2>
+<refsect2><title>発行されたファイルの代替場所の指定</title>
+<para>発行されたファイルを現在のディレクトリ以外のディレクトリに保存したい場合は、次のようにコンパイラを呼び出してください。<informalexample><screen>   example% <userinput>idlj -td /altdir My.idl</userinput></screen>
+</informalexample></para>
+<para>インタフェース <literal>My</literal> の場合、バインディングは <literal>./My.java</literal> ではなく <literal>/altdir/My.java</literal> などに対して発行されます。</para>
+</refsect2>
+<refsect2><title>インクルードファイルの代替場所の指定</title>
+<para><literal>My.idl</literal> にほかの idl ファイル、<literal>MyOther.idl</literal> が取り込まれている場合、コンパイラは <literal>MyOther.idl</literal> がローカルディレクトリに存在すると見なします。たとえば、<literal>MyOther.idl</literal> が <filename>/includes</filename> に存在する場合は、次のコマンドでコンパイラを呼び出します。<informalexample><screen>   example% <userinput>idlj -i /includes My.idl</userinput></screen>
+</informalexample></para>
+<para>たとえば、<literal>My.idl</literal> が <filename>/moreIncludes</filename> に存在する <literal>Another.idl</literal> も取り込んでいる場合は、次のコマンドでコンパイラを呼び出します。<informalexample><screen>   example% <userinput>idlj -i /includes -i /moreIncludes My.idl</userinput></screen>
+</informalexample></para>
+<para>この形式でファイルを取り込むと、コマンドが非常に長くなることがあります。このため、インクルードファイルの検索場所をコンパイラに知らせる方法が別に用意されています。この方法は、環境変数の概念に似ています。まず、<envar>CLASSPATH</envar> にリストされているディレクトリ内に、<literal>idl.config</literal> という名前のファイルを作成します。そして、<literal>idl.config</literal> 内に次の形式の行を 1 つ作成します。<informalexample><screen>   includes=/includes;/moreIncludes</screen>
+</informalexample></para>
+<para>コンパイラはこのファイルを見つけ、インクルードリストに読み込みます。この例では 2 つのディレクトリ間の区切り文字はセミコロン (;) であることに注意してください。この区切り文字は、NT ではセミコロン、Solaris ではコロンというようにプラットフォームによって異なります。インクルードの詳細は、<envar>CLASSPATH</envar> (Solaris)、<envar>CLASSPATH</envar> (Linux)、<envar>CLASSPATH</envar> (Windows) のドキュメントを参照してください。</para>
+</refsect2>
+<refsect2><title>インクルードファイルに対するバインディングの発行</title>
+<para>デフォルトでは、コマンド行 idl ファイルに定義されているインタフェース、構造体などに対してのみ、Java バインディングが生成されます。インクルードファイルに定義されているタイプの Java バインディングは生成されません。例として、次の 2 つの idl ファイルを考えてみましょう。<informalexample><screen>   <emphasis>My.idl</emphasis>
+      #include &lt;MyOther.idl>
+      interface My
+      {
+      };
+
+   <emphasis>MyOther.idl</emphasis>
+      interface MyOther
+      {
+      };</screen>
+</informalexample>次のコマンドは、<literal>My</literal> に対する Java バインディングしか生成しません。<informalexample><screen>   example% <userinput>idlj My.idl</userinput></screen>
+</informalexample></para>
+<para><literal>My.idl</literal> 内に定義されているすべてのタイプ、および <literal>My.idl</literal> に取り込まれているファイル (この例では <literal>MyOther.idl</literal>) 内に定義されているすべてのタイプを生成するには、次のコマンドを使用してください。<informalexample><screen>   example% <userinput>idlj -emitAll My.idl</userinput></screen>
+</informalexample></para>
+<para>このデフォルトの規則については、次の点に注意する必要があります。グローバルスコープに出現する <literal>#include</literal> 文は、記述どおりに処理されます。これらの <literal>#include</literal> 文は、インポート文と見なすことができます。一部の囲みスコープ内に出現する <literal>#include</literal> 文は、通常の <literal>#include</literal> 文として扱われます。つまり、インクルードファイル内のコードはオリジナルファイル内に出現しているかのように扱われ、これに対して Java バインディングが発行されます。例を示します。<informalexample><screen>   <emphasis>My.idl</emphasis>
+      #include &lt;MyOther.idl> 
+      interface My 
+      { 
+      #include &lt;Embedded.idl> 
+      };
+
+   <emphasis>MyOther.idl</emphasis>
+      interface MyOther 
+      { 
+      };
+
+   <emphasis>Embedded.idl</emphasis>
+      enum E {one, two, three};</screen>
+</informalexample>次のコマンドを実行すると、<informalexample><screen>   example% <userinput>idlj My.idl</userinput></screen>
+</informalexample>以下の Java ファイルのリストが生成されます。<informalexample><screen>   ./MyHolder.java 
+   ./MyHelper.java 
+   ./_MyStub.java 
+   ./MyPackage 
+   ./MyPackage/EHolder.java 
+   ./MyPackage/EHelper.java 
+   ./MyPackage/E.java 
+   ./My.java</screen>
+</informalexample></para>
+<para><literal>MyOther.java</literal> は生成されないことに注意してください。これは、インポートに類似した <literal>#include</literal> で定義されているためです。しかし、通常の <literal>#include</literal> に定義された <literal>E.java</literal> は生成されます。<literal>Embedded.idl</literal> はインタフェース <literal>My</literal> のスコープ内に取り込まれているため、<literal>My</literal> のスコープ内 (つまり <literal>MyPackage</literal> 内) に生成されます。</para>
+<para>上記の例で <option>emitAll</option> フラグが使用されていた場合は、すべてのインクルードファイル内に定義されているすべてのタイプが発行されます。</para>
+</refsect2>
+<refsect2><title>パッケージ接頭辞の挿入</title>
+<para>あなたが次の <acronym>IDL</acronym> ファイルを作成した <literal>ABC</literal> という名の企業に勤務していると仮定してください。<informalexample><screen>   <emphasis>Widgets.idl</emphasis>
+      module Widgets 
+      { 
+      interface W1 {...}; 
+      interface W2 {...}; 
+      };</screen>
+</informalexample></para>
+<para>このファイルに対して IDL-to-Java コンパイラを実行すると、パッケージ <literal>Widgets</literal> 内の <literal>W1</literal> と <literal>W2</literal> に対して Java バインディングが生成されます。しかし、業界規約では、企業のパッケージは <literal>com.</literal><replaceable>company name</replaceable> という名前のパッケージ内に配置しなければならないと規定されています。そのためこの <literal>Widgets</literal> パッケージのままでは不十分です。規定に従うには、<literal>com.abc.Widgets</literal> でなければなりません。<literal>Widgets</literal> モジュールにこのパッケージ接頭辞を配置するには、次のコマンドを実行してください。<informalexample><screen>   example% <userinput>idlj -pkgPrefix Widgets com.abc Widgets.idl</userinput></screen>
+</informalexample></para>
+<para><literal>Widgets.idl</literal> を取り込んでいる <acronym>IDL</acronym> ファイルが存在する場合は、そのコマンド内にも <option>pkgPrefix</option> フラグを指定する必要があります。このフラグを指定しないと、<acronym>IDL</acronym> ファイルは <literal>com.abc.Widgets</literal> パッケージではなく <literal>Widgets</literal> パッケージを検索します。接頭辞を必要とするこれらのパッケージが多数存在する場合は、前述した <literal>idl.config</literal> ファイルに配置する方が簡単でしょう。各パッケージ接頭辞行は、次の書式で記述します。<informalexample><screen>   PkgPrefix.&lt;type>=&lt;prefix></screen>
+</informalexample></para>
+<para>この書式に従うと、上記例の行は次のようになります。<informalexample><screen>   PkgPrefix.Widgets=com.abc</screen>
+</informalexample></para>
+<para>このオプションを使用しても、リポジトリ <acronym>ID</acronym> には影響を与えません。</para>
+</refsect2>
+<refsect2><title>コンパイル前のシンボルの定義</title>
+<para>バインディング内にデバッグコードを取り込む場合などに <acronym>IDL</acronym> ファイル内にコンパイル用のシンボルが定義されていないときは、それらのシンボルを定義する必要があることがあります。次のコマンドは、<informalexample><screen>   example% <userinput>idlj -d MYDEF My.idl</userinput></screen>
+</informalexample><literal>My.idl</literal> 内に <literal>#define MYDEF</literal> という行を含めるのに同じです。</para>
+</refsect2>
+<refsect2><title>既存のバインディングの保持</title>
+<para>Java バインディングファイルが既に存在する場合は、<option>keep</option> フラグを使用してコンパイラによる上書きを防止できます。デフォルトでは、既に存在するかどうかにかかわらずすべてのファイルが生成されます。ファイルをカスタマイズ (カスタマイズはその内容がよほど適切でない限り推奨されません) してある場合は、<option>keep</option> オプションが非常に役立ちます。次のコマンドは、<informalexample><screen>   example% <userinput>idlj -keep My.idl</userinput></screen>
+</informalexample>まだ存在していないすべてのクライアント側バインディングを発行します。</para>
+</refsect2>
+<refsect2><title>コンパイルの進捗の表示</title>
+<para><acronym>IDL</acronym>-to-Java コンパイラは、その実行段階でステータスメッセージを生成します。この生成を詳細 (verbose) モードにするには、<option>v</option> オプションを使用してください。<informalexample><screen>   example% <userinput>idlj -v My.idl</userinput></screen>
+</informalexample></para>
+<para>デフォルトでは、コンパイラは詳細モードで動作しません。</para>
+</refsect2>
+<refsect2><title>バージョン情報の表示</title>
+<para><acronym>IDL</acronym>-to-Java コンパイラのビルドバージョンを表示するには、コマンド行で <option>version</option> オプションを指定してください。<informalexample><screen>   example% <userinput>idlj -version</userinput></screen>
+</informalexample></para>
+</refsect2>
+</refsect1>
+<refsect1><title>&opts-tt;</title>
+<para>以下のオプションがサポートされています。</para>
+<variablelist termlength="wholeline"><varlistentry><term remap="15"><option>d</option> <replaceable>symbol</replaceable></term><listitem><para>これは、<acronym>IDL</acronym> ファイルに次の行を指定するのと同じです。<informalexample><screen>   #define symbol</screen>
+</informalexample></para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>emitAll</option> </term><listitem><para><literal>#include</literal> ファイル内に指定されているものも含め、すべてのタイプを発行します。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>f</option><replaceable>side</replaceable> </term><listitem><para>発行するバインディングを定義します。<replaceable>side</replaceable> には、<literal>client</literal>、<literal>server</literal>、<literal>serverTIE</literal>、<literal>all</literal>、<literal>allTIE</literal> のうちいずれか 1 つを指定します。<option>f</option><literal>serverTIE</literal> と <option>f</option><literal>allTIE</literal> オプションを指定すると、委譲モデルスケルトンが発行されます。フラグを指定しない場合は、<option>f</option><literal>client</literal> と見なされます。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>i</option> <replaceable>include-path</replaceable> </term><listitem><para>デフォルトでは、現在のディレクトリでインクルードファイルが検索されます。このオプションを使用すると、ほかのディレクトリを追加できます。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>keep</option></term><listitem><para>生成されるファイルが既に存在する場合、既存ファイルを上書きしません。デフォルトでは、既存ファイルが上書きされます。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>noWarn</option> </term><listitem><para>警告メッセージを表示しないようにします。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>oldImplBase</option></term><listitem><para>古い JDK <acronym>ORB</acronym> (1.4 より前) と互換性のあるスケルトンを生成します。デフォルトでは、<acronym>POA</acronym> 継承モデルのサーバ側バインディングが生成されます。このオプションは、<literal>ImplBase</literal> 継承モデルクラスであるサーバ側バインディングを生成することによって、旧バージョンの Java プログラミング言語との下位互換性を提供します。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>pkgPrefix</option> <replaceable>type</replaceable> <replaceable>prefix</replaceable></term><listitem><para>ファイルスコープで <replaceable>type</replaceable> が検出された場合、そのタイプに対して生成されるすべてのファイルについて、生成される Java パッケージ名に <replaceable>prefix</replaceable> という接頭辞を付けます。<replaceable>type</replaceable> は、トップレベルモジュールの単純名か、モジュールの外部で定義された <acronym>IDL</acronym> タイプの単純名です。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>pkgTranslate</option> <replaceable>type</replaceable> <replaceable>package</replaceable></term><listitem><para>このオプションは、識別子内でモジュール名 <replaceable>type</replaceable> が見つかるたびに、生成される Java パッケージ内のすべてのファイルについて、識別子内で <replaceable>type</replaceable> を <replaceable>package</replaceable> に置き換えます。<option>pkgPrefix</option> 変更が初めに行われることに注意してください。<replaceable>type</replaceable> はトップレベルモジュールの単純名か、モジュールの外部で定義された <acronym>IDL</acronym> タイプの単純名のいずれかであり、パッケージのフルネームと正確に一致する必要があります。</para>
+<para>複数の変換結果が 1 つの識別子と一致する場合、もっとも長い一致が選択されます。たとえば、引数が次のパラメータを含む場合、<informalexample><screen>   example% <userinput>-pkgTranslate foo bar -pkgTranslate foo.baz buzz.fizz</userinput></screen>
+</informalexample>以下の変換が行われます。<informalexample><screen>   foo          => bar
+   foo.boo      => bar.boo
+   foo.baz      => buzz.fizz
+   foo.baz.bar  => buzz.fizz.bar</screen>
+</informalexample></para>
+<para>以下のパッケージ名は変換できません。<itemizedlist>
+<listitem><para><literal>org</literal></para>
+</listitem><listitem><para><literal>org.omg</literal> または <literal>org.omg</literal> のサブパッケージ</para>
+</listitem></itemizedlist></para>
+<para>これらのパッケージの変換を試みると、コンパイル不可能なコードが生成されます。これらのパッケージを <option>pkgTranslate</option> の後の最初の引数として使用すると、エラーとして扱われます。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>skeletonName</option> <replaceable>xxx%yyy</replaceable></term><listitem><para><replaceable>xxx%yyy</replaceable> をスケルトンの名前付けのパターンとして使用します。デフォルトは次のとおりです。<itemizedlist>
+<listitem><para><acronym>POA</acronym> 基底クラス (<option>f</option><literal>server</literal> または <option>fall</option>) の場合、<literal>%POA</literal></para>
+</listitem><listitem><para><option>oldImplBase</option> クラス (<literal>oldImplBase</literal>、および <option>f</option><literal>server</literal> または <option>fall</option> のいずれか) の場合、<literal>_%ImplBase</literal></para>
+</listitem></itemizedlist></para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>td</option> <replaceable>dir</replaceable></term><listitem><para>出力ディレクトリとして、現在のディレクトリではなく <replaceable>dir</replaceable> を使用します。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>tieName</option> <replaceable>xxx%yyy</replaceable></term><listitem><para><replaceable>xxx%yyy</replaceable> を Tie の名前付けのパターンとして使用します。デフォルトは次のとおりです。<itemizedlist>
+<listitem><para>POA Tie 基底クラス (<option>f</option><literal>server</literal> または <option>fallTie</option>) の場合、<literal>%POATie</literal></para>
+</listitem><listitem><para><literal>oldImplBase</literal> クラス (<option>oldImplBase</option>、および <option>f</option><literal>serverTie</literal> または <option>fallTie</option> のいずれか) の場合、<literal>%_Tie</literal></para>
+</listitem></itemizedlist></para>
+</listitem></varlistentry>
+<varlistentry><term><option>nowarn</option></term><term remap="15"><option>verbose</option> </term><listitem><para>詳細モードにします。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>version</option></term><listitem><para>バージョン情報を表示して終了します。</para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<refsect1><title>&envr-tt;</title>
+<variablelist termlength="narrow"><varlistentry><term remap="15"><envar>CLASSPATH</envar> </term><listitem><para>システムにユーザ定義クラスへのパスを提供するために使用されます。ディレクトリはコロンで区切ります。例を示します。<informalexample>
+<para><literal>.:/home/avh/classes:/usr/local/java/classes</literal> </para>
+</informalexample></para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<refsect1><title>制限事項</title>
+<itemizedlist>
+<listitem><para>グローバルスコープ内でエスケープされた識別子は、<acronym>IDL</acronym> プリミティブ型 (<literal>Object</literal> または <literal>ValueBase</literal>) と同じスペルであってはなりません。これは、シンボルテーブルがこれらの識別子を使用してすでにロードされているためです。これらを定義し直すと、それらの本来の定義を上書きすることになります (この制限は永続的に適用される見込み)。</para>
+</listitem><listitem><para><acronym>IDL</acronym> の fixed 型はサポートされていません。</para>
+</listitem></itemizedlist>
+</refsect1>
+<refsect1><title>&attr-tt;</title>
+<para>次の属性については、<citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry> のマニュアルページを参照してください。</para>
+<informaltable frame="All" orient="Port"><tgroup cols="2" colsep="1" rowsep="1"><colspec colnum="1" colname="col1" colwidth="1*" colsep="1" align="Left"><colspec colnum="2" colname="col2" colwidth="1*" align="Left"><thead><row><entry colname="col1" align="center" valign="top">属性タイプ</entry><entry colname="col2" align="center" valign="top">属性値</entry></row></thead><tbody><row><entry>使用条件</entry><entry>SUNWj5dev</entry></row></tbody></tgroup></informaltable>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry> </para>
+<para>『<citetitle>OMG IDL to Java Language Mapping Specification</citetitle>』</para>
+</refsect1>
+<refsect1><title>&bugs-tt;</title>
+<para>グローバル識別子に対しては、インポートは生成されません。エクスポートされていないローカル <literal>impl</literal> 上で呼び出すとエラーメッセージが表示されますが、これは <literal>ServerDelegate</literal> <acronym>DSI</acronym> コード内の Null Ptr Exception に起因したものと思われます。</para>
+</refsect1>
+</refentry>
+<?Pub *0000020868 17897>

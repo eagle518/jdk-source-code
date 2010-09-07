@@ -1,0 +1,429 @@
+<html><head>
+    <!-- @(#)build-windows-64.html	1.20 04/10/15 -->
+    <title>Windows-Ia64/AMD64 Build Instructions</title>
+  </head>
+  <body bgcolor="#ffffff">
+    
+    <!-- ------------------------------------------------------ -->
+    
+  <TABLE BORDER="0" WIDTH="100%">
+  <TR>
+  <TD WIDTH=40>
+  <IMG SRC="javalogo52x88.gif" ALT="Java" BORDER=0 WIDTH=52 HEIGHT=88>
+  </TD>
+    
+  <TD ALIGN=CENTER>
+  <center><h1>
+    Windows-Ia64/amd64 Build Instructions
+  </h1>
+  <h2>
+    Java<sup><font size=-2>TM</font></sup> 2 Platform Standard Edition, v#VERSION# #MILESTONE#
+  <br>
+  </h2></center>
+  </TD>
+    
+  <TD ALIGN=RIGHT VALIGN=TOP>
+  <FONT SIZE="-1"><a href=build.html>Build Overview</a></FONT> 
+  </TD>
+  </TR>
+    
+  </TABLE>
+    
+  <HR SIZE=3 NOSHADE>
+    
+    <!-- ------------------------------------------------------ -->
+    
+    <h2>Contents</h2>
+    <ul>
+      <li><a href="#intro">Introduction</a></li>
+      <li><a href="#setup">Windows-Ia64/amd64 System Setup</a></li>
+      <li><a href="#buildtools">Windows-Ia64/amd64 Build Tools and Libraries Setup</a></li>
+      <li><a href="#environmentvariables">Windows-Ia64/amd64 Build Environment Variables</a></li>
+      <li><a href="#build">Windows-Ia64/amd64 Build</a></li>
+    </ul>
+    
+    <!-- ------------------------------------------------------ -->
+    
+  <a name="intro">
+  <h2>Introduction</h2></a>
+  <blockquote>
+    This README file contains build instructions for the 
+    Java<sup><font size=-2>TM</font></sup> 2 Platform  
+    Standard Edition, v#VERSION# (JDK #VERSION#) Community Source Release.  Building the 
+    source code for the JDK requires a high level of technical 
+    expertise.  Sun provides the source code primarily for 
+    technical experts who want to conduct research, port the platform 
+    to new operating systems and hardware, or add enhancements that 
+    require access to platform internals.  If you are not a technical 
+    professional in one of these categories, this release is probably 
+    not for you.  
+  </blockquote>
+    
+    <!-- ------------------------------------------------------ -->
+    
+    <a name="setup">
+    <h2>Windows-Ia64/amd64 System Setup</h2></a>
+    <blockquote>
+      The official build platform for the 64-bit Windows JDK #VERSION# is
+      Windows Server 2003 - 64Bit Edition with Microsoft Security Patch MS03-026 ( windows-ia64 only )
+      installed.
+      <p>
+	The minimum recommended hardware for building the Windows-Ia64
+	version is an Itanium 2 class processor, at least 1 GB of
+	RAM, and approximately 4 GB of free disk space.
+      <p>
+	The minimum recommended hardware for building the Windows-amd64
+	version is an AMD Opteron class processor, at least 512 MB of
+	RAM, and approximately 4 GB of free disk space.
+    </blockquote>
+      
+      <a name="buildtools">
+    <h2>Windows-Ia64/amd64 Build Tools and Libraries Setup</h2></a>
+    <blockquote>
+      You will need to install the following additional tools and libraries for building a
+   64-bit version of the windows JDK.
+    </blockquote>
+      
+	<a name="msvc">
+    <h4>Microsoft Visual C++ Compiler</h4></a>
+    <blockquote>
+      The Microsoft Visual C++ 6.0 Professional Edition compiler,
+      with Visual C++ 6.0 Service Pack 3 installed
+      (<em>not</em> Service Pack 4),
+      is required for building the JDK.
+      The compiler and other tools are expected to reside in the locations
+      defined by the variables <tt>MSVCDir</tt> and <tt>MSDevDir</tt>,
+      which are set by the setup utility
+      <tt>VCVARS32.BAT</tt> (usually found in
+      <tt>C:\Program Files\Microsoft Visual Studio\VC98\Bin\</tt>).
+      It is required that you run <tt>VCVARS32.BAT</tt> to set
+      <tt>MSVCDir</tt>, <tt>MSDevDir</tt>, <tt>INCLUDE</tt>, <tt>LIB</tt>,
+      and the <tt>PATH</tt> prior to building the JDK.
+      If your compiler resides in a place other than the default, you can set
+      <tt>ALT_COMPILER_PATH</tt> to point to the location of the <tt>cl</tt>
+      compiler binary, and <tt>ALT_MSDEVTOOLS_PATH</tt> to point to the
+      location of the development tools.
+      The compiler and tools binaries must be in the <tt>PATH</tt>.
+<p>
+	This compiler is used in conjunction with the Microsoft Platform 
+	Software Development Kit (SDK) ccompiler as described in the 
+	next section.
+    <p>
+    </blockquote>
+
+	<a name="msvc">
+    <h4>Microsoft Platform Software Development Kit (SDK)</h4></a>
+    <blockquote>
+      The Microsoft Platform Software Development Kit (SDK), November 2001 Edition compiler 
+      ( for windows-ia64 ) and February 2003 Edition compiler ( for windows-amd64 ),
+      is required for building the JDK. You will need to minimally install the 
+      <tt>Core SDK</tt> and the <tt>MDAC SDK</tt> features of this compiler.
+      The compiler and other tools are expected to reside in the locations
+      defined by the variables <tt>MSSdk</tt> and <tt>MSTools</tt>,
+      which are set by the setup utility
+      <tt>SETENV.BAT /XP64</tt> for windows-ia64 and <tt>SETENV.BAT /AMD64</tt> 
+      for windows-amd64 (usually found in
+      <tt>C:\Program Files\Microsoft SDK\</tt>).
+      It is required that you run <tt>SETENV.BAT /XP64</tt> or <tt>SETENV.BAT /AMD64</tt> 
+      <b>after</b> running <tt>VCVARS32.BAT</tt> to set <tt>MSSdk</tt>, <tt>MSTools</tt>,
+      <tt>MSVCDir</tt>, <tt>MSDevDir</tt>, <tt>INCLUDE</tt>, <tt>LIB</tt>,
+      and the <tt>PATH</tt> correctly prior to building the 64-bit windows JDK.
+	<p>	
+      If your compiler resides in a place other than the default, you can set
+      <tt>ALT_COMPILER_PATH</tt> to point to the location of the <tt>cl</tt>
+      compiler binary, and <tt>ALT_MSDEVTOOLS_PATH</tt> to point to the
+      location of the development tools.
+	<p>
+	Because GNU Make has problems with spaces in command PATHS, it may
+	be required that you set <tt>ALT_COMPILER_PATH</tt> and 
+	<tt>ALT_MSDEVTOOLS_PATH</tt> to point to the locations of the
+	SDK using the Microsoft Mangled Path name convention. For example,
+	if the Microsoft SDK is installed in <tt>C:\Progam Files\Microsoft SDK</tt>
+	then the settings using mangled path names on the system may be:<br>
+           <tt>SET ALT_COMPILER_PATH=C:\Progra~1\Micros~3\bin\win64</tt> for windows-ia64,<br>
+           <tt>SET ALT_COMPILER_PATH=C:\Progra~1\Micros~3\bin\win64\x86\amd64</tt> for windows-amd64 and<br>
+           <tt>SET ALT_MSDEVTOOLS_PATH=C:\Progra~1\Micros~3\bin</tt>, depending on
+	the unique situation of your build machine.
+	<p>
+      The compiler and tools binaries must be in the <tt>PATH</tt>.
+    <p>
+    </blockquote>
+
+      <a name="msvcrt">
+        <h4>msvcrt.dll and msvcrtd.dll</h4></a>
+    <blockquote>
+      <B>Itanium 64-BIT-ONLY</B>:The JDK build requires access to msvcrt.dll and msvcrtd.dll version 6.10.9337.7
+      (version that we use ) supplied by
+      The Microsoft Platform Software Development Kit (SDK), November 2001 Edition compiler
+      (usually found in
+      <tt>C:\Program Files\Microsoft SDK\redist\WIN64</tt>).
+      If the msvcrt.dll is not installed in <tt>$(J2SE_TOPDIR)\make\redist\ia64</tt>,
+      set the <tt>ALT_MSVCRT_DLL_PATH</tt> environment variable to their location.
+      If the msvcrtd.dll is not installed in <tt>$(J2SE_TOPDIR)\make\redist\ia64</tt>
+      set the <tt>ALT_MSVCRTD_DLL_PATH</tt> environment variable
+      <p>	
+      <B>AMD 64-BIT-ONLY</B>:The JDK build requires access to msvcrt.dll version 7.0.3790.0 
+      and msvcrtd.dll version 6.0.8447.0 (version that we use ) supplied by
+      The Microsoft Platform Software Development Kit (SDK), February 2003 Edition compiler
+      (usually found in
+      <tt>C:\Program Files\Microsoft SDK\redist\win64\AMD64</tt>).
+      If the msvcrt.dll is not installed in <tt>$(J2SE_TOPDIR)\make\redist\amd64</tt>,
+      set the <tt>ALT_MSVCRT_DLL_PATH</tt> environment variable to their location.
+      If the msvcrtd.dll is not installed in <tt>$(J2SE_TOPDIR)\make\redist\amd64</tt>
+      set the <tt>ALT_MSVCRTD_DLL_PATH</tt> environment variable
+    <p>
+    </blockquote>
+
+      <a name="dxsdk">
+      <h4>Microsoft DirectX 7 or DirectX 9 SDK header files and libraries</h4>
+      <blockquote>
+          Microsoft DirectX 7 or DirectX 9 SDK headers are required for building j2se.
+	  The DirectX 7 SDK is no longer available, DirectX 9 SDK can be downloaded from
+	      <a href="http://msdn.microsoft.com/library/default.asp?url=/downloads/list/directx.asp">
+		       http://msdn.microsoft.com/library/default.asp?url=/downloads/list/directx.asp</a>.
+	  If the link above becomes obsolete, the SDK can be obtained from
+	      <a href="http://download.microsoft.com">http://download.microsoft.com</a>
+	  (search with the keywords "directx 9 sdk").
+	  If the SDK is not installed to <code>c:\dxsdk</code>, set the <code>ALT_DXSDK_PATH</code> 
+	  environment variable to its location.
+        <pre>
+	  c:\ 			(set ALT_DXSDK_DRIVE to this level)
+            +- DXSDK\		(set ALT_DXSDK_PATH to this level)
+                 +- Include\    (set ALT_DXSDK_INCLUDE_PATH to this level)
+                 +- Libs\       (set ALT_DXSDK_LIBS_PATH to this level)
+        </pre>
+	  Note: the ALT_DXSDK_* variables have the following order of precedence
+	  (from most to least):
+	  <ul>
+	   <li>ALT_DXSDK_INCLUDE_PATH, ALT_DXSDK_LIBS_PATH</li>
+	   <li>ALT_DXSDK_PATH</li>
+	   <li>ALT_DXSDK_DRIVE</li>
+	  </ul>
+	  For example, ALT_DXSDK_DRIVE will be ignored if ALT_DXSDK_PATH is set.
+    </blockquote>
+   <p>
+	<a name="unix">
+    <h4>MKS Unix Command Binaries</h4></a>
+    <blockquote>
+      The JDK build requires access to Unix command binaries supplied by MKS Toolkit version 8.0 or
+      later. Information about the MKS Toolkit can be obtained from the MKS website at 
+      <a href="http://www.mks.com">http://www.mks.com</a>.
+      If the binaries are not installed in <tt>C:\mksnt\</tt>,
+      set the <tt>ALT_UNIXCOMMAND_PATH</tt> environment variable
+      to their location.
+<p>
+	If MKS is installed into a Path that contains spaces, it will be 
+	necessary to set <tt>ALT_UNIXCOMMAND_PATH</tt> to identify that 
+	location using Microsoft Mangled Path Name
+	conventions. For example, if the MKS command are located in  
+	<tt>C:\Program Files\MKS Toolkit\mksnt</tt>, then <tt>ALT_UNIXCOMMAND_PATH</tt>
+	should be set to <tt>C:\Progra~1\MKSToo~1\mksnt</tt> (or whatever mangled 
+	name setting is appropriate for your installation). You can use the DOS
+	command <code>DIR /x</code> as an aide in determining the mangled path and
+	file names.
+    <p>
+    </blockquote>
+    
+      
+      <a name="bootdir">
+    <h4>Bootstrap JDK</h4></a>
+    <blockquote>
+      You will need access to a JDK 1.4.2 or later for a windows-ia64 build. The 1.4.2 
+	binaries can be downloaded from Sun's 
+	<a href="http://java.sun.com/j2se/1.4.2/download.html">JDK 1.4.2</a> download site.
+
+      Set <tt>ALT_BOOTDIR</tt> to point to the location of the bootstrap JDK
+      installation, and place its <tt>bin</tt> directory in the <tt>PATH</tt>.
+    </blockquote>
+    <p>
+
+    <a name="gnumake">
+    <h4>GNU Make</h4></a>
+  <blockquote>
+      GNU make version 3.78.1 or later, built for the MKS shell per the
+      instructions in its documentation, is required to build the JDK.
+      Information on GNU make, and access to ftp download sites,
+      are available on the
+      <a href="http://www.gnu.org/software/make/make.html">GNU make
+      web site</a>.
+      Place the location of the GNU make binary in the <tt>PATH</tt>.
+  </blockquote>
+    <p>
+         
+      <a name="zip">
+    <h4><tt>Zip and Unzip</tt></tt></h4></a>
+  <blockquote>
+    <tt>ZIP.EXE</tt> and <tt>UNZIP.EXE</tt>
+    should be installed in <tt>C:\UTILS</tt>. If you have them
+    installed elsewhere set the environment variable
+    <tt>ALT_DEVTOOLS_PATH</tt> to their location.
+    ZIP.EXE version should be 2.2 or 2.[2-9]. UNZIP.EXE version should be 5.12 or 5.1[2-9].
+    Information and the source code for ZIP.EXE and UNZIP.EXE is available
+    on the <a href="http://www.info-zip.org">info-zip web site</a>.
+  </blockquote>
+    <p>
+      
+      <a name="cacerts">
+    <h4>cacerts</h4>
+    <blockquote>
+      A certificates file named "cacerts" represents a system-wide keystore 
+      with CA certificates. In JDK and JRE binary bundles, the "cacerts"
+      file contains root CA certificates from several public CAs (e.g., VeriSign,
+      Thawte, and Baltimore). 
+      <p>      
+	The source bundles contain a cacerts file without CA root certificates. 
+	JDK builders will need to secure permission from each public CA and
+	include the certificates into their own custom cacerts file. Failure to
+	provide a populated cacerts file will result in verification of a
+	certificate chain during runtime.
+      <p>      
+	The <tt>ALT_CACERTS_FILE</tt> should be set to point to the location of 
+	the populated cacerts file.</font>
+    </blockquote>
+    <p>
+
+    <a name=environmentvariables>
+    <h2>Windows-Ia64/amd64 Build Environment Variables</h2></a>
+    <blockquote>
+      This section describes environment variables that you can set to 
+      influence various aspects of the build.  Some of these variables 
+      are mentioned specifically in the setup and build instructions 
+      above.  Others you may set at your discretion.
+      <p>
+	Environment variables may be set in the shell environment
+	or on the GNU make command line.
+      <p>
+      <dl>
+	<p><dt><tt>ARCH_DATA_MODEL</tt>
+	<dd>Set the <code>ARCH_DATA_MODEL</code> to <tt>64</tt> to tell the build
+	to perform a 64-bit build. By default, <tt>ARCH_DATA_MODEL</tt> is set to 32
+	and will build a 32-bit release. 
+	  <p>
+	<p><dt><tt>PATH</tt>
+	<dd>Set the <code>PATH</code> to contain:
+         <ul>
+	    <li>The location of the GNU make binary</li>
+	    <li>The location of the MKS Unix command binaries
+	        (see <tt>ALT_UNIXCOMMAND_PATH</tt> below)</li>
+	    <li>The location of the Microsoft SDK installation
+	        (see <tt>ALT_COMPILER_PATH</tt> and <tt>ALT_MSDEVTOOLS_PATH</tt> below)</li>
+	    <li>The location of the Microsoft VC++ 6.0 compiler and tools.</li>
+	    <li>The locations of the Windows NT system commands
+	        (usually <tt>C:\WINNT</tt> and <tt>C:\WINNT\system32</tt>)</li>
+	  </ul>
+	  <p>
+	  It is strongly recommended that the Microsoft VC 6 and SDK setup scripts 
+	  <a href="#msvc"><tt>VCVARS32.BAT</tt></a> and <tt>SETENV.BAT /XP64<tt> for windows-ia64, 
+          <tt>SETENV.BAT /AMD64<tt> for windows-amd64 be used to set the <tt>PATH</tt>.
+	
+
+	  <p><dt><tt>ALT_BOOTDIR</tt>
+	<dd>The location of the JDK 1.4.2
+	  <a href="#bootdir">bootstrap installation</a>.
+	  
+	  <p><dt><tt>ALT_OUTPUTDIR</tt>
+	<dd>An override for specifying
+	  the (absolute) path of where the build output is to go. 
+	  
+	  <a name="unixcommand">
+	  <p><dt><tt>ALT_UNIXCOMMAND_PATH</tt>
+	<dd>An override for specifying the location of the
+          MKS Unix command binaries, needed only if they are not installed
+	  in <tt>C:\mksnt\</tt>.
+
+	  <p><dt><tt>ALT_COMPILER_PATH</tt>
+	<dd>An override for specifying the location of the
+	  <a href="#msvc">Microsoft SDK+</a> compiler.
+          By default the build uses a path based on <tt>MSSdk</tt>,
+	  which is set by the <tt>SETENV.BAT /XP64 or SETENV.BAT /AMD64</tt> setup utility.
+
+	  <p><dt><tt>ALT_MSDEVTOOLS_PATH</tt>
+	<dd>An override for specifying the location of the
+	  <a href="#msvc">Microsoft SDK</a> development tools.
+          By default the build uses a path based on <tt>Mstools</tt>,
+	  which is set by the <tt>SETENV.BAT /XP64 or SETENV.BAT /AMD64</tt> setup utility.
+
+	  <p><dt><tt>ALT_DEVTOOLS_PATH</tt>
+	<dd>The location of the <tt>zip</tt> and <tt>unzip</tt> binaries.
+	   See <a href="#zip">Zip and Unzip</a> for details.
+
+          <p><dt><tt>ALT_CACERTS_FILE</tt>
+        <dd>The location of the <tt>cacerts</tt> file.
+          See <a href="#cacerts">cacerts file</a> for details.
+           
+	  <p><dt><tt>ALT_DXSDK_PATH</tt>
+	<dd>The location of the
+	  <a href="#dxsdk">Microsoft DirectX SDK headers and libraries</a>.
+
+          <p><dt><tt>ALT_MSVCRT_DLL_PATH</tt>
+        <dd>The location of the
+          <a href="#msvcrt">msvcrt.dll</a>.
+
+          <p><dt><tt>ALT_MSVCRTD_DLL_PATH</tt>
+        <dd>The location of the
+          <a href="#msvcrt">msvcrtd.dll</a>.
+
+	  <p><dt><tt>MILESTONE</tt> 
+	<dd>The milestone name for the build (<i>e.g.</i> "beta").
+	  
+	  <p><dt><tt>BUILD_NUMBER</tt> 
+	<dd>The build number for the build (<i>e.g.</i> "b27").
+
+      </dl>
+    </blockquote>
+
+
+
+    <a name="build">
+    <h2>Windows-Ia64/amd64 Build</h2></a>
+      <ol>
+	<li>cd into the <tt>control/make</tt> directory.</li>
+	
+	<li>Start the build with the command:<br>
+	  &nbsp;&nbsp;&nbsp;&nbsp;<code>make scsl ARCH_DATA_MODEL=64 [ALT_OUTPUTDIR=directory-name-for-output] [MILESTONE=<i>milestone_name</i>] [BUILD_NUMBER=<i>build_number</i>] [other "ALT_" overrides]</code></li>
+      <p>	
+      </ol>
+      <blockquote>
+      Please be sure to use the GNU version of <tt>make</tt>. 
+      </blockquote>
+
+    <!-- ====================================================== -->
+    
+    <HR SIZE=3 NOSHADE>
+<table width=100%>
+<tr>
+<td valign=top>
+    <FONT SIZE=-2>
+Copyright  2004 Sun Microsystems, Inc., 4150 Network Circle, Santa Clara, 
+California 95054, U.S.A. All rights reserved.
+    </FONT>
+</td>
+<td>    
+    <P ALIGN=RIGHT>
+      <IMG SRC="sunlogo64x30.gif" ALT="Sun" BORDER=0 WIDTH=64 HEIGHT=30>
+    </P>
+</td>
+</table>
+
+    
+    
+    <pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </pre>
+    
+  </BODY>
+</HTML>

@@ -1,0 +1,60 @@
+<!--ArborText, Inc., 1988-2003, v.4002-->
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?APT Element gi="refentrytitle">
+<?APT Element gi="manvolnum">
+<?APT Element gi="refmiscinfo" attrs="class">
+<?APT Element gi="refmeta">
+<?APT Element gi="refname">
+<?APT Element gi="refpurpose">
+<?APT Element gi="refnamediv">
+<?APT Element gi="title">
+<?APT Element gi="command">
+<?APT Element gi="replaceable">
+<?APT Element gi="arg" attrs="choice rep">
+<?APT Element gi="cmdsynopsis">
+<?APT Element gi="refsynopsisdiv">
+<?APT Element gi="term">
+<?APT Element gi="para">
+<?APT Element gi="listitem">
+<?APT Element gi="varlistentry">
+<?APT Element gi="variablelist" attrs="termlength">
+<?APT Element gi="refsect1">
+<?APT Element gi="primary" attrs="sortas">
+<?APT Element gi="indexterm" attrs="id">
+<?APT Element gi="screen">
+<?APT Element gi="note">
+<?APT Element gi="citerefentry">
+<?APT Element gi="refentry" attrs="id">
+<?Pub Inc>
+<refentry id="jsadebugd-1"> <!--@(#)jsadebugd.1	1.1 04/06/15--><refmeta><refentrytitle>
+jsadebugd</refentrytitle><manvolnum>1</manvolnum><refmiscinfo class="date">
+2004 年 6 月 22 日</refmiscinfo><refmiscinfo class="sectdesc">&man1;</refmiscinfo><refmiscinfo
+class="software">&java-release;</refmiscinfo><refmiscinfo class="arch">generic</refmiscinfo><refmiscinfo
+class="copyright"> Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+ Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.</refmiscinfo></refmeta><refnamediv><refname>
+jsadebugd</refname><refpurpose>サービスエージェントデバッグデーモン</refpurpose></refnamediv><refsynopsisdiv><title>&synp-tt;</title><cmdsynopsis><command
+>jsadebugd</command><arg choice="opt"><replaceable>pid</replaceable></arg><arg
+choice="plain"><replaceable>[ server-id ]</replaceable></arg></cmdsynopsis><cmdsynopsis><command>
+jsadebugd</command><arg choice="opt" rep="repeat"><replaceable> executable
+core</replaceable></arg><arg>[ server-id ]</arg></cmdsynopsis></refsynopsisdiv><refsect1><title>&parm-tt;</title><variablelist
+termlength="narrow"><varlistentry><term><replaceable>pid</replaceable> </term><listitem><para>
+デバッグサーバがアタッチするプロセスのプロセス ID。プロセスは Java プロセスでなければなりません。マシン上で実行している Java プロセスのリストを取得するには、jps
+を使用します。1 つのプロセスにアタッチできるのは、1 つのデバッグサーバだけです。</para></listitem></varlistentry><varlistentry><term><replaceable>
+executable</replaceable> </term><listitem><para>コアダンプが生成された Java 実行可能ファイル。</para></listitem></varlistentry><varlistentry><term><replaceable>
+core</replaceable> </term><listitem><para>デバッグサーバがアタッチするコアファイル。</para></listitem></varlistentry><varlistentry><term><replaceable>
+server-id</replaceable> </term><listitem><para>同じマシン上で複数のデバッグサーバを起動する場合に必要な、オプションの一意 ID。リモートクライアントがアタッチする特定のデバッグサーバを識別するには、この ID を使用する必要があります。1 つのマシン内で、この ID は一意でなければなりません。</para></listitem></varlistentry></variablelist></refsect1 ><refsect1><title>&desc-tt;</title><indexterm id="java-1-indx-1"><primary
+sortas="Java interpreter">Javaインタプリタ &mdash; java</primary></indexterm><indexterm
+id="java-1-indx-2"><primary sortas="java"> java &mdash; Java インタプリタ</primary></indexterm><para>
+jsadebugd は、Java プロセスまたはコアファイルにアタッチして、デバッグサーバとして機能します。jstack、jmap、jinfo などのリモートクライアントは、Java Remote Method Invocation (RMI) を使用してサーバにアタッチできます。jsadebugd を起動する前に、次のコマンドで rmiregistry を起動する必要があります。
+<screen><command>rmiregistry -J-Xbootclasspath/p:$JAVA_HOME/lib/sajdi.jar </command></screen></para><para>
+$JAVA_HOME は、JDK インストールディレクトリです。rmiregistry が起動していなかった場合、jsadebugd は標準 (1099) ポートで内部的に rmiregistry を起動します。デバッグサーバを停止するには、SIGINT を送信します (Ctrl-C を押します) 。</para><note><para>
+このユーティリティはサポートされていないため、JDK の将来のバージョンでは使<?Pub Caret>用できない可能性があります。jinfo は、現時点では、Windows プラットフォームまたは Linux Itanium プラットフォームでは使用できません。</para></note></refsect1><refsect1><title>&also-tt;</title><para><citerefentry><refentrytitle
+>jinfo</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>
+jmap</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>
+jps</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>
+jstack</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>
+rmiregistry</refentrytitle><manvolnum>1</manvolnum></citerefentry></para></refsect1></refentry>

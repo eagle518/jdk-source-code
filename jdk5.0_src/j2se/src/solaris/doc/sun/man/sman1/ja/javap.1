@@ -1,0 +1,118 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1998, v.4001-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub Inc>
+<refentry id="javap-1">
+<!--@(#)javap.1 1.13 01/03/14 SMI;-->
+<refmeta><refentrytitle>javap</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">2004 年 6 月 22 日</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.   </refmiscinfo>
+</refmeta>
+<refnamediv><refname>javap</refname><refpurpose>Java クラスファイル逆アセンブラ</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>javap</command><arg>[ options ]</arg><arg choice="plain" rep="repeat"><replaceable>class</replaceable></arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="javap-1-indx-1"><primary sortas="Java class file disassembler">- Java クラスファイル逆アセンブラ &mdash; javap</primary></indexterm><indexterm id="javap-1-indx-2"><primary sortas="javap">javap &mdash; Java class file disassembler</primary></indexterm>
+<para><command>javap</command> コマンドは、Java&trade; クラスファイルを逆アセンブルします。出力内容はオプションで指定します。オプションを 1 つも指定しないと、<command>javap</command> は渡されたクラスの <literal>package</literal>、<literal>protected</literal>、および <literal>public</literal> フィールドとメソッドを出力します。<command>javap</command> コマンドの出力先は <literal>stdout</literal> です。たとえば、以下のクラス宣言をコンパイルします。<informalexample>
+<para> <screen>import java.awt.*;
+import java.applet.*;
+
+public class DocFooter extends Applet {
+		String date;
+		String email;
+
+		public void init() {
+			resize(500,100);
+
+			date = getParameter("LAST_UPDATED");
+			email = getParameter("EMAIL");
+		}
+
+		public void paint(Graphics g) {
+			g.drawString(date + " by ",100, 15);
+			g.drawString(email,290,15);
+		}
+}</screen></para>
+</informalexample></para>
+<para>この場合、<command>javap</command> <literal>DocFooter</literal> を実行すると以下の出力が得られます。<informalexample>
+<para><screen>Compiled from DocFooter.java
+public class DocFooter extends java.applet.Applet {
+	java.lang.String date;
+	java.lang.String email;
+	public void init();
+	public void paint(java.awt.Graphics);
+	public DocFooter();
+}
+
+</screen></para>
+</informalexample></para>
+</refsect1>
+<refsect1><title>&opts-tt;</title>
+<para>以下のオプションが使用できます。</para>
+<variablelist termlength="wholeline"><varlistentry><term remap="15"><option>b</option> </term><listitem><para>JDK 1.1 の <command>javap</command> との下位互換を保証します。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>bootclasspath</option> <replaceable>path</replaceable> </term><listitem><para>クラスをロードするパスを指定します。デフォルトでは、bootstrap クラスはコアとなる Java プラットフォームを実装するクラスで、<filename>jre/lib/rt.jar</filename> および他の重要な jar ファイルにあります。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>c</option> </term><listitem><para>クラス内の個々のメソッドについて、逆アセンブルされたコード、すなわち Java バイトコードからなる命令を出力します。詳細は、『Java 仮想マシン仕様』を参照してください。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>classpath</option> <replaceable>path</replaceable> </term><listitem><para><command>javap</command> がクラスを探すのに用いるパスを <replaceable>path</replaceable> で指定します。この指定値は、デフォルトおよび <envar>CLASSPATH</envar> 環境変数の設定値をオーバーライドします。複数のディレクトリを指定する場合はコロン (:) で区切ります。したがって <replaceable>path</replaceable> の一般形式は次のようになります。<informalexample>
+<para><literal>.:&lt;your_path></literal></para>
+</informalexample>パスの指定例：<informalexample>
+<para><literal>.:/home/avh/classes:/usr/local/java/classes</literal></para>
+</informalexample></para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>extdirs</option> <replaceable>dirs</replaceable></term><listitem><para>インストールされた拡張機能を検索する場所を指定します。デフォルトの拡張機能の場所は <filename>jre/lib/ext</filename> です。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>help</option> </term><listitem><para><command>javap</command> のヘルプメッセージを出力します。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>J</option><replaceable>flag</replaceable> </term><listitem><para>ランタイムシステムに直接渡すフラグ (<replaceable>flag</replaceable>) を指定します。<informalexample>
+<para><screen>example% <userinput>javap -J-version</userinput>
+
+example% <userinput>javap -JJ-Djava.security.manager &bsol;
+     -Djava.security.policy=MyPolicy MyClassName</userinput></screen></para>
+</informalexample></para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>l</option> </term><listitem><para>行と局所変数テーブルを表示します。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>package</option> </term><listitem><para>package、protected、および public のクラスとメンバだけを表示します。この指定がデフォルトです。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>private</option> </term><listitem><para>すべてのクラスとメンバを表示します。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>protected</option> </term><listitem><para>protected および public のクラスとメンバだけを表示します。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>public</option> </term><listitem><para>public のクラスとメンバだけを表示します。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>s</option> </term><listitem><para>内部型シグニチャを出力します。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>verbose</option> </term><listitem><para>メソッドのスタックサイズ、および <replaceable>locals</replaceable>と <replaceable>args</replaceable>の数を出力します。</para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<refsect1><title>&envr-tt;</title>
+<variablelist termlength="narrow"><varlistentry><term remap="15"><envar>CLASSPATH</envar> </term><listitem><para>ユーザ定義クラスへのパスをシステムに通知するために使用します。複数のディレクトリを指定する場合はコロンで区切ります。以下に例を示します。<informalexample>
+<para><literal>.:/home/avh/classes:/usr/local/java/classes</literal></para>
+</informalexample></para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<refsect1><title>&attr-tt;</title>
+<para>次の属性については、<citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry> のマニュアルページを参照してください。</para>
+<informaltable frame="All" orient="Port"><tgroup cols="2" colsep="1" rowsep="1"><colspec colnum="1" colname="col1" colwidth="1*" colsep="1" align="Left"><colspec colnum="2" colname="col2" colwidth="1*" align="Left"><thead><row><entry colname="col1" align="center" valign="top">属性タイプ</entry><entry colname="col2" align="center" valign="top">属性値</entry></row></thead><tbody><row><entry>使用条件</entry><entry>SUNWj5dev</entry></row></tbody></tgroup></informaltable>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>java</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>javac</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>javadoc</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>javah</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>jdb</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry> </para>
+</refsect1>
+<!--+ 07/27/00 08:34:40
+    | tagMorph:  $Id: tagMorph-engine 1.54 1998/01/19 05:44:48 $
+    | tagMorph library:  $Id: libtagMorph.a 1.50 1998/01/19 22:02:51 $
+    | sunman-to-solbook 1.17
+    +-->
+</refentry><?Pub Caret>
+<?Pub *0000007601 0>

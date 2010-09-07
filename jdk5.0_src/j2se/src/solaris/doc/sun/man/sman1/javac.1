@@ -1,0 +1,621 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1999, v.4002-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub EntList minus bsol>
+<?Pub Inc>
+<refentry id="javac-1">
+<!--@(#)javac.1 1.12 01/03/14 SMI;-->
+<refmeta><refentrytitle>javac</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">22 Jun 2004</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All
+rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.
+</refmiscinfo>
+</refmeta>
+<refnamediv><refname>javac</refname><refpurpose>Java compiler</refpurpose>
+</refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>javac</command><arg choice="opt"><option>bootclasspath
+</option>&nbsp;<replaceable>bootclasspath</replaceable></arg><arg choice="opt"><option>
+classpath</option>&nbsp;<replaceable>classpath</replaceable></arg><arg choice="opt"><option>
+d</option>&nbsp;<replaceable>directory</replaceable></arg><arg choice="opt"><option>
+deprecation</option></arg><arg choice="opt"><option>encoding</option><replaceable>
+encoding</replaceable></arg><arg choice="opt"><option>extdirs</option>&nbsp;<replaceable>
+directories</replaceable></arg><group><arg choice="plain"><option>g</option></arg>
+<arg choice="plain"><option>g:none</option></arg><arg choice="plain"><option>
+g:</option>&nbsp;<replaceable>keyword-list</replaceable></arg></group><arg
+choice="opt"><option>J</option><replaceable>option</replaceable></arg><arg><option>
+help</option></arg><arg choice="opt"><option>nowarn</option></arg><arg choice="opt"><option>
+O</option></arg><arg><option>source</option> <replaceable>release</replaceable></arg>
+<arg choice="opt"><option>sourcepath</option>&nbsp;<replaceable>sourcepath
+</replaceable></arg><arg choice="opt"><option>target</option>&nbsp;<replaceable>
+version</replaceable></arg><arg choice="opt"><option>verbose</option></arg>
+<arg choice="opt"><option>X</option></arg><arg choice="opt"><option>Xstdout
+</option> <replaceable>filename</replaceable></arg><arg choice="opt"><replaceable>
+sourcefiles</replaceable></arg><arg choice="opt"><replaceable>@files</replaceable></arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&parm-tt;</title>
+<para>Options may be in any order. For a discussion of parameters which apply
+to a specific option, see &opts-tt; below.</para>
+<variablelist termlength="narrow">
+<varlistentry><term remap="15"><replaceable>sourcefiles</replaceable> </term>
+<listitem><para>One or more source files to be compiled (such as <literal>
+MyClass.java</literal>).</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><literal>@</literal><replaceable>files</replaceable></term>
+<listitem><para>One or more files that list source files.</para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="javac-1-indx-1"><primary sortas="Java compiler">Java compiler &mdash;
+javac</primary></indexterm><indexterm id="javac-1-indx-2"><primary sortas="javac">
+javac &mdash; Java compiler</primary></indexterm><para>The <command>javac
+</command> tool reads class and interface definitions, written in the Java&trade;
+programming language, and compiles them into bytecode class files.</para>
+<para>There are two ways to pass source code file names to  <command>javac
+</command>:</para>
+<itemizedlist>
+<listitem><para>For a small number of source files, simply list the file names
+on the command line.</para></listitem>
+<listitem><para>For a large number of source files, list the file names in
+a file, separated by blanks or line breaks. Then use the list file name on
+the <command>javac</command> command line, preceded by an @ character.</para>
+</listitem>
+</itemizedlist>
+<para>Source code file names must have <literal>.java</literal> suffixes,
+class file names must have <literal>.class</literal> suffixes, and both source
+and class files must have root names that identify the class. For example,
+a class called <literal>MyClass</literal> would be written in a source file
+called <literal>MyClass.java</literal> and compiled into a bytecode class
+file called <literal>MyClass.class</literal>.</para>
+<para>Inner class definitions produce additional class files. These class
+files have names combining the inner and outer class names, such as <literal>
+MyClass$MyInnerClass.class</literal>.</para>
+<para>You should arrange source files in a directory tree that reflects their
+package tree. For example, if you keep all your source files in <literal>
+/workspace</literal>, the source code for  <literal>com.mysoft.mypack.MyClass
+</literal> should be in <literal>/workspace/com/mysoft/mypack/MyClass.java
+</literal>.</para>
+<para>By default, the compiler puts each class file in the same directory
+as its source file. You can specify a separate destination directory with <option>
+d</option> (see &opts-tt; below).</para>
+<refsect2>
+<title>Searching for Types</title>
+<indexterm id="javac-1-indx-3"><primary sortas="javac">javac &mdash; Java
+compiler</primary><secondary>Searching for Types</secondary></indexterm><para>
+When compiling a source file, the compiler often needs information about a
+type whose definition did not appear in the source files on the command line.
+The compiler needs type information for every class or interface used, extended,
+or implemented in the source file. This includes classes and interfaces not
+explicitly mentioned in the source file but which provide information through
+inheritance.</para>
+<para>For example, when you subclass <literal>java.applet.Applet</literal>,
+you are also using Applet's ancestor classes:  <literal>java.awt.Panel</literal>, <literal>
+java.awt.Container</literal>, <literal>java.awt.Component</literal>, and  <literal>
+java.awt.Object</literal>.</para>
+<para>When the compiler needs type information, it looks for a source file
+or class file which defines the type. The compiler searches first in the bootstrap
+and extension classes, then in the user class path (which by default is the
+current directory). The user class path is defined by setting the <envar>
+CLASSPATH</envar> environment variable or by using the <option>classpath</option>
+command line option. (For details, see <citetitle>Setting the Class Path</citetitle>.)
+</para>
+<para> If you use the  <option>sourcepath</option> option, the compiler searches
+the indicated path for source files. Otherwise the compiler searches the user
+class path both for class files and source files. You can specify different
+bootstrap or extension classes with the <option>bootclasspath</option> and <option>
+extdirs</option> options. See <literal>Cross-Compilation Options</literal>
+below.</para>
+<para>A successful type search may produce a class file, a source file, or
+both. Here is how <command>javac</command> handles each situation:</para>
+<itemizedlist>
+<listitem><para>Search produces a class file but no source file: <command>
+javac</command> uses the class file.</para></listitem>
+<listitem><para>Search produces a source file but no class file: <command>
+javac</command> compiles the source file and uses the resulting class file.
+</para></listitem>
+<listitem><para>Search produces both a source file and a class file: <command>
+javac</command> determines whether the class file is out of date. If the class
+file is out of date, <command>javac</command> recompiles the source file and
+uses the updated class file. Otherwise, <command>javac</command> just uses
+the class file.</para>
+<para>By default, <command>javac</command> considers a class file out of date
+only if it is older than the source file.</para></listitem>
+</itemizedlist>
+<note><para>Note:<command>javac</command> can silently compile source files
+not mentioned on the command line. Use the  <option>verbose</option> option
+to trace automatic compilation.</para>
+</note>
+</refsect2>
+</refsect1>
+<refsect1><title>&opts-tt;</title>
+<para>The compiler has a set of standard options that are supported on the
+current development environment and will be supported in future releases.
+An additional set of non-standard options are specific to the current virtual
+machine implementation and are subject to change in the future. Non-standard
+options begin with <option>X</option>.</para>
+<refsect2>
+<title>Standard Options</title>
+<indexterm id="javac-1-indx-5"><primary sortas="javac">javac &mdash; Java
+compiler</primary><secondary>Standard Options</secondary></indexterm>
+<variablelist termlength="wholeline">
+<varlistentry><term><option>classpath</option> <replaceable>classpath</replaceable> 
+</term><listitem><para>Sets the user class path, overriding the user class
+path in the  <envar>CLASSPATH</envar> environment variable. If neither <envar>
+CLASSPATH</envar> or <option>classpath</option> is specified, the user class
+path consists of the current directory. See <citetitle>Setting the Class Path
+</citetitle> for more details. </para>
+<para>If the <option>sourcepath</option> option is not specified, the user
+class path is searched for both source files and class files.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Djava.ext.dirs</option>=<replaceable>directories
+</replaceable> </term><listitem><para>Override the location of installed extensions. 
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Djava.endorsed.dirs</option>=<replaceable>directories
+</replaceable> </term><listitem><para>Override the location of endorsed standards
+path. </para>
+</listitem></varlistentry>
+<varlistentry><term><option>d</option> <replaceable>directory</replaceable> 
+</term><listitem><para>Sets the destination directory for class files. The
+destination directory must already exist; javac will not create the destination
+directory. If a class is part of a package, <command>javac</command> puts
+the class file in a subdirectory reflecting the package name, creating directories
+as needed. For example, if you specify <option>d</option> <literal>/home/myclasses
+</literal> and the class is called <literal>com.mypackage.MyClass</literal>,
+then the class file is called <literal>/home/myclasses/com/mypackage/MyClass.class
+</literal>.</para>
+<para>If <option>d</option> is not specified, <command>javac</command> puts
+the class file in the same directory as the source file.</para>
+<note><para>Note: The directory specified by <option>d</option> is not automatically
+added to your user class path.</para>
+</note>
+</listitem></varlistentry>
+<varlistentry><term><option>deprecation</option> </term><listitem><para>Shows
+a description of each use or override of a deprecated member or class. Without <option>
+deprecation</option>, <command>javac</command> shows the names of source files
+that use or override deprecated members or classes.<option> deprecation</option>
+is shorthand for <option>&mdash;Xlint:deprecation</option>.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>encoding</option> </term><listitem><para>Sets
+the source file encoding name, such as EUCJIS/SJISISO8859-1/UTF8. If <option>
+encoding</option> is not specified, the platform default converter is used.
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>g</option> </term><listitem><para>Generates all
+debugging information, including local variables. By default, only line number
+and source file information is generated.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>g:none</option> </term><listitem><para>Does not
+generate any debugging information.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>g:</option><replaceable>keyword-list</replaceable> 
+</term><listitem><para>Generates only some kinds of debugging information,
+specified by a comma-separated list of keywords. Valid keywords are: <variablelist
+termlength="narrow">
+<varlistentry><term remap="10"><literal>source</literal> </term><listitem>
+<para>Source file debugging information.</para>
+</listitem></varlistentry>
+<varlistentry><term><literal>lines</literal> </term><listitem><para>Line number
+debugging information.</para>
+</listitem></varlistentry>
+<varlistentry><term><literal>vars</literal> </term><listitem><para>Local variable
+debugging information.</para>
+</listitem></varlistentry>
+</variablelist></para>
+</listitem></varlistentry>
+<varlistentry><term remap="7"><option>help</option> </term><listitem><para>
+Prints a synopsis of standard options.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="7"><option>nowarn</option> </term><listitem><para>
+Disables warning messages. This has the same meaning as <option>-Xlint:none
+</option>. </para>
+</listitem></varlistentry>
+<varlistentry><term remap="7"><option>source</option> <replaceable>release
+</replaceable></term><listitem><para>Specifies the version of source code
+accepted. The following values for <replaceable>release</replaceable> are
+allowed: </para>
+<variablelist>
+<varlistentry><term>5</term><listitem><para>Synonym for 1.5<?Pub Caret></para>
+</listitem></varlistentry>
+<varlistentry><term>1.5</term><listitem><para>the compiler accepts code containing
+generics and other language features introduced in JDK 1.5. The compiler defaults
+to the 1.5 behavior if the <option>-source</option> flag is not used. </para>
+</listitem></varlistentry>
+<varlistentry><term>1.4</term><listitem><para>the compiler accepts code containing
+assertions, which were introduced in JDK 1.4. </para>
+</listitem></varlistentry>
+<varlistentry><term>1.3</term><listitem><para>the compiler does not support
+assertions, generics, or other language features                   introduced
+after JDK 1.3. </para>
+</listitem></varlistentry>
+</variablelist></listitem></varlistentry>
+<varlistentry><term><option>sourcepath</option> <replaceable>sourcepath</replaceable> 
+</term><listitem><para>Specify the source code path to search for class or
+interface definitions. As with the user class path, source path entries are
+separated by colons (<literal>:</literal>) and can be directories, <acronym
+remap="small">JAR</acronym> archives, or <acronym remap="small">ZIP</acronym>
+archives. If packages are used, the local path name within the directory or
+archive must reflect the package name.</para>
+<note><para>Note: Classes found through the classpath are subject to automatic
+recompilation if their sources are found.</para>
+</note>
+</listitem></varlistentry>
+<varlistentry><term><option>verbose</option> </term><listitem><para>Verbose
+output. This includes information about each class loaded and each source
+file compiled.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>X</option></term><listitem><para>Display information
+about non-standard options and exit. </para>
+</listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title>Cross-Compilation Options</title>
+<indexterm id="javac-1-indx-6"><primary sortas="javac">javac &mdash; Java
+compiler</primary><secondary>Cross-Compilation Options</secondary></indexterm>
+<para>By default, classes are compiled against the bootstrap and extension
+classes of the JDK that <command>javac</command> shipped with. But <command>
+javac</command> also supports cross-compiling, where classes are compiled
+against a bootstrap and extension classes of a different Java platform implementation.
+It is important to use <option>bootclasspath</option> and <option>extdirs
+</option> when cross-compiling. See <literal>Cross-Compilation Example</literal>
+below.</para>
+<variablelist termlength="wholeline">
+<varlistentry><term><option>target</option> <replaceable>version</replaceable> 
+</term><listitem><para>Generate class files that will work on VMs with the
+specified version. The default is to generate class files to be compatible
+with the 1.5 VM in the JDK. When the<option> -source 1.4</option> or lower
+option is used, the default target is 1.4. The versions supported by javac
+are: <variablelist termlength="xtranarrow">
+<varlistentry><term>1.1</term><listitem><para>Ensures that generated class
+files will be compatible with 1.1 and 1.2 <acronym remap="small">VM</acronym>s.
+</para>
+</listitem></varlistentry>
+<varlistentry><term>1.2</term><listitem><para>Generates class files that will
+run on 1.2 <acronym remap="small">VM</acronym>s, but will not run on 1.1 <acronym
+remap="small">VM</acronym>s. This is the default.</para>
+</listitem></varlistentry>
+<varlistentry><term>1.3</term><listitem><para>Generate class files that run
+on<acronym remap="small">VM</acronym>s in the Java 2 SDK v, 1.3 and later,
+but will not run on 1.1 or 1.2<acronym remap="small">VM</acronym>s.</para>
+</listitem></varlistentry>
+<varlistentry><term>1.4</term><listitem><para>Generates class files that are
+compatible only with 1.4 <acronym remap="small">VM</acronym>s.</para>
+</listitem></varlistentry>
+<varlistentry><term>1.5</term><listitem><para>Generate class files that are
+compatible only with JDK 1.5 VMs. </para>
+</listitem></varlistentry>
+<varlistentry><term>5</term><listitem><para>Synonym for 1.5</para>
+</listitem></varlistentry>
+</variablelist></para>
+</listitem></varlistentry>
+<varlistentry><term><option>bootclasspath</option> <replaceable>bootclasspath
+</replaceable> </term><listitem><para>Cross-compile against the specified
+set of boot classes. As with the user class path, boot class path entries
+are separated by colons (<literal>:</literal>) and can be directories, <acronym
+remap="small">JAR</acronym> archives, or <acronym remap="small">ZIP</acronym>
+archives.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>cldc1.0 </option></term><listitem><para>Use to
+compile CLDC programs. The compiler generates stack maps making the use of
+the preverifier unnecessary. </para>
+</listitem></varlistentry>
+<varlistentry><term><option>extdirs</option> <replaceable>directories</replaceable> 
+</term><listitem><para>Cross-compile against the specified extension directories.
+Directories are a colon-separated list of directories. Each <acronym remap="small">
+JAR</acronym> archive in the specified directories is searched for class files.
+</para>
+</listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title>Non-Standard Options</title>
+<indexterm id="javac-1-indx-7"><primary sortas="javac">javac &mdash; Java
+compiler</primary><secondary>Non-Standard Options</secondary></indexterm>
+<variablelist termlength="wholeline">
+<varlistentry><term><option>Xbootclasspath/p:<replaceable>path </replaceable></option></term>
+<listitem><para>Prepend to the bootstrap class path. </para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xbootclasspath/a:<replaceable>path</replaceable> 
+</option></term><listitem><para>Append to the bootstrap class path. </para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xbootclasspath/:<replaceable>path</replaceable> 
+</option></term><listitem><para>Override location of bootstrap class files. 
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xlint </option></term><listitem><para>Enable all
+recommended warnings. In this release, all available warnings are  recommended. 
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xlint:none </option></term><listitem><para>Disable
+all warnings not mandated by the Java Language Specification. </para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xlint:-xxx </option></term><listitem><para>Disable
+warning<replaceable> xxx</replaceable>, where<replaceable> xxx</replaceable>
+is one of the warning names supported for <option>-Xlint:xxx</option>, below 
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xlint:unchecked </option></term><listitem><para>
+Give more detail for unchecked conversion warnings that are mandated by the
+Java Language Specification. </para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xlint:path </option></term><listitem><para>Warn
+about nonexistent path (classpath, sourcepath, etc) directories. </para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xlint:serial </option></term><listitem><para>
+Warn about missing serialVersionUID definitions on serializable classes.</para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xlint:finally </option></term><listitem><para>
+Warn about <literal>finally</literal> clauses that cannot complete normally. 
+</para>
+</listitem></varlistentry>
+<varlistentry><term><option> Xlint:fallthrough </option></term><listitem>
+<para>Check <literal>switch</literal> blocks for fall-through cases and provide
+a warning message for any that are found. Fall-through cases are cases in
+a switch block, other than the last case in the block,  whose code does not
+include a break statement, allowing code execution to "fall through"     
+       from that case to the next case. For example, the code following the
+case 1 label in this switch block does not contain a break statement: </para>
+<screen>switch (x) {
+                  case 1:
+                         System.out.println("1");
+                         //  No  break;  statement here.
+                  case 2:
+                         System.out.println("2");
+                  }</screen>
+<para>If the <option>-Xlint:fallthrough</option> flag were used when compiling
+this code, the compiler would emit a warning about "possible fall-through
+into case," along with the line number of the  case in question. </para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xmaxerrors</option><replaceable>number</replaceable></term>
+<listitem><para>Set the maximum number of errors to print. </para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xmaxwarns</option><replaceable>number</replaceable></term>
+<listitem><para>Set the maximum number of warnings to print. </para>
+</listitem></varlistentry>
+<varlistentry><term><option>Xstdout</option> <replaceable>filename</replaceable></term>
+<listitem><para>Sends compiler messages to the named file. By default, compiler
+messages go to <literal>System.err</literal>.</para>
+</listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title>The -J Option</title>
+<variablelist>
+<varlistentry><term>J<replaceable>option</replaceable></term><listitem><para>
+Pass <replaceable>option</replaceable> to the java launcher called by javac.
+For example, <option>-J-Xms48m</option> sets the startup memory to 48 megabytes.
+Although it does not begin with <option>-X</option>, it is not a `standard
+option' of javac. It is a common convention for <option>-J</option> to pass
+options to the underlying VM executing applications written in Java. </para>
+<note><para>Note:   <literal>CLASSPATH</literal>, <option>-classpath</option>, <option>
+-bootclasspath</option>, and <option>-extdirs</option> do not specify the
+classes used to run javac. Fiddling with the implementation of the compiler
+in this way is usually pointless and always risky. If you do need to do this,
+use the <option>-J</option> option to pass  through options to the underlying
+java launcher. </para>
+</note>
+</listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title>Command Line Argument Files</title>
+<indexterm id="javac-1-indx-4"><primary sortas="javac">javac &mdash; Java
+compiler</primary><secondary>File List</secondary></indexterm><para>To shorten
+or simplify the <command>javac</command> command line, you can specify one
+or more files that themselves contain arguments to the <command>javac</command>
+command. This enables you to create javac commands of any length on any operating
+system.</para>
+<para>An argument file can include javac options and source filenames in any
+ combination.  The arguments within a file can be space-separated or  newline-separated.
+ Filenames within an argument file are relative to  the current directory,
+not the location of the argument file. Wildcards (*) are not allowed in these
+lists (such as for specifying <command>*.java</command>).  Use of the '@'
+character to recursively  interpret files is not supported.</para>
+<para>When executing javac, pass in the path and name of each argument  file
+with the '@' leading character. When javac encounters an argument beginning
+with  the character `@', it expands the contents of that file into the argument
+list.</para>
+<para>Example &mdash; Single Arg File</para>
+<para>You could use a single argument file named <filename>argfile</filename>
+to hold all javac arguments:<informalexample>
+<screen>C:> <userinput>javac @argfile</userinput></screen>
+</informalexample></para>
+<para>This argument file could contain the contents of both files shown in
+the next example.</para>
+<para>Example &mdash; Two Arg Files</para>
+<para>You can create two argument files -- one for the javac  options and
+the other for the source filenames: (Notice the following lists have no line-continuation
+characters.)</para>
+<para>Create a file named <filename>options</filename> containing:<informalexample>
+<screen>-d classes
+-g
+-sourcepath \java\pubs\ws\1.3\src\share\classes</screen>
+</informalexample></para>
+<para>Create a file named <filename>classes</filename> containing:<informalexample>
+<screen>MyClass1.java
+MyClass2.java
+MyClass3.java</screen>
+</informalexample></para>
+<para>You would then run javac with:<informalexample>
+<screen>% <userinput>javac @options @classes</userinput></screen>
+</informalexample></para>
+<para>Example &mdash; Arg FIles with Paths</para>
+<para>The argument files can have paths, but any filenames inside the files
+are relative to the current working directory (not <command>path1</command>
+or <command>path2</command>):<informalexample>
+<screen>% <userinput>javac @path1/options @path2/classes</userinput></screen>
+</informalexample></para>
+</refsect2>
+</refsect1>
+<refsect1><title>&exam-tt;</title>
+<example role="example">
+<title>Compiling a Simple Program</title>
+<para>One source file, <literal>Hello.java</literal>, defines a class called <literal>
+greetings.Hello</literal>. The greetings directory is the package directory
+both for the source file and the class file and is off the current directory.
+This allows you to use the default user class path. It also makes it unnecessary
+to specify a separate destination directory with <option>d</option>.<informalexample>
+<screen>   % <userinput>ls</userinput>
+      <computeroutput>greetings/</computeroutput>
+   % <userinput>ls greetings</userinput>
+      <computeroutput>Hello.java
+
+</computeroutput>   % <userinput>cat greetings/Hello.java</userinput>
+      <computeroutput>package greetings;
+   
+      public class Hello {
+           public static void main(String[] args) {
+              for (int i=0; i &lt; args.length; i++) {
+                  System.out.println("Hello " + args[i]);
+              }
+           }
+      }</computeroutput>
+    % <userinput>javac greetings/Hello.java</userinput>
+    % <userinput>ls greetings</userinput>
+      <computeroutput>Hello.class   Hello.java</computeroutput>
+    % <userinput>java greetings.Hello World Universe Everyone</userinput>
+      <computeroutput>Hello World
+      Hello Universe
+      Hello Everyone</computeroutput></screen>
+</informalexample></para>
+</example>
+<example role="example">
+<title>Compiling Multiple Source Files</title>
+<para>This example compiles all the source files in the package <literal>
+greetings</literal>:<informalexample>
+<screen>   % <userinput>ls</userinput>
+      <computeroutput>greetings/</computeroutput>
+   % <userinput>ls greetings</userinput>
+      <computeroutput>Aloha.java     GutenTag.java     Hello.java      Hi.java
+</computeroutput>
+   % <userinput>javac greetings/*.java</userinput>
+   % <userinput>ls greetings</userinput>
+      <computeroutput>Aloha.class    GutenTag.class    Hello.class     Hi.class
+      Aloha.java     GutenTag.java     Hello.java      Hi.java</computeroutput></screen>
+</informalexample></para>
+</example>
+<example role="example">
+<title>Specifying a User Class Path</title>
+<para>Having changed one of the source files in the previous example, we recompile
+it:<informalexample>
+<screen>   % <userinput>pwd</userinput>
+      <computeroutput>/examples</computeroutput>
+   % <userinput>javac greetings/Hi.java</userinput></screen>
+</informalexample>Since <literal>greetings.Hi</literal> refers to other classes
+in the greetings package, the compiler needs to find these other classes.
+The example above works, because the default user class path happens to be
+the directory containing the package directory. But suppose you want to recompile
+this file and not worry about which directory you are in? Then you need to
+add  <literal>/examples</literal> to the user class path. This can be done
+by setting <envar>CLASSPATH</envar>, but in this example the <option>classpath
+</option> option is used:<informalexample>
+<screen>   % <userinput>javac &ndash;classpath /examples /examples/greetings/Hi.java
+</userinput></screen>
+</informalexample></para>
+<para>If you change <literal>greetings.Hi</literal> again to use a banner
+utility, that utility also needs to be accessible through the user class path:<informalexample>
+<screen>   % <userinput>javac &ndash;classpath /examples:/lib/Banners.jar \
+                     /examples/greetings/Hi.java</userinput></screen>
+</informalexample></para>
+<para>To execute a class in <literal>greetings</literal>, you need access
+both to <literal>greetings</literal> and to the classes it uses.<informalexample>
+<screen>   % <userinput>java &ndash;classpath /examples:/lib/Banners.jar greetings.Hi
+</userinput></screen>
+</informalexample></para>
+</example>
+<example role="example">
+<title>Separating Source Files and Class Files</title>
+<para>It often makes sense to keep source files and class files in separate
+directories, especially on large projects. Use the <option>d</option> option
+to indicate the separate class file destination. Since the source files are
+not in the user class path, use <option>sourcepath</option> to help the compiler
+find them:<informalexample>
+<screen>   % <userinput>ls</userinput>
+      <computeroutput>classes/  lib/      src/</computeroutput>
+   % <userinput>ls src</userinput>
+      <computeroutput>farewells/</computeroutput>
+   % <userinput>ls src/farewells</userinput>
+      <computeroutput>Base.java      GoodBye.java</computeroutput>
+   % <userinput>ls lib</userinput>
+      <computeroutput>Banners.jar</computeroutput>
+   % ls classes
+   % <userinput>javac &ndash;sourcepath src &ndash;classpath classes:lib/Banners.jar \
+      src/farewells/GoodBye.java &ndash;d classes</userinput>
+   % <userinput>ls classes</userinput>
+      <computeroutput>farewells/</computeroutput>
+   % <userinput>ls classes/farewells</userinput>
+      <computeroutput>Base.class      GoodBye.class</computeroutput></screen>
+</informalexample></para>
+<para>Note: The compiler compiled <literal>src/farewells/Base.java</literal>,
+even though it wasn't specified on the command line. To trace automatic compiles,
+use the <option>verbose</option> option.</para>
+</example>
+<example role="example">
+<title>Cross-Compilation Example</title>
+<para>Here we use javac to compile code that will run on a 1.4 VM.<informalexample>
+<screen>% <userinput>javac -target 1.4 -bootclasspath jdk1.4.2/lib/classes.zip \
+                         -extdirs "" OldCode.java
+
+</userinput></screen>
+</informalexample></para>
+<para>The <option>-target 1.4</option> option ensures that the generated class
+files will be compatible with 1.4 VMs. By default, javac compiles for 1.5. 
+</para>
+<para>The Java 2 SDK's javac would also by default compile against its own
+bootstrap classes, so we need to tell javac to compile against JDK 1.4 bootstrap
+classes instead. We do this with <option>-bootclasspath</option> and <option>
+-extdirs</option>. Failing to do this might allow compilation against a Java
+2 Platform API that would not be present on a 1.4 VM and would fail at runtime. 
+</para>
+</example>
+</refsect1>
+<refsect1><title>&attr-tt;</title>
+<para>See <citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>
+5</manvolnum></citerefentry> for a description of the following attributes:
+</para>
+<informaltable frame="all" orient="port">
+<tgroup cols="2" colsep="1" rowsep="1"><colspec colnum="1" colname="col1"
+colwidth="1*" colsep="1" align="left"><colspec colnum="2" colname="col2" colwidth="1*"
+align="left">
+<thead>
+<row><entry colname="col1" rowsep="1" align="center" valign="top">ATTRIBUTE
+TYPE</entry><entry colname="col2" rowsep="1" align="center" valign="top">
+ATTRIBUTE VALUE</entry></row>
+</thead>
+<tbody>
+<row><entry>Availability</entry><entry>SUNWj5dev</entry></row>
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>jar</refentrytitle><manvolnum>1</manvolnum>
+</citerefentry>, <citerefentry><refentrytitle>java</refentrytitle><manvolnum>
+1</manvolnum></citerefentry>, <citerefentry><refentrytitle>javadoc</refentrytitle>
+<manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>javah
+</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>
+javap</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry>
+<refentrytitle>jdb</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry>
+<refentrytitle>attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry> 
+</para>
+<para>See or search the Java web site for the following:</para>
+<variablelist termlength="wholeline">
+<varlistentry><term remap="10"><citetitle>The Java Extensions Mechanism</citetitle>
+@</term><listitem><para><ulink url="http://java.sun.com/j2se/1.5/docs/guide/extensions/index.html">
+http://java.sun.com/j2se/1.5/docs/guide/extensions/index.html</ulink></para>
+</listitem></varlistentry>
+<varlistentry><term remap="10"><citetitle>Setting the Class Path</citetitle>
+@</term><listitem><para><ulink url="http://java.sun.com/j2se/1.5/docs/tooldocs/solaris/classpath.html">
+http://java.sun.com/j2se/1.5/docs/tooldocs/solaris/classpath.html</ulink></para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<!--+ 07/27/00 08:33:52
+    | tagMorph:  $Id: tagMorph-engine 1.54 1998/01/19 05:44:48 $
+    | tagMorph library:  $Id: libtagMorph.a 1.50 1998/01/19 22:02:51 $
+    | sunman-to-solbook 1.17
+    +-->
+</refentry>
+<?Pub *0000034240>

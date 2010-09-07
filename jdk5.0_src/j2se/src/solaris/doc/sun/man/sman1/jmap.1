@@ -1,0 +1,101 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1999, v.4002-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub Inc>
+<refentry id="jmap-1">
+<!--@(#)jmap.1	1.1 04/06/15-->
+<refmeta><refentrytitle>unpack200</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">22 Jun 2004</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All
+rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.
+</refmiscinfo>
+</refmeta>
+<refnamediv><refname>jmap</refname><refpurpose>memory map</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>jmap</command><arg choice="opt"><replaceable>[ option ]
+</replaceable></arg><arg choice="plain"><replaceable>pid</replaceable></arg>
+</cmdsynopsis>
+<cmdsynopsis><command>jmap</command><arg choice="opt" rep="repeat"><replaceable>
+[ option ]</replaceable></arg><arg>executable core</arg>
+</cmdsynopsis>
+<cmdsynopsis><command>jmap</command><arg choice="opt" rep="repeat"><replaceable>
+[ option ]</replaceable></arg><arg>[server-id@]remote-hostname-or-IP </arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&parm-tt;</title>
+<variablelist termlength="narrow">
+<varlistentry><term><replaceable>option</replaceable> </term><listitem><para>
+Options are mutually exclusive. Option, if used, should follow immediately
+after the command name. </para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>pid</replaceable> </term><listitem><para>
+process id for which the memory map is to be printed. The process must be
+a Java process. To get a list of Java processes running on a machine, jps
+may be used. </para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>executable</replaceable> </term><listitem>
+<para>Java executable from which the core dump was produced. </para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>core</replaceable> </term><listitem><para>
+ core file for which the memory map is to be printed. </para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>remote-hostname-or-IP</replaceable> </term>
+<listitem><para>remote debug server's (see jsadebugd) hostname or IP address.
+</para>
+</listitem></varlistentry>
+<varlistentry><term><replaceable>server-id</replaceable> </term><listitem>
+<para>optional unique id, if multiple debug servers are running on the same
+remote host.</para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="java-1-indx-1"><primary sortas="Java interpreter">Java interpreter &mdash;
+java</primary></indexterm><indexterm id="java-1-indx-2"><primary sortas="java">
+java &mdash; Java interpreter</primary></indexterm><para>jmap prints shared
+object memory maps or heap memory details of a given process or core file
+or  a remote debug server.</para>
+<note><para>NOTE - This utility is unsupported and may or may not be available
+in future versions <?Pub Caret>of the J2SE SDK. jinfo is not currently available
+on Windows platforms or on the Linux Itanium platform. </para>
+</note>
+</refsect1>
+<refsect1><title>&opts-tt;</title>
+<variablelist>
+<varlistentry><term>&lt;no option></term><listitem><para>When no option is
+used jmap prints shared object mappings. For each shared object  loaded in
+the target VM, start address, the size of the mapping, and the full path of
+the shared object file are printed. This is similar to the Solaris pmap utility. 
+</para>
+</listitem></varlistentry>
+<varlistentry><term>-heap</term><listitem><para>Prints a heap summary. GC
+algorithm used, heap configuration and generation wise heap usage are printed. 
+</para>
+</listitem></varlistentry>
+<varlistentry><term>-histo</term><listitem><para>Prints a histogram of the
+heap. For each Java class, number of objects, memory size in bytes, and fully
+qualified class names are printed. VM internal class names are printed with
+'*' prefix. </para>
+</listitem></varlistentry>
+<varlistentry><term>-permstat</term><listitem><para>Prints class loader wise
+statistics of permanent generation of Java heap. For each class loader, its
+name, liveness, address, parent class loader, and the number and size of classes
+ it has loaded are printed. </para>
+</listitem></varlistentry>
+<varlistentry><term>-h</term><listitem><para>prints a help message.</para>
+</listitem></varlistentry>
+<varlistentry><term>-help</term><listitem><para>prints a help message.</para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>pmap</refentrytitle><manvolnum>1</manvolnum>
+</citerefentry>,<citerefentry><refentrytitle>jps</refentrytitle><manvolnum>
+1</manvolnum></citerefentry>, <citerefentry><refentrytitle>jsadebugd</refentrytitle>
+<manvolnum>1</manvolnum></citerefentry></para>
+</refsect1>
+</refentry>
+<?Pub *0000005095>

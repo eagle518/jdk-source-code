@@ -1,0 +1,86 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1998, v.4001-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub Inc>
+<refentry id="javah-1">
+<!--@(#)javah.1 1.12 01/03/14 SMI;-->
+<refmeta><refentrytitle>javah</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">2004 年 6 月 22 日</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.   </refmiscinfo>
+</refmeta>
+<refnamediv><refname>javah</refname><refpurpose>C 言語のヘッダとスタブファイルのジェネレータ</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>javah</command><arg choice="opt">options</arg><arg choice="plain" rep="repeat"><replaceable>fully-qualified-classname</replaceable></arg>
+</cmdsynopsis>
+<cmdsynopsis><command>javah_g</command><arg choice="opt">options</arg><arg choice="plain" rep="repeat"><replaceable>fully-qualified-classname</replaceable></arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="javah-1-indx-1"><primary sortas="stub file generator">stub file generator &mdash; javah</primary></indexterm><indexterm id="javah-1-indx-2"><primary sortas="C header and stub file generator">C header and stub file generator &mdash; javah</primary></indexterm><indexterm id="javah-1-indx-3"><primary sortas="javah">javah &mdash; C header and stub file generator</primary></indexterm>
+<para><command>javah</command> コマンドは、ネイティブメソッドを実装するのに必要な C 言語のヘッダおよびソースファイルを生成します。C のプログラムは、生成されたヘッダとソースファイルを使って、ネイティブソースコードからオブジェクトのインスタンス変数を参照できます。<literal>.h</literal> ファイルは、対応するクラスに合ったレイアウトの構造体定義を含んでいます。構造体に含まれるフィールドは、クラス内のインスタンス変数に対応しています。</para>
+<para>ヘッダファイル名およびヘッダファイル中で定義される構造体名は、クラス名から派生します。<command>javah</command> に渡されるクラスがパッケージ内部にあれば、そのパッケージ名がファイル名および構造体名の先頭に付加されます。名前の間は下線 (_) で区切られます。</para>
+<para>デフォルトでは、<command>javah</command> はコマンド行で指定された個々のクラスに対してヘッダファイルを作成し、現在のディレクトリに出力します。<option>stubs</option> オプションを指定するとソースファイルが生成されます。<option>o</option> オプションを指定すると、指定した全クラスに対する出力ファイルを連結して 1 個のファイルとして生成します。</para>
+<para>新しいネイティブメソッドインタフェースの <trademark>Java</trademark> Native Interface (JNI) は、ヘッダ情報やスタブファイルを必要としません。ただし <command>javah</command> コマンドは現在も JNI 形式のネイティブメソッドに必要なネイティブメソッド関数プロトタイプを生成できます。<command>javah</command> はデフォルトで JNI 形式で出力し、その結果を <literal>.h</literal> ファイルに格納します。</para>
+<para><command>javah_g</command> は非最適化バージョンの <command>javah</command> で、<command>jdb</command> などのデバッガ用の使用に適しています。</para>
+</refsect1>
+<refsect1><title>&opts-tt;</title>
+<para>以下のオプションが使用できます。</para>
+<variablelist termlength="medium"><varlistentry><term remap="15"><option>bootclasspath</option> <replaceable>path</replaceable></term><listitem><para>bootstrap クラスをロードするパスを指定します。デフォルトでは、bootstrap クラスはコアとなる Java プラットフォームを実装するクラスで、<filename>jre/lib/rt.jar</filename> および他の重要な jar ファイルに含まれて<?Pub Caret>います。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>classpath</option> <replaceable>path</replaceable></term><listitem><para><command>javah</command> がクラスを検索するために用いるパスを <replaceable>path</replaceable> で指定します。この指定値は、デフォルトおよび <envar>CLASSPATH</envar> 環境変数の設定値をオーバーライドします。複数のディレクトリを指定する場合はコロンで区切ります。したがって、<replaceable>path</replaceable> の通常の形式は次のようになります。<informalexample>
+<para><literal>.:</literal><replaceable>your_path</replaceable> </para>
+</informalexample> <informalexample>
+<para>パスの指定例：</para>
+</informalexample> <informalexample>
+<para><literal>.:/home/avh/classes:/usr/local/java/classes</literal> </para>
+</informalexample></para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>d</option> <replaceable>directory</replaceable></term><listitem><para><command>javah</command> がヘッダファイルまたはスタブファイルを書き出すディレクトリを指定します。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>force</option></term><listitem><para>常に出力ファイルに書き込むことを指定します。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>help</option></term><listitem><para><command>javah</command> の使用法についてヘルプメッセージを出力します。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>jni</option></term><listitem><para>JNI 形式のネイティブなメソッド関数のプロトタイプが入った出力ファイルを作成します。これはデフォルトの出力であるため、<option>jni</option> は省略可能です。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>o</option> <replaceable>outputfile</replaceable></term><listitem><para>コマンド行で指定したすべてのクラスに対する結果のヘッダファイルまたはソースファイルを連結し、<replaceable>outputfile</replaceable> に格納します。<option>o</option> オプションまたは <option>d</option> オプションだけを使用できます。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>old</option></term><listitem><para>古い JDK 1.0 形式のヘッダファイルを生成します。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>stubs</option></term><listitem><para>Java オブジェクトファイルから C 言語の宣言を生成します。<option>o</option> オプションまたは <option>d</option> オプションだけを使用できます。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>trace</option></term><listitem><para>現在、トレースはサポートされていません。仮想マシンの <literal>-verbose:jni</literal> オプションを使用してください。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>verbose</option></term><listitem><para>詳細情報の出力を要求します。<command>javah</command> は、生成されたファイルの状態に関するメッセージを <literal>stdout</literal> に書き出します。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>version</option></term><listitem><para>バージョン情報を出力します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option role="nodash">J</option><replaceable>option</replaceable></term><listitem><para>オプションを Java 仮想マシンに渡します。ここで <replaceable>option</replaceable> は、Java アプリケーション起動ツール java(1) のマニュアルページに記載されたオプションの 1 つです。 たとえば、<literal>-J-Xms48m</literal> と指定すると、スタートアップメモリは 48M バイトに設定されます。 <literal>-J</literal> を使って基本となる仮想マシンにオプションを渡すことはよく行われています。 </para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<refsect1><title>&envr-tt;</title>
+<variablelist termlength="narrow"><varlistentry><term remap="15"><envar>CLASSPATH</envar> </term><listitem><para>ユーザ定義クラスへのパスをシステムに通知するために使用します。複数のディレクトリを指定する場合はコロンで区切ります。以下に例を示します。<informalexample>
+<para><literal>.:/home/avh/classes:/usr/local/java/classes</literal> </para>
+</informalexample></para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<refsect1><title>&attr-tt;</title>
+<para>次の属性については、<olink targetdocent="REFMAN5" localinfo="attributes-5"><citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry></olink>のマニュアルページを参照してください。</para>
+<informaltable frame="all" orient="port"><tgroup cols="2" colsep="1" rowsep="1"><colspec colnum="1" colname="col1" colwidth="1*" colsep="1" align="left"><colspec colnum="2" colname="col2" colwidth="1*" align="left"><thead><row><entry colname="col1" rowsep="1" align="center" valign="top">属性タイプ</entry><entry colname="col2" rowsep="1" align="center" valign="top">属性値</entry></row></thead><tbody><row><entry>使用条件</entry><entry>SUNWj5dev</entry></row></tbody></tgroup></informaltable>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>java</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>javac</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>javadoc</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>javap</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>jdb</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry></para>
+</refsect1>
+<!--+ 07/27/00 08:34:19
+    | tagMorph:  $Id: tagMorph-engine 1.54 1998/01/19 05:44:48 $
+    | tagMorph library:  $Id: libtagMorph.a 1.50 1998/01/19 22:02:51 $
+    | sunman-to-solbook 1.17
+    +-->
+</refentry>
+<?Pub *0000008020 0>

@@ -1,0 +1,70 @@
+<!--ArborText, Inc., 1988-2003, v.4002-->
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?APT Element gi="refentrytitle">
+<?APT Element gi="manvolnum">
+<?APT Element gi="refmiscinfo" attrs="class">
+<?APT Element gi="refmeta">
+<?APT Element gi="refname">
+<?APT Element gi="refpurpose">
+<?APT Element gi="refnamediv">
+<?APT Element gi="title">
+<?APT Element gi="command">
+<?APT Element gi="replaceable">
+<?APT Element gi="arg" attrs="choice rep">
+<?APT Element gi="cmdsynopsis">
+<?APT Element gi="refsynopsisdiv">
+<?APT Element gi="term">
+<?APT Element gi="para">
+<?APT Element gi="listitem">
+<?APT Element gi="varlistentry">
+<?APT Element gi="variablelist" attrs="termlength">
+<?APT Element gi="refsect1">
+<?APT Element gi="primary" attrs="sortas">
+<?APT Element gi="indexterm" attrs="id">
+<?APT Element gi="note">
+<?APT Element gi="citerefentry">
+<?APT Element gi="refentry" attrs="id">
+<?Pub Inc>
+<refentry id="jmap-1"> <!--@(#)jmap.1	1.1 04/06/15--><refmeta><refentrytitle>
+jmap</refentrytitle><manvolnum>1</manvolnum><refmiscinfo class="date">
+2004 年 6 月 22 日</refmiscinfo><refmiscinfo class="sectdesc">&man1;</refmiscinfo><refmiscinfo
+class="software">&java-release;</refmiscinfo><refmiscinfo class="arch">generic</refmiscinfo><refmiscinfo
+class="copyright"> Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+ Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.</refmiscinfo></refmeta><refnamediv><refname>
+jmap</refname><refpurpose>メモリマップ</refpurpose></refnamediv><refsynopsisdiv><title>&synp-tt;</title><cmdsynopsis><command>
+jmap</command><arg choice="opt"><replaceable>[ option ]</replaceable></arg><arg
+choice="plain"><replaceable>pid</replaceable></arg></cmdsynopsis><cmdsynopsis><command>
+jmap</command><arg choice="opt" rep="repeat"><replaceable> [ option ]</replaceable></arg><arg>
+executable core</arg></cmdsynopsis><cmdsynopsis><command>jmap</command><arg
+choice="opt" rep="repeat"><replaceable> [ option ]</replaceable></arg><arg>
+[server-id@]remote-hostname-or-IP </arg></cmdsynopsis></refsynopsisdiv><refsect1><title>&parm-tt;</title><variablelist
+termlength="narrow"><varlistentry><term><replaceable>option</replaceable> </term><listitem><para>
+オプションは相互に排他的です。オプションを使用する場合は、コマンド名の直後に指定する必要があります。</para></listitem></varlistentry><varlistentry><term><replaceable>
+pid</replaceable> </term><listitem><para>メモリマップを表示するプロセス ID。プロセスは Java プロセスでなければなりません。マシン上で実行している
+Java プロセスのリストを取得するには、jps を使用します。</para></listitem></varlistentry><varlistentry><term><replaceable>
+executable</replaceable> </term><listitem><para>コアダンプが生成された Java 実行可能ファイル。</para></listitem></varlistentry><varlistentry><term><replaceable>
+core</replaceable> </term><listitem><para>メモリマップを表示するコアファイル。</para></listitem></varlistentry><varlistentry><term><replaceable>
+remote-hostname-or-IP</replaceable> </term><listitem><para>リモートデバッグサーバ (jsadebugd を参照) のホスト名または IP アドレス。</para></listitem></varlistentry><varlistentry><term><replaceable>
+server-id</replaceable> </term><listitem><para>同じリモートホスト上で複数のデバッグサーバが実行している場合、オプションの一意
+ID。</para></listitem></varlistentry></variablelist></refsect1><refsect1><title>&desc-tt;</title><indexterm
+id="java-1-indx-1"><primary sortas="Java interpreter">Java インタプリタ&mdash;
+java</primary></indexterm><indexterm id="java-1-indx-2"><primary sortas="java">
+ java &mdash; Java インタプリタ</primary></indexterm><para>jmap は、指定されたプロセスまたはコアファイルまたはリモートデバッグサーバの共有オブジェクトメモリマップまたはヒープメモリの詳細を表示します。</para><note><para
+>このユーティリティはサポートされていないため、J2SE SDK の将来のバージョンでは使用できない可能性があります。jmap は、現時点では、Windows
+プラットフォームまたは Linux Itanium プラットフォームでは使用できません。</para></note></refsect1><refsect1><title>&opts-tt;</title><variablelist><varlistentry><term>
+&lt;no option></term><listitem><para>オプションが使用されなかった場合、jmap は共有オブジェクトマッピングを表示します。ターゲット
+VM にロードされた各共有オブジェクトについて、開始アドレス、マッピングのサイズ、および共有オブジェクトファイルのフルパスが表示されます。これは、Solaris
+の pmap ユーティリティと同様です。</para></listitem></varlistentry><varlistentry><term>
+-heap</term><listitem><para>ヒープのサマリを表示します。使用された GC アルゴリズム、ヒープ構成、および生成規模のヒープ使用率が表示されます。</para></listitem></varlistentry><varlistentry><term>
+-histo</term><listitem><para>ヒープのヒストグラムを表示します。各 Java クラスについて、オブジェクト数、メモリサイズ（バイト数）、および完全修飾クラス名が表示されます。VM
+内部クラス名の前には '*' が表示されます。</para></listitem></varlistentry><varlistentry><term>
+-permstat</term><listitem><para>ヒープの永続的生成のクラスローダ規模の統計を表示します。各クラスローダについて、名前、活性、アドレス、親クラスローダ、およびロードしたクラスのサイズが表示されます。</para></listitem></varlistentry
+><varlistentry><term>-h</term><listitem><para>ヘルプメッセージを表示します。</para></listitem></varlistentry><varlistentry><term>
+-help</term><listitem><para>ヘルプメッセージを表示します。<?Pub Caret></para></listitem></varlistentry></variablelist></refsect1><refsect1><title>&also-tt;</title
+><para><citerefentry><refentrytitle>pmap</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>
+jps</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>
+jsadebugd</refentrytitle><manvolnum>1</manvolnum></citerefentry></para></refsect1></refentry>

@@ -1,0 +1,161 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1998, v.4001-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub Inc>
+<refentry id="appletviewer-1">
+<!-- @(#)appletviewer.1 1.12 01/03/14 SMI; -->
+<refmeta><refentrytitle>appletviewer</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">2004 年 6 月 22 日</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.  </refmiscinfo>
+</refmeta>
+<refnamediv><refname>appletviewer</refname><refpurpose>Java アプレットビューア</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>appletviewer</command><arg choice="opt"><option>debug</option></arg><arg choice="opt"><option>encoding</option>&nbsp;<replaceable>encoding_name</replaceable></arg><arg choice="opt"><option>J</option>&nbsp;<replaceable>javaoption</replaceable></arg><arg choice="plain" rep="repeat"><replaceable>urls</replaceable></arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="appletviewer-1-indx-1"><primary sortas="appletviewer">appletviewer &mdash; run applets</primary></indexterm><indexterm id="appletviewer-1-indx-2"><primary sortas="appletviewer">appletviewer &mdash; Web browser</primary></indexterm>
+<para><command>appletviewer</command> コマンドは WWW ブラウザのコンテキストとは別に Java&trade; アプレットを実行します。</para>
+<para><command>appletviewer</command> コマンドは、<replaceable>urls</replaceable> で指定したドキュメントまたはリソースに接続して、独自のウィンドウ上にそのドキュメントが参照している 個々のアプレットを表示します。<replaceable>urls</replaceable> が示すドキュメントの中に <literal>OBJECT</literal>、<literal>EMBED</literal>、または <literal remap="small and bold"> APPLET</literal> タグを使ったアプレット参照が存在しない場合、<command>appletviewer</command> は何も行いません。</para>
+<refsect2><title>appletviewer のタグ</title>
+<para><command>appletviewer</command> は、ブラウザを使用せずに Java アプレットを実行できます。<command>appletviewer</command> は、アプレットの起動に直接関係ない <acronym remap="small">HTML</acronym> を無視します。ただし、アプレットの起動に関するさまざまな構文は認識します。<command>appletviewer</command> が認識する <acronym remap="small">HTML</acronym> コードは、次のとおりです。これ以外の <acronym remap="small">HTML</acronym> コードは無視されます。</para>
+<variablelist termlength="narrow"><varlistentry><term remap="10"><literal>object</literal> </term><listitem><para><literal>object</literal> タグは、アプレットやマルチメディアオブジェクトを <acronym remap="small">HTML</acronym> ページに埋め込むための <acronym remap="small">HTML</acronym> 4.0 タグです。また、このタグにより <acronym remap="small">HTML</acronym> 3.2 が拡張され、Internet Explorer 4.x で、Sun の最新の Java Plug-in を使用して Java アプレットを実行できるようになります。<informalexample><screen> &lt;object
+   width="pixelWidth"
+   height="pixelHeight"
+ >
+   &lt;param name="code" value="yourClass.class">
+   &lt;param name="object" value="serializedObjectOrJavaBean">
+   &lt;param name="codebase" value="classFileDirectory">
+   ...
+   alternate-text
+&lt;/object></screen>
+</informalexample></para>
+<para>次のことに注意してください。</para>
+<itemizedlist>
+<listitem><para><command>appletviewer</command> は、「classID」属性が次の値で Java Plug-in を指していると仮定し、この属性を無視します。<informalexample><para><screen>classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93"</screen></para>
+</informalexample></para>
+</listitem><listitem><para><command>appletviewer</command> は、通常は <literal>object</literal> タグの一部である「codebase」属性が次の値でネットワーク cab ファイル内の Java Plug-in を指していると仮定し、この属性も無視します。<informalexample><para><screen>codebase="http://java.sun.com/products/plugin/1.1/&bsol;
+		jinstall-11-win32.cab#Version=1,1,0,0"</screen></para>
+</informalexample></para>
+</listitem><listitem><para>オプションの codebase の <literal>param</literal> タグには、アプレットクラスの場所を指す相対 <acronym>URL</acronym> を指定します。</para>
+</listitem><listitem><para><literal>code</literal> と <literal>object</literal> はどちらか一方だけを指定します。両方同時には指定できません。</para>
+</listitem><listitem><para>type の <literal>param</literal> タグは <command>appletviewer</command> では使用しませんが、ブラウザが適切にプラグインを読み込めるようにする目的では使用します。アプレットの場合、この値は次のようになります。<informalexample><para><screen>  &lt;param name="type"
+  value="application/x-java-applet;version=1.1"></screen></para>
+<para>または</para>
+<para><screen>  &lt;param name="type" value="application/x-java-applet"></screen></para>
+<para>直列化されたオブジェクトまたは JavaBean の場合、type の <literal>param</literal> 値は次のようになります。</para>
+<para><screen>  &lt;param name="type"
+   value="application/x-java-bean;version=1.1"></screen></para>
+<para>または</para>
+<para><screen>  &lt;param name="type" value="application/x-java-bean"></screen></para>
+</informalexample></para>
+</listitem><listitem><para>他の <literal>param</literal> タグはアプレットに渡される引数値です。</para>
+</listitem><listitem><para> IE4.x が認識する <literal>object</literal> タグと Netscape 4.x が認識する embed タグは組み合わせて使用できます。つまり、アプレットをダウンロードするブラウザにかかわりなく、アプレットは Sun の最新の Java Plug-in を使用できます。</para>
+</listitem><listitem><para><command>appletviewer</command> は <literal>java_code</literal>、<literal>java_codebase</literal>、<literal>java_object</literal>、または <literal>java_type</literal> <literal>param</literal> タグを認識しません。これらのタグが必要なのは、アプレットがそれぞれ <literal>code</literal>、<literal>codebase</literal>、<literal>object</literal>、または <literal>type</literal> という名前のパラメータを定義するときだけです。この場合プラグインは、アプレットが使用するバージョンよりも、<literal>java_</literal> バージョンを優先して認識し、使用します。このような 4 つの名前のどれかのパラメータを要求するアプレットは <command>appletviewer</command> では使用できません。</para>
+</listitem></itemizedlist>
+</listitem></varlistentry>
+<varlistentry><term remap="10"><literal>embed</literal> </term><listitem><para><literal>embed</literal> タグは、アプレットやマルチメディアオブジェクトを <acronym remap="small">HTML</acronym> ページに埋め込む、Netscape の <acronym remap="small">HTML</acronym> 3.2 拡張タグです。これによって、<acronym remap="small">HTML</acronym> 3.2 をサポートする Netscape 4.x ブラウザが Sun の最新の Java Plug-in を使用して Java アプレットを実行できます。<informalexample><screen>  &lt;embed
+    code="yourClass.class"
+    object="serializedObjectOrJavaBean"
+    codebase="classFileDirectory"
+    width="pixelWidth"
+    height="pixelHeight"
+  >
+  ...
+  &lt;/embed>
+
+</screen>
+</informalexample></para>
+<para>次のことに注意してください。</para>
+<itemizedlist>
+<listitem><para><literal>object</literal> タグと <literal>embed</literal> タグは組み合わせて使用できるため、アプレットをダウンロードするブラウザにかかわりなく、アプレットは Sun の最新の Java Plug-in を使用できます。詳細は、「Java Plug-in <acronym remap="small">HTML</acronym> の仕様」を参照してください。</para>
+</listitem><listitem><para><literal>object</literal> タグとは異なり、<literal>embed</literal> タグで指定される値はすべて属性です (つまり、タグの一部)。<literal>param</literal> タグで指定される (<literal>start</literal> タグと <literal>end</literal> タグの間にある) パラメータではありません。</para>
+</listitem><listitem><para>アプレットのパラメータに引数値を指定するには、<literal>embed</literal> タグに別の属性を追加します。</para>
+</listitem><listitem><para><command>appletviewer</command> は、通常は <literal>embed</literal> タグの一部である「src」属性を無視します。</para>
+</listitem><listitem><para><literal>code</literal> と <literal>object</literal> はどちらか一方だけを指定します。</para>
+</listitem><listitem><para>オプションの <literal>codebase</literal> 属性には、アプレットクラスの場所を指す相対 <acronym>URL</acronym> を指定します。</para>
+</listitem><listitem><para><literal>type</literal> 属性は  <command>appletviewer</command> では使用しませんが、ブラウザが適切にプラグインを読み込めるようにするために存在します。アプレットの場合、この値は次のようになります。<informalexample><screen>  &lt;type="application/x-java-applet;version=1.1">...</screen>
+<para>または</para>
+<screen>  &lt;type="application/x-java-applet">...</screen>
+</informalexample> </para>
+<para>直列化されたオブジェクトまたは JavaBean の場合、type の param の値は次のようになります。<informalexample><screen>  &lt;type="application/x-java-bean;version=1.1">...</screen>
+<para>または</para>
+<screen>  &lt;type="application/x-java-bean">...</screen>
+</informalexample></para>
+</listitem></itemizedlist>
+<itemizedlist>
+<listitem><para><literal>pluginspage</literal> 属性は <command>appletviewer</command> では使用しませんが、ブラウザが適切にプラグインを読み込めるようにするために存在します。この属性は、ネットワーク cab ファイル内の Java Plug-in を指し、次のような値になります。<informalexample><screen>pluginspage="http://java.sun.com/products/plugin/1.1/&bsol;
+           jinstall-11-win32.cab#Version=1,1,0,0"</screen>
+</informalexample></para>
+</listitem></itemizedlist>
+</listitem></varlistentry>
+<varlistentry><term remap="10"><literal>applet</literal> </term><listitem><para><literal>applet</literal> タグは、アプレットを <acronym remap="small">HTML</acronym> ページに埋め込むための <acronym remap="small">HTML</acronym> 3.2 で使用できるタグです。<literal>applet</literal> タグで読み込まれたアプレットはブラウザによって実行されます。このとき、ブラウザが最新バージョンの Java プラットフォームを使用していない可能性があります。アプレットが最新のバージョンで実行されることを保証するには、<literal>object</literal> タグで Java Plug-in をブラウザに読み込みます。これによりこのプラグインがアプレットを実行します。<informalexample><screen>  &lt;applet
+    code="yourClass.class"
+    object="serializedObjectOrJavaBean"
+    codebase="classFileDirectory"
+    width="pixelWidth"
+    height="pixelHeight"
+  >
+    &lt;param name="..." value="...">
+    ...
+    alternate-text
+  &lt;/applet>
+
+</screen>
+</informalexample></para>
+<para>次のことに注意してください。</para>
+<itemizedlist>
+<listitem><para><literal>code</literal> と <literal>object</literal> はどちらか一方だけを指定します。両方同時には指定できません。</para>
+</listitem><listitem><para>オプションの <literal>codebase</literal> 属性には、アプレットクラスの場所を指す相対 <acronym>URL</acronym> を指定します。</para>
+</listitem><listitem><para><literal>param</literal> タグには、アプレットのパラメータのための引数値を指定します。</para>
+</listitem></itemizedlist>
+</listitem></varlistentry>
+<varlistentry><term remap="10"><literal>app</literal> </term><listitem><para><literal>app</literal> タグは短期間だけ使用された applet の省略形で、現在はサポートされていません。<command>appletviewer</command> は <literal>app</literal> タグを変換して、現在サポートされている対応タグを出力します。<informalexample><screen>  &lt;app
+    class="classFileName" (without a .class suffix)
+    src="classFileDirectory"
+    width="pixelWidth"
+    height="pixelHeight"
+  >
+    &lt;param name="..." value="...">
+    ...
+  &lt;/app></screen>
+</informalexample></para>
+</listitem></varlistentry>
+</variablelist>
+</refsect2>
+</refsect1>
+<refsect1><title>&opts-tt;</title>
+<para>以下のオプションが使用できます。</para>
+<variablelist termlength="medium"><varlistentry><term remap="10"><option>debug</option> </term><listitem><para>Java デバッガ中のアプレットビューアを起動します。これによりドキュメント中のアプレットのデバッグが始まります (詳細は <link linkend="jdb-1"><citerefentry><refentrytitle>jdb</refentrytitle><manvolnum>1</manvolnum></citerefentry></link> を参照)。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="10"><option>encoding</option> <replaceable>encoding_name</replaceable> </term><listitem><para>入力 <acronym remap="small">HTML</acronym> ファイルのエンコーディング名を指定します。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="10"><option>J</option> <replaceable>javaoption</replaceable> </term><listitem><para>文字列 <replaceable>javaoption</replaceable> を、コンパイラを実行する <link linkend="java-1"><citerefentry><refentrytitle>java</refentrytitle><manvolnum>1</manvolnum></citerefentry></link> に 1 つの引数として渡します。引数中には空白文字を含めることはできません。複数の引数を指定する場合には、それぞれの先頭に <option>J</option> を必ず付加してください。この文字は <link linkend="java-1"><citerefentry><refentrytitle>java</refentrytitle><manvolnum>1</manvolnum></citerefentry></link> に渡す内容からは取り除かれます。この引数指定を用いて、実行環境やコンパイラのメモリ使用量を有効に調整することができます。</para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<refsect1><title>&attr-tt;</title>
+<para>次の属性については <olink targetdocent="REFMAN5" localinfo="attributes-5"><citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry></olink> のマニュアルページを参照してください。</para>
+<informaltable frame="all" orient="port"><tgroup cols="2" colsep="1" rowsep="1"><colspec colnum="1" colname="col1" colwidth="1*" colsep="1" align="left"><colspec colnum="2" colname="col2" colwidth="1*" align="left"><thead><row><entry colname="col1" rowsep="1" align="center" valign="top">属性タイプ</entry><entry colname="col2" rowsep="1" align="center" valign="top">属性値</entry></row></thead><tbody><row><entry>使用条件</entry><entry>SUNWj5dev</entry></row></tbody></tgroup></informaltable>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><link linkend="java-1"><citerefentry><refentrytitle>java</refentrytitle><manvolnum>1</manvolnum></citerefentry></link>, <link linkend="jdb-1"><citerefentry><refentrytitle>jdb</refentrytitle><manvolnum>1</manvolnum></citerefentry></link>, <olink targetdocent="REFMAN5" localinfo="attributes-5"><citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry></olink> </para>
+<para>詳細は、<informalexample>
+<para><ulink url="http://java.sun.com/j2se/1.5.0/docs/guide/plugin/developer_guide/index.html">http://java.sun.com/j2se/1.5.0/docs/guide/plugin/developer_guide/index.html</ulink></para>
+</informalexample>を参照してください。</para>
+<para>または<informalexample>
+<para><ulink url="java.sun.com">java.sun.com</ulink></para>
+</informalexample>で「<literal>Java Plug-In HTML 仕様</literal>」を検索してください。</para>
+</refsect1>
+<!--+ 07/27/00 08:32:55
+    | tagMorph:  $Id: tagMorph-engine 1.54 1998/01/19 05:44:48 $
+    | tagMorph library:  $Id: libtagMorph.a 1.50 1998/01/19 22:02:51 $
+    | sunman-to-solbook 1.17
+    +-->
+</refentry><?Pub Caret>
+<?Pub *0000012953 0>

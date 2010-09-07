@@ -1,0 +1,204 @@
+'\" t
+.\" @(#)javap.1 1.10 00/06/13 SMI;
+.\" Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+.\" Copyright 2004 Sun Microsystems, Inc. Tous droits r駸erv駸.
+.\" 
+'\"macro stdmacro
+.TH javap 1 "2004 年 6 月 22 日"
+.SH "名前"
+javap \- Java クラスファイル逆アセンブラ
+.\" 
+.\"  This document was created by saving an HTML file as text
+.\"  from the JavaSoft web site:
+.\" 
+.\" http://java.sun.com/products/jdk/1.2/docs/tooldocs/tools.html
+.\" 
+.\"  and adding appropriate troff macros.  Because the JavaSoft web site 
+.\"  man pages can change without notice, it may be helpful to diff
+.\"  files to identify changes other than new functionality. 
+.\" 
+.SH "形式"
+.B  javap
+[
+.B options
+] 
+.IR class .\|.\|.
+.SH "機能説明"
+.IX "Java class file disassembler" "" "Java class file disassembler \(em \fLjavap\fP"
+.IX "javap" "" "\fLjavap\fP \(em Java class file disassembler"
+.B javap
+コマンドは、
+Java クラスファイルを逆アセンブルします。
+出力内容はオプションで指定します。
+オプションを
+1
+つも指定しないと、
+.B javap
+は渡されたクラスの
+.BR package、
+.BR protected、
+および 
+.B public
+フィールドとメソッドを出力します。
+.B javap
+コマンドの出力先は
+.B stdout
+です。たとえば、以下のクラス宣言をコンパイルします。
+.RS
+.nf
+\f3
+import java.awt.*;
+import java.applet.*;
+
+public class DocFooter extends Applet {
+		String date;
+		String email;
+
+		public void init() {
+			resize(500,100);
+
+			date = getParameter("LAST_UPDATED");
+			email = getParameter("EMAIL");
+		}
+
+		public void paint(Graphics g) {
+			g.drawString(date + " by ",100, 15);
+			g.drawString(email,290,15);
+		}
+}
+\f1
+.fi
+.RE
+.LP
+この場合、
+.B javap DocFooter
+を実行すると以下の出力が得られます。
+.RS
+\f3
+.nf
+Compiled from DocFooter.java
+public class DocFooter extends java.applet.Applet {
+	java.lang.String date;
+	java.lang.String email;
+	public void init();
+	public void paint(java.awt.Graphics);
+	public DocFooter();
+}
+\f1
+.fi
+.RE
+.SH "オプション"
+以下のオプションが使用できます。
+.TP 15
+.B \-b
+JDK 1.1
+の
+.B javap
+との下位互換を保証します。
+.TP 15
+.BI  \-bootclasspath " path"
+bootstrap クラスをロードするパスを指定します。デフォルトでは、bootstrap 
+クラスはコアとなる Java プラットフォームを実装するクラスで、
+.B jre/lib/rt.jar
+と 
+.BR jre/lib/charsets.jar
+にあります。
+.TP 15
+.B \-c
+クラス内の個々のメソッドについて、逆アセンブルされたコード、
+すなわち
+Java
+バイトコードからなる命令を出力します。詳細は、『Java Virtual Machine 
+Specification』を参照してください。
+.TP 15
+.BI \-classpath path
+.B javap
+がクラスを探すのに用いるパスを
+.I path
+で指定します。この指定値は、デフォルトおよび
+.B CLASSPATH
+環境変数の設定値をオーバーライドします。
+複数のディレクトリを指定する場合はコロン (:) で区切ります。
+したがって
+.I path
+の一般形式は次のようになります。
+.sp 1n
+.RS 20
+.BI .:< your_path >
+.RE
+.sp 1n
+.RS 15
+パスの指定例：
+.RE
+.sp 1n
+.RS 10
+.B .:/home/avh/classes:/usr/local/java/classes
+.RE
+.sp 1n
+.TP 15
+.BI \-extdirs dirs
+インストールされた拡張機能を検索する場所を指定します。デフォルトの拡張機能の場所は 
+.BR jre/lib/ext
+です。
+.TP 15
+.B \-help
+.BR javap
+のヘルプメッセージを出力します。
+.TP 15
+.BI \-J "flag"
+実行時システムに直接渡すフラグを指定します。
+.RS
+.LP
+.B javap \-J\-version
+.LP
+.B javap \-JJ\-Djava.security.manager \\
+.br
+.B -Djava.security.policy=MyPolicy MyClassName 
+.RE
+.TP 15
+.B \-l
+行と局所変数テーブルを表示します。
+.TP 15
+.B \-package
+package、protected、および public のクラスと
+メンバだけを表示します。この指定がデフォルトです。
+.TP 15
+.B \-private
+すべてのクラスとメンバを表示します。
+.TP 15
+.B \-protected
+protected
+および
+public
+のクラスとメンバだけを表示します。
+.TP 15
+.B \-public
+public
+のクラスとメンバだけを表示します。
+.TP 15
+.B \-s
+内部型シグニチャを出力します。
+.TP 15
+.B \-verbose
+メソッドのスタックサイズ、および
+.I local
+と
+.I arg
+の数を出力します。
+.SH "環境"
+.TP 15
+.B CLASSPATH
+ユーザ定義クラスへのパスをシステムに通知するために使用します。
+複数のディレクトリを指定する場合はコロンで区切ります。
+以下に例を示します。
+.sp 1n
+.RS 10
+.B .:/home/avh/classes:/usr/local/java/classes
+.RE
+.SH "関連項目"
+.BR java (1),
+.BR javac (1),
+.BR javadoc (1),
+.BR javah (1),
+.BR jdb (1)
+

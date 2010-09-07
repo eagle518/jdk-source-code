@@ -1,0 +1,19 @@
+The files
+
+  libjsoundsolmidi.so
+  libjsoundsolmidi_g.so
+
+are the JNI wrappers to access the Solaris MIDI library from Java Sound.
+Since the Solaris MIDI package is not yet publicly available,
+it is not built by default. Rather, it is copied from this 
+directory to the output directory when Java Sound is built.
+
+In order to compile the JNI wrapper, define 
+
+	BUILD_SOLARISMIDI=true
+
+and run a clean build of the Java Sound area on a machine that 
+has the Solaris MIDI package installed.
+
+Florian.Bomers@sun.com
+

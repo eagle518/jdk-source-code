@@ -1,0 +1,30 @@
+<!ENTITY  java-release   "J2SE @@VERSION@@">
+<!-- Division Titles -->
+<!ENTITY man1	"User Commands">
+<!-- Section Header Titles -->
+<!ENTITY  name-tt	"NAME">
+<!ENTITY  synp-tt	"SYNOPSIS">
+<!ENTITY  intf-tt	"INTERFACE LEVEL">
+<!ENTITY  file-tt	"FILES">
+<!ENTITY  desc-tt	"DESCRIPTION">
+<!ENTITY  opts-tt	"OPTIONS">
+<!ENTITY  oper-tt	"OPERANDS">
+<!ENTITY  parm-tt	"PARAMETERS">
+<!ENTITY  exde-tt	"EXTENDED DESCRIPTION">
+<!ENTITY  exit-tt	"EXIT STATUS">
+<!ENTITY  rtrn-tt	"RETURN VALUES">
+<!ENTITY  erro-tt	"ERRORS">
+<!ENTITY  exam-tt	"EXAMPLES">
+<!ENTITY  usge-tt	"USAGE">
+<!ENTITY  envr-tt	"ENVIRONMENT VARIABLES">
+<!ENTITY  file-tt	"FILES">
+<!ENTITY  also-tt	"SEE ALSO">
+<!ENTITY  attr-tt	"ATTRIBUTES">
+<!ENTITY  warn-tt	"WARNINGS">
+<!ENTITY  note-tt	"NOTES">
+<!ENTITY  diag-tt	"DIAGNOSTICS">
+<!ENTITY  bugs-tt	"BUGS">
+<!ENTITY  iocl-tt	"IOCTLS">
+<!ENTITY  cntx-tt	"CONTEXT">
+<!ENTITY  strc-tt	"STRUCTURE MEMBERS">
+

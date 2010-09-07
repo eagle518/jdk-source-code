@@ -1,0 +1,180 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1999, v.4002-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub Inc>
+<refentry id="javap-1">
+<!--@(#)javap.1 1.13 01/03/14 SMI;-->
+<refmeta><refentrytitle>javap</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">22 Jun 2004</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All
+rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.
+ </refmiscinfo>
+</refmeta>
+<refnamediv><refname>javap</refname><refpurpose>Java class file disassembler
+</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>javap</command><arg>[ options ]<?Pub Caret></arg><arg
+choice="plain" rep="repeat"><replaceable>class</replaceable></arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="javap-1-indx-1"><primary sortas="Java class file disassembler">
+Java class file disassembler &mdash; javap</primary></indexterm><indexterm
+id="javap-1-indx-2"><primary sortas="javap">javap &mdash; Java class file
+disassembler</primary></indexterm><para>The <command>javap</command> command
+disassembles a Java&trade; class file. The options determine the output. If
+no options are used, <command>javap</command> prints out the <literal>package
+</literal>, <literal>protected</literal>, and <literal>public</literal> fields
+and methods of the classes passed to it. The <command>javap</command> command
+displays its output to <literal>stdout</literal>. For example, compile the
+following class declaration:<informalexample><para><screen>import java.awt.*;
+import java.applet.*;
+
+public class DocFooter extends Applet {
+		String date;
+		String email;
+
+		public void init() {
+			resize(500,100);
+
+			date = getParameter("LAST_UPDATED");
+			email = getParameter("EMAIL");
+		}
+
+		public void paint(Graphics g) {
+			g.drawString(date + " by ",100, 15);
+			g.drawString(email,290,15);
+		}
+}</screen></para>
+</informalexample></para>
+<para>The output from <command>javap</command> <literal>DocFooter</literal>
+yields:<informalexample><para><screen>Compiled from DocFooter.java
+public class DocFooter extends java.applet.Applet {
+	java.lang.String date;
+	java.lang.String email;
+	public void init();
+	public void paint(java.awt.Graphics);
+	public DocFooter();
+}
+
+</screen></para>
+</informalexample></para>
+</refsect1>
+<refsect1><title>&opts-tt;</title>
+<para>The following options are supported:</para>
+<variablelist termlength="wholeline">
+<varlistentry><term remap="15"><option>b</option> </term><listitem><para>
+Ensures backward compatibility with <command>javap</command> in JDK 1.1.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>bootclasspath</option> <replaceable>
+path</replaceable> </term><listitem><para>Specifies path from which to load
+bootstrap classes. By default, the bootstrap classes are the classes implementing
+the core Java platform located in <filename>jre/lib/rt.jar</filename> and
+other important jar files.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>c</option> </term><listitem><para>
+Prints out disassembled code, that is, the instructions that comprise the
+Java bytecodes, for each of the methods in the class. These are documented
+in the Java Virtual Machine Specification.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>classpath</option> <replaceable>path
+</replaceable> </term><listitem><para>Specifies the <replaceable>path</replaceable> <command>
+javap</command> uses to look up classes. Overrides the default or the <envar>
+CLASSPATH</envar> environment variable if it is set. Directories are separated
+by colons (<literal>:</literal>). Thus the general format for <replaceable>
+path</replaceable> is:<informalexample><para><literal>.:&lt;your_path></literal></para>
+</informalexample>For example:<informalexample><para><literal>.:/home/avh/classes:/usr/local/java/classes
+</literal> </para>
+</informalexample></para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>extdirs</option> <replaceable>dirs
+</replaceable></term><listitem><para>Overrides location at which installed
+extensions are searched. The default location for extensions is <filename>
+jre/lib/ext</filename>. </para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>help</option> </term><listitem><para>
+Prints out help message for <command>javap</command>. </para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>J</option> <replaceable>flag</replaceable> 
+</term><listitem><para>Passes <replaceable>flag</replaceable> directly to
+runtime system.<informalexample><para><screen>example% <userinput>javap &ndash;J&ndash;version
+</userinput>
+
+example% <userinput>javap &ndash;JJ&ndash;Djava.security.manager \
+     &ndash;Djava.security.policy=MyPolicy MyClassName</userinput></screen></para>
+</informalexample></para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>l</option> </term><listitem><para>
+Displays line and local variable tables.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>package</option> </term><listitem>
+<para>Default. Shows only package, protected, and public classes and members.
+</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>private</option> </term><listitem>
+<para>Shows all classes and members.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>protected</option> </term><listitem>
+<para>Shows only protected and public classes and members.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>public</option> </term><listitem><para>
+Shows only public classes and members.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>s</option> </term><listitem><para>
+Displays internal type signatures.</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>verbose</option> </term><listitem>
+<para>Prints stack size, number of <replaceable>locals</replaceable>, and <replaceable>
+args</replaceable> for methods.</para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>&envr-tt;</title>
+<variablelist termlength="narrow">
+<varlistentry><term remap="15"><envar>CLASSPATH</envar> </term><listitem>
+<para>Used to provide the system with a path to user-defined classes. Directories
+are separated by colons. For example: <informalexample><para><literal>.:/home/avh/classes:/usr/local/java/classes
+</literal> </para>
+</informalexample></para>
+</listitem></varlistentry>
+</variablelist></refsect1>
+<refsect1><title>&attr-tt;</title>
+<para>See <citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>
+5</manvolnum></citerefentry> for a description of the following attributes:
+</para>
+<informaltable frame="All" orient="Port">
+<tgroup cols="2" colsep="1" rowsep="1"><colspec colnum="1" colname="col1"
+colwidth="1*" colsep="1" align="Left"><colspec colnum="2" colname="col2" colwidth="1*"
+align="Left">
+<thead>
+<row><entry colname="col1" align="center" valign="top">ATTRIBUTE TYPE</entry>
+<entry colname="col2" align="center" valign="top">ATTRIBUTE VALUE</entry>
+</row>
+</thead>
+<tbody>
+<row><entry>Availability</entry><entry>SUNWj5dev</entry></row>
+</tbody>
+</tgroup>
+</informaltable>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>java</refentrytitle><manvolnum>1</manvolnum>
+</citerefentry>, <citerefentry><refentrytitle>javac</refentrytitle><manvolnum>
+1</manvolnum></citerefentry>, <citerefentry><refentrytitle>javadoc</refentrytitle>
+<manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>javah
+</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>
+jdb</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry>
+<refentrytitle>attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry> 
+</para>
+</refsect1>
+<!--+ 07/27/00 08:34:40
+    | tagMorph:  $Id: tagMorph-engine 1.54 1998/01/19 05:44:48 $
+    | tagMorph library:  $Id: libtagMorph.a 1.50 1998/01/19 22:02:51 $
+    | sunman-to-solbook 1.17
+    +-->
+</refentry>
+<?Pub *0000008402>

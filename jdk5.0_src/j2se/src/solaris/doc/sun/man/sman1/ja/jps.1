@@ -1,0 +1,114 @@
+<!--ArborText, Inc., 1988-2003, v.4002-->
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?APT Element gi="refentrytitle">
+<?APT Element gi="manvolnum">
+<?APT Element gi="refmiscinfo" attrs="class">
+<?APT Element gi="refmeta">
+<?APT Element gi="refname">
+<?APT Element gi="refpurpose">
+<?APT Element gi="refnamediv">
+<?APT Element gi="title">
+<?APT Element gi="command">
+<?APT Element gi="replaceable">
+<?APT Element gi="arg" attrs="choice">
+<?APT Element gi="cmdsynopsis">
+<?APT Element gi="refsynopsisdiv">
+<?APT Element gi="para">
+<?APT Element gi="term">
+<?APT Element gi="listitem">
+<?APT Element gi="varlistentry">
+<?APT Element gi="variablelist" attrs="termlength">
+<?APT Element gi="refsect1">
+<?APT Element gi="primary" attrs="sortas">
+<?APT Element gi="indexterm" attrs="id">
+<?APT Element gi="note">
+<?APT Element gi="screen">
+<?APT Element gi="example">
+<?APT Element gi="citerefentry">
+<?APT Element gi="refentry" attrs="id">
+<?APT Element gi="filename" empty="yes">
+<?Pub Inc>
+<refentry id="jps-1"> <!--@(#)jps.1	1.1 04/06/15--><refmeta><refentrytitle>
+jps</refentrytitle><manvolnum>1</manvolnum><refmiscinfo class="date">
+2004 年 6 月 22 日</refmiscinfo><refmiscinfo class="sectdesc">&man1;</refmiscinfo><refmiscinfo
+class="software">&java-release;</refmiscinfo><refmiscinfo class="arch">generic</refmiscinfo><refmiscinfo
+class="copyright"> Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+ Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.</refmiscinfo></refmeta><refnamediv><refname>
+jps</refname><refpurpose>Java 仮想マシンプロセス状態ツール</refpurpose></refnamediv><refsynopsisdiv><title>&synp-tt;</title><cmdsynopsis><command
+>jps</command><arg choice="opt"><replaceable>[ options ]</replaceable></arg><arg
+choice="plain"><replaceable>[ hostid ]</replaceable></arg></cmdsynopsis></refsynopsisdiv><refsect1><title>&parm-tt;</title><para>
+オプションは相互に排他的です。オプションを指定する場合は、コマンドの名の直後に指定する必要があります。下記の「オプション」を参照してください。</para><variablelist
+termlength="narrow"><varlistentry><term><replaceable>options</replaceable> </term><listitem><para>
+コマンド行オプション</para></listitem></varlistentry><varlistentry><term><replaceable>
+hostid</replaceable> </term><listitem><para>プロセスレポートを生成するホストのホスト識別子。ホスト ID
+には、通信プロトコル、ポート番号、およびその他の実装系固有のデータを示すオプションコンポーネントを含めることができます。</para></listitem></varlistentry></variablelist></refsect1><refsect1><title>&desc-tt;</title
+><indexterm id="java-1-indx-1"><primary sortas="Java interpreter">Java インタプリタ&mdash;
+java</primary></indexterm><indexterm id="java-1-indx-2"><primary sortas="java">
+ java &mdash; Java インタプリタ</primary></indexterm><para>jps ツールは、ターゲットシステム上の計測機構付き
+HotSpot Java 仮想マシン (JVM) をリストします。このツールは、アクセス権がある JVM 上の情報だけを報告します。</para><para>
+ホスト ID を指定せずに jps が実行された場合は、ローカルホスト上の計測機構付き JVM を探します。ホスト ID が指定された場合は、指定されたホスト上の
+JVM を、指定されたプロトコルとポートを使用して探します。jstatd プロセスがターゲットホスト上で実行していることが前提となります。</para><para>
+jps コマンドは、ターゲットシステム上で見つかった計測機構付き JVM のそれぞれについて、ローカル VM 識別子 (lvmid) を報告します。lvmid
+は、一般に、オペレーティングシステムの JVM プロセスのプロセス識別子ですが、必ずしもそうとは限りません。オプションが指定されなかった場合、jps
+は各 Java アプリケーションの lvmid の後に短い形式のアプリケーションのクラス名または jar ファイル名を続けてリストします。短い形式のクラス名または
+JAR ファイル名では、クラスのパッケージ情報や JAR ファイルのパス情報は省かれます。</para><para>jps コマンドは java 起動ツールを使用して、クラス名と
+main メソッドに渡された引数を探します。ターゲット JVM がカスタム起動ツールで起動された場合、クラス名 (または JAR ファイル名) と main
+メソッドに渡された引数は入手できません。この場合、jps コマンドは、クラス名または JAR ファイル名と main メソッドの引数として、Unknown
+という文字列を出力します。</para><para>jps コマンドによって生成される JVM のリストは、コマンドを実行した主体に許可されているアクセス権によって制限されることがあります。このコマンドは、オペレーティングシステム固有のアクセス制御メカニズムに従って、主体がアクセス権を持っている
+JVM だけをリストします。</para><note><para>このユーティリティはサポートされていないため、JDK の将来のバージョンでは使用できない可能性があります。現在、Windows 98 および Windows ME プラットフォームでは使用できません。</para></note></refsect1><refsect1><title>&opts-tt;</title><para>
+jps コマンドは、コマンド出力を変更する多数のオプションをサポートしています。これらのオプションは、将来、変更または削除されることがあります。</para><variablelist><varlistentry><term>
+&mdash;q</term><listitem><para>クラス名、JAR ファイル名、および main メソッドに渡された引数の出力を抑制して、ローカル
+VM 識別子のリストだけを生成します。</para></listitem></varlistentry><varlistentry><term>-m</term><listitem><para>
+main メソッドに渡された引数を出力します。埋め込み JVM の場合、出力は NULL になることがあります。</para></listitem></varlistentry><varlistentry><term>
+-l</term><listitem><para>アプリケーションの main クラスのフルパッケージ名、またはアプリケーションの JAR ファイルのフルパス名を出力します。</para></listitem></varlistentry><varlistentry><term>
+-v</term><listitem><para>JVM に渡された引数を出力します。</para></listitem></varlistentry><varlistentry><term>
+-V</term><listitem><para>フラグファイル (.hotspotrc ファイル、または -XX:Flags=<filename> 引数によって指定されたファイル) を通じて
+JVM に渡された引数を出力します。</para></listitem></varlistentry><varlistentry><term>-J<replaceable>
+option</replaceable></term><listitem><para> javac によって呼び出された java 起動ツールに <replaceable>
+option</replaceable> を渡します。たとえば、-J-Xms48m は、起動メモリを 48M バイトに設定します。Java で作成された下層の
+VM 実行アプリケーションにオプションを渡すのが、-J の一般的規則です。</para></listitem></varlistentry></variablelist></refsect1><refsect1><title>
+ホスト識別子</title><para>ホスト識別子 (<replaceable>hostid</replaceable>)は、ターゲットシステムを示す文字列です。hostid
+文字列の構文は、URI の構文とほぼ同じです。<screen>[protocol:][[//]hostname][:port][/servername]</screen></para><variablelist><varlistentry><term>
+protocol</term><listitem><para>通信プロトコル。protocol が省かれ、hostname が指定されなかった場合、デフォルトのプロトコルは、プラットフォームに固有の最適化されたローカルプロトコルです。protocol
+が省かれ、hostname が指定された場合、デフォルトのプロトコルは rmi です。</para></listitem></varlistentry><varlistentry><term>
+hostname</term><listitem><para>ターゲットホストを示すホスト名または IP アドレス。hostname が省かれた場合、ターゲットホストはローカルホストです。</para></listitem></varlistentry><varlistentry><term
+>port</term><listitem><para>リモートサーバーと通信するためのデフォルトポート。hostname が省かれるか、protocol
+が最適化されたローカルプロトコルを指定している場合、port は無視されます。そうでない場合、port パラメータの扱いは、実装に固有です。デフォルトの
+rmi プロトコルの場合、port はリモートホスト上の rmiregistry のポート番号を示します。port が省かれ、protocol が
+rmi を示す場合は、デフォルトの rmiregistry ポート (1099) が使用されます。</para></listitem></varlistentry><varlistentry><term>
+servername</term><listitem><para>このパラメータの取り扱いは、実装によって異なります。最適化されたローカルプロトコルの場合、このフィールドは無視されます。rmi
+プロトコルの場合、このパラメータは、リモートホスト上の RMI リモートオブジェクトの名前を表す文字列です。jstatd コマンドの -n オプションを参照してください。</para></listitem></varlistentry></variablelist></refsect1><refsect1
+><title>出力形式</title><listitem><para>jps コマンドの出力は、次のパターンに従います。
+<screen> lvmid [ [ classname | JARfilename | "Unknown"] [ arg* ] [ jvmarg* ] ]</screen>
+出力トークンはすべて、空白で区切られます。埋め込まれた空白を含む
+arg があると、引数を実際の位置パラメータにマップするときにあいまいさが生じます。</para></listitem>
+<note><para>将来のリリースで形式が変更される可能性があるので、jps
+の出力を解析するスクリプトは書かない方がよいでしょう。jps 出力を解析するスクリプトを書く場合は、このツールの将来のリリースでは修正が必要になることを予期しておいてください。</para></note></refsect1><refsect1><title>
+例</title><para>このセクションでは、jps コマンドの例を示します。</para><example><title>ローカルホスト上の計測機構付き
+JVM をリストする:</title>
+<screen>example% jps
+          18027 Java2Demo.JAR
+          18032 jps
+          18005 jstat</screen>
+</example><example>
+<title>リモートホスト上の計測機構付き
+JVM をリストする:</title><para>この例では、jstat サーバーとその内部 RMI レジストリまたは個別の外部 rmiregistry
+プロセスがリモートホストのデフォルトポート (ポート 1099) で実行していることを前提としています。また、ローカルホストはリモートホストにアクセスするための適切なアクセス権を持っているものとします。また、この例には、長い形式のクラス名または
+JAR ファイル名を出力するための -l オプションが含まれています。</para>
+<screen>example% jps -l remote.domain   
+          3002 /opt/j2sdk1.5.0/demo/jfc/Java2D/Java2Demo.JAR
+          2857 sun.tools.jstatd.jstatd</screen></example><example><title>
+レジストリ用にデフォルト以外のポートを使用するリモートホスト上の計測機構付き Java 仮想マシンをリストする:</title><para>この例では、jstatd
+サーバーがリモートホスト上で実行していて、内部 RMI レジストリがポート 2002 にバインドされていることを前提としています。また、この例では、リストされる各
+Java アプリケーションの main メソッドに渡された引数を含めるために、-m オプションを使用しています。<?Pub Caret></para>
+<screen>example% jps -m remote.domain:2002
+          3002 /opt/j2sdk1.5.0/demo/jfc/Java2D/Java2Demo.JAR
+          3102 sun.tools.jstatd.jstatd -p 2002</screen></example></refsect1><refsect1><title>&also-tt;</title><para><citerefentry><refentrytitle>
+java</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>
+jstat</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>
+jstatd</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>
+rmiregistry</refentrytitle><manvolnum>1</manvolnum></citerefentry> </para></refsect1></refentry>

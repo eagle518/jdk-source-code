@@ -1,0 +1,76 @@
+'\" t
+.\" @(#)serialver.1 1.10 00/08/13 SMI;
+.\" Copyright 2004 Sun Microsystems, Inc. All rights reserved.
+.\" Copyright 2004 Sun Microsystems, Inc. Tous droits r駸erv駸.
+.\" 
+.TH serialver 1 "2004 年 6 月 22 日"
+.SH "名前"
+serialver \- シリアルバージョンコマンド
+.\" 
+.\"  This document was created by saving an HTML file as text
+.\"  from the JavaSoft web site:
+.\" 
+.\" http://java.sun.com/j2se/1.5/docs/tooldocs/tools.html
+.\" 
+.\"  and adding appropriate troff macros.  Because the JavaSoft web site 
+.\"  man pages can change without notice, it may be helpful to diff
+.\"  files to identify changes other than new functionality. 
+.\" 
+.SH "形式"
+.B serialver 
+[
+.B options
+] [
+.I classnames
+]
+.TP
+.BI options
+このドキュメントで指定されているコマンド行オプション。
+.TP
+.BI classnames
+1 つまたは複数のクラス名。
+.SH "機能説明"
+.IX "serial version command" "" "serial version command \(em \fLserialver\fP"
+.IX "serialver" "" "\fLserialver\fP \(em serial version command"
+.B serialver
+は、指定された 1 個
+または複数個のクラスの
+.B シリアルバージョン UID
+を、展開しているクラスへコピーするのに適した形式で返します。
+引数なしで呼び出した場合、
+.B serialver
+は使用方法を説明する行を表示します。
+.SH "オプション"
+.TP 15
+.B \-classpath " <directories and zip/jar files separated by:>"
+アプリケーションのクラスおよびリソースの検索パスを設定します。 
+.TP 15
+.B \-show
+単なるユーザインタフェースを表示します。
+ここで完全クラス名を入力し、
+Enter
+キーまたは
+Show
+ボタンを押すと、シリアルバージョン
+UID
+が表示されます。
+.TP 15 
+.BI \-J "option"
+.I option
+を Java 仮想マシンに渡します。ここで、
+.I option
+は、Java アプリケーション起動プログラム java(1) のマニュアルページで
+説明されているオプションの 1 つです。たとえば、
+.I \-J-Xms48m
+は、起動時に使用するメモリを 48M バイトに設定します。
+.B \-J
+が基本にする仮想マシンにオプションを渡すことは、共通の規約です。
+
+.SH "関連項目"
+.LP
+次については、
+.BR java.sun.com 
+を参照または検索してください。
+.TP 10
+.B java.io.ObjectStreamClass @
+http://java.sun.com/j2se/1.5/docs/api/java/io/ObjectStreamClass.html

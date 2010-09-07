@@ -1,0 +1,114 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1998, v.4001-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub Inc>
+<refentry id="orbd-1">
+<!--@(#)orbd.1 1.1 01/03/14 SMI;-->
+<refmeta><refentrytitle>orbd</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">2004 年 6 月 22 日</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.   </refmiscinfo>
+</refmeta>
+<refnamediv><indexterm><primary sortas="orbd">orbd &mdash; Object Request Broker Daemon</primary></indexterm><indexterm><primary sortas="Object Request Broker Daemon">Object Request Broker Daemon &mdash; orbd</primary></indexterm><refname>orbd</refname><refpurpose>Object Request Broker デーモン</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>orbd</command><arg choice="opt"><replaceable>options</replaceable></arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&desc-tt;</title>
+<para>ツールを含むサーバマネージャは、クライアントが CORBA 環境内のサーバ上に存在する持続オブジェクトを透過的に特定して呼び出す場合に使用します。持続サーバは、ネームサービス内の持続オブジェクト参照を発行する一方で、オブジェクト参照内にサーバのポート番号ではなく ORBD のポート番号を組み込みます。持続オブジェクト参照のためにオブジェクト参照内に ORBD ポート番号を組み込むと、以下の利点が得られます。<itemizedlist>
+<listitem><para>ネームサービス内のオブジェクト参照は、サーバのライフサイクルとは無関係に維持されます。たとえば、オブジェクト参照はサーバの最初のインストール時にネームサービス内でサーバによって発行され、その後は何度サーバの起動または停止が行われても <acronym>ORBD</acronym> は常に呼び出し側のクライアントに正しいオブジェクト参照を返します。</para>
+</listitem><listitem><para>クライアントはネームサービス内でオブジェクト参照を 1 度だけ確認する必要があり、サーバのライフサイクルが原因で起きる変更に関係なくこの参照を繰り返し使用できます。</para>
+</listitem></itemizedlist></para>
+<para>ORBD のサーバマネージャにアクセスするには、servertool を使用してサーバを起動する必要があります。servertool はアプリケーションプログラマが、持続サーバの登録、登録解除、起動、停止を行うためのコマンド行インタフェースです。サーバマネージャの詳細については、このドキュメントの「サーバマネージャ」の節を参照してください。</para>
+<para><acronym>orbd</acronym> が起動すると、ネームサービスも起動します。ネームサービスの詳細については、「ネームサービス」を参照してください。</para>
+</refsect1>
+<refsect1><title>必須オプション</title>
+<variablelist><varlistentry><term><option>ORBInitialPort nameserverport </option></term><listitem><para>ネームサーバを起動するポートを指定します。起動後に <acronym>orbd</acronym> はこのポートで着信要求を待機します。Solaris ソフトウェアを使用する場合は、スーパーユーザになって 1024 未満のポートでプロセスを開始する必要があります。このため、1024 以上のポート番号の使用を推奨します。(必須)</para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<refsect1><title>その他のオプション</title>
+<variablelist termlength="wholeline"><varlistentry><term remap="15"><option>port</option> <replaceable>port</replaceable></term><listitem><para>(省略可能) <acronym>ORBD</acronym> を開始する起動ポートを指定します。このポートのデフォルト値は <literal>1049</literal> です。このポート番号は、持続 <acronym>IOR</acronym> のポートフィールドに追加されます。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>defaultdb</option> <replaceable>directory</replaceable></term><listitem><para>(省略可能) <acronym>ORBD</acronym> 持続ストレージディレクトリである <literal>orb.db</literal> が作成されるベースを指定します。このオプションが指定されない場合、デフォルト値は <literal>./orb.db</literal> です。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>serverPollingTime</option> <replaceable>milliseconds </replaceable></term><listitem><para>デーモンスレッドが登録されているサーバの健全度を検査する頻度を指定します。ORBD は、<literal>milliseconds</literal> ごとにプロセスの状態をポーリングします。デフォルト値は 1,000 ミリ秒  (1 秒) です。<literal>milliseconds</literal> に指定される値は、有効な整数でなければなりません。(省略可能) </para>
+</listitem></varlistentry>
+<varlistentry><term remap="15"><option>serverStartupDelay</option> <replaceable> milliseconds </replaceable></term><listitem><para>サーバの再起動の後ロケーション転送例外を送信するまでに ServerManager がどれだけの間待機するかを指定します。ORBD は、ロケーション転送例外を生成するまでに <literal>milliseconds</literal> の間待機します。デフォルト値は、1,000 ミリ秒 (1 秒) です。<literal>milliseconds</literal> に指定される値は、有効な整数でなければなりません。(省略可能) </para>
+</listitem></varlistentry>
+<varlistentry><term><option>J</option><replaceable>option</replaceable></term><listitem><para><replaceable>option</replaceable> を Java 仮想マシンに渡します。この <replaceable>option</replaceable> は、Java アプリケーション起動プログラム java(1) のマニュアルページで説明されているオプションの 1 つです。たとえば、<literal>-J-Xms48m</literal> は、起動時に使用するメモリを 48M バイトに設定します。<literal>-J</literal> が基本とする仮想マシンにオプションを渡すことは、共通の規約です。</para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<refsect1><title>ネームサービスの起動と停止</title>
+<para>ネームサービスは、名前をオブジェクト参照にバインドすることによって、CORBA オブジェクトを指定できるようにする CORBA サービスです。ネームバインディングは、ネーミングサービスに保存できます。クライントは名前を指定して、目的のオブジェクト参照を取得できます。</para>
+<para>クライアントまたはサーバを実行する前に、ORBD を開始します。 ORBD には、持続ネーミングサービスと一時ネーミングサービスが含まれています。これらは両方とも COS ネーミングサービスの実装です。</para>
+<simplelist>
+<member>持続ネーミングサービスは、ネーミングコンテキストに持続性を提供します。つまり、この情報はサービスの停止と起動の間で持続し、サービスに障害が発生した場合に回復可能です。ORBD が 再起動されると、持続ネーミングサービスはネーミングコンテキストグラフを復元するため、すべてのクライアントとサーバの名前のバインディングは損傷を受けません (持続する)。</member>
+<member>以前のバージョンとの互換性のため、 tnameserv (以前のバージョンの JDK と一緒に出荷された 一時ネーミングサービス) もこのリリースの J2SE に含まれています。一時ネーミングサービスが実行されている限り、ネーミングコンテキストは保持されます。サービスが中断された場合、ネーミングコンテキストグラフは失われます。</member></simplelist>
+<para><option>ORBInitialPort</option> 引数は、orbd に必須のコマンド行引数で、ネーミングサービスが実行されるポート番号の設定に使用されます。以下の説明は、Java IDL Object Request Broker Daemon に ポート 1050 を使用できると仮定しています。Solaris ソフトウェアを使用する場合は、スーパーユーザになって 1024 未満のポートでプロセスを開始する必要があります。このため、1024 以上のポート番号の使用を推奨します。必要な場合は、別のポートを使用することもできます。</para>
+<para>UNIX コマンドシェルから orbd を起動するには、次のように入力します。</para>
+<screen> orbd -ORBInitialPort 1050&amp;</screen>
+<para>MS-DOS システムプロンプト (Windows) から起動するには、次のように入力します。</para>
+<screen>start orbd -ORBInitialPort 1050</screen>
+<para>ORBD の実行後に、サーバおよびクライアントアプリケーションを実行できます。クライアントおよびサーバアプリケーションを実行する場合は、ネーミングサービスが実行されているポート番号 (および該当する場合は、マシン名) をアプリケーションに認識させる必要があります。これを実行する方法の 1 つとして、次のコードをアプリケーションに追加することができます。</para>
+<screen>Properties props = new Properties();
+        props.put("org.omg.CORBA.ORBInitialPort", "1050");
+        props.put("org.omg.CORBA.ORBInitialHost", "MyHost");
+        ORB orb = ORB.init(args, props);</screen>
+<para>この例では、ネーミングサービスはホスト「MyHost」のポート 1050 で実行されています。また、サーバまたはクライアントアプリケーションの実行時にコマンド行からポート番号またはマシン名を指定することもできます。たとえば、「HelloApplication」を次のコマンド行で起動します。</para>
+<screen>java HelloApplication -ORBInitialPort 1050 -ORBInitialHost MyHost</screen>
+<para>ネーミングサービスを停止するには、該当するオペレーティングシステムコマンドを使用します (Solaris での "pkill orbd"、または orbd が実行されている DOS ウィンドウでの Ctrl+C など)。一時ネームサービスの場合、サービスが終了すると、ネーミングサービスに登録されている 名前が消失する可能性があります。Java IDL ネーミングサービスは明示的に停止されるまで実行します。</para>
+<para>ORBD に含まれているネーミングサービスの詳細については、「ネーミングサービス」を参照してください。</para>
+</refsect1>
+<refsect1><title>サーバマネージャ</title>
+<para>ORBD のサーバマネージャにアクセスして持続サーバを実行するには、servertool を使用してサーバを起動する必要があります。servertool はアプリケーションプログラマが、持続サーバの登録、登録解除、起動、停止を行うためのコマンド行インタフェースです。servertool を使用してサーバを起動する場合、 orbd と同じホストおよびポートで起動する必要があります。異なるポートでサーバが起動された場合、ローカルコンテキストのデータベースに格納されている情報は無効になり、サービスは正常に機能しなくなります。</para>
+<example><title>サーバマネージャ: 例</title>
+<para>デモ用のサンプルチュートリアルを使って、 idlj コンパイラと javac コンパイラをチュートリアルで示されているように実行します。サーバマネージャを実行するには、以下の手順に従ってアプリケーションを実行します。</para>
+<itemizedlist>
+<listitem><para>1. orbd を起動します。</para>
+<para>orbd を UNIX コマンドシェルから起動するには、次のように入力します。</para>
+<screen>orbd -ORBInitialPort 1050 </screen>
+<para>MS-DOS システムプロンプト (Windows) から起動するには、次のように入力します。 </para>
+<screen>start orbd -ORBInitialPort 1050</screen>
+<para>1050 は、ネームサーバを実行するポートです。<option>ORBInitialPort</option> は必須のコマンド行引数です。Solaris ソフトウェアを 使用する場合は、ルートから 1024 未満のポートでプロセスを開始する必要があります。このため、1024 以上のポート番号の使用を推奨します。</para>
+</listitem><listitem><para>2. servertool を起動します。</para>
+<para>Hello サーバを起動するには、次のように入力します。</para>
+<screen>servertool -ORBInitialPort 1050</screen>
+<para>ネームサーバ (orbd) のポートが前の手順で使用したポート (たとえば、\-ORBInitialPort 1050 ) と同じであることを確認してください。servertool は、ネームサーバと同じポートで起動する必要があります。</para>
+</listitem><listitem><para>3. Hello サーバを servertool プロンプトから起動します。</para>
+<screen>servertool > register -server HelloServer -classpath . &bsol;
+                      -applicationName HelloServerApName</screen>
+<para>servertool はサーバを登録し、「HelloServerApName」という名前を割り当て、サーバ ID を表示します。</para>
+</listitem><listitem><para>4. クライアントアプリケーションを別のターミナルウィンドウまたはプロンプトから実行します。</para>
+<screen> java HelloClient -ORBInitialPort 1050 -ORBInitialHost localhost</screen>
+<para>この例の場合、ネームサーバは Hello クライアントと同じホストで実行されているので、-ORBInitialHost  localhost を省くことができます。ネームサーバが別のホストで実行されている場合は、-ORBInitialHost nameserverhost を使用して IDL ネームサーバが実行されているホストを指定します。</para>
+<para>前の手順と同様に、ネームサーバ (orbd) のポート (たとえば、-ORBInitialPort 1050) を指定します。</para>
+</listitem><listitem><para>5. サーバマネージャの実験が終了したら、ネームサーバ (orbd) と servertool を必ず停止 (終了) してください。</para>
+<para>orbd を DOS プロンプトから停止するには、サーバが実行されているウィンドウを選択し、Ctrl+C を押して停止します。orbd を UNIX シェルから停止するには、プロセスを検索して終了します。サーバは、明示的に停止されるまで起動を引き続き待機します。</para>
+<para>servertool を停止するには、quit と入力し、キーボードの Enter キーを押します。<?Pub Caret></para>
+</listitem></itemizedlist>
+</example>
+</refsect1>
+<refsect1><title>&attr-tt;</title>
+<para>次の属性については、<citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry> のマニュアルページを参照してください。</para>
+<informaltable frame="All" orient="Port"><tgroup cols="2" colsep="1" rowsep="1"><colspec colnum="1" colname="col1" colwidth="1*" colsep="1" align="Left"><colspec colnum="2" colname="col2" colwidth="1*" align="Left"><thead><row><entry colname="col1" align="center" valign="top">属性タイプ</entry><entry colname="col2" align="center" valign="top">属性値</entry></row></thead><tbody><row><entry>使用条件</entry><entry>SUNWj5dev</entry></row></tbody></tgroup></informaltable>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>java</refentrytitle><manvolnum>1</manvolnum>
+</citerefentry>, <citerefentry><refentrytitle>javac</refentrytitle><manvolnum>
+1</manvolnum></citerefentry>, <citerefentry><refentrytitle>servertool</refentrytitle>
+<manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry> </para>
+<para>次については、<literal>java.sun.com</literal> を参照または検索してください。</para>
+<para><variablelist termlength="wholeline">
+<varlistentry><term remap="10"><citetitle>Setting the Classpath</citetitle>
+@</term><listitem><para><ulink url="http://java.sun.com/j2se/1.5/docs/tooldocs/solaris/classpath.html">
+http://java.sun.com/j2se/1.5/docs/tooldocs/solaris/classpath.html</ulink></para></listitem></varlistentry>
+</variablelist></para>
+</refsect1>
+</refentry>
+<?Pub *0000010167 0>

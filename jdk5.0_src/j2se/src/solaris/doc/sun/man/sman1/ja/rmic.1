@@ -1,0 +1,117 @@
+<!DOCTYPE REFENTRY PUBLIC "-//Sun Microsystems//DTD DocBook V3.0-Based SolBook Subset V2.0//EN" [
+<!--ArborText, Inc., 1988-1998, v.4001-->
+<!ENTITY % javaents SYSTEM "javaman.ent">
+%javaents;
+]>
+<?Pub UDT _bookmark _target>
+<?Pub Inc>
+<refentry id="rmic-1">
+<!--@(#)rmic.1 1.13 01/03/14 SMI;-->
+<refmeta><refentrytitle>rmic</refentrytitle><manvolnum>1</manvolnum>
+<refmiscinfo class="date">2004 年 6 月 22 日</refmiscinfo>
+<refmiscinfo class="sectdesc">&man1;</refmiscinfo>
+<refmiscinfo class="software">&java-release;</refmiscinfo>
+<refmiscinfo class="arch">generic</refmiscinfo>
+<refmiscinfo class="copyright"> Copyright 2004 Sun Microsystems, Inc. All rights reserved.  Copyright 2004 Sun Microsystems, Inc. Tous droits r&eacute;serv&eacute;s.  </refmiscinfo>
+</refmeta>
+<refnamediv><refname>rmic</refname><refpurpose>Java RMI スタブコンパイラ</refpurpose></refnamediv>
+<refsynopsisdiv><title>&synp-tt;</title>
+<cmdsynopsis><command>rmic</command><arg>[ options ]</arg><arg choice="plain"><replaceable>package-qualified-class-names</replaceable></arg>
+</cmdsynopsis></refsynopsisdiv>
+<refsect1><title>&desc-tt;</title>
+<indexterm id="rmic-1-indx-1"><primary sortas="Java RMI stub compiler">Java RMI stub compiler &mdash; rmic</primary></indexterm><indexterm id="rmic-1-indx-2"><primary sortas="rmic">rmic &mdash; Java RMI stub compiler</primary></indexterm>
+<para><command>rmic</command> コンパイラは、リモートオブジェクト用のスタブおよびスケルトンクラスファイル (JRMP プロトコル) とスタブおよび Tie クラスファイル (IIOP プロトコル) を生成します。これらのクラスファイルは、リモートオブジェクト実装クラスである、コンパイルされた Java プログラミング言語クラスから生成されます。リモート実装クラスは、インタフェース <literal>java.rmi.Remote</literal> を実装するクラスです。<command>rmic</command> コマンドで指定されるクラスは、<citerefentry><refentrytitle>javac</refentrytitle><manvolnum>1</manvolnum></citerefentry> コマンドで正常にコンパイルされ、完全にパッケージ修飾されたクラスでなければなりません。次に示す例では、<literal>HelloImpl</literal> というクラスファイルに対して <command>rmic</command> を実行しています。<informalexample>
+<para><screen>example% <userinput>rmic hello.HelloImpl</userinput></screen> </para>
+</informalexample></para>
+<para><literal>HelloImpl_Stub.class</literal> ファイルを (クラスのパッケージに対して指定された) <literal>Hello</literal> サブディレクトリに作成します。</para>
+<para>JRMP プロトコルサーバ側エンティティであるリモートオブジェクトのスケルトンには、リモートオブジェクト実装の呼び出しをディスパッチするメソッドがあります。</para>
+<para>リモートオブジェクトの Tie は、スケルトンに似たサーバ側エンティティですが、IIOP プロトコル を使用してクライアントと通信します。</para>
+<para>スタブは、リモートオブジェクトのプロキシで、実際のリモートオブジェクト実装が存在するサーバに、リモートオブジェクトに対するメソッド呼び出しを転送します。クライアントのリモートオブジェクトへの参照は、実際にはローカルスタブへの参照です。</para>
+<para>デフォルトでは、<command>rmic</command> は <option>v1.2</option> オプションが指定された場合と同様に 1.2 JRMP スタブプロトコルを使用するスタブクラスを生成します (1.5 より前のリリースでは、<option>vcompat</option> オプションがデフォルト)。IIOP プロトコル用のスタブクラスおよび Tie クラスを生成するには、<option>iiop</option> オプションを使用します。</para>
+<para>スタブは、リモートインタフェースのみを実装し、リモートオブジェクトによっても実装されるローカルインタフェースは実装しません。スタブはリモートオブジェクトとまったく同じリモートインタフェースのセットを実装するため、クライアントはキャストおよび型チェックに Java 言語の組み込み演算子を使用できます。IIOP の場合は、<literal>PortableRemoteObject.narrow</literal> メソッドを使用する必要があります。</para>
+</refsect1>
+<refsect1><title>&opts-tt;</title>
+<para>次のオプションがサポートされています。</para>
+<variablelist termlength="wholeline"><varlistentry><term remap="20"><option>bootclasspath</option> <replaceable>path</replaceable></term><listitem><para>ブートストラップクラスファイルの位置を上書きします。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>classpath</option> <replaceable>path</replaceable></term><listitem><para><command>rmic</command> がクラスを探すのに用いるパスを <replaceable>path</replaceable> で指定します。この指定値は、デフォルトおよび <envar>CLASSPATH</envar> 環境変数の設定値をオーバーライドします。複数のディレクトリを指定する場合はコロンで区切ります。したがって <replaceable>path</replaceable> の通常の形式は次のようになります。<informalexample>
+<para><literal>.:&lt;</literal><replaceable>your_path</replaceable><literal>></literal></para>
+</informalexample></para>
+<para>以下に例を示します。<informalexample>
+<para><literal>.:/usr/local/java/classes</literal></para>
+</informalexample></para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>d</option> <replaceable>directory</replaceable></term><listitem><para>クラス階層のルートディレクトリを指定します。このオプションを使用して、スタブ、スケルトン、および Tie ファイルの出力先ディレクトリを指定できます。たとえば、次のコマンドを入力します。<screen>% <userinput>rmic -d /java/classes foo.MyClass</userinput></screen></para>
+<para>この例では、<literal>MyClass</literal> から派生したスタブおよびスケルトンクラスをディレクトリ <literal>/java/classes/foo</literal> に配置します。<option>d</option> オプションが指定されていない場合、デフォルトの動作は「<option>d .</option>」が指定された場合と同様です。ターゲットクラスのパッケージ階層は、現在のディレクトリに作成され、スタブ/Tie/スケルトンファイルはその階層内に配置されます。(以前の一部のバージョンの <command>rmic</command> では、<option>d</option> が指定されなかった場合、パッケージ階層は作成されず、すべての出力ファイルは、現在のディレクトリ内に直接配置されました。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>extdirs</option> <replaceable>path</replaceable> </term><listitem><para>インストールされている拡張機能の位置を上書きします。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>g</option></term><listitem><para>ローカル変数を含む、すべてのデバッグ情報の生成を有効にします。デフォルトでは、行番号情報のみが生成されます。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>idl</option></term><listitem><para><command>rmic</command> によって、指定したクラスおよび参照されたクラスの <acronym remap="small">OMG IDL</acronym> が生成されます。<acronym remap="small">IDL</acronym> では、プログラミング言語に依存せずに、宣言するだけでオブジェクトの <acronym remap="small">API</acronym> を指定できます。<acronym remap="small">IDL</acronym> は、<acronym remap="small">CORBA</acronym> バインディングを提供する任意の言語 (Java、C++ など) を使用して、メソッドおよびデータの書き込みおよび呼び出しを行うときの仕様として使われます。完全な説明については、<ulink url="http://www.omg.org/technology/documentation/formal/java_language_mapping_to_omg_idl.html">Java Language to IDL Mapping</ulink> (OMG) のドキュメントを参照してください。</para>
+<para> <option>idl</option> オプションは、合わせて以下のオプションも指定できます。<variablelist termlength="wholeline"><varlistentry><term remap="5"><option>always</option></term><term><option>alwaysgenerate</option></term><listitem><para>既存のスタブ、Tie、および <acronym>IDL</acronym> が入力クラスより新しいときでも、強制的に生成し直します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>factory</option> </term><listitem><para>生成された <acronym remap="small">IDL</acronym> で factory キーワードを使います。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>idlModule</option> <literal>fromJavaPackage[.class]</literal> <literal>toIDLModule</literal> </term><listitem><para><literal>IDLEntity</literal> パッケージのマッピングを指定します。次に例を示します。<informalexample><screen><userinput>&ndash;idlModule foo.bar my::real::idlmod.</userinput></screen>
+</informalexample></para>
+</listitem></varlistentry>
+<varlistentry><term><option>idlFile</option> <literal>fromJavaPackage[.class]</literal> <literal>toIDLFile</literal> </term><listitem><para><literal>IDLEntity</literal> ファイルのマッピングを指定します。次に例を示します。<informalexample><screen><userinput>&ndash;idlFile test.pkg.X TEST16.idl</userinput></screen>
+</informalexample></para>
+</listitem></varlistentry>
+</variablelist></para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>iiop</option></term><listitem><para><command>rmic</command> は、<acronym remap="small">JRMP</acronym> のスタブとスケルトンクラスの代わりに、<acronym remap="small">IIOP</acronym> のスタブと Tie クラスを生成します。スタブクラスは、リモートオブジェクトのローカルプロキシで、クライアントがサーバに呼び出しを送信するときに使われます。各リモートインタフェースにはスタブクラスが必要です。スタブクラスによってリモートインタフェースが実装されます。クライアントでリモートオブジェクトを参照すると、実際にはスタブを参照することになります。Tie クラスは、サーバ側で受信した呼び出しを処理し、その呼び出しを適切な実装クラスにディスパッチするときに使われます。各実装クラスには、Tie クラスが必要です。<option>iiop</option> を指定して <command>rmic</command> を起動すると、次の命名規約に準拠したスタブと Tie が生成されます。<informalexample><screen>_&lt;implementationName>_stub.class
+_&lt;interfaceName>_tie.class</screen>
+</informalexample><option>iiop</option> オプションは、合わせて以下のオプションも指定できます。<variablelist termlength="wholeline"><varlistentry><term remap="5"><option>always</option></term><term><option>alwaysgenerate</option></term><listitem><para>既存のスタブ、Tie、および <acronym>IDL</acronym> が入力クラスより新しいときでも、強制的に生成し直します。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>nolocalstubs</option></term><listitem><para>同じプロセスのクライアントとサーバに対して最適化されたスタブを作成しません。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>noValueMethods</option></term><listitem><para><option>idl</option> オプションとともに使用する必要があります。発行された <acronym remap="small">IDL</acronym> に、valuetype メソッドおよび初期化子を追加しません。このメソッドおよび初期化子は、valuetype のオプションです。<option>idl</option> オプションを使うときは、<option>noValueMethods</option> オプションを指定しない限り生成されます。</para>
+</listitem></varlistentry>
+<varlistentry><term><option>poa</option></term><listitem><para>継承を<literal>org.omg.CORBA_2_3.portable.ObjectImpl</literal> から <literal>org.omg.PortableServer.Servant.</literal> へ変更します。</para>
+<para>Portable Object Adapter (<acronym>POA</acronym>) の <literal>PortableServer</literal> モジュールは、ネイティブの <literal>Servant</literal> 型を定義します。 Java プログラミング言語では、servant 型は、Java の <literal>org.omg.PortableServer.Servant</literal> クラスにマップされます。これはすべての <acronym>POA</acronym> サーバント実装の基底クラスとして機能し、アプリケーション開発者が呼び出せる多数のメソッドを提供します。また、<acronym>POA</acronym> 自体が読み出したり、サーバント動作を制御するためにユーザが上書きしたりできるメソッドも提供します。CORBA V 2.3.1 の「OMG IDL to Java Language Mapping Specfication (ptc/00-01-08.pdf)」に基づいています。</para>
+</listitem></varlistentry>
+</variablelist></para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>J</option></term><listitem><para><option>D</option> オプションと併用した場合、<option>J</option> の後のオプション (<option>J</option> と <option>D</option> オプションの間は空白文字をいれない) を java インタプリタに渡します。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>keepg</option></term><term> または </term><term remap="20"><option>keepgenerated</option></term><listitem><para>スタブ、スケルトンおよび tie クラス用に生成された <literal>.java</literal> ソースファイルを保持し、<literal>.class</literal> ファイルと同じディレクトリに書き込みます。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>nowarn</option></term><listitem><para>警告をオフにします。このオプションを使用した場合、コンパイラは警告を出力しません。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>sourcepath</option> <replaceable>path</replaceable></term><listitem><para>ユーザソースファイルを検索する場所を指定します。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>vcompat</option></term><listitem><para>1.1 と 1.2 の両方の JRMP スタブプロトコルバージョンと互換性があるスタブおよびスケルトンクラスを生成します (1.5 より前のリリースでは、このオプションはデフォルト)。生成されたスタブクラスは、JDK 1.1 の仮想マシンに読み込まれる場合、1.1 のスタブプロトコルバージョンを使用し、1.2 以降の仮想マシンに読み込まれる場合は、1.2 のスタブプロトコルバージョンを使用します。生成されたスケルトンクラスは、1.1 と 1.2 の両方のスタブプロトコルバージョンをサポートします。生成されたクラスは、両方の操作モードをサポートするため、比較的サイズが大きくなります。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>verbose</option></term><listitem><para>コンパイラとリンカに詳細情報を出力させます。具体的には、コンパイルされるクラスファイル、およびロードされるクラスファイルに関する情報が出力されます。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>v1.1</option></term><listitem><para>JDK 1.1 のスタブプロトコルバージョン専用のスタブおよびスケルトンを作成します。このオプションは、JDK 1.1 から <command>rmic</command> によって生成され、アップグレードできない (および動的クラスローディングが使用されていない) 既存の静的に配備されたスタブクラスと直列化互換性のあるスタブクラスを生成する場合にのみ使用します。</para>
+</listitem></varlistentry>
+<varlistentry><term remap="20"><option>v1.2</option></term><listitem><para>(デフォルト) 1.2 JRMP のスタブプロトコルバージョン専用のスタブクラスを生成します。スケルトンクラスは 1.2 のスタブプロトコルバージョンで使用されないため、このオプションではスケルトンクラスが生成されません。生成されたスタブクラスが JDK 1.1 の仮想マシンに読み込まれた場合は、機能しません。</para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<refsect1><title>&envr-tt;変数</title>
+<variablelist termlength="medium"><varlistentry><term remap="20"><envar>CLASSPATH</envar></term><listitem><para>ユーザ定義クラスへのパスをシステムに通知するために使用します。ディレクトリはコロンで区切ります。たとえば、次のようになります。<literal>.:/usr/local/java/classes</literal></para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<refsect1><title>&attr-tt;</title>
+<para>次の属性については、<citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry> のマニュアルページを参照してください。</para>
+<informaltable frame="all" orient="port"><tgroup cols="2" colsep="1" rowsep="1"><colspec colnum="1" colname="col1" colwidth="1*" colsep="1" align="left"><colspec colnum="2" colname="col2" colwidth="1*" align="left"><thead><row><entry colname="col1" align="center" valign="top">属性タイプ</entry><entry colname="col2" align="center" valign="top">属性値</entry></row></thead><tbody><row><entry>使用条件</entry><entry>SUNWj5dev</entry></row></tbody></tgroup></informaltable>
+</refsect1>
+<refsect1><title>&also-tt;</title>
+<para><citerefentry><refentrytitle>javac</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>attributes</refentrytitle><manvolnum>5</manvolnum></citerefentry></para>
+<para>次を参照するか、<literal>java.sun.com</literal> で検索してください。</para>
+<variablelist termlength="wholeline"><varlistentry><term remap="10"><citetitle>クラスパスの設定</citetitle> @</term><listitem><para><ulink url="http://java.sun.com/j2se/1.5/docs/tooldocs/solaris/classpath.html">http://java.sun.com/j2se/1.5/docs/tooldocs/solaris/classpath.html</ulink></para>
+</listitem></varlistentry>
+</variablelist>
+</refsect1>
+<!--+ 07/27/00 08:35:39
+    | tagMorph:  $Id: tagMorph-engine 1.54 1998/01/19 05:44:48 $
+    | tagMorph library:  $Id: libtagMorph.a 1.50 1998/01/19 22:02:51 $
+    | sunman-to-solbook 1.17
+    +-->
+</refentry><?Pub Caret>
+<?Pub *0000012885 0>
