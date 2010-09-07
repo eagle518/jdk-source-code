@@ -1,0 +1,5 @@
+//
+// @(#)jinstall_fr.rc	1.64 08/02/13
+//
+ 
+#include "jinstallcom_fr.rc"

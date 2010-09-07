@@ -1,0 +1,52 @@
+Action	Condition	Sequence	ISComments	ISAttributes
+s72	S255	I2	S255	I4
+InstallUISequence	Action
+SetupCompleteError	SDKSILENT=0	-3	SetupCompleteError	
+SetupCompleteSuccess	SDKSILENT=0 And ENDDIALOG=1	-1	SetupCompleteSuccess	
+SetupInterrupted	(Not Installed) And (Installed)	-2	SetupInterrupted	
+SETMODIFYREMOVE	(VersionNT=400) OR (Version9X=490) OR (Version9X=410)	32		
+IsMozillaInstalled		12	Find out if Mozilla is installed on the system	
+IsIEInstalled	SDKSILENT=1 Or (SKIPLICENSE=1 And ADVANCED<>1)	15	set it to 1	
+AppSearch		18	AppSearch	
+SetJDK_VERSIONtoPatchedVersion	REMOVE And MODE="C" And JDK_VERSION<>PREV_CONSUMER_VERSION	19		
+SetINSTALLDIR	MODE="U"	32		
+SetFINISHTEXT	KERNEL=1	33		
+LaunchConditions		52	LaunchConditions	
+FindRelatedProducts		150	FindRelatedProducts	
+NewerConsumerVersionInstalled	(Not REMOVE) And (MODE<>"S") And (PREV_CONSUMER_VERSION>JDK_VERSION)	151	Error if installing Consumer and newer consumer version is already installed.	
+SameVersionAlreadyInstalledAsStatic	(Not REMOVE) And (MODE<>"S") And SAMEVERSTATICPRODUCTFOUND	152	Error if installing Consumer and the same version of Static is already installed.	
+CCPSearch	CCP_TEST	250	CCPSearch	
+RMCCPSearch	Not CCP_SUCCESS And CCP_TEST	300	RMCCPSearch	
+ValidateProductID		350	ValidateProductID	
+CostInitialize		400	CostInitialize	
+FileCost		450	FileCost	
+IsolateComponents		500	IsolateComponents	
+SetODB		501	set it to 0	
+ResolveSource	Not Installed	525	ResolveSource	
+CostFinalize		538	CostFinalize	
+SetARPReadme		539		
+SetUninstallProductCode		590	set UninstallProductCode to ProductCode	
+SetUninstallConsumerProduct	CONSUMERPRODUCTFOUND And MODE="C" And SAME_VERSION_MODE="U"	591	set UninstallProductCode to CONSUMERPRODUCTFOUND	
+SetREINSTALL_COND	(Installed And DATABASE<>OriginalDatabase) Or (MODE="S" And SAME_VERSION_MODE="S") Or (MODE="C" And (SAME_VERSION_MODE="C" Or SAME_VERSION_MODE="U"))	600		
+reinstalldialog	(NOT REINSTALL_NO_PROMPT) And REINSTALL_COND	601	reinstalljre	
+uninstall	REINSTALL_NO_PROMPT And REINSTALL_COND	602		
+SetReinstall	REINSTALL_NO_PROMPT And REINSTALL_COND	603		
+ResetENDDIALOG	REINSTALL_NO_PROMPT And REINSTALL_COND	604		
+ExitUI	REINSTALL_NO_PROMPT And REINSTALL_COND	605		
+Warning	(Version9X Or VersionNT=400 Or (VersionNT=500 And ServicePackLevel<4) Or (VersionNT=501 And ServicePackLevel<2)) And (Not Installed) And SDKSILENT=0	653		
+LicenseAgreement	Not Installed And SDKSILENT=0 And SKIPLICENSE<>1	658	License Agreement	
+SetIExplorer	SKIPLICENSE=1 And ADVANCED=1	660		
+OutOfSpace	SKIPLICENSE=1 And ADVANCED<>1 And (OutOfNoRbDiskSpace=1)	661	Low disk space	
+MigrateFeatureStates		662	MigrateFeatureStates	
+CustomSetup	SDKSILENT=1 Or (SKIPLICENSE=1 And ADVANCED=1)	699	Custom Selection	
+MaintenanceWelcome	Installed And SDKSILENT=0	737	Maintenance Welcome	
+CheckPendingFileRenameOperations	(Not REMOVE)	740	Error if pending file rename operations	
+GetKernelReadyDoNotFinalize	MODE="U"	753		
+FilesInUseDialog		770	our own FilesInUse dialog	
+CheckFIUCancel		771	check RC from our own FilesInUse dialog	
+needrebootIEVM	Not Installed	780	do we need a reboot for IE	
+needrebootFirefox	Not Installed	781		
+enablesetupdlg	PROG=0	790	enables the custom setup progress bar	
+SetupProgress	PROG<>0	800	SetupProgress	
+ExecuteAction		825	ExecuteAction	
+PostInstallComplete		870	PostInstallComplete	

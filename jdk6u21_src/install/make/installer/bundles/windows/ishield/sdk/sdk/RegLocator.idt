@@ -1,0 +1,7 @@
+Signature_	Root	Key	Name	Type
+s72	i2	s255	S255	I2
+RegLocator	Signature_
+JavaDB_INSTALLDIR_Signature	2	SOFTWARE\Sun Microsystems\JavaDB\CurrentVersion	InstallDir	2
+NewSignature1	2	HARDWARE\DESCRIPTION\System\CentralProcessor\0	ProcessorNameString	2
+SameVersionJREInstalledSignature	2	SOFTWARE\JavaSoft\Java Runtime Environment\[JDK_VERSION]	JavaHome	2
+NewSignature3	0	http\shell\open\command		1

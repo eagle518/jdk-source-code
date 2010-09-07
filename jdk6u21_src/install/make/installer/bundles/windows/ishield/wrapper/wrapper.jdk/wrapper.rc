@@ -1,0 +1,128 @@
+
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+#define MANIFEST_RESOURCE_ID 1
+#include "afxres.h"
+#undef APSTUDIO_READONLY_SYMBOLS
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Manifest
+//
+
+MANIFEST_RESOURCE_ID RT_MANIFEST "wrapperer.exe.manifest"         
+
+/////////////////////////////////////////////////////////////////////////////
+// Include foreign resources
+/////////////////////////////////////////////////////////////////////////////
+
+#pragma code_page(1252)
+#include "wrapper_fr.rc"
+#include "wrapper_es.rc"
+#include "wrapper_it.rc"
+#include "wrapper_de.rc"
+#include "wrapper_sv.rc"
+
+#pragma code_page(932)
+#include "wrapper_ja.rc"
+
+#pragma code_page(949)
+#include "wrapper_ko.rc"
+
+#pragma code_page(936)
+#include "wrapper_zh.rc"
+
+#pragma code_page(950)
+#include "wrapper_zh_TW.rc"
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English resources
+/////////////////////////////////////////////////////////////////////////////
+
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_JAVA		ICON	DISCARDABLE	"java-icon.ico"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// JAVA_INSTALLER
+//
+
+IDP_INSTALLERMSI           JAVA_INSTALLER  MOVEABLE PURE "jdk.msi"
+#include "wrapper_cab_sed.rc"
+// auto update will not build in 64 bit machine
+#ifndef _AMD64
+IDP_AUINSTALLER		        JAVA_INSTALLER MOVEABLE PURE "au.msi"
+IDP_AUINSTALLERCAB		    JAVA_INSTALLER MOVEABLE PURE "au.cab"
+#endif
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ERROR_TITLE               "Java Installer Connection Error"
+    IDS_ERROR_MESSAGE             "The installer cannot proceed with the current Internet Connection proxy settings. Please check the Installation Notes for more information."
+    IDS_PROXY_AUTH__ERROR_MESSAGE "The installer cannot proceed with the current Internet Connection proxy settings. Please check the Installation Notes for more information."
+    IDS_ERROR_WI20                "Java(TM) could not be installed because the Windows Installer 2.0 Engine is not installed on this system.  Please download and install Windows Installer 2.0 or higher from the Microsoft web site."
+END
+
+/////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////////////
+
+//#endif    
+/////////////////////////////////////////////////////////////////////////////
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED

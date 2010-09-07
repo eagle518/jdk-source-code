@@ -1,0 +1,11 @@
+Action	Type	Source	Target	ISComments
+s72	i2	S64	S0	S255
+CustomAction	Action
+setAllUsersProfile2K	51	ALLUSERSPROFILE	[%ALLUSERSPROFILE]	
+SetAllUsersProfileNT	51	ALLUSERSPROFILE	[%SystemRoot]\Profiles\All Users	
+setUserProfileNT	51	USERPROFILE	[%USERPROFILE]	
+regautask	1	auutilsDLL	RegToTask	
+unregautask	1	auutilsDLL	UnregToTask	
+regautask64	1	auutilsDLL	RegToTask64bit	
+AddRegKeys	1	auutilsDLL	InstallAUpdate	
+RemoveRegKeys	1	auutilsDLL	UninstallAUpdate	

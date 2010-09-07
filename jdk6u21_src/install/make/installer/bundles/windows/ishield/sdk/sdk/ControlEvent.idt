@@ -1,0 +1,66 @@
+Dialog_	Control_	Event	Argument	Condition	Ordering
+s72	s50	s50	s255	S255	I2
+ControlEvent	Dialog_	Control_	Event	Argument	Condition
+CancelSetup	No	EndDialog	Return	1	1
+CancelSetup	Yes	DoAction	RemoveJDKMSICache	1	1
+CancelSetup	Yes	EndDialog	Exit	1	2
+CustomSetup	Back	NewDialog	LicenseAgreement	NOT Installed	2
+CustomSetup	Back	NewDialog	MaintenanceType	(Installed And VersionNT=400) OR (Installed And Version9X<=490)	1
+CustomSetup	Back	NewDialog	MaintenanceWelcome	Installed And VersionNT>=500	3
+CustomSetup	Cancel	SpawnDialog	CancelSetup	1	0
+CustomSetup	ChangeFolder	SelectionBrowse	InstallChangeFolder	1	0
+CustomSetup	Next	DoAction	semicolon	1	1
+CustomSetup	Next	EndDialog	Return	(OutOfNoRbDiskSpace <> 1) And (SEMICOLON=1)	4
+CustomSetup	Next	NewDialog	OutOfSpace	OutOfNoRbDiskSpace = 1	3
+CustomSetup	Next	NewDialog	Semicolon	SEMICOLON=0	2
+FilesInUse	Exit	EndDialog	Exit	1	1
+FilesInUse	Ignore	EndDialog	Ignore	1	1
+FilesInUse	Retry	EndDialog	Retry	1	1
+InstallChangeFolder	Cancel	EndDialog	Return	1	2
+InstallChangeFolder	Cancel	Reset	0	1	1
+InstallChangeFolder	NewFolder	DirectoryListNew	0	1	0
+InstallChangeFolder	OK	EndDialog	Return	1	3
+InstallChangeFolder	OK	SetTargetPath	[_BrowseProperty]	1	2
+InstallChangeFolder	Up	DirectoryListUp	0	1	0
+LicenseAgreement	Cancel	SpawnDialog	CancelSetup	1	1
+LicenseAgreement	Next	NewDialog	CustomSetup	1	1
+MaintenanceType	Back	NewDialog	MaintenanceWelcome	1	1
+MaintenanceType	Cancel	SpawnDialog	CancelSetup	1	0
+MaintenanceType	Next	[ProgressType0]	Modify	_IsMaintenance = "Change"	2
+MaintenanceType	Next	[ProgressType1]	Modifying	_IsMaintenance = "Change"	3
+MaintenanceType	Next	[ProgressType1]	Uninstalling	_IsMaintenance = "Remove"	10
+MaintenanceType	Next	[ProgressType2]	modified	_IsMaintenance = "Change"	6
+MaintenanceType	Next	[ProgressType2]	uninstalled	_IsMaintenance = "Remove"	11
+MaintenanceType	Next	[ProgressType3]	modifies	_IsMaintenance = "Change"	7
+MaintenanceType	Next	[ProgressType3]	uninstalls	_IsMaintenance = "Remove"	12
+MaintenanceType	Next	EndDialog	Return	_IsMaintenance = "Remove"	11
+MaintenanceType	Next	NewDialog	CustomSetup	_IsMaintenance = "Change"	12
+MaintenanceType	Next	Remove	ALL	_IsMaintenance = "Remove"	14
+MaintenanceWelcome	Cancel	SpawnDialog	CancelSetup	1	0
+MaintenanceWelcome	Next	NewDialog	CustomSetup	VersionNT>=500	2
+MaintenanceWelcome	Next	NewDialog	MaintenanceType	(VersionNT=400 OR Version9X<=490)	1
+OutOfSpace	Resume	NewDialog	CustomSetup	ACTION <> "ADMIN"	1
+Semicolon	PushButton1	NewDialog	CustomSetup	1	1
+SetupCompleteError	Finish	DoAction	OPENHELP	(OPENJAVAHELP="True")	2
+SetupCompleteError	Finish	EndDialog	Exit	1	3
+SetupCompleteSuccess	OK	DoAction	servicetag	(NOT Installed)	1
+SetupCompleteSuccess	OK	EndDialog	Exit	1	2
+SetupCompleteSuccess	RegInfoButton	DoAction	reginfolaunch	(ProductLanguage<>1041) And (ProductLanguage<>2052)	1
+SetupCompleteSuccess	RegInfoButton	DoAction	reginfolaunchja	ProductLanguage=1041	2
+SetupCompleteSuccess	RegInfoButton	DoAction	reginfolaunchzh_CN	ProductLanguage=2052	3
+SetupCompleteSuccess	CancelButton	EndDialog	Exit	1	1
+SetupError	A	EndDialog	ErrorAbort	1	0
+SetupError	C	EndDialog	ErrorCancel	1	0
+SetupError	I	EndDialog	ErrorIgnore	1	0
+SetupError	N	EndDialog	ErrorNo	1	0
+SetupError	O	EndDialog	ErrorOk	1	0
+SetupError	R	EndDialog	ErrorRetry	1	0
+SetupError	Y	EndDialog	ErrorYes	1	0
+Warning	PushButton1	EndDialog	Exit	1	1
+Warning	PushButton2	EndDialog	Ignore	1	1
+reinstalldialog	No	EndDialog	Exit	1	1
+reinstalldialog	Yes	DoAction	reinstall1	1	2
+reinstalldialog	Yes	DoAction	reinstall2	TRANSFORMS<>""	3
+reinstalldialog	Yes	DoAction	reinstall3	TRANSFORMS=""	4
+reinstalldialog	Yes	EndDialog	Exit	1	3
+SetupInitialization	Cancel	SpawnDialog	CancelSetup	1	1

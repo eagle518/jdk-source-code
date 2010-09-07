@@ -1,0 +1,9 @@
+File	Component_	FileName	FileSize	Version	Language	Attributes	Sequence	ISBuildSourcePath	ISAttributes
+s72	s72	s255	i4	S72	S20	I2	i2	S255	I4
+File	File
+aucheck	aucheckcomponent	jaucheck.exe	0				1	<ISProjectFolder>\jaucheck.exe	1
+jaureg	jauregcomponent	jaureg.exe	0				1	<ISProjectFolder>\jaureg.exe	1
+jucheck	jucheckcomponent	jucheck.exe	0				1	<ISProjectFolder>\jucheck.exe	1
+jusched	juschedcomponent	jusched.exe	0				1	<ISProjectFolder>\jusched.exe	1
+task.xml	oemupdate32	task.xml	0				1	<ISProjectFolder>\task.xml	1
+task64.xml	oemupdate64	task64.xml	0				1	<ISProjectFolder>\task64.xml	1

@@ -1,0 +1,16 @@
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# @(#)jdk.description	1.3 10/03/23
+#
+# This file contains the description for the Java Development package (JDK).
+#
+cat << EOF | fmt -u
+The __JDK_LONG_NAME__ (__JDK_ACRONYM__) includes both the runtime environment (Java
+virtual machine, the Java platform classes and supporting files) and development
+tools (compilers, debuggers, tool libraries and other tools).
+
+The __JDK_ACRONYM__ is a development environment for building applications,
+applets and components that can be deployed with the __JRE_LONG_NAME__.
+EOF

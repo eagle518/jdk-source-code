@@ -1,0 +1,24 @@
+Registry	Root	Key	Name	Value	Component_	ISAttributes
+s72	i2	s255	S255	S0	s72	I4
+Registry	Registry
+Registry1	2	Software\JavaSoft\Java Runtime Environment\[JDK_VERSION]	-		jz	0
+Registry10	2	Software\JavaSoft\Java Runtime Environment\[JDK_VERSION]\MSI	JU	[JU]	jz	0
+Registry11	2	Software\JavaSoft\Java Runtime Environment\[JDK_VERSION]\MSI	OEMUPDATE	[OEMUPDATE]	jz	0
+Registry12	2	Software\JavaSoft\Java Runtime Environment\[JDK_VERSION]\MSI	MODE	[MODE]	jz	0
+Registry17	2	Software\JavaSoft\Java Runtime Environment\[JDK_VERSION]\MSI	JQS	[JQS]	jz	0
+Registry13	2	Software\JavaSoft\Java Runtime Environment\[JDK_VERSION]\MSI	FROMVERSION	[FROMVERSION]	jz	0
+Registry18	2	Software\JavaSoft\Java Runtime Environment\[JDK_VERSION]\MSI	FROMVERSIONFULL	[FROMVERSIONFULL]	jz	0
+Registry14	2	Software\JavaSoft\Java Runtime Environment\[JDK_VERSION]\MSI	KERNEL	[KERNEL]	jz	0
+Registry15	2	Software\JavaSoft\Java Runtime Environment\[JDK_VERSION]\MSI	PRODUCTVERSION	[ProductVersion]	jz	0
+Registry2	2	Software\JavaSoft\Java Runtime Environment\[JDK_VERSION]\MSI	INSTALLDIR	[INSTALLDIR]	jz	0
+Registry3	2	Software\JavaSoft\Java Runtime Environment\[JDK_VERSION]\MSI	SYSTRAY	[SYSTRAY]	jz	0
+Registry4	2	Software\JavaSoft\Java Runtime Environment\[JDK_VERSION]\MSI	EULA	[EULA]	jz	0
+Registry5	2	Software\JavaSoft\Java Runtime Environment\[JDK_VERSION]\MSI	IEXPLORER	[IEXPLORER]	jz	0
+Registry6	2	Software\JavaSoft\Java Runtime Environment\[JDK_VERSION]\MSI	MOZILLA	[MOZILLA]	jz	0
+Registry7	2	Software\JavaSoft\Java Runtime Environment\[JDK_VERSION]\MSI	JAVAUPDATE	[JAVAUPDATE]	jz	0
+Registry8	2	Software\JavaSoft\Java Runtime Environment\[JDK_VERSION]\MSI	AUTOUPDATECHECK	[AUTOUPDATECHECK]	jz	0
+Registry16	2	Software\JavaSoft\Java Runtime Environment\[JDK_VERSION]\MSI	AUTOUPDATEDELAY	[AUTOUPDATEDELAY]	jz	0
+Registry9	2	Software\Microsoft\Windows\CurrentVersion\Uninstall\[ProductCode]	DisplayIcon	[INSTALLDIR]\bin\javaws.exe	jz	0
+Registry_FamilyVersion	2	Software\JavaSoft\Java Runtime Environment	Java[MINOR]FamilyVersion	[JDK_VERSION]	consumer	0
+RegistryImageCkSum	2	Software\JavaSoft\Java Runtime Environment\[JDK_VERSION]\MSI	ImageCkSum	[ImageCkSum]	jz	0
+RegistryFullVersion	2	Software\JavaSoft\Java Runtime Environment\[JDK_VERSION]\MSI	FullVersion	[FullVersion]	jz	0

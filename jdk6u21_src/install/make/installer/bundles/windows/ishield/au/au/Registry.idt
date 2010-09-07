@@ -1,0 +1,5 @@
+Registry	Root	Key	Name	Value	Component_	ISAttributes
+s72	i2	s255	S255	S0	s72	I4
+Registry	Registry
+Registry1	2	SOFTWARE\Microsoft\Windows\CurrentVersion\Run	SunJavaUpdateSched	"[INSTALLDIR]jusched.exe"	isooemupdateset	
+Registry3	2	SOFTWARE\JavaSoft\Auto Update	AUVersion	2.0.0.0	aucheckcomponent	

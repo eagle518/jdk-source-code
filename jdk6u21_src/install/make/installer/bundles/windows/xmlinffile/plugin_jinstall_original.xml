@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- XML file to be staged here: #DEFAULTXML# -->
+
+<java-update>
+  <information version="1.0" xml:lang="en">
+    <msi-url>#CAB_LOCATION#</msi-url>
+    <installaux-name></installaux-name>
+    <preload-url></preload-url>
+    <run-url></run-url>
+    <min-os></min-os>
+    <min-processor-speed></min-processor-speed>
+    <min-memory></min-memory>
+    <allowable-locales></allowable-locales>
+    <allowable-geos></allowable-geos>
+    <sponsor-preference>SP8;SP1;SP4</sponsor-preference>
+    <post-status>https://sjremetrics.java.com/b/ss//6</post-status>
+    <cntry-lookup>http://jal.sun.com/webapps/installstat/CountryLookup</cntry-lookup>
+    <online-options>ED=0 SP2OFF=1 SP3OFF=1 SP5OFF=1 SP6OFF=1 SP7OFF=1 SP9OFF=1 SP10OFF=1 MSDIR=#MSDIRVALUE# SPWEB=#SPONSOR_LOCATION#</online-options>
+    <offline-options>ED=0 SP2OFF=1 SP3OFF=1 SP5OFF=1 SP6OFF=1 SP7OFF=1 SP9OFF=1 SP10OFF=1 MSDIR=#MSDIRVALUE# SPWEB=#SPONSOR_LOCATION#</offline-options>
+  </information>
+</java-update>

@@ -1,0 +1,53 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_NEUTRAL
+#pragma code_page(1252)
+#endif //_WIN32
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    
+    IDS_ERROR_TITLE               "Verbindungsfehler des Java-Installationsprogramms"
+    IDS_ERROR_MESSAGE             "Das Installationsprogramm kann mit den aktuellen Proxy-Einstellungen für die Internetverbindung nicht arbeiten. Weitere Hinweise finden Sie in den Installationshinweisen."
+    IDS_PROXY_AUTH__ERROR_MESSAGE "Das Installationsprogramm kann mit den aktuellen Proxy-Einstellungen für die Internetverbindung nicht arbeiten. Weitere Hinweise finden Sie in den Installationshinweisen."
+    IDS_ERROR_WI20                "Java(TM) konnte nicht installiert werden, da Windows Installer 2.0 auf diesem System nicht installiert ist.  Laden Sie Windows Installer 2.0 oder höher von der Microsoft-Website herunter und installieren Sie es."
+    IDS_WARNING_CAPTION             "Warnung - Java(TM)-Installationsprogramm"
+    
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
+

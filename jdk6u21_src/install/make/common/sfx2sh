@@ -1,0 +1,433 @@
+#!/bin/sh
+#
+# @(#)sfx2sh	1.64 10/04/30
+#
+# Copyright (c) 2008, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# Convert a self-extracting zip file into a shell script that requires
+# the LICENSE be read.
+#
+# parameters:
+#
+#  $1: data_file        the path to the data_file (what gets installed).
+#  $2: license_file     the path to the license file. (pass "" if no LICENSE is required)
+#  $3: out_file         the name for the SFX installer output by this script.
+#  $4: image            the path to an image used to calculate installed size.
+#  $5: pack_files       a list of packed files, relative to the install root.
+#  $6: platform         the platform of the target system.
+#  $7: target_arch      the data architecture of the target system.
+#  $8: is_jdk           set to the string "JDK" for the JDK and "JRE" for the JRE.
+#  $9: is_rpm_package   set to the string "RPM" for RPM installers (optional).
+#
+# Note: the image is used to calculate the size requirements for installation,
+#       which is sizeof(image) + sizeof(data_file).
+#
+# Note: the pack_files can be set to the empty string for payloads that do not
+#       require explicit use of unpack200 (ex.: RPM packages and debug bundles).
+#
+PATH=/usr/bin:/bin
+
+data_file=$1
+license_file=$2
+out_file=$3
+image=$4
+pack_files="$5"
+platform=$6
+target_arch=$7
+is_jdk=$8
+is_rpm_package=$9
+
+javahome=`basename ${image}`
+
+#Compute the disk space
+_jre_image_disk_space=`du -sk ${image} | cut -f1`
+_data_file_size=`du -sk ${data_file} | cut -f1`
+diskSpaceRequired=`expr $_jre_image_disk_space + $_data_file_size`
+
+# Note: be careful changing the date format. SCCS will substitute certain %<ch>%
+#       combinations.  The format here is tested to work.
+tmp_file=`date "+/tmp/install.%S$$%j%y%m%d%M\`expr $$ % 251\`%H.bin"`
+rm -f $tmp_file
+touch $tmp_file
+
+# emit the beginning of the script
+cat - > $tmp_file <<'EOF'
+#!/bin/sh
+PATH=/usr/bin:/bin
+umask 022
+EOF
+
+#
+# Emit the version comparison routine for RPM versions (only need if
+# if the bundle includes co-packaged rpms, but its only a few characters).
+#
+cat - >> $tmp_file <<'EOF'
+
+release_comp() {
+    if [ "$1" = "$2" ] ; then
+	echo "eq"
+    else
+	lrel=`printf "%s\n%s\n" $1 $2 | \
+	    sort -t . -k 1,1n -k 2,2n -k 3,3n -k 4,4n -k 5,5n | \
+	    head -1`
+        if [ "$1" = "${lrel}" ]; then
+            echo "lt"
+        else
+            echo "gt"
+        fi
+    fi
+}
+
+EOF
+
+#
+# Emit the rpm installation code for copackaged JavaDB
+#
+# If an older version exists, only upgrade with permission.  Do not
+# downgrade newer versions. If the versions match, make sure all the
+# packages are present (in the case of upgrading a jre to a jdk).
+# Use the sun-javadb-common package for the version determination.
+#
+# Note: Relying on the return code from rpm is a bit questionable as its not
+# documented on the manual page.  You can't rely on the the string returned
+# being null for a "package not installed" error, because the diagnostic to
+# that effect is sent to stdout, not stderr, and relying on the form of the
+# message seems far worse than relying on the return code.
+#
+printf "\ninstall_JavaDB() {\n" >> $tmp_file
+javadb_version=`zipinfo $data_file 2>/dev/null | grep "sun-javadb-common" | awk '{print $9}' | sed -e 's/sun-javadb-common-//' -e 's/-/./g' | awk -F. '{printf "%s.%s.%s.%s.%s",$1,$2,$3,$4,$5}'`
+if [ ! -z "${javadb_version}" ] && [ "${is_rpm_package}" = "RPM" ]; then
+    copackaged=`zipinfo $data_file 2>/dev/null | grep sun-javadb- | awk '{printf "%s ", $9}'`
+    printf "    to_be_upgraded=\"%s\"\n" "${copackaged}" >> $tmp_file
+    cat - >> $tmp_file <<'EOF'
+    rpm_flags="-ihv"
+    installed_version=`rpm -q --queryformat '%{VERSION}.%{RELEASE}' sun-javadb-common`
+    if [ $? = 0 ] && [ ! -z ${installed_version} ] ; then
+EOF
+    printf "\tcase \`release_comp \${installed_version} '%s'\` in\n" ${javadb_version} >> $tmp_file
+    cat - >> $tmp_file <<'EOF'
+	    "lt" )
+		agreed=
+		while [ -z "$agreed" ] ; do
+		    printf "\nJava DB version %s is currently installed.\n" \
+			${installed_version}
+EOF
+    printf "\t\tprintf \"Upgrade to version %s ? [yes,no]\\\n\"\n" ${javadb_version} >> $tmp_file
+    cat - >> $tmp_file <<'EOF'
+		    read reply leftover
+		    case $reply in
+			[yY] | [yY][eE][sS])
+			    agreed=1
+			    ;;
+			[nN] | [nN][oO])
+			    printf "Java DB not updated\n"
+			    return 0
+			    ;;
+			*)
+			    printf "Please enter \"yes\" or \"no\".\n"
+			    ;;
+		    esac
+		done
+		rpm_flags="-Uvh"
+		;;
+	    "eq" )
+		to_be_upgraded=""
+EOF
+    printf "\t\tfor i in %s ; do\n" "${copackaged}" >> $tmp_file
+    printf "\t\t    rpm_name=\`echo \$i | sed -e \"s/-%s.*//\"\`\n" ${javadb_version} >> $tmp_file
+    cat - >> $tmp_file <<'EOF'
+		    rpm -q ${rpm_name} >/dev/null 2>&1
+		    if [ "$?" != 0 ] ; then	# Not installed
+			to_be_upgraded="${to_be_upgraded} $i"
+		    fi
+		done
+		if [ -z "${to_be_upgraded}" ] ; then
+		    return 0
+		fi
+		rpm_flags="-Uvh"
+		;;
+	    "gt" )
+		printf "Newer Java DB version (%s) is already installed.\n" \
+		     ${installed_version}
+		return 0
+		;;
+	    * )
+		return 1
+		;;
+	esac
+    fi
+
+    # Historical packages part of the sun-javadb "group" which may be on the
+    # system and have a version dependency on the sun-javadb-common package
+    # but will not be removed or updated. If present, dependencies can not
+    # be checked.
+    rpm -q sun-javadb-usr >/dev/null 2>&1
+    if [ "$?" = 0 ] ; then
+	rpm_flags="${rpm_flags} --nodeps"
+    else
+	rpm -q sun-javadb-derby2javadblnk >/dev/null 2>&1
+	if [ "$?" = 0 ] ; then
+	    rpm_flags="${rpm_flags} --nodeps"
+	fi
+    fi
+
+    printf "Installing JavaDB\n"
+    rpm ${rpm_flags} ${to_be_upgraded}
+EOF
+fi
+printf "    return 0\n" >> $tmp_file
+printf "}\n\n" >> $tmp_file
+
+#
+# Emit the JDK product registration code
+#
+# It first displays the benefit of product registration
+# and then wait to continue. Then call com.sun.servicetag.Installer
+# utility class to open the default browser for JDK product registration.
+# 
+# An internal "-noregister" option to skip JDK product registration 
+# but call the com.sun.servicetag.Installer to create a service tag.
+#
+# If it is a JRE install, create a service tag and no product
+# registration is done.
+# 
+printf "\nregister_JDK() {\n" >> $tmp_file
+printf "    javaprefix=\"\$1\"\n" >> $tmp_file
+printf "    source=\"\$2\"\n" >> $tmp_file
+printf "    noregister=\"\$3\"\n" >> $tmp_file
+if [ "${is_jdk}" = "JRE" ] ; then
+    cat - >> $tmp_file <<'EOF'
+    if [ -x "$javaprefix/bin/java" ] ; then
+        "$javaprefix/bin/java" com.sun.servicetag.Installer \
+            -source "$source" > /dev/null 2>&1
+    fi
+EOF
+else 
+    cat - >> $tmp_file <<'EOF'
+    if [ -x "$javaprefix/bin/java" ] ; then
+        register_option=""
+        if [ "$noregister" != "-noregister" ] ; then
+            register_option="-register"
+            more <<"EOF"
+
+Java(TM) SE Development Kit 6 successfully installed.
+
+Product Registration is FREE and includes many benefits:
+* Notification of new versions, patches, and updates
+* Special offers on Sun products, services and training
+* Access to early releases and documentation
+
+Product and system data will be collected. If your configuration
+supports a browser, the Sun Product Registration form for 
+the JDK will be presented. If you do not register, none of
+this information will be saved. You may also register your
+JDK later by opening the register.html file (located in 
+the JDK installation directory) in a browser.
+
+For more information on what data Registration collects and 
+how it is managed and used, see:
+http://java.sun.com/javase/registration/JDKRegistrationPrivacy.html
+
+EOF
+    printf "EOF\n" >> $tmp_file
+    cat - >> $tmp_file <<'EOF'
+            printf "Press Enter to continue.....\n"
+            read reply leftover
+        fi
+        "$javaprefix/bin/java" com.sun.servicetag.Installer \
+            -source "$source" "$register_option" > /dev/null 2>&1
+    fi
+EOF
+fi
+printf "    return 0\n" >> $tmp_file
+printf "}\n\n" >> $tmp_file
+
+echo "javahome=$javahome" >> $tmp_file
+echo "platform=$platform" >> $tmp_file
+echo "PACKED_JARS=\"${pack_files}\"" >> $tmp_file
+echo "ARCH=${target_arch}" >> $tmp_file
+echo "BINARY_NAME=`basename ${data_file}`" >> $tmp_file
+if [ "${is_rpm_package}" = "RPM" ]; then
+    echo "RPM_NAME=`basename ${out_file} | sed 's|-rpm.sh|.rpm|'`" >> $tmp_file
+    echo "RPM_JAVA_PREFIX=/usr/java/${javahome}" >> $tmp_file
+fi
+
+echo "diskSpaceRequired=$diskSpaceRequired" >> $tmp_file
+
+if [ -n "$license_file" ]; then
+    # emit the code the show the license file
+    echo 'more <<"EOF"' >> $tmp_file
+    cat $license_file >> $tmp_file
+    echo EOF >> $tmp_file
+
+    # emit the script to ask if they agree to the license
+    cat - >> $tmp_file <<'EOF'
+    agreed=
+    while [ -z "$agreed" ] ; do
+	printf "\nDo you agree to the above license terms? [yes or no]\n"
+	read reply leftover
+	case $reply in
+	    [yY] | [yY][eE][sS])
+		agreed=1
+		;;
+	    [nN] | [nN][oO])
+		printf "If you don't agree to the license you can't install this software\n"
+		exit 1
+		;;
+	    *)
+		printf "Please enter \"yes\" or \"no\"."
+		;;
+	esac
+    done
+EOF
+# the above EOF has to start in column 1 or the script won't work
+
+fi
+
+cat - >> $tmp_file <<'EOF'
+if [ "`uname -s`" = "Linux" ]; then
+    tail_args="-n"
+fi
+
+outname=install.sfx.$$
+diskSpace=`df -k . | tail ${tail_args} -1 | awk '{if ( $4 ~ /%/) { print $3 } else { print $4 } }'`
+if [ $diskSpace -lt $diskSpaceRequired ]; then
+    printf "You will need atleast %s kBytes of Disk Free\n" $diskSpaceRequired
+    printf "Please free up the required Disk Space and try again\n"
+    exit 3
+fi
+trap 'rm -f $outname; exit 1' HUP INT QUIT TERM
+echo "Unpacking..."
+tail ${tail_args} +_LINES_TO_STRIP_ "$0" > $outname
+if [ -x /usr/bin/sum ]; then
+    echo "Checksumming..."
+
+    sum=`/usr/bin/sum $outname`
+    index=1
+    for s in $sum; do
+        case $index in
+            1)
+                sum1=$s;
+                index=2;
+                ;;
+            2)
+                sum2=$s;
+                index=3;
+                ;;
+        esac
+    done
+    if [ $sum1 -ne _SUM_1_ ] || [ $sum2 -ne _SUM_2_ ]; then
+        echo "The download file appears to be corrupted.  Please refer"
+        echo "to the Troubleshooting section of the Installation"
+        echo "Instructions on the download page for more information."
+        echo "Please do not attempt to install this archive file."
+        exit 1
+    fi
+else
+    echo "Can't find /usr/bin/sum to do checksum.  Continuing anyway."
+fi
+chmod +x $outname
+echo "Extracting..."
+./$outname
+rm -f $outname #we dont need it anymore, so conserve disk space
+
+
+if [ -z "${RPM_NAME}" ]; then
+    if [ ! -d ${javahome} ]; then
+        echo "Failed to extract the files.  Please refer to the Troubleshooting section of"
+        echo "the Installation Instructions on the download page for more information."
+        exit 1
+    fi
+
+    UNPACK_EXE=$javahome/bin/unpack200
+    if [ -f $UNPACK_EXE ]; then
+        chmod +x $UNPACK_EXE 
+        packerror=""
+        for i in $PACKED_JARS; do
+            if [ -f $javahome/`dirname $i`/`basename $i .jar`.pack ]; then
+                printf "Creating %s\n" $javahome/$i
+                $UNPACK_EXE $javahome/`dirname $i`/`basename $i .jar`.pack $javahome/$i
+                if [ $? -ne 0 ] || [ ! -f $javahome/$i ]; then
+                    printf "ERROR: Failed to unpack JAR file:\n\n\t%s\n\n" $i
+		    printf "Installation failed. Please refer to the Troubleshooting Section of\n"
+		    printf "the Installation Instructions on the download page.\n"
+                    packerror="1"
+		    break
+                fi
+
+		# remove the old pack file
+		rm -f $javahome/`dirname $i`/`basename $i .jar`.pack
+            fi
+        done
+        if [  "$packerror" = "1" ]; then 
+            if [ -d $javahome ]; then
+                /bin/rm -rf $javahome
+            fi
+
+	    exit 2
+        fi
+    fi
+
+    PREFS_LOCATION="`echo \"${javahome}\" | sed -e 's/^jdk.*/&\/jre/'`/.systemPrefs"
+    if [ ! -d "${PREFS_LOCATION}" ]; then
+        mkdir -m 755 "${PREFS_LOCATION}"
+    fi
+    if [ ! -f "${PREFS_LOCATION}/.system.lock" ]; then
+        touch "${PREFS_LOCATION}/.system.lock"
+        chmod 644 "${PREFS_LOCATION}/.system.lock"
+    fi
+    if [ ! -f "${PREFS_LOCATION}/.systemRootModFile" ]; then
+        touch "${PREFS_LOCATION}/.systemRootModFile"
+        chmod 644 "${PREFS_LOCATION}/.systemRootModFile"
+    fi
+
+    if [ x$ARCH = "x32" ] && [ -f "$javahome/bin/java" ]; then
+        "$javahome/bin/java" -client -Xshare:dump > /dev/null 2>&1
+
+    fi
+
+    # Service Tag support and JDK product registration
+    register_JDK "$javahome" "${BINARY_NAME}" "$1"
+
+else
+    if [ "$1" = "-x" ]; then
+        echo "Extraction of RPM Done."
+    else
+        #  If rpm and the file exists then use rpm to install.
+        if [ -f `pwd`/$RPM_NAME ]; then
+            rpm -ivh `pwd`/$RPM_NAME
+        fi
+	install_JavaDB
+        register_JDK "$RPM_JAVA_PREFIX" "$RPM_NAME" "$1"
+    fi
+fi
+echo " "
+echo "Done."
+exit 0
+EOF
+
+# count the number of lines in the file and rewrite it so that tail
+# strips the right amount off
+lines=`wc -l $tmp_file | awk '{ print $1 + 1; }'`
+sum=`/usr/bin/sum $data_file`
+index=1
+for s in $sum; do
+    case $index in
+        1)
+            sum1=$s;
+            index=2;
+            ;;
+        2)
+            sum2=$s;
+            index=3;
+            ;;
+    esac
+done
+
+sed -e "s/_LINES_TO_STRIP_/$lines/" -e "s/_SUM_1_/$sum1/" \
+    -e "s/_SUM_2_/$sum2/" $tmp_file  > $out_file
+
+cat $data_file >> $out_file
+chmod +x $out_file
+rm -f $tmp_file

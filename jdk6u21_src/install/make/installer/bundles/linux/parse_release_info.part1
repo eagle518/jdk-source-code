@@ -1,0 +1,522 @@
+#
+# Copyright (c) 2008, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# @(#)parse_release_info.part1	1.4 10/03/23
+#
+# This is part 2 of 2.  This script has been broken into pieces so that it does
+# not overflow the buffer used by expanded macros on RPM 3.0.6.
+#
+# This script contains variables and functions used to parse the release name
+# identifier and version identifier from a string.  Strings parsed by this
+# script must follow Sun Microsystems' conventions for a "technical" Java
+# release string.
+#
+# A technical Java release string must at least contain a version identifier.
+# The version identifier must be valid as defined by JSR 56, Appendix A.  In
+# addition, the version identifier is required to have a minimum of a major,
+# minor, and micro version number values.
+#
+# A technical Java release string may also be prefixed with a release name
+# identifier.  This is a short string of predominantly alpabetic characters
+# used to identifiy the type of the release, such as JRE/JDK, or give other
+# simple information that is easilly parsed by a simple shell script.  The
+# release identifier is generally limited to lower case alpahbetic characters,
+# but this is not a strict requirement.
+#
+# Release names and release name identifiers are not the same thing.  Release
+# names are determined by non-technical requirements.  Names, such as "Java 5.0
+# Runtime Environment" and "Java 2 Standard Edition", may contain data that is
+# similar to a release name identifer and/or version identifier.  However, these
+# are not true version-id strings, and are unreliable for the purpose of
+# programatically determining a Java release version.
+#
+#
+#
+# ===============
+# BNF Definitions
+# ===============
+#
+# A technical Java release string has the following syntax:
+#
+#     release-string ::= [ name-id ] version-id
+#
+#
+# The version-id defined in this file follows the Sun convention, which is a
+# subset of the valid version identifiers defined by JSR 056.
+#
+#     version-id ::= major '.' minor '.' micro [ '_' update ] [ '-' non-fcs-id ]
+#
+#     major ::= most-digits { all-digits }
+#
+#     minor ::= counting-number
+#
+#     micro ::= counting-number
+#
+#     update ::= '0' all-digits | most-digits all-digits
+#
+#     non-fcs-id ::= alphanumeric { alphanumeric }
+#
+#
+# The following are valid JSR 056 release numbers:
+#
+#     1.0.0_00
+#     1.4.2
+#     1.5.0_01
+#     1.3.1_13
+#     1.6.0-beta1
+#     1.5.0_03-b06
+#     1.10.0
+#
+# The following are invalid JSR 056 release numbers:
+#
+#     0.1.4
+#     1.4
+#     5.0
+#     1.3.1_3
+#     1.6.0beta
+#     1.5.0-b06_03
+#     1.5.0_03-b06-internal
+#
+#
+#
+# A name-id may preceed a version-id in release strings used in filenames or
+# other places where a version-id alone may not provide enough information to
+# fully identify a release.
+#
+#     name-id ::= { valid-chars } valid-non-numeric
+#
+#     valid-non-numeric ::= '-' | '_' | '.' | alpha
+#
+#     valid-chars ::= all-digits | valid-non-numeric
+#
+#
+#
+# The following rules define the non-terminals used to make up the primary rules
+# defined above.
+#
+#     counting-number ::= '0' | most-digits { all-digits }
+#
+#     most-digits ::= '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
+#
+#     all-digits ::= '0' | most-digits
+#
+#     alphanumeric ::= all-digits | alpha
+#
+#     alpha ::= lower-alpha | upper-alpha
+#
+#     lower-alpha ::= 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h' | 'i' |
+#                     'j' | 'k' | 'l' | 'm' | 'n' | 'o' | 'p' | 'q' | 'r' |
+#                     's' | 't' | 'u' | 'v' | 'w' | 'x' | 'y' | 'z'
+#
+#     upper-alpha ::= 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' |
+#                     'J' | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' |
+#                     'S' | 'T' | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z'
+#
+#     prefix ::= { valid-chars } valid-non-numeric
+#
+#     valid-non-numeric ::= '-' | '_' | '.' | alpha
+#
+#     valid-chars ::= all-digits | valid-non-numeric
+#
+#
+#
+# Note: in case it isn't obvious from the name, the non-fcs-id non-terminal
+#       symbol is only used in non-FCS releases.
+#
+
+#
+# Define the basic non-terminals for the version id.
+#
+MOST_DIGITS="[1-9]"
+ALL_DIGITS="[0-9]"
+COUNTING_NUMBER="${MOST_DIGITS}${ALL_DIGITS}*\|0"
+VALID_NON_NUMERIC="[-_.a-zA-Z]"
+VALID_CHARS="[-_.a-zA-Z0-9]"
+
+#
+# Define the high level non-terminals.
+#
+MAJOR_RULE="\(${MOST_DIGITS}${ALL_DIGITS}*\)"
+MINOR_RULE="\(${COUNTING_NUMBER}\)"
+MICRO_RULE="\(${COUNTING_NUMBER}\)"
+UPDATE_RULE="\(${MOST_DIGITS}${ALL_DIGITS}\|0${ALL_DIGITS}\)"
+NON_FCS_ID_RULE="\([a-zA-Z0-9]*\)"
+
+#
+# This represents the minimal accepted version-id.
+#
+MIN_VERSION_ID_RULE="${MAJOR_RULE}\.${MINOR_RULE}\.${MICRO_RULE}"
+
+#
+# This represents an FCS version-id.
+#
+FCS_VERSION_ID_RULE="${MIN_VERSION_ID_RULE}\(_${UPDATE_RULE}\)\?"
+
+#
+# This represents a version-id.
+#
+VERSION_ID_RULE="${FCS_VERSION_ID_RULE}\(-${NON_FCS_ID_RULE}\)\?"
+
+#
+# This represents a name-id.
+#
+NAME_ID_RULE="${VALID_CHARS}*${VALID_NON_NUMERIC}"
+
+#
+# This is a list of technical Java release name identifiers that Sun has used
+# to date.  The list is specified in the ordered used when selecting the latest
+# Java installation on the system, from most preferred, to least preferred.
+#
+# Note: the name "java" is explicitly reserved for the future by Sun.  Other
+# names of the form "j*" are implicitly reserved by Sun.
+#
+KNOWN_GOOD_NAME_LIST="java jdk jre j2sdk j2re"
+
+#
+# Error values returned by the parse functions
+#
+PRS_ERROR_BAD_PARAMS=2000
+
+#
+# Expand and normalize a partial version-id to a tab separated list of the full,
+# four element FCS version-id.  Missing values are zero-expanded, while any
+# elements that are zero padded are normalized to non-padded numbers.
+#
+# Parameters:
+#     $1 : release - a partial or complete FCS version-id to expand.
+#
+# Output:
+#     This function writes the full FCS version-id to stdout, with any missing
+#     components replaced with 0 (zero).
+#
+# Returns:
+#        0 : Success.
+#     2000 : One or more input parameters was invalid.
+#
+# Note: this function is not able to detect if a non-FCS version-id is passed
+#       in.  If this happens, the results are undefined.
+#
+expand_version() {
+    status=0
+
+    if [ $# -eq 0 ]; then
+        read release remainder
+        status=$?
+        if [ ${status} -ne 0 ]; then
+            printf "Error(%s): failed to read!\n" "${status}"	>> /dev/stderr
+            status=${PRS_ERROR_BAD_PARAMS}
+        elif [ -z "${release}" ]; then
+            printf "Error: usage - function requires input!\n"	>> /dev/stderr
+            status=${PRS_ERROR_BAD_PARAMS}
+        elif [ -n "${remainder}" ]; then
+            printf "Error: too many words read:\n\n"		>> /dev/stderr
+            printf "\t%s %s\n" "${release}" "${remainder}"	>> /dev/stderr
+            status=${PRS_ERROR_BAD_PARAMS}
+        fi
+    elif [ $# -eq 1 ]; then
+        release=$1
+    else
+        printf "Error: usage - function takes 1 parameter:\n\n"	>> /dev/stderr
+        \printf "\t expand_version\n" "$*"			>> /dev/stderr
+        status=${PRS_ERROR_BAD_PARAMS}
+    fi
+
+    if [ ${status} -eq 0 ]; then
+        format="%d\t%d\t%d\t%d\n"
+        echo ${release} | sed -e "s/_/\./g" | \
+          awk -v format="${format}" 'BEGIN { FS = "." } { printf format, $1, $2, $3, $4 }'
+    fi
+
+    return ${status}
+}
+
+
+#
+# Parse a string to determine the Java release name identifier and version
+# identifier.  The string to parse must be of the form:
+#
+#     release-string ::= name-id version-id
+#
+# Parameters:
+#     $1 : string - a string consisting of a name-id and version-id, as defined
+#                   by this file.
+#
+# Output:
+#
+# The function writes a tab delimited list of the parsed parts as:
+#
+#     name-id       fcs-version-id       non-fcs-part
+#
+# Note: a minimal version-id, consisting of the major, minor, and micro version
+#       numbers must be detected in the input string, or else no output is
+#       generated, and no error is returned.
+#
+# Note: the fcs-version-id is not normalized to the full four-part value.  It
+#       only contains whatever information there was available from input.
+#
+# Note: if the input string doesn't contain a non-FCS release identifier, then
+#       the last string in the list is empty.
+#
+# Returns:
+#        0 : Success.
+#     2000 : One or more input parameters was invalid.
+#
+parse_release() {
+    status=0
+
+    if [ $# -eq 0 ]; then
+        read string remainder
+        status=$?
+        if [ ${status} -ne 0 ]; then
+            printf "Error(%s): failed to read!\n" "${status}"	>> /dev/stderr
+            status=${PRS_ERROR_BAD_PARAMS}
+        elif [ -z "${string}" ]; then
+            printf "Error: usage - function requires input!\n"	>> /dev/stderr
+            status=${PRS_ERROR_BAD_PARAMS}
+        elif [ -n "${remainder}" ]; then
+            printf "Error: too many words read:\n\n"		>> /dev/stderr
+            printf "\t%s %s\n" "${string}" "${remainder}"	>> /dev/stderr
+            status=${PRS_ERROR_BAD_PARAMS}
+        fi
+    elif [ $# -eq 1 ]; then
+        string=$1
+    else
+        printf "Error: usage - function takes 1 parameter:\n\n"	>> /dev/stderr
+        printf "\t parse_release %s\n" "$*"			>> /dev/stderr
+        status=${PRS_ERROR_BAD_PARAMS}
+    fi
+
+    if [ ${status} -eq 0 ]; then
+        version_id=`expr "${string}" : "${NAME_ID_RULE}\(${VERSION_ID_RULE}\)\$"`
+        if [ -n "${version_id}" ]; then
+            name_id=`expr "${string}" : "\(${NAME_ID_RULE}\)${VERSION_ID_RULE}\$"`
+            fcs_part=`expr "${string}" : "${NAME_ID_RULE}\(${FCS_VERSION_ID_RULE}\).*\$"`
+            non_fcs_part=`expr "${version_id}" : "[^-]*-\(${NON_FCS_ID_RULE}\)\$"`
+
+	    printf "%s\t%s\t%s\n" "${name_id}" "${fcs_part}" "${non_fcs_part}"
+        fi
+    fi
+
+    return ${status}
+}
+
+
+#
+# Constants used to represent the weight of an unknown release name-id.
+#
+UNKNOWN_NAME_WEIGHT=1000
+
+
+#
+# Gets a weight for a particular Java release name-id.  Weights are numeric
+# values with low values being better (lighter/better) than high values.
+#
+# The function tries to match the name-id to a list of good names.  If there is
+# a match, then the weight assigned is equal to the names position in the list,
+# starting from 1.  If no match is found, then UNKNOWN_NAME_WEIGHT is assigned.
+#
+# Parameters:
+#     $1 : name_id    - a string containing the Sun release name-id.
+#     $* : good_names - a list of space separated Sun release name identifiers,
+#                       ordered from most to least preferred.
+#
+# Output:
+#
+# The function writes the associated weight to stdout.
+#
+# Returns:
+#        0 : Success.
+#     2000 : One or more input parameters was invalid.
+#
+get_name_weight() {
+    status=0
+
+    if [ "$1" = "-" ]; then
+        read name good_names
+        status=$?
+        if [ ${status} -ne 0 ]; then
+            printf "Error(%s): failed to read!\n" "${status}"	>> /dev/stderr
+            status=${PRS_ERROR_BAD_PARAMS}
+        else
+            shift 1
+            if [ $# -gt 0 ]; then
+                good_names="$*"
+            fi
+
+            if [ -z "${name}" ]; then
+                printf "Error: usage - function requires input!\n" >> /dev/stderr
+                status=${PRS_ERROR_BAD_PARAMS}
+            fi
+        fi
+    elif [ $# -gt 1 ]; then
+        name=$1
+        shift 1
+        good_names="$*"
+    else
+        printf "Error: usage - function takes 2+ parameters:\n\n" >> /dev/stderr
+        printf "\t get_name_weight %s\n" "$*"			>> /dev/stderr
+        status=${PRS_ERROR_BAD_PARAMS}
+    fi
+
+    if [ ${status} -eq 0 ]; then
+        if [ -n "${good_names}" ]; then
+            length=`expr length "${good_names}"`
+            pos=`expr "${good_names}" : ".*\<${name}\>"`
+            if [ ${pos} -gt 0 ]; then
+                expr substr "${good_names}" 1 ${pos} | wc -w | tr -d "[:space:]"
+            else
+                echo ${UNKNOWN_NAME_WEIGHT}
+            fi
+        else
+            echo ${UNKNOWN_NAME_WEIGHT}
+        fi
+    fi
+
+    return ${status}
+}
+
+
+#
+# Constants used for determining a non-FCS by weight.
+#
+HAS_FCS_WEIGHT=0
+HAS_ODD_FCS_WEIGHT=1
+HAS_RC_WEIGHT=100
+HAS_ODD_RC_WEIGHT=101
+HAS_BETA_WEIGHT=300
+HAS_ODD_BETA_WEIGHT=301
+HAS_EA_WEIGHT=500
+HAS_ODD_EA_WEIGHT=501
+HAS_INTRNAL_WEIGHT=2000
+HAS_VERY_ODD_WEIGHT=9999
+
+
+#
+# Gets a weight for a particular non-FCS identifier in a version-id.  Weights
+# are numeric values with low values being better (lighter/better) than high
+# values.
+#
+# Weights are in the following range:
+#
+#              <empty-string> : 0              ; a proper FCS identifier
+#                         fcs : 1              ; an improper FCS identifier
+#                          rc : 100
+#                  rc0 - rc99 : 100 - 1
+#                         rc* : 101
+#                        beta : 300
+#              beta0 - beta99 : 300 - 201
+#                       beta* : 301
+#                          ea : 500
+#                  ea0 - ea99 : 500 - 401
+#                         ea* : 501
+#                    internal : 2000
+#     internal0 - internal999 : 2000 - 1001
+#                   b0 - b999 : 2000 - 1001
+#                           * : 9999           ; unknown non-FCS identifier
+#
+# Parameters:
+#     $1 : non_fcs_part - a string containing the non-FCS part of a Sun release
+#                         version-id.
+#
+# Output:
+#
+# The function writes the associated weight to stdout.
+#
+# Returns:
+#        0 : Success.
+#     2000 : One or more input parameters was invalid.
+#
+get_non_fcs_weight() {
+    status=0
+
+    if [ $# -eq 0 ]; then
+        read non_fcs_part remainder
+        status=$?
+        if [ ${status} -ne 0 ]; then
+            printf "Error(%s): failed to read!\n" "${status}"	>> /dev/stderr
+            status=${PRS_ERROR_BAD_PARAMS}
+        elif [ -n "${remainder}" ]; then
+            printf "Error: too many words read:\n\n"		>> /dev/stderr
+            printf "\t%s %s\n" "${non_fcs_part}" "${remainder}"	>> /dev/stderr
+            status=${PRS_ERROR_BAD_PARAMS}
+        fi
+    elif [ $# -eq 1 ]; then
+        non_fcs_part=$1
+    else
+        printf "Error: usage - function takes 1 parameter:\n\n"	>> /dev/stderr
+        printf "\t get_non_fcs_weight \n" "$*"			>> /dev/stderr
+        status=${PRS_ERROR_BAD_PARAMS}
+    fi
+
+    if [ ${status} -eq 0 ]; then
+        if [ -z "${non_fcs_part}" ]; then
+            echo ${HAS_FCS_WEIGHT}
+        else
+            case "${non_fcs_part}" in
+                fcs)
+                    echo ${HAS_ODD_FCS_WEIGHT}
+                    ;;
+
+                rc)
+                    echo ${HAS_RC_WEIGHT}
+                    ;;
+
+                rc[0-9] | rc[0-9][0-9])
+                    count=`expr "${non_fcs_part}" : "rc\([0-9]*\)$"`
+                    echo `expr ${HAS_RC_WEIGHT} - ${count}`
+                    ;;
+
+                rc*)
+                    echo ${HAS_ODD_RC_WEIGHT}
+                    ;;
+
+                beta)
+                    echo ${HAS_BETA_WEIGHT}
+                    ;;
+
+                beta[0-9] | beta[0-9][0-9])
+                    count=`expr "${non_fcs_part}" : "beta\([0-9]*\)$"`
+                    echo `expr ${HAS_BETA_WEIGHT} - ${count}`
+                    ;;
+
+                beta*)
+                    echo ${HAS_ODD_BETA_WEIGHT}
+                    ;;
+
+                ea)
+                    echo ${HAS_EA_WEIGHT}
+                    ;;
+
+                ea[0-9] | ea[0-9][0-9])
+                    count=`expr "${non_fcs_part}" : "ea\([0-9]*\)$"`
+                    echo `expr ${HAS_EA_WEIGHT} - ${count}`
+                    ;;
+
+                ea*)
+                    echo ${HAS_ODD_EA_WEIGHT}
+                    ;;
+
+                internal)
+                    echo ${HAS_INTRNAL_WEIGHT}
+                    ;;
+
+                internal[0-9] | internal[0-9][0-9] | internal[0-9][0-9][0-9])
+                    count=`expr "${non_fcs_part}" : "internal\([0-9]*\)$"`
+                    echo `expr ${HAS_INTRNAL_WEIGHT} - ${count}`
+                    ;;
+
+                b[0-9] | b[0-9][0-9] | b[0-9][0-9][0-9])
+                    count=`expr "${non_fcs_part}" : "b\([0-9]*\)$"`
+                    echo `expr ${HAS_INTRNAL_WEIGHT} - ${count}`
+                    ;;
+
+                *)
+                    echo ${HAS_VERY_ODD_WEIGHT}
+                    ;;
+            esac
+        fi
+    fi
+
+    return ${status}
+}

@@ -1,0 +1,5 @@
+//
+// @(#)jinstall_zh.rc	1.65 08/02/13
+//
+
+#include "jinstallcom_zh.rc"

@@ -1,0 +1,5 @@
+* $XConsortium: libXm.a.aix-syms /main/cde1_maint/1 1995/11/03 19:32:10 drk $
+
+* For compatibility with IBM's production libraries libXm.a needs
+* to re-export some symbols from libc.a.
+mblen

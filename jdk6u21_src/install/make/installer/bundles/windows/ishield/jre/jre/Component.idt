@@ -1,0 +1,9 @@
+Component	ComponentId	Directory_	Attributes	Condition	KeyPath	ISAttributes	ISComments	ISScanAtBuildFile	ISRegFileToMergeAtBuild	ISDotNetInstallerArgsInstall	ISDotNetInstallerArgsCommit	ISDotNetInstallerArgsUninstall	ISDotNetInstallerArgsRollback
+s72	S38	s72	i2	S255	S72	I4	S255	S255	S255	S0	S0	S0	S0
+Component	Component
+jz	{994E7530-5AD1-41FF-9F16-B53_COMPONENT_ID_VERSION_}	INSTALLDIR	0		zipper.exe	1							
+jr	{994E7530-5AD1-41FF-9F16-B54_COMPONENT_ID_VERSION_}	bin	0		regutils.dll	1							
+jp	{994E7530-5AD1-41FF-9F16-B55_COMPONENT_ID_VERSION_}	INSTALLDIR	0		patchjre.exe	1							
+consumer	{994E7530-5AD1-41FF-9F16-B56_COMPONENT_ID_VERSION_}	INSTALLDIR	4	MODE<>"S"	Registry_FamilyVersion	1							
+jre_bin_ssvDlls	{994E7530-5AD1-41FF-9F16-B57_COMPONENT_ID_VERSION_}	bin	0	MODE="U"	jp2ssv.dll	1							
+jqs_ie	{994E7530-5AD1-41FF-9F16-B58_COMPONENT_ID_VERSION_}	ie	0	MODE="U"	jqs_plugin.dll	1							

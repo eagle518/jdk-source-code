@@ -1,0 +1,229 @@
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# @(#)link_support	1.1 05/04/27
+#
+# This script contains functions used to create links for "default", and
+# "latest" Java installation on the system.
+
+
+#
+# Error values returned by the link functions
+#
+LINK_ERROR_BAD_PARAMS=3000
+LINK_ERROR_DEAD_LINK=3001
+LINK_ERROR_FILE_NOT_FOUND=3002
+
+
+#
+# Get the absolute path to a symbolic link's reference.
+#
+# Options:
+#     -f | --follow  follow links to the base parent.
+#
+# Parameters:
+#     $* : path - the path to the file (link) to dereference (can have spaces in
+#                 the name).
+#
+# Output:
+#     This function writes the path to the link reference to stdout.
+#
+# Returns:
+#        0 : success.
+#     3002 : the file was not found, or when --follow is set, this may indicate
+#            a dead link in the chain.
+#
+# Note: This function is not capable of detecting that one or more directories
+#       in the path is also a link and unravelling that.
+#
+dereference() {
+    status=0
+
+    if [ "$1" = "-f" ] || [ "$1" = "--follow" ]; then
+        follow="--follow"
+        shift 1
+    fi
+
+    #
+    # handle files with spaces in the name
+    #
+    if [ $# -ge 1 ]; then
+        path="$*"
+        if [ -e "${path}" ]; then
+            #
+            # Make sure the path is absolute
+            #
+            parent="`cd \`dirname \"${path}\"\`; pwd`"
+            child="`basename \"${path}\"`"
+
+            #
+            # if parent == child, then path == /, and is already absolute
+            #
+            if [ "${parent}" != "${child}" ]; then
+                path="${parent}/${child}"
+            fi
+
+            if [ -h "${path}" ]; then
+                path=`ls -l "${path}" | sed -e "s#^.*${path} -> ##"`
+                if [ "`expr substr \"${path}\" 1 1`" != "/" ]; then
+                    path="${parent}/${path}"
+                fi
+
+                if [ -n "${follow}" ]; then
+                    path="`dereference ${follow} ${path}`"
+                fi                    
+            fi
+        else
+            status=${LINK_ERROR_FILE_NOT_FOUND}
+        fi
+    fi
+
+    #
+    # Output whatever was found regardless of any error status, and let the
+    # caller decide what to do.
+    #
+    echo ${path}
+
+    return ${status}
+}
+
+
+setup_latest_link() {
+    latest=$1
+    link=$2
+
+    #
+    # Make sure that ${link} points to ${latest}.  If it doesn't, remove any old
+    # ${link} and create a new good one.
+    #
+    if [ -h "${link}" ]; then
+        reference="`dereference --follow ${link}`"
+        if [ $? -eq 0 ]; then
+            update=`compare_java_by_release "${latest}" "${reference}"`
+        else
+            # link is a dead link
+            update=1
+        fi
+
+        #
+        # Remove the old link only if it needs to be updated.
+        #
+        if [ ${update} -gt 0 ]; then
+            rm -f "${link}"
+        fi
+    fi
+
+    #
+    # Create ${link} if it doesn't exist.
+    #
+    if [ ! -e "${link}" ]; then
+        ln -s "${latest}" "${link}"
+    fi
+}
+
+
+#
+# Setup the system's default Java links if they do not exist.
+#
+# If a system "default" Java link does not already exist, a link is created that
+# points to the system's "latest" Java version.  In addition, links for a subset
+# of Java applications are created in the system's bin dir.  These links point
+# into the default Java bin directory.  If a link already exists, it is not
+# changed.
+#
+# Parameters:
+#     $1 : latest_link  - the path to a link that points to the system's lastest
+#                         version of Java (usually /usr/java/latest).
+#     $2 : default_link - the path to a link that points to the system's default
+#                         version of Java (usually /usr/java/default).  This link
+#                         is only created if it does not already exist.
+#     $3 : bindir       - the path to the default bin dir (usually /usr/bin).
+#     $* : java_apps    - a space separated list of Java applications that are
+#                         linked in ${bindir}.  
+#
+# Note: Java applications in the list are assumed to exist in the bin directory
+#       of the version of Java pointed to by ${default_link}, except for JavaWS.
+#       The location of JavaWS changed after JRE v.1.4.2.
+#
+setup_default_links() {
+    if [ $# -ge 2 ]; then
+        latest_link="$1"
+        default_link="$2"
+
+        # make sure the default_link exist
+        if [ ! -e "${default_link}" ]; then
+            ln -s "${latest_link}" "${default_link}"
+        fi
+    fi
+
+    if [ $# -gt 3 ]; then
+        bindir="$3"
+        shift 3
+        for file in $*; do
+            reference="`dereference --follow ${bindir}/${file}`"
+            if [ $? -ne 0 ]; then
+                # link is dead
+                rm -f "${bindir}/${file}"
+            fi
+
+            source="${default_link}/bin/${file}"
+            if [ "${file}" = "javaws" ]; then
+                #
+                # Depending on what version desult is set to, there may or may
+                # not be a JavaWS, and if there is, it could be in more than one
+                # location.
+                #
+                source="`get_javaws \"${default_link}\"`"
+            fi
+
+
+            if [ -n "${source}" ] && [ ! -e "${bindir}/${file}" ]; then
+                ln -s "${source}" "${bindir}/${file}"
+            fi
+        done
+    fi
+}
+
+
+#
+# Cleanup the system's default Java links.
+#
+# Remove the system "default" Java link if it exists.  In addition, remove the
+# links for the subset of Java applications created in the system's bin dir if
+# they point to the default or latest link.
+#
+# Parameters:
+#     $1 : default_link - the path to a link that points to the system's default
+#                         version of Java (usually /usr/java/default).
+#     $2 : bindir       - the path to the default bin dir (usually /usr/bin).
+#     $* : java_apps    - a space separated list of Java applications that are
+#                         linked in ${bindir}.  
+#
+cleanup_default_links() {
+    if [ $# -ge 1 ]; then
+        default_link=$1
+
+        if [ $# -gt 2 ]; then
+            bindir="$2"
+            shift 2
+            for file in $*; do
+                #
+                # Remove each ${bindir} link that points goes through the default
+                # link.
+                #
+                reference="`dereference \"${bindir}/${file}\"`"
+                if [ $? -ne 0 ] ||
+                   [ "${reference}" = "${default_link}/bin/${file}" ]
+                then
+                    rm -f "${bindir}/${file}"
+                fi
+            done
+        fi
+
+        #
+        # Remove the default link.
+        #
+        rm -f "${default_link}"
+    fi
+}

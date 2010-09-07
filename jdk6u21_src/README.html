@@ -1,0 +1,141 @@
+<html>
+    <head>
+        <!-- @(#)README-JRL.html	1.14 10/04/05 -->
+        <title>Java Research License Source Release</title>
+    </head>
+    <body bgcolor="#ffffff">
+        <center>
+            <h1>README: Java Research License Source Release</h1>
+            <h2>Java<sup><font size="-2">TM</font></sup> Platform, 
+            Standard Edition Development Kit (JDK)</h2>
+            <h2>v6u21 fcs</h2>
+        </center>
+        
+        <!-- ====================================================== -->
+        <hr SIZE=3 NOSHADE>
+        
+        <center>
+            <table cellpadding=5>
+                <tr>
+                    <td bgcolor="#CCCCFF">
+                        <b>
+                            See the most up-to-date version of these build notes online at 
+                            <blockquote>
+                                <a href="http://www.java.net/download/README-JRL.html">
+                                    http://www.java.net/download/README-JRL.html
+                                </a>
+                            </blockquote>
+                        </b>
+                    </td>
+                </tr>
+            </table>
+        </center>
+        
+        <!-- ------------------------------------------------------ -->
+        
+        <h2>Introduction</h2>
+        
+        <blockquote>
+            This README file describes the contents of the 
+            Java<sup><font size="-2">TM</font></sup> Platform, 
+            Standard Edition Development Kit (JDK)
+            Java Research License (JRL) Source Release.
+            <p>
+            Building the 
+            source code for the JDK requires a high level of technical 
+            expertise.  Sun provides the source code primarily for 
+            technical experts who want to conduct research, port the platform 
+            to new operating systems and hardware, or add enhancements that 
+            require access to platform internals.  If you are not a technical 
+            professional in one of these categories, this release is probably 
+            not for you.  
+        </blockquote>
+        
+        <!-- ------------------------------------------------------ -->
+        
+        <h2>Overview</h2>
+        
+        <blockquote>
+            This community source release contains all the source 
+            code and makefiles required for building JDK 6u21 for the 
+            Solaris<sup><font size=-2>TM</font></sup> Operating Environment 
+            (hereafter "Solaris"), Microsoft Windows platforms, and Linux.
+            To get the complete community source, you need to download 
+            both JRL source and binary bundles.
+            These files are jar files that need to be run, not un-jar'd,
+            for example
+            <blockquote>
+                <tt>java -jar <i>filename</i>.jar</tt>
+            </blockquote>
+            <p>
+            The source release has the following top-level directories.  
+            <p>
+            <dl>
+                <dt><tt><b>control</b></tt></dt>
+                <dd>
+                    The <tt>control</tt> directory contains the makefiles 
+                    necessary for building the entire J2SE release, including the
+                    Java HotSpot VMs and the runtime libraries, tools and utilities. 
+                </dd>
+                <dt><tt><b>hotspot</b></tt></dt>
+                <dd>
+                    The <tt>hotspot</tt> directory contains the source code and makefiles 
+                    necessary for building the Java HotSpot Client VM and the Java 
+                    HotSpot Server VM. 
+                </dd>
+                
+                <dt><tt><b>motif</b></tt></dt>
+                <dd>
+                    The <tt>motif</tt> directory contains the source code and makefiles 
+                    necessary for building a 32-bit or 64-bit motif library needed 
+                    by the Linux JDK. 
+                </dd>
+                
+                <dt><tt><b>j2se</b></tt></dt>
+                <dd>
+                    The <tt>j2se</tt> directory contains the source code and makefiles 
+                    necessary for building everything in the JDK 6u21 except the 
+                    VMs, including runtime libraries, tools and utilities. 
+                </dd>
+                
+                <dt><tt><b>deploy</b></tt></dt>
+                <dd>
+                    The <tt>deploy</tt> directory contains the source code and makefiles 
+                    necessary for building the Java <sup><font size="-2">TM</font></sup> 
+                    plugin and Java <sup><font size="-2">TM</font></sup> Web Start.
+                    <br>
+                    The Java<sup><font size="-2">TM</font></sup> Web Start product ships 
+                    with the JDK 6u21 binary release. The source code for the Java 
+                    Web Start product is available in a separate Sun Community Source release.
+                </dd>
+                
+                <dt><tt><b>install</b></tt></dt>
+                <dd>
+                    The <tt>install</tt> directory contains the source code and makefiles 
+                    necessary for building the installers and update technologies for the entire 
+                    j2se. Building installer workspace is not supported as part of this Java Research 
+                    License Source Release, so the binary images can only be built instead of the bundles.
+                </dd>
+                
+            </dl>
+        </blockquote>
+        
+        <!-- ------------------------------------------------------ -->
+        
+        <h2>Building Java 2 Platform Standard Edition, v6u21 fcs</h2>
+        
+        <blockquote>
+            For further instructions on how to build the 
+            JDK, see the 
+            <a href="README-builds.html">JDK Build README</a>.
+        </blockquote>
+        
+        <!-- ====================================================== -->
+        <hr SIZE=3 NOSHADE>
+        
+        <font SIZE=-2>
+            Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+        </font>
+    </body>
+</html>
+

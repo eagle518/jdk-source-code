@@ -1,0 +1,11 @@
+ReserveKey	Component_	ReserveFolder	ReserveLocal	ReserveSource
+s72	s72	S72	i4	i4
+ReserveCost	ReserveKey
+ReserveKey_charsets.jar	jz	lib	6555645	0
+ReserveKey_classes.jsa	jz	client	12845056	0
+ReserveKey_deploy.jar	jz	lib	2584190	0
+ReserveKey_javaws.jar	jz	lib	647524	0
+ReserveKey_jsse.jar	jz	lib	556789	0
+ReserveKey_localedata.jar	jz	ext	828260	0
+ReserveKey_plugin.jar	jz	lib	951746	0
+ReserveKey_rt.jar	jz	lib	41330545	0

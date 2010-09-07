@@ -1,0 +1,35 @@
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# Use is subject to license terms.
+#
+# pragma ident "@(#)postremove	1.2 10/03/23 Sun Microsystems"
+#
+# The only function of this script is to run the Gnome database update
+# scripts should anything have been removed.
+#
+
+#
+# Main Processing
+#
+if [ -d ${SHARE_PATH} ]; then
+
+    #
+    # Files *may* have been removed from the various mime/application/icon
+    # databases (caches).  We really don't know, so we do the conservative
+    # thing and run the update utilites, As we all know, this isn't always
+    # possible, so be careful to run them only when appropriate and be
+    # gracious about accepting failures.
+    #
+    for _theme in ${THEMES} ; do
+	UpdateIconCache ${SHARE_ICONS}/${_theme}
+    done
+
+    UpdateDesktopDatabase ${SHARE_APPS}
+
+    release=`GetHostRelease`
+    if [ $release -le 10 ]; then
+	UpdateMimedatabase ${SHARE_MIME}
+    fi
+
+fi   
+exit 0

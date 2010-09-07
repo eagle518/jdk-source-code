@@ -1,0 +1,94 @@
+#
+# Copyright (c) 2008, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# @(#)unpack_jars	1.5 10/03/23
+#
+# This script contains variables and functions used to unpack JAR files that
+# have been packed with the pack200 algorithm.
+#
+
+
+#
+# Error values returned by the unpack_jars function
+#
+ERROR_MISSING_PARAM=1000
+ERROR_MISSING_PACKED_JAR=1001
+ERROR_BAD_PARAM=1002
+ERROR_MISSING_UNPACK200=1003
+
+#
+# unpack_jars - unpack the list of JAR files.
+#
+# Parameters:
+#     $1 : unpack200    the path to the unpack200 binary.
+#     $2 : root         the base path to the packed jars.
+#     $* : packed_jars  the list of packed JAR files, relative to the given root.
+#
+# Output:
+#     This function writes the unpacked JAR files to the same location as the
+#     packed input files.  It also removes the packed input files from the disk.
+#
+# Returns:
+#        0 : Success.
+#     1000 : One or more input parameters was missing.
+#     1001 : One or more of the packed JAR files was not found.
+#     1002 : The base path was invalid.
+#     1003 : The unpack200 binary was not in the specified location.
+#
+unpack_jars() {
+    status=0
+
+    if [ $# -lt 3 ]; then
+        printf "Error: usage - no packed files specified, nothing to do:\n\n" \
+								>> /dev/stderr
+        printf "\t unpack_jars\n" "$*"                          >> /dev/stderr
+        status=${ERROR_MISSING_PARAM}
+    else
+        unpack200=$1
+        root=$2
+        shift 2
+
+        if [ -f ${unpack200} ]; then
+            if [ -d ${root} ]; then                
+
+                printf "Unpacking JAR files...\n"
+                for file in $*; do
+                    pack_file=`basename ${file} .jar`.pack
+                    pack_src=${root}/`dirname ${file}`/${pack_file}
+                    jar_dest=${root}/${file}
+                    printf "\t%s...\n" "`basename ${file}`"
+                    ${unpack200} ${pack_src} ${jar_dest}
+                    if [ ! -f ${jar_dest} ]; then
+                        printf "Error: unpack could not create JAR file:\n\n" \
+								>> /dev/stderr
+                        printf "\t%s\n\n" "${jar_dest}"		>> /dev/stderr
+                        printf "Please refer to the "		>> /dev/stderr
+			printf "Troubleshooting section of "    >> /dev/stderr
+                        printf "the Installation "              >> /dev/stderr
+                        printf "Instructions\n"                 >> /dev/stderr
+                        printf "on the download page.\n"        >> /dev/stderr
+                        status=${ERROR_MISSING_PACKED_JAR}
+                    fi
+
+                    rm -f ${pack_src}
+                done
+            else
+                printf "Error: usage - the base path for the "  >> /dev/stderr
+                printf "packed JAR files is invalid:\n\n"	>> /dev/stderr
+                printf "\tunpack_jars %s\n" "$*"		>> /dev/stderr
+                status=${ERROR_BAD_PARAM}
+            fi
+        else
+            printf "Error: unpack200 - command could not be found.\n\n" \
+								>> /dev/stderr
+            printf "Please refer to the Troubleshooting "       >> /dev/stderr
+            printf "section of the"                             >> /dev/stderr
+            printf "Installation Instructions\n"                >> /dev/stderr
+            printf "on the download page.\n"                    >> /dev/stderr
+            status=${ERROR_MISSING_UNPACK200}
+        fi
+    fi
+
+    return ${status}
+}

@@ -1,0 +1,100 @@
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# @(#)Pack.gmk	1.34 10/03/23
+#
+
+# Pack Variables we define.
+
+ifneq (,$(findstring Xjcov,$(OTHER_JAVACFLAGS)))
+   NO_PACK=true
+endif
+
+ifdef DEV_ONLY
+   NO_PACK=true
+endif
+
+CONFIG_FILE_ALL=pack.all.properties
+CONFIG_FILE_64 =pack.64.properties
+
+PACKOPTS += "--no-gzip"
+
+EXTRA_UNPACKOPTS += "-v" 
+
+ifdef NO_PACK
+   PACKOPTS += "--effort=0" #Pass through the jar
+else
+   PACKOPTS += "--config-file=$(CONFIG_FILE_ALL)"
+ifeq ($(ARCH_DATA_MODEL), 64)
+   PACKOPTS += "--config-file=$(CONFIG_FILE_64)"
+endif
+endif #NO_PACK
+
+
+PACK_DIR	  =  $(ABS_OUTPUTDIR)/pack
+
+# Define the JARs we pack
+
+# These are the well known JARs loaded from BootClassPath and 
+# are unpacked specially, see BugId:6317805 
+BCP_JRE_PACKED_JARS = lib/rt.jar lib/jsse.jar lib/charsets.jar 
+
+# These are loaded from the ClassPath
+CP_JRE_PACKED_JARS	= lib/ext/localedata.jar
+
+# Default to pack 64bit JRE on Window and Linux
+BUILD_DEPLOY_AMD64=true
+
+ifeq ($(ARCH_DATA_MODEL),32)
+  CP_JRE_PACKED_JARS += lib/plugin.jar
+  CP_JRE_PACKED_JARS += lib/javaws.jar
+  CP_JRE_PACKED_JARS += lib/deploy.jar
+else
+  ifeq ($(PLATFORM), windows)
+    ifeq ($(BUILD_DEPLOY_AMD64) , true)
+      CP_JRE_PACKED_JARS += lib/plugin.jar
+      CP_JRE_PACKED_JARS += lib/javaws.jar
+      CP_JRE_PACKED_JARS += lib/deploy.jar
+    endif
+  else 
+    ifeq ($(PLATFORM), linux)
+      ifeq ($(BUILD_DEPLOY_AMD64) , true)
+        CP_JRE_PACKED_JARS += lib/plugin.jar
+        CP_JRE_PACKED_JARS += lib/javaws.jar
+        CP_JRE_PACKED_JARS += lib/deploy.jar
+      endif
+    endif
+  endif
+endif
+
+BCP_JDK_PACKED_JARS = $(addprefix jre/, $(BCP_JRE_PACKED_JARS))
+CP_JDK_PACKED_JARS  = lib/tools.jar $(addprefix jre/, $(CP_JRE_PACKED_JARS))
+
+# create the master list for other subcomponents to use.
+JRE_PACKED_JARS = $(BCP_JRE_PACKED_JARS) $(CP_JRE_PACKED_JARS)
+JDK_PACKED_JARS = $(BCP_JDK_PACKED_JARS) $(CP_JDK_PACKED_JARS)
+
+PACKED_JRE_JARDIR =  $(PACK_DIR)/pack-jre-jars
+PACKED_JDK_JARDIR =  $(PACK_DIR)/pack-jdk-jars
+
+
+PACK_SUFFIX = .pack
+PACK_JAVA_FLAGS = -J-esa -J-ea $(JAVA_TOOLS_JFLAGS)
+# Adjust the maximum up, but if this is a low memory machine, then we
+#    have a problem here. We ASSUME that the 32bit machine has at least
+#    512Mb RAM and the 64bit machine has at least 1024Mb RAM.
+ifeq ($(ARCH_DATA_MODEL),64)
+   PACK_JAVA_FLAGS += -J-Xmx1024m
+else
+   PACK_JAVA_FLAGS += -J-Xmx512m
+endif
+
+PACK_EXE   = $(ABS_OUTPUTDIR)/j2re-image/bin/pack200$(EXE_SUFFIX)
+UNPACK_EXE = $(ABS_OUTPUTDIR)/j2re-image/bin/unpack200$(EXE_SUFFIX)
+
+PACK_CMD = $(PACK_EXE) $(PACK_JAVA_FLAGS) $(PACKOPTS)
+
+UNPACK_CMD = $(UNPACK_EXE) $(NATIVE_UNPACKOPTS)

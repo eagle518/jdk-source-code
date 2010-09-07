@@ -1,0 +1,5 @@
+//
+// @(#)jinstall_de.rc	1.66 08/02/13
+//
+
+#include "jinstallcom_de.rc"

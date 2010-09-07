@@ -1,0 +1,247 @@
+//
+// @(#)jinstallcom_ko.rc	1.13 09/10/28
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_WELCOME_DIALOG DIALOGEX 0,0,333,218
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_VISIBLE | 
+    WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Java 설치 - 시작"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "", IDC_BANNER, 0, 0, 333, 35 
+    LTEXT           "", IDC_BACK_COLOR, 0, 65, 333, 127
+    CTEXT           "", IDC_WELCOME_HEADER,0,46,333,10
+    LTEXT           "", IDC_WELCOME_LINE1,16,78,305,40
+    LTEXT           "참고: 설치 프로세스의 일부로 개인 정보가 수집되지 않습니다.", IDC_WELCOME_NOTE,32,118,300,10
+    LTEXT           "여기를 클릭하십시오.", IDC_WELCOME_CLICK_HERE,196,130,110,10
+    LTEXT           "수집하는 내용에 대한 자세한 내용을 보려면", IDC_WELCOME_MORE_INFO,35,130,160,10
+    LTEXT           "에 동의하고 지금 Java를 설치하려면", IDC_WELCOME_LICENSE_TEXT1,63,171,132,10
+    LTEXT           "라이센스 계약", IDC_WELCOME_LICENSE_AGREEMENT,10,171,50,10
+    LTEXT           """설치""를 클릭하십시오.", IDC_WELCOME_LICENSE_TEXT2,196,171,105,10
+    CONTROL         "", IDC_STATIC, "Static", SS_BLACKFRAME | SS_SUNKEN,0,192,334,1
+    CHECKBOX        "대상 폴더 변경", IDC_WELCOME_CHECKBOX,10,196,125,16, BS_AUTOCHECKBOX
+    PUSHBUTTON      "취소", IDCANCEL,219,200,50,14
+    PUSHBUTTON      "설치(&I) >", IDOK,276,200,50,14
+    DEFPUSHBUTTON   "Hide", IDNO, 0, 0, 0, 0, NOT WS_TABSTOP
+END
+
+IDD_SETUP_PROGRESS_DIALOG DIALOGEX 0, 0, 333, 218
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | 
+    WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX  
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Java 설치 - 진행률"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "", IDC_BANNER, 0, 0, 333, 35
+    LTEXT           "", IDC_BACK_COLOR, 0, 65, 333, 127
+    CONTROL         "", IDC_ADVERTISMENT, "Static" , SS_CENTERIMAGE ,11, 72, 313, 112
+    LTEXT           "상태:	Java를 설치하는 중", IDC_SETUP_TEXT, 35, 38, 200, 12
+    CONTROL         "Progress1", IDC_SETUP_PROGRESS, "msctls_progress32", WS_CAPTION, 35, 50, 263, 10
+    CONTROL         "", IDC_STATIC, "Static", SS_BLACKFRAME | SS_SUNKEN, 0, 192, 334, 1
+END
+
+IDD_DOWNLOAD_DIALOG DIALOGEX 0,0,333,140
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Java 설치 프로그램을 다운로드하는 중"
+EXSTYLE WS_EX_APPWINDOW
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "설치 프로그램을 다운로드하는 중", IDC_DOWNLOAD_HEADER, 30, 7, 130, 10
+    RTEXT           "", IDC_DOWNLOAD_STATUS, 166, 7, 130, 10
+    CONTROL         "Progress1", IDC_DOWNLOAD_PROGRESS, "msctls_progress32", WS_CAPTION, 30, 18, 270, 8
+    CONTROL         "", IDC_STATIC, "Static", SS_BLACKFRAME | SS_SUNKEN, 0, 33, 334, 1
+    CTEXT           "휴대 전화, 데스크탑 컴퓨터, 블루 레이 디스크 플레이어, 셋톱 박스, 자동차 등 모든 위치에서 Java를 찾을 수 있습니다.", IDC_MARKETING_INFO3, 12, 48, 305, 25
+    CTEXT           "Java를 설치하면 Oracle 에서 제공하는 Java의 강력한 기능을 경험할 수 있습니다.", IDC_MARKETING_INFO4, 12, 85, 305, 25
+    LTEXT           "방문 -", IDC_MARKETING_INFO1, 123, 120, 52, 10
+    LTEXT           "java.com", IDC_MARKETING_INFO2, 165, 120, 120, 10
+END
+
+IDD_ERROR_HELP_DIALOG DIALOGEX 0,0,253,94
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_VISIBLE | 
+    WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "오류 - Java(TM) Installer"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "다시 시도(&R)",IDOK,150,75,50,13
+    PUSHBUTTON      "취소(C)",IDCANCEL,203,75,44,13
+    LTEXT           "",IDC_EBODY_TEXT,10,10,240,30
+    LTEXT           "http://java.com/ko/download/help", IDC_MORE_INFO,10,30,160,12
+END
+
+108 DIALOGEX 0,0,259,61
+STYLE DS_SYSMODAL | DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION
+CAPTION "중단 - Java(TM) Installer"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "확인",2,104,39,50,14
+    ICON            IDI_JAVA,-1,16,11,20,20,0,WS_EX_TRANSPARENT
+    LTEXT           "Java(TM) Installer를 다시 시작하려면 웹 페이지를 재로드하십시오.",
+                    -1,47,11,195,17
+END
+
+///////////////////////////////////////////////////////////////////////////
+//
+// Installer Retry (RunOnce via FilesInUse cancellation) Splash Screen
+
+IDD_RETRY_SPLASH DIALOGEX 0,0,333,120
+STYLE DS_CENTER | WS_POPUPWINDOW | WS_EX_TOPMOST | WS_VISIBLE
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "", IDC_BANNER,0,0,333,35
+    CTEXT           "Java 업데이트를 완료하는 중...", IDC_SPLASH_HEADER,0,55,333,25
+    CTEXT           "일부 Java 파일이 사용 중이어서 마지막 Java 업데이트가 취소되었습니다.", IDC_SPLASH_LINE1,0,80,333,20
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Change Folder Dialog
+//
+
+IDD_CHANGEFOLDER DIALOGEX 0, 0, 333, 218
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_VISIBLE | 
+    WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Java 설치 - 대상 폴더"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CTEXT           "대상 폴더",IDC_DIALOG_HEADER,109,38,110,27,SS_CENTERIMAGE
+    LTEXT           "", IDC_BANNER, 0, 0, 333, 35 
+    LTEXT           "", IDC_BACK_COLOR, 0, 65, 333, 127
+    LTEXT           "Java를 다른 폴더에 설치하려면 ""변경...""을 클릭하십시오.",IDC_DIALOG_TEXT,8,78,320,12
+    LTEXT           "설치 위치:",IDC_DIALOG_TEXT2,8,112,236,12
+    LTEXT           "",IDC_DIRECTORY,8,124,320,48
+    CONTROL         "", IDC_STATIC, "Static", SS_BLACKFRAME | SS_SUNKEN, 0, 192, 334, 1
+    DEFPUSHBUTTON   "다음 >",IDOK,276,200,50,14
+    PUSHBUTTON      "변경(&Ｃ)...",IDC_CHANGE_BUTTON,260,108,50,14
+    PUSHBUTTON      "< 뒤로(&B)",IDC_BACK_BUTTON,219,200,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    105, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 236
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 63
+    END
+
+    108, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 252
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 78
+    END
+
+    109, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 250
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 219
+    END
+
+    IDD_CHANGEFOLDER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 312
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 219
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+
+// HTTP status code
+    IDS_HTTP_STATUS_BAD_REQUEST	    "올바르지 않은 구문 때문에 서버가 요청을 처리하지 못했습니다."
+    IDS_HTTP_STATUS_DENIED	    "요청된 자원에는 사용자 인증이 필요합니다."
+    IDS_HTTP_STATUS_NOT_FOUND	    "서버가 요청된 URI(Uniform Resource Identifier)와 일치하는 항목을 찾지 못했습니다."
+    IDS_HTTP_STATUS_BAD_METHOD	    "사용된 메소드는 허용되지 않습니다."
+    IDS_HTTP_STATUS_NONE_ACCEPTABLE "클라이언트에 적절한 응답을 찾지 못했습니다."
+    IDS_HTTP_STATUS_PROXY_AUTH_REQ  "프록시 인증이 필요합니다."
+    IDS_HTTP_STATUS_REQUEST_TIMEOUT "서버가 요청을 기다리는 동안 시간이 초과되었습니다."
+    IDS_HTTP_STATUS_CONFLICT	    "요청이 자원의 현재 상태와 충돌하므로 요청을 완료하지 못했습니다. 사용자는 자세한 정보와 함께 요청을 다시 보내야 합니다."
+    IDS_HTTP_STATUS_GONE	    "요청된 자원은 서버에서 더 이상 사용 가능하지 않으며, 전달 주소를 알 수 없습니다."
+    IDS_HTTP_STATUS_LENGTH_REQUIRED "서버에서는 컨텐트 길이가 정의되어 있지 않는 요청을 거부합니다."
+    IDS_HTTP_STATUS_PRECOND_FAILED  "하나 이상의 요청 헤더 필드에 제공된 사전 조건을 서버에서 테스트한 결과 거짓으로 평가되었습니다."
+    IDS_HTTP_STATUS_REQUEST_TOO_LARGE   "서버에서 처리할 수 있는 것보다 요청 엔티티가 더 크므로 서버가 요청 처리를 거부합니다."
+    IDS_HTTP_STATUS_URI_TOO_LONG        "서버에서 해석할 수 있는 것보다 요청 URI(Uniform Resource Identifier)이 더 길어서 서버가 요청 처리를 거부합니다."
+    IDS_HTTP_STATUS_UNSUPPORTED_MEDIA   "요청 엔티티가 요청된 메소드의 요청 자원에서 지원되지 않는 형식이므로 서버가 요청 처리를 거부합니다."
+    IDS_HTTP_STATUS_RETRY_WITH		"적절한 조치를 수행한 후에 요청을 재시도해야 합니다."
+    IDS_HTTP_STATUS_NOT_SUPPORTED	"서버는 요청을 실행하는 데 필요한 기능을 지원하지 않습니다."
+    IDS_HTTP_STATUS_BAD_GATEWAY		"게이트웨이 또는 프록시 역할을 하는 서버가 요청을 처리하기 위해 액세스한 업스트림 서버에서 잘못된 응답을 수신했습니다."
+    IDS_HTTP_STATUS_GATEWAY_TIMEOUT	"게이트웨이 대기 요청 시간이 초과되었습니다."
+    IDS_HTTP_STATUS_VERSION_NOT_SUP	"서버가 요청 메시지에서 사용된 HTTP 프로토콜 버전을 지원하지 않거나 지원을 거부합니다."
+    IDS_HTTP_STATUS_FORBIDDEN		"Java를 시스템에 다운로드하는 중 오류가 발생했습니다.\nHTTP 오류 403을 일으키는 프록시, 방화벽 또는 기타 네트워크 문제가 있을 수 있습니다.\nhttp://java.com/error403을 참조하십시오."
+    IDS_HTTP_STATUS_SERVER_ERROR	"서버에서 요청 이행을 방해하는 예상치 못한 조건이 발견되었습니다."
+    IDS_HTTP_STATUS_SERVICE_UNAVAIL	"서비스가 일시적으로 과부하되었습니다."
+    IDS_HTTP_STATUS_EXPORT_FAILURE	"Java을 시스템으로 다운로드할 수 없습니다.\n사용자가 수출 금지국에 있습니다."
+    IDS_HTTP_STATUS_SERVER_BUSY		"현재 서버에서 Java(tm)를 제공할 수 없습니다.\n다시 시도하시겠습니까?"
+    IDS_HTTP_STATUS_INTERNAL_ERROR	"예상치 못한 오류가 발생했습니다.\n다시 시도하시겠습니까?"
+    IDS_HTTP_STATUS_UNKNOWN_ERROR	"알 수 없는 오류가 발생했습니다.\n\nHTTP 상태 코드=%d"
+
+    IDS_HTTP_STATUS_EXPORT_FAILURE_CAPTION	"내보내기 제어 - Java(TM) Installer"
+    IDS_HTTP_STATUS_SERVER_BUSY_CAPTION		"서버 사용 중 - Java(tm) Installer"
+    IDS_HTTP_STATUS_SERVER_ERROR_CAPTION	"서버 문제점 - Java(tm) Installer"
+    IDS_HTTP_STATUS_UNKNOWN_ERROR_CAPTION	"알 수 없는 오류 - Java(tm) Installer"
+
+    IDS_DOWNLOAD_STATUS_OPENING		"여는 중 ..."
+    IDS_DOWNLOAD_STATUS_CONNECTING	"연결하는 중 ..."
+    IDS_DOWNLOAD_STATUS_OPENING_HTTP	"HTTP 요청 여는 중 ..."
+    IDS_DOWNLOAD_STATUS_SENDING_HTTP	"HTTP 요청 전송 중 ..."
+    IDS_DOWNLOAD_STATUS_RETRY		"현재 서버가 사용 중이므로 %ld초 후에 다시 시도하십시오."
+    IDS_DOWNLOAD_STATUS_DISCONNECTING	"연결을 끊는 중 ..."
+
+    IDS_USAGEERROR		    "사용법: %s {[/h]|[/installurl=구성 파일 또는 msi 파일의 URL] [/lang=언어 id]} [/s] [msi 설치 프로그램에 대한 cmdline 옵션] "
+    IDS_ERROR_CAPTION               "오류 - Java(TM) Installer"
+    IDS_WARNING_CAPTION             "경고 - Java(TM) Installer"
+    IDS_DOWNLOADERROR_MSG           "다운로드하여 설치할 수 없습니다."
+    IDS_HOURSMINUTESECOND	    "남은 시간: %d 시 %d 분 %.0f 초"
+    IDS_HOURMINUTESECOND	    "남은 시간: %d 시 %d 분 %.0f 초"
+    IDS_MINUTESECOND 		    "남은 시간: %d 분 %.0f 초"
+    IDS_SECOND 			    "남은 시간: %.0f 초"
+    IDS_PARSINGERROR_MSG	    "유효하지 않은 구성 파일 오류"
+    IDS_TERMINATE                   "\n이 제품을 재설치하기 전에 이 문제를 먼저 해결하십시오."
+    IDS_DISKSPACE                   "이 시스템에는 이 제품을 설치할만한 충분한 공간이 없습니다.\n\n"
+    IDS_HTTP_STATUS_SERVER_NOT_REACHABLE "Java(TM) Installer가 시스템의 현재 인터넷 연결 설정을 계속할 수 없습니다. Windows 제어판에서 인터넷 옵션 -> 연결을 확인하여 해당 설정과 프록시 정보가 올바른지 확인하십시오."
+    IDS_ERROR_TITLE               "연결 오류"
+    IDS_ERROR_MESSAGEURL             "http://java.com/ko/download/help/index.xml"
+    IDS_ERROR_MESSAGE             "현재 인터넷 연결 설정으로는 설치 프로그램을 진행할 수 없습니다. 자세한 내용을 보려면 다음 웹 사이트를 방문하십시오."
+    IDS_BETA_IFTW_ERROR "설치에 필요한 파일을 사용할 수 없으므로 이 설치 프로그램을 계속 진행할 수 없습니다. 베타 또는 이전 버전을 설치하려는 경우에는 http://java.sun.com/javase에서 해당 버전이 계속 지원되는지 확인하십시오. 지원된다면 이 파일이 일시적으로 사용할 수 없는 상태일 수 있으므로 나중에 설치를 시도하십시오."
+    IDS_REQ_WI20_MSG "시스템에 설치된 현재 Windows Installer로는 설치 프로그램을 진행할 수 없습니다. 자세한 내용을 보려면 다음 웹 사이트를 방문하십시오."
+    IDS_LICENSE_AGREEMENT_URL     "http://java.com/ko/download/license/%s_license.jsp"
+    IDS_CLICK_HERE_URL            "http://java.com/data/"
+    IDS_WELCOME_MAIN              L"Java\x2122 시작"
+    IDS_WELCOME_LINE1             "Java는 놀라운 Java 컨텐트의 세계로 안전하고 보안된 액세스를 제공합니다. 비즈니스 솔루션에서 유용한 유틸리티 및 엔터테인먼트까지 Java는 인터넷 경험을 현실로 만들어 드립니다."
+    IDS_AREYOUSURE_MESSAGE        L"Java\x2122 %s - 설치를 취소하시겠습니까?"
+    IDS_AREYOUSURE_CAPTION        "Java 설치"
+    IDS_SPONSOR_BANNER_CHECKSUM   "8627601d2979d1059b12d7cb5935b9946621ddec"
+    IDS_BROWSE_TITLE                " 대상 폴더 변경\nJava가 선택된 폴더에 설치됩니다."
+END

@@ -1,0 +1,247 @@
+//
+// @(#)jinstallcom_sv.rc	1.11 09/10/28
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_WELCOME_DIALOG DIALOGEX 0,0,333,218
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_VISIBLE | 
+    WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Java-installation – välkommen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "", IDC_BANNER,0,0,333,35
+    LTEXT           "", IDC_BACK_COLOR, 0, 65, 333, 127
+    CTEXT           "", IDC_WELCOME_HEADER,0,46,333,10
+    CTEXT           "", IDC_WELCOME_LINE1,16,78,305,40
+    LTEXT           "Obs! Inga personuppgifter samlas in under installationen.", IDC_WELCOME_NOTE,32,118,300,10
+    LTEXT           "Klicka här", IDC_WELCOME_CLICK_HERE,65,130,48,10
+    LTEXT           "om du vill veta mer om vad som samlas in.", IDC_WELCOME_MORE_INFO,113,130,210,10
+    LTEXT           "Klicka på Installera för att acceptera", IDC_WELCOME_LICENSE_TEXT1,22,161,185,10
+    LTEXT           "licensavtalet", IDC_WELCOME_LICENSE_AGREEMENT,188,161,56,10
+    LTEXT           " och installera Java", IDC_WELCOME_LICENSE_TEXT2,22,173,110,10
+    CONTROL         "", IDC_STATIC, "Static", SS_BLACKFRAME | SS_SUNKEN,0,192,334,1
+    CHECKBOX        "Ändra målmapp", IDC_WELCOME_CHECKBOX,10,196,125,16, BS_AUTOCHECKBOX
+    PUSHBUTTON      "Avbryt", IDCANCEL,219,200,50,14
+    PUSHBUTTON      "&Installera >", IDOK,276,200,50,14
+    DEFPUSHBUTTON   "Hide", IDNO, 0, 0, 0, 0, NOT WS_TABSTOP
+END
+
+IDD_SETUP_PROGRESS_DIALOG DIALOGEX 0, 0, 333, 218
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | 
+    WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX  
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Installationsprogram för Java - Status"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "", IDC_BANNER, 0, 0, 333, 35
+    LTEXT           "", IDC_BACK_COLOR, 0, 65, 333, 127
+    CONTROL         "", IDC_ADVERTISMENT, "Static" , SS_CENTERIMAGE ,11, 72, 313, 112
+    LTEXT           "Status:	Java installeras", IDC_SETUP_TEXT, 35, 38, 200, 12
+    CONTROL         "Progress1", IDC_SETUP_PROGRESS, "msctls_progress32", WS_CAPTION, 35, 50, 263, 10
+    CONTROL         "", IDC_STATIC, "Static", SS_BLACKFRAME | SS_SUNKEN, 0, 192, 334, 1
+END
+
+IDD_DOWNLOAD_DIALOG DIALOGEX 0,0,333,140
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Installationsprogrammet för Java laddas ner"
+EXSTYLE WS_EX_APPWINDOW
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Installationsprogrammet för laddas ner", IDC_DOWNLOAD_HEADER, 30, 7, 130, 10
+    RTEXT           "", IDC_DOWNLOAD_STATUS, 166, 7, 130, 10
+    CONTROL         "Progress1", IDC_DOWNLOAD_PROGRESS, "msctls_progress32", WS_CAPTION, 30, 18, 270, 8
+    CONTROL         "", IDC_STATIC, "Static", SS_BLACKFRAME | SS_SUNKEN, 0, 33, 334, 1
+    CTEXT           "Java används överallt - i mobiltelefoner, stationära datorer, Blu-ray-spelare, digitalboxar och t.o.m. i bilar.", IDC_MARKETING_INFO3, 12, 48, 305, 25
+    CTEXT           "Genom att installera Java får du stöd för detta språk som utvecklats av Oracle.", IDC_MARKETING_INFO4, 12, 85, 305, 25
+    LTEXT           "Gå gärna in på", IDC_MARKETING_INFO1, 123, 120, 52, 10
+    LTEXT           "java.com", IDC_MARKETING_INFO2, 172, 120, 120, 10
+END
+
+IDD_ERROR_HELP_DIALOG DIALOGEX 0,0,253,94
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_VISIBLE | 
+    WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Fel - installationsprogram för Java(TM)"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Fö&rsök igen",IDOK,160,75,40,13
+    PUSHBUTTON      "Avbryt",IDCANCEL,203,75,44,13
+    LTEXT           "",IDC_EBODY_TEXT,10,10,240,30
+    LTEXT           "http://java.com/sv/download/help", IDC_MORE_INFO,10,30,160,12
+END
+
+108 DIALOGEX 0,0,259,61
+STYLE DS_SYSMODAL | DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION
+CAPTION "Fel - installationsprogram för Java(TM)"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",2,104,39,50,14
+    ICON            IDI_JAVA,-1,16,11,20,20,0,WS_EX_TRANSPARENT
+    LTEXT           "Du startar om installationsprogrammet för Java(TM) genom att uppdatera webbsidan.",
+                    -1,47,11,195,17
+END
+
+///////////////////////////////////////////////////////////////////////////
+//
+// Installer Retry (RunOnce via FilesInUse cancellation) Splash Screen
+
+IDD_RETRY_SPLASH DIALOGEX 0,0,333,120
+STYLE DS_CENTER | WS_POPUPWINDOW | WS_EX_TOPMOST | WS_VISIBLE
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "", IDC_BANNER,0,0,333,35
+    CTEXT           "Slutför Java-uppdateringen...", IDC_SPLASH_HEADER,0,55,333,25
+    CTEXT           "Den senaste Java-uppdateringen avbröts eftersom vissa Java-filer användes.", IDC_SPLASH_LINE1,0,80,333,20
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Change Folder Dialog
+//
+
+IDD_CHANGEFOLDER DIALOGEX 0, 0, 333, 218
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_VISIBLE | 
+    WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Java-installation - Målmapp"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CTEXT           "Målmapp",IDC_DIALOG_HEADER,109,38,110,27,SS_CENTERIMAGE
+    LTEXT           "", IDC_BANNER, 0, 0, 333, 35 
+    LTEXT           "", IDC_BACK_COLOR, 0, 65, 333, 127
+    LTEXT           "Klicka på ""Ändra"" för att installera Java i en annan mapp.",IDC_DIALOG_TEXT,8,78,320,12
+    LTEXT           "Installera i:",IDC_DIALOG_TEXT2,8,112,236,12
+    LTEXT           "",IDC_DIRECTORY,8,124,320,48
+    CONTROL         "", IDC_STATIC, "Static", SS_BLACKFRAME | SS_SUNKEN, 0, 192, 334, 1
+    DEFPUSHBUTTON   "Nästa >",IDOK,276,200,50,14
+    PUSHBUTTON      "&Ändra ...",IDC_CHANGE_BUTTON,260,108,50,14
+    PUSHBUTTON      "< &Tillbaka",IDC_BACK_BUTTON,219,200,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    105, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 236
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 63
+    END
+
+    108, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 252
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 78
+    END
+
+    109, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 250
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 219
+    END
+
+    IDD_CHANGEFOLDER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 312
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 219
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+
+// HTTP status code
+    IDS_HTTP_STATUS_BAD_REQUEST	    "Begäran kunde inte bearbetas av servern på grund av ogiltig syntax."
+    IDS_HTTP_STATUS_DENIED	    "Den begärda resursen kräver användarautentisering."
+    IDS_HTTP_STATUS_NOT_FOUND	    "Servern hittade ingenting som matchar begärd URI (Uniform Resource Identifier)."
+    IDS_HTTP_STATUS_BAD_METHOD	    "Den använda metoden är inte tillåten."
+    IDS_HTTP_STATUS_NONE_ACCEPTABLE "Inga svar som accepteras av klienten hittades."
+    IDS_HTTP_STATUS_PROXY_AUTH_REQ  "Proxyautentisering krävs."
+    IDS_HTTP_STATUS_REQUEST_TIMEOUT "Serverns väntetid för begäran gick ut."
+    IDS_HTTP_STATUS_CONFLICT	    "Begäran kunde inte bearbetas på grund av en konflikt med resursens nuvarande tillstånd. Användaren bör försöka igen och ange mer information."
+    IDS_HTTP_STATUS_GONE	    "Den begärda resursen är inte längre tillgänglig på servern, och ingen ny adress är känd."
+    IDS_HTTP_STATUS_LENGTH_REQUIRED "Servern accepterar inte begäran utan definierad innehållslängd."
+    IDS_HTTP_STATUS_PRECOND_FAILED  "Förhandsvillkoret som angavs i ett eller flera av sidhuvudfälten i begäran värderades som falskt när det testades på servern."
+    IDS_HTTP_STATUS_REQUEST_TOO_LARGE   "Servern kan inte bearbeta en begäran eftersom begärandeenheten är för stor."
+    IDS_HTTP_STATUS_URI_TOO_LONG        "Servern kan inte bearbeta en begäran eftersom dess URI (Uniform Resource Identifier) är för lång."
+    IDS_HTTP_STATUS_UNSUPPORTED_MEDIA   "Servern kan inte bearbeta en begäran eftersom begärandeenhetens format inte stöds av den begärda resursen för den begärda metoden."
+    IDS_HTTP_STATUS_RETRY_WITH		"Begäran bör prövas igen när en lämplig åtgärd har utförts."
+    IDS_HTTP_STATUS_NOT_SUPPORTED	"Servern har inte det stöd som krävs för att begäran ska kunna fullföljas."
+    IDS_HTTP_STATUS_BAD_GATEWAY		"Servern mottog, medan den agerade som gateway eller proxy, ett ogiltigt svar från den uppströmsserver som den fick tillgång till för att fullfölja begäran."
+    IDS_HTTP_STATUS_GATEWAY_TIMEOUT	"Väntetid för begäran gick ut medan servern väntade på en gateway."
+    IDS_HTTP_STATUS_VERSION_NOT_SUP	"Servern har inte stöd för HTTP-protokollversionen som användes i begäran."
+    IDS_HTTP_STATUS_FORBIDDEN		"Ett fel inträffade när Java laddades ned på datorn.\nDet kan vara ett problem med proxy-servern, brandväggen eller andra nätverksproblem som förorsakar ett HTTP-fel 403.\nSe http://java.com/error403"
+    IDS_HTTP_STATUS_SERVER_ERROR	"Servern upptäckte ett oväntat villkor som förhindrade den från att utföra begäran."
+    IDS_HTTP_STATUS_SERVICE_UNAVAIL	"Tjänsten är för tillfället överbelastad."
+    IDS_HTTP_STATUS_EXPORT_FAILURE	"Java kan inte laddas ner till din dator.\nDu befinner dig i ett land med handelsembargon."
+    IDS_HTTP_STATUS_SERVER_BUSY		"Java(TM) kan inte erbjudas från servern just nu.\nVill du försöka igen?"
+    IDS_HTTP_STATUS_INTERNAL_ERROR	"Ett oväntat serverfel inträffade.\nVill du försöka igen?"
+    IDS_HTTP_STATUS_UNKNOWN_ERROR	"Ett okänt fel har påträffats:\n\nHTTP-statuskod=%d"
+
+    IDS_HTTP_STATUS_EXPORT_FAILURE_CAPTION	"Exportkontroll - installationsprogram för Java(TM)"
+    IDS_HTTP_STATUS_SERVER_BUSY_CAPTION		"Server upptagen – installationsprogram för Java(TM)"
+    IDS_HTTP_STATUS_SERVER_ERROR_CAPTION	"Serverproblem – installationsprogram för Java(TM)"
+    IDS_HTTP_STATUS_UNKNOWN_ERROR_CAPTION	"Okänt fel – installationsprogram för Java(TM)"
+
+    IDS_DOWNLOAD_STATUS_OPENING		"Öppnar ..."
+    IDS_DOWNLOAD_STATUS_CONNECTING	"Ansluter ..."
+    IDS_DOWNLOAD_STATUS_OPENING_HTTP	"Öppnar HTTP-begäran ..."
+    IDS_DOWNLOAD_STATUS_SENDING_HTTP	"Sänder HTTP-begäran..."
+    IDS_DOWNLOAD_STATUS_RETRY		"Servern är för tillfället upptagen, försök igen om %ld sekunder ..."
+    IDS_DOWNLOAD_STATUS_DISCONNECTING	"Avslutar förbindelse ..."
+
+    IDS_USAGEERROR		    "Användning: %s {[/h]|[/installurl=URL of configuration file or msi file] [/lang=language id]} [/s] [cmdline options for msi installer] "
+    IDS_ERROR_CAPTION               "Fel - installationsprogram för Java(TM)"
+    IDS_WARNING_CAPTION             "Varning – installationsprogram för Java(TM)"
+    IDS_DOWNLOADERROR_MSG           "Det går inte att ladda ner %s för installation."
+    IDS_HOURSMINUTESECOND	    "Uppskattad tid kvar: %d timmar %d min %.0f sek"
+    IDS_HOURMINUTESECOND	    "Uppskattad tid kvar: %d timmar %d min %.0f sek"
+    IDS_MINUTESECOND 		    "Uppskattad tid kvar: %d min %.0f sek"
+    IDS_SECOND 			    "Uppskattad tid kvar: %.0f sek"
+    IDS_PARSINGERROR_MSG	    "Ogiltig konfigurationsfilssyntax"
+    IDS_TERMINATE                   "\nÅtgärda dessa problem innan du installerar om produkten."
+    IDS_DISKSPACE                   "Det finns inte tillräckligt med diskutrymme för installation av produkten på datorn.\n\n"
+    IDS_HTTP_STATUS_SERVER_NOT_REACHABLE "Installationsprogrammet för Java(TM) kan inte fortsätta med de nuvarande inställningarna för Internet-anslutningen.  Kontrollera Internet-alternativ -> Anslutningar i Kontrollpanelen och försäkra dig om att proxy-inställningarna och proxy-informationen är korrekta."
+    IDS_ERROR_TITLE               "Anslutningsfel"
+    IDS_ERROR_MESSAGEURL             "http://java.com/sv/download/help/index.xml"
+    IDS_ERROR_MESSAGE             "Installationsprogrammet kan inte fortsätta med de aktuella inställningarna för Internetanslutningen. Se följande webbplats för vidare information."
+    IDS_BETA_IFTW_ERROR "Installationsprogrammet kan inte fortsätta eftersom de filer som behövs för installationen inte är tillgängliga. Om du försöker installera en äldre version eller en betaversion kan du kontrollera på http://java.sun.com/javase om det fortfarande finns stöd för den. Om så är fallet kan du prova att installera senare. Det kan nämligen hända att filerna endast är otillgängliga för tillfället."
+    IDS_REQ_WI20_MSG "Installationsprogrammet kan inte fortsätta med det aktuella versionen av Windows Installer som finns på datorn. Mer information finns på följande webbplats."
+    IDS_LICENSE_AGREEMENT_URL     "http://java.com/sv/download/license/%s_license.jsp"
+    IDS_CLICK_HERE_URL            "http://java.com/data/"
+    IDS_WELCOME_MAIN              L"Välkommen till Java\x2122"
+    IDS_WELCOME_LINE1             "Java ger dig säker tillgång till ett rikt programutbud, oavsett om du är ute efter affärsapplikationer, smidiga verktyg eller underhållning. Med Java får du en Internet-upplevelse utöver det vanliga."
+    IDS_AREYOUSURE_MESSAGE        L"Är du säker på att du vill avbryta installationen av Java\x2122 %s ?"
+    IDS_AREYOUSURE_CAPTION        "Installationsprogram för Java"
+    IDS_SPONSOR_BANNER_CHECKSUM   "6f35c30946a0e11f0b29ba79755c2c2c63837f15"
+	IDS_BROWSE_TITLE                "Ändra målmapp\nJava kommer att installeras i den valda mappen."
+END

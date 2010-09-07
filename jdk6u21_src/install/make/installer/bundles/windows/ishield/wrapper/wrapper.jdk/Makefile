@@ -1,0 +1,173 @@
+#
+# Copyright (c) 2008, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+#
+# Makefile for building JDK offline installer with wrapper code. 
+#
+
+INSTALL_BUILDDIR= ../../../../../..
+PLUGIN_SRC= $(INSTALL_BUILDDIR)/../../deploy/src/plugin
+PLUGIN_TMP= $(OUTPUTDIR)/tmp/deploy/plugin
+PRODUCT = wrapper
+SRCDIR=./
+TEMPDIR=$(TEMP_DIR)/wrapper-jdk
+
+# Tell Defs.gmk that we want a static link of the MS runtime libraries
+MS_RUNTIME_STATIC=true
+
+INSANE=TRUE
+include $(INSTALL_BUILDDIR)/common/Defs.gmk
+
+EXEVALUE=$(JDK_NAME)-$(JDK_MINOR_VERSION)-windows-$(ARCH)
+EXEDESVALUE=$(JAVA_DESC) $(JDK_MINOR_VERSION).$(JDK_MICRO_VERSION)$(MARKET_NAME)
+IMVERSIONVALUE=$(JDK_MINOR_VERSION).$(JDK_MICRO_VERSION).$(J2SE_UPDATE_VER).$(COOKED_BUILD_NUMBER)
+SED_EXE_FILENAME=$(SED) -e 's%EXEFILENAME%$(EXEVALUE)%g'
+SED_APP_VERSION=$(SED) -e 's%IMVERSION%$(IMVERSIONVALUE)%g'
+SED_APP_DES=$(SED) -e 's%EXEDES%$(EXEDESVALUE)%g'
+SED_ALL_MANIFEST=$(SED_APP_VERSION) | $(SED_EXE_FILENAME) | $(SED_APP_DES)
+
+CURRENTDIR := $(call FullPath,.)
+
+TARGET_NAME=wrapper
+TARGET=$(TARGET_NAME)$(SUFFIX)$(EXE_SUFFIX)
+
+JDK_BUNDLE_NAME = $(JDK_NAME)-$(BIN_BUNDLE_NAMEPART)-$(BUNDLE_DATE)
+JDKISHIELDDIR=$(TMPISHIELD_DIR)/patch/sdk
+
+# cpp flags
+ifdef J4B
+CPPFLAGS += -DJ4B
+endif
+
+# Linker flags
+LDFLAGS += version.lib shell32.lib wininet.lib wintrust.lib 
+ifeq ($(ARCH), amd64)
+  LDFLAGS += bufferoverflowu.lib
+endif
+
+all: jdk
+
+jdk: clean embed_transforms setup_jdk 
+	$(CAT) $(SRCDIR)/wrapper.exe.manifest | $(SED_ALL_MANIFEST) > $(OBJDIR)/wrapperer.exe.manifest
+	$(CAT) $(SRCDIR)/wrapper_cab.rc | $(PROCESS_FILES_COMP) >$(OBJDIR)/wrapper_cab_sed.rc
+	$(CP) $(SRCDIR)/../wrapper.jre/wrapper_*.rc $(OBJDIR)/
+	$(MAKE) target
+ifeq ($(SIGN_FLAG),1)
+	$(call Try3Times, $(FULL_SIGNER) -n "$(JDK_DESC) $(JDK_MINOR_VERSION).$(JDK_MICRO_VERSION)$(MARKET_NAME)" -i http://java.com/  $(OBJDIR)/wrapper.exe )
+endif
+	$(CP) $(OBJDIR)/wrapper.exe $(BIN_BUNDLEDIR)/$(JDK_BUNDLE_NAME).exe
+#	$(RM)  $(OBJDIR)/*
+
+
+
+setup_jdk: $(OBJDIR)
+	$(CP) $(EMBEDDIR)/jdk.msi $(OBJDIR)/jdk.msi
+	$(CP) $(EMBEDDIR)/*.cab $(OBJDIR)/
+	$(CP) $(PLUGIN_SRC)/win32/graphics/java-icon.ico $(OBJDIR)/java-icon.ico
+ifeq ($(ARCH_DATA_MODEL), 32)
+  ifdef ALT_AUMSI_DIR	
+	$(CP) -f $(ALT_AUMSI_DIR)/au.msi $(OBJDIR)/au.msi
+	$(CP) -f $(ALT_AUMSI_DIR)/au.cab $(OBJDIR)/au.cab
+  else
+	$(CP) -f $(INSTALL_BUILDDIR)/au/au.msi $(OBJDIR)/au.msi
+	$(CP) -f $(INSTALL_BUILDDIR)/au/au.cab $(OBJDIR)/au.cab
+  endif
+  BACKSLASH_OBJDIR = $(subst /,\\,$(OBJDIR))
+  MSIDBCMD:=$(shell cd $(OBJDIR) ; $(DEVTOOLS_PATH)/msidb.exe -e -d au.msi -f $(BACKSLASH_OBJDIR) Property)
+  AUVERSION:=$(shell $(CD) $(OBJDIR) ; $(CAT) Property.idt | $(GREP) ProductVersion | $(NAWK)  '{print $$2}')
+  CPPFLAGS += -DAUVERSION='"$(AUVERSION)"'
+endif
+
+
+EMBEDDIR= $(JDKISHIELDDIR)/sdk/embed/
+
+embed_transforms:
+	$(RM) $(EMBEDDIR)/*
+	$(MKDIR) -p $(EMBEDDIR)
+	$(CP) -f $(JDKINSTALLERFILESDIR)/* $(EMBEDDIR)
+	$(CSCRIPT) $(CURRENTDIR)/../Emb.vbs $(EMBEDDIR)/jdk.msi $(EMBEDDIR)/jdk1041.mst 1041
+	$(CSCRIPT) $(CURRENTDIR)/../Emb.vbs $(EMBEDDIR)/jdk.msi $(EMBEDDIR)/jdk2052.mst 2052
+
+target: optimized $(BIN_BUNDLEDIR) debug 
+
+$(OBJDIR):
+	$(MKDIR) -p $(OBJDIR)
+
+$(BIN_BUNDLEDIR):
+	$(MKDIR) -p  $(BIN_BUNDLEDIR)
+
+FILES_rc = $(SRCDIR)wrapper.rc
+
+vpath %.cpp $(SRCDIR):$(PLUGIN_SRC)/win32/jupdate/checker:$(PLUGIN_SRC)/../common/windows/native:$(PLUGIN_SRC)/win32/regutils:$(PLUGIN_SRC)/win32/common::$(SRCDIR)/../common
+
+FILES_c= \
+	wrapper.cpp \
+	StdAfx.cpp \
+	Locale.cpp \
+	XMLParser.cpp \
+	common.cpp \
+	UserProfile.cpp \
+	UpdateUtils.cpp \
+	UpdateConf.cpp \
+	WrapperUtils.cpp \
+	WrapperOffline.cpp
+
+
+FILES_o	= $(patsubst %.cpp, %.$(OBJECT_SUFFIX), $(addprefix $(OBJDIR)/, $(notdir $(FILES_c))))
+FILES_res = $(patsubst %.rc, %.res, $(addprefix $(OBJDIR)/, $(notdir $(FILES_rc))))
+
+$(OBJDIR)/%.res: $(SRCDIR)%.rc
+ifeq ($(ARCH_DATA_MODEL), 32)
+  ifeq ($(VARIANT), DBG)  
+	$(RC) -l 0x409 -d _DEBUG -i $(OBJDIR) $(CC_OBJECT_OUTPUT_FLAG)$(OBJDIR)/$*.res $<
+  else
+	$(RC) -l 0x409 -i $(OBJDIR) $(CC_OBJECT_OUTPUT_FLAG)$(OBJDIR)/$*.res $<
+  endif
+else
+  ifeq ($(VARIANT), DBG)  
+	$(RC) -l 0x409 -d _DEBUG -d _AMD64 -i $(OBJDIR) $(CC_OBJECT_OUTPUT_FLAG)$(OBJDIR)/$*.res $<
+  else
+	$(RC) -l 0x409 -d _AMD64 -i $(OBJDIR) $(CC_OBJECT_OUTPUT_FLAG)$(OBJDIR)/$*.res $<
+  endif
+endif
+
+$(OBJDIR)/%.$(OBJECT_SUFFIX): %.cpp
+	$(COMPILE.cc) -I$(PLUGIN_TMP) -I$(PLUGIN_SRC)/../common/windows/native  -I$(PLUGIN_SRC)/win32/jupdate/checker  -I $(PLUGIN_SRC)/win32/regutils -I$(PLUGIN_SRC)/win32/common -I$(SRCDIR)/../common -DARCH=\"$(ARCH)\" -DDEFAULT_XML='"$(DEFAULT_XML)"' -DVERSION='"$(JDK_VERSION)"' -DBUNDLE='"jdk"' $(CC_OBJECT_OUTPUT_FLAG)$(OBJDIR)/$*.$(OBJECT_SUFFIX) $<
+
+$(OBJDIR)/$(TARGET): $(FILES_res) $(FILES_o)
+	$(LINK) $(LDFLAGS) $(FILES_res) $(FILES_o)
+
+
+plus:
+	$(CD) ../../../../../../../../deploy/make/plugin; $(MAKE) plus
+	$(RM) $(OBJDIR)/au.msi $(OBJDIR)/au.cab $(OBJDIR)/*.obj $(OBJDIR)/*res $(OBJDIR)/*pdb $(OBJDIR)/*map
+ifdef ALT_AUMSI_DIR	
+	$(CP) -f $(ALT_AUMSI_DIR)/au.msi $(OBJDIR)/au.msi
+	$(CP) -f $(ALT_AUMSI_DIR)/au.cab $(OBJDIR)/au.cab
+else
+	$(CP) -f $(INSTALL_BUILDDIR)/au/au.msi $(OBJDIR)/au.msi
+	$(CP) -f $(INSTALL_BUILDDIR)/au/au.cab $(OBJDIR)/au.cab
+endif
+	$(MAKE) target
+ifeq ($(SIGN_FLAG),1)
+	$(call Try3Times, $(FULL_SIGNER) -n "$(JDK_DESC) $(JDK_MINOR_VERSION).$(JDK_MICRO_VERSION)$(MARKET_NAME)" -i http://java.com/  $(OBJDIR)/wrapper.exe )
+endif
+	$(CP) $(OBJDIR)/wrapper.exe $(BIN_BUNDLEDIR)/$(JDK_BUNDLE_NAME).exe
+
+build: $(OBJDIR) $(BIN_BUNDLEDIR) $(OBJDIR)/$(TARGET)
+
+debug:
+
+optimized:
+	$(MKDIR) -p $(OBJDIR)
+	$(MAKE) build VARIANT=OPT
+
+clean::
+	$(RM) -r $(OBJDIR) $(OBJDIR)$(DBG_SUFFIX)
+	$(RM) -r $(TEMPDIR)
+
+#
+# Phonies to avoid accidents.
+#
+.PHONY: all optimized debug clobber clean build

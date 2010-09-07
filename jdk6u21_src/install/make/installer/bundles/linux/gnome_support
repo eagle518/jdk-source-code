@@ -1,0 +1,548 @@
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# @(#)gnome_support	1.5 10/03/23
+#
+# This script contains variables and functions used to support Gnome
+# integration.
+#
+# freedesktop.org style integration is always performed, even if
+# not present.  This should provide desktop integration in the
+# event of Gnome upgrade.
+#
+
+#
+# Desktop integration source locations below.
+#
+JDK_DESKTOP="${INSTALL_JRE_PATH}/lib/desktop"
+JDK_ICONS="${JDK_DESKTOP}/icons"
+JDK_APPS="${JDK_DESKTOP}/applications"
+JDK_MIME="${JDK_DESKTOP}/mime"
+
+#
+# Desktop registration locations below.
+# freedesktop.org conventions.
+#
+SHARE_PATH="${GNOMEDIR}/share"
+SHARE_ICONS="${SHARE_PATH}/icons"
+SHARE_MIME="${SHARE_PATH}/mime"
+SHARE_APPS="${SHARE_PATH}/applications"
+
+#
+# Themes.
+#
+HICOLOR=hicolor
+HIGHCONTRAST=HighContrast
+HIGHCONTRASTINVERSE=HighContrastInverse
+LOWCONTRAST=LowContrast
+THEMES="${HICOLOR} ${HIGHCONTRAST} ${HIGHCONTRASTINVERSE} ${LOWCONTRAST}"
+
+#
+# Icons.
+#
+RESOLUTIONS="16x16 48x48"
+TEXT_ICON="gnome-mime-text-x-java.png"
+JAR_ICON="gnome-mime-application-x-java-archive.png"
+JNLP_ICON="gnome-mime-application-x-java-jnlp-file.png"
+JAVA_ICON="sun-java.png"
+JAVAWS_ICON="sun-javaws.png"
+JCONTROL_ICON="sun-jcontrol.png"
+APPS_ICONS="${JAVA_ICON} ${JAVAWS_ICON} ${JCONTROL_ICON}"
+MIME_ICONS="${TEXT_ICON} ${JAR_ICON} ${JNLP_ICON}"
+ICONS="${APPS_ICONS} ${MIME_ICONS}"
+
+#
+# The following are Gnome commands required to update the desktop databases.
+# They are currently (04/06) not as stable as we would like, but we have
+# little choice but to use them.  Usage should allow for graceful and
+# mostly successful continuation of the installation should the commands
+# fail (or not be present).
+#
+#
+GNOME_UTILS_DIRS="/usr/bin /opt/gnome/bin"
+UPDATE_MIME_DATABASE="update-mime-database"
+UPDATE_DESKTOP_DATABASE="update-desktop-database"
+GTK_UPDATE_ICON_CACHE="gtk-update-icon-cache"
+
+#
+# Legacy locations follow.
+#
+SHARE_CONTROL_CENTER="${SHARE_PATH}/control-center-2.0"
+SHARE_CAPPLETS="${SHARE_CONTROL_CENTER}/capplets"
+SHARE_MIME_INFO="${SHARE_PATH}/mime-info"
+SHARE_APP_REGISTRY="${SHARE_PATH}/application-registry"
+SHARE_PIXMAPS="${SHARE_PATH}/pixmaps"
+
+
+#
+# UpdateIconCache(icon_theme_root)
+#
+# Update the icon cache for the theme located at icon_root_theme.  The
+# icon cache is optional but if it is present it needs to be updated
+# for the new icons to be found.
+#
+# On older systems, the cache update utility may not exist.
+#
+# In addition, the following little tidbit is found in the "Implementation
+# Notes" section of the "Icon Theme Specification (0.11)":
+#
+#	(http://freedesktop.org/wiki/Standards_2ficon_2dtheme_2dspec)
+#
+#	This caching can make it impossible for users to add icons without
+#	having to restart applications. In order to handle this, any
+#	implementation that does caching is required to look at the mtime
+#	of the toplevel icon directories when doing a cache lookup, unless
+#	it already did so less than 5 seconds ago. This means that any icon
+#	editor or theme installation program need only to change the mtime
+#	of the the toplevel directory where it changed the theme to make sure
+#	that the new icons will eventually get used.
+#
+# Its not clear to me if "toplevel directory" means the "theme" directory or
+# an immediate child.  To be sure, touch both.
+#
+UpdateIconCache() {
+    _icon_theme_root=$1
+
+    if [ -f ${_icon_theme_root}/icon-theme.cache ]; then
+	for _dir in ${GNOME_UTILS_DIRS}; do
+	    if [ -x ${_dir}/${GTK_UPDATE_ICON_CACHE} ]; then
+		${_dir}/${GTK_UPDATE_ICON_CACHE} ${_icon_theme_root} \
+		    > /dev/null 2>&1
+		break
+	    fi
+	done
+	touch ${_icon_theme_root}
+	for _dir in ${RESOLUTIONS}; do
+	    if [ -d ${_icon_theme_root}/${_dir} ]; then
+		touch ${_icon_theme_root}/${_dir}
+	    fi
+        done
+    fi
+
+}
+
+#
+# UpdateDesktopDatabase(desktop_root)
+#
+# Update the desktop file database for the directory desktop_root.  The
+# desktop database (cache) is optional but if it is present it needs to
+# be updated for the new desktop files to be found.  (Interesting name for
+# the database/cache file, no?)
+#
+# On older systems, the update utility may not exist.
+#
+# In order for the new .desktop files to be recognized, host based update
+# utilities need to be run.  As we all know, this isn't always possible,
+# so be careful to run them only when appropriate and be gracious about
+# accepting failures.
+#
+UpdateDesktopDatabase() {
+    _desktop_root=$1
+
+    if [ -f ${_desktop_root}/mimeinfo.cache ]; then
+	for _dir in ${GNOME_UTILS_DIRS}; do
+	    if [ -x ${_dir}/${UPDATE_DESKTOP_DATABASE} ]; then
+		${_dir}/${UPDATE_DESKTOP_DATABASE} ${_desktop_root} \
+		   > /dev/null 2>&1
+		break
+	    fi
+	done
+    fi
+
+}
+
+#
+# UpdateMimeDatabase(mime_root)
+#
+# Update the mime definitions database located at mime_root.  This is not
+# optional.
+#
+# On older systems, the update utility may not exist (but in that case,
+# this mime database isn't being used).
+#
+UpdateMimeDatabase() {
+    _mime_root=$1
+
+    if [ -d ${_mime_root}/packages ]; then
+	for _dir in ${GNOME_UTILS_DIRS}; do
+	    if [ -x ${_dir}/${UPDATE_MIME_DATABASE} ]; then
+		${_dir}/${UPDATE_MIME_DATABASE} ${_mime_root} > /dev/null 2>&1
+		break
+	    fi
+	done
+    fi
+
+}
+
+#
+# InstallGnomeIcons()
+#
+# Installs the appropriate set of Java icons.  A fairly expansive set is
+# installed according to the freedesktop.org specification (0.11 at this
+# time):
+#	http://standards.freedesktop.org/icon-theme-spec/latest/
+#
+# Additionally, a limited set of icons is installed in the legacy pixmap
+# directory for support of earlier Gnome implementations.
+#
+InstallGnomeIcons() {
+
+    #
+    # freedesktop.org definitions
+    #
+    for _theme in ${THEMES}; do
+
+	#
+	# Don't try to create a theme which doesn't exist.
+	#
+	if [ -d ${SHARE_ICONS}/${_theme} ]; then
+
+	    for _res in ${RESOLUTIONS}; do
+
+		#
+		# Application icons.
+		#
+		mkdir -p ${SHARE_ICONS}/${_theme}/${_res}/apps
+		for _icon in ${APPS_ICONS}; do
+		    cp -f ${JDK_ICONS}/${_theme}/${_res}/apps/${_icon} \
+			  ${SHARE_ICONS}/${_theme}/${_res}/apps/${_icon}
+		done
+
+		#
+		# Mime type icons.
+		#
+		mkdir -p ${SHARE_ICONS}/${_theme}/${_res}/mimetypes
+		for _icon in ${MIME_ICONS}; do
+		    cp -f ${JDK_ICONS}/${_theme}/${_res}/mimetypes/${_icon} \
+			  ${SHARE_ICONS}/${_theme}/${_res}/mimetypes/${_icon}
+		done
+
+	    done
+
+	    UpdateIconCache ${SHARE_ICONS}/${_theme}
+
+	fi
+
+    done
+
+    #
+    # Legacy locations.  Only install these if the target directory already
+    # exists.
+    #
+    if [ -d ${SHARE_PIXMAPS} ]; then
+
+	#
+	# Application icons
+	#
+	for _icon in ${APPS_ICONS}; do
+	    cp -f ${JDK_ICONS}/${HICOLOR}/48x48/apps/${_icon} \
+		  ${SHARE_PIXMAPS}/${_icon}
+	done
+
+	#
+	# For mime type icons, only a subset of the icons are used (because
+	# only a subset of the mimetypes are known) and we shortened the
+	# names.
+	#
+	cp -f ${JDK_ICONS}/${HICOLOR}/48x48/mimetypes/${TEXT_ICON} \
+	      ${SHARE_PIXMAPS}/x-java.png
+	cp -f ${JDK_ICONS}/${HICOLOR}/48x48/mimetypes/${JAR_ICON} \
+	      ${SHARE_PIXMAPS}/x-java-archive.png
+	cp -f ${JDK_ICONS}/${HICOLOR}/48x48/mimetypes/${JNLP_ICON} \
+	      ${SHARE_PIXMAPS}/x-java-jnlp-file.png
+
+    fi
+
+}
+
+#
+# RemoveGnomeIcons()
+#
+# Undo the work of InstallGnomeIcons().
+#
+RemoveGnomeIcons() {
+
+    #
+    # freedesktop.org definitions
+    #
+    for _theme in ${THEMES}; do
+	for _res in ${RESOLUTIONS}; do
+	    for _icon in ${APPS_ICONS}; do
+		rm -f ${SHARE_ICONS}/${_theme}/${_res}/apps/${_icon}
+	    done
+	    for _icon in ${MIME_ICONS}; do
+		rm -f ${SHARE_ICONS}/${_theme}/${_res}/mimetypes/${_icon}
+	    done
+	done
+	UpdateIconCache ${SHARE_ICONS}/${_theme}
+    done
+
+    #
+    # Legacy locations.
+    #
+    if [ -d ${SHARE_PIXMAPS} ]; then
+	for _icon in ${APPS_ICONS}; do
+	    rm -f ${SHARE_PIXMAPS}/${_icon}
+	done
+	rm -f ${SHARE_PIXMAPS}/x-java.png
+	rm -f ${SHARE_PIXMAPS}/x-java-archive.png
+	rm -f ${SHARE_PIXMAPS}/x-java-jnlp-file.png
+    fi
+
+}
+
+# InstallGnomeDesktop(file)
+#
+# Installs "file", assumed to be a .desktop file for Gnome in both the
+# freedesktop.org specified location (0.9.4 at this time):
+#	http://standards.freedesktop.org/desktop-entry-spec/latest/
+# and legacy locations.
+#
+InstallGnomeDesktop() {
+    _file=$1
+
+    #
+    # freedesktop.org location.
+    #
+    mkdir -p ${SHARE_APPS}
+    cp -f ${JDK_APPS}/${_file} ${SHARE_APPS}/${_file}
+
+    #
+    # Legacy locations.
+    #
+    # Using the logic that newer versions of Java SE will not be bundled
+    # with older OS versions (which contain older JDS/Gnome versions) and
+    # that Gnome versions are not typically downgraded, legacy files are
+    # only installed if the directory exists. This helps eliminate clutter
+    # on newer installations.
+    #
+    # Pre-2.10 based Gnome implementations require the Java Control Panel
+    # application icon to be in the control-center-2.0 directory.
+    #
+    if [ "${_file}" = "sun_java.desktop" ]; then
+	if [ -d ${SHARE_CAPPLETS} ]; then
+	    cp -f ${JDK_APPS}/${_file} ${SHARE_CAPPLETS}/${_file}
+	fi
+    fi
+
+}
+
+#
+# RemoveGnomeDesktop(file)
+#
+# Undoes the work of InstallGnomeDesktop().
+#
+RemoveGnomeDesktop() {
+    _file=$1
+
+    rm -f ${SHARE_APPS}/${_file}
+    rm -f ${SHARE_CAPPLETS}/${_file}
+}
+
+#
+# InstallLegacyMimetype(mime_type, extension, name, command, icon, desc)
+#
+# Add an entry to Gnome legacy mimetype/application registry.
+#
+# Parameters:
+#     $1 - mime_type     associated mime type
+#     $2 - extension     associated file extension
+#     $3 - name          used to name Gnome registry files
+#     $4 - command       what to invoke when launching file/mime type
+#     $5 - icon          base name of icon file
+#     $6 - description   description for association
+#
+InstallLegacyMimetype() {
+    _mime_type=$1
+    _extension=$2
+    _name=$3
+    _command=$4
+    _icon=$5
+    _description=$6
+
+    # the following here-doc creates the keys file (leading tabs ignored).
+    cat <<- end_of_keys_file > ${SHARE_MIME_INFO}/${_name}.keys
+	${_mime_type}:
+	    description=${_description}
+	    icon_filename=${_icon}
+	    default_action_type=application
+	    default_application_id=${_name}
+	    short_list_application_user_additions=${_name}
+	end_of_keys_file
+    # --^ ends here-doc
+
+    # the following here-doc creates the mime file (leading tabs ignored).
+    cat <<- end_of_mime_file > ${SHARE_MIME_INFO}/${_name}.mime
+	${_mime_type}
+	    ext: ${_extension}
+	end_of_mime_file
+    # --^ ends here-doc
+
+    # the following here-doc creates the apps file (leading tabs ignored).
+    cat <<- end_of_apps_file > ${SHARE_APP_REGISTRY}/${_name}.applications
+	${_name}
+	    command=${_command}
+	    name=${_name}
+	    can_open_multiple_files=false
+	    requires_terminal=false
+	    mime_types=${_mime_type}
+	end_of_apps_file
+    # --^ ends here-doc
+
+}
+
+#
+# RemoveLegacyMimetype(file)
+#
+# Undoes the work of InstallLegacyMimetype().
+#
+#     param - $1 - name used to name Gnome registry files
+#
+RemoveLegacyMimetype() {
+    _name=$1
+
+    rm -f ${SHARE_MIME_INFO}/${_name}.keys
+    rm -f ${SHARE_MIME_INFO}/${_name}.mime
+    rm -f ${SHARE_APP_REGISTRY}/${_name}.applications
+
+}
+
+#
+# InstallGnomeMimetypes()
+#
+# Although the full mimetype suite is supposed to be delivered as part of
+# Gnome:
+#	http://freedesktop.org/wiki/Standards_2fshared_2dmime_2dinfo_2dspec
+# the mime specification for jnlp files is missing and the specification for
+# jar files is incorrect in early versions.  We "patch" those and rebuild
+# the database.
+#
+# Legacy support for earlier versions of Gnome is also provided.
+#
+InstallGnomeMimetypes() {
+
+    #
+    # There are bugs in the early mime database entry for jar and
+    # jnlp files.  Fix that.
+    #
+    if [ -d ${SHARE_MIME} ]; then
+	cp -f ${JDK_MIME}/packages/x-java-archive.xml \
+	      ${SHARE_MIME}/packages/x-java-archive.xml
+	cp -f ${JDK_MIME}/packages/x-java-jnlp-file.xml \
+	      ${SHARE_MIME}/packages/x-java-jnlp-file.xml
+    fi
+    UpdateMimeDatabase ${SHARE_MIME}
+
+    #
+    # Older Gnome implementations (pre-2.6) used a different mime recognition
+    # database.  If the directories to support that exist, add the appropriate
+    # files for x-java-archive and x-java-jnlp-file.
+    #
+    if [ -d ${SHARE_MIME_INFO} ] || [ -d ${SHARE_APP_REGISTRY} ]; then
+
+	#
+	# Make sure both directories exist
+	#
+	mkdir -p ${SHARE_MIME_INFO}
+	mkdir -p ${SHARE_APP_REGISTRY}
+
+	#
+	# Setup the Gnome association for JAR files.
+	#
+	InstallLegacyMimetype application/x-java-archive \
+                 jar              \
+                 java-archive     \
+                 "java -jar"      \
+                 x-java-archive.png     \
+		 "Java Archive"
+
+	#
+	# Setup the Gnome association for JNLP files.
+	#
+	InstallLegacyMimetype application/x-java-jnlp-file \
+                 jnlp                \
+                 java-web-start      \
+                 javaws              \
+                 x-java-jnlp-file.png        \
+                 "Java Web Start Application"
+
+    fi
+
+}
+
+#
+# RemoveGnomeMimetypes()
+#
+# Undoes the work of InstallGnomeMimetypes().
+#
+RemoveGnomeMimetypes() {
+    rm -f ${SHARE_MIME}/packages/x-java-archive.xml
+    rm -f ${SHARE_MIME}/packages/x-java-jnlp-file.xml
+    UpdateMimeDatabase ${SHARE_MIME}
+    if [ -d ${SHARE_MIME_INFO} ] || [ -d ${SHARE_APP_REGISTRY} ]; then
+	RemoveLegacyMimetype java-archive
+	RemoveLegacyMimetype java-web-start
+    fi
+}
+
+#
+# IntegrateWithGnome()
+#
+# This is the main entry point for all Java/Gnome integration.
+#
+IntegrateWithGnome() {
+
+    #
+    # Install the various icons used for Gnome integration.
+    #
+    InstallGnomeIcons
+
+    #
+    # Install the .desktop files for Gnome integration.
+    #
+    # "sun_java" is probably a poor choice of a name for the desktop file
+    # associated with jcontrol (aka: ControlPanel), but it would be difficult
+    # (if not impossible) to change at this time. A constant name is
+    # required for the Gnome transition mechanisms to work.
+    #
+    InstallGnomeDesktop sun_java.desktop
+    InstallGnomeDesktop sun-java.desktop
+    InstallGnomeDesktop sun-javaws.desktop
+    UpdateDesktopDatabase ${SHARE_APPS}
+
+    #
+    # Install/Patch the mimetype databases for Gnome integration.
+    #
+    InstallGnomeMimetypes
+
+}
+
+#
+# DisintegrateWithGnome()
+#
+# Dis'es the work of IntegrateWithGnome().
+#
+# Sorry about the pun.
+#
+DisintegrateWithGnome() {
+
+    #
+    # Remove the various icons used for Gnome integration.
+    #
+    RemoveGnomeIcons
+
+    #
+    # Remove the .desktop files for Gnome integration.
+    #
+    RemoveGnomeDesktop sun_java.desktop
+    RemoveGnomeDesktop sun-java.desktop
+    RemoveGnomeDesktop sun-javaws.desktop
+    UpdateDesktopDatabase ${SHARE_APPS}
+
+    #
+    # Remove the mimetype databases for Gnome integration.
+    #
+    RemoveGnomeMimetypes
+
+}

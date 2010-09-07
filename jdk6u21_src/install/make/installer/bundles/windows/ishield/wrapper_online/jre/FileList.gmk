@@ -1,0 +1,21 @@
+FILES_cpp = StdAfx.cpp \
+            DownloadDialog.cpp \
+            ChangeFolder.cpp \
+            RetrySplash.cpp \
+            ErrorHelpDialog.cpp \
+            WelcomeDialog.cpp \
+            jinstall.cpp \
+            UpdateUtils.cpp \
+            UpdateConf.cpp \
+            DownloadFile.cpp \
+            WrapperOnline.cpp \
+            WrapperUtils.cpp \
+            common.cpp \
+            UserProfile.cpp \
+            XMLParser.cpp \
+            SetupProgressDialog.cpp \
+            Locale.cpp
+
+FILES_rc = jinstall.rc
+
+FILES_cpp_chk = jchksum.cpp

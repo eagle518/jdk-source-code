@@ -1,0 +1,43 @@
+Property	Value	ISComments
+s72	L0	S255
+Property	Property
+_IsMaintenance	Change	
+_IsSetupTypeMin	Typical	
+AgreeToLicense	No	
+ApplicationUsers	AllUsers	
+ARPNOMODIFY	1	
+ARPNOREMOVE	1	
+ARPNOREPAIR	1	
+ARPSYSTEMCOMPONENT	1	
+DefaultUIFont	Tahoma8	
+DialogCaption	InstallShield for Windows Installer	
+DiskPrompt	[1]	
+Display_IsBitmapDlg	1	
+DisplayNameCustom	Custom	
+DisplayNameMinimal	Minimal	
+DisplayNameTypical	Typical	
+DWUSINTERVAL	30	
+ErrorDialog	SetupError	
+InstallChoice	AR	
+INSTALLLEVEL	100	
+ISCHECKFORPRODUCTUPDATES	1	
+ISENABLEDWUSFINISHDIALOG		
+ISSCRIPT_VERSION_MISSING	##IDS_ISSCRIPT_VERSION_MISSING##	
+ISSCRIPT_VERSION_OLD	##IDS_ISSCRIPT_VERSION_OLD##	
+ISVROOT_PORT_NO	0	
+Manufacturer	Sun Microsystems, Inc.	
+OEMUPDATE	0	
+PIDTemplate	12345<###-%%%%%%%>@@@@@	
+ProductCode	{4A03706F-666A-4037-7777-5F2748764D10}	
+ProductID	none	
+ProductLanguage	1033	
+ProductName	Java Auto Updater	
+ProductVersion	2.0.0.0	
+ProgressType0	install	
+ProgressType1	Installing	
+ProgressType2	installed	
+ProgressType3	installs	
+RebootYesNo	Yes	
+ReinstallModeText	omus	
+SetupType	Typical	
+UpgradeCode	{4CAACC5A-B5F0-4B96-7777-CA8F526664C7}	

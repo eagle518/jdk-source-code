@@ -1,0 +1,53 @@
+#
+# Copyright (c) 2009, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+#
+# @(#)Makefile.iftw	1.2 09/12/18 
+#
+#
+# Makefile to build the Online iftw installer
+#
+
+
+PRODUCT = jinstall_iftw
+TEMPDIR=$(TEMP_DIR)/jinstall-iftw
+
+
+TARGET_NAME=jinstall_iftw
+TARGET=$(TARGET_NAME).exe
+
+include ./common.gmk
+
+EXEVALUE=jre-$(JDK_MINOR_VERSION)-windows-$(ARCH)-iftw
+
+CPPFLAGS += -DIFTW
+
+all: clean copyfiles create_projectfiles jre-iftw
+
+create_projectfiles: copyfiles
+	# see wrapper_online\jre\common.gmk for SED__* commands
+	$(CAT) jinstall_iftw.vcproj | $(SED__OUTPUTDIR) | $(SED__PROJDIR) | $(SED__MINOR_VERSION) | $(SED__MICRO_VERSION) | $(SED__FULL_VERSION) | $(SED__JDK_VERSION) | $(SED__DEFAULT_XML) | $(SED__J2SE_FVER) | $(SED__J2SE_UPDATE_META_TAG) | $(SED__J2SE_UPDATE_VER) | $(SED__COOKED_BUILD_NUMBER) > $(TEMP_DIR)/jinstallproj/jinstall_iftw.vcproj
+
+
+jre-iftw: optimized debug
+
+
+$(OBJDIR)/$(TARGET): $(FILES_res) $(FILES_o)
+	$(LINK) $(LDFLAGS) $(FILES_res) $(FILES_o)
+
+build: $(OBJDIR)/$(TARGET)
+
+debug:
+
+optimized: $(OBJDIR)
+	$(MAKE) -f Makefile.iftw build VARIANT=OPT
+
+clean::
+	$(RM) -r $(TEMPDIR)
+
+#
+# Phonies to avoid accidents.
+#
+.PHONY: all create_projectfiles optimized debug clobber clean build
+

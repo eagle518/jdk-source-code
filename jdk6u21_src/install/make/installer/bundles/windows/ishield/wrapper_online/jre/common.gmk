@@ -1,0 +1,111 @@
+#
+# Copyright (c) 2009, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+#
+# @(#)common.gmk	1.12 10/03/31
+#
+#
+# Makefile that sets common variables to build the Online installer
+#
+
+INSTALL_BUILDDIR= ../../../../../..
+PLUGIN_TMP= $(OUTPUTDIR)/tmp/deploy/plugin
+DEPLOY_TOPDIR = $(INSTALL_BUILDDIR)/../../deploy
+PLUGIN_SRC= $(DEPLOY_TOPDIR)/src/plugin
+SRCDIR=./
+PATCH_FILEDIR=$(TEMP_DIR)/jinstall-jre/$(OBJECT_SUFFIX)
+ONLINE_TMPDIR=$(TMPISHIELD_DIR)/patch/online-final
+
+# Tell Defs.gmk that we want a static link of the MS runtime libraries
+MS_RUNTIME_STATIC=true
+
+INSANE=TRUE
+include $(INSTALL_BUILDDIR)/common/Defs.gmk
+
+
+EXEDESVALUE=Java(TM) SE Runtime Environment
+IMVERSIONVALUE=$(JDK_MINOR_VERSION).$(JDK_MICRO_VERSION).$(J2SE_UPDATE_VER).$(COOKED_BUILD_NUMBER)
+SED_EXE_FILENAME=$(SED) -e 's%EXEFILENAME%$(EXEVALUE)%g'
+SED_APP_VERSION=$(SED) -e 's%IMVERSION%$(IMVERSIONVALUE)%g'
+SED_APP_DES=$(SED) -e 's%EXEDES%$(EXEDESVALUE)%g'
+SED_ALL_MANIFEST=$(SED_APP_VERSION) | $(SED_EXE_FILENAME) | $(SED_APP_DES)
+
+#Get the msi & mst file list from the ishield dir
+FILE_LIST=$(shell $(CD) $(ONLINE_TMPDIR); $(LS) -rd *msi *MST)
+
+
+# Linker flags
+ifeq ($(ARCH), amd64)
+  LDFLAGS += urlmon.lib comctl32.lib wintrust.lib wininet.lib bits.lib gdi32.lib version.lib shell32.lib bufferoverflowu.lib delayimp.lib /DELAYLOAD:gdiplus.dll
+else
+  LDFLAGS += urlmon.lib comctl32.lib wintrust.lib wininet.lib bits.lib gdi32.lib version.lib shell32.lib delayimp.lib /DELAYLOAD:gdiplus.dll
+endif
+
+
+
+include ./FileList.gmk 
+
+copyfiles: $(OBJDIR)
+	$(CP) $(PATCH_FILEDIR)/InstallerFiles.h $(OBJDIR)/InstallerFiles.h
+	$(CP) $(PATCH_FILEDIR)/PatchStruct.h $(OBJDIR)/PatchStruct.h
+	if [ -f $(ALT_SPONSOR1DIR)/gtapi.dll ] ; \
+	then \
+		$(CP) $(ALT_SPONSOR1DIR)/gtapi.dll $(OBJDIR)/gtapi.dll ; \
+	fi
+
+vpath %.cpp $(SRCDIR):$(SRCDIR)/../../wrapper/common:$(PLUGIN_SRC)/win32/common:$(PLUGIN_SRC)/win32/jupdate/checker:$(PLUGIN_SRC)/../common/windows/native:$(PLUGIN_SRC)/win32/regutils
+
+FILES_o	= $(patsubst %.cpp, %.$(OBJECT_SUFFIX), $(addprefix $(OBJDIR)/, $(notdir $(FILES_cpp))))
+FILES_res = $(patsubst %.rc, %.res, $(addprefix $(OBJDIR)/, $(notdir $(FILES_rc))))
+FILES_ochk = $(patsubst %.cpp, %.$(OBJECT_SUFFIX), $(addprefix $(OBJDIR)/, $(notdir $(FILES_cpp_chk))))
+
+
+$(OBJDIR)/%.res: $(SRCDIR)%.rc
+ifeq ($(VARIANT), DBG)
+  ifneq ($(ARCH), amd64)
+	$(RC) -i $(SRCDIR)/../../wrapper/common $(RC_FLAGS) $(RSCFLAGS) -d _DEBUG -i $(OBJDIR) -i $(PLUGIN_TMP) -i $(PLUGIN_SRC)/win32 $(CC_OBJECT_OUTPUT_FLAG)$(OBJDIR)/$*.res $<
+  else
+	$(RC) -i $(SRCDIR)/../../wrapper/common $(RC_FLAGS) $(RSCFLAGS) -d _DEBUG -d _AMD64 -i $(OBJDIR) -i $(PLUGIN_TMP) -i $(PLUGIN_SRC)/win32 $(CC_OBJECT_OUTPUT_FLAG)$(OBJDIR)/$*.res $<
+  endif
+else
+  ifneq ($(ARCH), amd64)
+	$(RC) -i $(SRCDIR)/../../wrapper/common $(RC_FLAGS) $(RSCFLAGS) -i $(OBJDIR) -i $(PLUGIN_TMP) -i $(PLUGIN_SRC)/win32 $(CC_OBJECT_OUTPUT_FLAG)$(OBJDIR)/$*.res $<
+  else
+	$(RC) -i $(SRCDIR)/../../wrapper/common $(RC_FLAGS) $(RSCFLAGS) -i $(OBJDIR) -d _AMD64 -i $(PLUGIN_TMP) -i $(PLUGIN_SRC)/win32 $(CC_OBJECT_OUTPUT_FLAG)$(OBJDIR)/$*.res $<
+  endif
+endif
+
+$(OBJDIR)/%.$(OBJECT_SUFFIX): %.cpp
+	$(COMPILE.cc) $(CPPINCPATH) $(CC_OBJECT_OUTPUT_FLAG)$(OBJDIR)/$*.$(OBJECT_SUFFIX) $<
+
+
+$(OBJDIR):
+	$(MKDIR) -p $(OBJDIR)
+	$(CAT) $(SRCDIR)/jinstall.exe.manifest | $(SED_ALL_MANIFEST) > $(OBJDIR)/jinstaller.exe.manifest
+ifneq ($(ARCH), amd64)
+  ifdef ALT_AUMSI_DIR	
+	$(CP) -f $(ALT_AUMSI_DIR)/au.msi $(OBJDIR)/au.msi
+	$(CP) -f $(ALT_AUMSI_DIR)/au.cab $(OBJDIR)/au.cab
+  else
+	$(CP) -f $(INSTALL_BUILDDIR)/au/au.msi $(OBJDIR)/au.msi
+	$(CP) -f $(INSTALL_BUILDDIR)/au/au.cab $(OBJDIR)/au.cab
+  endif
+endif
+CPPFLAGS += -DDEFAULT_XML='"$(DEFAULT_XML)"' -DPRODUCT_NAME='"jre$(JDK_VERSION)-iftw"' -DBUNDLE='"jre"' -DARCH=\"$(ARCH)\" -DFULLVERSION='"$(FULL_VERSION)"' -DVERSION='"$(JDK_VERSION)"' 
+ifdef PATCH_LIST
+	# -DPATCH_LIST='""' would cause #ifdef PATCH_LIST to be true in the compiler
+	CPPFLAGS += -DPATCH_LIST='"$(PATCH_LIST)"'
+endif
+BACKSLASH_OBJDIR = $(subst /,\\,$(OBJDIR))
+MSIDBCMD:=$(shell cd $(OBJDIR) ; $(DEVTOOLS_PATH)/msidb.exe -e -d au.msi -f $(BACKSLASH_OBJDIR) Property)
+AUVERSION:=$(shell $(CD) $(OBJDIR) ; $(CAT) Property.idt | $(GREP) ProductVersion | $(NAWK)  '{print $$2}')
+CPPFLAGS += -DAUVERSION='"$(AUVERSION)"'
+
+# Use extra (de) compression if available
+ifdef EXTRA_COMP_LIB_NAME
+  CPPFLAGS += -DEXTRA_COMP_LIB_NAME=$(EXTRA_COMP_LIB_NAME)
+  RSCFLAGS += -DEXTRA_COMP_LIB_NAME=$(EXTRA_COMP_LIB_NAME) -i $(EXTRA_COMP_PATH)
+endif
+
+CPPINCPATH = -I$(OBJDIR) -I$(SRCDIR) -I$(PLUGIN_TMP) -I$(SRCDIR)/../../wrapper/common -I$(PLUGIN_SRC)/win32/common -I$(PLUGIN_SRC)/win32/jupdate/checker -I$(PLUGIN_SRC)/../common/windows/native -I$(PLUGIN_SRC)/win32/regutils

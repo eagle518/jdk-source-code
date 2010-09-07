@@ -1,0 +1,20 @@
+Dialog_	Control_	Action	Condition
+s72	s50	s50	s255
+ControlCondition	Dialog_	Control_	Action	Condition
+CustomSetup	ChangeFolder	Hide	Installed
+CustomSetup	InstallLabel	Hide	Installed
+SetupCompleteError	Finish	Default	NOT UpdateStarted
+SetupCompleteError	FinishText2	Hide	UpdateStarted
+SetupCompleteError	FinishText2	Show	NOT UpdateStarted
+SetupCompleteError	RestContText2	Hide	NOT UpdateStarted
+SetupCompleteError	RestContText2	Show	UpdateStarted
+SetupCompleteSuccess	RegInfoButton	Show	ProgressType2="installed" And ((ACTION<>"INSTALL") OR (NOT ISENABLEDWUSFINISHDIALOG) OR (ISENABLEDWUSFINISHDIALOG And Installed))
+SetupCompleteSuccess	TextLine1	Show	NOT(ProgressType2="installed" And ((ACTION<>"INSTALL") OR (NOT ISENABLEDWUSFINISHDIALOG) OR (ISENABLEDWUSFINISHDIALOG And Installed)))
+SetupCompleteSuccess	TextLine2	Show	ProgressType2="installed" And ((ACTION<>"INSTALL") OR (NOT ISENABLEDWUSFINISHDIALOG) OR (ISENABLEDWUSFINISHDIALOG And Installed))
+SetupCompleteSuccess	TextLine3	Show	ProgressType2="uninstalled" And ((ACTION<>"INSTALL") OR (NOT ISENABLEDWUSFINISHDIALOG) OR (ISENABLEDWUSFINISHDIALOG And Installed))
+SetupCompleteSuccess	TextLine4	Show	ProgressType2="installed" And ((ACTION<>"INSTALL") OR (NOT ISENABLEDWUSFINISHDIALOG) OR (ISENABLEDWUSFINISHDIALOG And Installed))
+SetupCompleteSuccess	UpdateTextLine1	Show	ISENABLEDWUSFINISHDIALOG And NOT Installed And ACTION="INSTALL"
+SetupProgress	DlgDesc	Show	ProgressType2="installed"
+SetupProgress	DlgDesc2	Show	ProgressType2="uninstalled"
+SetupProgress	DlgTitle	Show	ProgressType1="Installing"
+SetupProgress	DlgTitle2	Show	ProgressType1="Uninstalling"

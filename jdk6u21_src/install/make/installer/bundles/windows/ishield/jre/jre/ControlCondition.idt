@@ -1,0 +1,34 @@
+Dialog_	Control_	Action	Condition
+s72	s50	s50	s255
+ControlCondition	Dialog_	Control_	Action	Condition
+CustomSetup	Back	Hide	SDKSILENT=1 or SKIPLICENSE=1
+CustomSetup	ChangeFolder	Enable	Not Installed
+CustomSetup	ChangeFolder	Hide	Installed
+CustomSetup	InstallLabel	Hide	Installed
+SetupCompleteError	Finish	Default	NOT UpdateStarted
+SetupCompleteError	FinishText2	Hide	UpdateStarted
+SetupCompleteError	FinishText2	Show	NOT UpdateStarted
+SetupCompleteError	RestContText2	Hide	NOT UpdateStarted
+SetupCompleteError	RestContText2	Show	UpdateStarted
+SetupCompleteSuccess	CheckBoxBrowserRestart	Hide	(NEEDIERESTART=0) and (FIREFOXRESTART=0)
+SetupCompleteSuccess	CheckBoxBrowserRestart	Show	(NEEDIERESTART=1) or (FIREFOXRESTART=1)
+SetupCompleteSuccess	TextRestartBrowser	Hide	Not ((NEEDIERESTART=1) or (FIREFOXRESTART=1))
+SetupCompleteSuccess	TextRestartBrowser	Show	((NEEDIERESTART=1) or (FIREFOXRESTART=1))
+SetupCompleteSuccess	TextRestartBrowserCheckbox	Hide	(NEEDIERESTART=0) and (FIREFOXRESTART=0)
+SetupCompleteSuccess	TextRestartBrowserCheckbox	Show	(NEEDIERESTART=1)  or (FIREFOXRESTART=1)
+SetupCompleteSuccess	TextLineNONE	Hide	Not ((RUNVECTOR<>1) and (ProgressType2="installed"))
+SetupCompleteSuccess	TextLineNONE	Show	RUNVECTOR<>1 and ProgressType2="installed"
+SetupCompleteSuccess	JavaKernel	Hide	Not((KERNEL=1) and (ProgressType2="installed"))
+SetupCompleteSuccess	JavaKernel	Show	(KERNEL=1) and (ProgressType2="installed")
+SetupCompleteSuccess	JavaPowered	Hide	Not ((KERNEL<>1) and (RUNVECTOR<>1) and (ProgressType2="installed"))
+SetupCompleteSuccess	JavaPowered	Show	(KERNEL<>1) and (RUNVECTOR<>1) and (ProgressType2="installed")
+SetupCompleteSuccess	JavaVector	Hide	Not ((RUNVECTOR=1) and (ProgressType2="installed"))
+SetupCompleteSuccess	JavaVector	Show	(RUNVECTOR=1) and (ProgressType2="installed")
+SetupCompleteSuccess	TextLine3	Show	ProgressType2="uninstalled"
+SetupProgress	DlgDesc	Show	ProgressType2="installed"
+SetupProgress	DlgDesc2	Show	ProgressType2="uninstalled"
+SetupProgress	DlgTitle	Show	ProgressType1="Installing"
+SetupProgress	DlgTitle2	Show	ProgressType1="Uninstalling"
+SetupProgress	JavaAd	Show	ProgressType1="Installing"
+LicenseAgreement	CheckBoxAdvanced	Hide	MODE="U"
+FilesInUse	Ignore	Hide	1

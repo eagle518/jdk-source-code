@@ -1,0 +1,181 @@
+Dialog_	Control	Type	X	Y	Width	Height	Attributes	Property	Text	Control_Next	Help	ISWindowStyle	ISControlId	ISBuildSourcePath	Binary_
+s72	s50	s20	i2	i2	i2	i2	I4	S72	L0	S50	L50	I4	I4	S255	S72
+Control	Dialog_	Control
+CancelSetup	Icon	Icon	15	15	24	24	5242881					0			NewBinary4
+CancelSetup	No	PushButton	135	57	66	17	3		##IDS__IsCancelDlg_6##	Yes		0			
+CancelSetup	Text	Text	48	15	194	30	3		##IDS__IsCancelDlg_4##			0			
+CancelSetup	Yes	PushButton	62	57	66	17	3		##IDS__IsCancelDlg_8##	No		0			
+CustomSetup	Back	PushButton	164	243	66	17	3		##IDS__IsCustomSelectionDlg_1##	Next		0			
+CustomSetup	Banner	Bitmap	0	0	374	44	1					0			NewBinary11
+CustomSetup	BannerLine	Line	0	44	374	0	1					0			
+CustomSetup	Branding1	Text	4	229	50	13	3		##IDS__IsCustomSelectionDlg_2##			0			
+CustomSetup	Branding2	Text	3	228	50	13	65537		##IDS__IsCustomSelectionDlg_3##			0			
+CustomSetup	Cancel	PushButton	301	243	66	17	3		##IDS__IsCustomSelectionDlg_4##	Tree		0			
+CustomSetup	ChangeFolder	PushButton	301	203	66	17	3		##IDS__IsCustomSelectionDlg_16##	Back		0			
+CustomSetup	DlgDesc	Text	63	23	292	25	65539		##IDS__IsCustomSelectionDlg_6##			0	0		
+CustomSetup	DlgLine	Line	48	234	326	0	1					0			
+CustomSetup	DlgText	Text	9	51	360	27	3		##IDS__IsCustomSelectionDlg_7##			0	0		
+CustomSetup	DlgTitle	Text	63	6	292	25	65539		##IDS__IsCustomSelectionDlg_8##			0	0		
+CustomSetup	FeatureGroup	GroupBox	235	78	131	121	3		##IDS__IsCustomSelectionDlg_15##			0	0		
+CustomSetup	InstallLabel	Text	8	190	200	12	3		##ID_STRING_INSTALLTO##			0	0		
+CustomSetup	ItemDescription	Text	241	91	120	103	3		##IDS__IsCustomSelectionDlg_14##			0	0		
+CustomSetup	Location	Text	8	203	291	20	3		##IDS__IsCustomSelectionDlg_17##			0			
+CustomSetup	Next	PushButton	230	243	66	17	3		##IDS__IsCustomSelectionDlg_11##	Cancel		0			
+CustomSetup	Tree	SelectionTree	8	90	220	97	7	_BrowseProperty		ChangeFolder		0	0		
+FilesInUse	Banner	Bitmap	0	0	374	44	1					0			NewBinary11
+FilesInUse	BannerLine	Line	0	44	374	0	1					0			
+FilesInUse	Branding1	Text	4	229	50	13	3		##IDS__IsFilesInUse_1##			0			
+FilesInUse	Branding2	Text	3	228	50	13	65537		##IDS__IsFilesInUse_2##			0			
+FilesInUse	DlgDesc	Text	63	23	292	25	65539		##IDS__IsFilesInUse_3##			0	0		
+FilesInUse	DlgLine	Line	48	234	326	0	1					0			
+FilesInUse	DlgText	Text	21	51	348	29	3		##IDS__IsFilesInUse_4##			0			
+FilesInUse	DlgTitle	Text	63	6	292	25	65539		##IDS__IsFilesInUse_5##			0	0		
+FilesInUse	Exit	PushButton	301	243	66	17	3		##IDS__IsFilesInUse_6##	List		0			
+FilesInUse	Ignore	PushButton	230	243	66	17	3		##IDS__IsFilesInUse_7##	Exit		0			
+FilesInUse	List	ListBox	21	87	331	135	7	FileInUseProcess		Retry		0			
+FilesInUse	Retry	PushButton	164	243	66	17	3		##IDS__IsFilesInUse_8##	Ignore		0			
+InstallChangeFolder	Banner	Bitmap	0	0	374	44	1					0			NewBinary11
+InstallChangeFolder	BannerLine	Line	0	44	374	0	1					0			
+InstallChangeFolder	Branding1	Text	4	229	50	13	3		##IDS__IsBrowseFolderDlg_1##			0			
+InstallChangeFolder	Branding2	Text	3	228	50	13	65537		##IDS__IsBrowseFolderDlg_2##			0			
+InstallChangeFolder	Cancel	PushButton	301	243	66	17	3		##IDS__IsBrowseFolderDlg_3##	ComboText		0			
+InstallChangeFolder	Combo	DirectoryCombo	21	64	277	80	4128779	_BrowseProperty	##IDS__IsBrowseFolderDlg_4##	Up		0			
+InstallChangeFolder	ComboText	Text	21	50	99	14	3		##IDS__IsBrowseFolderDlg_5##	Combo		0			
+InstallChangeFolder	DlgDesc	Text	63	22	292	25	65539		##IDS__IsBrowseFolderDlg_6##			0	0		
+InstallChangeFolder	DlgLine	Line	48	234	326	0	1					0			
+InstallChangeFolder	DlgTitle	Text	63	6	292	25	65539		##IDS__IsBrowseFolderDlg_7##			0	0		
+InstallChangeFolder	List	DirectoryList	21	90	332	97	15	_BrowseProperty	##IDS__IsBrowseFolderDlg_8##	TailText		0			
+InstallChangeFolder	NewFolder	PushButton	335	66	19	19	3670019			List	##IDS__IsBrowseFolderDlg_9##	0			NewBinary2
+InstallChangeFolder	OK	PushButton	230	243	66	17	3		##IDS__IsBrowseFolderDlg_10##	Cancel		0			
+InstallChangeFolder	Tail	PathEdit	21	207	332	17	15	_BrowseProperty	##IDS__IsBrowseFolderDlg_11##	OK		0			
+InstallChangeFolder	TailText	Text	21	193	99	13	3		##IDS__IsBrowseFolderDlg_12##	Tail		0			
+InstallChangeFolder	Up	PushButton	310	66	19	19	3670019			NewFolder	##IDS__IsBrowseFolderDlg_13##	0			NewBinary3
+LicenseAgreement	Banner	Bitmap	0	0	374	44	1					0			NewBinary11
+LicenseAgreement	BannerLine	Line	0	44	374	0	1					0			
+LicenseAgreement	Image	Bitmap	0	44	374	190	262145					0	0		NewBinary7
+LicenseAgreement	Welcome	Text	10	55	360	26	65539		##IDS__Welcome##			0	0		
+LicenseAgreement	WelcomeText	Text	10	88	320	54	65539		##IDS__WelcomeText##			0	0		
+LicenseAgreement	Branding2	Text	3	228	50	13	65537		##IDS__IsLicenseDlg_3##			0			
+LicenseAgreement	Branding1	Text	4	229	50	13	3		##IDS__IsLicenseDlg_2##			0			
+LicenseAgreement	DlgLine	Line	48	234	326	0	1					0			
+LicenseAgreement	Next	PushButton	230	243	66	17	3		##IDS__Next##	Cancel		0			
+LicenseAgreement	Cancel	PushButton	301	243	66	17	3		##IDS__Cancel##	Next		0			
+MaintenanceType	Back	PushButton	164	243	66	17	3		##IDS__IsMaintenanceDlg_1##	Next		0			
+MaintenanceType	Banner	Bitmap	0	0	374	44	1					0			NewBinary11
+MaintenanceType	BannerLine	Line	0	44	374	0	1					0			
+MaintenanceType	Branding1	Text	4	229	50	13	3		##IDS__IsMaintenanceDlg_2##			0			
+MaintenanceType	Branding2	Text	3	228	50	13	65537		##IDS__IsMaintenanceDlg_3##			0			
+MaintenanceType	Cancel	PushButton	301	243	66	17	3		##IDS__IsMaintenanceDlg_4##	RadioGroup		0			
+MaintenanceType	DlgDesc	Text	63	23	292	25	65539		##IDS__IsMaintenanceDlg_5##			0	0		
+MaintenanceType	DlgLine	Line	48	234	326	0	1					0			
+MaintenanceType	DlgTitle	Text	63	5	292	25	65539		##IDS__IsMaintenanceDlg_6##			0	0		
+MaintenanceType	Ico1	Icon	37	84	24	24	5242881					0	0		NewBinary6
+MaintenanceType	Ico3	Icon	38	166	24	24	5242881					0	0		NewBinary8
+MaintenanceType	Next	PushButton	230	243	66	17	3		##IDS__IsMaintenanceDlg_7##	Cancel		0			
+MaintenanceType	RadioGroup	RadioButtonGroup	22	54	290	170	3	_IsMaintenance	##IDS__IsMaintenanceDlg_11##	Back		0	0		
+MaintenanceType	Text1	Text	81	81	260	35	65539		##IDS__IsMaintenanceDlg_12##			0	0		
+MaintenanceType	Text3	Text	83	169	260	35	65539		##IDS__IsMaintenanceDlg_14##			0	0		
+MaintenanceWelcome	Cancel	PushButton	301	243	66	17	3		##IDS__IsMaintenanceWelcome_2##	Next		0			
+MaintenanceWelcome	DlgLine	Line	0	234	374	0	1					0			
+MaintenanceWelcome	Banner	Bitmap	0	0	374	44	1					0			NewBinary11
+MaintenanceWelcome	Image	Bitmap	0	44	374	190	1					0			NewBinary7
+MaintenanceWelcome	Branding1	Text	4	229	50	13	2					0			
+MaintenanceWelcome	Branding2	Text	3	228	50	13	2					0			
+MaintenanceWelcome	Next	PushButton	230	243	66	17	3		##IDS__IsMaintenanceWelcome_3##	Cancel		0			
+MaintenanceWelcome	TextLine1	Text	15	52	320	45	65539		##IDS__IsMaintenanceWelcome_4##			0			
+MaintenanceWelcome	TextLine2	Text	15	99	320	50	65539		##IDS__IsMaintenanceWelcome_5##			0	0		
+OutOfSpace	Banner	Bitmap	0	0	374	44	1					0			NewBinary11
+OutOfSpace	BannerLine	Line	0	44	374	0	1					0			
+OutOfSpace	Branding1	Text	4	229	50	13	3		##IDS__IsDiskSpaceDlg_1##			0			
+OutOfSpace	Branding2	Text	3	228	50	13	65537		##IDS__IsDiskSpaceDlg_2##			0			
+OutOfSpace	DlgDesc	Text	63	22	292	25	65539		##IDS__IsDiskSpaceDlg_4##			0	0		
+OutOfSpace	DlgLine	Line	48	234	326	0	1					0			
+OutOfSpace	DlgText	Text	21	51	326	43	3		##IDS__IsDiskSpaceDlg_5##			0			
+OutOfSpace	DlgTitle	Text	63	5	292	25	65539		##IDS__IsDiskSpaceDlg_6##			0	0		
+OutOfSpace	List	VolumeCostList	21	95	332	120	393223		##IDS__IsDiskSpaceDlg_9##			0			
+OutOfSpace	Resume	PushButton	301	243	66	17	3		##IDS__IsDiskSpaceDlg_10##			0			
+Semicolon	Baseimage	Bitmap	0	44	374	190	262145			PushButton1		0	11		NewBinary7
+Semicolon	Bitmap1	Bitmap	0	0	374	44	1					0	0		NewBinary11
+Semicolon	Branding1	Text	4	229	50	13	3		##ID_STRING4##						
+Semicolon	Branding2	Text	3	228	50	13	65537		##ID_STRING9##						
+Semicolon	DlgLine	Line	48	234	326	0	1								
+Semicolon	PushButton1	PushButton	273	242	66	17	3		##IDS__IsDiskSpaceDlg_10##	Baseimage		0	0		
+Semicolon	Text1	Text	61	6	292	25	65539	NewProperty111	##ID_STRING_SEMICOLON##			0	0		
+Semicolon	Text2	Text	24	83	292	95	65539	NewProperty2111	##ID_STRING_SEMICOLON2##			0	0		
+SetupCompleteError	CheckBoxOpenHelp	CheckBox	15	180	10	10	3	OPENJAVAHELP		Finish		0	11		
+SetupCompleteError	DlgLine	Line	0	234	374	0	1					0			
+SetupCompleteError	Finish	PushButton	230	243	66	17	3		##IDS__IsFatalError_3##	Image		0			
+SetupCompleteError	FinishText2	Text	15	143	228	25	65539		##IDS__IsFatalError_5##			0	0		
+SetupCompleteError	Banner	Bitmap	0	0	374	44	1					0			NewBinary11
+SetupCompleteError	Image	Bitmap	0	44	374	190	262145			CheckBoxOpenHelp		0	0		NewBinary7
+SetupCompleteError	RestContText2	Text	15	143	228	25	65539		##IDS__IsFatalError_5##			0	0		
+SetupCompleteError	Branding1	Text	4	229	50	13	2					0			
+SetupCompleteError	Branding2	Text	3	228	50	13	2					0			
+SetupCompleteError	Text1	Text	33	179	195	14	65539		##ID_STRING_OPENHELP##			0	12		
+SetupCompleteError	TextLine1	Text	15	55	320	12	65539		##IDS__IsFatalError_11##			0	0		
+SetupCompleteError	TextLine2	Text	15	92	320	57	65539		##IDS__IsFatalError_9##			0	0		
+SetupCompleteSuccess	Branding1	Text	4	229	50	13	2					0			
+SetupCompleteSuccess	Branding2	Text	3	228	50	13	2					0			
+SetupCompleteSuccess	DlgLine	Line	0	234	374	0	1					0			
+SetupCompleteSuccess	CancelButton	PushButton	15	204	0	0	2			OK		0	13		
+SetupCompleteSuccess	Banner	Bitmap	0	0	374	44	1					0			NewBinary11
+SetupCompleteSuccess	Image	Bitmap	0	44	374	190	262145			RegInfoButton		0	0		NewBinary7
+SetupCompleteSuccess	OK	PushButton	230	243	66	17	3		##IDS__IsExitDialog_3##	Image		0	0		
+SetupCompleteSuccess	RegInfoButton	PushButton	120	210	132	17	3		##IDS__IsExitDialog_10##	CancelButton		0	11		
+SetupCompleteSuccess	TextLine1	Text	15	66	320	45	65538		##IDS__IsExitDialog_4##			0	0		
+SetupCompleteSuccess	TextLine2	Text	15	80	320	120	65538		##IDS__IsExitDialog_5##			0	0		
+SetupCompleteSuccess	TextLine3	Text	15	55	320	45	65538		##IDS__IsExitDialog_6##			0	0		
+SetupCompleteSuccess	UpdateTextLine1	Text	15	56	320	45	65538		##IDS__IsExitDialog_Update_4##			0			
+SetupCompleteSuccess	TextLine4	Text	15	56	320	46	65539		##IDS__ExitDialog_11##			0	12		
+SetupError	A	PushButton	192	80	66	17	3		##IDS__IsErrorDlg_1##			0			
+SetupError	C	PushButton	192	80	66	17	3		##IDS__IsErrorDlg_2##			0			
+SetupError	ErrorText	Text	50	15	200	50	3		##IDS__IsErrorDlg_3##			0			
+SetupError	I	PushButton	192	80	66	17	3		##IDS__IsErrorDlg_4##			0			
+SetupError	N	PushButton	192	80	66	17	3		##IDS__IsErrorDlg_5##			0			
+SetupError	O	PushButton	192	80	66	17	3		##IDS__IsErrorDlg_6##			0			
+SetupError	R	PushButton	192	80	66	17	3		##IDS__IsErrorDlg_7##			0			
+SetupError	WarningIcon	Icon	15	15	24	24	5242881					0			NewBinary4
+SetupError	Y	PushButton	192	80	66	17	3		##IDS__IsErrorDlg_8##			0			
+SetupInterrupted	DlgLine	Line	0	234	374	0	1					0			
+SetupProgress	ActionProgress95	ProgressBar	15	75	320	12	65537		##IDS__IsProgressDlg_1##			0			
+SetupProgress	ActionText	Text	60	60	275	12	65539		##IDS__IsProgressDlg_2##			0			
+SetupProgress	Banner	Bitmap	0	0	374	44	1					0			NewBinary11
+SetupProgress	Baseimage	Bitmap	0	44	374	190	262145					0	11		NewBinary7
+SetupProgress	BannerLine	Line	0	44	374	0	1					0			
+SetupProgress	Branding1	Text	4	229	50	13	3		##IDS__IsProgressDlg_4##			0			
+SetupProgress	Branding2	Text	3	228	50	13	65537		##IDS__IsProgressDlg_5##			0			
+SetupProgress	DlgDesc	Text	63	23	292	25	65538		##IDS__IsProgressDlg_7##			0	0		
+SetupProgress	DlgDesc2	Text	63	22	292	25	65538		##IDS__IsProgressDlg_16##			0	0		
+SetupProgress	DlgLine	Line	48	234	326	0	1					0			
+SetupProgress	DlgTitle	Text	63	6	292	25	65538		##IDS__IsProgressDlg_9##			0	0		
+SetupProgress	DlgTitle2	Text	63	6	292	25	65538		##IDS__IsProgressDlg_15##			0	0		
+SetupProgress	LbSec	Text	172	139	32	12	65538		##IDS__IsProgressDlg_10##			0	0		
+SetupProgress	LbStatus	Text	15	60	70	12	65539		##IDS__IsProgressDlg_11##			0	0		
+SetupProgress	SetupIcon	Icon	21	51	24	24	5767168					0			NewBinary9
+SetupProgress	ShowTime	Text	154	139	17	12	65538		##IDS__IsProgressDlg_13##			0	0		
+SetupProgress	TextTime	Text	30	139	96	12	65538		##IDS__IsProgressDlg_14##			0	0		
+Warning	Bitmap1	Bitmap	0	0	374	44	1					0	0		NewBinary11
+Warning	Baseimage	Bitmap	0	44	374	190	262145			PushButton2		0	11		NewBinary7
+Warning	Branding1	Text	4	229	50	13	3		##ID_STRING4##						
+Warning	Branding2	Text	3	228	50	13	65537		##ID_STRING9##						
+Warning	DlgLine	Line	48	234	326	0	1								
+Warning	PushButton1	PushButton	272	242	66	17	3		##IDS__IsDiskSpaceDlg_7##	Baseimage		0	0		
+Warning	PushButton2	PushButton	205	242	66	17	3		##ID_STRING_CONTINUEJAVA##	PushButton1		0	0		
+Warning	Text1	Text	60	6	247	31	65539	NewProperty1	##ID_STRING_NOTSUPPORTED##			0	0		
+Warning	Text3	Text	25	83	292	88	65539	NewProperty21	##ID_STRING_WINBUILD##			0	0		
+reinstalldialog	Icon	Icon	15	15	24	24	5242881					0			NewBinary4
+reinstalldialog	No	PushButton	135	57	66	17	3		##IDS__IsCancelDlg_6##	Yes		0			
+reinstalldialog	Text	Text	48	15	194	30	3		##ID_JDKREINSTALL##			0	0		
+reinstalldialog	Yes	PushButton	63	57	66	17	3		##IDS__IsCancelDlg_8##	No		0	0		
+SetupInitialization	ActionData	Text	135	125	228	12	65539		##IDS__IsInitDlg_1##			0			
+SetupInitialization	ActionText	Text	135	109	220	36	65539		##IDS__IsInitDlg_2##			0			
+SetupInitialization	Back	PushButton	164	243	66	17	1		##IDS__IsInitDlg_3##			0			
+SetupInitialization	Cancel	PushButton	301	243	66	17	3		##IDS__IsInitDlg_4##			0			
+SetupInitialization	DlgLine	Line	0	234	374	0	1					0			
+SetupInitialization	Image	Bitmap	0	44	374	190	1					0			NewBinary7
+SetupInitialization	Banner	Bitmap	0	0	374	44	1					0			NewBinary11
+SetupInitialization	Next	PushButton	230	243	66	17	1		##IDS__IsInitDlg_5##			0			
+SetupInitialization	Branding1	Text	4	229	50	13	2					0			
+SetupInitialization	Branding2	Text	3	228	50	13	2					0			
+SetupInitialization	TextLine1	Text	15	51	320	45	65539		##IDS__IsInitDlg_6##			0			
+SetupInitialization	TextLine2	Text	15	99	320	30	65539		##IDS__IsInitDlg_7##			0			

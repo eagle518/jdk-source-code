@@ -1,0 +1,79 @@
+Property	Value	ISComments
+s72	L0	S255
+Property	Property
+_IsMaintenance	Change	
+ALLUSERS	1	
+ApplicationUsers	AllUsers	
+ARPCONTACT	http://java.com	
+ARPHELPLINK	http://java.com	
+ARPNOREPAIR	1	
+ARPNOMODIFY	1	
+ARPREADME	[INSTALLDIR]README.txt	
+ARPURLINFOABOUT	http://java.com	
+ARPURLUPDATEINFO	http://java.sun.com	
+AUTOUPDATECHECK	1	
+CLOSETEXT	##CLOSE_STRING##	
+DefaultUIFont	Tahoma8	
+description	0	
+DialogCaption	InstallShield for Windows Installer	
+DiskPrompt	[1]	
+Display_IsBitmapDlg	1	
+DisplayNameCustom	Custom	
+DisplayNameMinimal	Minimal	
+DisplayNameTypical	Typical	
+DWUSINTERVAL	30	
+ENDDIALOG	1	
+ErrorDialog	SetupError	
+EULA	0	
+FINISHTEXT	##FINISH_STRING##	
+FIREFOXOPEN	0	
+FIREFOXPATH		
+FIREFOXRESTART	0	
+FullVersion		
+IEOPEN	0	
+IEXPLORER	0	
+ImageCkSum		
+InstallChoice	AR	
+INSTALLLEVEL	100	
+ISSCRIPT_VERSION_MISSING	##IDS_ISSCRIPT_VERSION_MISSING##	
+ISSCRIPT_VERSION_OLD	##IDS_ISSCRIPT_VERSION_OLD##	
+ISVROOT_PORT_NO	0	
+ITANIUM		
+JAVATYPE	JRE	
+JAVAUPDATE	1	
+JDK_VERSION	JDKVERSION	Version of JDK, including update version, passed in from Defs.gmk
+JU	1	
+LAUNCHBROWSER	True	
+MAJOR	MAJORVERSION	
+Manufacturer	Oracle	
+MICRO	MICROVERSION	
+MINOR	MINORVERSION	
+MODE	_MODE_PROPERTY_	
+MODIFYREMOVE	modify	
+MOZILLA	0	
+MSIRESTARTMANAGERCONTROL	Disable	
+MSVCRT	0	
+NEEDIERESTART	0	
+ODB	0	
+OPENJAVAHELP	True	
+PIDTemplate	12345<###-%%%%%%%>@@@@@	
+ProductCode	{26A24AE4-039D-4CA4-87B4-2F8_PRODUCT_CODE_VERSION_}	
+ProductID	none	
+ProductLanguage	1033	
+ProductName	Java(TM) MINORVERSION Update UPDATEVERSION	
+ProductVersion	MSIVERSION	
+ProgressType0	install	
+ProgressType1	Installing	
+ProgressType2	installed	
+ProgressType3	installs	
+RebootYesNo	Yes	
+Registration	No	
+ReinstallModeText	omus	
+SDKSILENT	0	
+SecureCustomProperties	CONSUMERPRODUCTFOUND;SAMEVERSTATICPRODUCTFOUND	
+SEMICOLON	0	
+SUCCESS	0	
+SYSTRAY	1	
+title	0	
+UPDATE	UPDATEVERSION	
+UpgradeCode	{57BDA5C6-443C-4D65-B233-28239_UPGRADE_CODE_VERSION_}	

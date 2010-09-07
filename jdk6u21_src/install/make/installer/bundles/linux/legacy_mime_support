@@ -1,0 +1,213 @@
+#
+# Copyright (c) 2008, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# @(#)legacy_mime_support	1.5 10/03/23
+#
+# This script contains functions used to update legacy MIME-type info in the
+# Netscape MIME information file, and the mailcap file.
+#
+
+#
+# Standard comment text used in Netscape MIME information files.
+#
+NS_COMMENT1="#--Netscape Communications Corporation MIME Information"
+NS_COMMENT2="#Do not delete the above line. It is used to identify the file type."
+NS_COMMENT3="#mime types added by Netscape Helper"
+
+
+#
+# Add a MIME-type entry to a mailcap file.
+#
+# Parameters:
+#     $1 : mailcap_file  the path to a mailcap file.
+#     $2 : mime_type     the MIME-type to add.
+#     $3 : command       the command to invoke when handling this MIME-type.
+#
+# Output:
+#     This function writes the given mailcap file.  The file overwrites any
+#     exisiting file.  However, this function ensures that data that is not
+#     related to the changes being made is preserved.  Changes are made to
+#     the bottom of the new file.
+# 
+# Returns:
+#        0 : this function always returns success.
+#
+UpdateMailcap() {
+    mailcap_file="$1"
+    mime_type="$2"
+    command="$3"
+
+    #
+    # Check if the command is already setup (so we don't change the file if we
+    # don't need to).
+    #
+    if [ -z "`grep -E \"^${mime_type}; ${command}$\" \"${mailcap_file}\" 2> /dev/null`" ]; then
+        #
+        # We shouldn't add a comment, since nobody else ever seems to.  We
+        # should remove any past comments when updating the file.
+        #
+        mc_comment="# Java Web Start"
+        mc_text=
+
+        if [ -w "${mailcap_file}" ]; then
+            # Remove existing entry, if present
+            regexp="(${mime_type})|(${mc_comment})"
+            mc_text=`grep -Ev "${regexp}" "${mailcap_file}"`
+        fi
+        # Add new entry
+        if [ -w "`dirname \"${mailcap_file}\"`" ]; then
+            mc_text="${mc_text:+${mc_text}\n}${mime_type}; ${command}"
+            printf "%s" "${mc_text}" > "${mailcap_file}"
+        else
+            echo "WARNING - cannot write to file:"
+            echo "       ${mailcap_file}"
+            echo "Check permissions."
+        fi
+    fi
+}
+
+
+#
+# Remove a MIME-type entry from a mailcap file.
+#
+# Parameters:
+#     $1 : mailcap_file  the path to a mailcap file.
+#     $2 : mime_type     the MIME-type to remove.
+#
+# Output:
+#     This function writes the given mailcap file.  The file overwrites any
+#     exisiting file.  However, this function ensures that data that is not
+#     related to the changes being made is preserved.  The new file will not
+#     contain any references to the MIME-type removed.
+# 
+# Returns:
+#        0 : this function always returns success.
+#
+RemoveMailcap() {
+    mailcap_file="$1"
+    mime_type="$2"
+
+    #
+    # We don't add a comment anymore, since nobody else ever seems to.  However,
+    # we should remove any past comments when uninstalling.
+    #
+    mc_comment="# Java Web Start"
+
+    if [ -w "${mailcap_file}" ]; then
+        # Remove existing entry, if present
+        if [ -n "`grep \"${mime_type}\" \"${mailcap_file}\"`" ] ; then
+            regexp="(${mime_type})|(${mc_comment})"
+            mc_text=`grep -Ev "${regexp}" "${mailcap_file}"`
+
+            #
+            # Only update the file if it still contains something without our
+            # entries; otherwise remove it completely.
+            #
+            if [ `echo "${mc_text}" | tr -d '[:space:]' | wc -c` -gt 0 ]; then
+                echo "${mc_text}" > "${mailcap_file}"
+            else
+                rm -f "${mailcap_file}"
+            fi
+        fi
+    fi
+}
+
+
+#
+# Add a MIME-type entry to a Netscape MIME information file.
+#
+# Parameters:
+#     $1 : mime_file - the path to a Netscape MIME information file.
+#     $2 : mime_type - the MIME-type to add.
+#     $3 : desc      - a short description for the MIME-type.
+#     $* : exts      - the file extentions to associate with the MIME-type.
+#
+# Output:
+#     This function writes the given Netscape MIME information file.  The file
+#     overwrites any exisiting file.  However, this function ensures that data
+#     that is not related to the changes being made is preserved.  Changes are
+#     made to the bottom of the new file.
+# 
+# Returns:
+#        0 : this function always returns success.
+#
+UpdateMimeTypes() {
+    mime_file="$1"
+    mime_type="$2"
+    desc="$3"
+    shift 3
+    exts="$*"
+
+    JNLP_ENTRY="type=${mime_type} desc=\"${desc}\" exts=\"${exts}\""
+
+    #
+    # Create the file if it does not exist.
+    #
+    if [ ! -w "${mime_file}" ]; then
+        if [ -w `dirname ${mime_file}` ]; then
+            echo "${NS_COMMENT1}"  > "${mime_file}"
+            echo "${NS_COMMENT2}" >> "${mime_file}"
+            echo "${NS_COMMENT3}" >> "${mime_file}"
+        else
+            echo "WARNING - cannot write to file:"
+            echo "       ${mime_file}"
+            echo "Check permissions."
+            return
+        fi
+    fi
+
+    #
+    # Add the jnlp entry if it does not already exist (ignore any comments).
+    #
+    if [ -z "`grep -E \"^[^#]*${mime_type}\" \"${mime_file}\"`" ]; then
+        echo ${JNLP_ENTRY} >> "${mime_file}"
+    fi
+}
+
+
+#
+# Remove a MIME-type entry from a Netscape MIME information file.
+#
+# Parameters:
+#     $1 : mime_file - the path to a Netscape MIME information file.
+#     $2 : mime_type - the MIME-type to remove.
+#
+# Output:
+#     This function writes the given Netscape MIME information file.  The file
+#     overwrites any exisiting file.  However, this function ensures that data
+#     that is not related to the changes being made is preserved.  The new file
+#     will not contain any references to the MIME-type removed.
+# 
+# Returns:
+#        0 : this function always returns success.
+#
+RemoveMimeTypes() {
+    mime_file="$1"
+    mime_type="$2"
+
+    if [ -w "${mime_file}" ]; then
+        #
+        # Remove existing entry, if present
+        #
+        if [ -n "`grep \"${mime_type}\" \"${mime_file}\"`" ]; then
+            #
+            # Only update the file if it still contains something without our
+            # entries; otherwise remove it completely.
+            #
+            # Note: it would be easier to write a test that ignored all comment
+            # lines.  However, there is a chance that an admin might still want
+            # a file with nothing but comments they had added.
+            #
+            regexp="(${mime_type})|(^${NS_COMMENT1}$)|(^${NS_COMMENT2}$)|(^${NS_COMMENT3}$)"
+            if [ `grep -Ev "${regexp}" "${mime_file}" | \
+                 tr -d '[:space:]' | wc -c` -gt 0 ]
+            then
+                mt_text="`grep -v \"${mime_type}\" \"${mime_file}\"`"
+                echo "${mt_text}" > "${mime_file}"
+            else
+                rm -f "${mime_file}"
+            fi
+        fi
+    fi
+}

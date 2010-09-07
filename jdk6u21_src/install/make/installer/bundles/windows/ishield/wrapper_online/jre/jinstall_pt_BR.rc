@@ -1,0 +1,5 @@
+//
+// @(#)jinstall_pt_BR.rc	1.2 10/03/08
+//
+
+#include "jinstallcom_pt_BR.rc"

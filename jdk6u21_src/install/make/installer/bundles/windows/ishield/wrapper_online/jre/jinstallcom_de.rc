@@ -1,0 +1,248 @@
+//
+//  @(#)jinstallcom_de.rc	1.11 09/10/28
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_WELCOME_DIALOG DIALOGEX 0,0,333,218
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_VISIBLE | 
+    WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Java-Setup - Willkommen"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "", IDC_BANNER,0,0,333,35
+    LTEXT           "", IDC_BACK_COLOR, 0, 65, 333, 127
+    CTEXT           "", IDC_WELCOME_HEADER,0,46,333,10
+    CTEXT           "", IDC_WELCOME_LINE1,16,78,305,40
+    LTEXT           "Hinweis: Es werden keine persönlichen Informationen im Verlauf des Installationsprozesses gesammelt.", IDC_WELCOME_NOTE,22,108,300,26
+    LTEXT           "Klicken Sie hier, ", IDC_WELCOME_CLICK_HERE,15,134,75,10
+    LTEXT           "um mehr über die gesammelten Informationen zu erfahren.", IDC_WELCOME_MORE_INFO,88,134,230,26
+    LTEXT           "Klicken Sie auf Installieren, um die ", IDC_WELCOME_LICENSE_TEXT1,25,165,178,10
+    LTEXT           "Lizenzvereinbarung", IDC_WELCOME_LICENSE_AGREEMENT,180,165,100,10
+    LTEXT           "zu akzeptieren und Java zu installieren.", IDC_WELCOME_LICENSE_TEXT2,25,177,230,10
+    CONTROL         "", IDC_STATIC, "Static", SS_BLACKFRAME | SS_SUNKEN,0,192,334,1
+    CHECKBOX        "Zielordner ändern", IDC_WELCOME_CHECKBOX,10,196,125,16, BS_AUTOCHECKBOX
+    PUSHBUTTON      "Abbrechen", IDCANCEL,219,200,50,14
+    PUSHBUTTON      "&Installieren >", IDOK,276,200,50,14
+    DEFPUSHBUTTON   "Hide", IDNO, 0, 0, 0, 0, NOT WS_TABSTOP
+END
+
+IDD_SETUP_PROGRESS_DIALOG DIALOGEX 0, 0, 333, 218
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | 
+    WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX  
+EXSTYLE WS_EX_APPWINDOW 
+CAPTION "Java Setup - Fortschritt"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "", IDC_BANNER, 0, 0, 333, 35
+    LTEXT           "", IDC_BACK_COLOR, 0, 65, 333, 127
+    CONTROL         "", IDC_ADVERTISMENT, "Static" , SS_CENTERIMAGE ,11, 72, 313, 112
+    LTEXT           "Status:	Java wird installiert", IDC_SETUP_TEXT, 35, 38, 200, 12
+    CONTROL         "Progress1", IDC_SETUP_PROGRESS, "msctls_progress32", WS_CAPTION, 35, 50, 263, 10
+    CONTROL         "", IDC_STATIC, "Static", SS_BLACKFRAME | SS_SUNKEN, 0, 192, 334, 1
+END
+
+IDD_DOWNLOAD_DIALOG DIALOGEX 0,0,333,140
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Java Installer wird heruntergeladen"
+EXSTYLE WS_EX_APPWINDOW
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Installer wird heruntergeladen", IDC_DOWNLOAD_HEADER, 30, 7, 130, 10
+    RTEXT           "", IDC_DOWNLOAD_STATUS, 166, 7, 130, 10
+    CONTROL         "Progress1", IDC_DOWNLOAD_PROGRESS, "msctls_progress32", WS_CAPTION, 30, 18, 270, 8
+    CONTROL         "", IDC_STATIC, "Static", SS_BLACKFRAME | SS_SUNKEN, 0, 33, 334, 1
+    CTEXT           "Java ist überall präsent, auf Mobiltelefonen, Desktopcomputern, Blu-Ray-Spielern, Set-Top-Boxes und sogar in Ihrem Auto.", IDC_MARKETING_INFO3, 12, 48, 305, 25
+    CTEXT           "Wenn Sie Java installieren, können Sie Java von Oracle in vollem Umfang genießen.", IDC_MARKETING_INFO4, 12, 85, 305, 25
+    LTEXT           "Besuchen Sie unsere Webseite unter:", IDC_MARKETING_INFO1, 60, 120, 150, 10
+    LTEXT           "java.com", IDC_MARKETING_INFO2, 210, 120, 120, 10
+END
+
+IDD_ERROR_HELP_DIALOG DIALOGEX 0,0,253,94
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_VISIBLE | 
+    WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Fehler - Java(TM)-Installationsprogramm"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&Wiederholen",IDOK,160,75,40,13
+    PUSHBUTTON      "Abbrechen",IDCANCEL,203,75,44,13
+    LTEXT           "",IDC_EBODY_TEXT,10,10,240,30
+    LTEXT           "http://java.com/de/download/help", IDC_MORE_INFO,10,30,160,12
+END
+
+108 DIALOGEX 0,0,259,61
+STYLE DS_SYSMODAL | DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION
+CAPTION "Abbruch - Java(TM)-Installationsprogramm"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",2,104,39,50,14
+    ICON            IDI_JAVA,-1,16,11,20,20,0,WS_EX_TRANSPARENT
+    LTEXT           "Um das Java(TM)-Installationsprogramm neu zu starten, aktualisieren Sie bitte die Webseite.",
+                    -1,47,11,195,17
+END
+
+///////////////////////////////////////////////////////////////////////////
+//
+// Installer Retry (RunOnce via FilesInUse cancellation) Splash Screen
+
+IDD_RETRY_SPLASH DIALOGEX 0,0,333,120
+STYLE DS_CENTER | WS_POPUPWINDOW | WS_EX_TOPMOST | WS_VISIBLE
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "", IDC_BANNER,0,0,333,35
+    CTEXT           "Java-Setup wird abgeschlossen ...", IDC_SPLASH_HEADER,0,55,333,25
+    CTEXT           "Ihr letztes Java-Setup wurde abgebrochen, da einige Java-Dateien gerade verwendet wurden.", IDC_SPLASH_LINE1,0,80,333,20
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Change Folder Dialog
+//
+
+IDD_CHANGEFOLDER DIALOGEX 0, 0, 333, 218
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_VISIBLE | 
+    WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Java-Setup - Zielordner"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CTEXT           "Zielordner",IDC_DIALOG_HEADER,109,38,110,27,SS_CENTERIMAGE
+    LTEXT           "", IDC_BANNER, 0, 0, 333, 35 
+    LTEXT           "", IDC_BACK_COLOR, 0, 65, 333, 127
+    LTEXT           "Klicken Sie auf ""Ändern"", um Java in einem anderen Ordner zu installieren.",IDC_DIALOG_TEXT,8,78,320,12
+    LTEXT           "Installieren in:",IDC_DIALOG_TEXT2,8,112,236,12
+    LTEXT           "",IDC_DIRECTORY,8,124,320,48
+    CONTROL         "", IDC_STATIC, "Static", SS_BLACKFRAME | SS_SUNKEN, 0, 192, 334, 1
+    DEFPUSHBUTTON   "Weiter >",IDOK,276,200,50,14
+    PUSHBUTTON      "&Ändern...",IDC_CHANGE_BUTTON,260,108,50,14
+    PUSHBUTTON      "< &Zurück",IDC_BACK_BUTTON,219,200,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    105, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 236
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 63
+    END
+
+    108, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 252
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 78
+    END
+
+    109, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 250
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 219
+    END
+
+    IDD_CHANGEFOLDER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 312
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 219
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+
+// HTTP status code
+    IDS_HTTP_STATUS_BAD_REQUEST	    "Die Anforderung konnte wegen ungültiger Syntax vom Server nicht verarbeitet werden."
+    IDS_HTTP_STATUS_DENIED	    "Für die angeforderte Ressource ist eine Benutzerauthentifizierung erforderlich."
+    IDS_HTTP_STATUS_NOT_FOUND	    "Der Server konnte nichts Passendes zum angeforderten URI  (Uniform Resource Identifier) finden."
+    IDS_HTTP_STATUS_BAD_METHOD	    "Die verwendete Methode ist nicht zulässig."
+    IDS_HTTP_STATUS_NONE_ACCEPTABLE "Es wurden keine Antworten gefunden, die akzeptabel für den Client sind."
+    IDS_HTTP_STATUS_PROXY_AUTH_REQ  "Proxy-Authentifizierung erforderlich."
+    IDS_HTTP_STATUS_REQUEST_TIMEOUT "Beim Warten auf die Antwort ist eine Zeitüberschreitung beim Server aufgetreten."
+    IDS_HTTP_STATUS_CONFLICT	    "Die Anforderung konnte nicht abgeschlossen werden, weil ein Konflikt mit dem aktuellen Zustand der Ressource vorliegt. Der Benutzer sollte die Anforderung mit zusätzlichen Informationen erneut übermitteln."
+    IDS_HTTP_STATUS_GONE	    "Die angeforderte Ressource ist beim Server nicht mehr verfügbar, und es ist keine Weiterleitungsadresse bekannt."
+    IDS_HTTP_STATUS_LENGTH_REQUIRED "Der Server lehnt es ab, die Anforderung ohne eine festgelegte Inhaltslänge anzunehmen."
+    IDS_HTTP_STATUS_PRECOND_FAILED  "Die in mindestens einem Feld im Header der Anforderung angegebene Vorbedingung wurde beim Prüfen auf dem Server als 'Falsch' ausgewertet."
+    IDS_HTTP_STATUS_REQUEST_TOO_LARGE   "Die Verarbeitung einer Anforderung wird vom Server abgelehnt, weil der Umfang der angeforderten Entität den vom Server verarbeitbaren oder zugelassenen Datenumfang übersteigt."
+    IDS_HTTP_STATUS_URI_TOO_LONG        "Der Server lehnt es ab, die Anforderung zu verarbeiten, weil die Länge des angeforderten URI (Uniform Resource Identifier) die bei der Interpretation zulässige Länge übersteigt."
+    IDS_HTTP_STATUS_UNSUPPORTED_MEDIA   "Der Server bedient die Anforderung nicht, weil die Entity der Anforderung in einem Format vorliegt, das von der angeforderten Ressource für die angeforderte Methode nicht unterstützt wird."
+    IDS_HTTP_STATUS_RETRY_WITH		"Nach Ausführung der entsprechenden Aktion sollte die Anforderung erneut abgesetzt werden."
+    IDS_HTTP_STATUS_NOT_SUPPORTED	"Die für die Anforderung erforderliche Funktionalität wird vom Server nicht unterstützt."
+    IDS_HTTP_STATUS_BAD_GATEWAY		"Der Server erhielt, während er als Gateway oder Proxy fungierte, eine ungültige Antwort vom Upstream-Server, auf den ein Zugriff zur Ausführung der Anforderung erfolgte."
+    IDS_HTTP_STATUS_GATEWAY_TIMEOUT	"Time-Out für die Anforderung beim Warten auf einen Gateway."
+    IDS_HTTP_STATUS_VERSION_NOT_SUP	"Der Server unterstützt die Version des HTTP-Protokolls nicht, die in der Anforderungsmeldung verwendet wurde, oder lehnt die Unterstützung ab."
+    IDS_HTTP_STATUS_FORBIDDEN		"Beim Dowload von Java(TM) auf Ihren Computer ist ein Fehler aufgetreten.\nMöglicherweise hat ein Proxy, eine Firewall oder ein anderes Netzwerkproblem einen HTTP Error 403 verursacht.\nInformieren Sie sich unter http://java.com//error403"
+    IDS_HTTP_STATUS_SERVER_ERROR	"Der Server ist auf eine unerwartete Bedingung gestoßen, die eine Ausführung der Anforderung verhindert."
+    IDS_HTTP_STATUS_SERVICE_UNAVAIL	"Der Dienst ist vorübergehend überlastet."
+    IDS_HTTP_STATUS_EXPORT_FAILURE	"Java kann nicht auf Ihren Rechner heruntergeladen werden.\nSie befinden sich in einem Land, das mit einem Embargo belegt ist."
+    IDS_HTTP_STATUS_SERVER_BUSY		"Der Server kann Java(TM) gegenwärtig nicht bereitstellen.\nMöchten Sie es erneut versuchen?"
+    IDS_HTTP_STATUS_INTERNAL_ERROR	"Es ist ein unerwarteter Serverfehler aufgetreten.\nMöchten Sie es erneut versuchen?"
+    IDS_HTTP_STATUS_UNKNOWN_ERROR	"Unbekannter Fehler:\n\nHTTP-Status-Code=%d"
+
+    IDS_HTTP_STATUS_EXPORT_FAILURE_CAPTION	"Ausfuhrbeschränkung - Java(TM)-Installationsprogramm"
+    IDS_HTTP_STATUS_SERVER_BUSY_CAPTION		"Server beschäftigt - Java(TM)-Installationsprogramm"
+    IDS_HTTP_STATUS_SERVER_ERROR_CAPTION	"Serverproblem - Java(TM)-Installationsprogramm"
+    IDS_HTTP_STATUS_UNKNOWN_ERROR_CAPTION	"Unbekannter Fehler - Java(TM)-Installationsprogramm"
+
+    IDS_DOWNLOAD_STATUS_OPENING		"Wird geöffnet ..."
+    IDS_DOWNLOAD_STATUS_CONNECTING	"Verbindung ..."
+    IDS_DOWNLOAD_STATUS_OPENING_HTTP	"HTTP-Anforderung wird geöffnet ..."
+    IDS_DOWNLOAD_STATUS_SENDING_HTTP	"HTTP-Anforderung wird gesendet ..."
+    IDS_DOWNLOAD_STATUS_RETRY		"Der Server ist momentan beschäftigt, versuchen Sie es in %ld Sekunden erneut ..."
+    IDS_DOWNLOAD_STATUS_DISCONNECTING	"Verbindung wird getrennnt ..."
+
+    IDS_USAGEERROR		    "Syntax: %s {[/h]|[/installurl=URL der Konfigurations- oder MSI-Datei] [/lang=Sprach-ID]} [/s] [Befehlszeilenoptionen für MSI-Installationsprogramm] "
+    IDS_ERROR_CAPTION               "Fehler - Java(TM)-Installationsprogramm"
+    IDS_WARNING_CAPTION             "Warnung - Java(TM)-Installationsprogramm"
+    IDS_DOWNLOADERROR_MSG           "%s kann für die Installation nicht heruntergeladen werden."
+    IDS_HOURSMINUTESECOND	    "Voraussichtliche Restdauer: %d Stunden %d Min. %.0f Sek."
+    IDS_HOURMINUTESECOND	    "Voraussichtliche Restdauer: %d Stunde %d Min. %.0f Sek."
+    IDS_MINUTESECOND 		    "Voraussichtliche Restdauer: %d Min. %.0f Sek."
+    IDS_SECOND 			    "Voraussichtliche Restdauer: %.0f Sek."
+    IDS_PARSINGERROR_MSG	    "Ungültige Syntax in Konfigurationsdatei"
+    IDS_TERMINATE                   "\nBitte beheben Sie diese Probleme, bevor Sie dieses Produkt erneut installieren."
+    IDS_DISKSPACE                   "Auf dem Computer ist nicht genügend Festplattenspeicher für die Installation dieses Produkts vorhanden.\n\n"
+    IDS_HTTP_STATUS_SERVER_NOT_REACHABLE "Aufgrund der aktuellen Einstellungen für Internetverbindungen Ihres Systems kann das Java(TM)-Installationsprogramm nicht fortgesetzt werden. Überprüfen Sie die Einstellungen und Proxyangaben in der Windows-Systemsteuerung unter Internetoptionen -> Verbindungen."
+    IDS_ERROR_TITLE               "Verbindungsfehler"
+    IDS_ERROR_MESSAGEURL             "http://java.com/de/download/help/index.xml"
+    IDS_ERROR_MESSAGE             "Der Installationsprozess kann mit den aktuellen Internetverbindungseinstellungen nicht fortgesetzt werden. Weitere Informationen dazu finden Sie auf der folgenden Website."
+    IDS_BETA_IFTW_ERROR "Das Installationsprogramm kann nicht fortgesetzt werden, da für die Installation erforderliche Dateien fehlen.  Falls Sie versuchen, eine Betaversion oder eine ältere Version zu installieren, informieren Sie sich unter http://java.sun.com/javase, ob die Version noch unterstützt wird.  Wenn dies der Fall ist, dann versuchen Sie es später noch einmal, da die Dateien eventuell nur zeitweise verfügbar sind."
+    IDS_REQ_WI20_MSG "Das Installationsprogramm kann mit dem derzeit auf dem System installierten Windows-Installationsprogramm nicht fortfahren. Weitere Informationen dazu finden Sie auf der folgenden Website."
+    IDS_LICENSE_AGREEMENT_URL     "http://java.com/de/download/license/%s_license.jsp"
+    IDS_CLICK_HERE_URL            "http://java.com/data/"
+    IDS_WELCOME_MAIN              L"Willkommen bei Java\x2122"
+    IDS_WELCOME_LINE1             "Java bietet sicheren und zuverlässigen Zugang zu Welt erstaunlicher Java-Inhalte. Von Business-Lösungen bis zu nützlichen Dienstprogrammen und Unterhaltung, garantiert Ihnen Java ein lebendiges Interneterlebnis."
+    IDS_AREYOUSURE_MESSAGE        L"Sind Sie sicher, daß Sie die Java\x2122 %s Installation abbrechen wollen?"
+    IDS_AREYOUSURE_CAPTION        "Java Setup"
+    IDS_SPONSOR_BANNER_CHECKSUM   "d5dd746503d0917e448b52b2962a386c2996c4af"
+    IDS_BROWSE_TITLE                "Zielordner ändern\nJava wird im ausgewählten Ordner installiert."
+
+END

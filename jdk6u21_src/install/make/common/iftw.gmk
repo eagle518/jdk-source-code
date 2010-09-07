@@ -1,0 +1,85 @@
+#
+# @(#)iftw.gmk	1.5 10/03/23
+#
+# Copyright (c) 2009, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# This Makefile will generate all of the flavors of online installer (iftw)
+# There are currently no online installers for 64-bit
+
+generate_iftw:
+ifeq ($(ARCH_DATA_MODEL),32)
+	# not supporting online install and patch in place that comes with it on 64-bit
+	$(CD) ../wrapper_online/jre ; $(MAKE) all 
+# Compress the Java Kernel online installer into a self-extracting
+# executable if the compression command is available.
+# The path is defined by deploy/make/upx/win32/Makefile .
+# Compression will be skipped if the cmd hasn't been put into the 
+# build tree by the deploy build (e.g. it is not part of a source distro).
+# TODO: 1) Pass in the UPX path (e.g. $(CMD_COMP_CMD_PATH)) if this can be
+#       done without adding a large number of $(shell ops to the build.
+#       2) Consider using this for all installer commands
+  ifdef CMD_COMP_CMD_PATH
+    ifneq ($(KERNEL), off)
+	$(CD) $(TEMPDIR)/online-final
+	$(CMD_COMP_CMD_PATH) $(CMD_COMP_CMD_INSTALL_OPTS) \
+	    $(TEMPDIR)/online-final/$(JRE_IFTW_BUNDLE_NAME)-k.exe
+    endif
+    ifneq ($(J4B), true)
+	$(CD) $(TEMPDIR)/online-final
+	$(CMD_COMP_CMD_PATH) $(CMD_COMP_CMD_INSTALL_OPTS) \
+	    $(TEMPDIR)/online-final/$(JRE_IFTW_BUNDLE_NAME)-rv.exe
+	$(CMD_COMP_CMD_PATH) $(CMD_COMP_CMD_INSTALL_OPTS) \
+	    $(TEMPDIR)/online-final/$(XPI_RV_BUNDLE)
+	$(CMD_COMP_CMD_PATH) $(CMD_COMP_CMD_INSTALL_OPTS) \
+	    $(TEMPDIR)/online-final/$(JCAB_RV_BUNDLE)
+	$(CMD_COMP_CMD_PATH) $(CMD_COMP_CMD_INSTALL_OPTS) \
+	    $(TEMPDIR)/online-final/$(JXPI_RV_BUNDLE)
+	$(CMD_COMP_CMD_PATH) $(CMD_COMP_CMD_INSTALL_OPTS) \
+	    $(TEMPDIR)/online-final/$(JCHROME_RV_BUNDLE)
+     endif
+	$(CD) $(TEMPDIR)/online-final
+	$(CMD_COMP_CMD_PATH) $(CMD_COMP_CMD_INSTALL_OPTS) \
+	    $(TEMPDIR)/online-final/$(JRE_IFTW_BUNDLE_NAME).exe
+	$(CMD_COMP_CMD_PATH) $(CMD_COMP_CMD_INSTALL_OPTS) \
+	    $(TEMPDIR)/online-final/$(XPI_BUNDLE)
+	$(CMD_COMP_CMD_PATH) $(CMD_COMP_CMD_INSTALL_OPTS) \
+	    $(TEMPDIR)/online-final/$(JCAB_BUNDLE)
+	$(CMD_COMP_CMD_PATH) $(CMD_COMP_CMD_INSTALL_OPTS) \
+	    $(TEMPDIR)/online-final/$(JXPI_BUNDLE)
+	$(CMD_COMP_CMD_PATH) $(CMD_COMP_CMD_INSTALL_OPTS) \
+	    $(TEMPDIR)/online-final/$(JCHROME_BUNDLE)
+  endif
+  ifeq ($(SIGN_FLAG),1)
+	# not supporting online install and patch in place that comes with it on 64-bit
+	$(call Try3Times, $(FULL_SIGNER) -n "Java(TM) SE Runtime Environment $(JDK_MINOR_VERSION)$(MARKET_NAME)" -i http://java.com/ $(TEMPDIR)/online-final/$(JRE_IFTW_BUNDLE_NAME).exe )
+	$(call Try3Times, $(FULL_SIGNER) -n "Java(TM) SE Runtime Environment $(JDK_MINOR_VERSION)$(MARKET_NAME)" -i http://java.com/ $(TEMPDIR)/online-final/$(JCAB_BUNDLE) )
+	$(call Try3Times, $(FULL_SIGNER) -n "Java(TM) SE Runtime Environment $(JDK_MINOR_VERSION)$(MARKET_NAME)" -i http://java.com/ $(TEMPDIR)/online-final/$(JCHROME_BUNDLE) )
+	$(call Try3Times, $(FULL_SIGNER) -n "Java(TM) SE Runtime Environment $(JDK_MINOR_VERSION)$(MARKET_NAME)" -i http://java.com/ $(TEMPDIR)/online-final/$(JXPI_BUNDLE) )
+	$(call Try3Times, $(FULL_SIGNER) -n "Java(TM) SE Runtime Environment $(JDK_MINOR_VERSION)$(MARKET_NAME)" -i http://java.com/ $(TEMPDIR)/online-final/$(XPI_BUNDLE) )
+    ifneq ($(J4B), true)
+	# Vector installer
+	$(call Try3Times, $(FULL_SIGNER) -n "Java(TM) SE Runtime Environment $(JDK_MINOR_VERSION)$(MARKET_NAME)" -i http://java.com/ $(TEMPDIR)/online-final/$(JRE_IFTW_BUNDLE_NAME)-rv.exe )
+	$(call Try3Times, $(FULL_SIGNER) -n "Java(TM) SE Runtime Environment $(JDK_MINOR_VERSION)$(MARKET_NAME)" -i http://java.com/ $(TEMPDIR)/online-final/$(JCAB_RV_BUNDLE) )
+	$(call Try3Times, $(FULL_SIGNER) -n "Java(TM) SE Runtime Environment $(JDK_MINOR_VERSION)$(MARKET_NAME)" -i http://java.com/ $(TEMPDIR)/online-final/$(JCHROME_RV_BUNDLE) )
+	$(call Try3Times, $(FULL_SIGNER) -n "Java(TM) SE Runtime Environment $(JDK_MINOR_VERSION)$(MARKET_NAME)" -i http://java.com/ $(TEMPDIR)/online-final/$(JXPI_RV_BUNDLE) )
+	$(call Try3Times, $(FULL_SIGNER) -n "Java(TM) SE Runtime Environment $(JDK_MINOR_VERSION)$(MARKET_NAME)" -i http://java.com/ $(TEMPDIR)/online-final/$(XPI_RV_BUNDLE) )
+    endif
+    ifneq ($(KERNEL), off)
+	$(call Try3Times, $(FULL_SIGNER) -n "Java(TM) SE Runtime Environment $(JDK_MINOR_VERSION)$(MARKET_NAME)" -i http://java.com/ $(TEMPDIR)/online-final/$(JRE_IFTW_BUNDLE_NAME)-k.exe )
+    endif
+  endif
+
+#copy all online exes after signing
+	$(CP) -f $(TEMPDIR)/online-final/*.exe $(BIN_BUNDLEDIR)/
+#zip up the msi/mst files
+	$(CD) $(TEMPDIR)/online-final; $(ZIPEXE) -r $(BIN_BUNDLEDIR)/$(JRE_BUNDLE_NAME).zip *.MST *.msi
+endif
+
+.PHONY: generate_iftw
+
+# Force rule
+FRC:
+

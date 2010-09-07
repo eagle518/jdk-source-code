@@ -1,0 +1,23 @@
+Action	Condition	Sequence	ISComments	ISAttributes
+s72	S255	I2	S255	I4
+InstallUISequence	Action
+SetupCompleteError	SDKSILENT=0	-3	SetupCompleteError	
+SetupCompleteSuccess	SDKSILENT=0 And ENDDIALOG=1	-1	SetupCompleteSuccess	
+SetupInterrupted	(Not Installed) And (Installed)	-2	SetupInterrupted	
+AppSearch		400	AppSearch	
+CCPSearch	CCP_TEST	500	CCPSearch	
+CostFinalize		1000	CostFinalize	
+CostInitialize		800	CostInitialize	
+ExecuteAction		1300	ExecuteAction	
+FileCost		900	FileCost	
+FindRelatedProducts		430	FindRelatedProducts	
+IsolateComponents		950	IsolateComponents	
+LaunchConditions		410	LaunchConditions	
+MigrateFeatureStates		1200	MigrateFeatureStates	
+ResolveSource	Not Installed And Not PATCH	990	ResolveSource	
+RMCCPSearch	Not CCP_SUCCESS And CCP_TEST	600	RMCCPSearch	
+setAllUsersProfile2K	VersionNT >= 500	980		
+SetAllUsersProfileNT	VersionNT = 400	970		
+SetupProgress		1240	SetupProgress	
+setUserProfileNT	VersionNT	960		
+ValidateProductID		700	ValidateProductID	

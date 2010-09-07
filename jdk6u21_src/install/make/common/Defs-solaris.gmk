@@ -1,0 +1,14 @@
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# @(#)Defs-solaris.gmk	1.16 10/03/23
+# Makefile to specify compiler flags for programs and libraries
+# targeted to Windows builds.  Should not contain any rules.
+
+
+include $(CONTROL_TOPDIR)/make/common/Defs-solaris.gmk
+include $(J2SE_TOPDIR)/make/common/Defs-solaris.gmk
+
+
+PKGDEFS_REMNANTFILES = copyright pkginfo depend action *.tmp .make.state

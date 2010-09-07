@@ -1,0 +1,23 @@
+FileKey	Component_	FileName	DirProperty	InstallMode
+s72	s72	L255	s72	i2
+RemoveFile	FileKey
+CLASSLIST	jz	classli*	lib	2
+INSTALLDIRPATCHERR	jz	PATCH.ERR	INSTALLDIR	3
+JAVADIR	jz		JAVA	2
+JAVAEXE	jz	java.exe	SystemFOLDERFolder	1
+JAVAWEXE	jz	javaw.exe	SystemFOLDERFolder	1
+JAVAWSEXE	jz	javaws.exe	SystemFOLDERFolder	1
+ext	jz		ext	2
+SHAREDARCHIVE	jz	classes.jsa	client	3
+bundles	jz	*	bundles	3
+bundlesdir	jz		bundles	3
+tmp	jz	*	tmp	3
+tmpdir	jz		tmp	3
+tmplib	jz	*	tmplib	3
+tmplibdir	jz		tmplib	3
+tmplibext	jz	*	tmplibext	3
+tmplibextdir	jz		tmplibext	3
+tmplibi386	jz	*	tmplibi386	3
+tmplibi386dir	jz		tmplibi386	3
+binkernel	jz	*	binkernel	3
+binkerneldir	jz		binkernel	3

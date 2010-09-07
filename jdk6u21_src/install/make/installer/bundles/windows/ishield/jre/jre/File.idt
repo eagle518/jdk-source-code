@@ -1,0 +1,10 @@
+File	Component_	FileName	FileSize	Version	Language	Attributes	Sequence	ISBuildSourcePath	ISAttributes
+s72	s72	s255	i4	S72	S20	I2	i2	S255	I4
+File	File
+core.zip	jz	core.zip	0				1	<ISProjectFolder>\jre-image\core.zip	1
+regutils.dll	jr	regutils.dll	0				1	<ISProjectFolder>\regutils.dll	1
+zipper.exe	jz	zipper.exe	0				1	<ISProjectFolder>\zipper.exe	1
+patchjre.exe	jp	patchjre.exe	0				1	<ISProjectFolder>\jre-image\patchjre.exe	1
+ssv.dll	jre_bin_ssvDlls	SSV_PA~1.dll|ssv_patch.dll	0				1	<ISProjectFolder>\jre-image\ssv.dll	1
+jp2ssv.dll	jre_bin_ssvDlls	JP2SSV~1.dll|jp2ssv_patch.dll	0				1	<ISProjectFolder>\jre-image\jp2ssv.dll	1
+jqs_plugin.dll	jqs_ie	JQS_PL~1.dll|jqs_plugin_patch.dll	0				1	<ISProjectFolder>\jre-image\jqs_plugin.dll	1
