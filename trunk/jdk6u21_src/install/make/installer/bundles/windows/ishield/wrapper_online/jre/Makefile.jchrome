@@ -1,0 +1,49 @@
+#
+# Copyright (c) 2009, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+#
+# @(#)Makefile.jchrome	1.2 10/03/23 
+#
+#
+# Makefile to build the Online jchrome installer
+#
+
+
+PRODUCT = jinstall_jchrome
+TEMPDIR=$(TEMP_DIR)/jinstall-jchrome
+
+
+TARGET_NAME=jinstall_jchrome
+TARGET=$(TARGET_NAME).exe
+
+include ./common.gmk
+
+EXEVALUE=chromeinstall-$(BIN_BUNDLE_NAMEPART)-${BUNDLE_DATE}
+
+CPPFLAGS += -DJCHROME
+
+all: clean copyfiles jre-jchrome
+
+
+jre-jchrome: optimized debug
+
+
+$(OBJDIR)/$(TARGET): $(FILES_res) $(FILES_o)
+	$(LINK) $(LDFLAGS) $(FILES_res) $(FILES_o)
+
+build: $(OBJDIR)/$(TARGET)
+
+debug:
+
+optimized: $(OBJDIR)
+	$(MAKE) -f Makefile.jchrome build VARIANT=OPT
+
+clean::
+	$(RM) -r $(TEMPDIR)
+
+#
+# Phonies to avoid accidents.
+#
+.PHONY: all optimized debug clobber clean build
+

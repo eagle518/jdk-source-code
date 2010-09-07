@@ -1,0 +1,281 @@
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+# @(#)Sanity.gmk	1.38 04/05/18
+
+# Settings and rules to validate the Patch build environment.
+
+
+.PHONY: pre-sanity settings sanity sanity-base post-sanity sanity-all sanity-bundles sanity-binaries post-sanity-binaries post-sanity-bundles outputdir patching
+
+# EXTERNALSANITYCONTROL means that this j2se workspace build is being controlled by
+# the control workspace, and that workspace is managing what is done to the sanity
+# check files, and this sanity check run is only appending to those files.
+pre-sanity: 
+ifndef EXTERNALSANITYCONTROL
+	@$(RM) $(ERROR_FILE) $(WARNING_FILE) $(MESSAGE_FILE)
+endif
+
+sanity-bundles: sanity-base
+
+sanity-binaries: sanity-base
+
+ifeq ($(PLATFORM), windows)
+  MIN_FREE_DISK=100000
+  FREE_SPACE := $(shell $(DF) -kP $(OUTPUTDIR) | $(NAWK) '{if ($$4 != "Available") print $$4;}')
+endif
+ifeq ($(PLATFORM), linux)
+  MIN_FREE_DISK=50000
+  FREE_SPACE := $(shell $(DF) -kP $(OUTPUTDIR) | $(NAWK) '{if ($$4 != "Available") print $$4;}')
+endif
+ifeq ($(PLATFORM), solaris)
+  MIN_FREE_DISK=50000
+  FREE_SPACE := $(shell $(DF) -k $(OUTPUTDIR) | $(NAWK) '{if ($$4 != "avail") print $$4;}')
+endif
+
+
+sanity-base:: $(OUTPUTDIR) $(TEMPDIR) pre-sanity settings  outputdir patching \
+   installing \
+   sane-install-mssdk_path \
+   sane-install-msival2_path \
+   sane-install-javadb_msi \
+   sane-install-visualvm
+
+# The rules sanity-* have a one-to-one correspondence with the major targets
+# Each sanity-* rule should have no body to ensure that the post-sanity-* is the
+# last rule executed. The pre-sanity rule should be the first dependency. This design 
+# expects the execution of pre-sanity only once per gnumake command invocation, 
+# thus, info written to ERROR_FILE and/or WARNING_FILE will not be removed by subsequent
+# targets in the same 'gnumake' command line.
+
+sanity-all:: sanity-base
+
+sanity:: sanity-all post-sanity
+
+# this should be the last rule in any target's sanity rule.
+post-sanity post-sanity-binaries post-sanity-bundles:
+ifndef EXTERNALSANITYCONTROL
+	@if [ -r $(MESSAGE_FILE) ]; then \
+	  $(CAT) $(MESSAGE_FILE) ; \
+	fi
+	@if [ -r $(WARNING_FILE) ]; then \
+	  $(CAT) $(WARNING_FILE) ; \
+	fi
+	@if [ "x$(INSANE)" != x ]; then \
+	  $(ECHO) "INSANE mode requested. \n" \
+	    "Sanity will not force a build termination, even with errors.\n" \
+	    "" >> $(ERROR_FILE); \
+	fi
+	@if [ -r $(ERROR_FILE) ]; then \
+	  if [ "x$(INSANE)" = x ]; then \
+	    $(ECHO) "Exiting because of the above error(s). \n" \
+	      "">> $(ERROR_FILE); \
+	  fi ; \
+	  $(CAT) $(ERROR_FILE) ; \
+	  if [ "x$(INSANE)" = x ]; then \
+	    exit 1 ; \
+	  fi ; \
+	fi
+ifdef PEDANTIC
+	@if [ -r $(WARNING_FILE) ]; then \
+	  $(ECHO) "PEDANTIC mode requested. \n" \
+	    "Exiting because of the above warning(s). \n" \
+	    "" >> $(ERROR_FILE); \
+	  $(CAT) $(ERROR_FILE) ; \
+	  exit 1 ; \
+	fi
+endif # PEDANTIC
+	@if [ ! -r $(ERROR_FILE) ]; then \
+	  $(ECHO) "Sanity check passed." ; \
+	fi
+endif #  EXTERNALSANITYCONTROL
+
+
+settings::
+ifeq ($(PLATFORM), windows) 
+	@$(ECHO) >> $(MESSAGE_FILE)
+	@$(ECHO) "Patch Build Settings:" >> $(MESSAGE_FILE)
+	@$(ECHO) "  PATCH_TOPDIR = $(PATCH_TOPDIR)"  >> $(MESSAGE_FILE)
+	@$(ECHO) "  RTPATCH_DIR = $(RTPATCH_DIR)" >> $(MESSAGE_FILE)
+	@$(ECHO) "  PATCH_LEVEL = $(PATCH_LEVEL)" >> $(MESSAGE_FILE)
+	@$(ECHO)  >> $(MESSAGE_FILE)	
+	@$(ECHO) "  NEW_IMAGE_JRE_DIR = $(NEW_IMAGE_JRE_DIR) " >> $(MESSAGE_FILE)
+	@$(ECHO) "  NEW_IMAGE_SDK_DIR = $(NEW_IMAGE_SDK_DIR) " >> $(MESSAGE_FILE)
+	@$(ECHO) "  NEW_IMAGE_FULLVERSION = $(NEW_IMAGE_FULLVERSION) "  >> $(MESSAGE_FILE)
+	@$(ECHO) "  NEW_IMAGE_MAJOR_VERSION (Parsed) = $(NEW_IMAGE_MAJOR_VERSION) " >> $(MESSAGE_FILE)
+	@$(ECHO) "  NEW_IMAGE_MINOR_VERSION (Parsed) = $(NEW_IMAGE_MINOR_VERSION) " >> $(MESSAGE_FILE)
+	@$(ECHO) "  NEW_IMAGE_MICRO_VERSION (Parsed) = $(NEW_IMAGE_MICRO_VERSION) " >> $(MESSAGE_FILE)
+	@$(ECHO) "  NEW_IMAGE_UPDATE_VERSION (Parsed) = $(NEW_IMAGE_UPDATE_VERSION) " >> $(MESSAGE_FILE)
+	@$(ECHO) "  NEW_IMAGE_BUILD_NUMBER (Parsed) = $(NEW_IMAGE_BUILD_NUMBER) " >> $(MESSAGE_FILE)
+	@$(ECHO) "  NEW_IMAGE_MILESTONE (Parsed) = $(NEW_IMAGE_MILESTONE) " >> $(MESSAGE_FILE)
+	@$(ECHO) "  BUNDLE_DATE = $(BUNDLE_DATE) " >> $(MESSAGE_FILE)
+	@$(ECHO)  >> $(MESSAGE_FILE)
+ifdef ALT_BASE_IMAGE_JRE_ZIP
+ifdef ALT_BASE_IMAGE_SDK_ZIP
+	@$(ECHO) "  BASE_IMAGE_JRE_ZIP = $(BASE_IMAGE_JRE_ZIP) " >> $(MESSAGE_FILE)
+	@$(ECHO) "  BASE_IMAGE_SDK_ZIP = $(BASE_IMAGE_SDK_ZIP) " >> $(MESSAGE_FILE)
+	@$(ECHO)  >> $(MESSAGE_FILE)
+endif
+endif
+	@$(ECHO) "  BASE_IMAGE_JRE_DIR = $(BASE_IMAGE_JRE_DIR) " >> $(MESSAGE_FILE)
+	@$(ECHO) "  BASE_IMAGE_SDK_DIR = $(BASE_IMAGE_SDK_DIR) " >> $(MESSAGE_FILE)
+	@$(ECHO) "  BASE_IMAGE_FULLVERSION = $(BASE_IMAGE_FULLVERSION) "  >> $(MESSAGE_FILE)	
+	@$(ECHO) "  BASE_IMAGE_MAJOR_VERSION (Parsed) = $(BASE_IMAGE_MAJOR_VERSION) " >> $(MESSAGE_FILE)
+	@$(ECHO) "  BASE_IMAGE_MINOR_VERSION (Parsed) = $(BASE_IMAGE_MINOR_VERSION) " >> $(MESSAGE_FILE)
+	@$(ECHO) "  BASE_IMAGE_MICRO_VERSION (Parsed) = $(BASE_IMAGE_MICRO_VERSION) " >> $(MESSAGE_FILE)
+	@$(ECHO) "  BASE_IMAGE_UPDATE_VERSION (Parsed) = $(BASE_IMAGE_UPDATE_VERSION) " >> $(MESSAGE_FILE)
+	@$(ECHO) "  BASE_IMAGE_BUILD_NUMBER (Parsed) = $(BASE_IMAGE_BUILD_NUMBER) " >> $(MESSAGE_FILE)
+	@$(ECHO) "  BASE_IMAGE_MILESTONE (Parsed) = $(BASE_IMAGE_MILESTONE) " >> $(MESSAGE_FILE)
+	@$(ECHO)  >> $(MESSAGE_FILE)
+	@$(ECHO) "Install Build Settings:" >> $(MESSAGE_FILE)
+ifeq ($(ARCH_DATA_MODEL), 32)
+	@$(ECHO) "  ISHIELDDIR = $(ISHIELDDIR) " >> $(MESSAGE_FILE)
+	@$(ECHO) "  BUILDER     = $(ISHIELDDIR)/System/ISCmdBld.exe " >> $(MESSAGE_FILE)
+	@$(ECHO) "  SIGN_FLAG   = $(SIGN_FLAG) " >> $(MESSAGE_FILE)
+	@$(ECHO) "  HTTPSERVER  = $(HTTPSERVER) " >> $(MESSAGE_FILE)
+
+else #ARCH_DATA_MODEL
+	@$(ECHO) "  Windows 64bit not supported" >> $(MESSAGE_FILE)
+endif #ARCH_DATA_MODEL
+else #PLATFORM
+	@$(ECHO) "  No setting required for Unix Systems" >> $(MESSAGE_FILE)
+endif #PLATFORM
+	@$#
+
+
+######################################################
+# OUTPUTDIR tests
+######################################################
+outputdir:
+	@#
+	@# OUTPUTDIR must have enough free space...
+	@#
+	@if [ -d $(OUTPUTDIR) -a $(FREE_SPACE) -lt $(MIN_FREE_DISK) ]; then \
+	  $(ECHO) "WARNING: You may not have enough free space in your OUTPUTDIR. The \n" \
+	    "        current value of OUTPUTDIR is \n" \
+	    "            $(OUTPUTDIR) \n" \
+	    "        You need "$(MIN_FREE_DISK)" bytes free on this device to build \n" \
+	    "        and it appears that only "$(FREE_SPACE)" bytes are free. \n" \
+	    "        Either obtain more space or set ALT_OUTPUTDIR to a larger disk. \n" \
+	    "" >> $(WARNING_FILE) ; \
+	fi
+
+
+######################################################
+# Check for existence of required Patch sundries.
+######################################################
+patching:
+ifeq ($(PLATFORM), windows)
+ifneq ($(ARCH_DATA_MODEL), 64)
+	@#
+	@# Other required checks we need
+	@#
+ifdef ALT_BASE_IMAGE_DIR
+	@if [ ! -x `$(ECHO) $(subst \,/,$(RTPATCH_DIR)/patchbld.exe)` ]; then \
+	  $(ECHO) "ERROR: RTPATCH_DIR does not point to a valid RT Patch. \n" \
+	    "      Please check your access to \n" \
+	    "      $(RTPATCH_DIR)/patchbld.exe \n" \
+	    "      and/or check your value of ALT_RTPATCH_DIR. \n" \
+	    "" >> $(ERROR_FILE) ; \
+	fi	
+endif
+endif #ARCH_DATA_MODEL
+endif #PLATFORM
+
+######################################################
+# Check for existence of required Installer sundries.
+######################################################
+installing:
+ifeq ($(PLATFORM), windows)
+ifneq ($(ARCH), amd64)
+	@#
+	@# Check if ISHIELD is correct
+	@#
+	@if [ ! -x $(BUILDER) ]; then \
+	  $(ECHO) "ERROR: ISHIELDDIR does not point to a valid InstallShield Developer. \n" \
+	    "      Please check your access to \n" \
+	    "      $(INSTALL_BUILDDIR) or $(ISHIELDDIR) \n" \
+	    "      and/or check your value of ALT_ISHIELDDIR. \n" \
+	    "" >> $(ERROR_FILE) ; \
+	fi	
+endif #ARCH
+endif #PLATFORM
+
+######################################################
+# Check for existence of INSTALL_MSSDK on windows
+######################################################
+sane-install-mssdk_path:
+ifeq ($(PLATFORM), windows)
+	@if [ -z "$(INSTALL_MSSDK)" ]; then \
+          $(ECHO) "WARNING: Your INSTALL_MSSDK setting is empty.\n" \
+            "        It is recommended to set ALT_INSTALL_MSSDK.\n" \
+            "" >> $(WARNING_FILE) ; \
+        fi
+	@if [ ! -r "$(INSTALL_MSSDK)" ]; then \
+          $(ECHO) "WARNING: You do not have a valid INSTALL_MSSDK setting. \n" \
+            "      Please check your access to \n" \
+            "          $(INSTALL_MSSDK) \n" \
+            "      and/or check your value of ALT_INSTALL_MSSDK. \n" \
+            "" >> $(WARNING_FILE) ; \
+        fi
+endif
+
+######################################################
+# Check for existence of INSTALL_MSIVAL2 on windows
+######################################################
+sane-install-msival2_path:
+ifeq ($(PLATFORM), windows)
+	@if [ -z "$(INSTALL_MSIVAL2)" ]; then \
+          $(ECHO) "WARNING: Your INSTALL_MSIVAL2 setting is empty.\n" \
+            "        It is recommended to set ALT_INSTALL_MSIVAL2.\n" \
+            "" >> $(WARNING_FILE) ; \
+        fi
+	@if [ ! -r "$(INSTALL_MSIVAL2)" ]; then \
+          $(ECHO) "WARNING: You do not have a valid INSTALL_MSIVAL2 setting. \n" \
+            "      Please check your access to \n" \
+            "          $(INSTALL_MSIVAL2) \n" \
+            "      and/or check your value of ALT_INSTALL_MSIVAL2. \n" \
+            "" >> $(WARNING_FILE) ; \
+        fi
+endif
+
+######################################################
+# Check for existence of JavaDB MSI on windows
+######################################################
+sane-install-javadb_msi:
+ifeq ($(PLATFORM), windows)
+ifeq ($(ARCH_DATA_MODEL),32)
+	@if [ ! -e "$(COPKG_JAVADB_DIR)/windows/javadb.msi" ]; then \
+          $(ECHO) "WARNING: $(COPKG_JAVADB_DIR)/windows/javadb.msi does not exist.\n" \
+            "        Make sure you've brought over the $(COPKG_JAVADB_DIR) directory.\n" \
+            "        COPKG_JAVADB_DIR=$(COPKG_JAVADB_DIR)\n" \
+            "" >> $(WARNING_FILE) ; \
+    else \
+	    if [ ! -r "$(COPKG_JAVADB_DIR)/windows/javadb.msi" ]; then \
+          $(ECHO) "WARNING: You do not have access to $(COPKG_JAVADB_DIR)/windows/javadb.msi.\n" \
+            "      Please check your access to \n" \
+            "          $(COPKG_JAVADB_DIR)/windows/javadb.msi \n" \
+            "" >> $(WARNING_FILE) ; \
+        fi \
+    fi
+endif #ARCH_DATA_MODEL
+endif #PLATFORM
+
+######################################################
+# Check for existence of VisualVM zip files
+######################################################
+sane-install-visualvm:
+	@if [ ! -f "$(COPKG_VISUALVM_CMN_ZIP)" ]; then \
+	  $(ECHO) "ERROR: $(COPKG_VISUALVM_CMN_ZIP) does not exist.\n" \
+	  "        Make sure you've brought over the contents of $(COPKG_VISUALVM_DIR) directory.\n" \
+	  "        COPKG_VISUALVM_DIR=$(COPKG_VISUALVM_DIR)\n" \
+	  "" >> $(ERROR_FILE) ; \
+	fi
+	@if [ ! -f "$(COPKG_VISUALVM_PLATFORM_ZIP)" ]; then \
+	  $(ECHO) "ERROR: $(COPKG_VISUALVM_PLATFORM_ZIP) does not exist.\n" \
+	  "        Make sure you've brought over the $(COPKG_VISUALVM_DIR) directory.\n" \
+	  "        COPKG_VISUALVM_DIR=$(COPKG_VISUALVM_DIR)\n" \
+	  "" >> $(ERROR_FILE) ; \
+	fi

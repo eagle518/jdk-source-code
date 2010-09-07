@@ -1,0 +1,27 @@
+!
+!  Sun Motif 1.2.3
+!  Virtual Key Bindings for PC AT style keyboard
+!
+! "Sun Microsystems, Inc."
+osfActivate     :               <Key>KP_Enter
+osfCancel       :               <Key>Escape
+osfHelp         :               <Key>F1
+osfMenu         :Shift          <Key>F10
+osfMenuBar      :               <Key>F10
+
+osfLeft         :               <Key>Left
+osfUp           :               <Key>Up
+osfRight        :               <Key>Right
+osfDown         :               <Key>Down
+
+osfBeginLine    :               <Key>Home
+osfEndLine      :               <Key>End
+
+osfPageUp       :               <Key>Prior
+osfPageDown     :               <Key>Next
+
+osfBackSpace    :               <Key>BackSpace
+osfDelete       :               <Key>Delete
+osfInsert       :               <Key>Insert
+osfInsert       :               <Key>KP_Insert
+osfAddMode      :Shift          <Key>F8

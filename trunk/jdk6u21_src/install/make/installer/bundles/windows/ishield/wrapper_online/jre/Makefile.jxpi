@@ -1,0 +1,49 @@
+#
+# Copyright (c) 2009, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+#
+# @(#)Makefile.jxpi	1.2 10/03/23
+#
+#
+# Makefile to build the Online jxpi installer
+#
+
+
+PRODUCT = jinstall_jxpi
+TEMPDIR=$(TEMP_DIR)/jinstall-jxpi
+
+
+TARGET_NAME=jinstall_jxpi
+TARGET=$(TARGET_NAME).exe
+
+include ./common.gmk
+
+EXEVALUE=jxpiinstall-$(BIN_BUNDLE_NAMEPART)-${BUNDLE_DATE}
+
+CPPFLAGS += -DJXPI
+
+all: clean copyfiles jre-jxpi
+
+
+jre-jxpi: optimized debug
+
+
+$(OBJDIR)/$(TARGET): $(FILES_res) $(FILES_o)
+	$(LINK) $(LDFLAGS) $(FILES_res) $(FILES_o)
+
+build: $(OBJDIR)/$(TARGET)
+
+debug:
+
+optimized: $(OBJDIR)
+	$(MAKE) -f Makefile.jxpi build VARIANT=OPT
+
+clean::
+	$(RM) -r $(TEMPDIR)
+
+#
+# Phonies to avoid accidents.
+#
+.PHONY: all optimized debug clobber clean build
+

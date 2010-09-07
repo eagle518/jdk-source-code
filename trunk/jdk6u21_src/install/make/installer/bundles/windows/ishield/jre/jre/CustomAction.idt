@@ -1,0 +1,100 @@
+Action	Type	Source	Target	ISComments
+s72	i2	S64	S0	S255
+CustomAction	Action
+charsets	3089	regutils.dll	MSIcharsets	
+CheckFIUCancel	1	RegUtilsMSI	MSICheckFIUCancel	
+deploy	3089	regutils.dll	MSIdeploy	
+DuplicateUnzippedFiles	3089	regutils.dll	MSIDuplicateUnzippedFiles	
+ExitUI	1	RegUtilsMSI	MSIErrorNoMoreItems	returning ERROR_NO_MORE_ITEMS causes the rest of the UI sequence to be skipped
+FilesInUseDialog	66	FilesInUseEXE	[INSTALLDIR];[MODE]	our own FilesInUse dialog
+GetKernelReady	1	RegUtilsMSI	MSIGetKernelReady	
+GetKernelReadyDoNotFinalize	1	RegUtilsMSI	MSIGetKernelReadyDoNotFinalize	
+ielaunch	226	ProgramFilesFolder	"[ProgramFilesFolder]\Internet Explorer\iexplore.exe" "http://java.com/verify"	
+InstallJava	3089	regutils.dll	MSIInstallJRE	
+UninstallJQS	3089	regutils.dll	MSIUninstallJQS	
+ShutdownJusched	1	RegUtilsMSI	MSIShutdownJusched	
+IsIEInstalled	1	RegUtilsMSI	MSIIsIEInstalled	Is Internet Explorer Installed
+IsMozillaInstalled	1	RegUtilsMSI	MSIIsMozillaInstalled	Find out if Mozilla is installed on the system
+issemicolon	1	RegUtilsMSI	MSIIsINSTALLDIRValid	is there a semi colon in the installdir?
+javaws	3089	regutils.dll	MSIjavaws	Unpack javaws jar file
+jaws	3089	regutils.dll	MSIjaws	
+jsse	3089	regutils.dll	MSIjsse	
+KillIE	17	regutils.dll	KillIExplore	
+ReplaceIEDlls	17	regutils.dll	MSIReplaceIEDlls	
+localedata	3089	regutils.dll	MSIlocaledata	
+needrebootIEVM	1	RegUtilsMSI	MSIDoesIeNeedRestart	do we need to restart IE
+NewerConsumerVersionInstalled	19		25000	
+SameVersionAlreadyInstalledAsStatic	19		25001	
+OPENHELP	129	RegUtilsMSI	OpenHelpURL	Open Help URL for Install Error
+CheckPendingFileRenameOperations	257	RegUtilsMSI	MSICheckPendingFileRenameOperations	
+PostInstallComplete	1	RegUtilsMSI	PostInstallComplete	
+postprogress1	3073	RegUtilsMSI	CAProgress	
+postprogress10	3073	RegUtilsMSI	CAProgress	
+postprogress12	3073	RegUtilsMSI	CAProgress	
+postprogress4	3073	RegUtilsMSI	CAProgress	
+postprogress5	3073	RegUtilsMSI	CAProgress	
+postprogress6	3073	RegUtilsMSI	CAProgress	
+postprogress7	3073	RegUtilsMSI	CAProgress	
+postprogress9	3073	RegUtilsMSI	CAProgress	
+preprogress1	1	RegUtilsMSI	CAProgress	
+preprogress10	1	RegUtilsMSI	CAProgress	
+preprogress12	1	RegUtilsMSI	CAProgress	
+preprogress4	1	RegUtilsMSI	CAProgress	
+preprogress5	1	RegUtilsMSI	CAProgress	
+preprogress6	1	RegUtilsMSI	CAProgress	
+preprogress7	1	RegUtilsMSI	CAProgress	
+preprogress9	1	RegUtilsMSI	CAProgress	
+enablesetupdlg	1	RegUtilsMSI	ShowSetupDialog	
+increprogress1	1	RegUtilsMSI	IncrementSetupBar	
+increprogress2	1	RegUtilsMSI	IncrementSetupBar	
+increprogress3	1	RegUtilsMSI	IncrementSetupBar	
+increprogress4	1	RegUtilsMSI	IncrementSetupBar	
+increprogress5	1	RegUtilsMSI	IncrementSetupBar	
+increprogress6	1	RegUtilsMSI	IncrementSetupBar	
+increprogress7	1	RegUtilsMSI	IncrementSetupBar	
+increprogress8	1	RegUtilsMSI	IncrementSetupBar	
+increprogress9	1	RegUtilsMSI	IncrementSetupBar	
+increprogress10	1	RegUtilsMSI	IncrementSetupBar	
+increprogress11	1	RegUtilsMSI	IncrementSetupBar	
+increprogress12	1	RegUtilsMSI	IncrementSetupBar	
+increprogress13	1	RegUtilsMSI	IncrementSetupBar	
+RemoveJREMSICache	1	RegUtilsMSI	MSIRemoveJREMSICache	
+rt	3089	regutils.dll	MSIrt	
+RunOnceCleanup	1	RegUtilsMSI	MSIRunOnceCleanup	
+servicetagNoRegister	1250	bin	"[bin]javaw.exe" com.sun.servicetag.Installer -source "Windows JRE installer"	Create service tag
+setAllUsersProfile2K	51	ALLUSERSPROFILE	[%ALLUSERSPROFILE]	
+SetAllUsersProfileNT	51	ALLUSERSPROFILE	[%SystemRoot]\Profiles\All Users	
+SetARPINSTALLLOCATION	51	ARPINSTALLLOCATION	[INSTALLDIR]	
+SetARPReadme	51	ARPREADME	[INSTALLDIR]README.txt	
+SetExists	1	RegUtilsMSI	SetExists	
+SetIExplorer	51	IEXPLORER	1	
+SetIExplorerProperty0	51	IEXPLORER	0	
+SetIExplorerProperty1	51	IEXPLORER	1	
+SetIMOZILLAProperty0	51	MOZILLA	0	
+SetIMOZILLAProperty1	51	MOZILLA	1	
+SetINSTALLDIR	51	INSTALLDIR	[PATCHDIR]	
+SetLicenseDecline	1	RegUtilsMSI	SetLicenseDecline	
+SetJDK_VERSIONtoPatchedVersion	51	JDK_VERSION	[PREV_CONSUMER_VERSION]	
+SETMODIFYREMOVE	51	MODIFYREMOVE	modify or remove	
+SetODB	51	ODB	[OriginalDatabase]	
+SetREBOOT	51	REBOOT	Force	
+SetReinstall	1	RegUtilsMSI	SetReinstall	
+ResetENDDIALOG	51	ENDDIALOG	0	
+SetREINSTALL_COND	51	REINSTALL_COND	1	
+SetUninstallConsumerProduct	51	UninstallProductCode	[CONSUMERPRODUCTFOUND]	
+SetUninstallProductCode	51	UninstallProductCode	[ProductCode]	
+setUserProfileNT	51	USERPROFILE	[%USERPROFILE]	
+sharedclassdata	3170	bin	"[bin]javaw.exe" -Xshare:dump	generate shared class data
+uninstall	98	SystemFolder	msiexec.exe /x "[UninstallProductCode]" MSIMSTREMOVE=1 /qb	
+UninstallJRE	3089	regutils.dll	MSIUninstallJRE	
+AUunreg	226	CommonFilesFolder	"[CommonFilesFolder]\Java\Java Update\jaureg.exe" -u jre	
+unzipcore	3089	regutils.dll	MSIunzipcore	
+patchjre	3090	patchjre.exe	-s "[PATCHDIR]"	
+PreloadJavaFX	65	RegUtilsMSI	MSIPreloadJavaFX	
+LoadVector	65	RegUtilsMSI	MSILoadVector	
+RunVector	193	RegUtilsMSI	MSIRunVector	
+startKernelBackgroundDownloadProcess	65	RegUtilsMSI	MSIStartKernelBackgroundDownloadProcess	
+needrebootFirefox	1	RegUtilsMSI	MSICheckFirefox	do we need to restart Firefox
+firefoxlaunch	226	ProgramFilesFolder	"[FIREFOXPATH]\firefox.exe" "http://java.com/verify"	
+KillFirefox	17	regutils.dll	KillFirefox	
+SetFINISHTEXT	51	FINISHTEXT	[CLOSETEXT]	

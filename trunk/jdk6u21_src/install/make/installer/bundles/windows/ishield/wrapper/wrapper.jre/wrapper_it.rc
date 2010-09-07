@@ -1,0 +1,53 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Italian (Italy) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ITA)
+#ifdef _WIN32
+LANGUAGE LANG_ITALIAN, SUBLANG_NEUTRAL
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+
+    IDS_ERROR_TITLE               "Errore di collegamento del programma di installazione Java"
+    IDS_ERROR_MESSAGE             "Il programma di installazione non può proseguire con le attuali impostazioni Proxy per la connessione Internet. Per maggiori informazioni leggere le note sull'installazione."
+    IDS_PROXY_AUTH__ERROR_MESSAGE "Il programma di installazione non può proseguire con le attuali impostazioni Proxy per la connessione Internet. Per maggiori informazioni leggere le note sull'installazione."
+    IDS_ERROR_WI20                "Installazione di Java(TM) non riuscita: Windows Installer 2.0 Engine non è installato nel sistema corrente.  Scaricare e installare Windows Installer 2.0 o versioni successive dal sito Web Microsoft."
+    IDS_WARNING_CAPTION             "Avviso - Programma di installazione di Java(TM)"
+    
+END
+
+#endif    // Italian (Italy) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
+

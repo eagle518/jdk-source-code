@@ -1,0 +1,64 @@
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+#include "afxres.h"
+#undef APSTUDIO_READONLY_SYMBOLS
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_PORTUGUESE, SUBLANG_PORTUGUESE_BRAZILIAN 
+#pragma code_page(1252) 
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ERROR_TITLE               "Erro de conexão do instalador Java"
+    IDS_ERROR_MESSAGE             "O instalador não pode prosseguir com as configurações atuais do proxy de conexão à Internet. Consulte as Notas de instalação para obter mais informações"
+    IDS_PROXY_AUTH__ERROR_MESSAGE "O instalador não pode prosseguir com as configurações atuais do proxy de conexão à Internet. Consulte as Notas de instalação para obter mais informações"
+    IDS_ERROR_WI20                "O Java(TM) não pode ser instalado porque o Windows Installer 2.0 não está instalado neste sistema.  Baixe e instale o Windows Installer 2.0 ou superior no site da Microsoft."
+    IDS_WARNING_CAPTION             "Aviso - Instalador Java(TM)"
+END
+
+#endif    
+/////////////////////////////////////////////////////////////////////////////
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED

@@ -1,0 +1,9 @@
+Dialog_	Control_	Action	Condition
+s72	s50	s50	s255
+ControlCondition	Dialog_	Control_	Action	Condition
+SetupProgress	DlgDesc	Show	ProgressType2="installed"
+SetupProgress	DlgDesc2	Show	ProgressType2="uninstalled"
+SetupProgress	DlgText	Show	ProgressType3="installs"
+SetupProgress	DlgText2	Show	ProgressType3="uninstalls"
+SetupProgress	DlgTitle	Show	ProgressType1="Installing"
+SetupProgress	DlgTitle2	Show	ProgressType1="Uninstalling"

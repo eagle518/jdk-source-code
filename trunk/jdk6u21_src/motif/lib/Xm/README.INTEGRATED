@@ -1,0 +1,21 @@
+/*
+ * This file has a record of the bugs fixed in 2.1
+ */
+
+Bug#		CRT#(if any)	Description
+4072236				mail to motif@moonshell
+4072243				mail to motif@moonshell
+4072273				mail to motif@moonshell
+4075863				./BUGDIFFS/diff.4075863
+4075880				./BUGDIFFS/diff.4075880
+4085003				./BUGDIFFS/diff.4085003
+4083294				./BUGDIFFS/diff.4085003
+4077411				./BUGDIFFS/diff.4085003
+4076258				./BUGDIFFS/diff.4085003
+4075954				./BUGDIFFS/diff.4085003
+4075880				./BUGDIFFS/diff.4085003
+4075863				./BUGDIFFS/diff.4085003
+4072756				./BUGDIFFS/diff.4085003
+4072273				./BUGDIFFS/diff.4085003
+4072243				./BUGDIFFS/diff.4085003
+4072236				./BUGDIFFS/diff.4085003

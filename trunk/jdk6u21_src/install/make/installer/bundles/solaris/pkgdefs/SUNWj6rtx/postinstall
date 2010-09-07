@@ -1,0 +1,27 @@
+#
+# Copyright (c) 2007, Oracle and/or its affiliates. All rights reserved.
+# Use is subject to license terms.
+#
+# pragma ident "@(#)postinstall	1.4 10/03/23 Sun Microsystems"
+#
+
+#
+# To create a service tag for 64-bit JDK installation.
+# No product registration is done.
+#
+# If a different package install root is specified via pkgadd -R option,
+# the installer cannot create a service tag since the service tag registry
+# client (see /usr/bin/stclient) only supports local system use.
+# A RFE# 6576434 is created for stclient to support the remote installation
+# support.
+#
+if [ "${PKG_INSTALL_ROOT}" = "" ]; then
+    ${INSTALL_NAME}/bin/java com.sun.servicetag.Installer \
+        -source "${PKGINST}" > /dev/null 2>&1
+fi
+
+#
+# Commit
+#
+$INSTALLF -f $PKGINST
+exit 0

@@ -1,0 +1,138 @@
+Action	Condition	Sequence	ISComments	ISAttributes
+s72	S255	I2	S255	I4
+InstallExecuteSequence	Action
+AppSearch		40	AppSearch	
+SetJDK_VERSIONtoPatchedVersion	REMOVE And MODE="C" And JDK_VERSION<>PREV_CONSUMER_VERSION	41		
+SetINSTALLDIR	MODE="U"	48		
+SetExists	Installed And (DATABASE<>OriginalDatabase) And UILevel=2	49	SetExists	
+LaunchConditions		52	LaunchConditions	
+increprogress1	PROG=0	53	custom setup iftw progress bar	
+GetKernelReady	MODE="U"	55		
+FindRelatedProducts	NOT ISSETUPDRIVEN	100	FindRelatedProducts	
+NewerConsumerVersionInstalled	(Not REMOVE) And (MODE<>"S") And (PREV_CONSUMER_VERSION>JDK_VERSION)	101	Error if installing Consumer and newer consumer version is already installed.	
+SameVersionAlreadyInstalledAsStatic	(MODE<>"S") And (SAMEVERSTATICPRODUCTFOUND Or (Not REMOVE And SAME_VERSION_MODE="S"))	102	Error if installing Consumer and the same version of Static is already installed.	
+CCPSearch	CCP_TEST	200	CCPSearch	
+RMCCPSearch	Not CCP_SUCCESS And CCP_TEST	250	RMCCPSearch	
+ValidateProductID		300	ValidateProductID	
+setUserProfileNT	VersionNT	301		
+SetAllUsersProfileNT	VersionNT = 400	302		
+setAllUsersProfile2K	VersionNT >= 500	303		
+CostInitialize		350	CostInitialize	
+FileCost		400	FileCost	
+IsolateComponents		450	IsolateComponents	
+CostFinalize		500	CostFinalize	
+SetARPReadme		501		
+CheckPendingFileRenameOperations	(Not REMOVE)	502	Error if pending file rename operations	
+SetODBCFolders		550	SetODBCFolders	
+MigrateFeatureStates		600	MigrateFeatureStates	
+SetARPINSTALLLOCATION	Not Installed	640		
+InstallValidate		650	InstallValidate	
+RemoveExistingProducts	REMOVEEXISTING Or (MODE="C" And (PREV_CONSUMER_VERSION<JDK_VERSION))	675	RemoveExistingProducts ***used with Upgrade table to uninstall Consumer for replacement by Static***	
+InstallInitialize		700	InstallInitialize	
+RemoveJREMSICache	Installed And MSIMSTREMOVE<>"1" And NOT UPGRADINGPRODUCTCODE	724	UPGRADINGPRODUCTCODE is set during RemoveExistingProducts action	
+UninstallJRE	REMOVE	728		
+AUunreg	REMOVE	734		
+FilesInUseDialog	(Installed) And (UILevel<>2)	740		
+CheckFIUCancel	(Installed) And (UILevel<>2)	741		
+AllocateRegistrySpace	NOT Installed	750	AllocateRegistrySpace	
+ProcessComponents		800	ProcessComponents	
+UnpublishComponents		850	UnpublishComponents	
+MsiUnpublishAssemblies		875	MsiUnpublishAssemblies	
+UnpublishFeatures		900	UnpublishFeatures	
+StopServices	VersionNT	950	StopServices	
+DeleteServices	VersionNT	1000	DeleteServices	
+UnregisterComPlus		1050	UnregisterComPlus	
+SelfUnregModules		1100	SelfUnregModules	
+UnregisterTypeLibraries		1150	UnregisterTypeLibraries	
+RemoveODBC		1200	RemoveODBC	
+RemoveRegistryValues		1300	RemoveRegistryValues	
+UnregisterClassInfo		1350	UnregisterClassInfo	
+UnregisterExtensionInfo		1400	UnregisterExtensionInfo	
+UnregisterProgIdInfo		1450	UnregisterProgIdInfo	
+UnregisterMIMEInfo		1500	UnregisterMIMEInfo	
+RemoveIniValues		1550	RemoveIniValues	
+RemoveShortcuts		1600	RemoveShortcuts	
+RemoveEnvironmentStrings		1650	RemoveEnvironmentStrings	
+RemoveDuplicateFiles		1700	RemoveDuplicateFiles	
+increprogress2	PROG=0	1724	custom setup iftw progress bar	
+InstallExecute	REMOVE And KERNEL=1	1725	refresh uninstall list for kernel	
+RemoveFiles		1750	RemoveFiles	
+RemoveFolders		1800	RemoveFolders	
+CreateFolders		1850	CreateFolders	
+MoveFiles		1900	MoveFiles	
+InstallFiles		1950	InstallFiles	
+PatchFiles		2000	PatchFiles	
+DuplicateFiles		2050	DuplicateFiles	
+BindImage		2100	BindImage	
+CreateShortcuts		2150	CreateShortcuts	
+RegisterClassInfo		2200	RegisterClassInfo	
+RegisterExtensionInfo		2250	RegisterExtensionInfo	
+RegisterProgIdInfo		2300	RegisterProgIdInfo	
+RegisterMIMEInfo		2350	RegisterMIMEInfo	
+SetIExplorerProperty1	(UILevel<>2) And ((&IE=3) Or (&IESUB=3))	2355	ExecuteAction	
+SetIMOZILLAProperty1	(UILevel<>2) And (&MOZILLASUB=3)	2360	ExecuteAction	
+SetIExplorerProperty0	(UILevel<>2) And (Not &IE=3) And (Not &IESUB=3)	2365	ExecuteAction	
+SetIMOZILLAProperty0	(UILevel<>2) And (Not &MOZILLASUB=3)	2370	ExecuteAction	
+WriteRegistryValues		2400	WriteRegistryValues	
+WriteIniValues		2450	WriteIniValues	
+WriteEnvironmentStrings		2500	WriteEnvironmentStrings	
+InstallODBC		2600	InstallODBC	
+RegisterTypeLibraries		2650	RegisterTypeLibraries	
+RegisterComPlus		2700	RegisterComPlus	
+InstallServices	VersionNT	2750	InstallServices	
+StartServices	VersionNT	2800	StartServices	
+SelfRegModules		2850	SelfRegModules	
+RegisterUser	MODE<>"U"	2900	RegisterUser	
+RegisterProduct	MODE<>"U"	2950	RegisterProduct	
+PublishComponents		3000	PublishComponents	
+MsiPublishAssemblies		3025	MsiPublishAssemblies	
+PublishFeatures	MODE<>"U"	3050	PublishFeatures	
+PublishProduct	MODE<>"U"	3100	PublishProduct	
+increprogress3	PROG=0	3130	custom setup iftw progress bar	
+unzipcore	MODE<>"U" And NOT Installed	3131		
+DuplicateUnzippedFiles	IS32BITMSI=1 And MODE<>"U" And NOT Installed	3132		
+preprogress1	NOT REMOVE	3133		
+postprogress1	NOT REMOVE	3134		
+increprogress4	PROG=0	3135	custom setup iftw progress bar	
+rt	MODE<>"U" And &jrecore=3 AND NOT Installed	3143		
+preprogress4	NOT REMOVE And MODE<>"U"	3145		
+postprogress4	NOT REMOVE And MODE<>"U"	3146		
+increprogress5	PROG=0	3147	custom setup iftw progress bar	
+jsse	MODE<>"U" And &jrecore=3 And KERNEL<>"1" AND NOT Installed	3148		
+preprogress5	NOT REMOVE And MODE<>"U"	3149		
+postprogress5	NOT REMOVE And MODE<>"U"	3150		
+increprogress6	PROG=0	3151	custom setup iftw progress bar	
+jaws	MODE<>"U" And &jrecore=3 And KERNEL<>"1" AND NOT Installed	3152		
+preprogress6	NOT REMOVE And MODE<>"U"	3153		
+postprogress6	NOT REMOVE And MODE<>"U"	3154		
+increprogress7	PROG=0	3155	custom setup iftw progress bar	
+javaws	MODE<>"U" And &jrecore=3 And KERNEL<>"1" AND NOT Installed	3156	Unpack javaws jar file	
+deploy	MODE<>"U" And &jrecore=3 And KERNEL<>"1" AND NOT Installed	3157	Unpack deploy jar file	
+preprogress7	NOT REMOVE And MODE<>"U"	3158		
+postprogress7	NOT REMOVE And MODE<>"U"	3159		
+increprogress8	PROG=0	3160	custom setup iftw progress bar	
+charsets	OTHER=1 And MODE<>"U" And Not Installed	3163		
+preprogress9	NOT REMOVE And MODE<>"U"	3165		
+postprogress9	NOT REMOVE And MODE<>"U"	3166		
+increprogress9	PROG=0	3167	custom setup iftw progress bar	
+localedata	OTHER=1 And MODE<>"U" And Not Installed	3168		
+preprogress10	NOT REMOVE And MODE<>"U"	3169		
+postprogress10	NOT REMOVE And MODE<>"U"	3170		
+increprogress10	PROG=0	3171	custom setup iftw progress bar	
+UninstallJQS	MODE="U"	3172	unlock bin/jqs.exe for patchinplace	
+ShutdownJusched	MODE="U"	3173		
+patchjre	MODE="U"	3174		
+preprogress12	NOT REMOVE	3175		
+postprogress12	NOT REMOVE	3176		
+increprogress11	PROG=0	3177	custom setup iftw progress bar	
+InstallJava	NOT Installed	3181		
+sharedclassdata	NOT Installed And VersionNT	3182		
+servicetagNoRegister	KERNEL<>"1" AND NOT Installed	3183	Create service tag	
+increprogress12	PROG=0	3184	custom setup iftw progress bar	
+InstallFinalize		3185		
+ReplaceIEDlls	(NOT Installed) And UILevel=2 And MODE="U"	3186		
+increprogress13	PROG=0	3188	custom setup iftw progress bar	
+PostInstallComplete	UILevel=2	3189		
+startKernelBackgroundDownloadProcess	NOT Installed And KERNEL=1	3190		
+PreloadJavaFX	NOT Installed And EULA_JAVAFX_ACCEPT="yes" And (RUNVECTOR<>1) And NOT DISABLE_PRELOAD_JAVAFX	3195		
+LoadVector	NOT Installed And (RUNVECTOR=1) And UILevel<>2	3197		

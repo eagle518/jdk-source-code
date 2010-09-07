@@ -1,0 +1,4 @@
+//
+// @(#)jinstall_ko.rc	1.71 08/02/13 
+//
+#include "jinstallcom_ko.rc"

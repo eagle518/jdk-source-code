@@ -1,0 +1,41 @@
+XCOMM 
+XCOMM (c) Copyright 1989, 1990, 1991, 1992 OPEN SOFTWARE FOUNDATION, INC. 
+XCOMM ALL RIGHTS RESERVED 
+XCOMM 
+XCOMM 
+XCOMM Motif Release 1.2
+XCOMM 
+XCOMM   $XConsortium: Imakefile /main/cde1_maint/1 1995/07/14 15:31:26 drk $
+INSTALLFLAGS = $(INSTINCFLAGS)
+
+FILES = \
+	xmbind.alias \
+	acorn \
+	apollo \
+	dec \
+	dg_AViiON \
+	doubleclick \
+	hitachi \
+	hp \
+	ibm \
+	intergraph \
+	intergraph17 \
+	megatek \
+	motorola \
+	ncr_at \
+	ncr_vt \
+	sgi \
+	siemens_9733 \
+	siemens_wx200 \
+	sony \
+	sun \
+	sun_at \
+	tek
+
+
+all::
+
+InstallMultiple($(FILES),$(USRLIBDIR)/Xm/bindings)
+
+depend::
+

@@ -1,0 +1,1506 @@
+ISString	ISLanguage_	Value	Encoded	Comment	TimeStamp
+s255	s50	S0	I2	S0	I4
+ISString	ISString	ISLanguage_
+ID_DEPLOY	1033	Installing Deployment Environment	0		-1315249938
+ID_DEPLOY	1041	39&94+!T@UB2,*0P\S"Y,,@P_##K,%<P9C!$,'XP63``	16		-493166496
+ID_DEPLOY	2052	8VLH5XE;Q8CHD')_KW.#6```	8		-627433865
+ID_EXTRACTING	1033	Extracting Installer	0		-1315249842
+ID_EXTRACTING	1041	I##S,+DPR##\,.DPDC"]8OI15S!F,$0P?C!9,```	14		-493189024
+ID_EXTRACTING	2052	8VLH5^.)BU,I?XE;Q8@+>H]>	9		-627401161
+ID_JAVAWS	1033	Installing Java Web Start	0		-1315296978
+ID_JAVAWS	1041	2@!A`'8`80`@`%<`90!B`"``4P!T`&$`<@!T`"``DC"D,/,PN3#(,/PPZS!7,&8P1#!^,%DP	27		-493207424
+ID_JAVAWS	2052	8VLH5XE;Q8@@`$H`80!V`&$`(`!7`&4`8@`@`%,`=`!A`'(`=```	19		-627409289
+ID_JDKREINSTALL	1033	This software has already been installed on your computer.  Would you like to reinstall it?	0		-635950606
+ID_JDKREINSTALL	1041	4S!N,+TPU3#(,*8PIS"B,&\P?T\H=2U.;C"S,/,PU##E,/PPOS!K,%DP9S!K,*0P\S"Y,,@P_##K,%4PC#!F,$0P?C!9,`(PC5&D,/,PN3#(,/PPZS!7,'XP63!+,#\`	48		-1021716048
+ID_JDKREINSTALL	2052	J&"$=J&+EWLZ9PI.\EW/?HE;Q8B&3F1K;X_V3@(P+V8F5(&)S9&P98E;Q8@?_P``	23		-1155937421
+ID_PATCH	1033	Applying Java Patches	0		-1046840149
+ID_PATCH	1041	2@!A`'8`80`@`-$PPS#!,)(P:9`H=5<P9C!$,'XP63``	16		-493221792
+ID_PATCH	2052	8VLH5Y1>*'4@`$H`80!V`&$`(`#N3V6("WJ/7@``	14		-627380713
+ID_PLUGIN	1033	Installing Java Plug-in	0		-1315282642
+ID_PLUGIN	1041	2@!A`'8`80`@`%``;`!U`&<`+0!I`&X`(`"2,*0P\S"Y,,@P_##K,%<P9C!$,'XP63``	25		-493197184
+ID_PLUGIN	2052	8VLH5XE;Q8@@`$H`80!V`&$`(`#28_9.	12		-627397001
+ID_RTJAR	1033	Installing Java Runtime Environment	0		-1315292850
+ID_RTJAR	1041	2@!A`'8`80`@`%(`=0!N`'0`:0!M`&4`(`!%`&X`=@!I`'(`;P!N`&T`90!N`'0`(`"2,*0P\S"Y,,@P_##K,%<P9C!$,'XP63``	37		-493209504
+ID_RTJAR	2052	8VLH5XE;Q8@@`$H`80!V`&$`(`!2`'4`;@!T`&D`;0!E`"``10!N`'8`:0!R`&\`;@!M`&4`;@!T````	29		-627429833
+ID_SHAREDCDATA	1033	Installing Class Data Sharing	0		-1315276402
+ID_SHAREDCDATA	1041	KS#I,+DPQS#\,+\P<5$)9Y(PI##S,+DPR##\,.LP5S!F,$0P?C!9,```	20		-493197216
+ID_SHAREDCDATA	2052	8VLH5XE;Q8A[?'!E;F-Q4:M.	9		-627419593
+ID_STRING_1	1033	Demos and Samples of applets and applications with source code.  The demos and samples require [Demos]MB on your hard drive.	0		1167470710
+ID_STRING_1	1041	O3#\,+DPLS#\,,DPV$Y-,&XPQS#B,&@PM3#S,-<PZS!N,*(PUS#L,,,PR#!*,(@P<S"B,-<PZC"Q,/PPMS#G,/,P9S!9,`(PQS#B,&@PM3#S,-<PZS!K,&\P`3#/,/PPR3#',*,PN3"O,&LP(`!;`$0`90!M`&\`<P!=`"``30!"`"``;C!Z>DTPN5O/D4PPQ5^!B6<P63`",```	77		-1684367957
+ID_STRING_1	2052	!5,K5)!NXTX!>(1V#UP+>H]>C%247BAU"WJ/7H1V%&\Z>8Q4-VB+3P(P%&\Z>0MZCUZ,5#=HBT\`EX&)(`!;`$0`90!M`&\`<P!=`"``30!"`"``A'9L>-AV<9JH4FA6>GKTE0(P	51		-1684378348
+ID_STRING_12	1033	You may change the settings later in the Java(TM) Control Panel.	0		-1005175951
+ID_STRING_12	1041	+8J:6U<P7S"%4;E;;S`!,$H`80!V`&$`*`!4`$T`*0`@`+,P\S#(,.TP_##K,-$PS3#K,)(P?T\H=5<P9C`!,(Q?9S`)6?1F9S!-,'XP63`",```	41		1704448166
+ID_STRING_12	2052	J&#E3@Y4[U/E3BA7(`!*`&$`=@!A`"@`5`!-`"D`(`"G8S928I=_9RU.]&8Y9;Z+;G\",```	26		-107356799
+ID_STRING_2	1033	    Netscape 6 or later	0		-1667804337
+ID_STRING_2	1041	(``@`"``(`!.`&4`=`!S`&,`80!P`&4`(``V`"``Y4Y-E@``	17		-1667803086
+ID_STRING_2	2052	(``@`"``(`!.`&4`=`!S`&,`80!P`&4`(``V`"``%F+T9MB:2'(L9P``	20		-107356799
+ID_STRING_3	1033	The standalone JRE. Any application can use this JRE.  It registers Java Plug-in and Java Web Start with the browsers and system.  It can be uninstalled separately from the JDK.  It requires [Pubjre]MB on your hard drive.	0		1167501462
+ID_STRING_3	1041	N3"_,/,PR3"B,.TP\S`@`$H`4@!%``(P4S!N,"``2@!2`$4`(`!O,%DP>3!F,&XPHC#7,.HPL3#\,+<PYS#S,&<P?T\H=6<P33!^,%DP`C#6,.DPIC"V,$HPB#!S,+<PN3#&,.`P9S`@`$H`80!V`&$`(`!0`&P`=0!G`"T`:0!N`"``2C"(,',P(`!*`&$`=@!A`"``5P!E`&(`(`!3`'0`80!R`'0`(`"2,'MV,I-7,'XP63`",$H`1`!+`"``:#!O,"52:S"B,/,PI##S,+DPR##\,.LP63"+,%,P:#!,,&<P33!^,%DP`C#/,/PPR3#),.DPI##6,&LP(`!;`%``=0!B`&H`<@!E`%T`30!"`"``3##%7X&)9S!9,`(P	144		-1021742640
+ID_STRING_3	2052	['++>B``2@!2`$4``C#[3E5/E%XH=0MZCUY'5^]3Y4Y_3RAU9&L@`$H`4@!%``(P9&L@`$H`4@!%`"``$51/;<B):%:,5/M\WW[H;(Q1(`!*`&$`=@!A`"``TF/V3HQ4(`!*`&$`=@!A`"``5P!E`&(`(`!3`'0`80!R`'0``C#O4^5.55/L<@9<=E'.3B``2@!$`$L`(``M3GA3?8\",(-;`)>!B2``6P!0`'4`8@!J`'(`90!=`"``30!"`"``A'9L>-AV<9JH4FA6>GKTE0(P	105		-1155968077
+ID_STRING_4	1033	[ProductName], including private JRE [MARKET].  This will require [Tools]MB on your hard drive.	0		1167518839
+ID_STRING_4	1041	6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`"@``EPH=2``2@!2`$4`(`!;`$T`00!2`$L`10!4`%T`(`"2,"M4@#`I``(P4S!N,-<P[3"P,.DPX#"2,*0P\S"Y,,@P_##K,%DPBS!K,&\P`3#/,/PPR3#',*,PN3"O,&LP(`!;`%0`;P!O`&P`<P!=`"``30!"`"``;C!Z>DTPN5O/D4PPQ5^!B6<P63`",```	86		-610605366
+ID_STRING_4	2052	6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`,_P53[&(33BAU(`!*`%(`10`@`%L`30!!`%(`2P!%`%0`70`",-F/!EP`EX&)(`!;`%0`;P!O`&P`<P!=`"``30!"`"``A'9L>-AV<9JH4FA6>GKTE0(P	57		-610659190
+ID_STRING_64	1033	This product is not supported on Itanium 64-bit systems.  You may obtain a Windows Itanium 64-bit Java(TM) SE Development Kit installer from http://java.sun.com.	0		-1005144527
+ID_STRING_64	1041	4S!N,/V(P51O,"``20!T`&$`;@!I`'4`;0`@`#8`-``@`-,PPS#(,+<PN3#&,.`P9S!O,+4PW3#\,,@P53",,&8P1#!^,%LPDS`",&@`=`!T`'``.@`O`"\`:@!A`'8`80`N`',`=0!N`"X`8P!O`&T`(`!+,(DP(`!7`&D`;@!D`&\`=P!S`"``20!T`&$`;@!I`'4`;0`@`#8`-``@`-,PPS#(,"``2@!A`'8`80`H`%0`30`I`"``4P!%`"``1`!E`'8`90!L`&\`<`!M`&4`;@!T`"``2P!I`'0`(`!N,*0P\S"Y,,@P_##K,-<P[3"P,.DPX#"2,&512V)G,$TP?C!9,`(P	132		-593951153
+ID_STRING_64	2052	*%<@`$D`=`!A`&X`:0!U`&T`(``V`#0`(`!-3_M\WWX*3@U.+V4!8RQGIT[!5`(PJ&#O4\Y.(`!H`'0`=`!P`#H`+P`O`&H`80!V`&$`+@!S`'4`;@`N`&,`;P!M`"``!%D+3GV/(`!7`&D`;@!D`&\`=P!S`"``20!T`&$`;@!I`'4`;0`@`#8`-``@`$U/(`!*`&$`=@!A`"@`5`!-`"D`(`!3`$4`(`!$`&4`=@!E`&P`;P!P`&T`90!N`'0`(`!+`&D`=``@`(E;Q8@+>H]>`C``	106		-593907858
+ID_STRING_CONTINUEJAVA	1033	&Continue	0		2106990415
+ID_STRING_CONTINUEJAVA	1041	F7V:?2@`)@!#`"D`	6		-1860747637
+ID_STRING_CONTINUEJAVA	2052	YW[M?B@`)@!#`"D`	6		-107356799
+ID_STRING_CUSTOM_TITLE	1033	[ProductName] - Custom Setup	0		-1021928859
+ID_STRING_CUSTOM_TITLE	1041	6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`"T`(`"K,+DPOS#@,+LPPS#(,*(PPS#7,```	26		-1860747637
+ID_STRING_CUSTOM_TITLE	2052	6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`"T`(`#J@9I;24Z)6\6(	21		-107356799
+ID_STRING_DEMOS	1033	Demos and Samples	0		-1005162321
+ID_STRING_DEMOS	1041	QS#B,&@PM3#S,-<PZS``	7		-1684357685
+ID_STRING_DEMOS	2052	%&\Z>0MZCU[*4S=HBT\`	7		-1684391061
+ID_STRING_DISKSPACE_TITLE	1033	[ProductName] - Disk Space	0		-1021928859
+ID_STRING_DISKSPACE_TITLE	1041	6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`"T`(`#',*,PN3"O,!B8WU<`	22		-1860747637
+ID_STRING_DISKSPACE_TITLE	2052	6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`"T`(`#!>-AV>GKTE0``	20		-107356799
+ID_STRING_EXIT_TITLE	1033	[ProductName] - Complete	0		-1021928859
+ID_STRING_EXIT_TITLE	1041	6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`"T`(`",6X9.	18		-1860747637
+ID_STRING_EXIT_TITLE	2052	6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`"T`(`",6Q!B	18		-107356799
+ID_STRING_FILESINUSE_TITLE	1033	[ProductName] - Files In Use	0		-1021928859
+ID_STRING_FILESINUSE_TITLE	1041	6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`"T`(`!_3RAU+4YN,-4PH3"D,.LP	24		-1860747637
+ID_STRING_FILESINUSE_TITLE	2052	6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`"T`(`!C:RA7?T\H=8=E]DX`	22		-107356799
+ID_STRING_INSTALLTO	1033	Install to:	0		-1021928859
+ID_STRING_INSTALLTO	1041	I##S,+DPR##\,.LP2%$Z````	8		311893355
+ID_STRING_INSTALLTO	2052	B5O%B#!2&O\`	4		-107356799
+ID_STRING_JavaDB_FeatureDescription	1033	Java DB is Sun's supported distribution of the open source Apache Derby 100% Java technology database.  This will require [Javadb] MB on your hard drive.	0		958118864
+ID_STRING_JavaDB_FeatureDescription	1041	2@!A`'8`80`@`$0`0@`@`&\P`3"J,/PPUS#S,+TP_#"Y,&XP(`!!`'``80!C`&@`90`@`$0`90!R`&(`>0`@`)(P^E=K,%<P7S`@`#$`,``P`"4`(`!*`&$`=@!A`"``;C#&,*\PSC#M,+@PQS#\,+\PV3#\,+DP9S`!,%,`=0!N`"``3#!-D0->DC"U,-TP_##(,%<P9C!$,'XP63`",$H`80!V`&$`(`!$`$(`(`"2,"E2*'59,(LP:S!O,`$PSS#\,,DPQS"C,+DPKS#),.DPI##6,&LP(`!;`$H`80!V`&$`9`!B`%T`(`!-`"``T#"D,,@P;C`8F-]73##%7X&)9S!9,`(P	132		-241453779
+ID_STRING_JavaDB_FeatureDescription	2052	2@!A`'8`80`@`$0`0@`@`"]F(`!3`'4`;@`@`"]E`6.$=@!?D&X@`$$`<`!A`&,`:`!E`"``1`!E`'(`8@!Y`"``,0`P`#``)0`@`$H`80!V`&$`(`"`8B]G<&5N8Y->A'8&4M%3`C#9CX&)0FQL>-AV<9JH4FA66%LH5R``6P!*`&$`=@!A`&0`8@!=`"``30!"`"``A';O4RAU>GKTE0(P	81		-241464499
+ID_STRING_JavaDB_FeatureName	1033	Java DB	0		958090192
+ID_STRING_JavaDB_FeatureName	1041	Java DB	0		958090192
+ID_STRING_JavaDB_FeatureName	2052	Java DB	0		958090192
+ID_STRING_WELCOME_TITLE	1033	[ProductName] - Setup	0		-1021928859
+ID_STRING_WELCOME_TITLE	1041	6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`"T`(`"[,,,PR#"B,,,PUS``	22		-1969318998
+ID_STRING_WELCOME_TITLE	2052	6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`"T`(`"^BVY_	18		-1969304694
+ID_STRING_MAINT_TITLE	1033	[ProductName] - Maintenance	0		-1021928859
+ID_STRING_MAINT_TITLE	1041	6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`"T`(`#=3XA;	18		-1860747637
+ID_STRING_MAINT_TITLE	2052	6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`"T`(`#T?J1B	18		-107356799
+ID_STRING_MOZILLA7	1033	    Mozilla 1.1 or later	0		1167492565
+ID_STRING_MOZILLA7	1041	(``@`"``(`!-`&\`>@!I`&P`;`!A`"``,0`N`#$`(`#E3DV6	18		-1667819470
+ID_STRING_MOZILLA7	2052	(``@`"``(`!-`&\`>@!I`&P`;`!A`"``,0`N`#$`(``68O1FV)I(<BQG	21		-107356799
+ID_STRING_NOTSUPPORTED	1033	{&MSSWhiteSerif8}Warning: This is not a supported Operating System	0		2107002543
+ID_STRING_NOTSUPPORTED	1041	>P`F`$T`4P!3`%<`:`!I`'0`90!3`&4`<@!I`&8`.`!]`&:+2E0:_R``4S!N,*HPVC#L,/PPQC"C,/,PL#"W,+DPQC#@,&\PM3#=,/PPR#!5,(PP9C!$,'XP6S"3,`(P	48		-1130537625
+ID_STRING_NOTSUPPORTED	2052	>P`F`$T`4P!3`%<`:`!I`'0`90!3`&4`<@!I`&8`.`!]`&:+2E0:_PU.+V4!8V1KS61<3_M\WWX`	28		-1130558105
+ID_STRING_OPENHELP	1033	Open Java Help	0		-442850196
+ID_STRING_OPENHELP	1041	2@!A`'8`80`@`-@PZS#7,)(PBY5$,&8P3S!@,%4P1#``	16		832329361
+ID_STRING_OPENHELP	2052	4V(`7R``2@!A`'8`80`@`"Y>J5(`	10		832316817
+ID_STRING_PRIV	1033	This account does not have sufficient privileges to install Java(TM).  Please login to an account with administrative permissions.	0		-1005144527
+ID_STRING_PRIV	1041	4S!N,*(PJS"F,/,PR#!K,&\P`3!*`&$`=@!A`"@`5`!-`"D`(`!N,*0P\S"Y,,@P_##K,&LPQ5^!B6HP*6I0EDPP0C"*,'XP6S"3,`(PH7L&=`6`*6I0EFXP0C"+,*(PJS"F,/,PR#!G,.TPL#"D,/,P5S!F,$\P8#!5,$0P`C``	64		-1860747637
+ID_STRING_PRIV	2052	9&L07C=B0V=0E@U.LXT,_^!EU6R)6\6((`!*`&$`=@!A`"@`5`!-`"D``C#WBW]/*'5W40EGH7L&=$-G4):$=A!>-V)[=E5?`C``	37		-107356799
+ID_STRING_PROGRESS_TITLE	1033	[ProductName] - Progress	0		-1021928859
+ID_STRING_PROGRESS_TITLE	1041	6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`"T`(``RD%=C	18		-1860747637
+ID_STRING_PROGRESS_TITLE	2052	6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`"T`(`#;CZ9>	18		-107356799
+ID_STRING_PUBLICJRE	1033	Public JRE	0		-1005133617
+ID_STRING_PUBLICJRE	1041	;%&+E2``2@!2`$4`	6		-1021732400
+ID_STRING_PUBLICJRE	2052	;%%Q42``2@!2`$4`	6		-107356799
+ID_STRING_RAM	1033	This machine does not have the recommended amount of memory to install this product.	0		-1005144527
+ID_STRING_RAM	1041	4S!N,-XPMS#S,&\P`3!3,&XP_8C!5&XPI##S,+DPR##\,.LP:S#%7X&):C#A,.(PZC"Y6\^1DC`M9`F/5S!F,$0P?C!;,),P`C``	37		-1860747637
+ID_STRING_RAM	2052	9&NABY=[.F<-3G=1"6>H8U"#A':%45A;SY$,_^!EU6R)6\6(+&>G3L%4`C``	22		-107356799
+ID_STRING_REMOVE_TITLE	1033	[ProductName] - Remove	0		-1021928859
+ID_STRING_REMOVE_TITLE	1041	6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`"T`(`!*4F26	18		-1860747637
+ID_STRING_REMOVE_TITLE	2052	6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`"T`(``@4F26	18		-107356799
+ID_STRING_SEMICOLON	1033	{&MSSWhiteSerif8}Semi-Colon found in selected path	0		-1248439795
+ID_STRING_SEMICOLON	1041	>P`F`$T`4P!3`%<`:`!I`'0`90!3`&4`<@!I`&8`.`!]`'B0GF)7,%\PT3"Y,&LPNS#?,+,P[3#S,)(P'&GZ40``	32		-1130537625
+ID_STRING_SEMICOLON	2052	>P`F`$T`4P!3`%<`:`!I`'0`90!3`&4`<@!I`&8`.`!]`"A7"9":6^^-A%\M3M%3L',&4O=3	27		-1130558105
+ID_STRING_SEMICOLON2	1033	A path with a semi-colon in it, is not supported for this product.  Please select a directory path without a semi-colon.	0		-1248439795
+ID_STRING_SEMICOLON2	1041	NS#?,+,P[3#S,)(P*U2`,-$PN3!O,%,P;C#]B,%49S!O,+4PW3#\,,@P53",,&8P1#!^,%LPDS`",+LPWS"S,.TP\S"2,"M4?C!J,$0PQS"C,.PPKS#(,.HPDC!XD)YB5S!F,$\P8#!5,$0P`C``	55		-1860747637
+ID_STRING_SEMICOLON2	2052	+&>G3L%4#4XO90%C)EX)9P92]U.$=N^-A%\",/>+"9#I8@U.)EX&4O=3A';N=E5?[XV$7P(P	27		-107356799
+ID_STRING_SETUP_TITLE	1033	[ProductName] - Setup Type	0		-1021928859
+ID_STRING_SETUP_TITLE	1041	6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`"T`(`"[,,,PR#"B,,,PUS!B7P]?	24		-1860747637
+ID_STRING_SETUP_TITLE	2052	6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`"T`(`")6\6(>WR+5P``	20		-107356799
+ID_STRING_SOURCE2	1033	Source code for classes that comprise the public API of Java.  The source code requires [Src]MB on your hard drive.	0		1167509622
+ID_STRING_SOURCE2	1041	2@!A`'8`80`@`&XP(`!P`'4`8@!L`&D`8P`@`$$`4`!)`"``DC#+:1!B63"+,*\PZ3"Y,&XPO3#\,+DPLS#\,,DP`C"],/PPN3"S,/PPR3"2,*0P\S"Y,,@P_##K,%DPBS!K,&\P`3!;`%,`<@!C`%T`(`!-`$(`(`!N,'IZ33"Y6\^13##%7X&)9S!9,`(P	72		-593895857
+ID_STRING_SOURCE2	2052	A&<08B``2@!A`'8`80`@`&Q1<5$@`$$`4`!)`"``A'9[?(1VD&[C3@%X`C!D:Y!NXTX!>`"7@8D@`%L`4P!R`&,`70`@`$T`0@`@`(1V;'C8=G&:J%)H5GIZ])4",```	47		-593921360
+ID_STRING_SOURCES	1033	Source Code	0		-1005178673
+ID_STRING_SOURCES	1041	O3#\,+DPLS#\,,DP	6		-1860747637
+ID_STRING_SOURCES	2052	D&[C3@%X	3		-107356799
+ID_STRING_TOOLS	1033	Development Tools	0		-1005174930
+ID_STRING_TOOLS	1041	BY5Z=L0P_##K,```	5		-1860747637
+ID_STRING_TOOLS	2052	`%_14^5==U$`	4		-107356799
+ID_STRING_UNPACK	1033	Removing backup files	0		-1021928859
+ID_STRING_UNPACK	1041	T###,*\PHC##,-<P(`#5,*$PI##K,)(P2E)DEE<P9C!$,'XP63``	18		1704425670
+ID_STRING_UNPACK	2052	8VLH5R!29)8'6?U.AV7V3@``	8		-1155931213
+ID_STRING_WHENREQUIRED	1033	Don't install this feature now.	0		-1021928859
+ID_STRING_WHENREQUIRED	1041	4S!N,%]J_8"2,,I.I##S,+DPR##\,.LP5S!J,$0P9S!/,&`P53!$,`(P	21		-1860747637
+ID_STRING_WHENREQUIRED	2052	L',H5PU.B5O%B&1KGU+]@`(P	9		-107356799
+ID_STRING_WINBUILD	1033	Thank you for choosing the Java(TM) Platform. You may continue with this installation, but for best results we recommend running on one of the following operating systems:  Windows XP Professional (SP2), Windows XP Home (SP2), Windows Server 2003, Windows 2000 Professional (SP4+), and Windows Vista.	0		-719922032
+ID_STRING_WINBUILD	1041	2@!A`'8`80`H`%0`30`I`"``US#I,,,PR##5,*DP_##@,&XP5#`I4BAU0C"*,$PP:#!&,%0P5C!$,'XP63`",%,P;C!^,'XPI##S,+DPR##\,.LPDC":?4R(9S!-,'XP63!,,`$PJ&-H65DPBS"J,-HP[##\,,8PHS#S,+`PMS"Y,,8PX#!O,`$P5P!I`&X`9`!O`'<`<P`@`%@`4``@`%``<@!O`&8`90!S`',`:0!O`&X`80!L`"``*`!3`%``,@`I``$P5P!I`&X`9`!O`'<`<P`@`%@`4``@`$@`;P!M`&4`(``H`%,`4``R`"D``3!7`&D`;@!D`&\`=P!S`"``4P!E`'(`=@!E`'(`(``R`#``,``S``$P5P!I`&X`9`!O`'<`<P`@`#(`,``P`#``(`!0`'(`;P!F`&4`<P!S`&D`;P!N`&$`;``@`"@`4P!0`#0`(`#E3@I.*0`!,$HPB#!S,"``5P!I`&X`9`!O`'<`<P`@`%8`:0!S`'0`80`@`&LP:C"*,'XP63`",```	200		-493184960
+ID_STRING_WINBUILD	2052	'V$BC*A@"9`H=2``2@!A`'8`80`H`%0`30`I`"``<U[P4P(PJ&#O4^5.YW[M?F1KB5O%B`S_1D\Z3H9.MX.77P!G<T](99QG#/_Z7JZ+J&!_3RAUY4X+3LUD7$_[?-]^2TX`3CH`(`!7`&D`;@!D`&\`=P!S`"``6`!0`"``4`!R`&\`9@!E`',`<P!I`&\`;@!A`&P`(``H`%,`4``R`"D``3!7`&D`;@!D`&\`=P!S`"``6`!0`"``2`!O`&T`90`@`"@`4P!0`#(`*0`!,%<`:0!N`&0`;P!W`',`(`!3`&4`<@!V`&4`<@`@`#(`,``P`#,``3!7`&D`;@!D`&\`=P!S`"``,@`P`#``,``@`%``<@!O`&8`90!S`',`:0!O`&X`80!L`"``*`!3`%``-``K`"D`(`",5"``5P!I`&X`9`!O`'<`<P`@`%8`:0!S`'0`80`",```	173		-627431785
+ID_STRINGMAINTWEL_TITLE	1033	[ProductName] - Maintenance Welcome	0		-1021928859
+ID_STRINGMAINTWEL_TITLE	1041	6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`"T`(`#=3XA;BY7+60``	20		-1860747637
+ID_STRINGMAINTWEL_TITLE	2052	6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`"T`(``B:\Z/?T\H=?1^I&(`	22		-107356799
+IDS__DisplayName_Custom	1033	Custom	0		-1021928859
+IDS__DisplayName_Custom	1041	JS"Y,+\PX#``	4		1670816362
+IDS__DisplayName_Custom	2052	ZH&:6TE.B5O%B```	5		-107356799
+IDS__DisplayName_Minimal	1033	Minimal	0		-1021928859
+IDS__DisplayName_Minimal	1041	`&</7```playName_Custom	2		1670816362
+IDS__DisplayName_Minimal	2052	`&</7(E;Q8@`	4		-107356799
+IDS__DisplayName_Typical	1033	Typical	0		-1021928859
+IDS__DisplayName_Typical	1041	&6J6;@``playName_Minimal	2		1670816362
+IDS__DisplayName_Typical	2052	>%&+5XE;Q8@`	4		-107356799
+IDS__ExitDialog_11	1033	{&TahomaBold8}[ProductName] Successfully Installed	0		899390538
+IDS__ExitDialog_11	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`X`'T`6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`$PP8VLX7FLPI##S,+DPR##\,.LP53",,'XP5S!?,```	41		-996310230
+IDS__ExitDialog_11	2052	>P`F`%0`80!H`&\`;0!A`$(`;P!L`&0`.`!]`%L`4`!R`&\`9`!U`&,`=`!.`&$`;0!E`%T`(`#R71!BGU*)6\6(	33		-996289910
+IDS__IsBrowseFolderDlg_0	1033	[ProductName]	0		-2137471153
+IDS__IsBrowseFolderDlg_0	1041	[ProductName]	0		-786901853
+IDS__IsBrowseFolderDlg_0	2052	[ProductName]	0		-107361343
+IDS__IsBrowseFolderDlg_1	1033	{&MSSWhiteSerif8}InstallShield	0		-1021928859
+IDS__IsBrowseFolderDlg_1	1041	{&MSSWhiteSerif8}InstallShield	0		1670816362
+IDS__IsBrowseFolderDlg_1	2052	{&MSSWhiteSerif8}InstallShield	0		-107361343
+IDS__IsBrowseFolderDlg_10	1033	OK	0		-1021928859
+IDS__IsBrowseFolderDlg_10	1041	{&MSGothic9}OK	0		1670816362
+IDS__IsBrowseFolderDlg_10	2052	>P`F`%0`80!H`&\`;0!A`#@`?0!N>)I;	12		-107356799
+IDS__IsBrowseFolderDlg_11	1033		0		-1021928859
+IDS__IsBrowseFolderDlg_11	1041	{&MSGothic9}	0		1670816362
+IDS__IsBrowseFolderDlg_11	2052	{&Tahoma8}	0		-107356799
+IDS__IsBrowseFolderDlg_12	1033	&Folder name:	0		-1021928859
+IDS__IsBrowseFolderDlg_12	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`U3"I,.LPP#`-5"@`)@!&`"D`.@``	22		1670816362
+IDS__IsBrowseFolderDlg_12	2052	>P`F`%0`80!H`&\`;0!A`#@`?0"'9?9..5D-5/!Y*``F`$8`*0`:_P``	20		-107356799
+IDS__IsBrowseFolderDlg_13	1033	Up One Level|	0		-1021928859
+IDS__IsBrowseFolderDlg_13	1041	,0!D,`I.;C#L,-DPZS!K,/MYU5)\````	11		1670816362
+IDS__IsBrowseFolderDlg_13	2052	"DX`3J=^?```	4		-107356799
+IDS__IsBrowseFolderDlg_2	1033	InstallShield	0		-1021928859
+IDS__IsBrowseFolderDlg_2	1041	{&Tahoma8}InstallShield	0		1670816362
+IDS__IsBrowseFolderDlg_2	2052	{&Tahoma8}InstallShield	0		-107356799
+IDS__IsBrowseFolderDlg_3	1033	Cancel	0		-1021928859
+IDS__IsBrowseFolderDlg_3	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`K3#C,/,PNS#K,```	17		1670816362
+IDS__IsBrowseFolderDlg_3	2052	>P`F`%0`80!H`&\`;0!A`#@`?0#64XAM	12		-107356799
+IDS__IsBrowseFolderDlg_4	1033		0		-1021928859
+IDS__IsBrowseFolderDlg_4	1041	{&MSGothic9}	0		1670816362
+IDS__IsBrowseFolderDlg_4	2052	{&Tahoma8}	0		-107356799
+IDS__IsBrowseFolderDlg_5	1033	&Look in:	0		-1021928859
+IDS__IsBrowseFolderDlg_5	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`HF-9,#180&(H`"8`3``I`#H`	21		1670816362
+IDS__IsBrowseFolderDlg_5	2052	>P`F`%0`80!H`&\`;0!A`#@`?0`<9")]`X/T5B@`)@!,`"D`&O\`	19		-107356799
+IDS__IsBrowseFolderDlg_6	1033	{&MSSWhiteSerif8}Browse to the destination folder.	0		-1021928859
+IDS__IsBrowseFolderDlg_6	1041	>P`F`$T`4P!3`%<`:`!I`'0`90!3`&4`<@!I`&8`.`!]`*0P\S"Y,,@P_##K,$A1U3"I,.LPP#"2,,)39W%7,&8P3S!@,%4P1#`",```	38		-1130537625
+IDS__IsBrowseFolderDlg_6	2052	>P`F`$T`4P!3`%<`:`!I`'0`90!3`&4`<@!I`&8`.`!]`$]MR(GN=@=HAV7V3CE9`C``	25		-1130558105
+IDS__IsBrowseFolderDlg_7	1033	{&MSSWhiteSerif8}Change Current Destination Folder	0		-1021928859
+IDS__IsBrowseFolderDlg_7	1041	>P`F`$T`4P!3`%<`:`!I`'0`90!3`&4`<@!I`&8`.`!]`*0P\S"Y,,@P_##K,$A1U3"I,.LPP#!N,`E9]&8`	31		-1130537625
+IDS__IsBrowseFolderDlg_7	2052	>P`F`$T`4P!3`%<`:`!I`'0`90!3`&4`<@!I`&8`.`!]`/1F.6537TU2[G8':(=E]DXY60``	26		-1130558105
+IDS__IsBrowseFolderDlg_8	1033		0		-1021928859
+IDS__IsBrowseFolderDlg_8	1041	{&MSGothic9}	0		1670816362
+IDS__IsBrowseFolderDlg_8	2052	{&Tahoma8}	0		-107356799
+IDS__IsBrowseFolderDlg_9	1033	Create New Folder|	0		-1021928859
+IDS__IsBrowseFolderDlg_9	1041	U3"I,.LPP#!N,+!ECXE<3Q!B?```	10		1670816362
+IDS__IsBrowseFolderDlg_9	2052	&U+Z7K!EAV7V3CE9?```	7		-107356799
+IDS__IsCancelDlg_0	1033	[ProductName]	0		-2137505969
+IDS__IsCancelDlg_0	1041	[ProductName]	0		-786901853
+IDS__IsCancelDlg_0	2052	[ProductName]	0		-107361343
+IDS__IsCancelDlg_1	1033	Information icon|	0		-1021928859
+IDS__IsCancelDlg_1	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`Q6`Q6*(PI#"S,/,P?```	19		1670816362
+IDS__IsCancelDlg_1	2052	>P`F`%0`80!H`&\`;0!A`#@`?0#A3V]@_E8':'P`	15		-107356799
+IDS__IsCancelDlg_2	1033	InstallShield	0		-1021928859
+IDS__IsCancelDlg_2	1041	{&MSGothic9}InstallShield	0		1670816362
+IDS__IsCancelDlg_2	2052	{&Tahoma8}InstallShield	0		-107356799
+IDS__IsCancelDlg_3	1033	Are you sure you want to cancel the installation?	0		-1021928859
+IDS__IsCancelDlg_3	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`I##S,+DPR##\,.LPDC`M3JUE5S!F,((PB#"-,%<P1#!G,%DP2S`_````	32		-1860747637
+IDS__IsCancelDlg_3	2052	>P`F`%0`80!H`&\`;0!A`#@`?0`O9B94;GB:6X&)UE.(;8E;Q8@?_P``	20		-107356799
+IDS__IsCancelDlg_4	1033	Are you sure you want to cancel [ProductName] installation?	0		-1021928859
+IDS__IsCancelDlg_4	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`&XPI##S,+DPR##\,.LPDC`M3JUE5S!F,((PB#"-,%<P1#!G,%DP2S`_````	47		-1860747637
+IDS__IsCancelDlg_4	2052	>P`F`%0`80!H`&\`;0!A`#@`?0`O9B94;GB:6X&)UE.(;2``6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`(E;Q8@?_P``	35		-107356799
+IDS__IsCancelDlg_5	1033	{&MSSansBold8}Cancel Setup	0		-1021928859
+IDS__IsCancelDlg_5	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`NS##,,@PHC##,-<P;C`M3F)K	21		1670816362
+IDS__IsCancelDlg_5	2052	>P`F`$T`4P!3`&$`;@!S`$(`;P!L`&0`.`!]`-93B&V)6\6(	18		-107356799
+IDS__IsCancelDlg_6	1033	&No	0		-1021928859
+IDS__IsCancelDlg_6	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`1#!$,$@P*``F`$X`*0``	19		1670816362
+IDS__IsCancelDlg_6	2052	>P`F`%0`80!H`&\`;0!A`#@`?0`F5"@`)@!.`"D`	15		-107356799
+IDS__IsCancelDlg_7	1033	To continue installing [ProductName], click Resume. To exit the installation, click Exit.	0		-1021928859
+IDS__IsCancelDlg_7	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`&XPI##S,+DPR##\,.LPDC"9?9I]63"+,&LP;S`,,)I]3(@-,)(PKS#J,,,PKS!7,&8P3S!@,%4P1#`",*0P\S"Y,,@P_##K,)(P0GV&3EDPBS!K,&\P##!"?89.#3"2,*\PZC##,*\P5S!^,%DP`C``	82		-1860747637
+IDS__IsCancelDlg_7	2052	>P`F`%0`80!H`&\`;0!A`#@`?0"!B>=^[7Z)6\6((`!;`%``<@!O`&0`=0!C`'0`3@!A`&T`90!=``S_]XM54_M1(@#G?NU^9V),B"(``C`@`(&)`)#Z48E;Q8@,__>+55/[42(``)#Z42(``C``	55		-107356799
+IDS__IsCancelDlg_8	1033	&Yes	0		-1021928859
+IDS__IsCancelDlg_8	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`;S!$,"@`)@!9`"D`	18		1670816362
+IDS__IsCancelDlg_8	2052	>P`F`%0`80!H`&\`;0!A`#@`?0`O9B@`)@!9`"D`	15		-107356799
+IDS__IsCancelDlg_9	1033	<ISProductFolder>\Redist\Language Independent\OS Independent\WarningIcon.ibd	0		-1021928859
+IDS__IsCancelDlg_9	1041	<ISProductFolder>\Redist\Language Independent\OS Independent\WarningIcon.ibd	0		1670816362
+IDS__IsCancelDlg_9	2052	<ISProductFolder>\Redist\Language Independent\OS Independent\WarningIcon.ibd	0		-107361343
+IDS__IsCustomSelectionDlg_1	1033	< &Back	0		-1021928859
+IDS__IsCustomSelectionDlg_1	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`/``@`#MBBS`H`"8`0@`I````	20		1670816362
+IDS__IsCustomSelectionDlg_1	2052	>P`F`%0`80!H`&\`;0!A`#@`?0`\`"``"DX`3F5K*``F`$(`*0``	19		-107356799
+IDS__IsCustomSelectionDlg_10	1033	Feature Description:	0		-1021928859
+IDS__IsCustomSelectionDlg_10	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`7VK]@&XPK(H.9CH`	18		1670816362
+IDS__IsCustomSelectionDlg_10	2052	GU+]@/2+#F8:_P``	5		-107356799
+IDS__IsCustomSelectionDlg_11	1033	&Next >	0		-1021928859
+IDS__IsCustomSelectionDlg_11	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`(6MX,"@`)@!.`"D`(``^````	20		1670816362
+IDS__IsCustomSelectionDlg_11	2052	>P`F`%0`80!H`&\`;0!A`#@`?0`+3@!.96LH`"8`3@`I`"``/@``	19		-107356799
+IDS__IsCustomSelectionDlg_12	1033	Feature size	0		-1021928859
+IDS__IsCustomSelectionDlg_12	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`7VK]@&XPM3"D,+HP	18		1670816362
+IDS__IsCustomSelectionDlg_12	2052	>P`F`%0`80!H`&\`;0!A`#@`?0"?4OV`)UD/7```	14		-107356799
+IDS__IsCustomSelectionDlg_13	1033	&Help	0		-1021928859
+IDS__IsCustomSelectionDlg_13	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`V##K,-<P*``F`$@`*0``	19		1670816362
+IDS__IsCustomSelectionDlg_13	2052	>P`F`%0`80!H`&\`;0!A`#@`?0`N7JE2*``F`$@`*0``	16		-107356799
+IDS__IsCustomSelectionDlg_14	1033	Multiline description of the currently selected item	0		-1021928859
+IDS__IsCustomSelectionDlg_14	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`>)">8E<P9C!$,(LPHC"D,,8PX#!N,*R*#F8`	25		1670816362
+IDS__IsCustomSelectionDlg_14	2052	>P`F`%0`80!H`&\`;0!A`#@`?0!37TU2"9":6WF8[G:$=AI93(CTBPYF	21		-107356799
+IDS__IsCustomSelectionDlg_15	1033	Feature Description	0		-1021928859
+IDS__IsCustomSelectionDlg_15	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`7VK]@&XPK(H.9@``	17		1670816362
+IDS__IsCustomSelectionDlg_15	2052	>P`F`%0`80!H`&\`;0!A`#@`?0"?4OV`](L.9@``	14		-107356799
+IDS__IsCustomSelectionDlg_16	1033	&Change...	0		-1021928859
+IDS__IsCustomSelectionDlg_16	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`"5GT9B@`)@!#`"D`+@`N`"X`	21		1670816362
+IDS__IsCustomSelectionDlg_16	2052	>P`F`%0`80!H`&\`;0!A`#@`?0#T9CEE*``F`$$`*0`N`"X`+@``	19		-107356799
+IDS__IsCustomSelectionDlg_17	1033	<selected feature path>	0		-1021928859
+IDS__IsCustomSelectionDlg_17	1041	{&MSGothic9}<selected feature path>	0		1670816362
+IDS__IsCustomSelectionDlg_17	2052	{&Tahoma8}<selected feature path>	0		-107356799
+IDS__IsCustomSelectionDlg_2	1033	{&MSSWhiteSerif8}InstallShield	0		-1021928859
+IDS__IsCustomSelectionDlg_2	1041	{&MSSWhiteSerif8}InstallShield	0		1670816362
+IDS__IsCustomSelectionDlg_2	2052	{&MSSWhiteSerif8}InstallShield	0		-107361343
+IDS__IsCustomSelectionDlg_3	1033	InstallShield	0		-1021928859
+IDS__IsCustomSelectionDlg_3	1041	{&Tahoma8}InstallShield	0		1670816362
+IDS__IsCustomSelectionDlg_3	2052	{&Tahoma8}InstallShield	0		-107356799
+IDS__IsCustomSelectionDlg_4	1033	Cancel	0		-1021928859
+IDS__IsCustomSelectionDlg_4	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`K3#C,/,PNS#K,```	17		1670816362
+IDS__IsCustomSelectionDlg_4	2052	>P`F`%0`80!H`&\`;0!A`#@`?0#64XAM	12		-107356799
+IDS__IsCustomSelectionDlg_5	1033	&Space	0		-1021928859
+IDS__IsCustomSelectionDlg_5	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`QS"C,+DPKS`H`"8`50`I````	20		1670816362
+IDS__IsCustomSelectionDlg_5	2052	>P`F`%0`80!H`&\`;0!A`#@`?0!Z>O25*``F`%,`*0``	16		-107356799
+IDS__IsCustomSelectionDlg_6	1033	{&MSSWhiteSerif8}Select the program features you want installed.	0		-1021928859
+IDS__IsCustomSelectionDlg_6	1041	>P`F`$T`4P!3`%<`:`!I`'0`90!3`&4`<@!I`&8`.`!]`*0P\S"Y,,@P_##K,%DPBS#7,.TPL##I,.`P;C!?:OV`DC!XD)YB5S!F,$\P8#!5,$0P`C``	43		-1130537625
+IDS__IsCustomSelectionDlg_6	2052	>P`F`$T`4P!3`%<`:`!I`'0`90!3`&4`<@!I`&8`.`!]``F0Z6*!B8E;Q8B$=@MZCUZ?4OV``C``	28		-1130558105
+IDS__IsCustomSelectionDlg_7	1033	Select optional features to install from the list below.  You can change your choice of features after installation by using the Add/Remove Programs utility in the Control Panel	0		-1021928859
+IDS__IsCustomSelectionDlg_7	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`"TYN,.HPN3#(,&LP0C"+,*(PI#"S,/,PDC"O,.HPPS"O,%<P9C!?:OV`;C"D,/,PN3#(,/PPZS"Y9=5LDC`)6?1F5S!F,$\P8#!5,$0P`C``	52		-1860747637
+IDS__IsCustomSelectionDlg_7	2052	>P`F`%0`80!H`&\`;0!A`#@`?0#WB\Y."TYBEX1V%U)HB"U."9#I8H&)B5O%B(1V[U,)D)]2_8`",(E;Q8B,6Q!B#E0,_ZA@[U/E3G]/*'4<(*=C-E)BEW]G'2`M3H1V'"#[;:!2+P`@4F26"WJ/7AT@GELH=0MZCUYE9_1F.66H8`F0Z6*$=I]2_8``	70		-107356799
+IDS__IsCustomSelectionDlg_8	1033	{&MSSWhiteSerif8}Custom Setup	0		-1021928859
+IDS__IsCustomSelectionDlg_8	1041	>P`F`$T`4P!3`%<`:`!I`'0`90!3`&4`<@!I`&8`.`!]`*LPN3"_,.`PNS##,,@PHC##,-<P	27		-1130537625
+IDS__IsCustomSelectionDlg_8	2052	>P`F`$T`4P!3`%<`:`!I`'0`90!3`&4`<@!I`&8`.`!]`.J!FEM)3HE;Q8@`	22		-1130558105
+IDS__IsCustomSelectionDlg_9	1033	Multiline description of the currently selected item	0		-1021928859
+IDS__IsCustomSelectionDlg_9	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`>)">8E<P9C!$,(LPHC"D,,8PX#!N,*R*#F8`	25		1670816362
+IDS__IsCustomSelectionDlg_9	2052	>P`F`%0`80!H`&\`;0!A`#@`?0!37TU2"9":6WF8[G:$=AI93(CTBPYF	21		-107356799
+IDS__IsDiskSpaceDlg_1	1033	{&MSSWhiteSerif8}InstallShield	0		-1021928859
+IDS__IsDiskSpaceDlg_1	1041	{&MSSWhiteSerif8}InstallShield	0		1670816362
+IDS__IsDiskSpaceDlg_1	2052	{&MSSWhiteSerif8}InstallShield	0		-107361343
+IDS__IsDiskSpaceDlg_10	1033	OK	0		-1021928859
+IDS__IsDiskSpaceDlg_10	1041	{&MSGothic9}&OK	0		1670816362
+IDS__IsDiskSpaceDlg_10	2052	>P`F`%0`80!H`&\`;0!A`#@`?0!N>)I;	12		-107356799
+IDS__IsDiskSpaceDlg_2	1033	InstallShield	0		-1021928859
+IDS__IsDiskSpaceDlg_2	1041	{&Tahoma8}InstallShield	0		1670816362
+IDS__IsDiskSpaceDlg_2	2052	{&Tahoma8}InstallShield	0		-107356799
+IDS__IsDiskSpaceDlg_3	1033	&Disk Cleanup	0		-1021928859
+IDS__IsDiskSpaceDlg_3	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`QS"C,+DPKS"O,.HP_##S,*(PPS#7,"@`)@!$`"D`	27		-1860747637
+IDS__IsDiskSpaceDlg_3	2052	>P`F`%0`80!H`&\`;0!A`#@`?0#!>-AV!6X&="@`)@!$`"D`	18		-107356799
+IDS__IsDiskSpaceDlg_4	1033	{&MSSWhiteSerif8}Disk space required for the installation exceeds available disk space.	0		-1021928859
+IDS__IsDiskSpaceDlg_4	1041	>P`F`$T`4P!3`%<`:`!I`'0`90!3`&4`<@!I`&8`.`!]`*0P\S"Y,,@P_##K,&LP;S`!,/YS*%=_3RAU[U/]@&HPQS"C,+DPKS`8F-]7B#"*,((P&EE/,&XPQS"C,+DPKS!Z>DTP&)C?5TPPQ5^!B6<P63`",```	59		-1130537625
+IDS__IsDiskSpaceDlg_4	2052	>P`F`$T`4P!3`%<`:`!I`'0`90!3`&4`<@!I`&8`.`!]`(E;Q8A`8@"7A';!>-AV>GKTE86-^E&&3N]3*'6$=L%XV'9Z>O25`C``	37		-1130558105
+IDS__IsDiskSpaceDlg_5	1033	The highlighted volumes do not have enough disk space available for the currently selected features. You can remove files from the highlighted volumes, choose to install less features onto local drives, or select different destination drives.	0		-1021928859
+IDS__IsDiskSpaceDlg_5	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`_G,H5VXPW##J,.4P_##@,&LP;S`!,'B0GF)7,&8P1#"+,%]J_8"2,*0P\S"Y,,@P_##K,%DPBS!?,($P:S!!4P92:C#',*,PN3"O,'IZ33`8F-]73#!",(HP?C!;,),P`C#^<RA7;C#<,.HPY3#\,.`P2S"),-4PH3"D,.LPDC!*4F265S!F,,<PHS"Y,*\P&)C?5Y(PNGC=3UDPBS!+,`$P[3#\,*LPZS#',*,PN3"O,&LPI##S,+DPR##\,.LP63"+,%]J_8"2,$I2&VY7,&8P3S!@,%4P1#`",$(PBS!$,&\P)5)N,,DPZ3"D,-8PDC!XD)YB5S!F,$\P8#!5,$0P`C``	142		-1860747637
+IDS__IsDiskSpaceDlg_5	2052	>P`F`%0`80!H`&\`;0!A`#@`?0"!>OI1/F8Z>81V=U.A;`EGLXT?681VP7C8=GIZ])7O4YM/4U]-4@F0FEN$=I]2_8!_3RAU`C`@`.]3Y4[.3H%Z^E$^9CIYA'9W4RU.(%)DEH=E]DX,_Q9B"9#I8BA7+&<P5W&:J%)H5@I.B5O%B(./$5R$=I]2_8`,_]B/[U,)D.EB#4X,5(1V[G8':'&:J%)H5@(P	84		-107356799
+IDS__IsDiskSpaceDlg_6	1033	{&MSSWhiteSerif8}Out of Disk Space	0		-1021928859
+IDS__IsDiskSpaceDlg_6	1041	>P`F`$T`4P!3`%<`:`!I`'0`90!3`&4`<@!I`&8`.`!]`,<PHS"Y,*\P>GI-,!B8WU=N,`U.LXT`	28		-1130537625
+IDS__IsDiskSpaceDlg_6	2052	>P`F`$T`4P!3`%<`:`!I`'0`90!3`&4`<@!I`&8`.`!]`,%XV'9Z>O25#4ZSC0``	23		-1130558105
+IDS__IsDiskSpaceDlg_7	1033	&Exit	0		-1021928859
+IDS__IsDiskSpaceDlg_7	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`0GV&3B@`)@!%`"D`	18		1670816362
+IDS__IsDiskSpaceDlg_7	2052	>P`F`%0`80!H`&\`;0!A`#@`?0``D/I1*``F`$4`*0``	16		-107356799
+IDS__IsDiskSpaceDlg_8	1033	Use disk cleanup to free more disk space by removing unneeded files.	0		-1021928859
+IDS__IsDiskSpaceDlg_8	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`QS"C,+DPKS"O,.HP_##S,*(PPS#7,&<P#4[%7X&):C#5,*$PI##K,)(P2E)DEE<P9C`!,(@PBC`:64\P;C#',*,PN3"O,'IZ33`8F-]7DC"+E3YE5S!F,$\P8#!5,$0P`C``	61		-1860747637
+IDS__IsDiskSpaceDlg_8	2052	>P`F`%0`80!H`&\`;0!A`#@`?0!_3RAU(@#!>-AV!6X&="(`#/\@4F26#4X`EX&)A':'9?9.Y4[*D3YE]&8:6<%XV'9Z>O25`C``	37		-107356799
+IDS__IsDiskSpaceDlg_9	1033	{120}{70}{70}{70}{70}	0		-1021928859
+IDS__IsDiskSpaceDlg_9	1041	{&MSGothic9}{120}{70}{70}{70}{70}	0		1670816362
+IDS__IsDiskSpaceDlg_9	2052	{&Tahoma8}{120}{70}{70}{70}{70}	0		-107356799
+IDS__IsErrorDlg_0	1033	[ProductName] Installer Information	0		-1021928859
+IDS__IsErrorDlg_0	1041	6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`&XP(`!)`&X`<P!T`&$`;`!L`&4`<@`@`,5@,5@`	28		-1860747637
+IDS__IsErrorDlg_0	2052	6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`(E;Q8@+>H]>X4]O8```	20		-107356799
+IDS__IsErrorDlg_1	1033	&Abort	0		-1021928859
+IDS__IsErrorDlg_1	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`+4YB:R@`)@!!`"D`	18		1670816362
+IDS__IsErrorDlg_1	2052	>P`F`%0`80!H`&\`;0!A`#@`?0`M3F)K*``F`$$`*0``	16		-107356799
+IDS__IsErrorDlg_2	1033	&Cancel	0		-1021928859
+IDS__IsErrorDlg_2	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`K3#C,/,PNS#K,"@`)@!#`"D`	21		-786901853
+IDS__IsErrorDlg_2	2052	>P`F`%0`80!H`&\`;0!A`#@`?0#64XAM*``F`$,`*0``	16		-107356799
+IDS__IsErrorDlg_3	1033	<error text goes here><error text goes here><error text goes here><error text goes here><error text goes here><error text goes here><error text goes here><error text goes here><error text goes here><error text goes here><error text goes here>	0		-1021928859
+IDS__IsErrorDlg_3	1041	{&MSGothic9}<error text goes here><error text goes here><error text goes here><error text goes here><error text goes here><error text goes here><error text goes here><error text goes here><error text goes here><error text goes here><error text goes here>	0		1670816362
+IDS__IsErrorDlg_3	2052	{&Tahoma8}<error text goes here><error text goes here><error text goes here><error text goes here><error text goes here><error text goes here><error text goes here><error text goes here><error text goes here><error text goes here><error text goes here>	0		-107356799
+IDS__IsErrorDlg_4	1033	&Ignore	0		-1021928859
+IDS__IsErrorDlg_4	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`(7&6B2@`)@!)`"D`	18		1670816362
+IDS__IsErrorDlg_4	2052	>P`F`%0`80!H`&\`;0!A`#@`?0#]7V5U*``F`$D`*0``	16		-107356799
+IDS__IsErrorDlg_5	1033	&No	0		-1021928859
+IDS__IsErrorDlg_5	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`1#!$,$@P*``F`$X`*0``	19		1670816362
+IDS__IsErrorDlg_5	2052	>P`F`%0`80!H`&\`;0!A`#@`?0`F5"@`)@!.`"D`	15		-107356799
+IDS__IsErrorDlg_6	1033	&OK	0		-1021928859
+IDS__IsErrorDlg_6	1041	{&MSGothic9}&OK	0		1670816362
+IDS__IsErrorDlg_6	2052	>P`F`%0`80!H`&\`;0!A`#@`?0!N>)I;*``F`$\`*0``	16		-107356799
+IDS__IsErrorDlg_7	1033	&Retry	0		-1021928859
+IDS__IsErrorDlg_7	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`C5%FBDR(*``F`%(`*0``	19		1670816362
+IDS__IsErrorDlg_7	2052	>P`F`%0`80!H`&\`;0!A`#@`?0#-D=6+*``F`%(`*0``	16		-107356799
+IDS__IsErrorDlg_8	1033	&Yes	0		-1021928859
+IDS__IsErrorDlg_8	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`;S!$,"@`)@!9`"D`	18		1670816362
+IDS__IsErrorDlg_8	2052	>P`F`%0`80!H`&\`;0!A`#@`?0`O9B@`)@!9`"D`	15		-107356799
+IDS__IsExitDialog_1	1033	< &Back	0		-1021928859
+IDS__IsExitDialog_1	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`/``@`#MBBS`H`"8`0@`I````	20		1670816362
+IDS__IsExitDialog_1	2052	>P`F`%0`80!H`&\`;0!A`#@`?0`\`"``"DX`3F5K*``F`$(`*0``	19		-107356799
+IDS__IsExitDialog_10	1033	&Product Registration Information	0		-442791566
+IDS__IsExitDialog_10	1041	_8C!5'MV,I/%8#%8*``F`%``*0``	10		-711235890
+IDS__IsExitDialog_10	2052	IT[!5.ALC%'A3V]@*``F`%``*0``	10		-711248402
+IDS__IsExitDialog_2	1033	Cancel	0		-1021928859
+IDS__IsExitDialog_2	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`K3#C,/,PNS#K,```	17		1670816362
+IDS__IsExitDialog_2	2052	>P`F`%0`80!H`&\`;0!A`#@`?0#64XAM	12		-107356799
+IDS__IsExitDialog_3	1033	&Finish	0		-1021928859
+IDS__IsExitDialog_3	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`C%N&3B@`)@!&`"D`	18		1670816362
+IDS__IsExitDialog_3	2052	>P`F`%0`80!H`&\`;0!A`#@`?0",6Q!B*``F`$8`*0``	16		-107356799
+IDS__IsExitDialog_4	1033	{&TahomaBold10}Wizard Completed	0		-2137499536
+IDS__IsExitDialog_4	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`I##S,+DPR##\,.LP3#",6X9.5S!^,%<P7S``	25		-786901853
+IDS__IsExitDialog_4	2052	>P`F`%0`80!H`&\`;0!A`$(`;P!L`&0`,0`P`'T`B5O%B(Q;$&(`	19		-107356799
+IDS__IsExitDialog_5	1033	Product Registration is FREE and includes many benefits:* Notification of new versions, patches, and updates* Special offers on Sun products, services and training* Access to early releases and documentationWhen you click Finish, product and system data will be collected and the JDK product registration form will be presented. If you do not register, none of this information will be saved.For more information on what data Registration collects and how it is managed and used, see the Product Registration Information Page.	0		1167818857
+IDS__IsExitDialog_5	1041	_8C!5'MV,I-O,"%QF65G,`$P(6MN,(@P1C!J,!I93S!N,'ER>%%,,$(PBC!^,%DP`C`-``H`*@`@``!GL&5N,-`P_#"X,.<P\S`!,-$PPS#!,`$P2C"(,',P]&:P96LP9#!$,&8P;C`:D.5W#0`*`"H`(`!3`'4`;@`@`&XP_8C!5`$PM3#\,-,PN3`!,$HPB#!S,,@P[##\,,LP\S"P,&XP>7(E4JF,\E@-``H`*@`@`*(P_##J,/PPZC#J,/PPN3!*,(@P<S#),*TPY3#A,/,PR#!X,&XPHC"O,+LPN3`-``H`#0`*``PPC%N&3@TPDC"O,.HPPS"O,%DPBS!H,/V(P51H,+<PN3#&,.`P;C#',/PPOS!,,,Y3QI95,(PP`3!*`$0`2P`@`/V(P51[=C*3U3"I,/PPX#!,,&B(.GE5,(PP?C!9,`(P>W8RDU<P:C!$,#18"%0!,%,PC#"),&XPQ6`Q6&\PW4]86U4PC#!^,%LPDS`",`T`"@`-``H`>W8RDVXPFY9K,&51FU)7,&8P1#!?,&`P3S#',/PPOS"$,`$P73",,(DP;C"A>P9T2C"(,',P*5(H=;EEU6QN,'.*,'UK,&0P1#!F,&\P`3`,,/V(P51[=C*3Q6`Q6`TPVC#\,+@PDC!4,*>)3S!@,%4P1#`",```	251		-1130537625
+IDS__IsExitDialog_5	2052	IT[!5.ALC%$O9DU1.8V$=@S_J&`&7+>#EU^"60M.GE@\4`UGH5(:_PT`"@`J`"``MX.77[!E2'(L9P$P[D]EB`MZCUZ,5/1FL&6$=AJ0Y7<-9Z%2#0`*`"H`(`"W@Y=?"6=S42``4P!U`&X`(```7]%3!8"G3L%4`3`-9Z%2C%3Y5ZV+A'883^!@#0`*`"H`(`"W@Y=?^5OI91]G2'(L9XQ4AV5C:(1VOXONE4-G4)8-``H`#0`*`%-?J&!54_M1'"",6Q!B'2`.5`9<-F7&EJ=.P50.3OM\WW[A3V]@#/\,5/9E/F8Z>2``2@!$`$L`(`"G3L%4Z&R,46B(55,",()9G&>H8`U.Z&R,40S_&5(-3MU/6%OE3@I.X4]O8`(P#0`*``T`"@`)9W-1Z&R,44!B-F7&EH1V<&5N8^5.RE/9CYM.<&5N8X1VH7L&=(Q4?T\H=;EE#U^$=O1F&EGA3V]@#/_WB\)3P8D<(*=.P53H;(Q1X4]O8!T@=9ABEP(P	192		-1130558105
+IDS__IsExitDialog_6	1033	The Wizard has successfully uninstalled [ProductName]. Click Finish to exit the wizard.	0		-2137479056
+IDS__IsExitDialog_6	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`$PP8VLX7FLPHC#S,*0P\S"Y,,@P_##K,%4PC#!^,%<P7S`",*8PHS"V,/PPR3"2,$)]ADY9,(LP:S!O,`PPC%N&3@TPDC"O,.HPPS"O,%<P?C!9,`(P	69		-786901853
+IDS__IsExitDialog_6	2052	$53\6Q!BGU(P5WA3?8^&3B``6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`",%53^U$<((Q;$&(=(`"0^E$15/Q;`C``	34		-107356799
+IDS__IsExitDialog_7	1033	<ISProjectFolder>\white_background.ibd	0		-1021928859
+IDS__IsExitDialog_7	1041	<ISProjectFolder>\white_background.ibd	0		1670816362
+IDS__IsExitDialog_7	2052	<ISProjectFolder>\white_background.ibd	0		-107361343
+IDS__IsExitDialog_9	1033	Launch the program	0		-1021928859
+IDS__IsExitDialog_9	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`US#M,+`PZ3#@,&XP=XW54@``	20		1670816362
+IDS__IsExitDialog_9	2052	+U2H4@MZCUX`	4		-107356799
+IDS__IsExitDialog_Update_4	1033	Setup has finished installing [ProductName].	0		-1021928859
+IDS__IsExitDialog_Update_4	1041	NS##,,@PHC##,-<P;S`@`%L`4`!R`&\`9`!U`&,`=`!.`&$`;0!E`%T`(`!N,*0P\S"Y,,@P_##K,)(PC%N&3E<P?C!7,%\P`C``	37		-1860747637
+IDS__IsExitDialog_Update_4	2052	B5O%B`MZCU[R78Q;$&*&3B``6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`(1VB5O%B`(P	27		-107356799
+IDS__IsExitDialog_Update_5	1033	Some program files might have been updated since you purchased your copy of [ProductName].	0		-1021928859
+IDS__IsExitDialog_Update_5	1041	6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`)(P_(QE4>5.96=$,$\P9#!+,&XPUS#M,+`PZ3#@,-4PH3"D,.LP3#"B,,,PUS#',/PPR#!5,(PP7S#O4_V`)V!,,$(PBC!^,%DP`C``	52		-1860747637
+IDS__IsExitDialog_Update_5	2052	*%>H8"V-<$X@`%L`4`!R`&\`9`!U`&,`=`!.`&$`;0!E`%T`(``.5`S_T&>;3@MZCUZ'9?9.[U/]@/)=]&:P90(P	33		-107356799
+IDS__IsFatalError_0	1033	[ProductName] - Failed	0		-1021928859
+IDS__IsFatalError_0	1041	6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`"T`(``Q65=E5S!^,%<P7S``	22		-241493810
+IDS__IsFatalError_0	2052	6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`"T`(``Q626-	18		-241442162
+IDS__IsFatalError_1	1033	< &Back	0		-1021928859
+IDS__IsFatalError_1	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`/``@`#MBBS`H`"8`0@`I````	20		1670816362
+IDS__IsFatalError_1	2052	>P`F`%0`80!H`&\`;0!A`#@`?0`\`"``"DX`3F5K*``F`$(`*0``	19		-107356799
+IDS__IsFatalError_10	1033	<ISProjectFolder>\white_background.ibd	0		-1021928859
+IDS__IsFatalError_10	1041	<ISProjectFolder>\white_background.ibd	0		1670816362
+IDS__IsFatalError_10	2052	<ISProjectFolder>\white_background.ibd	0		-107361343
+IDS__IsFatalError_11	1033	{&TahomaBold10}Installation Failed	0		-442840180
+IDS__IsFatalError_11	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`I##S,+DPR##\,.LP:S`Q65=E5S!^,%<P7S``	25		303773895
+IDS__IsFatalError_11	2052	>P`F`%0`80!H`&\`;0!A`$(`;P!L`&0`,0`P`'T`B5O%B#%9)8T`	19		-241483090
+IDS__IsFatalError_2	1033	Cancel	0		-1021928859
+IDS__IsFatalError_2	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`K3#C,/,PNS#K,```	17		1670816362
+IDS__IsFatalError_2	2052	>P`F`%0`80!H`&\`;0!A`#@`?0#64XAM	12		-107356799
+IDS__IsFatalError_3	1033	&Finish	0		-1021928859
+IDS__IsFatalError_3	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`C%N&3B@`)@!&`"D`	18		1670816362
+IDS__IsFatalError_3	2052	>P`F`%0`80!H`&\`;0!A`#@`?0",6Q!B*``F`$8`*0``	16		-107356799
+IDS__IsFatalError_4	1033	Your system has not been modified. To complete installation at another time, please run setup again.	0		-1021928859
+IDS__IsFatalError_4	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`MS"Y,,8PX#!N,+9R2V%O,`E9]&95,(PP9C!$,'XP6S"3,`(P.66!,&8PI##S,+DPR##\,.LP63"+,#18"%1O,`$PC5&F7KLPPS#(,*(PPS#7,)(PGUM,B%<P9C!/,&`P53!$,`(P	63		1670816362
+IDS__IsFatalError_4	2052	>P`F`%0`80!H`&\`;0!A`#@`?0#[?-]^*F>KB.Y/.64","``@8DH5W91UD[V9?25C%L08HE;Q8@,__>+S9&P9="/3(B)6\6("WJ/7@(P	39		-107356799
+IDS__IsFatalError_5	1033	Click Finish to exit the wizard.	0		-1021928859
+IDS__IsFatalError_5	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`##",6X9.#3"2,*\PZC##,*\P5S!F,`$PIC"C,+8P_##),)(P0GV&3E<P9C!/,&`P53!$,`(P	39		1670816362
+IDS__IsFatalError_5	2052	>P`F`%0`80!H`&\`;0!A`#@`?0!54_M1(@",6Q!B(@``D/I1$53\6P(P	21		-107356799
+IDS__IsFatalError_6	1033	You can either keep any existing installed elements on your system to continue this installation at a later time or you can restore your system to its original state prior to the installation.	0		-1021928859
+IDS__IsFatalError_6	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`I##S,+DPR##\,.LP5S!?,+,P\S#=,/PPS3#S,,@PDC"W,+DPQC#@,&LPW4]86U<P9C",7V<P4S!N,*0P\S"Y,,@P_##K,)(PFGU,B%DPBS!+,`$P0C"+,$0P;S"D,/,PN3#(,/PPZS"2,)];3(A9,(LP35)N,+9R2V%K,*E?0U%9,(LP4S!H,$PP9S!-,'XP63`",```	86		1670816362
+IDS__IsFatalError_6	2052	>P`F`%0`80!H`&\`;0!A`#@`?0#O4^5.W4]9=?M\WWXM3K!S6%N$=O)=B5O%B(51N5L,_^5.#E2-4>=^[7YD:XE;Q8C'CPMZ#/]?3N]3Y4X&7/M\WWYB8`U9,%*)6\6(35*$=I]3RUFV<@%@`C``	55		-107356799
+IDS__IsFatalError_7	1033	Click Restore or Continue Later to exit the wizard.	0		-1021928859
+IDS__IsFatalError_7	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`##"I7T-1#3`!,'XP7S!O,`PPC%]G,)I]3(@-,)(PKS#J,,,PKS!7,&8PIC"C,+8P_##),)(P0GV&3E<P9C!/,&`P53!$,`(P	48		1670816362
+IDS__IsFatalError_7	2052	>P`F`%0`80!H`&\`;0!A`#@`?0!54_M1(@!B8`U9(@`68B(`Y4X.5.=^[7XB``"0^E$15/Q;`C``	28		-107356799
+IDS__IsFatalError_8	1033	{&TahomaBold10}Installation Completed	0		-2137520016
+IDS__IsFatalError_8	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`I##S,+DPR##\,.LP3#",6X9.5S!^,%<P7S``	25		-786901853
+IDS__IsFatalError_8	2052	>P`F`%0`80!H`&\`;0!A`$(`;P!L`&0`,0`P`'T`B5O%B(Q;$&(`	19		-107356799
+IDS__IsFatalError_9	1033	The wizard was interrupted before [ProductName] could be completely installed. To complete installation at another time, please run setup again.	0		-442875156
+IDS__IsFatalError_9	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`4S!N,*8PHS"V,/PPR3!O,`$P6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`&XPI##S,+DPR##\,.LPDC",6X9.63"+,$U2:S`M3JUE53",,'XP5S!?,`(P.66!,&8PI##S,+DPR##\,.LP63"+,#18"%1O,`$PC5&F7KLPPS#(,*(PPS#7,)(PGUM,B%<P9C!/,&`P53!$,`(P	90		-241489618
+IDS__IsFatalError_9	2052	>P`F`%0`80!H`&\`;0!A`#@`?0`H5R``6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`(E;Q8B,6Q!B35(,_Q%4_%NKB"U.K64",(&)*%=V4=9.]F7TE8Q;$&*)6\6(#/_WB\V1L&70CTR(B5O%B`MZCUX",```	59		-241491250
+IDS__IsFilesInUse_0	1033	[ProductName]	0		-2137479345
+IDS__IsFilesInUse_0	1041	[ProductName]	0		-786901853
+IDS__IsFilesInUse_0	2052	[ProductName]	0		-107361343
+IDS__IsFilesInUse_1	1033	{&MSSWhiteSerif8}InstallShield	0		-1021928859
+IDS__IsFilesInUse_1	1041	{&MSSWhiteSerif8}InstallShield	0		1670816362
+IDS__IsFilesInUse_1	2052	{&MSSWhiteSerif8}InstallShield	0		-107361343
+IDS__IsFilesInUse_2	1033	InstallShield	0		-1021928859
+IDS__IsFilesInUse_2	1041	{&Tahoma8}InstallShield	0		1670816362
+IDS__IsFilesInUse_2	2052	{&Tahoma8}InstallShield	0		-107356799
+IDS__IsFilesInUse_3	1033	{&MSSWhiteSerif8}Some files that need to be updated are currently in use.	0		-1021928859
+IDS__IsFilesInUse_3	1041	>P`F`$T`4P!3`%<`:`!I`'0`90!3`&4`<@!I`&8`.`!]`/1FL&59,(LPQ5^!B6XP0C"+,-4PH3"D,.LP3#!_3RAU+4YG,%DP`C``	37		-1130537625
+IDS__IsFilesInUse_3	2052	>P`F`$T`4P!3`%<`:`!I`'0`90!3`&4`<@!I`&8`.`!]`-!GFTX`EX&)]&:P981VAV7V3E-?35)C:RA7?T\H=0(P	33		-1130558105
+IDS__IsFilesInUse_4	1033	The following applications are using files that need to be updated by this setup. Close these applications and click Retry to continue.	0		-1021928859
+IDS__IsFilesInUse_4	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`(6MN,*(PUS#J,+$P_#"W,.<P\S!,,`$P4S!N,+LPPS#(,*(PPS#7,&<P]&:P95DPBS#%7X&);C!",(LPU3"A,*0PZS"2,']/*'57,&8P1#!^,%DP`C!3,(PPB3!N,*(PUS#J,+$P_#"W,.<P\S"2,(F56#!F,$LPB3`!,`PPC5%FBDR(#3"2,*\PZC##,*\P5S!F,)I]3(A7,&8P3S!@,%4P1#`",```	95		1368881974
+IDS__IsFilesInUse_4	2052	>P`F`%0`80!H`&\`;0!A`#@`?0`+3A=2E%XH=0MZCUYC:RA7?T\H=61KB5O%B`MZCUX`EX&)]&:P981VAV7V3@(P(`!S4>V5V8^;3I1>*'4+>H]>=EY54_M1'"#-D=6+'2#G?NU^`C``	52		-107356799
+IDS__IsFilesInUse_5	1033	{&MSSWhiteSerif8}Files in Use	0		-1021928859
+IDS__IsFilesInUse_5	1041	>P`F`$T`4P!3`%<`:`!I`'0`90!3`&4`<@!I`&8`.`!]`']/*'4M3FXPU3"A,*0PZS``	25		-1130537625
+IDS__IsFilesInUse_5	2052	>P`F`$T`4P!3`%<`:`!I`'0`90!3`&4`<@!I`&8`.`!]`&-K*%=_3RAUA':'9?9.	24		-1130558105
+IDS__IsFilesInUse_6	1033	&Exit	0		-1021928859
+IDS__IsFilesInUse_6	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`0GV&3B@`)@!%`"D`	18		1670816362
+IDS__IsFilesInUse_6	2052	>P`F`%0`80!H`&\`;0!A`#@`?0``D/I1*``F`$4`*0``	16		-107356799
+IDS__IsFilesInUse_7	1033	&Ignore	0		-1021928859
+IDS__IsFilesInUse_7	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`(7&6B2@`)@!)`"D`	18		1670816362
+IDS__IsFilesInUse_7	2052	>P`F`%0`80!H`&\`;0!A`#@`?0#]7V5U*``F`$D`*0``	16		-107356799
+IDS__IsFilesInUse_8	1033	&Retry	0		-1021928859
+IDS__IsFilesInUse_8	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`C5%FBDR(*``F`%(`*0``	19		1670816362
+IDS__IsFilesInUse_8	2052	>P`F`%0`80!H`&\`;0!A`#@`?0#-D=6+*``F`%(`*0``	16		-107356799
+IDS__IsFilesInUse_9	1033		0		-1021928859
+IDS__IsFilesInUse_9	1041	{&MSGothic9}	0		1670816362
+IDS__IsFilesInUse_9	2052	{&Tahoma8}	0		-107356799
+IDS__IsInitDlg_0	1033	[ProductName]	0		-2137462640
+IDS__IsInitDlg_0	1041	[ProductName]	0		-786901853
+IDS__IsInitDlg_0	2052	[ProductName]	0		-107361343
+IDS__IsInitDlg_1	1033		0		-1021928859
+IDS__IsInitDlg_1	1041	{&MSGothic9}	0		1670816362
+IDS__IsInitDlg_1	2052	{&Tahoma8}	0		-107356799
+IDS__IsInitDlg_2	1033		0		-1021928859
+IDS__IsInitDlg_2	1041	{&MSGothic9}	0		1670816362
+IDS__IsInitDlg_2	2052	{&Tahoma8}	0		-107356799
+IDS__IsInitDlg_3	1033	< &Back	0		-1021928859
+IDS__IsInitDlg_3	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`/``@`#MBBS`H`"8`0@`I````	20		1670816362
+IDS__IsInitDlg_3	2052	>P`F`%0`80!H`&\`;0!A`#@`?0`\`"``"DX`3F5K*``F`$(`*0``	19		-107356799
+IDS__IsInitDlg_4	1033	Cancel	0		-1021928859
+IDS__IsInitDlg_4	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`K3#C,/,PNS#K,```	17		1670816362
+IDS__IsInitDlg_4	2052	>P`F`%0`80!H`&\`;0!A`#@`?0#64XAM	12		-107356799
+IDS__IsInitDlg_5	1033	&Next >	0		-1021928859
+IDS__IsInitDlg_5	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`(6MX,"@`)@!.`"D`(``^````	20		1670816362
+IDS__IsInitDlg_5	2052	>P`F`%0`80!H`&\`;0!A`#@`?0`+3@!.96LH`"8`3@`I`"``/@``	19		-107356799
+IDS__IsInitDlg_6	1033	{&TahomaBold8}Welcome to the Installation Wizard for [ProductName]	0		-2137513808
+IDS__IsInitDlg_6	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`X`'T`6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`&XPI##S,+DPR##\,.LPIC"C,+8P_##),'@PB#!&,%,P73``	43		-1130537625
+IDS__IsInitDlg_6	2052	>P`F`%0`80!H`&\`;0!A`$(`;P!L`&0`.`!]`")KSH]_3RAU(`!;`%``<@!O`&0`=0!C`'0`3@!A`&T`90!=`"``B5O%B!%4_%L`	37		-1130558105
+IDS__IsInitDlg_7	1033	[ProductName] Setup is preparing the Installation Wizard which will guide you through the program setup process.  Please wait.	0		-2137499472
+IDS__IsInitDlg_7	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`+LPPS#(,*(PPS#7,&\P`3#7,.TPL##I,.`PNS##,,@PHC##,-<P*'5N,"``5P!I`&X`9`!O`'<`<P`@`$D`;@!S`'0`80!L`&P`90!R`"``DC"6;IE05S!F,$0P?C!9,`(P2C"%7V$P3S!@,%4P1#`",```	83		-786901853
+IDS__IsInitDlg_7	2052	6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`(E;Q8@+>H]>8VLH5\91!UF)6\6($53\6PS_B5O%B!%4_%L&7!5?_%NH8(Q;$&(+>H]>B5O%B,>/"WH",/>+#7H94`(P	48		-107356799
+IDS__IsInitDlg_8	1033	<ISProjectFolder>\white_background.ibd	0		-1021928859
+IDS__IsInitDlg_8	1041	<ISProjectFolder>\white_background.ibd	0		1670816362
+IDS__IsInitDlg_8	2052	<ISProjectFolder>\white_background.ibd	0		-107361343
+IDS__IsLicenseDlg_2	1033	{&MSSWhiteSerif8}InstallShield	0		-1021928859
+IDS__IsLicenseDlg_2	1041	{&MSSWhiteSerif8}InstallShield	0		1670816362
+IDS__IsLicenseDlg_2	2052	{&MSSWhiteSerif8}InstallShield	0		-107361343
+IDS__IsLicenseDlg_3	1033	InstallShield	0		-1021928859
+IDS__IsLicenseDlg_3	1041	{&Tahoma8}InstallShield	0		1670816362
+IDS__IsLicenseDlg_3	2052	{&Tahoma8}InstallShield	0		-107356799
+IDS__Next	1033	&Next >	0		-1021928859
+IDS__Next	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`(6MX,"@`)@!.`"D`(``^````	20		1670816362
+IDS__Next	2052	>P`F`%0`80!H`&\`;0!A`#@`?0`+3@!.96LH`"8`3@`I`"``/@``	19		-107356799
+IDS__Welcome	1033	{&TahomaBold8}Welcome to the Installation Wizard for Java™ SE Development Kit [MARKET]	0		-2137513808
+IDS__Welcome	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`2@!A`'8`80`H`%0`30`I`"``4P!%`"``1`!E`'8`90!L`&\`<`!M`&4`;@!T`"``2P!I`'0`(`!;`$T`00!2`$L`10!4`%T`(`"D,/,PN3#(,/PPZS"F,*,PMC#\,,DP(`!X,(@P1C!3,%TP	66		-1969349686
+IDS__Welcome	2052	>P`F`%0`80!H`&\`;0!A`$(`;P!L`&0`.`!]`")KSH]_3RAU(`!*`&$`=@!A`"@`5`!-`"D`(`!3`$4`(`!$`&4`=@!E`&P`;P!P`&T`90!N`'0`(`!+`&D`=``@`%L`30!!`%(`2P!%`%0`70`@`(E;Q8@15/Q;	60		-1969296374
+IDS__WelcomeText	1033	This wizard will guide you through the installation process for the Java SE Development Kit [MARKET].	0		-2137513808
+IDS__WelcomeText	1041	4S!N,*8PHS"V,/PPR3!G,&\P(`!*`&$`=@!A`"``4P!%`"``1`!E`'8`90!L`&\`<`!M`&4`;@!T`"``2P!I`'0`(`!;`$T`00!2`$L`10!4`%T`(`!N,*0P\S"Y,,@P_##K,$MB!IB2,"``5#!(:(515S!^,%DP`C``	61		-1969347638
+IDS__WelcomeText	2052	9&L15/Q;!EP57_Q;J&",6Q!B(`!*`&$`=@!A`"``4P!%`"``1`!E`'8`90!L`&\`<`!M`&4`;@!T`"``2P!I`'0`(`!;`$T`00!2`$L`10!4`%T`(`"$=HE;Q8C'CPMZ`C``	49		-1969355734
+IDS__Cancel	1033	Cancel	0		-1021928859
+IDS__Cancel	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`K3#C,/,PNS#K,```	17		1670816362
+IDS__Cancel	2052	>P`F`%0`80!H`&\`;0!A`#@`?0#64XAM	12		-107356799
+IDS__IsMaintenanceDlg_1	1033	< &Back	0		-1021928859
+IDS__IsMaintenanceDlg_1	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`/``@`#MBBS`H`"8`0@`I````	20		1670816362
+IDS__IsMaintenanceDlg_1	2052	>P`F`%0`80!H`&\`;0!A`#@`?0`\`"``"DX`3F5K*``F`$(`*0``	19		-107356799
+IDS__IsMaintenanceDlg_10	1033	{&MSSansBold8}&Remove	0		-1021928859
+IDS__IsMaintenanceDlg_10	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`2E)DEB@`)@!2`"D`	18		1670816362
+IDS__IsMaintenanceDlg_10	2052	>P`F`$T`4P!3`&$`;@!S`$(`;P!L`&0`.`!]`"!29)8H`"8`4@`I````	20		-107356799
+IDS__IsMaintenanceDlg_11	1033		0		-1021928859
+IDS__IsMaintenanceDlg_11	1041	{&MSGothic9}	0		1670816362
+IDS__IsMaintenanceDlg_11	2052	{&Tahoma8}	0		-107356799
+IDS__IsMaintenanceDlg_12	1033	Change which program features are installed. This option displays the Custom Selection dialog in which you can change the way features are installed.	0		-1021928859
+IDS__IsMaintenanceDlg_12	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`I##S,+DPR##\,.LP63"+,-<P[3"P,.DPX#!?:OV`DC`)6?1F5S!^,%DP`C!3,&XPJC#7,+<PYS#S,&<P;S`!,*LPN3"_,.`PP#"D,*(P[3"P,)(P?T]C,&8PI##S,+DPR##\,.LP63"+,-<P[3"P,.DPX#!?:OV`DC`)6?1F63"+,%,P:#!,,&<P33!^,%DP`C``	85		-1860747637
+IDS__IsMaintenanceDlg_12	2052	>P`F`%0`80!H`&\`;0!A`#@`?0#T9CEE@8F)6\6(A'8+>H]>GU+]@`(P(`!D:PF0>9CO4SYF.GDB`.J!FEM)3@F0Z6(B`/E;W8M&:`S_*%=V42U.J&#O4^5.]&8Y98E;Q8B?4OV`A':Y90]?`C``	55		-107356799
+IDS__IsMaintenanceDlg_13	1033	Repair installation errors in the program. This option fixes missing or corrupt files, shortcuts, and registry entries.	0		-1021928859
+IDS__IsMaintenanceDlg_13	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`US#M,+`PZ3#@,"U.;C"H,.DP_#"2,.Y/J5]7,'XP63`",%,P;C"J,-<PMS#G,/,P9S!O,`$P,5F/,(PP7S"*,,I8C#!?,(HP5S!?,-4PH3"D,.LP`3"W,.<P_##(,*LPPS#(,`$P2C"(,',P[#"X,+DPR##J,*@P\S#(,.HPDC#N3V-K63"+,%,P:#!,,&<P33!^,%DP`C``	88		-1860747637
+IDS__IsMaintenanceDlg_13	2052	>P`F`%0`80!H`&\`;0!A`#@`?0#N3PU9"WJ/7BU.A'89E>^+`C`@`!J0QX]D:PF0>9BH8.]3[D\-63I_$5P68E]C3U>$=H=E]DX!,.M?=V.Y90]?C%3H;(Q1:(AYF`(P	48		-107356799
+IDS__IsMaintenanceDlg_14	1033	Remove [ProductName] from your computer.	0		-1021928859
+IDS__IsMaintenanceDlg_14	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`LS#S,-0PY3#\,+\P2S"),"``6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`)(P2E)DEE<P?C!9,`(P	42		1670816362
+IDS__IsMaintenanceDlg_14	2052	>P`F`%0`80!H`&\`;0!A`#@`?0#.3J&+EWLZ9RU.(%)DEB``6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`",```	32		-107356799
+IDS__IsMaintenanceDlg_2	1033	{&MSSWhiteSerif8}InstallShield	0		-1021928859
+IDS__IsMaintenanceDlg_2	1041	{&MSSWhiteSerif8}InstallShield	0		1670816362
+IDS__IsMaintenanceDlg_2	2052	{&MSSWhiteSerif8}InstallShield	0		-107361343
+IDS__IsMaintenanceDlg_3	1033	InstallShield	0		-1021928859
+IDS__IsMaintenanceDlg_3	1041	{&Tahoma8}InstallShield	0		1670816362
+IDS__IsMaintenanceDlg_3	2052	{&Tahoma8}InstallShield	0		-107356799
+IDS__IsMaintenanceDlg_4	1033	Cancel	0		-1021928859
+IDS__IsMaintenanceDlg_4	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`K3#C,/,PNS#K,```	17		1670816362
+IDS__IsMaintenanceDlg_4	2052	>P`F`%0`80!H`&\`;0!A`#@`?0#64XAM	12		-107356799
+IDS__IsMaintenanceDlg_5	1033	{&MSSWhiteSerif8}Modify or remove the program.	0		-1021928859
+IDS__IsMaintenanceDlg_5	1041	>P`F`$T`4P!3`%<`:`!I`'0`90!3`&4`<@!I`&8`.`!]`-<P[3"P,.DPX#"2,`E9]&8!,.Y/J5\!,$HPB#!S,$I29)97,'XP63`",```	38		-1130537625
+IDS__IsMaintenanceDlg_5	2052	>P`F`$T`4P!3`%<`:`!I`'0`90!3`&4`<@!I`&8`.`!]`.Y/.6468B!29)8+>H]>`C``	25		-1130558105
+IDS__IsMaintenanceDlg_6	1033	{&MSSWhiteSerif8}Program Maintenance	0		-1021928859
+IDS__IsMaintenanceDlg_6	1041	>P`F`$T`4P!3`%<`:`!I`'0`90!3`&4`<@!I`&8`.`!]`-<P[3"P,.DPX#!N,-U/B%L`	25		-1130537625
+IDS__IsMaintenanceDlg_6	2052	>P`F`$T`4P!3`%<`:`!I`'0`90!3`&4`<@!I`&8`.`!]``MZCU[T?J1B	21		-1130558105
+IDS__IsMaintenanceDlg_7	1033	&Next >	0		-1021928859
+IDS__IsMaintenanceDlg_7	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`(6MX,"@`)@!.`"D`(``^````	20		1670816362
+IDS__IsMaintenanceDlg_7	2052	>P`F`%0`80!H`&\`;0!A`#@`?0`+3@!.96LH`"8`3@`I`"``/@``	19		-107356799
+IDS__IsMaintenanceDlg_8	1033	{&MSSansBold8}&Modify	0		-1021928859
+IDS__IsMaintenanceDlg_8	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`"5GT9B@`)@!-`"D`	18		1670816362
+IDS__IsMaintenanceDlg_8	2052	>P`F`$T`4P!3`&$`;@!S`$(`;P!L`&0`.`!]`.Y/.64H`"8`30`I````	20		-107356799
+IDS__IsMaintenanceDlg_9	1033	{&MSSansBold8}Re&pair	0		-1021928859
+IDS__IsMaintenanceDlg_9	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`[D^I7R@`)@!0`"D`	18		1670816362
+IDS__IsMaintenanceDlg_9	2052	>P`F`$T`4P!3`&$`;@!S`$(`;P!L`&0`.`!]`.Y/#5DH`"8`4``I````	20		-107356799
+IDS__IsMaintenanceWelcome_1	1033	< &Back	0		-1021928859
+IDS__IsMaintenanceWelcome_1	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`/``@`#MBBS`H`"8`0@`I````	20		1670816362
+IDS__IsMaintenanceWelcome_1	2052	>P`F`%0`80!H`&\`;0!A`#@`?0`\`"``"DX`3F5K*``F`$(`*0``	19		-107356799
+IDS__IsMaintenanceWelcome_2	1033	Cancel	0		-1021928859
+IDS__IsMaintenanceWelcome_2	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`K3#C,/,PNS#K,```	17		1670816362
+IDS__IsMaintenanceWelcome_2	2052	>P`F`%0`80!H`&\`;0!A`#@`?0#64XAM	12		-107356799
+IDS__IsMaintenanceWelcome_3	1033	&Next >	0		-1021928859
+IDS__IsMaintenanceWelcome_3	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`(6MX,"@`)@!.`"D`(``^````	20		1670816362
+IDS__IsMaintenanceWelcome_3	2052	>P`F`%0`80!H`&\`;0!A`#@`?0`+3@!.96LH`"8`3@`I`"``/@``	19		-107356799
+IDS__IsMaintenanceWelcome_4	1033	{&TahomaBold8}Welcome to the Installer Wizard for [ProductName]	0		-1021928859
+IDS__IsMaintenanceWelcome_4	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`X`'T`6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`"AU;C"D,/,PN3#(,/PPZS"F,*,PMC#\,,DP>#"(,$8P4S!=,```	44		-1130537625
+IDS__IsMaintenanceWelcome_4	2052	>P`F`%0`80!H`&\`;0!A`$(`;P!L`&0`.`!]`")KSH]_3RAU(`!;`%``<@!O`&0`=0!C`'0`3@!A`&T`90!=`"``B5O%B!%4_%L`	37		-1130558105
+IDS__IsMaintenanceWelcome_5	1033	The Installer Wizard will allow you to [MODIFYREMOVE] [ProductName]. To continue, click "Next".	0		-1021928859
+IDS__IsMaintenanceWelcome_5	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`I##S,+DPR##\,.LPIC"C,+8P_##),)(P?T]&,&@P`3!;`%``<@!O`&0`=0!C`'0`3@!A`&T`90!=`"``DC`)6?1F2C"(,',P2E)DEEDPBS!3,&@P3#!G,$TP?C!9,`(P(`":?4R(63"+,&LP;S`,,"%K>#`-,)(PKS#J,,,PKS!7,&8P3S!@,%4P1#`",```	83		-1441250391
+IDS__IsMaintenanceWelcome_5	2052	?T\H=>6+B5O%B!%4_%OO4^5.[D\Y919B(%)DEB``6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`",(&)YW[M?@S_]XM54_M1'"`+3@!.96L=(`(P	42		-107356799
+IDS__IsProgressDlg_1	1033	Progress done	0		-1021928859
+IDS__IsProgressDlg_1	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`US#M,+`P[#"Y,&XPC%N&3@``	20		1670816362
+IDS__IsProgressDlg_1	2052	\EV,6Q!BVX^F7@``	5		-107356799
+IDS__IsProgressDlg_10	1033	(Hidden for now)Sec.	0		-1021928859
+IDS__IsProgressDlg_10	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`TGD`	13		1670816362
+IDS__IsProgressDlg_10	2052	>P`F`%0`80!H`&\`;0!A`#@`?0`(_[!S*%>0EL^%"?_2>0``	17		-107356799
+IDS__IsProgressDlg_11	1033	Status:	0		-1021928859
+IDS__IsProgressDlg_11	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`N3#&,/PPOS"Y,#H`	18		1670816362
+IDS__IsProgressDlg_11	2052	>P`F`%0`80!H`&\`;0!A`#@`?0"V<@%@&O\`	13		-107356799
+IDS__IsProgressDlg_13	1033	(Hidden for now)	0		-1021928859
+IDS__IsProgressDlg_13	1041	{&MSGothic9}	0		1670816362
+IDS__IsProgressDlg_13	2052	>P`F`%0`80!H`&\`;0!A`#@`?0`(_[!S*%>0EL^%"?\`	16		-107356799
+IDS__IsProgressDlg_14	1033	)Hidden for now)Estimated time remaining:	0		-1021928859
+IDS__IsProgressDlg_14	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`J&,L;FXPBVN*,$)FDY4Z````	20		1670816362
+IDS__IsProgressDlg_14	2052	>P`F`%0`80!H`&\`;0!A`#@`?0`(_[!S*%>0EL^%"?\P3Z&+:5)93_9E])4:_P``	23		-107356799
+IDS__IsProgressDlg_15	1033	{&MSSWhiteSerif8}Uninstalling	0		-1021928859
+IDS__IsProgressDlg_15	1041	>P`F`$T`4P!3`%<`:`!I`'0`90!3`&4`<@!I`&8`.`!]`*(P\S"D,/,PN3#(,/PPZS!7,&8P1#!^,%DP	30		-1130537625
+IDS__IsProgressDlg_15	2052	>P`F`$T`4P!3`%<`:`!I`'0`90!3`&4`<@!I`&8`.`!]`&-K*%=X4WV/	21		-1130558105
+IDS__IsProgressDlg_16	1033	{&MSSWhiteSerif8}The program features you selected are being uninstalled.	0		-1021928859
+IDS__IsProgressDlg_16	1041	>P`F`$T`4P!3`%<`:`!I`'0`90!3`&4`<@!I`&8`.`!]`'B0GF)7,%\PUS#M,+`PZ3#@,%]J_8"2,*(P\S"D,/,PN3#(,/PPZS!7,&8P1#!^,%DP`C``	43		-1130537625
+IDS__IsProgressDlg_16	2052	>P`F`$T`4P!3`%<`:`!I`'0`90!3`&4`<@!I`&8`.`!]`&-K*%=X4WV/J&`)D.EBA'8+>H]>GU+]@`(P	30		-1130558105
+IDS__IsProgressDlg_17	1033	Please wait while the Install Wizard uninstalls [ProductName]. This may take several minutes.	0		-1021928859
+IDS__IsProgressDlg_17	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`&XPHC#S,*0P\S"Y,,@P_##K,$PPC%N&3EDPBS!^,&<P5S!P,(DP3S!*,(5?83!/,&`P53!$,`(PYE$&=&LP<&4&4DLP2S"+,#18"%1,,$(PBC!^,%DP`C``	70		-786901853
+IDS__IsProgressDlg_17	2052	$53\6V-K*%=X4WV/(`!;`%``<@!O`&0`=0!C`'0`3@!A`&T`90!=``S_]XL->AE0`C#9C^]3_8``EX&)`6/M?N!1!E*?E/9E])4",```	38		-107356799
+IDS__IsProgressDlg_2	1033		0		-1021928859
+IDS__IsProgressDlg_2	1041	{&MSGothic9}	0		1670816362
+IDS__IsProgressDlg_2	2052	{&Tahoma8}	0		-107356799
+IDS__IsProgressDlg_3	1033	< &Back	0		-1021928859
+IDS__IsProgressDlg_3	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`/``@`#MBBS`H`"8`0@`I````	20		1670816362
+IDS__IsProgressDlg_3	2052	>P`F`%0`80!H`&\`;0!A`#@`?0`\`"``"DX`3F5K*``F`$(`*0``	19		-107356799
+IDS__IsProgressDlg_4	1033	{&MSSWhiteSerif8}InstallShield	0		-1021928859
+IDS__IsProgressDlg_4	1041	{&MSSWhiteSerif8}InstallShield	0		1670816362
+IDS__IsProgressDlg_4	2052	{&MSSWhiteSerif8}InstallShield	0		-107361343
+IDS__IsProgressDlg_5	1033	InstallShield	0		-1021928859
+IDS__IsProgressDlg_5	1041	{&Tahoma8}InstallShield	0		1670816362
+IDS__IsProgressDlg_5	2052	{&Tahoma8}InstallShield	0		-107356799
+IDS__IsProgressDlg_6	1033	Cancel	0		-1021928859
+IDS__IsProgressDlg_6	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`K3#C,/,PNS#K,```	17		1670816362
+IDS__IsProgressDlg_6	2052	>P`F`%0`80!H`&\`;0!A`#@`?0#64XAM	12		-107356799
+IDS__IsProgressDlg_7	1033	{&MSSWhiteSerif8}The program features you selected are being installed.	0		-1021928859
+IDS__IsProgressDlg_7	1041	>P`F`$T`4P!3`%<`:`!I`'0`90!3`&4`<@!I`&8`.`!]`'B0GF)7,%\PUS#M,+`PZ3#@,%]J_8"2,*0P\S"Y,,@P_##K,%<P9C!$,'XP63`",```	41		-1130537625
+IDS__IsProgressDlg_7	2052	>P`F`$T`4P!3`%<`:`!I`'0`90!3`&4`<@!I`&8`.`!]`&-K*%>)6\6(J&`)D.EBA'8+>H]>GU+]@`(P	30		-1130558105
+IDS__IsProgressDlg_8	1033	Please wait while the Install Wizard installs [ProductName]. This may take several minutes.	0		-1021928859
+IDS__IsProgressDlg_8	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`@`&XPI##S,+DPR##\,.LP3#",6X9.63"+,'XP9S!7,'`PB3!/,$HPA5]A,$\P8#!5,$0P`C#F409T:S!P90922S!+,(LP-%@(5$PP0C"*,'XP63`",```	68		-786901853
+IDS__IsProgressDlg_8	2052	B5O%B!%4_%MC:RA7B5O%B"``6P!0`'(`;P!D`'4`8P!T`$X`80!M`&4`70`,__>+#7H94`(PV8_O4_V``)>!B0%C[7[@4092GY3V9?25`C``	40		-107356799
+IDS__IsProgressDlg_9	1033	{&MSSWhiteSerif8}Installing	0		-1021928859
+IDS__IsProgressDlg_9	1041	>P`F`$T`4P!3`%<`:`!I`'0`90!3`&4`<@!I`&8`.`!]`*0P\S"Y,,@P_##K,%<P9C!$,'XP63``	28		-1130537625
+IDS__IsProgressDlg_9	2052	>P`F`$T`4P!3`%<`:`!I`'0`90!3`&4`<@!I`&8`.`!]`&-K*%>)6\6(	21		-1130558105
+IDS__IsRegisterUserDlg_1	1033	< &Back	0		-1021928859
+IDS__IsRegisterUserDlg_1	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`/``@`#MBBS`H`"8`0@`I````	20		1670816362
+IDS__IsRegisterUserDlg_1	2052	>P`F`%0`80!H`&\`;0!A`#@`?0`\`"``"DX`3F5K*``F`$(`*0``	19		-107356799
+IDS__IsRegisterUserDlg_14	1033	&Anyone who uses this computer (all users)	0		-1021928859
+IDS__IsRegisterUserDlg_14	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`4S!N,+,P\S#4,.4P_#"_,)(P?T\H=5DPBS!9,'DP9C!N,.8P_#"V,"@`)@!!`"D`	36		1670816362
+IDS__IsRegisterUserDlg_14	2052	>P`F`%0`80!H`&\`;0!A`#@`?0!_3RAU+&<Z9X1V^TY53[I.*``F`$$`*0`(_T!B"6<H=3=B"?\`	28		-107356799
+IDS__IsRegisterUserDlg_15	1033	Only for &me ([USERNAME])	0		-1021928859
+IDS__IsRegisterUserDlg_15	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`6P!5`%,`10!2`$X`00!-`$4`70`@`&XP?S`H`"8`30`I````	29		1670816362
+IDS__IsRegisterUserDlg_15	2052	>P`F`%0`80!H`&\`;0!A`#@`?0#%3E"6+&>Z3B@`)@!-`"D`(``H`%L`50!3`$4`4@!.`$$`30!%`%T`*0``	31		-107356799
+IDS__IsSetupTypeMinDlg_11	1033	{&MSSansBold8}&Complete	0		-1021928859
+IDS__IsSetupTypeMinDlg_11	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`63!Y,&8P*``F`$,`*0``	19		1670816362
+IDS__IsSetupTypeMinDlg_11	2052	>P`F`$T`4P!3`&$`;@!S`$(`;P!L`&0`.`!]`(Q;=&6)6\6(*``F`$\`*0``	22		-107356799
+IDS__IsSetupTypeMinDlg_12	1033	{&MSSansBold8}Cu&stom	0		-1021928859
+IDS__IsSetupTypeMinDlg_12	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`JS"Y,+\PX#`H`"8`4P`I````	20		1670816362
+IDS__IsSetupTypeMinDlg_12	2052	>P`F`$T`4P!3`&$`;@!S`$(`;P!L`&0`.`!]`.J!FEM)3B@`)@!3`"D`	21		-107356799
+IDS_ACTIONTEXT_1	1033	Advertising application	0		-1021928859
+IDS_ACTIONTEXT_1	1041	C%]G,']/*'59,(LP7S"!,&LPHC#7,.HPL3#\,+<PYS#S,)(P+8J:6U<P9C!$,'XP63``	25		1670816362
+IDS_ACTIONTEXT_1	2052	&I#E=Y1>*'4+>H]>	6		-107356799
+IDS_ACTIONTEXT_10	1033	Computing space requirements	0		-1021928859
+IDS_ACTIONTEXT_10	1041	Q5^!B6HP&)C?5Y(P"(J7>U<P9C!$,'XP63``	13		1670816362
+IDS_ACTIONTEXT_10	2052	8VLH5Z&+EWMZ>O25`)=";```	8		-107356799
+IDS_ACTIONTEXT_100	1033	MIME Content Type: [1], Extension: [2]	0		-1021928859
+IDS_ACTIONTEXT_100	1041	30!)`$T`10`@`+,P\S#&,/,PR#"_,*0PUS`Z`"``6P`Q`%T`+``@`.%B-5]06SH`(`!;`#(`70``	28		-786901853
+IDS_ACTIONTEXT_100	2052	30!)`$T`10`@`(51N5M[?(M7.@`@`%L`,0!=``S_:6)57#H`(`!;`#(`70``	22		-107356799
+IDS_ACTIONTEXT_101	1033	Unregistering program identifiers	0		-1021928859
+IDS_ACTIONTEXT_101	1041	US#M,+`PZ3#@,%B+)5)06VXP>W8RDY(PXXEDEE<P9C!$,'XP63``	19		1670816362
+IDS_ACTIONTEXT_101	2052	8VLH5Z1DB&T+>H]>!VC&BR9[A';H;(Q1	12		-107356799
+IDS_ACTIONTEXT_102	1033	ProgID: [1]	0		-1021928859
+IDS_ACTIONTEXT_102	1041	ProgID: [1]	0		-786901853
+IDS_ACTIONTEXT_102	2052	VX^F7B``20!$`#H`(`!;`#$`70``	10		-107356799
+IDS_ACTIONTEXT_103	1033	Unregistering type libraries	0		-1021928859
+IDS_ACTIONTEXT_103	1041	OS"D,-<PZ3"D,-8PZ3#J,&XP>W8RDY(PXXEDEE<P9C!$,'XP63``	19		1670816362
+IDS_ACTIONTEXT_103	2052	8VLH5Z1DB&U[?(M7DUZ$=NALC%$`	10		-107356799
+IDS_ACTIONTEXT_104	1033	LibID: [1]	0		-1021928859
+IDS_ACTIONTEXT_104	1041	LibID: [1]	0		1670816362
+IDS_ACTIONTEXT_104	2052	DUX@`$D`1``Z`"``6P`Q`%T`	9		-107356799
+IDS_ACTIONTEXT_105	1033	Updating environment strings	0		-1021928859
+IDS_ACTIONTEXT_105	1041	L'2#6+DPR##J,/,PL#"2,/1FL&57,&8P1#!^,%DP	15		1670816362
+IDS_ACTIONTEXT_105	2052	8VLH5_1FL&6O<X-85ULF>S).	9		-107356799
+IDS_ACTIONTEXT_106	1033	Name: [1], Value: [2], Action [3]	0		-1021928859
+IDS_ACTIONTEXT_106	1041	#51-4CH`(`!;`#$`70`L`"``)%`Z`"``6P`R`%T`+``@`*(PKS"W,.<P\S`@`%L`,P!=````	26		-786901853
+IDS_ACTIONTEXT_106	2052	#53P>3H`(`!;`#$`70`,_W!E/%`Z`"``6P`R`%T`#/^H4EQ/(`!;`#,`70``	22		-107356799
+IDS_ACTIONTEXT_107	1033	Writing INI file values	0		-1021928859
+IDS_ACTIONTEXT_107	1041	20!.`$D`(`#5,*$PI##K,&LP)%"2,/AF33"\CY,P9S!$,'XP63``	19		1670816362
+IDS_ACTIONTEXT_107	2052	8VLH5YE195$@`$D`3@!)`"``AV7V3G!E/%``	13		-107356799
+IDS_ACTIONTEXT_108	1033	File: [1],  Section: [2],  Key: [3], Value: [4]	0		-1021928859
+IDS_ACTIONTEXT_108	1041	U3"A,*0PZS`Z`"``6P`Q`%T`+``@`"``NS"O,+<PYS#S,#H`(`!;`#(`70`L`"``(`"M,/PP.@`@`%L`,P!=`"P`(``D4#H`(`!;`#0`70``	40		-786901853
+IDS_ACTIONTEXT_108	2052	AV7V3CH`(`!;`#$`70`,_X*".@`@`%L`,@!=``S_+I4Z`"``6P`S`%T`#/]P93Q0.@`@`%L`-`!=````	29		-107356799
+IDS_ACTIONTEXT_109	1033	Writing system registry values	0		-1021928859
+IDS_ACTIONTEXT_109	1041	MS"Y,,8PX##L,+@PN3#(,.HP;C`D4)(P^&9-,+R/DS!G,$0P?C!9,```	20		-1860747637
+IDS_ACTIONTEXT_109	2052	8VLH5YE195'[?-]^Z&R,46B(/%``	10		-107356799
+IDS_ACTIONTEXT_11	1033	Creating folders	0		-1021928859
+IDS_ACTIONTEXT_11	1041	U3"I,.LPP#"2,%Q/$&)7,&8P1#!^,%DP	12		1670816362
+IDS_ACTIONTEXT_11	2052	8VLH5QM2^EZ'9?9..5D`	7		-107356799
+IDS_ACTIONTEXT_110	1033	Key: [1], Name: [2], Value: [3]	0		-1021928859
+IDS_ACTIONTEXT_110	1041	K3#\,#H`(`!;`#$`70`L`"``#51-4CH`(`!;`#(`70`L`"``)%`Z`"``6P`S`%T`	24		-786901853
+IDS_ACTIONTEXT_110	2052	+I4Z`"``6P`Q`%T`#/\-5/!Y.@`@`%L`,@!=``S_<&4\4#H`(`!;`#,`70``	22		-107356799
+IDS_ACTIONTEXT_111	1033	Registering COM+ Applications and Components	0		-1021928859
+IDS_ACTIONTEXT_111	1041	0P!/`$T`*P`@`*(PUS#J,+$P_#"W,.<P\S!H,+,P\S#=,/PPS3#S,,@PDC![=C*35S!F,$0P?C!9,```	29		1670816362
+IDS_ACTIONTEXT_111	2052	8VLH5^ALC%$@`$,`3P!-`"L`(`"47BAU"WJ/7HQ4Q'[V3@``	17		-107356799
+IDS_ACTIONTEXT_112	1033	AppId: [1]{{, AppType: [2], Users: [3], RSN: [4]}}	0		-1021928859
+IDS_ACTIONTEXT_112	1041	AppId: [1]{{, AppType: [2], Users: [3], RSN: [4]}}	0		-786901853
+IDS_ACTIONTEXT_112	2052	E%XH=0MZCUX@`$D`9``Z`"``6P`Q`%T`>P![`"P`(`"47BAU"WJ/7GM\BU<Z`"``(`!;`#(`70`L`"``*'4W8CH`(``@`%L`,P!=`"P`(`!2`%,`3@`Z`"``6P`T`%T`?0!]````	50		-107356799
+IDS_ACTIONTEXT_113	1033	Unregistering COM+ Applications and Components	0		-1021928859
+IDS_ACTIONTEXT_113	1041	0P!/`$T`*P`@`*(PUS#J,+$P_#"W,.<P\S!H,+,P\S#=,/PPS3#S,,@P;C![=C*3DC#CB6265S!F,$0P?C!9,```	32		1670816362
+IDS_ACTIONTEXT_113	2052	8VLH5Z1DB&T@`$,`3P!-`"L`(`"47BAU"WJ/7HQ4Q'[V3H1VZ&R,40``	20		-107356799
+IDS_ACTIONTEXT_114	1033	AppId: [1]{{, AppType: [2]}}	0		-1021928859
+IDS_ACTIONTEXT_114	1041	AppId: [1]{{, AppType: [2]}}	0		-786901853
+IDS_ACTIONTEXT_114	2052	E%XH=0MZCUX@`$D`9``Z`"``6P`Q`%T`>P![`"P`(`"47BAU"WJ/7GM\BU<Z`"``6P`R`%T`?0!]````	29		-107356799
+IDS_ACTIONTEXT_115	1033	Searching for related applications	0		-1021928859
+IDS_ACTIONTEXT_115	1041	HI4CD&XPHC#7,.HPL3#\,+<PYS#S,)(P'&DB?5<P9C!$,'XP63``	19		1670816362
+IDS_ACTIONTEXT_115	2052	8VLH5QQD(GWX=G-1IT[!5```	8		-107356799
+IDS_ACTIONTEXT_116	1033	Found application: [1]	0		-1021928859
+IDS_ACTIONTEXT_116	1041	BXED,$LP8S!?,*(PUS#J,+$P_#"W,.<P\S`Z`"``6P`Q`%T`	18		-786901853
+IDS_ACTIONTEXT_116	2052	?F(P4I1>*'4+>H]>.@`@`%L`,0!=````	11		-107356799
+IDS_ACTIONTEXT_117	1033	Migrating feature states from related applications	0		-1021928859
+IDS_ACTIONTEXT_117	1041	HI4CD&XPHC#7,.HPL3#\,+<PYS#S,$LPB3!?:OV`;C"V<DMADC#[>4R(5S!F,$0P?C!9,```	26		1670816362
+IDS_ACTIONTEXT_117	2052	8VLH5\Y.^'9S491>*'4+>H]>P8_[>9]2_8``	13		-107356799
+IDS_ACTIONTEXT_118	1033	Application: [1]	0		-1021928859
+IDS_ACTIONTEXT_118	1041	HC#7,.HPL3#\,+<PYS#S,#H`(`!;`#$`70``	13		-786901853
+IDS_ACTIONTEXT_118	2052	E%XH=0MZCUXZ`"``6P`Q`%T`	9		-107356799
+IDS_ACTIONTEXT_119	1033	Removing applications	0		-1021928859
+IDS_ACTIONTEXT_119	1041	HC#7,.HPL3#\,+<PYS#S,)(P2E)DEE<P9C!$,'XP63``	16		1670816362
+IDS_ACTIONTEXT_119	2052	8VLH5R!29):47BAU"WJ/7@``	8		-107356799
+IDS_ACTIONTEXT_12	1033	Folder: [1]	0		-1021928859
+IDS_ACTIONTEXT_12	1041	U3"I,.LPP#`Z`"``6P`Q`%T`	9		-786901853
+IDS_ACTIONTEXT_12	2052	AV7V3CE9.@`@`%L`,0!=````	8		-107356799
+IDS_ACTIONTEXT_120	1033	Application: [1], Command line: [2]	0		-1021928859
+IDS_ACTIONTEXT_120	1041	HC#7,.HPL3#\,+<PYS#S,#H`(`!;`#$`70`L`"``LS#>,/,PR3#I,*0P\S`Z`"``6P`R`%T`	27		-786901853
+IDS_ACTIONTEXT_120	2052	E%XH=0MZCUXZ`"``6P`Q`%T`#/]]5.1.3(@Z`"``6P`R`%T`	18		-107356799
+IDS_ACTIONTEXT_121	1033	Installing system catalog	0		-1021928859
+IDS_ACTIONTEXT_121	1041	I##S,+DPR##\,.LP63"+,+<PN3#&,.`PJS"_,.TPL#``	16		-1860747637
+IDS_ACTIONTEXT_121	2052	B5O%B/M\WW[N=E5?	6		-107356799
+IDS_ACTIONTEXT_122	1033	File: [1],  Dependencies: [2]	0		-1021928859
+IDS_ACTIONTEXT_122	1041	U3"A,*0PZS`Z`"``6P`Q`%T`+``@`)U/6%O5,*$PI##K,#H`(`!;`#(`70``	22		-786901853
+IDS_ACTIONTEXT_122	2052	AV7V3AK_6P`Q`%T`+``@`"``G4]86QK_(`!;`#(`70``	16		-107356799
+IDS_ACTIONTEXT_123	1033	Creating IIS Virtual Roots...	0		-1021928859
+IDS_ACTIONTEXT_123	1041	Creating IIS Virtual Roots...	0		1670816362
+IDS_ACTIONTEXT_123	2052	8VLH5QM2^EX@`$D`20!3`"``6H;?8CEH+@`N`"X`	15		-107356799
+IDS_ACTIONTEXT_124	1033	Removing IIS Virtual Roots...	0		-1021928859
+IDS_ACTIONTEXT_124	1041	Removing IIS Virtual Roots...	0		1670816362
+IDS_ACTIONTEXT_124	2052	8VLH5R!29)8@`$D`20!3`"``6H;?8CEH+@`N`"X`	15		-107356799
+IDS_ACTIONTEXT_13	1033	Creating shortcuts	0		-1021928859
+IDS_ACTIONTEXT_13	1041	MS#G,/PPR#"K,,,PR#"2,%Q/$&)7,&8P1#!^,%DP	15		1670816362
+IDS_ACTIONTEXT_13	2052	8VLH5QM2^E[K7W=CN64/7P``	8		-107356799
+IDS_ACTIONTEXT_14	1033	Shortcut: [1]	0		-1021928859
+IDS_ACTIONTEXT_14	1041	MS#G,/PPR#"K,,,PR#`Z`"``6P`Q`%T`	12		-786901853
+IDS_ACTIONTEXT_14	2052	ZU]W8[EE#U\Z`"``6P`Q`%T`	9		-107356799
+IDS_ACTIONTEXT_15	1033	Deleting services	0		-1021928859
+IDS_ACTIONTEXT_15	1041	M3#\,-,PN3"2,$I29)97,&8P1#!^,%DP	12		1670816362
+IDS_ACTIONTEXT_15	2052	8VLH5R!29)8-9Z%2	6		-107356799
+IDS_ACTIONTEXT_16	1033	Service: [1]	0		-1021928859
+IDS_ACTIONTEXT_16	1041	M3#\,-,PN3`Z`"``6P`Q`%T`	9		-786901853
+IDS_ACTIONTEXT_16	2052	#6>A4CH`(`!;`#$`70``	7		-107356799
+IDS_ACTIONTEXT_17	1033	Creating duplicate files	0		-1021928859
+IDS_ACTIONTEXT_17	1041	U3"A,*0PZS!N,`>)_8B2,%Q/$&)7,&8P1#!^,%DP	15		1670816362
+IDS_ACTIONTEXT_17	2052	8VLH5QM2^E[-D0U9AV7V3@``	8		-107356799
+IDS_ACTIONTEXT_18	1033	File: [1],  Directory: [9],  Size: [6]	0		-1021928859
+IDS_ACTIONTEXT_18	1041	U3"A,*0PZS`Z`"``6P`Q`%T`+``@`"``QS"C,.PPKS#(,.HP.@`@`%L`.0!=`"P`(``@`+4PI#"Z,#H`(`!;`#8`70``	34		-786901853
+IDS_ACTIONTEXT_18	2052	AV7V3CH`(`!;`#$`70`,_^YV55\Z`"``6P`Y`%T`#/\G60]<.@`@`%L`-@!=````	23		-107356799
+IDS_ACTIONTEXT_19	1033	Computing space requirements	0		-1021928859
+IDS_ACTIONTEXT_19	1041	Q5^!B6HP&)C?5Y(P"(J7>U<P9C!$,'XP63``	13		1670816362
+IDS_ACTIONTEXT_19	2052	8VLH5Z&+EWMZ>O25`)=";```	8		-107356799
+IDS_ACTIONTEXT_2	1033	Allocating registry space	0		-1021928859
+IDS_ACTIONTEXT_2	1041	[#"X,+DPR##J,!B8WU>2,')2BC`O8V,P9C!$,'XP63``	16		1670816362
+IDS_ACTIONTEXT_2	2052	8VLH5P9239'H;(Q1:(AZ>O25	9		-107356799
+IDS_ACTIONTEXT_20	1033	Generating script operations for action:	0		-1021928859
+IDS_ACTIONTEXT_20	1041	HC"O,+<PYS#S,&LP_EM9,(LPN3"O,.HPUS#(,*HPVC#L,/PPMS#G,/,PDC`?=1!B5S!F,$0P?C!9,#H`	30		-786901853
+IDS_ACTIONTEXT_20	2052	8VLH5Q]U$&(:@2QGS61<3PS_*'6.3AK_	12		-107356799
+IDS_ACTIONTEXT_21	1033	[1]	0		-1021928859
+IDS_ACTIONTEXT_21	1041	[1]	0		1670816362
+IDS_ACTIONTEXT_21	2052	[1]	0		-107361343
+IDS_ACTIONTEXT_22	1033	Copying files to the network	0		-1021928859
+IDS_ACTIONTEXT_22	1041	S3##,,@P[S#\,*\PI##S,+DPR##\,.LPU3"A,*0PZS"2,+,PU##\,%<P9C!$,'XP63``	25		-1860747637
+IDS_ACTIONTEXT_22	2052	8VLH5PU9-E)1?]Q^B5O%B(=E]DX`	10		-107356799
+IDS_ACTIONTEXT_23	1033	File: [1], Directory: [9], Size: [6]	0		-1021928859
+IDS_ACTIONTEXT_23	1041	U3"A,*0PZS`Z`"``6P`Q`%T`+``@`,<PHS#L,*\PR##J,#H`(`!;`#D`70`L`"``M3"D,+HP.@`@`%L`-@!=````	32		-786901853
+IDS_ACTIONTEXT_23	2052	AV7V3CH`(`!;`#$`70`,_^YV55\Z`"``6P`Y`%T`#/\G60]<.@`@`%L`-@!=````	23		-107356799
+IDS_ACTIONTEXT_25	1033	File: [1],  Directory: [9],  Size: [6]	0		-1021928859
+IDS_ACTIONTEXT_25	1041	U3"A,*0PZS`Z`"``6P`Q`%T`+``@`"``QS"C,.PPKS#(,.HP.@`@`%L`.0!=`"P`(``@`+4PI#"Z,#H`(`!;`#8`70``	34		-786901853
+IDS_ACTIONTEXT_25	2052	AV7V3CH`(`!;`#$`70`,_^YV55\Z`"``6P`Y`%T`#/\G60]<.@`@`%L`-@!=````	23		-107356799
+IDS_ACTIONTEXT_26	1033	Installing ODBC components	0		-1021928859
+IDS_ACTIONTEXT_26	1041	3P!$`$(`0P`@`+,P\S#=,/PPS3#S,,@PDC"D,/,PN3#(,/PPZS!7,&8P1#!^,%DP	24		1670816362
+IDS_ACTIONTEXT_26	2052	8VLH5XE;Q8@@`$\`1`!"`$,`(`#$?O9.	12		-107356799
+IDS_ACTIONTEXT_27	1033	Installing new services	0		-1021928859
+IDS_ACTIONTEXT_27	1041	L&57,$0PM3#\,-,PN3"2,*0P\S"Y,,@P_##K,%<P9C!$,'XP63``	19		1670816362
+IDS_ACTIONTEXT_27	2052	8VLH5XE;Q8BP90UGH5(`	7		-107356799
+IDS_ACTIONTEXT_28	1033	Service: [2]	0		-1021928859
+IDS_ACTIONTEXT_28	1041	M3#\,-,PN3`Z`"``6P`R`%T`	9		-786901853
+IDS_ACTIONTEXT_28	2052	#6>A4CH`(`!;`#(`70``	7		-107356799
+IDS_ACTIONTEXT_29	1033	Validating install	0		-1021928859
+IDS_ACTIONTEXT_29	1041	I##S,+DPR##\,.LPDC`<:3R*5S!F,$0P?C!9,```	14		1670816362
+IDS_ACTIONTEXT_29	2052	8VLH5XR:P8N)6\6(	6		-107356799
+IDS_ACTIONTEXT_3	1033	Free space: [1]	0		-1021928859
+IDS_ACTIONTEXT_3	1041	>GI-,!B8WU<Z`"``6P`Q`%T`	9		-786901853
+IDS_ACTIONTEXT_3	2052	ZH$Q=7IZ])4Z`"``6P`Q`%T`	9		-107356799
+IDS_ACTIONTEXT_30	1033	Evaluating launch conditions	0		-1021928859
+IDS_ACTIONTEXT_30	1041	=XW54K9R2V&2,!QI/(I7,&8P1#!^,%DP	12		1670816362
+IDS_ACTIONTEXT_30	2052	8VLH5\2+,$\O5*A286?V3@``	8		-107356799
+IDS_ACTIONTEXT_31	1033	Moving files	0		-1021928859
+IDS_ACTIONTEXT_31	1041	U3"A,*0PZS"2,/MYU5)7,&8P1#!^,%DP	12		1670816362
+IDS_ACTIONTEXT_31	2052	8VLH5_MYJ%*'9?9.	6		-107356799
+IDS_ACTIONTEXT_32	1033	File: [1],  Directory: [9],  Size: [6]	0		-1021928859
+IDS_ACTIONTEXT_32	1041	U3"A,*0PZS`Z`"``6P`Q`%T`+``@`"``QS"C,.PPKS#(,.HP.@`@`%L`.0!=`"P`(``@`+4PI#"Z,#H`(`!;`#8`70``	34		-786901853
+IDS_ACTIONTEXT_32	2052	AV7V3CH`(`!;`#$`70`,_^YV55\Z`"``6P`Y`%T`#/\G60]<.@`@`%L`-@!=````	23		-107356799
+IDS_ACTIONTEXT_33	1033	Patching files	0		-1021928859
+IDS_ACTIONTEXT_33	1041	U3"A,*0PZS"2,.Y/8VM7,&8P1#!^,%DP	12		1670816362
+IDS_ACTIONTEXT_33	2052	8VLH5^Y/98B'9?9.	6		-107356799
+IDS_ACTIONTEXT_34	1033	File: [1],  Directory: [2],  Size: [3]	0		-1021928859
+IDS_ACTIONTEXT_34	1041	U3"A,*0PZS`Z`"``6P`Q`%T`+``@`"``QS"C,.PPKS#(,.HP.@`@`%L`,@!=`"P`(``@`+4PI#"Z,#H`(`!;`#,`70``	34		-786901853
+IDS_ACTIONTEXT_34	2052	AV7V3CH`(`!;`#$`70`,_^YV55\Z`"``6P`R`%T`#/\G60]<.@`@`%L`,P!=````	23		-107356799
+IDS_ACTIONTEXT_35	1033	Updating component registration	0		-1021928859
+IDS_ACTIONTEXT_35	1041	LS#S,-TP_##-,/,PR#!N,'MV,I.2,/1FL&57,&8P1#!^,%DP	18		1670816362
+IDS_ACTIONTEXT_35	2052	8VLH5_1FL&7$?O9.Z&R,46B(	9		-107356799
+IDS_ACTIONTEXT_36	1033	Publishing qualified components	0		-1021928859
+IDS_ACTIONTEXT_36	1041	8VN/B6XPLS#S,-TP_##-,/,PR#"2,'IV3(A7,&8P1#!^,%DP	18		1670816362
+IDS_ACTIONTEXT_36	2052	8VLH5]%3`UX(5#QHA';$?O9.	9		-107356799
+IDS_ACTIONTEXT_37	1033	Component ID: [1], Qualifier: [2]	0		-1021928859
+IDS_ACTIONTEXT_37	1041	LS#S,-TP_##-,/,PR#`@`$D`1``Z`"``6P`Q`%T`+``@`%$`=0!A`&P`:0!F`&D`90!R`#H`(`!;`#(`70``	31		-786901853
+IDS_ACTIONTEXT_37	2052	Q'[V3B``20!$`#H`(`!;`#$`70`,_T2-/&BDB\&+!8`Z`"``6P`R`%T`	21		-107356799
+IDS_ACTIONTEXT_38	1033	Publishing product features	0		-1021928859
+IDS_ACTIONTEXT_38	1041	_8C!5%]J_8"2,'IV3(A7,&8P1#!^,%DP	12		1670816362
+IDS_ACTIONTEXT_38	2052	8VLH5]%3`UZG3L%4GU+]@```	8		-107356799
+IDS_ACTIONTEXT_39	1033	Feature: [1]	0		-1021928859
+IDS_ACTIONTEXT_39	1041	7VK]@#H`(`!;`#$`70``	7		-786901853
+IDS_ACTIONTEXT_39	2052	GU+]@#H`(`!;`#$`70``	7		-107356799
+IDS_ACTIONTEXT_4	1033	Searching for installed applications	0		-1021928859
+IDS_ACTIONTEXT_4	1041	I##S,+DPR##\,.LP53",,&8P1#"+,*(PUS#J,+$P_#"W,.<P\S"2,!QI(GU7,&8P1#!^,%DP	27		1670816362
+IDS_ACTIONTEXT_4	2052	8VLH5QQD(GWR78E;Q8B$=I1>*'4+>H]>	12		-107356799
+IDS_ACTIONTEXT_40	1033	Publishing product information	0		-1021928859
+IDS_ACTIONTEXT_40	1041	_8C!5,5@,5B2,'IV3(A7,&8P1#!^,%DP	12		1670816362
+IDS_ACTIONTEXT_40	2052	8VLH5]%3`UZG3L%4X4]O8```	8		-107356799
+IDS_ACTIONTEXT_41	1033	Registering class servers	0		-1021928859
+IDS_ACTIONTEXT_41	1041	KS#I,+DPM3#\,-`PDC![=C*35S!F,$0P?C!9,```	14		-1860747637
+IDS_ACTIONTEXT_41	2052	8VLH5^ALC%%[?`UGH5)H5@``	8		-107356799
+IDS_ACTIONTEXT_42	1033	Class ID: [1]	0		-1021928859
+IDS_ACTIONTEXT_42	1041	Class ID: [1]	0		-786901853
+IDS_ACTIONTEXT_42	2052	Class Id: [1]	0		-107356799
+IDS_ACTIONTEXT_43	1033	Registering extension servers	0		-1021928859
+IDS_ACTIONTEXT_43	1041	J#"O,+DPQC#S,+<PYS#S,+4P_##0,)(P>W8RDU<P9C!$,'XP63``	19		-1860747637
+IDS_ACTIONTEXT_43	2052	8VLH5^ALC%%I8E5<#6>A4FA6	9		-107356799
+IDS_ACTIONTEXT_44	1033	Extension: [1]	0		-1021928859
+IDS_ACTIONTEXT_44	1041	J#"O,+DPQC#S,+<PYS#S,#H`(`!;`#$`70``	13		-786901853
+IDS_ACTIONTEXT_44	2052	:6)57#H`(`!;`#$`70``	7		-107356799
+IDS_ACTIONTEXT_45	1033	Registering fonts	0		-1021928859
+IDS_ACTIONTEXT_45	1041	U3"I,/,PR#"2,'MV,I-7,&8P1#!^,%DP	12		1670816362
+IDS_ACTIONTEXT_45	2052	8VLH5^ALC%%76U-/	6		-107356799
+IDS_ACTIONTEXT_46	1033	Font: [1]	0		-1021928859
+IDS_ACTIONTEXT_46	1041	U3"I,/,PR#`Z`"``6P`Q`%T`	9		-786901853
+IDS_ACTIONTEXT_46	2052	5UM33SH`(`!;`#$`70``	7		-107356799
+IDS_ACTIONTEXT_47	1033	Registering MIME info	0		-1021928859
+IDS_ACTIONTEXT_47	1041	30!)`$T`10`@`,5@,5B2,'MV,I-7,&8P1#!^,%DP	15		1670816362
+IDS_ACTIONTEXT_47	2052	8VLH5^ALC%$@`$T`20!-`$4`(`#A3V]@	12		-107356799
+IDS_ACTIONTEXT_48	1033	MIME Content Type: [1], Extension: [2]	0		-1021928859
+IDS_ACTIONTEXT_48	1041	30!)`$T`10`@`+,P\S#&,/,PR#"_,*0PUS`Z`"``6P`Q`%T`+``@`.%B-5]06SH`(`!;`#(`70``	28		-786901853
+IDS_ACTIONTEXT_48	2052	30!)`$T`10`@`(51N5M[?(M7.@`@`%L`,0!=``S_:6)57#H`(`!;`#(`70``	22		-107356799
+IDS_ACTIONTEXT_49	1033	Registering product	0		-1021928859
+IDS_ACTIONTEXT_49	1041	_8C!5)(P>W8RDU<P9C!$,'XP63``	10		1670816362
+IDS_ACTIONTEXT_49	2052	8VLH5^ALC%&G3L%4	6		-107356799
+IDS_ACTIONTEXT_5	1033	Property: [1], Signature: [2]	0		-1021928859
+IDS_ACTIONTEXT_5	1041	US#M,-$PQC"C,#H`(`!;`#$`70`L`"``<G\-5#H`(`!;`#(`70``	19		-786901853
+IDS_ACTIONTEXT_5	2052	7EPG8#H`(`!;`#$`70`,_WY[#50Z`"``6P`R`%T`	15		-107356799
+IDS_ACTIONTEXT_50	1033	[1]	0		-1021928859
+IDS_ACTIONTEXT_50	1041	[1]	0		1670816362
+IDS_ACTIONTEXT_50	2052	[1]	0		-107361343
+IDS_ACTIONTEXT_51	1033	Registering program identifiers	0		-1021928859
+IDS_ACTIONTEXT_51	1041	US#M,+`PZ3#@,%B+)5)06VXP>W8RDY(PXXEDEE<P9C!$,'XP63``	19		1670816362
+IDS_ACTIONTEXT_51	2052	8VLH5Z1DB&T+>H]>!VC&BR9[A';H;(Q1	12		-107356799
+IDS_ACTIONTEXT_52	1033	ProgID: [1]	0		-1021928859
+IDS_ACTIONTEXT_52	1041	ProgID: [1]	0		-786901853
+IDS_ACTIONTEXT_52	2052	ProgId: [1]	0		-107356799
+IDS_ACTIONTEXT_53	1033	Registering type libraries	0		-1021928859
+IDS_ACTIONTEXT_53	1041	OS"D,-<PZ3"D,-8PZ3#J,)(P>W8RDU<P9C!$,'XP63``	16		-1860747637
+IDS_ACTIONTEXT_53	2052	8VLH5^ALC%%[?(M7DUX`	7		-107356799
+IDS_ACTIONTEXT_54	1033	LibID: [1]	0		-1021928859
+IDS_ACTIONTEXT_54	1041	LibID: [1]	0		1670816362
+IDS_ACTIONTEXT_54	2052	LibID: [1]	0		-107361343
+IDS_ACTIONTEXT_55	1033	Registering user	0		-1021928859
+IDS_ACTIONTEXT_55	1041	YC#\,+8PDC![=C*35S!F,$0P?C!9,```	11		-1860747637
+IDS_ACTIONTEXT_55	2052	8VLH5^ALC%$H=3=B	6		-107356799
+IDS_ACTIONTEXT_56	1033	[1]	0		-1021928859
+IDS_ACTIONTEXT_56	1041	[1]	0		1670816362
+IDS_ACTIONTEXT_56	2052	[1]	0		-107361343
+IDS_ACTIONTEXT_57	1033	Removing duplicated files	0		-1021928859
+IDS_ACTIONTEXT_57	1041	S9$'B5<P9C!$,(LPU3"A,*0PZS"2,$I29)97,&8P1#!^,%DP	18		1670816362
+IDS_ACTIONTEXT_57	2052	8VLH5R!29);-D0U9A':'9?9.	9		-107356799
+IDS_ACTIONTEXT_58	1033	File: [1], Directory: [9]	0		-1021928859
+IDS_ACTIONTEXT_58	1041	U3"A,*0PZS`Z`"``6P`Q`%T`+``@`,<PHS#L,*\PR##J,#H`(`!;`#D`70``	22		-786901853
+IDS_ACTIONTEXT_58	2052	AV7V3CH`(`!;`#$`70`,_^YV55\Z`"``6P`Y`%T`	15		-107356799
+IDS_ACTIONTEXT_59	1033	Updating environment strings	0		-1021928859
+IDS_ACTIONTEXT_59	1041	L'2#6+DPR##J,/,PL#"2,/1FL&57,&8P1#!^,%DP	15		1670816362
+IDS_ACTIONTEXT_59	2052	8VLH5_1FL&6O<X-85ULF>S).	9		-107356799
+IDS_ACTIONTEXT_6	1033	Binding executables	0		-1021928859
+IDS_ACTIONTEXT_6	1041	GUM,B-4PH3"D,.LPDC#0,*0P\S#),%<P9C!$,'XP63``	16		-1860747637
+IDS_ACTIONTEXT_6	2052	T7Z:6^]39V),B(=E]DX`	7		-107356799
+IDS_ACTIONTEXT_60	1033	Name: [1], Value: [2], Action [3]	0		-1021928859
+IDS_ACTIONTEXT_60	1041	#51-4CH`(`!;`#$`70`L`"``)%`Z`"``6P`R`%T`+``@`*(PKS"W,.<P\S`@`%L`,P!=````	26		-786901853
+IDS_ACTIONTEXT_60	2052	#53P>3H`(`!;`#$`70`,_W!E/%`Z`"``6P`R`%T`#/^H4EQ/(`!;`#,`70``	22		-107356799
+IDS_ACTIONTEXT_61	1033	Removing files	0		-1021928859
+IDS_ACTIONTEXT_61	1041	U3"A,*0PZS"2,$I29)97,&8P1#!^,%DP	12		1670816362
+IDS_ACTIONTEXT_61	2052	8VLH5R!29):'9?9.	6		-107356799
+IDS_ACTIONTEXT_62	1033	File: [1], Directory: [9]	0		-1021928859
+IDS_ACTIONTEXT_62	1041	U3"A,*0PZS`Z`"``6P`Q`%T`+``@`,<PHS#L,*\PR##J,#H`(`!;`#D`70``	22		-786901853
+IDS_ACTIONTEXT_62	2052	AV7V3CH`(`!;`#$`70`,_^YV55\Z`"``6P`Y`%T`	15		-107356799
+IDS_ACTIONTEXT_63	1033	Removing folders	0		-1021928859
+IDS_ACTIONTEXT_63	1041	U3"I,.LPP#"2,$I29)97,&8P1#!^,%DP	12		1670816362
+IDS_ACTIONTEXT_63	2052	8VLH5R!29):'9?9..5D`	7		-107356799
+IDS_ACTIONTEXT_64	1033	Folder: [1]	0		-1021928859
+IDS_ACTIONTEXT_64	1041	U3"I,.LPP#`Z`"``6P`Q`%T`	9		-786901853
+IDS_ACTIONTEXT_64	2052	AV7V3CE9.@`@`%L`,0!=````	8		-107356799
+IDS_ACTIONTEXT_65	1033	Removing INI file entries	0		-1021928859
+IDS_ACTIONTEXT_65	1041	20!.`$D`(`#5,*$PI##K,&XPJ##S,,@PZC"2,$I29)97,&8P1#!^,%DP	21		1670816362
+IDS_ACTIONTEXT_65	2052	8VLH5R!29)8@`$D`3@!)`"``AV7V3F%G[G8`	13		-107356799
+IDS_ACTIONTEXT_66	1033	File: [1],  Section: [2],  Key: [3], Value: [4]	0		-1021928859
+IDS_ACTIONTEXT_66	1041	U3"A,*0PZS`Z`"``6P`Q`%T`+``@`"``NS"O,+<PYS#S,#H`(`!;`#(`70`L`"``(`"M,/PP.@`@`%L`,P!=`"P`(``D4#H`(`!;`#0`70``	40		-786901853
+IDS_ACTIONTEXT_66	2052	AV7V3CH`(`!;`#$`70`,_X*".@`@`%L`,@!=``S_+I4Z`"``6P`S`%T`#/]P93Q0.@`@`%L`-`!=````	29		-107356799
+IDS_ACTIONTEXT_67	1033	Removing ODBC components	0		-1021928859
+IDS_ACTIONTEXT_67	1041	3P!$`$(`0P`@`+,P\S#=,/PPS3#S,,@PDC!*4F265S!F,$0P?C!9,```	20		1670816362
+IDS_ACTIONTEXT_67	2052	8VLH5R!29)8@`$\`1`!"`$,`(`#$?O9.	12		-107356799
+IDS_ACTIONTEXT_68	1033	Removing system registry values	0		-1021928859
+IDS_ACTIONTEXT_68	1041	MS"Y,,8PX##L,+@PN3#(,.HP;C`D4)(P2E)DEE<P9C!$,'XP63``	19		-1860747637
+IDS_ACTIONTEXT_68	2052	8VLH5R!29);[?-]^Z&R,46B(/%``	10		-107356799
+IDS_ACTIONTEXT_69	1033	Key: [1], Name: [2]	0		-1021928859
+IDS_ACTIONTEXT_69	1041	K3#\,#H`(`!;`#$`70`L`"``#51-4CH`(`!;`#(`70``	16		-786901853
+IDS_ACTIONTEXT_69	2052	+I4\4#H`(`!;`#$`70`,_PU4\'DZ`"``6P`R`%T`	15		-107356799
+IDS_ACTIONTEXT_7	1033	File: [1]	0		-1021928859
+IDS_ACTIONTEXT_7	1041	U3"A,*0PZS`Z`"``6P`Q`%T`	9		-786901853
+IDS_ACTIONTEXT_7	2052	AV7V3CH`(`!;`#$`70``	7		-107356799
+IDS_ACTIONTEXT_70	1033	Removing shortcuts	0		-1021928859
+IDS_ACTIONTEXT_70	1041	MS#G,/PPR#"K,,,PR#"2,$I29)97,&8P1#!^,%DP	15		1670816362
+IDS_ACTIONTEXT_70	2052	8VLH5R!29);K7W=CN64/7P``	8		-107356799
+IDS_ACTIONTEXT_71	1033	Shortcut: [1]	0		-1021928859
+IDS_ACTIONTEXT_71	1041	MS#G,/PPR#"K,,,PR#`Z`"``6P`Q`%T`	12		-786901853
+IDS_ACTIONTEXT_71	2052	ZU]W8[EE#U\Z`"``6P`Q`%T`	9		-107356799
+IDS_ACTIONTEXT_72	1033	Searching for qualifying products	0		-1021928859
+IDS_ACTIONTEXT_72	1041	8VN/B6XP_8C!5)(P'&DB?5<P9C!$,'XP63``	13		1670816362
+IDS_ACTIONTEXT_72	2052	8VLH5QQD(GTF>PA41(T\:(1VIT[!5```	11		-107356799
+IDS_ACTIONTEXT_73	1033	Rolling back action:	0		-1021928859
+IDS_ACTIONTEXT_73	1041	HC"O,+<PYS#S,)(P0U%K,#MB5S!F,$0P?C!9,#H`	15		-786901853
+IDS_ACTIONTEXT_73	2052	WE;:;LUD7$\Z`"``	6		-107356799
+IDS_ACTIONTEXT_74	1033	[1]	0		-1021928859
+IDS_ACTIONTEXT_74	1041	[1]	0		1670816362
+IDS_ACTIONTEXT_74	2052	[1]	0		-107361343
+IDS_ACTIONTEXT_76	1033	File: [1]	0		-1021928859
+IDS_ACTIONTEXT_76	1041	U3"A,*0PZS`Z`"``6P`Q`%T`	9		-786901853
+IDS_ACTIONTEXT_76	2052	AV7V3CH`(`!;`#$`70``	7		-107356799
+IDS_ACTIONTEXT_77	1033	Registering modules	0		-1021928859
+IDS_ACTIONTEXT_77	1041	XC"X,.4P_##K,)(P2E)DEE<P9C!$,'XP63``	13		1670816362
+IDS_ACTIONTEXT_77	2052	8VLH5^ALC%$A:E=7	6		-107356799
+IDS_ACTIONTEXT_78	1033	File: [1], Folder: [2]	0		-1021928859
+IDS_ACTIONTEXT_78	1041	U3"A,*0PZS`Z`"``6P`Q`%T`+``@`-4PJ3#K,,`P.@`@`%L`,@!=````	20		-786901853
+IDS_ACTIONTEXT_78	2052	AV7V3CH`(`!;`#$`70`,_X=E]DXY63H`(`!;`#(`70``	16		-107356799
+IDS_ACTIONTEXT_79	1033	Unregistering modules	0		-1021928859
+IDS_ACTIONTEXT_79	1041	XC"X,.4P_##K,&XP>W8RDY(PXXEDEE<P9C!$,'XP63``	16		1670816362
+IDS_ACTIONTEXT_79	2052	8VLH5Z1DB&TA:E=7A';H;(Q1	9		-107356799
+IDS_ACTIONTEXT_8	1033	Searching for qualifying products	0		-1021928859
+IDS_ACTIONTEXT_8	1041	8VN/B6XP_8C!5)(P'&DB?5<P9C!$,'XP63``	13		1670816362
+IDS_ACTIONTEXT_8	2052	8VLH5QQD(GTF>PA41(T\:(1VIT[!5```	11		-107356799
+IDS_ACTIONTEXT_80	1033	File: [1], Folder: [2]	0		-1021928859
+IDS_ACTIONTEXT_80	1041	U3"A,*0PZS`Z`"``6P`Q`%T`+``@`-4PJ3#K,,`P.@`@`%L`,@!=````	20		-786901853
+IDS_ACTIONTEXT_80	2052	AV7V3CH`(`!;`#$`70`,_X=E]DXY63H`(`!;`#(`70``	16		-107356799
+IDS_ACTIONTEXT_81	1033	Initializing ODBC directories	0		-1021928859
+IDS_ACTIONTEXT_81	1041	3P!$`$(`0P`@`,<PHS#L,*\PR##J,)(P'5(?9Q935S!F,$0P?C!9,```	20		1670816362
+IDS_ACTIONTEXT_81	2052	8VLH5QU2RUD64R``3P!$`$(`0P`@`.YV55\`	13		-107356799
+IDS_ACTIONTEXT_82	1033	Starting services	0		-1021928859
+IDS_ACTIONTEXT_82	1041	M3#\,-,PN3"2,(N5RUE7,&8P1#!^,%DP	12		1670816362
+IDS_ACTIONTEXT_82	2052	8VLH5R]4J%(-9Z%2	6		-107356799
+IDS_ACTIONTEXT_83	1033	Service: [1]	0		-1021928859
+IDS_ACTIONTEXT_83	1041	M3#\,-,PN3`Z`"``6P`Q`%T`	9		-786901853
+IDS_ACTIONTEXT_83	2052	#6>A4CH`(`!;`#$`70``	7		-107356799
+IDS_ACTIONTEXT_84	1033	Stopping services	0		-1021928859
+IDS_ACTIONTEXT_84	1041	M3#\,-,PN3"2,%Q08FM7,&8P1#!^,%DP	12		1670816362
+IDS_ACTIONTEXT_84	2052	8VLH5UQ08FL-9Z%2	6		-107356799
+IDS_ACTIONTEXT_85	1033	Service: [1]	0		-1021928859
+IDS_ACTIONTEXT_85	1041	M3#\,-,PN3`Z`"``6P`Q`%T`	9		-786901853
+IDS_ACTIONTEXT_85	2052	#6>A4CH`(`!;`#$`70``	7		-107356799
+IDS_ACTIONTEXT_86	1033	Removing moved files	0		-1021928859
+IDS_ACTIONTEXT_86	1041	^WG54E<P7S#5,*$PI##K,)(P2E)DEE<P9C!$,'XP63``	16		1670816362
+IDS_ACTIONTEXT_86	2052	8VLH5R!29);[>:A2QX^$=H=E]DX`	10		-107356799
+IDS_ACTIONTEXT_87	1033	File: [1], Directory: [9]	0		-1021928859
+IDS_ACTIONTEXT_87	1041	U3"A,*0PZS`Z`"``6P`Q`%T`+``@`,<PHS#L,*\PR##J,#H`(`!;`#D`70``	22		-786901853
+IDS_ACTIONTEXT_87	2052	AV7V3CH`(`!;`#$`70`,_^YV55\Z`"``6P`Y`%T`	15		-107356799
+IDS_ACTIONTEXT_88	1033	Unpublishing Qualified Components	0		-1021928859
+IDS_ACTIONTEXT_88	1041	8VN/B6XPLS#S,-TP_##-,/,PR#!N,'IV3(B2,%Q08FM7,&8P1#!^,%DP	21		1670816362
+IDS_ACTIONTEXT_88	2052	8VLH5]93B&T(5#QHQ'[V3H1VT5,#7@``	11		-107356799
+IDS_ACTIONTEXT_89	1033	Component ID: [1], Qualifier: [2]	0		-1021928859
+IDS_ACTIONTEXT_89	1041	LS#S,-TP_##-,/,PR#`@`$D`1``Z`"``6P`Q`%T`+``@`%$`=0!A`&P`:0!F`&D`90!R`#H`(`!;`#(`70``	31		-786901853
+IDS_ACTIONTEXT_89	2052	Q'[V3B``20!$`#H`(`!;`#$`70`,_T2-/&BDB\&+!8`Z`"``6P`R`%T`	21		-107356799
+IDS_ACTIONTEXT_9	1033	Computing space requirements	0		-1021928859
+IDS_ACTIONTEXT_9	1041	Q5^!B6HP&)C?5Y(P"(J7>U<P9C!$,'XP63``	13		1670816362
+IDS_ACTIONTEXT_9	2052	8VLH5Z&+EWMZ>O25`)=";```	8		-107356799
+IDS_ACTIONTEXT_90	1033	Unpublishing product features	0		-1021928859
+IDS_ACTIONTEXT_90	1041	_8C!5%]J_8!N,'IV3(B2,%Q08FM7,&8P1#!^,%DP	15		1670816362
+IDS_ACTIONTEXT_90	2052	8VLH5]93B&VG3L%4GU+]@(1VT5,#7@``	11		-107356799
+IDS_ACTIONTEXT_91	1033	Feature: [1]	0		-1021928859
+IDS_ACTIONTEXT_91	1041	7VK]@#H`(`!;`#$`70``	7		-786901853
+IDS_ACTIONTEXT_91	2052	GU+]@#H`(`!;`#$`70``	7		-107356799
+IDS_ACTIONTEXT_92	1033	Unpublishing product information	0		-1021928859
+IDS_ACTIONTEXT_92	1041	_8C!5,5@,5AN,'IV3(B2,%Q08FM7,&8P1#!^,%DP	15		1670816362
+IDS_ACTIONTEXT_92	2052	8VLH5]93B&VG3L%4X4]O8(1VT5,#7@``	11		-107356799
+IDS_ACTIONTEXT_93	1033	Unregister class servers	0		-1021928859
+IDS_ACTIONTEXT_93	1041	KS#I,+DPM3#\,-`P;C![=C*3DC#CB6265S!F,$0P?C!9,```	17		-1860747637
+IDS_ACTIONTEXT_93	2052	8VLH5Z1DB&U[?`UGH5)H5H1VZ&R,40``	11		-107356799
+IDS_ACTIONTEXT_94	1033	Class ID: [1]	0		-1021928859
+IDS_ACTIONTEXT_94	1041	Class ID: [1]	0		-786901853
+IDS_ACTIONTEXT_94	2052	>WP@`$D`1``Z`"``6P`Q`%T`	9		-107356799
+IDS_ACTIONTEXT_95	1033	Unregistering extension servers	0		-1021928859
+IDS_ACTIONTEXT_95	1041	J#"O,+DPQC#S,+<PYS#S,+4P_##0,&XP>W8RDY(PXXEDEE<P9C!$,'XP63``	22		-1860747637
+IDS_ACTIONTEXT_95	2052	8VLH5Z1DB&UI8E5<#6>A4FA6A';H;(Q1	12		-107356799
+IDS_ACTIONTEXT_96	1033	Extension: [1]	0		-1021928859
+IDS_ACTIONTEXT_96	1041	J#"O,+DPQC#S,+<PYS#S,#H`(`!;`#$`70``	13		-786901853
+IDS_ACTIONTEXT_96	2052	:6)57#H`(`!;`#$`70``	7		-107356799
+IDS_ACTIONTEXT_97	1033	Unregistering fonts	0		-1021928859
+IDS_ACTIONTEXT_97	1041	U3"I,/,PR#!N,'MV,I.2,..)9)97,&8P1#!^,%DP	15		1670816362
+IDS_ACTIONTEXT_97	2052	8VLH5Z1DB&U76U-/A';H;(Q1	9		-107356799
+IDS_ACTIONTEXT_98	1033	Font: [1]	0		-1021928859
+IDS_ACTIONTEXT_98	1041	U3"I,/,PR#`Z`"``6P`Q`%T`	9		-786901853
+IDS_ACTIONTEXT_98	2052	5UM33SH`(`!;`#$`70``	7		-107356799
+IDS_ACTIONTEXT_99	1033	Unregistering MIME info	0		-1021928859
+IDS_ACTIONTEXT_99	1041	30!)`$T`10`@`,5@,5AN,'MV,I.2,..)9)97,&8P1#!^,%DP	18		1670816362
+IDS_ACTIONTEXT_99	2052	8VLH5Z1DB&T@`$T`20!-`$4`(`#A3V]@A';H;(Q1	15		-107356799
+IDS_ACTIONTEXT_CP	1033	Copying new files	0		-1021928859
+IDS_ACTIONTEXT_CP	1041	L&57,$0PU3"A,*0PZS"2,+,PU##\,%<P9C!$,'XP63``	16		1704399078
+IDS_ACTIONTEXT_CP	2052	8VLH5PU9-E*P98=E]DX`	7		-107356799
+IDS_ACTIONTEXT_DL	1033	Downloading files (expect pauses as cabinet files are downloaded)	0		-1021928859
+IDS_ACTIONTEXT_DL	1041	P#"F,/,P[3#\,,DP+4X@`"@`K3#C,-,PS3##,,@PU3"A,*0PZS#`,*8P\S#M,/PPR3!"9F\P+4ZM92D`	30		-451316399
+IDS_ACTIONTEXT_DL	2052	8VLH5PM.?8^'9?9."/^'9?9.!5,+3GV/]F7O4_V`^E&P<X)F7%`)_P``	20	^M	-451337710
+IDS_ERROR_0	1033	{{Fatal error: }}	0		-1021928859
+IDS_ERROR_0	1041	>P![`/2!?52$=FHPJ##I,/PP.@`@`'T`?0``	13		-786901853
+IDS_ERROR_0	2052	>P![`/2!?509E>^+.@`@`'T`?0``	10		-107356799
+IDS_ERROR_1	1033	Error [1].	0		-1021928859
+IDS_ERROR_1	1041	>P![`*@PZ3#\,"``6P`Q`%T``C`@`"``?0!]````	14		1670816362
+IDS_ERROR_1	2052	>P![`!F5[XL@`%L`,0!=``(P?0!]````	11		-107356799
+IDS_ERROR_10	1033	=== Logging started: [Date]  [Time] ===	0		-1021928859
+IDS_ERROR_10	1041	/0`]`#T`(`#M,+`PBY7+63H`(`!;`$0`80!T`&4`70`@`"``6P!4`&D`;0!E`%T`(``]`#T`/0``	28		-786901853
+IDS_ERROR_10	2052	/0`]`#T`(`"PBU5?`%_+63H`(`!;`$0`80!T`&4`70`@`"``6P!4`&D`;0!E`%T`(``]`#T`/0``	28		-107356799
+IDS_ERROR_100	1033	Could not remove shortcut [2]. Verify that the shortcut file exists and that you can access it.	0		-1021928859
+IDS_ERROR_100	1041	MS#G,/PPR#"K,,,PR#`@`%L`,@!=`"``DC!*4F269S!-,'XP6S"3,`(PMS#G,/PPR#"K,,,PR##5,*$PI##K,$PP6%LH5UDPBS!+,`$P?C!?,%,P;C#5,*$PI##K,'@P;C"B,*\PNS"Y,"EJDC`!8V,P9C!$,(LP2S!I,$8P2S"2,+IXC8I7,&8P3S!@,%4P1#`",```	74		-1860747637
+IDS_ERROR_100	2052	X&75;"!29);K7W=CN64/7R``6P`R`%T``C#WBVYXI(OEB^M?=V.Y90]?AV7V3EA;*%<,_W9>%$ZH8.]3Y4Z_B^Z5Y8N'9?9.`C``	37		-107356799
+IDS_ERROR_101	1033	Could not register type library for file [2].  Contact your support personnel.	0		-1021928859
+IDS_ERROR_101	1041	U3"A,*0PZS`@`%L`,@!=`"``:S"_,*0PUS#I,*0PUC#I,.HPDC![=C*39S!-,'XP6S"3,`(PM3#=,/PPR##%8E-?!8!X,$HP3U5$,`A4CS!;,$\P8#!5,$0P`C``	46		-1860747637
+IDS_ERROR_101	2052	X&75;`9<AV7V3B``6P`R`%T`(`#H;(Q1,%)[?(M7DUXM3@(P]XL.3JA@A':`8B]G+V4!8[I.6%14@/M\`C``	31		-107356799
+IDS_ERROR_102	1033	Could not unregister type library for file [2].  Contact your support personnel.	0		-1021928859
+IDS_ERROR_102	1041	U3"A,*0PZS`@`%L`,@!=`"``;C"_,*0PUS#I,*0PUC#I,.HP;C![=C*3DC#64XHPB&U9,%,P:#!,,&<P33!^,%LPDS`",+4PW3#\,,@PQ6)37P6`>#!*,$]51#`(5(\P6S!/,&`P53!$,`(P	54		-1860747637
+IDS_ERROR_102	2052	X&75;*1DB&V'9?9.(`!;`#(`70`@`"A7>WR+5Y->+4Z$=NALC%$",/>+#DZH8(1V@&(O9R]E`6.Z3EA45(#[?`(P	33		-107356799
+IDS_ERROR_103	1033	Could not update the INI file [2][3].  Verify that the file exists and that you can access it.	0		-1021928859
+IDS_ERROR_103	1041	20!N`&D`(`#5,*$PI##K,"``6P`R`%T`6P`S`%T`(`"2,/1FL&5G,$TP?C!;,),P`C#N=H1V;C#5,*$PI##K,$PP6%LH5UDPBS!+,&DP1C!+,`$P?C!?,%,P;C#5,*$PI##K,'@P;C"B,*\PNS"Y,"EJDC`!8V,P9C!$,(LP2S!I,$8P2S"2,+IXC8I7,&8P3S!@,%4P1#`",```	77		1670816362
+IDS_ERROR_103	2052	X&75;/1FL&4@`$D`3@!)`"``AV7V3B``6P`R`%T`6P`S`%T``C#WBVYXI(OEBX=E]DY86RA7=EX43JA@[U/E3K^+[I6#6P(P	36		-107356799
+IDS_ERROR_104	1033	Could not schedule file [2] to replace file [3] on reboot.  Verify that you have write permissions to file [3].	0		-1021928859
+IDS_ERROR_104	1041	C5%WC=5263"+,&@P33!K,`$PU3"A,*0PZS`@`%L`,P!=`"``DC`@`%L`,@!=`"``9S!N?TTPVV-(,(LPB#!&,&LPN3"Q,+@PY3#\,.LP63"+,%,P:#!,,&<P33!^,%LPDS`",-4PH3"D,.LP(`!;`#,`70`@`'@P;C#X9DTPO(]_,"EJDC`!8V,P9C!$,(LP2S!I,$8P2S"2,+IXC8I7,&8P3S!@,%4P1#`",```	86		1670816362
+IDS_ERROR_104	2052	X&75;(E;DF,H5\V1L&4O5*A2]F4H=8=E]DX@`%L`,@!=`"``_V9B8X=E]DX@`%L`,P!=``(P]XMN>*2+J&#E8@EG^5N'9?9.(`!;`#,`70`@`(1VF5%#9U"6`C``	46		-107356799
+IDS_ERROR_105	1033	Error removing ODBC driver manager, ODBC error [2]: [3]. Contact your support personnel.	0		-1021928859
+IDS_ERROR_105	1041	3P!$`$(`0P`@`,DPZ3"D,-`PWC#-,/PPN##C,&XP2E)DEF<PJ##I,/PP3#!Z=A]U5S!^,%<P7S`",$\`1`!"`$,`J##I,/PP(`!;`#(`70`Z`"``6P`S`%T``C"U,-TP_##(,,5B4U\%@'@P2C!/540P"%2/,%LP3S!@,%4P1#`",```	65		-786901853
+IDS_ERROR_105	2052	(%)DEB``3P!$`$(`0P`@`'&:J%(+>H]>H7L&=&A6]F714Q]U&97OBPS_3P!$`$(`0P`@`!F5[XL@`%L`,@!=`#H`(`!;`#,`70`",/>+#DZH8(1V@&(O9R]E`6.Z3EA45(#[?`(P	51		-107356799
+IDS_ERROR_106	1033	Error installing ODBC driver manager, ODBC error [2]: [3]. Contact your support personnel.	0		-1021928859
+IDS_ERROR_106	1041	3P!$`$(`0P`@`,DPZ3"D,-`PWC#-,/PPN##C,&XPI##S,+DPR##\,.LP9S"H,.DP_#!,,'IV'W57,'XP5S!?,`(P3P!$`$(`0P`@`*@PZ3#\,"``6P`R`%T`.@`@`%L`,P!=``(PM3#=,/PPR##%8E-?!8!X,$HP3U5$,`A4CS!;,$\P8#!5,$0P`C``	70		-1860747637
+IDS_ERROR_106	2052	B5O%B"``3P!$`$(`0P`@`'&:J%(+>H]>H7L&=&A6]F714Q]U&97OBPS_3P!$`$(`0P`@`!F5[XL@`%L`,@!=`#H`(`!;`#,`70`",/>+#DZH8(1V@&(O9R]E`6.Z3EA45(#[?`(P	51		-107356799
+IDS_ERROR_107	1033	Error removing ODBC driver [4], ODBC error [2]: [3]. Verify that you have sufficient privileges to remove ODBC drivers.	0		-1021928859
+IDS_ERROR_107	1041	3P!$`$(`0P`@`,DPZ3"D,-`P(`!;`#0`70`@`&XP2E)DEF<PJ##I,/PP3#!Z=A]U5S!^,%<P7S`",$\`1`!"`$,`(`"H,.DP_#`@`%L`,@!=`#H`(`!;`#,`70`",$\`1`!"`$,`(`#),.DPI##0,)(P2E)DEEDPBS`I:E"6DC`!8V,P9C!$,(LP2S!I,$8P2S"2,+IXC8I7,&8P3S!@,%4P1#`",```	83		-786901853
+IDS_ERROR_107	2052	(%)DEB``3P!$`$(`0P`@`'&:J%(+>H]>(`!;`#0`70`@`/9ET5,?=1F5[XL,_T\`1`!"`$,`(``9E>^+(`!;`#(`70`Z`"``6P`S`%T``C#WBVYXI(NH8`EGLXT?681V0V=0EB!29)8@`$\`1`!"`$,`(`!QFJA2"WJ/7@(P	63		-107356799
+IDS_ERROR_108	1033	Error installing ODBC driver [4], ODBC error [2]: [3]. Verify that the file [4] exists and that you can access it.	0		-1021928859
+IDS_ERROR_108	1041	3P!$`$(`0P`@`,DPZ3"D,-`P(`!;`#0`70`@`&XPI##S,+DPR##\,.LP9S"H,.DP_#!,,'IV'W57,'XP5S!?,`(P(`!/`$0`0@!#`"``J##I,/PP(`!;`#(`70`Z`"``6P`S`%T``C#5,*$PI##K,"``6P`T`%T`(`!,,%A;*%=9,(LP2S`!,$HPB#!S,%,P;C#5,*$PI##K,'@P;C"B,*\PNS"Y,"EJDC`!8V,P9C!$,(LP2S!I,$8P2S"2,+IXC8I7,&8P3S!@,%4P1#`",```	104		-786901853
+IDS_ERROR_108	2052	B5O%B"``3P!$`$(`0P`@`'&:J%(+>H]>(`!;`#0`70`@`/9ET5,?=1F5[XL,_T\`1`!"`$,`(``9E>^+(`!;`#(`70`Z`"``6P`S`%T``C#WBVYXI(N'9?9.(`!;`#0`70`@`%A;*%<,_W9>%$ZH8.]3Y4Z_B^Z5Y8N'9?9.`C``	64		-107356799
+IDS_ERROR_109	1033	Error configuring ODBC data source [4], ODBC error [2]: [3]. Verify that the file [4] exists and that you can access it.	0		-1021928859
+IDS_ERROR_109	1041	3P!$`$(`0P`@`,<P_#"_,+TP_#"Y,&XP+8J:6VLP,5E795<P?C!7,%\P.@`@`%L`-`!=``(P3P!$`$(`0P`@`*@PZ3#\,"``6P`R`%T`.@`@`%L`,P!=``(PU3"A,*0PZS`@`%L`-`!=`"``3#!86RA763"+,$LP`3!^,%\P4S!N,-4PH3"D,.LP>#!N,*(PKS"[,+DP*6J2,`%C8S!F,$0PBS!+,&DP1C!+,)(PNGB-BE<P9C!/,&`P53!$,`(P	96		-786901853
+IDS_ERROR_109	2052	39%N?R``3P!$`$(`0P`@`'!E;F.0;B``6P`T`%T`(`#V9=%3'W49E>^+#/]/`$0`0@!#`"``&97OBR``6P`R`%T`.@`@`%L`,P!=``(P]XMN>*2+AV7V3B``6P`T`%T`(`!86RA7#/]V7A1.J&#O4^5.OXONE>6+AV7V3@(P	63		-107356799
+IDS_ERROR_11	1033	=== Logging stopped: [Date]  [Time] ===	0		-1021928859
+IDS_ERROR_11	1041	/0`]`#T`(`#M,+`P0GV&3CH`(`!;`$0`80!T`&4`70`@`"``6P!4`&D`;0!E`%T`(``]`#T`/0``	28		-786901853
+IDS_ERROR_11	2052	/0`]`#T`(`"PBU5?7%!B:SH`(`!;`$0`80!T`&4`70`@`"``6P!4`&D`;0!E`%T`(``]`#T`/0``	28		-107356799
+IDS_ERROR_110	1033	Service [2] ([3]) failed to start.  Verify that you have sufficient privileges to start system services.	0		-1021928859
+IDS_ERROR_110	1041	M3#\,-,PN3`@`"<`6P`R`%T`)P`@`"@`6P`S`%T`*0`@`$PPBY7+66<P33!^,%LPDS!G,%<P7S`",+<PN3#&,.`PM3#\,-,PN3"2,(N5RUE9,(LP*6I0EI(P`6-C,&8P1#"+,%,P:#"2,+IXC8I7,&8P3S!@,%4P1#`",```	62		-1860747637
+IDS_ERROR_110	2052	#6>A4B``6P`R`%T`"/];`#,`70`)_X1V+U2H4C%9)8T",/>+;GBDBZA@"6>SC1]9A'9#9U"6+U2H4OM\WWX-9Z%2`C``	34		-107356799
+IDS_ERROR_111	1033	Service [2] ([3]) could not be stopped.  Verify that you have sufficient privileges to stop system services.	0		-1021928859
+IDS_ERROR_111	1041	M3#\,-,PN3`@`"<`6P`R`%T`)P`@`"@`6P`S`%T`*0`@`)(P7%!B:V<P33!^,%LPDS!G,%<P7S`",+<PN3#&,.`PM3#\,-,PN3"2,%Q08FM9,(LP*6I0EI(P`6-C,&8P1#"+,%,P:#"2,+IXC8I7,&8P3S!@,%4P1#`",```	62		-1860747637
+IDS_ERROR_111	2052	X&75;,A^8FL-9Z%2(`!;`#(`70`(_UL`,P!=``G_`C#WBVYXI(NH8`EGLXT?681V0V=0ELA^8FO[?-]^#6>A4@(P	33		-107356799
+IDS_ERROR_112	1033	Service [2] ([3]) could not be deleted.  Verify that you have sufficient privileges to remove system services.	0		-1021928859
+IDS_ERROR_112	1041	M3#\,-,PN3`@`"<`6P`R`%T`)P`@`"@`6P`S`%T`*0`@`)(P2E)DEF<P33!^,%LPDS!G,%<P7S`",+<PN3#&,.`PM3#\,-,PN3"2,$I29)99,(LP*6I0EI(P`6-C,&8P1#"+,%,P:#"2,+IXC8I7,&8P3S!@,%4P1#`",```	62		-1860747637
+IDS_ERROR_112	2052	X&75;"!29)8-9Z%2(`!;`#(`70`(_UL`,P!=``G_`C#WBVYXI(NH8`EGLXT?681V0V=0EB!29);[?-]^#6>A4@(P	33		-107356799
+IDS_ERROR_113	1033	Service [2] ([3]) could not be installed.  Verify that you have sufficient privileges to install system services.	0		-1021928859
+IDS_ERROR_113	1041	M3#\,-,PN3`@`"<`6P`R`%T`)P`@`"@`6P`S`%T`*0`@`)(PI##S,+DPR##\,.LP9S!-,'XP6S"3,&<P5S!?,`(PMS"Y,,8PX#"U,/PPTS"Y,)(PI##S,+DPR##\,.LP63"+,"EJ4):2,`%C8S!F,$0PBS!3,&@PDC"Z>(V*5S!F,$\P8#!5,$0P`C``	70		-1860747637
+IDS_ERROR_113	2052	X&75;(E;Q8@-9Z%2(`!;`#(`70`(_UL`,P!=``G_`C#WBVYXI(NH8`EGLXT?681V0V=0EHE;Q8C[?-]^#6>A4@(P	33		-107356799
+IDS_ERROR_114	1033	Could not update environment variable [2].  Verify that you have sufficient privileges to modify environment variables.	0		-1021928859
+IDS_ERROR_114	1041	L'2#6`E9<&4@`"<`6P`R`%T`)P`@`)(P]&:P96<P33!^,%LPDS!G,%<P7S`",+!T@U@)67!EDC#N3V-K63"+,"EJ4):2,`%C8S!F,$0PBS!3,&@PDC"Z>(V*5S!F,$\P8#!5,$0P`C``	52		1670816362
+IDS_ERROR_114	2052	X&75;/1FL&6O<X-8V%//D2``6P`R`%T``C#WBVYXI(NH8`EGLXT?681V0V=0ENY/.66O<X-8V%//D0(P	30		-107356799
+IDS_ERROR_115	1033	You do not have sufficient privileges to complete this installation for all users of the machine.  Log on as an administrator and then retry this installation.	0		-1021928859
+IDS_ERROR_115	1041	HC"O,+LPN3`I:DPP#4Y!4P92:C!?,($P`3!3,&XPWC"W,/,P;C!9,'DP9C!N,.8P_#"V,/PP3#!_3RAU9S!-,(LPB#!&,&LPHC#7,.HPL3#\,+<PYS#S,)(PI##S,+DPR##\,.LP63"+,%,P:#!O,&<P33!^,%LPDS`",*%[!G0%@&@P5S!F,.TPL#"D,/,P5S`!,(U1IEZD,/,PN3#(,/PPZS!7,&8P3S!@,%4P1#`",```	89		1670816362
+IDS_ERROR_115	2052	J&"A;`EGLXT?681V0V=0ECI.Y8NABY=[.F=`8@EG*'4W8HQ;$&)D:XE;Q8@",/>+Y4ZA>P9T6%2$=JN._4Y[=E5?#/\V<0Y4S9&P91U<U8O;CTR(9&N)6\6(`C``	46		-107356799
+IDS_ERROR_116	1033	Could not set file security for file [3]. Error: [2].  Verify that you have sufficient privileges to modify the security permissions for this file.	0		-1021928859
+IDS_ERROR_116	1041	U3"A,*0PZS`@`"<`6P`S`%T`)P`@`&LP_EM9,(LPNS"M,.4PZC#&,*,PDC`MBII;9S!-,'XP6S"3,`(PJ##I,/PP.@`@`%L`,@!=``(P(`!3,&XPU3"A,*0PZS!K,/Y;5S!F,+LPK3#E,.HPQC"C,)(P"5GT9EDPBS`I:E"6DC`!8V,P9C!$,(LP2S!I,$8P2S"Z>(V*5S!F,$\P8#!5,$0P`C``	82		-786901853
+IDS_ERROR_116	2052	X&75;/E;AV7V3B``6P`S`%T`(`"$=HE;:%%#9U"6VX],B+Z+;G\",!F5[XLZ`"``6P`R`%T``C#WBVYXI(NH8`EGLXT?681V0V=0ENY/.65D:X=E]DZ$=HE;:%%#9U"6`C``	49		-107356799
+IDS_ERROR_117	1033	Component Services (COM+ 1.0) are not installed on this computer.  This installation requires Component Services in order to complete successfully.  Component Services are available on Windows 2000.	0		-1021928859
+IDS_ERROR_117	1041	LS#S,-TP_##-,/,PR#"U,/PPTS"Y,"``*`!#`$\`30`K`"``,0`N`#``*0`@`&\P`3!3,&XPLS#S,-0PY3#\,+\P:S!C:U<P3S"D,/,PN3#(,/PPZS!5,(PP9C!$,'XP6S"3,`(PI##S,+DPR##\,.LPDC",6X9.63"+,&LP;S"S,/,PW3#\,,TP\S#(,+4P_##3,+DP3##%7X&)9S!9,`(PLS#S,-TP_##-,/,PR#"U,/PPTS"Y,&\P`3!7`&D`;@!D`&\`=P!S`"``,@`P`#``,``@`&<P*5(H=6<P33!^,%DP`C``	115		-1860747637
+IDS_ERROR_117	2052	9&NABY=[.F<*3BIGB5O%B"``0P!O`&T`<`!O`&X`90!N`'0`(`!3`&4`<@!V`&D`8P!E`',`(``H`$,`3P!-`"L`(``Q`"X`,``I``(P@8D08I]2C%L08HE;Q8@`EX&)(`!#`&\`;0!P`&\`;@!E`&X`=``@`%,`90!R`'8`:0!C`&4`<P`",$,`;P!M`'``;P!N`&4`;@!T`"``4P!E`'(`=@!I`&,`90!S`"``*%<@`%<`:0!N`&0`;P!W`',`(``R`#``,``P`"``"DX)9TAE`C``	106		-107356799
+IDS_ERROR_118	1033	Error registering COM+ application.  Contact your support personnel for more information.	0		-1021928859
+IDS_ERROR_118	1041	0P!/`$T`*P`@`*(PUS#J,+$P_#"W,.<P\S!N,'MV,I.H,.DP_#!G,%DP`C!SBE<P3S!O,+4PW3#\,,@PQ6)37P6`>#!*,$]51#`(5(\P6S!/,&`P53!$,`(P	45		1670816362
+IDS_ERROR_118	2052	Z&R,42``0P!/`$T`*P`@`)1>*'4+>H]>]F7Z41F5`C#FB\9^X4]O8`S_]XL.3JA@A':`8B]G+V4!8[I.6%14@/M\`C``	34		-107356799
+IDS_ERROR_119	1033	Error unregistering COM+ application.  Contact your support personnel for more information.	0		-1021928859
+IDS_ERROR_119	1041	0P!/`$T`*P`@`*(PUS#J,+$P_#"W,.<P\S!N,'MV,I/CB626;C"H,.DP_#!G,%DP`C!SBE<P3S!O,+4PW3#\,,@PQ6)37P6`>#!*,$]51#`(5(\P6S!/,&`P53!$,`(P	48		1670816362
+IDS_ERROR_119	2052	I&2(;>ALC%$@`$,`3P!-`"L`(`"47BAU"WJ/7O9E^E$9E0(PYHO&?N%/;V`,__>+#DZH8(1V@&(O9R]E`6.Z3EA45(#[?`(P	36		-107356799
+IDS_ERROR_12	1033	Action start [Time]: [1].	0		-1021928859
+IDS_ERROR_12	1041	HC"O,+<PYS#S,(N5RUD@`%L`5`!I`&T`90!=`#H`(`!;`#$`70`",```	20		-786901853
+IDS_ERROR_12	2052	S61<3P!?RUD@`%L`5`!I`&T`90!=`#H`(`!;`#$`70`",```	17		-107356799
+IDS_ERROR_120	1033	Removing older versions of this application	0		-1021928859
+IDS_ERROR_120	1041	4S!N,*(PUS#J,+$P_#"W,.<P\S!N,.131##0,/PPN##G,/,PDC!*4F265S!F,$0P?C!9,"X`+@`N````	29		1670816362
+IDS_ERROR_120	2052	8VLH5R!29)9D:Y1>*'4+>H]>YV6$=DAR+&<N`"X`+@``	16		-107356799
+IDS_ERROR_121	1033	Preparing to remove older versions of this application	0		-1021928859
+IDS_ERROR_121	1041	4S!N,*(PUS#J,+$P_#"W,.<P\S!N,.131##0,/PPN##G,/,PDC!*4F2663"+,)9NF5"2,%<P9C!$,'XP63`N`"X`+@``	34		1670816362
+IDS_ERROR_121	2052	8VLH5\91!UD@4F269&N47BAU"WJ/7N=EA'9(<BQG+@`N`"X`	18		-107356799
+IDS_ERROR_122	1033	Error applying patch to file [2].  It has probably been updated by other means, and can no longer be modified by this patch.  For more information contact your patch vendor.  {{System Error: [3]}}	0		-1021928859
+IDS_ERROR_122	1041	U3"A,*0PZS`@`%L`,@!=`"``:S#1,,,PP3"2,&F0*'59,(LP0F9K,*@PZ3#\,$PP>G8?=5<P?C!7,%\P`C!*,%TPB3!/,"52;C"Y9=5L:S"(,&,P9C"B,,,PUS#',/PPR#!5,(PP7S!?,($P9S!9,`(P4S!N,-$PPS#!,&<P"5GT9EDPBS!3,&@P;S!G,$TP?C!;,),P`C!SBC!];S`!,%,P;C#1,,,PP3!N,-DP\S#`,/PP:S!*,$]51#`(5(\P6S!/,&`P53!$,`(P(`![`'L`MS"Y,,8PX#"H,.DP_#`Z`"``6P`S`%T`?0!]````	119		-786901853
+IDS_ERROR_122	2052	^5N'9?9.(`!;`#(`70`@`)1>*'7N3V6("WJ/7O9E^E$9E0(PY8N'9?9.[U/]@*N(]&:P9<>/#/]`8N5.+&?N3V6("WJ/7@U._8#N3SEE@UL",.:+QG[A3V]@#/_WBPY.J&"$=NY/98@+>H]>FT^47D955(#[?`(P(`![`'L`^WS??AF5[XLZ`"``6P`S`%T`?0!]````	74		-107356799
+IDS_ERROR_123	1033	[2] cannot install one of its required products. Contact your technical support group.  {{System Error: [3].}}	0		-1021928859
+IDS_ERROR_123	1041	6P`R`%T`(`!O,(&)0FQ5,(PP7S#]B,%4;C`@`#$`(`!D,)(PI##S,+DPR##\,.LP9S!-,'XP6S"3,`(P@&)3B(1V:S!SBE<P1#"Y96LP2C!/540P"%2/,%LP3S!@,%4P1#`","``>P![`+<PN3#&,.`PJ##I,/PP.@`@`%L`,P!=`'T`?0``	67		-786901853
+IDS_ERROR_123	2052	6P`R`%T`(``-3OV`B5O%B-!G`$Y`8@"7IT[!5`(P]XL.3JA@A':`8B]G+V4!8[I.6%14@/M\`C`@`'L`>P#[?-]^&97OBSH`(`!;`#,`70`",'T`?0``	43		-107356799
+IDS_ERROR_124	1033	The older version of [2] cannot be removed.  Contact your technical support group.  {{System Error [3].}}	0		-1021928859
+IDS_ERROR_124	1041	6P`R`%T`(`!N,.131##0,/PPN##G,/,PDC!*4F2663"+,%,P:#!O,&<P33!^,%LPDS`",(!B4XB$=FLP<XI7,$0PN65K,$HP3U5$,`A4CS!;,$\P8#!5,$0P`C`@`'L`>P"W,+DPQC#@,*@PZ3#\,#H`(`!;`#,`70!]`'T`	63		-786901853
+IDS_ERROR_124	2052	#4[]@"!29);G94AR+&>$=B``6P`R`%T``C#WBPY.J&"$=H!B+V<O90%CNDY85%2`^WP","``>P![`/M\WWX9E>^+.@`@`%L`,P!=``(P?0!]````	41		-107356799
+IDS_ERROR_125	1033	The description for service '[2]' ([3]) could not be changed.	0		-1021928859
+IDS_ERROR_125	1041	M3#\,-,PN3`@`"<`6P`R`%T`)P`@`"@`6P`S`%T`*0`@`&XP&(KPCV\P"5GT9F<P33!^,%LPDS!G,%<P7S`",```	32		1670816362
+IDS_ERROR_125	2052	#6>A4B``6P`R`%T`(``H`%L`,P!=`"D`(`"$=L]C\(\-3OV`]&8Y90(P	21		-107356799
+IDS_ERROR_126	1033	The Windows Installer service cannot update the system file [2] because the file is protected by Windows.  You may need to update your operating system for this program to work correctly. {{Package version: [3], OS Protected version: [4]}}	0		-1021928859
+IDS_ERROR_126	1041	5P!I`&X`9`!O`'<`<P`@`$D`;@!S`'0`80!L`&P`90!R`"``M3#\,-,PN3!O,`$PMS"Y,,8PX##5,*$PI##K,"``6P`R`%T`(`"2,*(PPS#7,,<P_##(,&<P33!^,%LPDS`",%,P;C#5,*$PI##K,&\P(`!7`&D`;@!D`&\`=P!S`"``:S"(,&,P9C#=3W>+53",,&8P1#!^,%DP`C!3,&XPUS#M,+`PZ3#@,)(P8VM7,$\PU5)<3U4P6S"+,&LP;S`!,*HPVC#L,/PPQC"C,/,PL#"W,+DPQC#@,)(PHC##,-<PQS#\,,@P63"+,,5?@8E,,$(PBS#O4_V`)V!,,$(PBC!^,%DP`C`@`'L`>P#1,,,PL3#\,+@PT##\,+@PYS#S,#H`(`!;`#,`70`L`"``3P!3`"``US#M,,8PKS#&,,,PR3#0,/PPN##G,/,P(``Z`"``6P`T`%T`?0!]````	176		-786901853
+IDS_ERROR_126	2052	5P!I`&X`9`!O`'<`<P`@`$D`;@!S`'0`80!L`&P`90!R`"``#6>A4@U._8#T9K!E^WS??H=E]DX@`%L`,@!=``S_X%8Z3N6+AV7V3JN((`!7`&D`;@!D`&\`=P!S`"``W4^D8@(P.DY_3^6+"WJ/7F-K;GCE75Q/#/^H8.]3_8``EX&)]&:P9<UD7$_[?-]^`C![`'L`"WJ/7@532'(L9SH`(`!;`#,`70`,_\UD7$_[?-]^W4^D8DAR+&<Z`"``6P`T`%T`?0!]````	101		-107356799
+IDS_ERROR_127	1033	The Windows Installer service cannot update the protected Windows file [2]. {{Package version: [3], OS Protected version: [4], SFP Error: [5]}}	0		-1021928859
+IDS_ERROR_127	1041	5P!I`&X`9`!O`'<`<P`@`$D`;@!S`'0`80!L`&P`90!R`"``M3#\,-,PN3!G,&\P`3#=3W>+53",,%\P(`!7`&D`;@!D`&\`=P!S`"``U3"A,*0PZS`@`%L`,@!=`"``DC"B,,,PUS#',/PPR#!9,(LP4S!H,&\P9S!-,'XP6S"3,`(P(`![`'L`T3##,+$P_#"X,-`P_#"X,.<P\S`Z`"``6P`S`%T`+``@`$\`4P`@`-<P[3#&,*\PQC##,,DPT##\,+@PYS#S,"``,0`Z`"``6P`T`%T`+``@`%,`1@!0`"``J##I,/PP.@`@`%L`-0!=`'T`?0`B````	125		-786901853
+IDS_ERROR_127	2052	5P!I`&X`9`!O`'<`<P`@`$D`;@!S`'0`80!L`&P`90!R`"``#6>A4@U._8#T9K!EJXC=3Z1BA'8@`%<`:0!N`&0`;P!W`',`(`"'9?9.(`!;`#(`70`",'L`>P`+>H]>!5-(<BQG.@`@`%L`,P!=``S_S61<3_M\WW[=3Z1B2'(L9SH`(`!;`#0`70`,_U,`1@!0`"``&97OBSH`(`!;`#4`70!]`'T`	84		-107356799
+IDS_ERROR_128	1033	This setup requires Internet Information Server 4.0 or higher for configuring IIS Virtual Roots. Please make sure that you have IIS 4.0 or higher.	0		-1021928859
+IDS_ERROR_128	1041	This setup requires Internet Information Server 4.0 or higher for configuring IIS Virtual Roots. Please make sure that you have IIS 4.0 or higher.	0		1670816362
+IDS_ERROR_128	2052	9&N)6\6("WJ/7@"7@8D@`$D`;@!T`&4`<@!N`&4`=``@`$D`;@!F`&\`<@!M`&$`=`!I`&\`;@`@`%,`90!R`'8`90!R`"``-``N`#``(``68O1FV)I(<BQG96=-D6Y_(`!)`$D`4P`@`%J&WV(Y:`(P]XMN>-U/J&")6\6(ADX@`$D`20!3`"``-``N`#``(``68O1FV)I(<BQG`C``	79		-107356799
+IDS_ERROR_129	1033	This setup requires Administrator privileges for configuring IIS Virtual Roots.	0		-1021928859
+IDS_ERROR_129	1041	This setup requires Administrator privileges for configuring IIS Virtual Roots.	0		1670816362
+IDS_ERROR_129	2052	9&N)6\6("WJ/7H&)0FQW40EGH7L&=%A40V=0EDUB_8!-D6Y_(`!)`$D`4P`@`%J&WV(Y:`(P	27		-107356799
+IDS_ERROR_13	1033	Action ended [Time]: [1]. Return value [2].	0		-1021928859
+IDS_ERROR_13	1041	HC"O,+<PYS#S,$)]ADX@`%L`5`!I`&T`90!=`#H`(`!;`#$`70`","``.V**,"10(`!;`#(`70`",```	29		-786901853
+IDS_ERROR_13	2052	S61<3]-^7V<@`%L`5`!I`&T`90!=`#H`(`!;`#$`70`",-2/WE8\4"``6P`R`%T``C``	25		-107356799
+IDS_ERROR_14	1033	Time remaining: {[1] minutes }{[2] seconds}	0		-1021928859
+IDS_ERROR_14	1041	BVN*,$)FDY4Z`"``>P!;`#$`70`@``92(`!]`'L`6P`R`%T`(`#2>7T`	21		-786901853
+IDS_ERROR_14	2052	:5)93_9E])4Z`"``>P!;`#$`70`@``92(`!]`'L`6P`R`%T`(`#2>7T`	21		-107356799
+IDS_ERROR_15	1033	Out of memory. Shut down other applications before retrying.	0		-1021928859
+IDS_ERROR_15	1041	X3#B,.HP#4ZSC6<P63`",-9.;C"B,-<PZC"Q,/PPMS#G,/,PDC")E5@P9C!+,(DP`3"-4:9>GUM,B%<P9C!/,&`P53!$,`(P	36		1670816362
+IDS_ERROR_15	2052	A5%86PU.LXT",/>+2%%S4>V5=E'63I1>*'4+>H]>#/\V<0Y4C5'-D=6+`C``	22		-107356799
+IDS_ERROR_16	1033	Installer is no longer responding.	0		-1021928859
+IDS_ERROR_16	1041	I##S,+DPR##\,.LPUS#M,+`PZ3#@,$LPB3#<7U1[3#!",(HP?C!;,),P`C``	22		-1860747637
+IDS_ERROR_16	2052	B5O%B`MZCU[R70U.C5'-4Y1>`C``	10		-107356799
+IDS_ERROR_17	1033	Installer terminated prematurely.	0		-1021928859
+IDS_ERROR_17	1041	I##S,+DPR##\,.LPUS#M,+`PZ3#@,&\PC%N&3DU2:S`M3JUE53",,'XP5S!?,`(P	24		-1860747637
+IDS_ERROR_17	2052	B5O%B`MZCU['C^EE7%!B:P(P	9		-107356799
+IDS_ERROR_18	1033	Please wait while Windows configures [ProductName]	0		-1021928859
+IDS_ERROR_18	1041	5P!I`&X`9`!O`'<`<P`@`&LP(`!;`%``<@!O`&0`=0!C`'0`3@!A`&T`90!=`"``DC`MBII;5S!F,$0P?C!9,`(P5S!P,(DP3S!*,(5?83!/,&`P53!$,`(P	45		1670816362
+IDS_ERROR_18	2052	5P!I`&X`9`!O`'<`<P`@`&-K*%=-D6Y_(`!;`%``<@!O`&0`=0!C`'0`3@!A`&T`90!=``S_]XL->DE[`C``	31		-107356799
+IDS_ERROR_19	1033	Gathering required information...	0		-1021928859
+IDS_ERROR_19	1041	Q5^!B6HPQ6`Q6)(PQI:!,&8P1#!^,%DP+@`N`"X`	15		1670816362
+IDS_ERROR_19	2052	8VLH5S9EQI9`8@"7X4]O8"X`+@`N````	11		-107356799
+IDS_ERROR_2	1033	Warning [1].	0		-1021928859
+IDS_ERROR_2	1041	9HM*5"``6P`Q`%T``C`@````	8		1670816362
+IDS_ERROR_2	2052	9HM*5"``6P`Q`%T``C``	7		-107356799
+IDS_ERROR_20	1033	{[ProductName] }Setup completed successfully.	0		-1021928859
+IDS_ERROR_20	1041	>P!;`%``<@!O`&0`=0!C`'0`3@!A`&T`90!=`"``?0!N,+LPPS#(,*(PPS#7,$PP8VLX7D)]ADY7,'XP5S!?,`(P	33		1670816362
+IDS_ERROR_20	2052	>P!;`%``<@!O`&0`=0!C`'0`3@!A`&T`90!=`"``?0"$=HE;Q8CR71!BGU*,6Q!B`C``	25		-107356799
+IDS_ERROR_21	1033	{[ProductName] }Setup failed.	0		-1021928859
+IDS_ERROR_21	1041	>P!;`%``<@!O`&0`=0!C`'0`3@!A`&T`90!=`"``?0!N,+LPPS#(,*(PPS#7,&LP,5E795<P?C!7,%\P`C``	31		1670816362
+IDS_ERROR_21	2052	>P!;`%``<@!O`&0`=0!C`'0`3@!A`&T`90!=`"``?0")6\6(,5DEC0(P	21		-107356799
+IDS_ERROR_22	1033	Error reading from file: [2]. {{ System error [3].}}  Verify that the file exists and that you can access it.	0		-1021928859
+IDS_ERROR_22	1041	U3"A,*0PZS`@`%L`,@!=`"``;C"MBG\PO(]_,&LP,5E795<P?C!7,%\P`C![`'L`(`"W,+DPQC#@,*@PZ3#\,"``6P`S`%T``C!]`'T`4S!N,-4PH3"D,.LP3#!86RA763"+,$LP:3!&,$LP`3!*,(@P<S!3,&XPU3"A,*0PZS!X,&XPHC"O,+LPN3`I:DPP0C"+,$LP:3!&,$LPDC"Z>(V*5S!F,$\P8#!5,$0P`C``	88		-1860747637
+IDS_ERROR_22	2052	^XO64X=E]DX@`%L`,@!=`"``]F7Z41F5`C![`'L`(`#[?-]^&97OBR``6P`S`%T``C!]`'T`(``@`/>+;GBDB^6+AV7V3H1V;GA86RA7=EX43JA@[U/E3OE;=E';CTR(OXONE0(P	51		-107356799
+IDS_ERROR_23	1033	Cannot create the file [3].  A directory with this name already exists.  Cancel the installation and try installing to a different location.	0		-1021928859
+IDS_ERROR_23	1041	U3"A,*0PZS`@`"<`6P`R`%T`)P`@`)(P7$\08F<P33!^,%LPDS`",%,P;C`-5$U2DC`!8V0PQS"C,.PPKS#(,.HP;S!9,&<P:S!86RA75S!F,$0P?C!9,`(PI##S,+DPR##\,.LPDC"M,.,P\S"[,.LP5S!F,`$P)5)N,#180&)K,*0P\S"Y,,@P_##K,%<P9C!_,&8P3S!@,%4P1#`",```	80		1670816362
+IDS_ERROR_23	2052	X&75;!M2^EZ'9?9.(`!;`#(`70`",`Q4#53N=E5?\EU86RA7`C#WB]93B&UD:R%KB5O%B`S_-G$.5(E;Q8@P4G91UDY-3VY_`C``	37		-107356799
+IDS_ERROR_24	1033	Please insert the disk: [2]	0		-1021928859
+IDS_ERROR_24	1041	QS"C,+DPKS`@`%L`,@!=`"``DC`_8V515S!F,$\P8#!5,$0P`C``	19		1670816362
+IDS_ERROR_24	2052	]XO28V51P7C8=CH`(`!;`#(`70``	10		-107356799
+IDS_ERROR_25	1033	The installer has insufficient privileges to access this directory: [2].  The installation cannot continue.  Log on as an administrator or contact your system administrator.	0		-1021928859
+IDS_ERROR_25	1041	I##S,+DPR##\,.LPUS#M,+`PZ3#@,&LP;S#',*,P[#"O,,@PZC`@`%L`,@!=`"``:S"B,*\PNS"Y,%DPBS`I:E"63#!",(HP?C!;,),P`C"D,/,PN3#(,/PPZS"2,)E]FGUG,$TP?C!;,),P`C"A>P9T!8!H,%<P9C#M,+`PI##S,%DPBS!+,`$P?C!?,&\PMS"Y,,8PX#"A>P9T!8!K,$HP3U5$,`A4CS!;,$\P8#!5,$0P`C``	91		-1860747637
+IDS_ERROR_25	2052	B5O%B`MZCUZA;`EGOXONE>YV55\@`%L`,@!=`"``A'9#9U"6#/^)6\6(X&75;.=^[7[;CTR(`C#WB^5.H7L&=%A4JX[]3GMV55\,_Q9B#DZH8(1V^WS??J%[!G185%2`^WP",```	50		-107356799
+IDS_ERROR_26	1033	Error writing to file [2].  Verify that you have access to that directory.	0		-1021928859
+IDS_ERROR_26	1041	U3"A,*0PZS`@`%L`,@!=`"``>#!N,/AF33"\CW\P:S`Q65=E5S!^,%<P7S`",%,P;C#',*,P[#"O,,@PZC!X,&XPHC"O,+LPN3`I:DPP0C"+,$LP:3!&,$LPDC"Z>(V*5S!F,$\P8#!5,$0P`C``	55		1670816362
+IDS_ERROR_26	2052	F5'S@8=E]DX@`%L`,@!=`"``]F7Z41F5`C#WBVYXI(NH8`EGOXONE>6+[G957X1V0V=0E@(P	27		-107356799
+IDS_ERROR_27	1033	Error reading from file [2].  Verify that the file exists and that you can access it.	0		-1021928859
+IDS_ERROR_27	1041	U3"A,*0PZS`@`%L`,@!=`"``;C"MBG\PO(]_,&LP,5E795<P?C!7,%\P`C![`'L`(`"W,+DPQC#@,*@PZ3#\,"``6P`S`%T``C!]`'T`(`#5,*$PI##K,$PP6%LH5U<PHC"O,+LPN3`I:DPP0C"+,%,P:#"2,+IXC8I7,&8P3S!@,%4P1#`",```	68		-1860747637
+IDS_ERROR_27	2052	^XO64X=E]DX@`%L`,@!=`"``]F7Z41F5`C![`'L`(`#[?-]^&97OBR``6P`S`%T``C!]`'T`]XMN>*2+AV7V3EA;*%<,_W9>%$ZH8/V`'UF_B^Z5Y8N'9?9.`C``	46		-107356799
+IDS_ERROR_28	1033	Another application has exclusive access to the file [2].  Please shut down all other applications, then click Retry.	0		-1021928859
+IDS_ERROR_28	1041	U3"A,*0PZS`@`"<`6P`R`%T`)P`@`&\PUDYN,*(PUS#J,+$P_#"W,.<P\S!G,']/*'55,(PP9C!$,'XP63`",(N51#!F,$0PBS"B,-<PZC"Q,/PPMS#G,/,PDC!9,'DP9C")E5@P9C!+,(DP`3`,,(U19HI,B`TPDC"O,.HPPS"O,%<P9C!/,&`P53!$,`(P	72		1670816362
+IDS_ERROR_28	2052	YE,`3I1>*'4+>H]>\EW/?N5.[')@4R%J#U^_B^Z5ADZ'9?9.(`!;`#(`70`",/>+<U'ME4!B"6=V4=9.A':47BAU"WJ/7@S_-G$.5(U155/[42(`S9'5BR(`"6.NE`(P	48		-107356799
+IDS_ERROR_29	1033	There is not enough disk space to install thi file [2].  Free some disk space and click Retry, or click Cancel to exit.	0		-1021928859
+IDS_ERROR_29	1041	U3"A,*0PZS`@`%L`,@!=`"``DC"D,/,PN3#(,/PPZS!9,(LP7S"!,&LP`3!!4P92:C#',*,PN3"O,!B8WU=,,$(PBC!^,%LPDS`",,<PHS"Y,*\P&)C?5Y(PBY4^95<P9C!+,(DP`3`,,(U19HI,B`TPDC"O,.HPPS"O,%<P9C!/,&`P53!$,`(P0GV&3EDPBS`T6`A4;S`,,"U.8FL-,)(PKS#J,,,PKS!7,'XP63`",```	89		-1860747637
+IDS_ERROR_29	2052	H6P)9[.-'UF$=L%XV'9Z>O2596>)6\6(AV7V3B``6P`R`%T``C#WB\J1/F4`3IM.P7C8=GIZ])4.5%53^U$B`,V1U8LB``S_%F(%@%53^U$B`-93B&TB``"0^E$",```	47		-107356799
+IDS_ERROR_3	1033	Info [1].	0		-1021928859
+IDS_ERROR_3	1041	Q6`Q6"``6P`Q`%T``C`@````	8		1670816362
+IDS_ERROR_3	2052	X4]O8"``6P`Q`%T``C``	7		-107356799
+IDS_ERROR_30	1033	Source file not found: [2].  Verify that the file exists and that you can access it.	0		-1021928859
+IDS_ERROR_30	1041	O3#\,+DP(`#5,*$PI##K,"``6P`R`%T`(`!,,(N)9#!+,(HP?C!;,),P`C#5,*$PI##K,$PP6%LH5UDPBS!+,&DP1C!+,`$P2C"(,',P4S!N,-4PH3"D,.LP>#!N,*(PKS"[,+DP*6I,,$(PBS!+,&DP1C!+,)(PNGB-BE<P9C!/,&`P53!$,`(P	69		1670816362
+IDS_ERROR_30	2052	H6P)9WYB,%*0;H=E]DX@`%L`,@!=``(P]XMN>*2+AV7V3EA;*%<,_W9>%$ZH8/V`'UF_B^Z5Y8N'9?9.`C``	31		-107356799
+IDS_ERROR_31	1033	Error reading from file: [3]. {{ System error [2].}}  Verify that the file exists and that you can access it.	0		-1021928859
+IDS_ERROR_31	1041	U3"A,*0PZS`@`%L`,P!=`"``2S"),&XPK8I_,+R/?S!K,#%95V57,'XP5S!?,`(P>P![`"``MS"Y,,8PX#"H,.DP_#`@`%L`,@!=``(P?0!]`"``U3"A,*0PZS!,,%A;*%=9,(LP2S!I,$8P2S`!,$HPB#!S,%,P;C#5,*$PI##K,'@P;C"B,*\PNS"Y,"EJ3#!",(LP2S!I,$8P2S"2,+IXC8I7,&8P3S!@,%4P1#`",```	89		-1860747637
+IDS_ERROR_31	2052	^XO64X=E]DX@`%L`,P!=`"``]F7Z41F5`C![`'L`(`#[?-]^&97OBR``6P`R`%T``C!]`'T`(`#WBVYXI(N'9?9.6%LH5PS_=EX43JA@_8`?6;^+[I7EBX=E]DX",```	47		-107356799
+IDS_ERROR_32	1033	Error writing to file: [3]. {{ System error [2].}}  Verify that you have access to that directory.	0		-1021928859
+IDS_ERROR_32	1041	U3"A,*0PZS`@`%L`,P!=`"``>#!N,/AF33"\CW\P:S`Q65=E5S!^,%<P7S`",'L`>P`@`+<PN3#&,.`PJ##I,/PP6P`R`%T``C!]`'T`(`!3,&XPQS"C,.PPKS#(,.HP>#!N,*(PKS"[,+DP*6I,,$(PBS!3,&@PDC"Z>(V*5S!F,$\P8#!5,$0P`C``	70		-1860747637
+IDS_ERROR_32	2052	F5'S@8=E]DX@`%L`,P!=`"``]F7Z41F5`C![`'L`(`#[?-]^&97OBR``6P`R`%T``C!]`'T`(`#WBVYXI(NH8`EG0V>_B^Z5Y8ON=E5?`C``	40		-107356799
+IDS_ERROR_33	1033	Source file not found{{(cabinet)}}: [2].  Verify that the file exists and that you can access it.	0		-1021928859
+IDS_ERROR_33	1041	O3#\,+DP(`#5,*$PI##K,$PPBXED,$LPBC!^,%LPDS`",'L`>P`H`&,`80!B`&D`;@!E`'0`*0!]`'T`.@`@`%L`,@!=``(P(`#5,*$PI##K,$PP6%LH5UDPBS!+,&DP1C!+,`$P2C"(,',P4S!N,-4PH3"D,.LP>#!N,*(PKS"[,+DP*6I,,$(PBS!+,&DP1C!+,)(PNGB-BE<P9C!/,&`P53!$,`(P	84		-786901853
+IDS_ERROR_33	2052	H6P)9WYB,%*0;H=E]DY[`'L`*``%4RD`?0!]`#H`(`!;`#(`70`",/>+;GBDBX=E]DY86RA7#/]V7A1.J&#]@!]9OXONE>6+AV7V3@(P	39		-107356799
+IDS_ERROR_34	1033	Cannot create the directory [2].  A file with this name already exists.  Please rename or remove the file and click Retry, or click Cancel to exit.	0		-1021928859
+IDS_ERROR_34	1041	QS"C,.PPKS#(,.HP(``G`%L`,@!=`"<`(`"2,%Q/$&)G,$TP?C!;,),P`C!3,&XP#51-4I(P`6-D,-4PH3"D,.LP3#!9,&<P:S!86RA75S!F,$0P?C!9,`(PU3"A,*0PZS!N,`U435*2,`E9]&99,(LP2S`!,$I29)97,&8P2S"),`$P##"-46:*3(@-,)(PKS#J,,,PKS!7,&8P3S!@,%4P1#`",'XP7S!O,`PPK3#C,/,PNS#K,`TPDC"O,.HPPS"O,%<P9C!"?89.5S!F,$\P8#!5,$0P`C``	109		-1860747637
+IDS_ERROR_34	2052	X&75;!M2^E[N=E5?(`!;`#(`70`",`Q4#52'9?9.\EW/?EA;*%<",/>+S9%]5`U4%F(@4F26AV7V3@S_-G$.5%53^U$B`,V1U8LB``ECKI0,_Q9B!8!54_M1(@#64XAM(@`)8ZZ4`)#Z40(P	54		-107356799
+IDS_ERROR_35	1033	The volume [2] is currently unavailable.  Please select another.	0		-1021928859
+IDS_ERROR_35	1041	W##J,.4P_##@,"``6P`R`%T`(`!O,/YS*%=_3RAU9S!-,'XP6S"3,`(P)5)N,-PPZC#E,/PPX#"2,'B0GF)7,&8P3S!@,%4P1#`",```	38		1670816362
+IDS_ERROR_35	2052	[G9-4N!EU6Q_3RAU=U,@`%L`,@!=``S_]XOF4PF0=E'63G=3`C``	19		-107356799
+IDS_ERROR_36	1033	The specified path [2] is unavailable.	0		-1021928859
+IDS_ERROR_36	1041	!V.:6U4PC#!?,-$PN3`@`"<`6P`R`%T`)P`@`&\P?T\H=6<P33!^,%LPDS`",```	23		1670816362
+IDS_ERROR_36	2052	X&75;']/*'4'8YI;A';OC81?(`!;`#(`70`",```	14		-107356799
+IDS_ERROR_37	1033	Unable to write to the specified folder [2].	0		-1021928859
+IDS_ERROR_37	1041	!V.:6U4PC#!?,-4PJ3#K,,`P:S#X9DTPO(^!,'XP6S"3,#H`(``@`"<`6P`R`%T`)P`",```	26		-786901853
+IDS_ERROR_37	2052	X&75;)E195$'8YI;A':'9?9..5D@`%L`,@!=``(P	15		-107356799
+IDS_ERROR_38	1033	A network error occurred while attempting to read from the file [2]	0		-1021928859
+IDS_ERROR_38	1041	(6MN,-4PH3"D,.LPDC"MBG\PO(]_,"U.:S`!,,TPPS#(,.\P_#"O,*@PZ3#\,$PP>G8?=5<P?C!7,%\P.@`@`%L`,@!=````	35		-786901853
+IDS_ERROR_38	2052	U8O^5ON+UE.'9?9.(`!;`#(`70`@`/9ET5,?=5%_W'X9E>^+`C`@````	20		-107356799
+IDS_ERROR_39	1033	An error occurred while attempting to create the directory [2]	0		-1021928859
+IDS_ERROR_39	1041	QS"C,.PPKS#(,.HP(`!;`#(`70`@`)(P7$\08BU.:S`!,*@PZ3#\,$PP>G8?=5<P?C!7,%\P`C``	28		1670816362
+IDS_ERROR_39	2052	U8O^5AM2^E[N=E5?(`!;`#(`70`@`/9ET5,?=1F5[XL",```	17		-107356799
+IDS_ERROR_4	1033	Internal Error [1]. [2]{, [3]}{, [4]}	0		-1021928859
+IDS_ERROR_4	1041	A5'HD*@PZ3#\,"``6P`Q`%T``C`@`%L`,@!=`'L`+``@`%L`,P!=`'T`>P`L`"``6P`T`%T`?0``	28		1670816362
+IDS_ERROR_4	2052	A5'HD!F5[XL@`%L`,0!=`"X`(`!;`#(`70![`"P`(`!;`#,`70!]`'L`+``@`%L`-`!=`'T`	27		-107356799
+IDS_ERROR_40	1033	A network error occurred while attempting to create the directory [2]	0		-1021928859
+IDS_ERROR_40	1041	QS"C,.PPKS#(,.HP(`!;`#(`70`@`)(P7$\08BU.:S`!,,TPPS#(,.\P_#"O,*@PZ3#\,$PP>G8?=5<P?C!7,%\P`C``	34		-1860747637
+IDS_ERROR_40	2052	U8O^5AM2^E[N=E5?(`!;`#(`70`@`/9ET5,?=5%_W'X9E>^+`C``	19		-107356799
+IDS_ERROR_41	1033	A network error occurred while attempting to open the source file cabinet [2].	0		-1021928859
+IDS_ERROR_41	1041	O3#\,+DP(`#5,*$PI##K,*TPXS#3,,TPPS#(,"``6P`R`%T`(`"2,(N51#!F,$0PBS`4D"U.9S`!,,TPPS#(,.\P_#"O,*@PZ3#\,$PP>G8?=5<P?C!7,%\P`C``	46		-1860747637
+IDS_ERROR_41	2052	U8O^5E-B`%^0;H=E]DX%4R``6P`R`%T`(`#V9=%3'W51?]Q^&97OBP(P	21		-107356799
+IDS_ERROR_42	1033	The specified path is too long [2].	0		-1021928859
+IDS_ERROR_42	1041	!V.:6U4PC#!?,-$PN3!O,'>563!.,'XP63`Z`"``6P`R`%T`	18		-786901853
+IDS_ERROR_42	2052	!V.:6X1V[XV$7\>/?Y4Z`"``6P`R`%T`	12		-107356799
+IDS_ERROR_43	1033	The Installer has insufficient privileges to modify the file [2].	0		-1021928859
+IDS_ERROR_43	1041	I##S,+DPR##\,.LPUS#M,+`PZ3#@,&LP;S`!,-4PH3"D,.LP(`!;`#(`70`@`)(P[D]C:UDPBS`I:E"63#!",(HP?C!;,),P`C``	37		-1860747637
+IDS_ERROR_43	2052	B5O%B`MZCUZA;`EG[D\Y98=E]DX@`%L`,@!=`"``A'9#9U"6`C``	19		-107356799
+IDS_ERROR_44	1033	A portion of the path [2] exceeds the length allowed by the system.	0		-1021928859
+IDS_ERROR_44	1041	U3"I,.LPP##1,+DP(``G`%L`,@!=`"<`(`!N,`!.Z)!,,`U.8VMG,%DP`C#1,+DP3#!Z>F<P0C"+,$LP?C!?,&\P=Y59,$XPBS!N,&<P4S!N,+<PN3#&,.`P9S!O,`=CFEMG,$TP?C!;,),P`C``	55		-1860747637
+IDS_ERROR_44	2052	AV7V3CE9[XV$7R``6P`R`%T`(`"$=@!.Z)`&4N!E2&4",!9B!8`Z3GIZ#/\68@6`A8WZ489.^WS??D%1N(N$=G^5IEX",```	35		-107356799
+IDS_ERROR_45	1033	The path [2] contains words that are not valid in folders.	0		-1021928859
+IDS_ERROR_45	1041	U3"I,.LPP##1,+DP(``G`%L`,@!=`"<`(`!K,']/*'55,(PP9C!$,(LP6%.>BFXP+4YK,`$PU3"I,.LPP##1,+DP9S!O,']/*'5G,$TP:C!$,((P;C!,,"M4?C",,&8P1#!^,%DP`C``	52		-1860747637
+IDS_ERROR_45	2052	AV7V3CE9[XV$7R``6P`R`%T`(``M3BM4"6?@94AE55/-BP(P	18		-107356799
+IDS_ERROR_46	1033	The path [2] contains an invalid character.	0		-1021928859
+IDS_ERROR_46	1041	U3"I,.LPP##1,+DP(``G`%L`,@!=`"<`(`!K,']/*'5G,$TP:C!$,(=E5UM,,"M4?C",,&8P1#!^,%DP`C``	31		-1860747637
+IDS_ERROR_46	2052	AV7V3CE9[XV$7R``6P`R`%T`(``M3BM4"6?@94AEA'976R9[`C``	19		-107356799
+IDS_ERROR_47	1033	[2] is not a valid short file name.	0		-1021928859
+IDS_ERROR_47	1041	6P`R`%T`)P`@`&\PMS#G,/PPR##5,*$PI##K,`U4:#!7,&8P;S!C:U<P3S!",(HP?C!;,),P`C``	28		-1860747637
+IDS_ERROR_47	2052	6P`R`%T`(``-3B]F`$XJ3@EG2&6$=NUWAV7V3@U4`C``	16		-107356799
+IDS_ERROR_48	1033	Error getting file security: [3] GetLastError: [2]	0		-1021928859
+IDS_ERROR_48	1041	U3"A,*0PZS"[,*TPY3#J,,8PHS!N,-93EU]K,#%95V57,'XP5S!?,#H`(`!;`#,`70`@`$<`90!T`$P`80!S`'0`10!R`'(`;P!R`#H`(`!;`#(`70`",```	44		-786901853
+IDS_ERROR_48	2052	MX/64X=E]DX@`%L`,P!=`"``B5MH44-G4);V9=%3'W49E>^+(`!'`&4`=`!,`&$`<P!T`$4`<@!R`&\`<@`Z`"``6P`R`%T`	36		-107356799
+IDS_ERROR_49	1033	Invalid Drive: [2]	0		-1021928859
+IDS_ERROR_49	1041	R3#I,*0PUC!,,&-K5S!/,$(PBC!^,%LPDS`Z`"``6P`R`%T`	18		-786901853
+IDS_ERROR_49	2052	X&5(97&:J%)H5CH`(`!;`#(`70``	10		-107356799
+IDS_ERROR_5	1033	{{Disk full: }}	0		-1021928859
+IDS_ERROR_5	1041	>P![`,<PHS"Y,*\P3#!$,&,P<3!$,&<P63`Z`"``?0!]````	17		-786901853
+IDS_ERROR_5	2052	>P![`,%XV';R7>%N.@`@`'T`?0``	10		-107356799
+IDS_ERROR_50	1033	Could not create key [2]. {{ System error [3].}}  Verify that you have sufficient access to that key, or contact your support personnel.	0		-1021928859
+IDS_ERROR_50	1041	K3#\,"``6P`R`%T`(`"2,%Q/$&)G,$TP?C!;,),P`C![`'L`(`"W,+DPQC#@,*@PZ3#\,"``6P`S`%T``C!]`'T`(`!=,&XPK3#\,'@P;C!!4P92:C"B,*\PNS"Y,"EJDC`!8V,P9C!$,(LP2S!I,$8P2S"2,+IXC8I9,(LP2S`!,'XP7S!O,+4PW3#\,,@PQ6)37P6`>#!*,$]51#`(5(\P6S!/,&`P53!$,`(P(```	88		-1860747637
+IDS_ERROR_50	2052	X&75;!M2^EXNE3H`(`!;`#(`70`",'L`>P`@`/M\WWX9E>^+(`!;`#,`70`",'T`?0`@`/>+C)K!BZA@^5OEBRZ5Y6()9[.-'UF$=K^+[I5#9U"6#/\68@6`#DZH8(1V@&(O9R]E`6.Z3EA45(#[?`(P	57		-107356799
+IDS_ERROR_51	1033	Could not open key: [2]. {{ System error [3].}}  Verify that you have sufficient access to that key, or contact your support personnel.	0		-1021928859
+IDS_ERROR_51	1041	K3#\,"``6P`R`%T`(`"2,(N53S!3,&@P3#!G,$TP?C!;,),P`C![`'L`(`"W,+DPQC#@,*@PZ3#\,"``6P`S`%T``C!]`'T`(`!=,&XPK3#\,'@P;C!!4P92:C"B,*\PNS"Y,"EJDC`!8V,P9C!$,(LP2S!I,$8P2S"2,+IXC8I9,(LP2S`!,'XP7S!O,+4PW3#\,,@PQ6)37P6`>#!*,$]51#`(5(\P6S!/,&`P53!$,`(P(```	91		-1860747637
+IDS_ERROR_51	2052	X&75;%-B`%\NE3H`(`!;`#(`70`",'L`>P`@`/M\WWX9E>^+(`!;`#,`70`",'T`?0`@`"``]XN,FL&+J&#Y6^6++I7E8@EGLXT?681VOXONE4-G4)8,_Q9B!8`.3JA@A':`8B]G+V4!8[I.6%14@/M\`C`@````	59		-107356799
+IDS_ERROR_52	1033	Could not delete value [2] from key [3]. {{ System error [4].}}  Verify that you have sufficient access to that key, or contact your support personnel.	0		-1021928859
+IDS_ERROR_52	1041	K3#\,"``6P`S`%T`(`!+,(DP(``D4"``6P`R`%T`(`"2,$I29)9G,$TP?C!;,),P`C![`'L`(`"W,+DPQC#@,*@PZ3#\,"``6P`T`%T``C!]`'T`(``@`%TP;C"M,/PP>#!N,$%3!E)J,*(PKS"[,+DP*6J2,`%C8S!F,$0PBS!+,&DP1C!+,)(PNGB-BEDPBS!+,`$P?C!?,&\PM3#=,/PPR##%8E-?!8!X,$HP3U5$,`A4CS!;,$\P8#!5,$0P`C`@````	98		-1860747637
+IDS_ERROR_52	2052	X&75;"!29)8\4"``6P`R`%T`"/_.3BZ5(`!;`#,`70`@`"U."?\",'L`>P`@`/M\WWX9E>^+(`!;`#0`70`",'T`?0`@`"``]XN,FL&+J&#Y6^6++I7E8@EGLXT?681VOXONE4-G4)8,_Q9B!8`.3JA@A':`8B]G+V4!8[I.6%14@/M\`C``	67		-107356799
+IDS_ERROR_53	1033	Could not delete key [2]. {{ System error [3].}}  Verify that you have sufficient access to that key, or contact your support personnel.	0		-1021928859
+IDS_ERROR_53	1041	K3#\,"``6P`R`%T`(`"2,$I29)9G,$TP?C!;,),P`C![`'L`(`"W,+DPQC#@,*@PZ3#\,"``6P`S`%T``C!]`'T`(`!=,&XPK3#\,'@P;C!!4P92:C"B,*\PNS"Y,"EJDC`!8V,P9C!$,(LP2S!I,$8P2S"2,+IXC8I9,(LP2S`!,'XP7S!O,+4PW3#\,,@PQ6)37P6`>#!*,$]51#`(5(\P6S!/,&`P53!$,`(P	87		-1860747637
+IDS_ERROR_53	2052	X&75;"!29)8NE2``6P`R`%T``C![`'L`(`#[?-]^&97OBR``6P`S`%T``C!]`'T`(``@`/>+C)K!BZA@^5OEBRZ5Y6()9[.-'UF$=K^+[I5#9U"6#/\68@6`#DZH8(1V@&(O9R]E`6.Z3EA45(#[?`(P	57		-107356799
+IDS_ERROR_54	1033	Could not read value [2] from key [3]. {{ System error [4].}}  Verify that you have sufficient access to that key, or contact your support personnel.	0		-1021928859
+IDS_ERROR_54	1041	K3#\,"``6P`S`%T`(`!+,(DP(``D4"``6P`R`%T`(`"2,*V*?S"\CX$P?C!;,),P`C![`'L`(`"W,+DPQC#@,*@PZ3#\,"``6P`T`%T``C!]`'T`(``@`%TP;C"M,/PP>#!N,$%3!E)J,*(PKS"[,+DP*6J2,`%C8S!F,$0PBS!+,&DP1C!+,)(PNGB-BEDPBS!+,`$P?C!?,&\PM3#=,/PPR##%8E-?!8!X,$HP3U5$,`A4CS!;,$\P8#!5,$0P`C`@````	98		-1860747637
+IDS_ERROR_54	2052	X&75;/N+UE,\4"``6P`R`%T`"/_.3BZ5(`!;`#,`70`@`"U."?\",'L`>P`@`/M\WWX9E>^+(`!;`#0`70`",'T`?0`@`"``]XN,FL&+J&#Y6^6++I7E8@EGLXT?681VOXONE4-G4)8,_Q9B!8`.3JA@A':`8B]G+V4!8[I.6%14@/M\`C``	67		-107356799
+IDS_ERROR_55	1033	Could not write value [2] to key [3]. {{ System error [4].}}  Verify that you have sufficient access to that key, or contact your support personnel.	0		-1021928859
+IDS_ERROR_55	1041	)%`@`%L`,@!=`"``DC"M,/PP(`!;`#,`70`@`&LP^&9-,+R/@3!^,%LPDS`",'L`>P`@`+<PN3#&,.`PJ##I,/PP(`!;`#0`70`",'T`?0`@`"``73!N,*TP_#!X,&XP05,&4FHPHC"O,+LPN3`I:I(P`6-C,&8P1#"+,$LP:3!&,$LPDC"Z>(V*63"+,$LP`3!^,%\P;S"U,-TP_##(,,5B4U\%@'@P2C!/540P"%2/,%LP3S!@,%4P1#`",```	95		-1860747637
+IDS_ERROR_55	2052	X&75;`9<<&4\4"``6P`R`%T`(`"94651+I4@`%L`,P!=``(P>P![`"``^WS??AF5[XL@`%L`-`!=``(P?0!]`"``]XN,FL&+J&#Y6^6++I7E8@EGLXT?681VOXONE4-G4)8,_Q9B!8`.3JA@A':`8B]G+V4!8[I.6%14@/M\`C``	64		-107356799
+IDS_ERROR_56	1033	Could not get value names for key [2]. {{ System error [3].}}  Verify that you have sufficient access to that key, or contact your support personnel.	0		-1021928859
+IDS_ERROR_56	1041	K3#\,"``6P`R`%T`(`!K,/Y;63"+,"10;C`-5$U2DC"77XLP4S!H,$PP9S!-,'XP6S"3,`(P(`![`'L`(`"W,+DPQC#@,*@PZ3#\,"``6P`S`%T``C!]`'T`(``@`%TP;C"M,/PP>#!N,$%3!E)J,*(PKS"[,+DP*6J2,`%C8S!F,$0PBS!+,&DP1C!+,)(PNGB-BEDPBS!+,`$P?C!?,&\PM3#=,/PPR##%8E-?!8!X,$HP3U5$,`A4CS!;,$\P8#!5,$0P`C``	100		-1860747637
+IDS_ERROR_56	2052	X&75;+>#UE,NE2``6P`R`%T`(`"$=G!E/%`-5/!Y`C![`'L`(`#[?-]^&97OBR``6P`S`%T``C!]`'T`(`#WBXR:P8NH8/E;Y8LNE>5B"6>SC1]9A':_B^Z50V=0E@S_%F(%@`Y.J&"$=H!B+V<O90%CNDY85%2`^WP",```	62		-107356799
+IDS_ERROR_57	1033	Could not get sub key names for key [2]. {{ System error [3].}}  Verify that you have sufficient access to that key, or contact your support personnel.	0		-1021928859
+IDS_ERROR_57	1041	K3#\,"``6P`R`%T`(`!K,/Y;63"+,+4PUC`@`*TP_#`-5)(PEU^+,%,P:#!,,&<P33!^,%LPDS`","``>P![`"``MS"Y,,8PX#"H,.DP_#`@`%L`,P!=``(P?0!]`"``(`!=,&XPK3#\,'@P;C!!4P92:C"B,*\PNS"Y,"EJDC`!8V,P9C!$,(LP2S!I,$8P2S"2,+IXC8I9,(LP2S`!,'XP7S!O,+4PW3#\,,@PQ6)37P6`>#!*,$]51#`(5(\P6S!/,&`P53!$,`(P	102		-1860747637
+IDS_ERROR_57	2052	X&75;+>#UE,NE2``6P`R`%T`(`"$=E!;+I4",'L`>P`@`/M\WWX9E>^+(`!;`#,`70`",'T`?0`@`/>+C)K!BZA@^5OEBRZ5Y6()9[.-'UF$=K^+[I5#9U"6#/\68@6`#DZH8(1V@&(O9R]E`6.Z3EA45(#[?`(P	60		-107356799
+IDS_ERROR_58	1033	Could not read security information for key [2]. {{ System error [3].}}  Verify that you have sufficient access to that key, or contact your support personnel.	0		-1021928859
+IDS_ERROR_58	1041	K3#\,"``6P`R`%T`(`!K,/Y;63"+,+LPK3#E,.HPQC"C,,5@,5A,,*V*@3!^,%LPDS`",'L`>P`@`+<PN3#&,.`PJ##I,/PP(`!;`#,`70`",'T`?0`@`"``73!N,*TP_#!X,&XP05,&4FHPHC"O,+LPN3`I:I(P`6-C,&8P1#"+,$LP:3!&,$LPDC"Z>(V*63"+,$LP`3!^,%\P;S"U,-TP_##(,,5B4U\%@'@P2C!/540P"%2/,%LP3S!@,%4P1#`",```	98		-1860747637
+IDS_ERROR_58	2052	X&75;/N+UE,NE2``6P`R`%T`(`"$=HE;:%'A3V]@`C![`'L`(`#[?-]^&97OBR``6P`S`%T``C!]`'T`(`#WBXR:P8NH8/E;Y8LNE>5B"6>SC1]9A':_B^Z50V=0E@S_%F(%@`Y.J&"$=H!B+V<O90%CNDY85%2`^WP",```	62		-107356799
+IDS_ERROR_59	1033	Could not increase the available registry space. [2] KB of free registry space is required for the installation of this application.	0		-1021928859
+IDS_ERROR_59	1041	?T\H=>]3_8!J,.PPN#"Y,,@PZC`8F-]7DC"76(0P63!3,&@P;S!G,$TP?C!;,),P`C!3,&XPHC#7,.HPL3#\,+<PYS#S,)(PI##S,+DPR##\,.LP63"+,&LP;S`!,%L`,@!=`"``2P!"`"``;C#L,+@PN3#(,.HP&)C?5TPPQ5^!B6<P63`",```	68		1670816362
+IDS_ERROR_59	2052	X&75;)Y8H%+O4RAUA';H;(Q1:(AZ>O25`C")6\6(+&>47BAU"WJ/7@"7@8D@`%L`,@!=`"``0U-76X*"A'9Z>O*5Z&R,46B(>GKTE0(P	39		-107356799
+IDS_ERROR_6	1033	Action [Time]: [1]. [2]	0		-1021928859
+IDS_ERROR_6	1041	HC"O,+<PYS#S,"``6P!4`&D`;0!E`%T`.@`@`%L`,0!=``(P(`!;`#(`70``	22		1670816362
+IDS_ERROR_6	2052	S61<3R``6P!4`&D`;0!E`%T`.@`@`%L`,0!=`"X`(`!;`#(`70``	19		-107356799
+IDS_ERROR_60	1033	Another installation is in progress. You must complete that installation before continuing this one.	0		-1021928859
+IDS_ERROR_60	1041	)5)N,*0P\S"Y,,@P_##K,$PP_G,H5TR(CS",,&8P1#!^,%DP`C!3,&XPI##S,+DPR##\,.LP3#",6X9.5S!J,%$PC#!P,`$PL&5?,&LPI##S,+DPR##\,.LPDC!,B$8P4S!H,&\P9S!-,'XP6S"3,`(P	57		1670816362
+IDS_ERROR_60	2052	YE,`3HE;Q8C'CPMZ8VLH5]N/3(@",*A@Q5][F$A1C%L08J.0(6O'CPMZ#/\V<0Y436+]@.=^[7XL9R%KQX\+>@(P	33		-107356799
+IDS_ERROR_61	1033	Error accessing secured data. Please make sure the Windows Installer is configured properly and try the installation again.	0		-1021928859
+IDS_ERROR_61	1041	W4]WBU4PC#!F,$0PBS#',/PPOS!X,&XPHC"O,+LPN3!G,*@PZ3#\,$PP>G8?=5<P?C!7,%\P`C!7`&D`;@!D`&\`=P!S`"``20!N`',`=`!A`&P`;`!E`'(`(`!,,&-K5S!/,"V*FEM5,(PP9C!$,(LP4S!H,)(PNGB-BE<P9C!+,(DP`3"-4:9>I##S,+DPR##\,.LPDC"?6TR(5S!F,$\P8#!5,$0P`C``	85		1670816362
+IDS_ERROR_61	2052	OXONE==3W4^D8H1V<&5N8_9E^E$9E0(P]XMN>*2+(`!7`&D`;@!D`&\`=P!S`"``20!N`',`=`!A`&P`;`!E`'(`(`!-D6Y_+V8F5&-K;G@,_S9Q#E3-D;!EB5O%B`(P	48		-107356799
+IDS_ERROR_62	1033	User [2] has previously initiated an installation for product [3].  That user will need to run that installation again before using that product.  Your current installation will now continue.	0		-1021928859
+IDS_ERROR_62	1041	YC#\,+8P(``G`%L`,@!=`"<`(`!K,(@P8S!F,`$P63!G,&LP(``G`%L`,P!=`"<`(`!N,*0P\S"Y,,@P_##K,$PPBY7+654PC#!F,$0P?C!9,`(P4S!N,.8P_#"V,&\P`3!3,&XP_8C!5)(P?T]&,$U2:S"-4:9>I##S,+DPR##\,.LPDC"?6TR(63"+,,5?@8E,,$(PBC!^,%DP`C#^<RA7;C"D,/,PN3#(,/PPZS!O,%,P;C!^,'XPF7V:?54PC#!^,%DP`C``	100		-1860747637
+IDS_ERROR_62	2052	*'4W8B``6P`R`%T`(`#E3DU2+U2H4L>/IT[!5"``6P`S`%T`(`"$=HE;Q8@+>H]>`C#E@H&)?T\H=>6+IT[!5`S_`)>!B?>+9&LH=3=BC5$A:]"/3(B)6\6("WJ/7@(PL',H5P9<YW[M?MN/3(BH8(1VB5O%B`(P	60		-107356799
+IDS_ERROR_63	1033	User [2] has previously initiated an installation for product [3].  That user will need to run that installation again before using that product.	0		-1021928859
+IDS_ERROR_63	1041	YC#\,+8P(``G`%L`,@!=`"<`(`!K,(@P8S!F,`$P63!G,&LP(``G`%L`,P!=`"<`(`!N,*0P\S"Y,,@P_##K,$PPBY7+654PC#!F,$0P?C!9,`(P4S!N,.8P_#"V,&\P`3!3,&XP_8C!5)(P?T]&,$U2:S"-4:9>I##S,+DPR##\,.LPDC"?6TR(63"+,,5?@8E,,$(PBC!^,%DP`C``	79		-1860747637
+IDS_ERROR_63	2052	*'4W8B``6P`R`%T`(`#E3DU2+U2H4L>/IT[!5"``6P`S`%T`(`"$=HE;Q8@+>H]>`C#E@H&)?T\H=>6+IT[!5`S_`)>!B?>+9&LH=3=BC5$A:]"/3(B)6\6("WJ/7@(P	48		-107356799
+IDS_ERROR_64	1033	Out of disk space -- Volume: '[2]'; required space: [3] KB; available space: [4] KB.  Free some disk space and retry.	0		-1021928859
+IDS_ERROR_64	1041	QS"C,+DPKS`8F-]73#"SC8HP?C!;,),P(``M`"T`(`#<,.HPY3#\,.`P.@`@`"<`6P`R`%T`)P`[`"``Q5^!B6HP&)C?5SH`(`!;`#,`70`@`$L`0@`[`"``?T\H=>]3_8!J,!B8WU<Z`"``6P`T`%T`(`!+`$(``C#',*,PN3"O,!B8WU>2,)=8A#!7,&8P2S"),`$PC5&F7I];3(A7,&8P3S!@,%4P1#`",```	86		-786901853
+IDS_ERROR_64	2052	P7C8=GIZ])4-3K.-(``M`"T`(`!W4SH`(`!;`#(`70`;_T!B`)=Z>O25.@`@`%L`,P!=`"``0U-76X*"&__O4RAU>GKTE3H`(`!;`#0`70`@`$-35UN"@@(P]XLH5\J1/F7!>-AV>GKTE0Y4C5'5BP(P	57		-107356799
+IDS_ERROR_65	1033	Are you sure you want to cancel?	0		-1021928859
+IDS_ERROR_65	1041	K3#C,/,PNS#K,%<P?C!9,$LP(``_````	11		1670816362
+IDS_ERROR_65	2052	+V8F5&YXI(N!B=93B&W-9%Q/'_\`	10		-107356799
+IDS_ERROR_66	1033	The file [2][3] is being held in use{ by the following process: Name: [4], ID: [5], Window Title: [6]}.  Close that application and retry.	0		-1021928859
+IDS_ERROR_66	1041	U3"A,*0PZS`@`%L`,@!=`%L`,P!=`"``;S!_3RAU+4YG,%DP(`![`-<P[3"[,+DP#50Z`"``6P`T`%T`+``@`$D`9``Z`"``6P`U`%T`+``@`*8PHS#S,,DPIC`@`+\PI##(,.LP.@`@`"<`6P`V`%T`)P!]`"``4S!N,*(PUS#J,+$P_#"W,.<P\S"2,$)]ADY7,&8P2S"),`$PC5&F7I];3(A7,&8P3S!@,%4P1#`",```	89		-786901853
+IDS_ERROR_66	2052	AV7V3B``6P`R`%T`6P`S`%T`(`!C:ZN(?T\H=2``>P!_3RAU!8`Z`"``#53P>3H`(`!;`#0`70`,_TD`9``Z`"``6P`U`%T`#/^7>N-3!VB8F#H`(``B`%L`-@!=`"(`?0`",/>+<U'ME:.0*DZ47BAU"WJ/7@Y4C5'-D=6+`C``	64		-107356799
+IDS_ERROR_67	1033	The product [2] is already installed, preventing the installation of this product.  The two products are incompatible.	0		-1021928859
+IDS_ERROR_67	1041	)P!;`#(`70`G`"``3#!9,&<P:S"D,/,PN3#(,/PPZS!5,(PP9C!$,(LP7S"!,`$P4S!N,/V(P51N,*0P\S"Y,,@P_##K,)(PJ%E2,&8P1#!^,%DP`C!3,&XP(``R`"``9#!N,/V(P522,"``,0`@`/!3;C"S,/,PU##E,/PPOS!K,`Q40F9K,%A;*%=5,%LPBS!3,&@P;S!G,$TP?C!;,),P`C``	82		1670816362
+IDS_ERROR_67	2052	IT[!5"``6P`R`%T`(`#R7<]^B5O%B`S_L',H5^!EU6R)6\6(+&>G3L%4`C#9CR1.S7FG3L%4#4Y\4;E;`C``	31		-107356799
+IDS_ERROR_68	1033	Out of disk space -- Volume: [2]; required space: [3] KB; available space: [4] KB.  If rollback is disabled, enough space is available. Click Cancel to quit, Retry to check available disk space again, or Ignore to continue without rollback.	0		-1021928859
+IDS_ERROR_68	1041	QS"C,+DPKS`8F-]73#"SC8HP?C!;,),P(``M`"T`(`#<,.HPY3#\,.`P.@`@`"<`6P`R`%T`)P`[`"``Q5^!B6HP&)C?5SH`(`!;`#,`70`@`$L`0@`[`"``?T\H=>]3_8!J,!B8WU<Z`"``6P`T`%T`(`!+`$(``C`@`.TP_##K,-`PPS"O,)(P?T\H=6<P33!J,$0PB#!&,&LP63"+,&@P`3!!4P92:C`8F-]7DC"Z>-U/9S!-,'XP63`",$)]ADY9,(LP-%@(5&\P##"M,.,P\S"[,.LP#3`!,(U1IEY_3RAU[U/]@&HPQS"C,+DPKS`8F-]7DC"Z>(V*63"+,#18"%1O,`PPC5%FBDR(#3`!,.TP_##K,-`PPS"O,%LP6C!K,)E]FGU9,(LP-%@(5&\P##`A<9:)#3`@`)(PKS#J,,,PKS!7,&8P3S!@,%4P1#`",```	170		-786901853
+IDS_ERROR_68	2052	P7C8=GIZ])4-3K.-(``M`"T`(`!W4R``6P`R`%T`&_]`8@"7>GKTE3H`(`!;`#,`70`@`$-35UN"@AO_[U,H=7IZ])4Z`"``6P`T`%T`(`!#4U=;@H(",()9G&>!>2AUWE;:;I]2_8`,_QE2>GKTE;.-'UD",%53^U$B`-93B&TB``"0^E$,_U53^U$B`,V1U8LB`(U1(6O`:.5G[U,H=7IZ])4,_U53^U$B`/U?974B`"A7@7DH==Y6VFZ?4OV`A';%8+51"T[G?NU^B5O%B`(P	105		-107356799
+IDS_ERROR_69	1033	Could not access network location [2].	0		-1021928859
+IDS_ERROR_69	1041	S3##,,@P[S#\,*\P(`#M,+$P_#"W,.<P\S`@`%L`,@!=`"``>#"B,*\PNS"Y,&<P33!^,%LPDS`",```	29		1670816362
+IDS_ERROR_69	2052	X&75;+^+[I51?]Q^34]N?R``6P`R`%T``C``	13		-107356799
+IDS_ERROR_7	1033	[ProductName]	0		-1021928859
+IDS_ERROR_7	1041	[ProductName]	0		1670816362
+IDS_ERROR_7	2052	[ProductName]	0		-107361343
+IDS_ERROR_70	1033	The following applications should be closed before continuing the installation:	0		-1021928859
+IDS_ERROR_70	1041	I##S,+DPR##\,.LPDC"9?9I]63"+,&LP;S`!,"%K;C"B,-<PZC"Q,/PPMS#G,/,PDC")E5@PBS#%7X&)3#!",(HP?C!9,#H`	36		-786901853
+IDS_ERROR_70	2052	*%?G?NU^B5O%B$M.35(,__>+<U'ME>5."TZ47BAU"WJ/7CH`(```	19		-107356799
+IDS_ERROR_71	1033	Could not find any previously installed compliant products on the machine for installing this product.	0		-1021928859
+IDS_ERROR_71	1041	4S!N,-XPMS#S,&LP4S!N,/V(P522,*0P\S"Y,,@P_##K,%DPBS!N,&LP`3!-4H(P8S!F,*0P\S"Y,,@P_##K,%4PC#!F,$0P:C!1,(PP<#!J,(DP:C!$,/V(P51,,(N)9#!+,(HP?C!;,),P`C``	55		1670816362
+IDS_ERROR_71	2052	X&75;"A7H8N7>SIG"DY^8C!2B5O%B"QGIT[!5$!B`)>$=OM.54_E3DU2B5O%B(1V^':47J=.P50",```	29		-107356799
+IDS_ERROR_72	1033	The key [2] is not valid.  Verify that you entered the correct key.	0		-1021928859
+IDS_ERROR_72	1041	K3#\,"``6P`R`%T`(`!O,&-K5S!/,$(PBC!^,%LPDS`",&-K5S!$,*TP_#!,,&51FU)5,(PP9C!$,(LP2S!I,$8P2S"2,+IXC8I7,&8P3S!@,%4P1#`",```	44		1670816362
+IDS_ERROR_72	2052	+I4@`%L`,@!=`"``X&5(90(P]XMN>*2+J&"3CV51A'8NE2]F)E1C:VYX`C``	22		-107356799
+IDS_ERROR_73	1033	The installer must restart your system before configuration of [2] can continue.  Click Yes to restart now or No if you plan to restart later.	0		-1021928859
+IDS_ERROR_73	1041	6P`R`%T`(`!N,"V*FEN2,)E]FGU9,(LP35)K,`$PMS"Y,,8PX#"2,(U1=XW54EDPBS#%7X&)3#!",(HP?C!9,`(P63!0,&LPC5%WC=5263"+,#18"%1O,`PP;S!$,`TPDC`!,(Q?9S!+8M529S"-47>-U5)9,(LP-%@(5&\P##!$,$0P2#`-,)(PKS#J,,,PKS!7,&8P3S!@,%4P1#`",```	80		1670816362
+IDS_ERROR_73	2052	B5O%B`MZCU[%7WN82%'-D;!E+U2H4JA@A';[?-]^#/\V<0Y436+]@.=^[7Y-D6Y_(`!;`#(`70`",%53^U$B`"]F(@`)8ZZ4[U/+>G-3S9&P92]4J%(;_U53^U$B`"94(@`)8ZZ4&5+O4RA7Y4X.5.5.ND[E7;EE#U\O5*A2`C``	64		-107356799
+IDS_ERROR_74	1033	You must restart your system for the configuration changes made to [2] to take effect. Click Yes to restart now or No if you plan to restart later.	0		-1021928859
+IDS_ERROR_74	1041	6P`R`%T`(`!K,/Y;63"+,"V*FEL)6?1FDC`)9[E2:S!9,(LP:S!O,`$PMS"Y,,8PX#"2,(U1=XW54EDPBS#%7X&)3#!",(HP?C!9,`(P63!0,&LPC5%WC=5263"+,#18"%1O,`PP;S!$,`TPDC`!,(Q?9S!+8M529S"-47>-U5)9,(LP-%@(5&\P##!$,$0P2#`-,)(PKS#J,,,PKS!7,&8P3S!@,%4P1#`",```	86		1670816362
+IDS_ERROR_74	2052	J&#%7WN82%'-D;!E+U2H4OM\WWX,_S9Q#E1-8OV`?T_Y6R``6P`R`%T`(`!:4/I1A'9-D6Y_[D\Y91]U2&4",%53^U$B`"]F(@`)8ZZ4[U/+>G-3S9&P92]4J%(;_U53^U$B`"94(@`)8ZZ4&5+O4RA7Y4X.5.5.ND[E7;EE#U\O5*A2`C``	67		-107356799
+IDS_ERROR_75	1033	An installation for [2] is currently suspended.  You must undo the changes made by that installation to continue.  Do you want to undo those changes?	0		-1021928859
+IDS_ERROR_75	1041	6P`R`%T`(`!N,*0P\S"Y,,@P_##K,&\P_G,H5RU.K655,(PP9C!$,'XP63`",%,P;C!^,'XPF7V:?5DPBS!K,&\P`3"D,/,PN3#(,/PPZS!K,(@P8S!F,$R(CS",,%\P"5GT9I(PUE.*,(AM63#%7X&)3#!",(HP?C!9,`(P4S",,(DP;C`)6?1FDC#64XHPB&U7,'XP63!+,#\`	78		-1860747637
+IDS_ERROR_75	2052	6P`R`%T`(`"$=@!.(6N)6\6(QX\+>F-K!%F.3H)F7%"V<@%@#/^H8,5?>YA(4:1DB&WEBXE;Q8C'CPMZ6E#Z481V[D\Y90S_-G$.5$UB_8#G?NU^S61<3P(P+V8F5*1DB&VCD)M.[D\Y91__	54		-107356799
+IDS_ERROR_76	1033	A previous installation for this product is in progress.  You must undo the changes made by that installation to continue.  Do you want to undo those changes?	0		-1021928859
+IDS_ERROR_76	1041	4S!N,/V(P51N,$U2;C"D,/,PN3#(,/PPZS!O,/YS*%<RD$R(+4YG,%DP`C!3,&XP?C!^,)E]FGU9,(LP:S!O,`$P4S!N,*0P\S"Y,,@P_##K,&LPB#!C,&8P3(B/,(PP7S`)6?1FDC#64XHPB&U9,,5?@8E,,$(PBC!^,%DP`C!3,(PPB3!N,`E9]&:2,-93BC"(;5<P?C!9,$LP/P``	79		-1860747637
+IDS_ERROR_76	2052	+&>G3L%4A'9-4@!.(6N)6\6(8VLH5]N/3(@,_ZA@Q5][F$A1I&2(;>6+QX\+>EI0^E&$=NY/.64,_S9Q#E1-8OV`YW[M?@(P+V8F5*1DB&VCD)M.[D\Y91__	45		-107356799
+IDS_ERROR_77	1033	No valid source could be found for product [2].  The Windows Installer cannot continue.	0		-1021928859
+IDS_ERROR_77	1041	_8C!5"``6P`R`%T`(`!K,/Y;63"+,&-K#U]J,+TP_#"Y,$PPBXED,$LPBC!^,%LPDS`",%,P;C"D,/,PN3#(,.PP_#"W,.<P\S#1,,,PL3#\,+@P(``G`%L`,P!=`"<`(`!N,&-KCXEN,+,PU##\,)(P?T\H=5<P9C`!,(U1IEZD,/,PN3#(,/PPZS"2,)];3(A7,&8P3S!@,%4P1#`",```	80		-1860747637
+IDS_ERROR_77	2052	X&75;'YB,%*G3L%4(`!;`#(`70`@`(1VB5O%B`MZCUX%4P(P]XM_3RAUB5O%B`MZCUX%4R``6P`S`%T`(`"$=@EG2&7W8AV-S9&P9=N/3(B)6\6(`C``	43		-107356799
+IDS_ERROR_78	1033	Installation operation completed successfully.	0		-1021928859
+IDS_ERROR_78	1041	I##S,+DPR##\,.LP;S!C:SA>:S!"?89.5S!^,%<P7S`",```	17		1670816362
+IDS_ERROR_78	2052	B5O%B,UD7$_R71!BGU*,6Q!B`C``	10		-107356799
+IDS_ERROR_79	1033	Installation operation failed.	0		-1021928859
+IDS_ERROR_79	1041	I##S,+DPR##\,.LP;S`Q65=E5S!^,%<P7S`",```	14		1670816362
+IDS_ERROR_79	2052	B5O%B,UD7$\Q626-`C``	7		-107356799
+IDS_ERROR_8	1033	{[2]}{, [3]}{, [4]}	0		-1021928859
+IDS_ERROR_8	1041	{[2]}{, [3]}{, [4]}	0		1670816362
+IDS_ERROR_8	2052	{[2]}{, [3]}{, [4]}	0		-107361343
+IDS_ERROR_80	1033	Product: [2] -- [3]	0		-1021928859
+IDS_ERROR_80	1041	_8C!5#H`(`!;`#(`70`@`"T`+0`@`%L`,P!=````	14		-786901853
+IDS_ERROR_80	2052	IT[!5#H`(`!;`#(`70`@`"T`+0`@`%L`,P!=````	14		-107356799
+IDS_ERROR_81	1033	You may either restore your computer to its previous state or continue the installation later. Would you like to restore?	0		-1021928859
+IDS_ERROR_81	1041	LS#S,-0PY3#\,+\PDC#T=DU2;C"V<DMA:S"I7T-163"+,$LP`3",7V<PI##S,+DPR##\,.LPDC"9?9I]63"+,%,P:#!,,&<P33!^,%DP`C"I7T-15S!^,%DP2S`_````	47		-1860747637
+IDS_ERROR_81	2052	J&#O4^5.!ERABY=[.F?8CY]3\X%V49]3RUFV<@%@#/]?3N]3*%?E3@Y4YW[M?HE;Q8@","]F)E2!B=N/3(C8CY]3'_\`	34		-107356799
+IDS_ERROR_82	1033	An error occurred while writing installation information to disk.  Check to make sure enough disk space is available, and click Retry, or Cancel to end the installation.	0		-1021928859
+IDS_ERROR_82	1041	I##S,+DPR##\,.LPQ6`Q6)(PQS"C,+DPKS!K,/AF33"\CW\P+4YK,*@PZ3#\,$PP>G8?=5<P?C!7,%\P`C!!4P92:C#',*,PN3"O,!B8WU=,,$(PBS!3,&@PDC"Z>(V*5S!F,$LPB3`!,`PPC5%FBDR(#3"2,*\PZC##,*\P5S!F,)E]FGU9,(LP2S`!,'XP7S!O,`PPK3#C,/,PNS#K,`TPDC"O,.HPPS"O,%<P9C"D,/,PN3#(,/PPZS"2,"U.8FM7,&8P3S!@,%4P1#`",```	104		1670816362
+IDS_ERROR_82	2052	$51L>-AVF5%E48E;Q8CA3V]@]F714Q]U&97OBP(P]XMN>*2++V8F5`EGLXT?681V;'C8=GIZ])7O4YM/?T\H=0S_-G$.5%53^U$B`,V1U8LB``ECKI0,_Q9B!8!54_M1(@#64XAM(@`)8ZZ4TWY?9XE;Q8@",```	59		-107356799
+IDS_ERROR_83	1033	One or more of the files required to restore your computer to its previous state could not be found.  Restoration will not be possible.	0		-1021928859
+IDS_ERROR_83	1041	2C!_3T0P;C"S,/,PU##E,/PPOS"2,/1V35)N,+9R2V%K,*E?0U%9,(LP7S"!,&LPQ5^!B6HPU3"A,*0PZS!N,`!.Z)!,,(N)9#!+,(HP?C!;,),P`C"I7T-163"+,%,P:#!O,&<P33!^,%LPDS`",```	56		1670816362
+IDS_ERROR_83	2052	X&75;'YB,%(&7*A@A':ABY=[.F=B8`U9\X&?4\M9MG(!8$!B`)>$=@!.*DX68AI9*DZ'9?9.`C`-3OV`VX],B&)@#5G-9%Q/`C``	37		-107356799
+IDS_ERROR_84	1033	The path [2] is not valid.  Please specify a valid path.	0		-1021928859
+IDS_ERROR_84	1041	T3"Y,"``6P`R`%T`(`!,,&-K5S!/,$(PBC!^,%LPDS`",&-K5S!$,-$PN3"2,`=CFEM7,&8P3S!@,%4P1#`",```	32		1670816362
+IDS_ERROR_84	2052	[XV$7R``6P`R`%T`(`#@94AE#/_WBP=CFEL)9TAE[XV$7P(P	18		-107356799
+IDS_ERROR_85	1033	Out of memory. Shut down other applications before retrying.	0		-1021928859
+IDS_ERROR_85	1041	X3#B,.HP#4ZSC6<P63`",-9.;C"B,-<PZC"Q,/PPMS#G,/,PDC")E5@P9C!+,(DP`3"-4:9>GUM,B%<P9C!/,&`P53!$,`(P	36		1670816362
+IDS_ERROR_85	2052	A5%86PU.LXT",/>+2%%S4>V5=E'63I1>*'4+>H]>#/\V<0Y4C5'-D=6+`C``	22		-107356799
+IDS_ERROR_86	1033	There is no disk in drive [2]. Please insert one and click Retry, or click Cancel to go back to the previously selected volume.	0		-1021928859
+IDS_ERROR_86	1041	R3#I,*0PUC`@`%L`,@!=`"``:S!O,,<PHS"Y,*\P3#!",(HP?C!;,),P`C#',*,PN3"O,)(P/V-E45<P9C!+,(DP(``,,(U19HI,B`TPDC"O,.HPPS"O,%<P9C!/,&`P53!$,`(PW##J,.4P_##@,&XP>)">8FLP.V*+,&LP;S`!,`PPK3#C,/,PNS#K,`TPDC"O,.HPPS"O,%<P9C!/,&`P53!$,`(P	84		1670816362
+IDS_ERROR_86	2052	<9JH4FA6(`!;`#(`70`@`"U.H6P)9\%XV'8",/>+2%'28V51P7C8=@S_-G$.5%53^U$B`,V1U8LB``ECKI0;_Q9B!8!54_M1(@#64XAM(@`)8ZZ4#/_4C]Y635)BEPF0Z6*$=G=3`C``	52		-107356799
+IDS_ERROR_87	1033	There is no disk in drive [2]. Please insert one and click Retry, or click Cancel to return to the browse dialog and select a different volume.	0		-1021928859
+IDS_ERROR_87	1041	R3#I,*0PUC`@`%L`,@!=`"``:S!O,,<PHS"Y,*\P3#!",(HP?C!;,),P`C#',*,PN3"O,)(P/V-E45<P9C!+,(DP##"-46:*3(@-,)(PKS#J,,,PKS!7,&8P3S!@,%4P1#`",`PP'&DB?0TPP#"D,*(P[3"P,-PPPS"O,+DP:S`[8F,P9C`!,"52;C#<,.HPY3#\,.`PDC!XD)YB63"+,#18"%1O,`PPK3#C,/,PNS#K,`TPDC"O,.HPPS"O,%<P9C!/,&`P53!$,`(P	102		-1860747637
+IDS_ERROR_87	2052	<9JH4FA6(`!;`#(`70`@`"U.H6P)9\%XV'8",/>+2%'28V51P7C8=@S_-G$.5%53^U$B`,V1U8LB``ECKI0;_Q9B!8!54_M1(@#64XAM(@`)8ZZ4#/_4C]Y6(@!/;<B)(@#Y6]V+1FAV7@F0Z6)V4=9.=U,",```	59		-107356799
+IDS_ERROR_88	1033	The folder [2] does not exist.  Please enter a path to an existing folder.	0		-1021928859
+IDS_ERROR_88	1041	U3"I,.LPP#`@`%L`,@!=`"``;S!86RA75S!^,%LPDS`",.)E6%MN,-4PJ3#K,,`P>#!N,-$PN3"2,&51FU)7,&8P3S!@,%4P1#`",```	38		1670816362
+IDS_ERROR_88	2052	AV7V3CE9(`!;`#(`70`@``U.6%LH5P(P]XN3CV51T&<J3I]3"6>'9?9..5F$=N^-A%\",```	26		-107356799
+IDS_ERROR_89	1033	You have insufficient privileges to read this folder.	0		-1021928859
+IDS_ERROR_89	1041	4S!N,-4PJ3#K,,`PDC"MBG\PO(^`,&LP;S`!,*(PKS"[,+DP*6I,,`U.05,&4F<P63`",```	26		1670816362
+IDS_ERROR_89	2052	J&#[B]939&N'9?9..5F$=D-G4)8-3A]9`C``	13		-107356799
+IDS_ERROR_9	1033	Message type: [1], Argument: [2]	0		-1021928859
+IDS_ERROR_9	1041	X3##,+LP_#"X,&XP+GI>F#H`(`!;`#$`70`L`"``%5]P93H`(`!;`#(`70``	22		-786901853
+IDS_ERROR_9	2052	B&UO8'M\BU<Z`"``6P`Q`%T`#/\@`,)3<&4Z`"``6P`R`%T`	18		-107356799
+IDS_ERROR_90	1033	A valid destination folder for the installation could not be determined.	0		-1021928859
+IDS_ERROR_90	1041	8VM7,$0PI##S,+DPR##\,.LP2%%N,-4PJ3#K,,`P3#"Z>)I;9S!-,'XP6S"3,`(P	24		1670816362
+IDS_ERROR_90	2052	X&75;&YXFEN)6\6(0&(`EX1V"6=(9>^-A%\",```	14		-107356799
+IDS_ERROR_91	1033	Error attempting to read from the source installation database: [2].	0		-1021928859
+IDS_ERROR_91	1041	O3#\,+DPI##S,+DPR##\,.LPQS#\,+\PV3#\,+DP(`!;`#(`70`@`$LPB3!N,*V*?S"\CW\P:S`Q65=E5S!^,%<P7S`",```	35		-1860747637
+IDS_ERROR_91	2052	U8O^5ON+UE.0;HE;Q8AP96YCDUX@`%L`,@!=`"``]F7Z41F5`C``	19		-107356799
+IDS_ERROR_92	1033	Scheduling reboot operation: Renaming file [2] to [3]. Must reboot to complete operation.	0		-1021928859
+IDS_ERROR_92	1041	C5%WC=52S61<3VXPN3"Q,+@PY3#\,.HP\S"P,#H`(`#5,*$PI##K,"``6P`R`%T`(`!N,`U435*2,"``6P`S`%T`(`!K,`E9]&8",,UD7$^2,(Q;ADY9,(LP:S!O,`$PC5%WC=525S!J,%$PC#!P,&HPBC!^,%LPDS`",```	62		-786901853
+IDS_ERROR_92	2052	8VLH5XE;DF/-D;!E+U2H4LUD7$\Z`"``!ER'9?9.(`!;`#(`70`@`,V1?50-5#I.(`!;`#,`70`",.I3"6?-D;!E+U2H4@Y4S61<3TUB_8",6Q!B`C``	43		-107356799
+IDS_ERROR_93	1033	Scheduling reboot operation: Deleting file [2]. Must reboot to complete operation.	0		-1021928859
+IDS_ERROR_93	1041	C5%WC=520F9N,,UD7$]N,+DPL3"X,.4P_##J,/,PL#`Z`"``U3"A,*0PZS`@`%L`,@!=`"``;C!*4F26`C#-9%Q/DC",6X9.63"+,&LP;S`!,(U1=XW54E<P:C!1,(PP<#!J,(HP?C!;,),P`C``	55		-786901853
+IDS_ERROR_93	2052	8VLH5XE;DF/-D;!E+U2H4LUD7$\Z`"``(%)DEH=E]DX@`%L`,@!=``(PZE,)9\V1L&4O5*A2#E3-9%Q/36+]@(Q;$&(",```	35		-107356799
+IDS_ERROR_94	1033	Module [2] failed to register.  HRESULT [3].  Contact your support personnel.	0		-1021928859
+IDS_ERROR_94	1041	XC"X,.4P_##K,"``6P`R`%T`(`!G,'MV,I-K,#%95V57,'XP5S!?,`(P(`!(`%(`10!3`%4`3`!4`"``6P`S`%T``C"U,-TP_##(,,5B4U\%@'@P2C!/540P"%2/,%LP3S!@,%4P1#`","``	54		1670816362
+IDS_ERROR_94	2052	X&75;.ALC%$A:E=7(`!;`#(`70`",$@`4@!%`%,`50!,`%0`(`!;`#,`70`",/>+#DZH8(1V@&(O9R]E`6.Z3EA45(#[?`(P	36		-107356799
+IDS_ERROR_95	1033	Module [2] failed to unregister.  HRESULT [3].  Contact your support personnel.	0		-1021928859
+IDS_ERROR_95	1041	XC"X,.4P_##K,"``6P`R`%T`(`!G,'MV,I-N,..)9)9K,#%95V57,'XP5S!?,`(P2`!2`$4`4P!5`$P`5``@`%L`,P!=``(PM3#=,/PPR##%8E-?!8!X,$HP3U5$,`A4CS!;,$\P8#!5,$0P`C`@````	56		1670816362
+IDS_ERROR_95	2052	X&75;*1DB&WH;(Q1(6I75R``6P`R`%T``C!(`%(`10!3`%4`3`!4`"``6P`S`%T``C#WBPY.J&"$=H!B+V<O90%CNDY85%2`^WP",```	38		-107356799
+IDS_ERROR_96	1033	Failed to cache package [2]. Error: [3]. Contact your support personnel.	0		-1021928859
+IDS_ERROR_96	1041	T3##,+$P_#"X,"``6P`R`%T`(`!N,*TPXS##,+<PY3!K,#%95V57,'XP5S!?,`(PJ##I,/PP.@`@`%L`,P!=``(PM3#=,/PPR##%8E-?!8!X,$HP3U5$,`A4CS!;,$\P8#!5,$0P`C``	52		-786901853
+IDS_ERROR_96	2052	X&75;!-_6%L@`%L`,@!=``(P&97OBSH`(`!;`#,`70`",/>+#DZH8(1V@&(O9R]E`6.Z3EA45(#[?`(P	30		-107356799
+IDS_ERROR_97	1033	Could not register font [2].  Verify that you have sufficient permissions to install fonts, and that the system supports this font.	0		-1021928859
+IDS_ERROR_97	1041	U3"I,/,PR#`@`%L`,@!=`"``DC![=C*39S!-,'XP6S"3,`(P4S!N,-4PJ3#S,,@PDC"D,/,PN3#(,/PPZS!9,(LP*6HI4DPP0C"+,$LP:3!&,$LP`3!^,%\PMS"Y,,8PX#!,,%,P;C#5,*DP\S#(,)(PM3#=,/PPR#!7,&8P1#"+,$LP:3!&,$LPDC"Z>(V*5S!F,$\P8#!5,$0P`C``	79		1670816362
+IDS_ERROR_97	2052	X&75;.ALC%%76U-/(`!;`#(`70`",/>+P&CE9ZA@+V8F5`EGLXT?681V0V=0EHE;Q8A76U-/#/_E3LI3^WS??B]F)E3]@!]9+V4!8^6+5UM33P(P	42		-107356799
+IDS_ERROR_98	1033	Could not unregister font [2]. Verify that you have sufficient permissions to remove fonts.	0		-1021928859
+IDS_ERROR_98	1041	U3"I,/,PR#`@`%L`,@!=`"``;C![=C*3DC#64XHPB&U9,%,P:#!,,&<P33!^,%LPDS`",-4PJ3#S,,@PDC!*4F2663"+,"EJ*5),,$(PBS!+,&DP1C!+,)(PNGB-BE<P9C!/,&`P53!$,`(P	54		1670816362
+IDS_ERROR_98	2052	X&75;*1DB&WY6U=;4T\@`%L`,@!=`"``A';H;(Q1`C#WB\!HY6>H8"]F)E0)9[.-'UF$=D-G4)8@4F265UM33P(P	33		-107356799
+IDS_ERROR_99	1033	Could not create shortcut [2]. Verify that the destination folder exists and that you can access it.	0		-1021928859
+IDS_ERROR_99	1041	MS#G,/PPR#"K,,,PR#`@`%L`,@!=`"``DC!<3Q!B9S!-,'XP6S"3,`(P[G:$=FXPU3"I,.LPP#!,,%A;*%=9,(LP2S`!,'XP7S!3,&XPU3"I,.LPP#!X,&XPHC"O,+LPN3`I:I(P`6-C,&8P1#"+,$LP:3!&,$LPDC"Z>(V*5S!F,$\P8#!5,$0P`C``	70		1670816362
+IDS_ERROR_99	2052	X&75;!M2^E[K7W=CN64/7R``6P`R`%T``C#WB\!HY6?N=@=HAV7V3CE9+V8F5%A;*%<,_^5.RE.H8"]F)E3O4^5.OXONE>6+AV7V3CE9`C``	40		-107356799
+IDS_ERROR_SN_INVALID	1033	The serial number is invalid.	0		-1021928859
+IDS_ERROR_SN_INVALID	1041	MS#J,*(PZS!J=?=33#`A<;E29S!9,`(P	12		1670816362
+IDS_ERROR_SN_INVALID	2052	CUX74O=3X&5(90(P	6		-107356799
+IDS_ISSCRIPT_VERSION_MISSING	1033	The InstallScript engine is missing from this machine.  If available, please run ISScript.msi, or contact your support personnel for further assistance.	0		-1021928859
+IDS_ISSCRIPT_VERSION_MISSING	1041	4S!N,-XPMS#S,&LP;S`@`$D`;@!S`'0`80!L`&P`4P!C`'(`:0!P`'0`(`"H,/,PN##S,$PP0C"*,'XP6S"3,`(P20!3`%,`8P!R`&D`<`!T`"X`;0!S`&D`(`!,,$(PBS`T6`A4;S!=,(PPDC"?6TR(5S`!,&HP1#`T6`A4;S"U,-TP_##(,,5B4U\%@&LP2C!/540P"%2/,%LP3S!@,%4P1#`",```	83		-1860747637
+IDS_ISSCRIPT_VERSION_MISSING	2052	Y8NABY=[.F<Z?Q%<(`!)`&X`<P!T`&$`;`!L`%,`8P!R`&D`<`!T`"``%5_.9`(P]XO0CTR((`!)`%,`4P!C`'(`:0!P`'0`+@!M`',`:0`(_X)9G&<)9X1VW8L)_PS_%F(%@%2`^WRH8(1V+V4!8[I.6%2W@Y=?VX\`3F5KA'8N7JE2`C``	67		-107356799
+IDS_ISSCRIPT_VERSION_OLD	1033	The InstallScript engine on this machine is older than the version required to run this setup.  If available, please install the latest version of ISScript.msi, or contact your support personnel for further assistance.	0		-1021928859
+IDS_ISSCRIPT_VERSION_OLD	1041	4S!N,-XPMS#S,&LP0C"+,"``20!N`',`=`!A`&P`;`!3`&,`<@!I`'``=``@`*@P\S"X,/,P;S`!,%,P;C"[,,,PR#"B,,,PUS"2,)];3(A9,(LP;C!K,,5?@8EJ,-`P_#"X,.<P\S"(,(HPY%-$,((P;C!G,%DP`C``9[!ET##\,+@PYS#S,&XP(`!)`%,`4P!C`'(`:0!P`'0`+@!M`',`:0`@`$PP0C"+,#18"%1O,%TPC#"2,)];3(A7,`$P:C!$,#18"%1O,+4PW3#\,,@PQ6)37P6`:S!*,$]51#`(5(\P6S!/,&`P53!$,`(P	120		-1860747637
+IDS_ISSCRIPT_VERSION_OLD	2052	Y8NABY=[.F<M3H1V(`!)`&X`<P!T`&$`;`!L`%,`8P!R`&D`<`!T`"``%5_.9$AR+&?I98Y.9&N)6\6("WJ/7@"7@8F$=DAR+&<",/>+B5O%B"``20!3`%,`8P!R`&D`<`!T`"X`;0!S`&D`(`"$=@!GL&5(<BQG"/^"69QG"6>$=MV+"?\,_Q9B!8!4@/M\J&"$=B]E`6.Z3EA4MX.77]N/`$YE:X1V+EZI4@(P	87		-107356799
+IDS_STANDARD_USE_SETUPEXE	1033	This installation cannot be run by directly launching the MSI package. You must run setup.exe.	0		-1021928859
+IDS_STANDARD_USE_SETUPEXE	1041	4S!N,'+_G?]]_X3_</^9_V\P(`!-`%,`20`@`-$PPS"Q,/PPN#"2,/1VI6-WC=525S!F,)];3(AG,$TP?C!;,),P`C!S`&4`=`!U`'``+@!E`'@`90`@`)(PGUM,B%<P9C!/,&`P53!$,`(P	54		-1860747637
+IDS_STANDARD_USE_SETUPEXE	2052	]':E8R]4J%(@`$T`4P!)`"``!5/@9=5LT(],B&1KB5O%B`MZCUX,_\5?>YB!B="/3(@@`',`90!T`'4`<``N`&4`>`!E``(P	36		-107356799
+IDS_UITEXT_0	1033	bytes	0		-1021928859
+IDS_UITEXT_0	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`T#"D,,@P	15		1670816362
+IDS_UITEXT_0	2052	5UN"@@``DARD_USE_SETUPEXE	2		-107356799
+IDS_UITEXT_1	1033	GB	0		-1021928859
+IDS_UITEXT_1	1041	GB	0		1670816362
+IDS_UITEXT_1	2052	GB	0		-107361343
+IDS_UITEXT_10	1033	This feature will remain uninstalled.	0		-1021928859
+IDS_UITEXT_10	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`4S!N,%]J_8"2,*(P\S"D,/,PN3#(,/PPZS!7,%\P?C!^,&LP5S!^,%DP`C``	34		1670816362
+IDS_UITEXT_10	2052	^WS??@9<#4Z)6\6(9&N?4OV``C``	10		-107356799
+IDS_UITEXT_11	1033	This feature will be set to be installed when required.	0		-1021928859
+IDS_UITEXT_11	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`@8E";$PP0C!C,%\P-%@(5&LP4S!N,%]J_8"2,*0P\S"Y,,@P_##K,(@P1C!K,+LPPS#(,%<P?C!9,`(P	42		-1860747637
+IDS_UITEXT_11	2052	9&N?4OV`!ERKB+Z+;G\Z3BA7`)>!B?9EB5O%B`(P	15		-107356799
+IDS_UITEXT_12	1033	This feature will be installed to run from CD.	0		-1021928859
+IDS_UITEXT_12	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`4S!N,%]J_8"2,$,`1`!+,(DPGUM,B%DPBS"(,$8P:S"D,/,PN3#(,/PPZS!7,'XP63`",```	38		1670816362
+IDS_UITEXT_12	2052	9&N?4OV`B5O%B`Y4!ES.3DE1V'8*3M"/3(@",```	14		-107356799
+IDS_UITEXT_13	1033	This feature will be installed on the local hard drive.	0		-1021928859
+IDS_UITEXT_13	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`4S!N,%]J_8"2,.TP_#"K,.LP;C#/,/PPR3#',*,PN3"O,,DPZ3"D,-8P:S"D,/,PN3#(,/PPZS!7,'XP63`",```	44		-1860747637
+IDS_UITEXT_13	2052	9&N?4OV`!ER)6\6(*%<L9S!7;'C8=G&:J%)H5@I.`C``	16		-107356799
+IDS_UITEXT_14	1033	This feature will be installed to run from the network.	0		-1021928859
+IDS_UITEXT_14	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`4S!N,%]J_8"2,,TPPS#(,.\P_#"O,$LPB3"?6TR(63"+,(@P1C!K,*0P\S"Y,,@P_##K,%<P?C!9,`(P	42		1670816362
+IDS_UITEXT_14	2052	9&N?4OV`B5O%B`Y4!ES.3E%_W'XM3M"/3(@",```	14		-107356799
+IDS_UITEXT_15	1033	This feature will become unavailable.	0		-1021928859
+IDS_UITEXT_15	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`4S!N,%]J_8!O,']/*'5G,$TP:C!$,(@P1C!K,&HPBC!^,%DP`C``	31		-1860747637
+IDS_UITEXT_15	2052	9&N?4OV`!EP-3HE;Q8@",```	8		-107356799
+IDS_UITEXT_16	1033	Will be installed when required.	0		-1021928859
+IDS_UITEXT_16	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`@8E";$PP0C!C,%\P-%@(5&LPI##S,+DPR##\,.LP5S!^,%DP`C``	31		-1860747637
+IDS_UITEXT_16	2052	9&N?4OV`!EPH5P"7@8GV98E;Q8@",```	11		-107356799
+IDS_UITEXT_17	1033	This feature will be available to run from CD.	0		-1021928859
+IDS_UITEXT_17	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`4S!N,%]J_8"2,$,`1`!+,(DPGUM,B&<P33"+,(@P1C!K,%<P?C!9,`(P	33		1670816362
+IDS_UITEXT_17	2052	9&N?4OV`[U/.3DE1V'8*3M"/3(@",```	11		-107356799
+IDS_UITEXT_18	1033	This feature will be installed on your local hard drive.	0		-1021928859
+IDS_UITEXT_18	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`4S!N,%]J_8"2,.TP_#"K,.LP;C#/,/PPR3#',*,PN3"O,,DPZ3"D,-8P:S"D,/,PN3#(,/PPZS!7,'XP63`",```	44		-1860747637
+IDS_UITEXT_18	2052	9&N?4OV`!ER)6\6(*%<L9S!7;'C8=G&:J%)H5@I.`C``	16		-107356799
+IDS_UITEXT_19	1033	This feature will be available to run from the network.	0		-1021928859
+IDS_UITEXT_19	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`4S!N,%]J_8"2,,TPPS#(,.\P_#"O,$LPB3"?6TR(9S!-,(LPB#!&,&LP5S!^,%DP`C``	37		1670816362
+IDS_UITEXT_19	2052	9&N?4OV`[U/.3E%_W'XM3M"/3(@",```	11		-107356799
+IDS_UITEXT_2	1033	KB	0		-1021928859
+IDS_UITEXT_2	1041	KB	0		1670816362
+IDS_UITEXT_2	2052	KB	0		-107361343
+IDS_UITEXT_20	1033	This feature will be uninstalled completely, and you won't be able to run it from CD.	0		-1021928859
+IDS_UITEXT_20	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`4S!N,%]J_8"2,(Q;:%%K,*(P\S"D,/,PN3#(,/PPZS!7,'XP63`",$,`1`!+,(DPGUM,B&<P33!J,$0PB#!&,&LP:C"*,'XP63`",```	50		1670816362
+IDS_UITEXT_20	2052	9&N?4OV`!EQH4>B0>%-]CPS_J&`&7.!EU6S.3DE1V'8*3M"/3(@",```	20		-107356799
+IDS_UITEXT_21	1033	This feature was run from the CD but will be set to be installed when required.	0		-1021928859
+IDS_UITEXT_21	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`4S!N,%]J_8!O,$,`1`!+,(DPGUM,B%4PC#!^,%<P7S!,,`$P@8E";$PP0C!C,%\P-%@(5&LPI##S,+DPR##\,.LP63"+,(@P1C!K,+LPPS#(,%<P?C!9,`(P	57		1670816362
+IDS_UITEXT_21	2052	9&N?4OV`[U/.3DE1V'8*3M"/3(@,_T9/JXB^BVY_.DX`EX&)]F5-8MN/3(B)6\6(`C``	25		-107356799
+IDS_UITEXT_22	1033	This feature will continue to be run from the CD	0		-1021928859
+IDS_UITEXT_22	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`4S!N,%]J_8"2,)E]FGU7,&8P0P!$`$LPB3"?6TR(63"+,(@P1C!K,%<P?C!9,`(P	36		1670816362
+IDS_UITEXT_22	2052	9&N?4OV`!ESG?NU^SDY)4=AV"D[0CTR(	12		-107356799
+IDS_UITEXT_23	1033	This feature was run from the CD but will be installed on the local hard drive.	0		-1021928859
+IDS_UITEXT_23	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`4S!N,%]J_8!O,$,`1`!+,(DPGUM,B%4PC#!^,%<P7S!,,`$P[3#\,*LPZS!N,,\P_##),,<PHS"Y,*\PR3#I,*0PUC!K,*0P\S"Y,,@P_##K,%<P?C!9,`(P	57		-1860747637
+IDS_UITEXT_23	2052	9&N?4OV`[U/.3DE1V'8*3M"/3(@,_T9/!ER)6\6(*%<L9S!7;'C8=G&:J%)H5@I.`C``	25		-107356799
+IDS_UITEXT_24	1033	This feature frees up [1] on your hard drive.	0		-1021928859
+IDS_UITEXT_24	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`4S!N,%]J_8!O,`$PSS#\,,DPQS"C,+DPKS#),.DPI##6,&XP(`!;`#$`70`@`)(PBY4^95<P?C!9,`(P+@``	43		-1860747637
+IDS_UITEXT_24	2052	9&N?4OV`RI$^96QXV'9QFJA2:%8*3H1V(`!;`#$`70`@``(P	18		-107356799
+IDS_UITEXT_25	1033	This feature requires [1] on your hard drive.	0		-1021928859
+IDS_UITEXT_25	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`4S!N,%]J_8"2,*0P\S"Y,,@P_##K,%DPBS!K,&\P`3#M,/PPJS#K,&XPSS#\,,DPQS"C,+DPKS#),.DPI##6,&LP(`!;`#$`70`@`$PPQ5^!B6<P63`",```	56		-1860747637
+IDS_UITEXT_25	2052	9&N?4OV``)>!B6QXV'9QFJA2:%8*3H1V(`!;`#$`70`@``(P	18		-107356799
+IDS_UITEXT_26	1033	Compiling cost for this feature...	0		-1021928859
+IDS_UITEXT_26	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`4S!N,%]J_8!K,/Y;63"+,+,PN3#(,)(PLS#S,-$PI##K,%<P9C!$,'XP63`N`"X`+@``	37		1670816362
+IDS_UITEXT_26	2052	8VLH5Q9_T8MD:Y]2_8"$=N-.]TXN`"X`+@``	13		-107356799
+IDS_UITEXT_27	1033	This feature will be completely removed.	0		-1021928859
+IDS_UITEXT_27	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`4S!N,%]J_8"2,%DP>3!F,$I29)97,'XP63`",```	26		1670816362
+IDS_UITEXT_27	2052	9&N?4OV`!ERKB&A1Z)`@4F26`C``	10		-107356799
+IDS_UITEXT_28	1033	This feature will be removed from your local hard drive but will be set to be installed when required.	0		-1021928859
+IDS_UITEXT_28	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`4S!N,%]J_8"2,.TP_#"K,.LP;C#/,/PPR3#',*,PN3"O,,DPZ3"D,-8P2S"),$I29)97,&8P`3"!B4)L3#!",&,P7S`T6`A4:S"D,/,PN3#(,/PPZS!9,(LPB#!&,&LPNS##,,@P5S!^,%DP`C``	67		-1860747637
+IDS_UITEXT_28	2052	9&N?4OV`!ES.3BQG,%=L>-AV<9JH4FA6+4X@4F26#/]&3P"7@8GV909<VX],B(E;Q8@",```	26		-107356799
+IDS_UITEXT_29	1033	This feature will be removed from your local hard drive but will still be available to run from CD.	0		-1021928859
+IDS_UITEXT_29	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`4S!N,%]J_8"2,.TP_#"K,.LP;C#/,/PPR3#',*,PN3"O,,DPZ3"D,-8P2S"),$I29)97,'XP63!,,`$P0P!$`$LPB3!O,)];3(AG,$TPBS"(,$8P:S!7,'XP63`",```	59		-1860747637
+IDS_UITEXT_29	2052	9&N?4OV`!ES.3BQG,%=L>-AV<9JH4FA6+4X@4F26#/]&3\U.[U/E3LY.25'8=@I.T(],B`(P	27		-107356799
+IDS_UITEXT_3	1033	MB	0		-1021928859
+IDS_UITEXT_3	1041	MB	0		1670816362
+IDS_UITEXT_3	2052	MB	0		-107361343
+IDS_UITEXT_30	1033	This feature will remain on your local hard drive.	0		-1021928859
+IDS_UITEXT_30	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`4S!N,%]J_8!O,`$P[3#\,*LPZS!N,,\P_##),,<PHS"Y,*\PR3#I,*0PUC!+,(DP2E)DEE4PC#!^,%LPDS`",```	44		-1860747637
+IDS_UITEXT_30	2052	9&N?4OV`!ES=3UEU*%<L9S!7;'C8=G&:J%)H5BU.`C``	16		-107356799
+IDS_UITEXT_31	1033	This feature will be removed from your local hard drive, but will be still available to run from the network.	0		-1021928859
+IDS_UITEXT_31	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`4S!N,%]J_8"2,.TP_#"K,.LP;C#/,/PPR3#',*,PN3"O,,DPZ3"D,-8P2S"),$I29)97,'XP63!,,`$PS3##,,@P[S#\,*\P2S"),&\PGUM,B&<P33"+,(@P1C!K,%<P?C!9,`(P	63		-1860747637
+IDS_UITEXT_31	2052	9&N?4OV`!ES.3BQG,%=L>-AV<9JH4FA6+4X@4F26#/]&3\U.[U/E3LY.47_<?BU.T(],B`(P	27		-107356799
+IDS_UITEXT_32	1033	This feature will be uninstalled completely, and you won't be able to run it from the network.	0		-1021928859
+IDS_UITEXT_32	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`4S!N,%]J_8"2,(Q;:%%K,*(P\S"D,/,PN3#(,/PPZS!7,'XP63`",,TPPS#(,.\P_#"O,$LPB3"?6TR(9S!-,&HP1#"(,$8P:S!J,(HP?C!9,`(P	54		1670816362
+IDS_UITEXT_32	2052	9&N?4OV`!ERKB&A1Z)!X4WV/#/^H8`9<X&75;,Y.47_<?BU.T(],B`(P	21		-107356799
+IDS_UITEXT_33	1033	This feature was run from the network but will be installed when required.	0		-1021928859
+IDS_UITEXT_33	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`4S!N,%]J_8!O,,TPPS#(,.\P_#"O,$LPB3"?6TR(53",,'XP5S!?,$PP`3"!B4)L3#!",&,P7S`T6`A4:S"D,/,PN3#(,/PPZS!9,(LPB#!&,&LPNS##,,@P5S!^,%DP`C``	61		1670816362
+IDS_UITEXT_33	2052	9&N?4OV`SDY1?]Q^+4[0CTR(#/]&3RA7`)>!B?9E!ES;CTR(B5O%B`(P	21		-107356799
+IDS_UITEXT_34	1033	This feature was run from the network but will be installed on the local hard drive.	0		-1021928859
+IDS_UITEXT_34	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`4S!N,%]J_8!O,,TPPS#(,.\P_#"O,$LPB3"?6TR(53",,'XP5S!?,$PP`3#M,/PPJS#K,&XPSS#\,,DPQS"C,+DPKS#),.DPI##6,&LPI##S,+DPR##\,.LP5S!^,%DP`C``	61		-1860747637
+IDS_UITEXT_34	2052	9&N?4OV`SDY1?]Q^+4[0CTR(#/]&3P9<B5O%B"A7+&<P5VQXV'9QFJA2:%8*3@(P	24		-107356799
+IDS_UITEXT_35	1033	This feature will continue to be run from the network	0		-1021928859
+IDS_UITEXT_35	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`4S!N,%]J_8"2,)E]FGU7,&8PS3##,,@P[S#\,*\P2S"),)];3(A9,(LPB#!&,&LP5S!^,%DP`C``	40		1670816362
+IDS_UITEXT_35	2052	9&N?4OV`!ESG?NU^SDY1?]Q^+4[0CTR(	12		-107356799
+IDS_UITEXT_36	1033	This feature frees up [1] on your hard drive. It has [2] of [3] subfeatures selected. The subfeatures free up [4] on your hard drive.	0		-1021928859
+IDS_UITEXT_36	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`4S!N,%]J_8!O,`$P6P`Q`%T`(`"2,(N5/F57,'XP63`",%L`,@!=`"``+P`@`%L`,P!=`"``;C"U,-8P7VK]@$PP>)">8E4PC#!F,$0P?C!9,`(PM3#6,%]J_8!O,`$P6P`T`%T`(`"2,(N5/F57,'XP63`",```	71		1670816362
+IDS_UITEXT_36	2052	9&N?4OV`RI$^96QXV'9QFJA2:%8*3H1V(`!;`#$`70`@``(P(``)D)I;ADX@`%L`,P!=`"``4%N?4OV`A'8@`%L`,@!=`"```C`@`.6+4%N?4OV`RI$^96QXV'9QFJA2:%8*3H1V(`!;`#0`70`@``(P	57		-107356799
+IDS_UITEXT_37	1033	This feature frees up [1] on your hard drive. It has [2] of [3] subfeatures selected. The subfeatures require [4] on your hard drive.	0		-1021928859
+IDS_UITEXT_37	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`4S!N,%]J_8!O,`$P6P`Q`%T`(`"2,(N5/F57,'XP63`",%L`,@!=`"``+P`@`%L`,P!=`"``;C"U,-8P7VK]@$PP>)">8E4PC#!F,$0P?C!9,`(PM3#6,%]J_8"2,*0P\S"Y,,@P_##K,%DPBS!K,&\P`3!;`#0`70`@`$PPQ5^!B6<P63`",```	80		1670816362
+IDS_UITEXT_37	2052	9&N?4OV`RI$^96QXV'9QFJA2:%8*3H1V(`!;`#$`70`@``(P(``)D)I;ADX@`%L`,P!=`"``4%N?4OV`A'8@`%L`,@!=`"```C`@`.6+4%N?4OV``)>!B6QXV'9QFJA2:%8*3H1V(`!;`#0`70`@``(P	57		-107356799
+IDS_UITEXT_38	1033	This feature requires [1] on your hard drive. It has [2] of [3] subfeatures selected. The subfeatures free up [4] on your hard drive.	0		-1021928859
+IDS_UITEXT_38	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`4S!N,%]J_8"2,*0P\S"Y,,@P_##K,%DPBS!K,&\P`3!;`#$`70`@`$PPQ5^!B6<P63`",%L`,@!=`"``+P`@`%L`,P!=`"``;C"U,-8P7VK]@$PP>)">8E4PC#!F,$0P?C!9,`(PM3#6,%]J_8!O,`$P6P`T`%T`(`"2,(N5/F57,'XP63`",```	80		1670816362
+IDS_UITEXT_38	2052	9&N?4OV``)>!B6QXV'9QFJA2:%8*3H1V(`!;`#$`70`@``(P(``)D)I;ADX@`%L`,P!=`"``4%N?4OV`A'8@`%L`,@!=`"```C`@`.6+4%N?4OV`RI$^96QXV'9QFJA2:%8*3H1V(`!;`#0`70`@``(P	57		-107356799
+IDS_UITEXT_39	1033	This feature requires [1] on your hard drive. It has [2] of [3] subfeatures selected. The subfeatures require [4] on your hard drive.	0		-1021928859
+IDS_UITEXT_39	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`4S!N,%]J_8"2,*0P\S"Y,,@P_##K,%DPBS!K,&\P`3!;`#$`70`@`$PPQ5^!B6<P63`",%L`,@!=`"``+P`@`%L`,P!=`"``;C"U,-8P7VK]@$PP>)">8E4PC#!F,$0P?C!9,`(PM3#6,%]J_8!K,&\P`3!;`#0`70`@`$PPQ5^!B6<P63`",```	80		1670816362
+IDS_UITEXT_39	2052	9&N?4OV``)>!B6QXV'9QFJA2:%8*3H1V(`!;`#$`70`@``(P(``)D)I;ADX@`%L`,P!=`"``4%N?4OV`A'8@`%L`,@!=``(P(`#EBU!;GU+]@`"7@8EL>-AV<9JH4FA6"DZ$=B``6P`T`%T`(``",```	56		-107356799
+IDS_UITEXT_4	1033	This feature will not be available.	0		-1021928859
+IDS_UITEXT_4	1041	4S!N,%]J_8"2,']/*'5G,$TP:C!$,(@P1C!K,%<P?C!9,`(P	18		1670816362
+IDS_UITEXT_4	2052	9&N?4OV`!EP-3N]3*'4",```	8		-107356799
+IDS_UITEXT_40	1033	Time remaining: {[1] min }[2] sec	0		-1021928859
+IDS_UITEXT_40	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`BVN*,$)FDY4Z`"``>P!;`#$`70`@``92(`!]`%L`,@!=`"``TGD`	31		1670816362
+IDS_UITEXT_40	2052	:5)93_9E])4:_WL`6P`Q`%T`(``&4GT`6P`R`%T`(`#2>0``	17		-107356799
+IDS_UITEXT_41	1033	Available	0		-1021928859
+IDS_UITEXT_41	1041	?T\H=>]3_8!J,,<PHS"Y,*\PN5O/D0``	11		1670816362
+IDS_UITEXT_41	2052	[U,H=0``XT_40	2		-107356799
+IDS_UITEXT_42	1033	Differences	0		-1021928859
+IDS_UITEXT_42	1041	BVN*,```XT_41	2		1670816362
+IDS_UITEXT_42	2052	[ET"7P``XT_41	2		-107356799
+IDS_UITEXT_43	1033	Required	0		-1021928859
+IDS_UITEXT_43	1041	Q5^!B6HPQS"C,+DPKS"Y6\^1	9		1670816362
+IDS_UITEXT_43	2052	@8E";```XT_42	2		-107356799
+IDS_UITEXT_44	1033	Disk Size	0		-1021928859
+IDS_UITEXT_44	1041	QS"C,+DPKS"U,*0PNC``	7		-1860747637
+IDS_UITEXT_44	2052	P7C8=GIZ])4`	4		-107356799
+IDS_UITEXT_45	1033	Volume	0		-1021928859
+IDS_UITEXT_45	1041	W##J,.4P_##@,```	5		1670816362
+IDS_UITEXT_45	2052	=U,`UITEXT_44	1		-107356799
+IDS_UITEXT_46	1033	This feature, and all subfeatures, will be installed to run from the network.	0		-1021928859
+IDS_UITEXT_46	1041	4S!N,%]J_8`!,$HPB#!S,%DP>3!F,&XPM3#6,%]J_8"2,,TPPS#(,.\P_#"O,$LPB3"?6TR(63"+,(@P1C!K,*0P\S"Y,,@P_##K,%<P?C!9,`(P	42		1670816362
+IDS_UITEXT_46	2052	9&N?4OV`RE-`8@EG4%N?4OV`B5O%B`Y4!ES.3E%_W'X*3M"/3(@",```	20		-107356799
+IDS_UITEXT_47	1033	This feature, and all subfeatures, will be installed to run from the CD.	0		-1021928859
+IDS_UITEXT_47	1041	4S!N,%]J_8`!,$HPB#!S,%DP>3!F,&XPM3#6,%]J_8"2,$,`1`!+,(DPGUM,B%DPBS"(,$8P:S"D,/,PN3#(,/PPZS!7,'XP63`",```	38		1670816362
+IDS_UITEXT_47	2052	9&N?4OV`RE-`8@EG4%N?4OV`B5O%B`Y4!ES.3DE1V'8*3M"/3(@",```	20		-107356799
+IDS_UITEXT_48	1033	This feature, and all subfeatures, will be installed on local hard drive.	0		-1021928859
+IDS_UITEXT_48	1041	4S!N,%]J_8`!,$HPB#!S,%DP>3!F,&XPM3#6,%]J_8"2,.TP_#"K,.LP;C#/,/PPR3#',*,PN3"O,,DPZ3"D,-8P:S"D,/,PN3#(,/PPZS!7,'XP63`",```	44		-1860747637
+IDS_UITEXT_48	2052	9&N?4OV`RE-`8@EG4%N?4OV`!ER)6\6(*%<L9S!7;'C8=G&:J%)H5@I.`C``	22		-107356799
+IDS_UITEXT_6	1033	This feature will be installed to run from CD.	0		-1021928859
+IDS_UITEXT_6	1041	4S!N,%]J_8"2,"``0P!$`"``2S"),)];3(A9,(LPB#!&,&LPI##S,+DPR##\,.LP5S!^,%DP`C``	28		-1860747637
+IDS_UITEXT_6	2052	9&N?4OV`B5O%B`Y4!ES.3DE1V'8*3M"/3(@",```	14		-107356799
+IDS_UITEXT_7	1033	This feature will be installed on local hard drive.	0		-1021928859
+IDS_UITEXT_7	1041	4S!N,%]J_8"2,.TP_#"K,.LP;C#/,/PPR3#',*,PN3"O,,DPZ3"D,-8P:S"D,/,PN3#(,/PPZS!7,'XP63`",```	32		-1860747637
+IDS_UITEXT_7	2052	9&N?4OV`!ER)6\6(*%<L9S!7;'C8=G&:J%)H5@I.`C``	16		-107356799
+IDS_UITEXT_8	1033	This feature will be installed to run from network.	0		-1021928859
+IDS_UITEXT_8	1041	4S!N,%]J_8"2,,TPPS#(,.\P_#"O,$LPB3"?6TR(63"+,(@P1C!K,*0P\S"Y,,@P_##K,%<P?C!9,`(P	30		1670816362
+IDS_UITEXT_8	2052	9&N?4OV`B5O%B`Y4!ES.3E%_W'XM3M"/3(@",```	14		-107356799
+IDS_UITEXT_9	1033	Fldr|New Folder	0		-1021928859
+IDS_UITEXT_9	1041	>P`F`$T`4P!'`&\`=`!H`&D`8P`Y`'T`U3"I,.LPP#!\`-4PJ3#K,,`P;C"P98^)7$\08@``	26		1670816362
+IDS_UITEXT_9	2052	AV7V3CE9?`"P98=E]DXY60``	8		-107356799

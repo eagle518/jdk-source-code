@@ -1,0 +1,10 @@
+ISPathVariable	Value	TestValue	Type
+s32	S255	S255	i4
+ISPathVariable	ISPathVariable
+CommonFilesFolder			1
+ISProductFolder			1
+ISProjectDataFolder			1
+ISProjectFolder			1
+ProgramFilesFolder			1
+SystemFolder			1
+WindowsFolder			1

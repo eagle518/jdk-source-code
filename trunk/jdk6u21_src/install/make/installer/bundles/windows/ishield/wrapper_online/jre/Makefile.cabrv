@@ -1,0 +1,49 @@
+#
+# Copyright (c) 2009, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+#
+# @(#)Makefile.cabrv	1.2 10/03/23
+#
+#
+# Makefile to build the Online cabrv installer
+#
+
+
+PRODUCT = jinstall_cab_rv
+TEMPDIR=$(TEMP_DIR)/jinstall-cab-rv
+
+
+TARGET_NAME=jinstall_cab_rv
+TARGET=$(TARGET_NAME).exe
+
+include ./common.gmk
+
+EXEVALUE=JavaSetup$(JDK_MINOR_VERSION)u$(JDK_UPDATE_VERSION)-rv
+
+CPPFLAGS += -DJCABRV -DJVECTOR
+
+all: clean copyfiles jre-cabrv
+
+
+jre-cabrv: optimized debug
+
+
+$(OBJDIR)/$(TARGET): $(FILES_res) $(FILES_o)
+	$(LINK) $(LDFLAGS) $(FILES_res) $(FILES_o)
+
+build: $(OBJDIR)/$(TARGET)
+
+debug:
+
+optimized: $(OBJDIR)
+	$(MAKE) -f Makefile.cabrv build VARIANT=OPT
+
+clean::
+	$(RM) -r $(TEMPDIR)
+
+#
+# Phonies to avoid accidents.
+#
+.PHONY: all optimized debug clobber clean build
+

@@ -1,0 +1,3 @@
+ISMergeModule_	Language_	ModuleConfiguration_	Value	Format	Type	ContextData	DefaultValue	Attributes	DisplayName	Description	HelpLocation	HelpKeyword
+s255	i2	s72	L0	i2	L255	L255	L255	I2	L255	L255	L255	L255
+ISMergeModuleCfgValues	ISMergeModule_	Language_	ModuleConfiguration_

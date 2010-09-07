@@ -1,0 +1,7 @@
+Feature_	Level	Condition
+s38	i2	S255
+Condition	Feature_	Level
+both	0	(MOZILLA=0 And Not Installed) Or (Installed And REMOVE<>"ALL" And VersionNT>=500)
+IE	0	(MOZILLA=1 And Not Installed) Or (Installed And REMOVE<>"ALL" And VersionNT>=500)
+IESUB	0	(MOZILLA=0 And Not Installed) Or (Installed And REMOVE<>"ALL" And VersionNT>=500)
+MOZILLASUB	0	(MOZILLA=0 And Not Installed) Or (Installed And REMOVE<>"ALL" And VersionNT>=500)

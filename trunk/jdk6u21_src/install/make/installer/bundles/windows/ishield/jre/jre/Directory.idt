@@ -1,0 +1,29 @@
+Directory	Directory_Parent	DefaultDir	ISDescription	ISAttributes
+s72	S72	l255	S255	I4
+Directory	Directory
+AdminToolsFolder	TARGETDIR	.:Admint~1|AdminTools		0
+ALLUSERSPROFILE	TARGETDIR	.:ALLUSE~1|All Users		0
+AppDataFolder	TARGETDIR	.:APPLIC~1|Application Data		0
+CommonAppDataFolder	TARGETDIR	.:Common~1|CommonAppData		0
+CommonFiles64Folder	TARGETDIR	.:Common64		0
+CommonFilesFolder	TARGETDIR	.:Common		0
+GlobalAssemblyCache	TARGETDIR	.:Global~1|GlobalAssemblyCache		0
+INSTALLDIR	JAVA	_SED_INSTALL_DIR_		0
+JAVA	ProgramFilesFolder	Java		0
+LocalAppDataFolder	TARGETDIR	.:LocalA~1|LocalAppData		0
+ProgramFiles64Folder	TARGETDIR	.:Prog64~1|Program Files 64		0
+ProgramFilesFolder	TARGETDIR	.:PROGRA~1|program files		0
+System16Folder	TARGETDIR	.:System		0
+System64Folder	TARGETDIR	.:System64		0
+SystemFolder	TARGETDIR	.:System32		0
+TARGETDIR		SourceDir		0
+TempFolder	TARGETDIR	.:Temp		0
+TemplateFolder	TARGETDIR	.:ShellNew		0
+USERPROFILE	TARGETDIR	.:USERPR~1|UserProfile		0
+WindowsFolder	TARGETDIR	.:Windows		0
+bundles	lib	bundles		0
+tmp	bundles	tmp		0
+tmplib	tmp	lib		0
+tmplibext	tmplib	ext		0
+tmplibi386	tmplib	i386		0
+binkernel	bin	kernel		0

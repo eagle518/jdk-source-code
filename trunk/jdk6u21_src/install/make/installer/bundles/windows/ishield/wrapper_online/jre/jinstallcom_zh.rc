@@ -1,0 +1,247 @@
+//
+// @(#)jinstallcom_zh.rc	1.11 09/10/28
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_WELCOME_DIALOG DIALOGEX 0,0,333,218
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_VISIBLE | 
+    WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Java 安装程序 – 欢迎使用"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "", IDC_BANNER, 0, 0, 333, 35 
+    LTEXT           "", IDC_BACK_COLOR, 0, 65, 333, 127
+    CTEXT           "", IDC_WELCOME_HEADER,0,46,333,10
+    LTEXT           "", IDC_WELCOME_LINE1,16,78,305,40
+    LTEXT           "注：在我们的安装过程中，不会收集个人信息。", IDC_WELCOME_NOTE,32,118,300,10
+    LTEXT           "单击此处", IDC_WELCOME_CLICK_HERE,65,130,38,10
+    LTEXT           "了解有关我们所收集内容的更多信息。", IDC_WELCOME_MORE_INFO,103,130,200,10
+    LTEXT           "单击""安装""，以接受", IDC_WELCOME_LICENSE_TEXT1,34,171,75,10
+    LTEXT           "许可协议", IDC_WELCOME_LICENSE_AGREEMENT,110,171,36,10
+    LTEXT           "并立即安装 Java。", IDC_WELCOME_LICENSE_TEXT2,147,171,110,10
+    CONTROL         "", IDC_STATIC, "Static", SS_BLACKFRAME | SS_SUNKEN,0,192,334,1
+    CHECKBOX        "更改目标文件夹", IDC_WELCOME_CHECKBOX,10,196,125,16, BS_AUTOCHECKBOX
+    PUSHBUTTON      "取消", IDCANCEL,219,200,50,14
+    PUSHBUTTON      "安装(&I) >", IDOK,276,200,50,14
+    DEFPUSHBUTTON   "Hide", IDNO, 0, 0, 0, 0, NOT WS_TABSTOP
+END
+
+IDD_SETUP_PROGRESS_DIALOG DIALOGEX 0, 0, 333, 218
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | 
+    WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX  
+EXSTYLE WS_EX_APPWINDOW 
+CAPTION "Java 安装 - 进度"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "", IDC_BANNER, 0, 0, 333, 35
+    LTEXT           "", IDC_BACK_COLOR, 0, 65, 333, 127
+    CONTROL         "", IDC_ADVERTISMENT, "Static" , SS_CENTERIMAGE ,11, 72, 313, 112
+    LTEXT           "状态：	正在安装 Java", IDC_SETUP_TEXT, 35, 38, 200, 12
+    CONTROL         "Progress1", IDC_SETUP_PROGRESS, "msctls_progress32", WS_CAPTION, 35, 50, 263, 10
+    CONTROL         "", IDC_STATIC, "Static", SS_BLACKFRAME | SS_SUNKEN, 0, 192, 334, 1
+END
+
+IDD_DOWNLOAD_DIALOG DIALOGEX 0,0,333,140
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "正在下载 Java 安装程序"
+EXSTYLE WS_EX_APPWINDOW
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "下载安装程序", IDC_DOWNLOAD_HEADER, 30, 7, 130, 10
+    RTEXT           "", IDC_DOWNLOAD_STATUS, 166, 7, 130, 10
+    CONTROL         "Progress1", IDC_DOWNLOAD_PROGRESS, "msctls_progress32", WS_CAPTION, 30, 18, 270, 8
+    CONTROL         "", IDC_STATIC, "Static", SS_BLACKFRAME | SS_SUNKEN, 0, 33, 334, 1
+    CTEXT           "Java 的使用十分普遍，例如用于移动电话、桌面计算机、蓝光光碟播放器、机顶盒甚至是汽车中。", IDC_MARKETING_INFO3, 12, 48, 305, 25
+    CTEXT           "通过安装 Java，您将能够体验由 Oracle 提供的 Java 的强大功能。", IDC_MARKETING_INFO4, 12, 85, 305, 25
+    LTEXT           "访问我们的网站", IDC_MARKETING_INFO1, 116, 120, 56, 10
+    LTEXT           "java.com", IDC_MARKETING_INFO2, 175, 120, 120, 10
+END
+
+IDD_ERROR_HELP_DIALOG DIALOGEX 0,0,253,94
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_VISIBLE | 
+    WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "错误 - Java(TM) 安装程序"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "重试(&R)",IDOK,160,75,40,13
+    PUSHBUTTON      "取消",IDCANCEL,203,75,44,13
+    LTEXT           "",IDC_EBODY_TEXT,10,10,240,30
+    LTEXT           "http://java.com/zh_CN/download/help", IDC_MORE_INFO,10,30,160,12
+END
+
+108 DIALOGEX 0,0,259,61
+STYLE DS_SYSMODAL | DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION
+CAPTION "中止 - Java(TM) 安装程序"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "确定",2,104,39,50,14
+    ICON            IDI_JAVA,-1,16,11,20,20,0,WS_EX_TRANSPARENT
+    LTEXT           "要重新启动 Java(TM) 安装程序，请刷新 Web 页。",
+                    -1,47,11,195,17
+END
+
+///////////////////////////////////////////////////////////////////////////
+//
+// Installer Retry (RunOnce via FilesInUse cancellation) Splash Screen
+
+IDD_RETRY_SPLASH DIALOGEX 0,0,333,120
+STYLE DS_CENTER | WS_POPUPWINDOW | WS_EX_TOPMOST | WS_VISIBLE
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "", IDC_BANNER,0,0,333,35
+    CTEXT           "正在完成 Java 更新...", IDC_SPLASH_HEADER,0,55,333,25
+    CTEXT           "上次 Java 更新被取消了，因为某些 Java 文件当时正在使用。", IDC_SPLASH_LINE1,0,80,333,20
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Change Folder Dialog
+//
+
+IDD_CHANGEFOLDER DIALOGEX 0, 0, 333, 218
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_VISIBLE | 
+    WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Java 安装 - 目标文件夹"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CTEXT           "目标文件夹",IDC_DIALOG_HEADER,109,38,110,27,SS_CENTERIMAGE
+    LTEXT           "", IDC_BANNER, 0, 0, 333, 35 
+    LTEXT           "", IDC_BACK_COLOR, 0, 65, 333, 127
+    LTEXT           "单击 ""更改..."" 以将 Java 安装到其他文件夹。",IDC_DIALOG_TEXT,8,78,320,12
+    LTEXT           "安装到 ：",IDC_DIALOG_TEXT2,8,112,236,12
+    LTEXT           "",IDC_DIRECTORY,8,124,320,48
+    CONTROL         "", IDC_STATIC, "Static", SS_BLACKFRAME | SS_SUNKEN, 0, 192, 334, 1
+    DEFPUSHBUTTON   "下一步 >",IDOK,276,200,50,14
+    PUSHBUTTON      "更改(&C)...",IDC_CHANGE_BUTTON,260,108,50,14
+    PUSHBUTTON      "< 返回(&B)",IDC_BACK_BUTTON,219,200,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    105, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 236
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 63
+    END
+
+    108, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 252
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 78
+    END
+
+    109, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 250
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 219
+    END
+
+    IDD_CHANGEFOLDER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 312
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 219
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+
+// HTTP status code
+    IDS_HTTP_STATUS_BAD_REQUEST	    "语法无效，服务器无法处理请求。"
+    IDS_HTTP_STATUS_DENIED	    "所请求的资源需要用户鉴别。"
+    IDS_HTTP_STATUS_NOT_FOUND	    "服务器找不到与请求的 URI（统一资源标识符）相匹配的任何信息。"
+    IDS_HTTP_STATUS_BAD_METHOD	    "不允许使用该方法。"
+    IDS_HTTP_STATUS_NONE_ACCEPTABLE "找不到客户机能接受的响应。"
+    IDS_HTTP_STATUS_PROXY_AUTH_REQ  "需要代理鉴别。"
+    IDS_HTTP_STATUS_REQUEST_TIMEOUT "服务器等待请求时超时。"
+    IDS_HTTP_STATUS_CONFLICT	    "由于与资源的当前状态发生冲突，请求无法完成。用户应该重新提交更多的信息。"
+    IDS_HTTP_STATUS_GONE	    "所请求的资源在服务器上不再有效，并且转发地址未知。"
+    IDS_HTTP_STATUS_LENGTH_REQUIRED "服务器拒绝接受未定义内容长度的请求。"
+    IDS_HTTP_STATUS_PRECOND_FAILED  "在服务器上测试时，一个或多个请求标题字段给出的前提条件的计算结果为 false。"
+    IDS_HTTP_STATUS_REQUEST_TOO_LARGE   "请求实体大于服务器愿意或能够处理的实体，服务器拒绝处理该请求。"
+    IDS_HTTP_STATUS_URI_TOO_LONG        "请求 URI (统一资源标识符) 的长度大于服务器能够解释的 URI，服务器拒绝处理该请求。"
+    IDS_HTTP_STATUS_UNSUPPORTED_MEDIA   "请求方法所需的资源不支持请求实体的格式，服务器拒绝处理该请求。"
+    IDS_HTTP_STATUS_RETRY_WITH		"执行适当的操作后，应该再次尝试提交该请求。"
+    IDS_HTTP_STATUS_NOT_SUPPORTED	"服务器不支持执行请求所需的功能。"
+    IDS_HTTP_STATUS_BAD_GATEWAY		"服务器作为网关或代理运行，在尝试执行请求时收到来自其访问的上游服务器的无效响应。"
+    IDS_HTTP_STATUS_GATEWAY_TIMEOUT	"等待网关时请求超时。"
+    IDS_HTTP_STATUS_VERSION_NOT_SUP	"服务器不支持或拒绝支持请求消息中使用的 HTTP 协议版本。"
+    IDS_HTTP_STATUS_FORBIDDEN		"将 Java 下载到您的计算机时出现错误。\n可能存在有导致 HTTP 错误 403 的代理、防火墙或其他网络问题。\n请参阅 http://java.com/error403"
+    IDS_HTTP_STATUS_SERVER_ERROR	"服务器遇到意外情况，无法完成请求。"
+    IDS_HTTP_STATUS_SERVICE_UNAVAIL	"服务器暂时过载。"
+    IDS_HTTP_STATUS_EXPORT_FAILURE	"不能将 Java 下载到您的计算机。\n您位于禁运的国家。"
+    IDS_HTTP_STATUS_SERVER_BUSY		"服务器此时无法提供 Java(TM)。\n是否要再试一次？"
+    IDS_HTTP_STATUS_INTERNAL_ERROR	"发生意外的服务器错误。\n是否要再试一次？"
+    IDS_HTTP_STATUS_UNKNOWN_ERROR	"遇到未知错误：\n\nHTTP 状态代码 = %d"
+
+    IDS_HTTP_STATUS_EXPORT_FAILURE_CAPTION	"导出控制 - Java(TM) 安装程序"
+    IDS_HTTP_STATUS_SERVER_BUSY_CAPTION		"服务器忙 - Java(TM) 安装程序"
+    IDS_HTTP_STATUS_SERVER_ERROR_CAPTION	"服务器问题 - Java(TM) 安装程序"
+    IDS_HTTP_STATUS_UNKNOWN_ERROR_CAPTION	"未知错误 - Java(TM) 安装程序"
+
+    IDS_DOWNLOAD_STATUS_OPENING		"正在打开..."
+    IDS_DOWNLOAD_STATUS_CONNECTING	"正在连接..."
+    IDS_DOWNLOAD_STATUS_OPENING_HTTP	"正在打开 HTTP 请求..."
+    IDS_DOWNLOAD_STATUS_SENDING_HTTP	"正在发送 HTTP 请求..."
+    IDS_DOWNLOAD_STATUS_RETRY		"服务器正忙，请在 %ld 秒后重试..."
+    IDS_DOWNLOAD_STATUS_DISCONNECTING	"正在断开连接..."
+
+    IDS_USAGEERROR		    "用法: %s {[/h]|[/installurl=URL of configuration file or msi file] [/lang=language id]} [/s] [cmdline options for msi installer]"
+    IDS_ERROR_CAPTION               "错误 - Java(TM) 安装程序"
+    IDS_WARNING_CAPTION             "警告 - Java(TM) 安装程序"
+    IDS_DOWNLOADERROR_MSG           "无法下载 %s 以进行安装。"
+    IDS_HOURSMINUTESECOND	    "估计时间剩余: %d 小时 %d 分 %.0f 秒"
+    IDS_HOURMINUTESECOND	    "估计时间剩余: %d 小时 %d 分 %.0f 秒"
+    IDS_MINUTESECOND 		    "估计时间剩余: %d 分 %.0f 秒"
+    IDS_SECOND 			    "估计时间剩余: %.0f 秒"
+    IDS_PARSINGERROR_MSG	    "无效的配置文件语法"
+    IDS_TERMINATE                   "\n请在重新安装本产品之前解决这些问题。"
+    IDS_DISKSPACE                   "此计算机没有足够的磁盘空间来安装此产品。\n\n"
+    IDS_HTTP_STATUS_SERVER_NOT_REACHABLE "Java(TM) 安装程序由于系统当前的 Internet 连接设置而无法继续。请在 Windows 控制面板中，选择“Internet 选项”->“连接”，以确保设置和代理信息正确。"
+    IDS_ERROR_TITLE               "连接错误"
+    IDS_ERROR_MESSAGEURL             "http://java.com/zh_CN/download/help/index.xml"
+    IDS_ERROR_MESSAGE             "在使用当前 Internet 连接设置的情况下，此安装程序无法继续。有关更多信息，请访问以下 Web 站点。"
+    IDS_BETA_IFTW_ERROR "此安装程序无法继续，因为安装所必需的文件不可用。如果尝试安装 Beta 版或早期版本，请访问 http://java.sun.com/javase 以确定是否仍支持此版本。如果支持，请稍后再尝试安装，因为这些文件可能仅暂时不可用。"
+    IDS_REQ_WI20_MSG "在使用系统上安装的当前 Windows Installer 的情况下，此安装程序无法继续。有关更多信息，请访问以下 Web 站点。"
+    IDS_LICENSE_AGREEMENT_URL     "http://java.com/zh_CN/download/license/%s_license.jsp"
+    IDS_CLICK_HERE_URL            "http://java.com/data/"
+    IDS_WELCOME_MAIN              L"欢迎使用 Java(TM)"
+    IDS_WELCOME_LINE1             "通过 Java，您可以安全可靠地访问惊奇的 Java 内容世界。从商业解决方案到有用的实用程序和娱乐程序，Java 都能让您的 Internet 体验显得栩栩如生。"
+    IDS_AREYOUSURE_MESSAGE        L"要取消 Java(TM) %s 安装吗？"
+    IDS_AREYOUSURE_CAPTION        "Java 安装"
+    IDS_SPONSOR_BANNER_CHECKSUM   "ee8037a56ba3fe03f08eac3e0c1eaef0e372b75b"
+    IDS_BROWSE_TITLE                "更改目标文件夹\nJava将被安装到被选择的文件夹内。"
+END

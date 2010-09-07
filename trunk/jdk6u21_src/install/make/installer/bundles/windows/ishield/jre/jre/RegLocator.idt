@@ -1,0 +1,8 @@
+Signature_	Root	Key	Name	Type
+s72	i2	s255	S255	I2
+RegLocator	Signature_
+NewSignature1	2	HARDWARE\DESCRIPTION\System\CentralProcessor\0	ProcessorNameString	2
+PatchFromSignature	2	Software\JavaSoft\Java Runtime Environment\[FROMVERSION]	JavaHome	2
+PatchFromVersionFullSignature	2	Software\JavaSoft\Java Runtime Environment\[FROMVERSION]\MSI	FullVersion	2
+SameVersionModeSignature	2	Software\JavaSoft\Java Runtime Environment\[JDK_VERSION]\MSI	MODE	2
+PrevConsumerVersionSignature	2	Software\JavaSoft\Java Runtime Environment	Java[MINOR]FamilyVersion	2

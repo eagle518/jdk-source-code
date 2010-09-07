@@ -1,0 +1,67 @@
+
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+#include "afxres.h"
+#undef APSTUDIO_READONLY_SYMBOLS
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+
+    IDS_ERROR_TITLE               "Java 安装程序连接错误"
+    IDS_ERROR_MESSAGE             "当前的 Internet 连接代理设置不对，此安装程序无法继续。有关详细信息，请查阅安装说明。"
+    IDS_PROXY_AUTH__ERROR_MESSAGE "当前的 Internet 连接代理设置不对，此安装程序无法继续。有关详细信息，请查阅安装说明。"
+    IDS_ERROR_WI20                "由于未在此系统上安装 Windows Installer 2.0 版引擎，因此无法安装 Java(TM)。请从 Microsoft 的 Web 站点下载并安装 Windows Installer 2.0 版或更高版本。"
+    IDS_WARNING_CAPTION             "警告 - Java(TM) 安装程序"
+
+END
+
+#endif    
+/////////////////////////////////////////////////////////////////////////////
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED

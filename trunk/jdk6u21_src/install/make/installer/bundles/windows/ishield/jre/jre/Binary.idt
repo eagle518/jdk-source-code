@@ -1,0 +1,15 @@
+Name	Data	ISBuildSourcePath
+s72	V0	S255
+Binary	Name
+NewBinary1		<ISProjectFolder>\IsDialogBannerRed.ibd
+NewBinary11		<ISProjectFolder>\IsDialogBannerRed.ibd
+NewBinary2		<ISProductFolder>\Redist\Language Independent\OS Independent\New.ibd
+NewBinary3		<ISProductFolder>\Redist\Language Independent\OS Independent\Up.ibd
+NewBinary4		<ISProductFolder>\Redist\Language Independent\OS Independent\WarningIcon.ibd
+NewBinary5		<ISProjectFolder>\white_background.ibd
+NewBinary6		<ISProductFolder>\Redist\Language Independent\OS Independent\CustomSetupIco.ibd
+NewBinary7		<ISProjectFolder>\white_background.ibd
+NewBinary8		<ISProductFolder>\Redist\Language Independent\OS Independent\RemoveIco.ibd
+NewBinary9		<ISProjectFolder>\javaad.ibd
+RegUtilsMSI		<ISProjectFolder>\RegUtilsMSI.dll
+FilesInUseEXE		<ISProjectFolder>\FilesInUse.exe

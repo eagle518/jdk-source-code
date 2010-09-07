@@ -1,0 +1,5 @@
+Name	Data	ISBuildSourcePath
+s72	V0	S255
+Binary	Name
+NewBinary9		<ISProductFolder>\Redist\Language Independent\OS Independent\SetupIcon.ibd
+auutilsDLL		<ISProjectFolder>\auutils.dll

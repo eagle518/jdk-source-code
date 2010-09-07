@@ -1,0 +1,4 @@
+ISProductConfiguration	ProductConfigurationFlags	GeneratePackageCode
+s72	S255	I4
+ISProductConfiguration	ISProductConfiguration
+sdk		0

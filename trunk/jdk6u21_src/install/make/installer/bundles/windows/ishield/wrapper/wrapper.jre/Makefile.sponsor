@@ -1,0 +1,179 @@
+#
+# Copyright (c) 2008, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+#
+# Makefile for building JRE offline installer with wrapper code. 
+#
+
+INSTALL_BUILDDIR= ../../../../../..
+PLUGIN_SRC= $(INSTALL_BUILDDIR)/../../deploy/src/plugin
+PLUGIN_TMP= $(OUTPUTDIR)/tmp/deploy/plugin
+PRODUCT = wrapper
+SRCDIR=./
+TEMPDIR=$(TEMP_DIR)/wrapper-jre-sponsor
+
+# Tell Defs.gmk that we want a static link of the MS runtime libraries
+MS_RUNTIME_STATIC=true
+
+INSANE=TRUE
+include $(INSTALL_BUILDDIR)/common/Defs.gmk
+
+EXEVALUE=$(JRE_NAME)-$(JDK_MINOR_VERSION)-windows-$(ARCH)-s
+EXEDESVALUE=$(JAVA_DESC) $(JDK_MINOR_VERSION).$(JDK_MICRO_VERSION)$(MARKET_NAME)
+IMVERSIONVALUE=$(JDK_MINOR_VERSION).$(JDK_MICRO_VERSION).$(J2SE_UPDATE_VER).$(COOKED_BUILD_NUMBER)
+SED_EXE_FILENAME=$(SED) -e 's%EXEFILENAME%$(EXEVALUE)%g'
+SED_APP_VERSION=$(SED) -e 's%IMVERSION%$(IMVERSIONVALUE)%g'
+SED_APP_DES=$(SED) -e 's%EXEDES%$(EXEDESVALUE)%g'
+SED_ALL_MANIFEST=$(SED_APP_VERSION) | $(SED_EXE_FILENAME) | $(SED_APP_DES)
+
+CURRENTDIR := $(call FullPath,.)
+
+TARGET_NAME=wrapper
+TARGET=$(TARGET_NAME)$(SUFFIX)$(EXE_SUFFIX)
+
+JRE_BUNDLE_NAME = $(JRE_NAME)-$(BIN_BUNDLE_NAMEPART)-$(BUNDLE_DATE)-s
+JREISHIELDDIR=$(TMPISHIELD_DIR)/patch/jre
+
+# Linker flags
+
+LDFLAGS += version.lib shell32.lib wininet.lib wintrust.lib 
+
+all: setup_jre jre
+
+jre: clean $(BIN_BUNDLEDIR) optimized debug 
+ifeq ($(SIGN_FLAG),1)
+	$(call Try3Times, $(FULL_SIGNER) -n "$(JAVA_DESC) $(JDK_MINOR_VERSION).$(JDK_MICRO_VERSION)$(MARKET_NAME)" -i http://java.com/  $(OBJDIR)/$(TARGET) )
+endif
+	$(CP) $(OBJDIR)/$(TARGET) $(BIN_BUNDLEDIR)/$(JRE_BUNDLE_NAME).exe
+
+
+$(BIN_BUNDLEDIR):
+	$(MKDIR) -p  $(BIN_BUNDLEDIR)
+
+FILES_rc = $(SRCDIR)wrapper.rc
+
+vpath %.cpp $(SRCDIR):$(PLUGIN_SRC)/win32/jupdate/checker:$(PLUGIN_SRC)/../common/windows/native:$(PLUGIN_SRC)/win32/regutils $(PLUGIN_SRC)/win32/common:$(SRCDIR)/../common
+
+FILES_c= \
+	wrapper.cpp \
+	StdAfx.cpp \
+	Locale.cpp \
+	XMLParser.cpp \
+	common.cpp \
+	UserProfile.cpp \
+	UpdateUtils.cpp \
+	UpdateConf.cpp \
+	WrapperUtils.cpp \
+	WrapperOffline.cpp
+
+FILES_o	= $(patsubst %.cpp, %.$(OBJECT_SUFFIX), $(addprefix $(OBJDIR)/, $(notdir $(FILES_c))))
+FILES_res = $(patsubst %.rc, %.res, $(addprefix $(OBJDIR)/, $(notdir $(FILES_rc))))
+
+$(OBJDIR)/%.res: $(SRCDIR)%.rc
+ifeq ($(VARIANT), DBG)
+  ifeq ($(ARCH_DATA_MODEL), 32)	
+	$(RC) $(RC_FLAGS) -i $(SRCDIR)/../common -l 0x409 $(RSCFLAGS) -d _DEBUG -i $(OBJDIR) $(CC_OBJECT_OUTPUT_FLAG)$(OBJDIR)/$*.res $<
+  else
+	$(RC) $(RC_FLAGS) -i $(SRCDIR)/../common -l 0x409 $(RSCFLAGS) -d _DEBUG -d _AMD64 -i $(OBJDIR) $(CC_OBJECT_OUTPUT_FLAG)$(OBJDIR)/$*.res $<
+  endif
+else
+  ifeq ($(ARCH_DATA_MODEL), 32)	
+	$(RC) $(RC_FLAGS) -i $(SRCDIR)/../common -l 0x409 $(RSCFLAGS) -i $(OBJDIR) $(CC_OBJECT_OUTPUT_FLAG)$(OBJDIR)/$*.res $<
+  else
+	$(RC) $(RC_FLAGS) -i $(SRCDIR)/../common -l 0x409 $(RSCFLAGS) -d _AMD64 -i $(OBJDIR) $(CC_OBJECT_OUTPUT_FLAG)$(OBJDIR)/$*.res $<
+  endif
+endif
+
+# include srcdir for resource.h when compiling common\WrapperUtils.cpp needs to include resource.h from $(SRCDIR) before
+# ../../../../../../../../deploy/src/plugin/win32/jupdate/checker/resource.h and ../../../../../../../../deploy/src/plugin/win32/regutils/resource.h
+CPPINCPATH = -I$(SRCDIR)
+
+CPPINCPATH += -I$(PLUGIN_TMP) -I$(PLUGIN_SRC)/../common/windows/native -I$(PLUGIN_SRC)/win32/jupdate/checker  -I $(PLUGIN_SRC)/win32/regutils -I$(PLUGIN_SRC)/win32/common -I$(SRCDIR)/../common
+CPPFLAGS = -DARCH=\"$(ARCH)\" -DDEFAULT_XML='"$(DEFAULT_XML)"' -DSPONSOR -DFULLVERSION='"$(FULL_VERSION)"' -DVERSION='"$(JDK_VERSION)"' -DBUNDLE='"jre"' 
+
+## for debugging:
+## CPPFLAGS += /Od /Zi /Fd 
+## LDFLAGS += /DEBUG /PDB:$(OBJDIR)/wrapper.pdb /debugtype:cv
+
+$(OBJDIR)/%.$(OBJECT_SUFFIX): %.cpp
+	$(COMPILE.cc) $(CPPINCPATH) $(CC_OBJECT_OUTPUT_FLAG)$(OBJDIR)/$*.$(OBJECT_SUFFIX) $<
+
+$(OBJDIR)/$(TARGET): $(FILES_res) $(FILES_o)
+	$(LINK) $(LDFLAGS) $(FILES_res) $(FILES_o)
+
+plus:
+	$(RM) $(OBJDIR)/au.msi $(OBJDIR)/au.cab $(OBJDIR)/*.obj $(OBJDIR)/*res $(OBJDIR)/*pdb $(OBJDIR)/*map
+ifdef ALT_AUMSI_DIR	
+	$(CP) -f $(ALT_AUMSI_DIR)/au.msi $(OBJDIR)/au.msi
+	$(CP) -f $(ALT_AUMSI_DIR)/au.cab $(OBJDIR)/au.cab
+else
+	$(CP) -f $(INSTALL_BUILDDIR)/au/au.msi $(OBJDIR)/au.msi
+	$(CP) -f $(INSTALL_BUILDDIR)/au/au.cab $(OBJDIR)/au.cab
+endif
+	$(MAKE) target
+ifeq ($(SIGN_FLAG),1)
+	$(call Try3Times, $(FULL_SIGNER) -n "$(JAVA_DESC) $(JDK_MINOR_VERSION).$(JDK_MICRO_VERSION)$(MARKET_NAME)" -i http://java.com/  $(OBJDIR)/wrapper.exe )
+endif
+	$(CP) $(OBJDIR)/wrapper.exe $(BIN_BUNDLEDIR)/$(JRE_BUNDLE_NAME).exe
+
+$(OBJDIR):
+	$(MKDIR) -p $(OBJDIR)
+
+setup_jre: $(OBJDIR)
+	$(CP) -f $(JREISHIELDDIR)/../offline-final/jre$(JDK_VERSION)-c.msi $(OBJDIR)/jre-c.msi
+	$(CP) -f $(JREISHIELDDIR)/../offline-final/jre$(JDK_VERSION)-s.msi $(OBJDIR)/jre-s.msi
+ifeq ($(ARCH_DATA_MODEL), 32)	
+  ifdef ALT_AUMSI_DIR	
+	$(CP) -f $(ALT_AUMSI_DIR)/au.msi $(OBJDIR)/au.msi
+	$(CP) -f $(ALT_AUMSI_DIR)/au.cab $(OBJDIR)/au.cab
+  else
+	$(CP) -f $(INSTALL_BUILDDIR)/au/au.msi $(OBJDIR)/au.msi
+	$(CP) -f $(INSTALL_BUILDDIR)/au/au.cab $(OBJDIR)/au.cab
+  endif
+endif
+	$(CP) -f $(JREISHIELDDIR)/../offline-final/Data1.cab $(OBJDIR)/
+	$(CP) $(PLUGIN_SRC)/win32/graphics/java-icon.ico $(OBJDIR)/java-icon.ico
+	$(CP) $(JREISHIELDDIR)/jre/transform/javaone/jre1028.MST $(OBJDIR)/
+	$(CP) $(JREISHIELDDIR)/jre/transform/javaone/jre1031.MST $(OBJDIR)/
+	$(CP) $(JREISHIELDDIR)/jre/transform/javaone/jre1034.MST $(OBJDIR)/
+	$(CP) $(JREISHIELDDIR)/jre/transform/javaone/jre1036.MST $(OBJDIR)/
+	$(CP) $(JREISHIELDDIR)/jre/transform/javaone/jre1040.MST $(OBJDIR)/
+	$(CP) $(JREISHIELDDIR)/jre/transform/javaone/jre1041.MST $(OBJDIR)/
+	$(CP) $(JREISHIELDDIR)/jre/transform/javaone/jre1042.MST $(OBJDIR)/
+	$(CP) $(JREISHIELDDIR)/jre/transform/javaone/jre1046.MST $(OBJDIR)/
+	$(CP) $(JREISHIELDDIR)/jre/transform/javaone/jre1053.MST $(OBJDIR)/
+	$(CP) $(JREISHIELDDIR)/jre/transform/javaone/jre2052.MST $(OBJDIR)/
+	if [ -f $(ALT_SPONSOR1DIR)/gtapi.dll ] ; \
+	then \
+		$(CP) $(ALT_SPONSOR1DIR)/gtapi.dll $(OBJDIR)/gtapi.dll ; \
+	fi
+BACKSLASH_OBJDIR = $(subst /,\\,$(OBJDIR))
+MSIDBCMD:=$(shell cd $(OBJDIR) ; $(DEVTOOLS_PATH)/msidb.exe -e -d au.msi -f $(BACKSLASH_OBJDIR) Property)
+AUVERSION:=$(shell $(CD) $(OBJDIR) ; $(CAT) Property.idt | $(GREP) ProductVersion | $(NAWK)  '{print $$2}')
+CPPFLAGS += -DAUVERSION='"$(AUVERSION)"'
+
+build: $(OBJDIR)/$(TARGET)
+
+debug:
+
+optimized:
+	$(MKDIR) -p $(OBJDIR)
+	$(CAT)  $(SRCDIR)/wrapper.exe.manifest | $(SED_ALL_MANIFEST) > $(OBJDIR)/wrapperer.exe.manifest
+	$(MAKE) -f Makefile.sponsor build VARIANT=OPT
+
+clean::
+	$(RM) $(OBJDIR)/*.$(OBJECT_SUFFIX)
+	$(RM) $(OBJDIR)$(DBG_SUFFIX)/*.$(OBJECT_SUFFIX)
+
+#
+# Phonies to avoid accidents.
+#
+.PHONY: all optimized debug clobber clean build
+
+
+# Use extra (de) compression if available
+ifdef EXTRA_COMP_LIB_NAME
+  CPPFLAGS += -DEXTRA_COMP_LIB_NAME=$(EXTRA_COMP_LIB_NAME)
+  RSCFLAGS += -DSPONSOR -DEXTRA_COMP_LIB_NAME=$(EXTRA_COMP_LIB_NAME) -i $(EXTRA_COMP_PATH)
+endif

@@ -1,0 +1,388 @@
+#
+# Copyright (c) 2008, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# @(#)parse_release_info.part2	1.5 10/03/23
+#
+# This is part 2 of 2.  This script has been broken into pieces so that it does
+# not overflow the buffer used by expanded macros on RPM 3.0.6.
+#
+# This script contains variables and functions used to parse the release name
+# identifier and version identifier from a string.  Strings parsed by this
+# script must follow Sun Microsystems' conventions for a "technical" Java
+# release string.
+#
+# A technical Java release string must at least contain a version identifier.
+# The version identifier must be valid as defined by JSR 056, Appendix A.  In
+# addition, the version identifier is required to have a minimum of a major,
+# minor, and micro version number values.
+#
+# A technical Java release string may also be prefixed with a release name
+# identifier.  This is a short string of predominantly alpabetic characters
+# used to identifiy the type of the release, such as JRE/JDK, or give other
+# simple information that is easilly parsed by a simple shell script.  The
+# release identifier is generally limited to lower case alpahbetic characters,
+# but this is not a strict requirement.
+#
+# Release names and release name identifiers are not the same thing.  Release
+# names are determined by non-technical requirements.  Names, such as "Java 5.0
+# Runtime Environment" and "Java 2 Standard Edition", may contain data that is
+# similar to a release name identifer and/or version identifier.  However, these
+# are not true version-id strings, and are unreliable for the purpose of
+# programatically determining a Java release version.
+#
+#
+#
+
+#
+# Get a weighted line for the Java installations at the given path.
+#
+# Any path with a basename that parses to a valid Sun Java release is assumed to
+# be a valid Java installation, and assigned a weight.  No output is generated
+# for paths that don't parse.
+#
+# Parameters:
+#     $* : good_list    - a list of space separated release name identifiers
+#                         that are known to be good.  The list is treated as
+#                         an ordered list from most to least preferred.
+#                         ordered from most to least preferred.
+#     $2 : path         - the path to assign weights to.
+#
+# Output:
+#
+# If the path is parsable, then a line is generated to stdout containing 6
+# weighted columns, and a 7th column containing the input path.  Weight values
+# are assigned based on the release name as follows:
+#
+# column  name     position  description
+#      1  major      1 -  4  the weight of this column is equal to the major
+#                            version number.
+#
+#      2  minor      7 - 10  the weight of this column is equal to the minor
+#                            version number.
+#
+#      3  micro     13 - 16  the weight of this column is equal to the micro
+#                            version number.
+#
+#      4  update    19 - 22  the weight of this column is equal to the update
+#                            version number.
+#
+#      5  name-id   25 - 28  the weight of this column is determined by where
+#                            the release name identifier matches in the list
+#                            of good-names, or UNKNOWN_NAME_WEIGHT if there is
+#                            no match.
+#
+#      6  non-fcs   31 - 34  the weight of any non-FCS release identifier is
+#                            determined by the function get_non_fcs_weight.
+#
+#      7  path          37+  this is just the input path.
+# 
+# Returns:
+#        0 : this function always returns success.
+#
+get_path_weight() {
+    good_list="$1"
+    path=$2
+    release=`basename ${path}`
+
+    parts="`parse_release ${release}`"
+    if [ $? -eq 0 ]; then
+        name=`echo "${parts}" | cut -f1`
+        version=`echo "${parts}" | cut -f2`
+        non_fcs=`echo "${parts}" | cut -f3`
+
+        if [ -n "${version}" ]; then
+           v_weight=`echo ${version} | expand_version`
+           n_weight=`echo ${name} | get_name_weight - "${good_list}"`
+           o_weight=`echo ${non_fcs} | get_non_fcs_weight`
+
+           printf "%4d  %4d  %4d  %4d  %4d  %4d  %s\n" \
+                  ${v_weight} ${n_weight} ${o_weight} "${path}"
+        fi
+    fi
+}
+
+
+#
+# Get a weighted list of the Java installations at the given path(s).  Paths
+# can be specified as arguments to this function, or through a pipe.
+#
+# Usage:
+#     get_weighted_list [-v | --verify] [-g <list> | --good-list=<list>]
+#         [--] [path [path...]]
+#
+# Options:
+#     -v | --verify  if set, only considered input paths that contain bin/java.
+#
+#     -g  <list> |        a list of space separated release name identifiers
+#     --good-list=<list>  that are known to be good.  The list is treated as
+#                         an ordered list from most to least preferred.  Quotes
+#                         must be used around list items.
+#
+#     -  read path arguments from stdin.  stdin is read by default if no path
+#        arguments are passed in.
+#
+#     --  treat all remaining parameters as path arguments.
+#
+# Any path with a basename that parses to a valid Sun Java release name is
+# assumed to be a valid Java installation, and assigned a weight.  If the verify
+# option is set, then the path must contain bin/java.
+#
+# Output:
+#
+# For each input path, a line is generated containing 6 weighted columns, and
+# a 7th column containing the input path.  Paths are assigned weight values and
+# placed into columns in the following order: one value for each element a Sun
+# FCS release 4-part version id (major, minor, micro, and update), the release
+# name identifier, and the non-FCS release identifier.
+#
+# The weighted columns are exactly 4 characters wide, with 2 spaces separating
+# each column.  The width of last columns is equal to the length of the path.
+# So, the columns fill the following positions: 1 = 1-4, 2 = 7-10, 3 = 13-16,
+# 4 = 19-22, 5 = 25-28, 6 = 31-34, and 7 = 37+.
+#
+# The weight used for numeric version information is the value of the version
+# information.  The weight of any non-FCS release identifier is determined by
+# the function get_non_fcs_weight.  The weight of the release name identifier
+# is dependant on it's position in the good-list.  Any release name identifier
+# that is not in the good-list is given a weight of UNKNOWN_NAME_WEIGHT.
+#
+# The caller can choose to sort the list in any order desired.  To sort the list
+# for latest known release, sort columns 1 - 4 in natural order, and 5 - 6 in
+# reverse order.  The latest release is then on the last line of the list.
+# 
+# Returns:
+#        0 : Success.
+#     2000 : One or more input parameters was invalid.
+# 
+get_weighted_list() {
+    good_list=
+    verify=
+    stdio=
+    status=0
+
+    #
+    # read in any options
+    #
+    check=true
+    while [ -n "${check}" ]; do
+        if [ $# -gt 0 ]; then
+            case "$1" in
+                -g)
+                    good_list="$2"
+                    shift 2
+                    ;;
+
+                --good-list=*)
+                    length=`expr length "$1"`
+                    remove=`expr \( length "--good-list=" \) + 1`
+                    good_list="`expr substr \"$1\" ${remove} ${length}`"
+                    shift 1
+                    ;;
+
+                -v | --verify)
+                    verify=true
+                    shift 1
+                    ;;
+
+                --)
+                    # treat everything else as an argument
+                    shift 1
+                    check=
+                    ;;
+
+                -)
+                    shift 1
+                    stdio=true
+                    ;;
+
+                -*)
+                    printf "Error: usage - unknown parameter:\n\n" \
+								>> /dev/stderr
+                    printf "\t%s : %s\n" "$1" "$*"		>> /dev/stderr
+                    status=${PRS_ERROR_BAD_PARAMS}
+                    check=
+                    ;;
+
+                *)
+                    check=
+                    ;;
+            esac
+        else
+            check=
+        fi
+    done
+
+    if [ $# -eq 0 ] || [ -n "${stdio}" ]; then
+        # first read in stdin
+        read line
+        while [ -n "${line}" ]; do
+            if [ -z "${verify}" ] || [ -f ${line}/bin/java ]; then
+                get_path_weight "${good_list}" ${line}
+            fi
+            read line
+        done
+    fi
+
+    # now read in any arguments
+    while [ $# -gt 0 ]; do
+        if [ -z "${verify}" ] || [ -f $1/bin/java ]; then
+            get_path_weight "${good_list}" $1
+        fi
+        shift 1
+    done
+
+    return ${status}
+}
+
+
+_compare_java_by_weight() {
+    compare=0
+
+    if [ $# -ne 0 ]; then
+        if [ $# -eq 1 ]; then
+            compare=1
+        else
+            left=$1
+            right=$2
+            shift 2
+            good="$*"
+
+            list=`get_weighted_list --good-list="${good}" \
+                    ${left} ${right} | sort -u -k1n -k2n -k3n -k4n -k5rn -k6rn`
+
+            if [ `echo "${list}" | wc -l | tr -d "[:space:]"` -ne 1 ]; then
+                compare=-1
+                latest=`echo "${list}" | tail -n 1 | cut -c 37-`
+
+                if [ "${left}" = "${latest}" ]; then
+                    compare=1
+                fi
+            fi
+        fi
+    fi
+
+    echo ${compare}
+}
+
+
+#
+# Compare two releases using only the version-id portion of their names.
+#
+compare_java_by_version() {
+    _compare_java_by_weight $1 $2
+}
+
+compare_java_by_release() {
+    _compare_java_by_weight $1 $2 ${KNOWN_GOOD_NAME_LIST}
+}
+
+
+#
+# Finds the path to the latest release by looking in the default install
+# location (/usr/java), and java_prefix.
+#
+# Output:
+# The path to the latest release.
+# 
+# Returns:
+#        0 : this function always returns success.
+#
+find_latest_release() {
+    #
+    # Look for the latest release in /usr/java (our preferred install location).
+    #
+    if [ -d /usr/java ]; then
+        latest_release=`find /usr/java/* -prune | \
+            get_weighted_list -v --good-list="${KNOWN_GOOD_NAME_LIST}" | \
+            sort -k1n -k2n -k3n -k4n -k5rn -k6rn | tail -n 1 | cut -c 37-`
+    fi
+
+    #
+    # If we aren't installed in our preferred location, then search the location
+    # we are installed in.
+    #
+    if [ -d "${RPM_INSTALL_PREFIX}" ] && \
+       [ "/usr/java" != "${RPM_INSTALL_PREFIX}" ]
+    then 
+        prefix_release=`find ${RPM_INSTALL_PREFIX}/* -prune | \
+            get_weighted_list -v --good-list="${KNOWN_GOOD_NAME_LIST}" | \
+            sort -k1n -k2n -k3n -k4n -k5rn -k6rn | tail -n 1 | cut -c 37-`
+
+        #
+        # Given an equal version in both /usr/java and ${RPM_INSTALL_PREFIX},
+        # this will prefer the version in /usr/java.
+        #
+        # !!!                                           !!!
+        # !!! I'm not sure this is what I should prefer !!!
+        # !!!                                           !!!
+        #
+        if [ `compare_java_by_release ${latest_release} ${prefix_release}` -lt 0 ]; then
+            latest_release=${prefix_release}
+        fi
+    fi
+
+    echo ${latest_release}
+}
+
+
+#
+# Get the path to the Java Web Start binary relative to a given Java install
+# path.
+#
+# The path returned is based on the release version:
+#
+#   release > 1.4.2*   JavaWS is at <install-root>/bin/javaws
+#
+#   release = 1.4.2*   JavaWS is at <j2re-install-root>/javaws/javaws,
+#                      or <j2sdk-install-root>/jre/javaws/javaws
+#
+#   release < 1.4.2*   JavaWS is not integrated
+#
+# Parameters:
+#     $1 : path - path to a Java install root.
+#
+# Output:
+# The path to the Java Web Start binary.
+# 
+# Returns:
+#        0 : this function always returns success.
+#
+get_javaws() {
+    path=$1
+
+    #
+    # If this is a Sun 1.5+ install, then JavaWS should be in bin, regardless
+    # of whether or not this is a JDK or JRE.
+    #
+    if [ `compare_java_by_version ${path} version-1.5.0` -ge 0 ] &&
+       [ -f ${path}/bin/javaws ]
+    then
+        path=${path}/bin/javaws
+    elif [ `compare_java_by_version ${path} version-1.4.2` -ge 0 ]; then
+        #
+        # If this is a j2sdk install, look in the JRE subdir; otherwise
+        # it should be a direct subdir.
+        #
+        if [ -f ${path}/jre/javaws/javaws ]; then
+            path=${path}/jre/javaws/javaws
+        elif [ -f ${path}/javaws/javaws ]; then
+            path=${path}/javaws/javaws
+        else
+            #
+            # This isn't a Sun distribution, so don't try to integrate
+            # JavaWS.
+            #
+            path=
+        fi
+    else
+        #
+        # JavaWS was not tightly bundled prior to Sun J2SE 1.4.2, so don't
+        # try to integrate it.  (Either that, or this isn't even a Sun
+        # distribution.)
+        #
+        path=
+    fi
+
+    echo ${path}
+}

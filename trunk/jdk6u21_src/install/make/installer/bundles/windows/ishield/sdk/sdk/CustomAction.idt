@@ -1,0 +1,71 @@
+Action	Type	Source	Target	ISComments
+s72	i2	S64	S0	S255
+CustomAction	Action
+charsets	3106	jrelib	"[jrelib]\launcher.exe" "[bin]\unpack200.exe" -r -v -l "[LOGFILE]" "[INSTALLDIR]\jre\lib\charsets.pack" "[INSTALLDIR]\jre\lib\charsets.jar"	
+InstallJava	3089	RegUtils	MSIInstallJDK	
+installjavadb	98	SystemFolder	msiexec.exe /i "[INSTALLDIR]javadb.msi" /qn INSTALLDIR="[JAVADB_DIR]"	
+installpublicjre	98	SystemFolder	msiexec.exe /i "[INSTALLDIR]\jre.msi" ADDLOCAL=ALL SDKSILENT=1	
+installpublicjrejapan	98	SystemFolder	msiexec.exe /i "[INSTALLDIR]\jre.msi" TRANSFORMS="[INSTALLDIR]\jre1041.MST" ADDLOCAL=ALL SDKSILENT=1	
+installpublicjreschinese	98	SystemFolder	msiexec.exe /i "[INSTALLDIR]\jre.msi" TRANSFORMS="[INSTALLDIR]\jre2052.MST" ADDLOCAL=ALL SDKSILENT=1	
+ISInitAllUsers	307	ALLUSERS	2	Initializes ALLUSERS property
+javaws	3106	jrelib	"[jrelib]\launcher.exe" "[bin]\unpack200.exe" -r -v -l "[LOGFILE]" "[INSTALLDIR]\jre\lib\javaws.pack" "[INSTALLDIR]\jre\lib\javaws.jar"	Unpack javaws.jar file
+jaws	3106	jrelib	"[jrelib]\launcher.exe" "[bin]\unpack200.exe" -r -v -l "[LOGFILE]" "[INSTALLDIR]\jre\lib\plugin.pack" "[INSTALLDIR]\jre\lib\plugin.jar"	
+jsse	3106	jrelib	"[jrelib]\launcher.exe" "[bin]\unpack200.exe" -r -v -l "[LOGFILE]" "[INSTALLDIR]\jre\lib\jsse.pack" "[INSTALLDIR]\jre\lib\jsse.jar"	
+localedata	3106	jrelib	"[jrelib]\launcher.exe" "[bin]\unpack200.exe" -r -v -l "[LOGFILE]" "[INSTALLDIR]\jre\lib\ext\localedata.pack" "[INSTALLDIR]\jre\lib\ext\localedata.jar"	
+rt	3106	jrelib	"[jrelib]\launcher.exe" "[bin]\unpack200.exe" -r -v -l "[LOGFILE]" "[INSTALLDIR]\jre\lib\rt.pack" "[INSTALLDIR]\jre\lib\rt.jar"	
+deploy	3106	jrelib	"[jrelib]\launcher.exe"  "[bin]\unpack200.exe" -r -v -l "[LOGFILE]" "[INSTALLDIR]\jre\lib\deploy.pack" "[INSTALLDIR]\jre\lib\deploy.jar"	Unpack deploy.jar file
+semicolon	1	RegUtilsMSI	MSIIsINSTALLDIRValid	is there a semi colon in the INSTALLDIR?
+setAllUsersProfile2K	51	ALLUSERSPROFILE	[%ALLUSERSPROFILE]	
+SetAllUsersProfileNT	51	ALLUSERSPROFILE	[%SystemRoot]\Profiles\All Users	
+SetARPINSTALLLOCATION	51	ARPINSTALLLOCATION	[INSTALLDIR]	
+SetARPReadme	51	ARPREADME	[INSTALLDIR]README.html	
+setUserProfileNT	51	USERPROFILE	[%USERPROFILE]	
+tools	3106	jrelib	"[jrelib]\launcher.exe" "[bin]\unpack200.exe" -r -l "[LOGFILE]" "[INSTALLDIR]\lib\tools.pack" "[INSTALLDIR]\lib\tools.jar"	
+uninstallsdk	3089	RegUtils	MSIUninstallSDK	
+unzipdemos	3090	zipper.exe	"[INSTALLDIR]\demos.zip" "[INSTALLDIR]\" "[LOGFILE]"	
+unzipapplets	3090	zipper.exe	"[INSTALLDIR]\applets.zip" "[INSTALLDIR]\demo\" "[LOGFILE]"	
+unzippluginapplets	3090	zipper.exe	"[INSTALLDIR]\applets.zip" "[INSTALLDIR]\demo\plugin\" "[LOGFILE]"	
+unziptools	3090	zipper.exe	"[INSTALLDIR]\tools.zip" "[INSTALLDIR]" "[LOGFILE]"	
+preprogress1	1	RegUtilsMSI	CAProgress	
+preprogress2	1	RegUtilsMSI	CAProgress	
+preprogress3	1	RegUtilsMSI	CAProgress	
+preprogress4	1	RegUtilsMSI	CAProgress	
+preprogress5	1	RegUtilsMSI	CAProgress	
+preprogress6	1	RegUtilsMSI	CAProgress	
+preprogress7	1	RegUtilsMSI	CAProgress	
+preprogress8	1	RegUtilsMSI	CAProgress	
+preprogress9	1	RegUtilsMSI	CAProgress	
+preprogress10	1	RegUtilsMSI	CAProgress	
+preprogress12	1	RegUtilsMSI	CAProgress	
+postprogress1	3073	RegUtilsMSI	CAProgress	
+postprogress2	3073	RegUtilsMSI	CAProgress	
+postprogress3	3073	RegUtilsMSI	CAProgress	
+postprogress4	3073	RegUtilsMSI	CAProgress	
+postprogress5	3073	RegUtilsMSI	CAProgress	
+postprogress6	3073	RegUtilsMSI	CAProgress	
+postprogress7	3073	RegUtilsMSI	CAProgress	
+postprogress8	3073	RegUtilsMSI	CAProgress	
+postprogress9	3073	RegUtilsMSI	CAProgress	
+postprogress10	3073	RegUtilsMSI	CAProgress	
+postprogress12	3073	RegUtilsMSI	CAProgress	
+servicetag	226	INSTALLDIR	[INSTALLDIR]\jre\bin\javaw.exe com.sun.servicetag.Installer -source "Windows JDK i586 installer" -register	Create service tag, register it with ST bundle if present, open browser on Product Registration page
+servicetagNoRegister	1122	INSTALLDIR	[INSTALLDIR]\jre\bin\javaw.exe com.sun.servicetag.Installer -source "Windows JDK i586 installer"	Create service tag, register it with ST bundle if present, do not open browser
+servicetagRemove	98	INSTALLDIR	[INSTALLDIR]\jre\bin\javaw.exe com.sun.servicetag.Installer -delete	Remove the service tag if it exists
+sharedclassdata	3170	bin	[INSTALLDIR]\jre\bin\javaw.exe -Xshare:dump	generate shared class data
+SetODB	51	ODB	[OriginalDatabase]	
+SetDONTREINSTALL	51	JDKREINSTALL	0	
+reinstall1	98	SystemFolder	msiexec.exe /x "[ProductCode]" MSIMSTREMOVE=1 /qb	
+reinstall2	226	SystemFolder	msiexec.exe /i "[ODB]" TRANSFORMS=[TRANSFORMS]	
+reinstall3	226	SystemFolder	msiexec.exe /i "[ODB]"	
+reginfolaunch	226	INSTALLDIR	[DEFAULTBROWSER] "http://java.sun.com/javase/registration/JDKRegistrationPrivacy.html"	
+reginfolaunchja	226	INSTALLDIR	[DEFAULTBROWSER] "http://java.sun.com/javase/ja/registration/JDKRegistrationPrivacy.html"	
+reginfolaunchzh_CN	226	INSTALLDIR	[DEFAULTBROWSER] "http://java.sun.com/javase/registration/JDKRegistrationPrivacy.html"	
+uninstallpublicjre	98	SystemFolder	msiexec.exe /x {3248F0A8-6813-11D6-A77B-00B0D0MAJORVERSIONMINORVERSIONMICROVERSIONCOMPUPDATEVERSION} /qb 	
+SETMODIFYREMOVE	51	MODIFYREMOVE	modify or remove	
+RemoveJDKMSICache	1	RegUtilsMSI	MSIRemoveJDKMSICache	
+removepackfiles	3089	RegUtils	MSIRemovePackFiles	
+waitextractevent	1	RegUtilsMSI	WaitForExtractEvent	
+OPENHELPja	226	ProgramFilesFolder	[DEFAULTBROWSER] "http://java.com/ja/download/help/index.xml"	Open Help URL for Install Error
+OPENHELPZH_CN	226	ProgramFilesFolder	[DEFAULTBROWSER] "http://java.com/zh_CN/download/help/index.xml"	Open Help URL for Install Error
+OPENHELP	226	ProgramFilesFolder	[DEFAULTBROWSER] "http://java.com/en/download/help/index.xml"	Open Help URL for Install Error
+RemoveJDKExtraFiles	1	RegUtilsMSI	MSIRemoveJDKExtraFiles	

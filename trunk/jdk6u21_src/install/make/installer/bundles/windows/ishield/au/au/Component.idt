@@ -1,0 +1,10 @@
+Component	ComponentId	Directory_	Attributes	Condition	KeyPath	ISAttributes	ISComments	ISScanAtBuildFile	ISRegFileToMergeAtBuild	ISDotNetInstallerArgsInstall	ISDotNetInstallerArgsCommit	ISDotNetInstallerArgsUninstall	ISDotNetInstallerArgsRollback
+s72	S38	s72	i2	S255	S72	I4	S255	S255	S255	S0	S0	S0	S0
+Component	Component
+isooemupdateset	{96DFAA25-C456-4470-9638-DA1A52F67C9A}	INSTALLDIR	12	OEMUPDATE=0	Registry1	17				/LogFile=	/LogFile=	/LogFile=	/LogFile=
+aucheckcomponent	{4D5CF522-0BDC-475C-987E-5F111CD11028}	INSTALLDIR	0		aucheck	1				/LogFile=	/LogFile=	/LogFile=	/LogFile=
+jauregcomponent	{4D5AF522-0BDC-475C-987E-5F111CD11028}	INSTALLDIR	0		jaureg	1				/LogFile=	/LogFile=	/LogFile=	/LogFile=
+jucheckcomponent	{4D5CF522-0BDA-475C-987E-5F111CD11028}	INSTALLDIR	0		jucheck	1				/LogFile=	/LogFile=	/LogFile=	/LogFile=
+juschedcomponent	{4D5CF522-0BDB-475C-987E-5F111CD11028}	INSTALLDIR	0		jusched	1				/LogFile=	/LogFile=	/LogFile=	/LogFile=
+oemupdate32	{F51BB9DA-7CA1-4D67-B967-E8FDA5208B69}	INSTALLDIR	8			17				/LogFile=	/LogFile=	/LogFile=	/LogFile=
+oemupdate64	{4CC5121E-C213-4A85-8A9F-6D0311F54B75}	INSTALLDIR	8			17				/LogFile=	/LogFile=	/LogFile=	/LogFile=

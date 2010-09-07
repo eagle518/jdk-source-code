@@ -1,0 +1,52 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Swedish resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_SVE)
+#ifdef _WIN32
+LANGUAGE LANG_SWEDISH, SUBLANG_NEUTRAL
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    
+    IDS_ERROR_TITLE               "Java-installerare: anslutningsfel"
+    IDS_ERROR_MESSAGE             "Installeraren kan inte fortsätta med de aktuella proxyinställningarna för Internetanslutningen. Det finns mer information i filen Installation Notes."
+    IDS_PROXY_AUTH__ERROR_MESSAGE             "Installeraren kan inte fortsätta med de aktuella proxyinställningarna för Internetanslutningen. Det finns mer information i filen Installation Notes."
+    IDS_ERROR_WI20                "Java(TM) kunde inte installeras därför att Windows Installer 2.0 Engine inte är installerad på detta system.  Ladda gärna ned och installera Windows Installer 2.0 eller senare version från Microsifts webbsida.  "
+    IDS_WARNING_CAPTION             "Varning - Java(TM) Installer"
+END
+
+#endif    // Swedish resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
+

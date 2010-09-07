@@ -1,0 +1,34 @@
+Directory	Directory_Parent	DefaultDir	ISDescription	ISAttributes
+s72	S72	l255	S255	I4
+Directory	Directory
+AdminToolsFolder	TARGETDIR	.:Admint~1|AdminTools		0
+ALLUSERSPROFILE	TARGETDIR	.:ALLUSE~1|All Users		0
+AppDataFolder	TARGETDIR	.:APPLIC~1|Application Data		0
+BASE_IMAGES	UPDATEDIR	BASEIM~1|Base Images		0
+CommonAppDataFolder	TARGETDIR	.:Common~1|CommonAppData		0
+CommonFiles64Folder	TARGETDIR	.:Common64		0
+CommonFilesFolder	TARGETDIR	.:Common		0
+GlobalAssemblyCache	TARGETDIR	.:Global~1|GlobalAssemblyCache		0
+JAVA	ProgramFilesFolder	Java		0
+JAVADB_DIR	SUN	JavaDB		0
+INSTALLDIR	JAVA	JDK1~1|jdkTHEFULLVERSION		0
+J2REBASEIMAGEFULLVERSION	BASE_IMAGES	JRE1_~1|jreBASEIMAGEFULLDOTVERSION		0
+J2SDKBASEIMAGEFULLVERSION	BASE_IMAGES	JDK1~1|jdkBASEIMAGEFULLDOTVERSION		0
+J2SDKPATCHFULLVERSION	J2SDKBASEIMAGEFULLVERSION	PATCH-~1|patch-jdkNEWIMAGEFULLDOTVERSION		0
+JAVADIR	CommonFilesFolder	Java		0
+LocalAppDataFolder	TARGETDIR	.:LocalA~1|LocalAppData		0
+PrimaryVolumePath	TARGETDIR	.:Primar~1|PrimaryVolumePath		0
+ProgramFiles64Folder	TARGETDIR	.:Prog64~1|Program Files 64		0
+ProgramFilesFolder	TARGETDIR	.:PROGRA~1|program files		0
+SUN	ProgramFilesFolder	Sun		0
+System16Folder	TARGETDIR	.:System		0
+System64Folder	TARGETDIR	.:System64		0
+SystemFolder	TARGETDIR	.:System32		0
+TARGETDIR		SourceDir		0
+TempFolder	TARGETDIR	.:Temp		0
+TemplateFolder	TARGETDIR	.:ShellNew		0
+UPDATEDIR	JAVADIR	Update		0
+USERPROFILE	TARGETDIR	.:USERPR~1|UserProfile		0
+WindowsFolder	TARGETDIR	.:Windows		0
+WindowsVolume	TARGETDIR	.:WinRoot		0
+CACHEMSIDIR	LocalAppDataFolder	{ARCHA3A~1|{ARCHA3A4F2-B792-11D6-A78A-00B0D0MAJORVERSIONMINORVERSIONMICROVERSIONCOMPUPDATEVERSION}		0

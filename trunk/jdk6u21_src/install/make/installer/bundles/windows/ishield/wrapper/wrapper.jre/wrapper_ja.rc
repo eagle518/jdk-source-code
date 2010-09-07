@@ -1,0 +1,75 @@
+//Microsoft Developer Studio generated resource script.
+//
+
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+#include "afxres.h"
+#undef APSTUDIO_READONLY_SYMBOLS
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Japanese resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
+#ifdef _WIN32
+LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
+#pragma code_page(932)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+
+    IDS_ERROR_TITLE               "Java インストールプログラム接続エラー"
+    IDS_ERROR_MESSAGE             "このインストールプログラムは、ご使用のインターネット接続設定では実行できません。詳細はインストールノートをご確認ください。"
+    IDS_PROXY_AUTH__ERROR_MESSAGE "このインストールプログラムは、ご使用のインターネット接続設定では実行できません。詳細はインストールノートをご確認ください。"
+    IDS_ERROR_WI20                "Windows Installer 2.0 Engine がこのシステムにインストールされていないため、Java(TM) をインストールできませんでした。Windows Installer 2.0 以上を Microsoft Web サイトからダウンロードし、インストールしてください。"
+    IDS_WARNING_CAPTION             "警告 - Java(TM) インストーラ"
+
+END
+
+#endif    // Japanese resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED

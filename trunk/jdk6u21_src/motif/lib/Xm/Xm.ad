@@ -1,0 +1,49 @@
+! $XConsortium: Xm.ad /main/1 1996/06/06 16:24:56 pascale $
+
+!######################################################################
+!#
+!#     Xm
+!#
+!#     Application Defaults for the Xm library
+!#
+!#     (c) Copyright 1996 Digital Equipment Corporation.
+!#     (c) Copyright 1996 Hewlett-Packard Company.
+!#     (c) Copyright 1996 International Business Machines Corp.
+!#     (c) Copyright 1996 Sun Microsystems, Inc.
+!#     (c) Copyright 1996 Novell, Inc. 
+!#     (c) Copyright 1996 FUJITSU LIMITED.
+!#     (c) Copyright 1996 Hitachi.
+!#
+!######################################################################
+
+!# Default resources for XmCommand
+
+*XmCommand.Selection.labelString:		%|nls-1-#>#|
+
+!# Default resources for XmFileSelectionBox
+
+*XmFileSelectionBox.Apply.labelString:		%|nls-2-#Filter#|
+*XmFileSelectionBox.Cancel.labelString:		%|nls-3-#Cancel#|
+*XmFileSelectionBox.Dir.labelString:		%|nls-4-#Directories#|
+*XmFileSelectionBox.FilterLabel.labelString:	%|nls-5-#Filter#|
+*XmFileSelectionBox.Help.labelString:		%|nls-6-#Help#|
+*XmFileSelectionBox.Items.labelString:		%|nls-7-#Files#|
+*XmFileSelectionBox.OK.labelString:		%|nls-8-#OK#|
+*XmFileSelectionBox.Selection.labelString:	%|nls-9-#Selection#|
+
+!# Default resources for XmMessageBox
+
+*XmMessageBox.Cancel.labelString:		%|nls-3-#Cancel#|
+*XmMessageBox.Help.labelString:			%|nls-6-#Help#|
+*XmMessageBox.OK.labelString:			%|nls-8-#OK#|
+
+!# Default resources for XmSelectionBox
+
+*XmSelectionBox.Apply.labelString:		%|nls-10-#Apply#|
+*XmSelectionBox.Cancel.labelString:		%|nls-3-#Cancel#|
+*XmSelectionBox.Help.labelString:		%|nls-6-#Help#|
+*XmSelectionBox.Items.labelString:		%|nls-11-#Items#|
+*XmSelectionBox.OK.labelString:			%|nls-8-#OK#|
+*XmSelectionBox.Selection.labelString:		%|nls-9-#Selection#|
+
+!###########################   eof   ###########################

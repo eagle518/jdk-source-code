@@ -1,0 +1,47 @@
+; Version number and signature of INF file.
+;
+[version]
+signature="$CHICAGO$"
+AdvancedINF=2.0
+
+; The order of files in this section defines the download order.
+; Last in First download.
+[Add.Code]
+#JINSTALLNAME#
+deployHelper.dll=deployHelper.dll
+jpiexp.dll=jpiexp.dll
+npjpi#NODOTVERSION#.dll=npjpi#NODOTVERSION#.dll
+
+[deployHelper.dll]
+FileVersion=#PLUGIN_VERSION#
+RegisterServer=no
+clsid={CAFEEFAC-DEC7-0000-0000-ABCDEFFEDCBA}
+hook=bridgeinstaller
+
+[jpiexp.dll]
+FileVersion=#PLUGIN_VERSION#
+RegisterServer=no
+clsid={8AD9C840-044E-11D1-B3E9-00805F499D93}
+hook=bridgeinstaller
+
+[jpiexp.dll]
+FileVersion=#PLUGIN_VERSION#
+RegisterServer=no
+clsid={CAFEEFAC-FFFF-FFFF-FFFF-ABCDEFFEDCBA}
+hook=bridgeinstaller
+
+[npjpi#NODOTVERSION#.dll]
+FileVersion=#PLUGIN_VERSION#
+RegisterServer=no
+clsid={CAFEEFAC-00#JDK_MAJOR_VERSION##JDK_MINOR_VERSION#-000#JDK_MICRO_VERSION#-00#JDK_UPDATE_VERSION#-ABCDEFFEDCBA}
+hook=bridgeinstaller
+
+[#JINSTALLNAME#]
+file-win32-x86=thiscab
+FileVersion=#PLUGIN_VERSION#
+
+; #JINSTALLNAME# will be executed.
+;
+[bridgeinstaller]
+run=%EXTRACT_DIR%\#JINSTALLNAME# /installurl=#DEFAULTXML# /installmethod=#INSTALLMETHOD#
+

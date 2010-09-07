@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- XML file to be staged anywhere, and pointed to by map.xml file -->
+
+<java-update>
+
+  <information version="1.0" xml:lang="en">
+    <caption>Java Update - Update Available</caption>
+    <title>Java Update Available</title>
+    <description>Java #JDK_MINOR_VERSION# Update #JDK_UPDATE_VERSION# is ready to install. Click the Install button to update Java now.  If you wish to update Java later, click the Later button. To get a FREE copy of OpenOffice.org, the global standard in free, Microsoft compatible office productivity software, just click the More Information link below.</description>
+    <moreinfo>http://java.com/infourl</moreinfo>
+    <AlertTitle>Java Update Available</AlertTitle>
+    <AlertText>A new version of Java is ready to be installed.</AlertText>
+    <moreinfotxt>More information...</moreinfotxt>
+    <url>#CAB_LOCATION#/#IFTW_EXE#</url>
+    <version>#FULL_VERSION#</version>
+    <post-status>https://sjremetrics.java.com/b/ss//6</post-status>
+    <cntry-lookup>http://jal.sun.com/webapps/installstat/CountryLookup</cntry-lookup>
+    <predownload></predownload>
+    <options>/installmethod=jau SP2OFF=1 SP3OFF=1 SP5OFF=1 SP6OFF=1 SP7OFF=1 SP8OFF=1 SP9OFF=1 SP10OFF=1 MSDIR=#MSDIRVALUE# SPWEB=#SPONSOR_LOCATION#</options>
+    <urlinfo>#CHECKSUM#</urlinfo>
+  </information>
+
+<information version="1.1" xml:lang="zh">
+    <caption>Java Update - 更新可用</caption>
+    <title>有可用的 Java 更新程序</title>
+    <description>Java #JDK_MINOR_VERSION# Update #JDK_UPDATE_VERSION# 已准备好，可以点击“安装”按钮立即安装。如果希望稍后安装，可以点击“稍后”按钮。想获得免费的、符合国际自由软件标准的、与 Microsoft 办公室软件兼容的 OpenOffice.org 办公室软件套件，请单击下面的“详细信息...”。 </description>
+    <moreinfo>http://java.com/infourl</moreinfo>
+    <AlertTitle>有可用的 Java 更新程序</AlertTitle>
+    <AlertText>Java 新版本已经准备好，可以安装。</AlertText>
+    <moreinfotxt>详细信息...</moreinfotxt>
+  </information>
+
+<information version="1.1" xml:lang="zh_TW">
+    <caption>Java Update - 可用更新</caption>
+    <title>有可用的 Java 更新程式</title>
+    <description>Java #JDK_MINOR_VERSION# Update #JDK_UPDATE_VERSION# 已準備完畢，按一下「安裝」按鈕可以立即安裝。如果您希望稍後安裝，按一下「稍後」按鈕。想獲得免費的、符合國際自由軟件標準的、與 Microsoft 辦公室軟件兼容的 OpenOffice.org 辦公室軟件套件，請即點擊下面的「更多資訊...」。</description>
+    <moreinfo>http://java.com/infourl</moreinfo>
+    <AlertTitle>有可用的 Java 更新程式</AlertTitle>
+    <AlertText>Java 新版本已準備完畢，可以立即安裝。</AlertText>
+    <moreinfotxt>更多資訊...</moreinfotxt>
+  </information>
+
+  <information version="1.1" xml:lang="ja">
+    <caption>Java Update - アップデートを入手可能</caption>
+    <title>アップデートを入手可能</title>
+    <description>Java #JDK_MINOR_VERSION# Update #JDK_UPDATE_VERSION# をインストールする準備ができました。「インストール」ボタンを押して Java をアップデートします。後で Java のアップデートを行う場合は、「後で」ボタンを押してください。Microsoft Office と互換性のある無償生産性ソフトウェアの世界標準、OpenOffice の無償コピーを入手するには、以下の「詳細情報...」をクリックして下さい。</description>
+    <moreinfo>http://java.com/infourl</moreinfo>
+    <AlertTitle>アップデートを入手可能</AlertTitle>
+    <AlertText>新しいバージョンの Java がインストール可能になりました。</AlertText>
+    <moreinfotxt>詳細情報...</moreinfotxt>
+  </information>
+
+  <information version="1.1" xml:lang="ko">
+    <caption>Java 업데이트 - 업데이트 사용 가능</caption>
+    <title>Java 업데이트 사용 가능</title>
+    <description>이제 Java #JDK_MINOR_VERSION# Update #JDK_UPDATE_VERSION#을(를) 설치할 준비가 되었습니다. Java를 지금 업데이트하려면 “설치” 버튼을 클릭하십시오. Java를 나중에 업데이트하려면 “나중에”를 클릭하십시오. Microsoft의 호환성 오피스 생산성 소프트웨어, 세계표준의 FREE copy의 OpenOffice.org를 다운하려면 아래 “자세한 내용” 링크를 클릭하십시오.</description>
+    <moreinfo>http://java.com/infourl</moreinfo>
+    <AlertTitle>Java 업데이트 사용 가능</AlertTitle>
+    <AlertText>새로운 버전의 Java 설치가 이미 준비되었습니다.</AlertText>
+    <moreinfotxt>자세한 내용 ...</moreinfotxt>
+  </information>
+
+  <information version="1.1" xml:lang="de">
+    <caption>Java-Update - Update verfügbar</caption>
+    <title>Java Update verfügbar</title>
+    <description>Java #JDK_MINOR_VERSION# Update #JDK_UPDATE_VERSION# steht zur Installation bereit. Klicken Sie auf "Installieren", um Java jetzt zu aktualisieren. Falls Sie Java später aktualisieren möchten, klicken Sie auf "Später". Um eine KOSTENLOSE Kopie von OpenOffice.org, dem globalen Standard in kostenloser Microsoft Office-kompatibler Produktivitätssoftware, zu erhalten, reicht es auf "Weitere Informationen ..." zu klicken.</description>
+    <moreinfotxt>Weitere Informationen ...</moreinfotxt>
+    <moreinfo>http://java.com/infourl</moreinfo>
+    <AlertTitle>Update verfügbar</AlertTitle>
+    <AlertText>Eine neue Version von Java steht zur Installation bereit.</AlertText>
+  </information>
+
+  <information version="1.1" xml:lang="es">
+    <caption>Actualización Java - Actualización disponible</caption>
+    <title>Actualización Java disponible</title>
+    <description>La actualización #JDK_UPDATE_VERSION# de Java #JDK_MINOR_VERSION# está lista para instalar. Haga clic en Instalar para actualizar Java ahora. Si desea actualizar más tarde, haga clic en el botón Más adelante. Para obtener una copia GRATIS de OpenOffice.org, el estándar global gratis en compatibilidad con Microsoft software, haga clic en "Más información ..." en el siguiente enlace.</description>
+    <moreinfotxt>Más información ...</moreinfotxt>
+    <moreinfo>http://java.com/infourl</moreinfo>
+    <AlertTitle>Actualización Java disponible</AlertTitle>
+    <AlertText>Hay una nueva versión de Java lista para instalarse.</AlertText>
+  </information>
+
+  <information version="1.1" xml:lang="fr">
+    <caption>Mise à jour Java - Mise à jour disponible</caption>
+    <title>Mise à jour Java disponible</title>
+    <description>Java #JDK_MINOR_VERSION# Mise à jour #JDK_UPDATE_VERSION# est prêt à être installé. Cliquez sur le bouton Installer pur mettre à jour Java maintenant. Si vous souhaitez faire la mise à jour plus tard, cliquez sur le bouton Ultérieurement. Pour recevoir une copie GRATUITE d'OpenOffice.org, le standard global des logiciels de productivité gratuits et compatibles à Microsoft Office, cliquez sur le lien "Plus d'information..." ci-dessous.</description>
+    <moreinfotxt>Plus d'information ...</moreinfotxt>
+    <moreinfo>http://java.com/infourl</moreinfo>
+    <AlertTitle>Mise à jour Java disponible</AlertTitle>
+    <AlertText>Une nouvelle version de Java est prête à être installée.</AlertText>
+  </information>
+
+  <information version="1.1" xml:lang="it">
+    <caption>Aggiornamento Java - Aggiornamento disponibile</caption>
+    <title>Aggiornamento Java disponibile</title>
+    <description>L'aggiornamento #JDK_UPDATE_VERSION# di Java #JDK_MINOR_VERSION# è pronto per l'installazione. Per aggiornare Java ora, fare clic su "Installa". Per aggiornare Java in un secondo momento, fare clic su "In seguito". Per ricevere una copia GRATUITA di OpenOffice.org, il software standard gratuito globale per la produttività compatibile con Microsoft Office, è sufficiente fare clic su "Ulteriori informazioni...".</description>
+    <moreinfotxt>Ulteriori informazioni ...</moreinfotxt>
+    <moreinfo>http://java.com/infourl</moreinfo>
+    <AlertTitle>Aggiornamento Java disponibile</AlertTitle>
+    <AlertText>Nuova versione di Java pronta per l'installazione.</AlertText>
+  </information>
+
+  <information version="1.1" xml:lang="pt_BR">
+  <caption>Atualização do Java – Atualização disponível</caption> 
+  <title>Atualizações disponíveis do Java</title> 
+  <description>O Java #JDK_MINOR_VERSION# Update #JDK_UPDATE_VERSION# está pronto para a instalação. Clique no botão Instalar para atualizar o Java agora. Se desejar atualizar o Java mais tarde, clique no botão Mais tarde. Para adquirir uma cópia GRATUITA do OpenOffice.org, o padrão global aberto do software de produtividade compatível com Microsoft, clique no link abaixo Mais informações.</description> 
+  <moreinfo>http://java.com/infourl</moreinfo> 
+  <AlertTitle>Atualizações disponíveis do Java</AlertTitle> 
+  <AlertText>Uma nova versão do Java já está pronta para ser instalada.</AlertText> 
+  <moreinfotxt>Mais informações...</moreinfotxt> 
+  </information>
+
+  <information version="1.1" xml:lang="sv">
+    <caption>Java Update - Uppdatering tillgänglig</caption>
+    <title>Java Update tillgänglig</title>
+    <description>Java #JDK_MINOR_VERSION# Uppdatering #JDK_UPDATE_VERSION# är redo att installeras nu! Klicka på Installera för att uppdatera Java nu. Klicka på Senare om du vill uppdatera Java senare. För att få en gratis-version av OpenOffice.org, den globala standarden när det gäller kostnadsfri Microsoft Office-kompatibel programvara, klicka bara på länken "Mer information ..." här nedan.</description>
+    <moreinfotxt>Mer information ...</moreinfotxt>
+    <moreinfo>http://java.com/infourl</moreinfo>
+    <AlertTitle>Java Update tillgänglig</AlertTitle>
+    <AlertText>En ny Javaversion är redo att installeras!</AlertText>
+  </information>
+
+</java-update>

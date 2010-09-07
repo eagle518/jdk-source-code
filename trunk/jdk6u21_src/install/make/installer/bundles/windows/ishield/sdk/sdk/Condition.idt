@@ -1,0 +1,5 @@
+Feature_	Level	Condition
+s38	i2	S255
+Condition	Feature_	Level
+PublicjreFeature	0	(JREINSTALLED<>"0") Or (Installed And REMOVE<>"ALL" And VersionNT>=500)
+JavaDBFeature	0	VersionNT64

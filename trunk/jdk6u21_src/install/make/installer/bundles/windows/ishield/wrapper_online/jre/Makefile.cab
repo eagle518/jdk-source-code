@@ -1,0 +1,49 @@
+#
+# Copyright (c) 2009, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+#
+# @(#)Makefile.cab	1.2 10/03/23 
+#
+#
+# Makefile to build the Online cab installer
+#
+
+
+PRODUCT = jinstall_cab
+TEMPDIR=$(TEMP_DIR)/jinstall-cab
+
+
+TARGET_NAME=jinstall_cab
+TARGET=$(TARGET_NAME).exe
+
+include ./common.gmk
+
+EXEVALUE=JavaSetup$(JDK_MINOR_VERSION)u$(JDK_UPDATE_VERSION)
+
+CPPFLAGS += -DJCAB
+
+all: clean copyfiles jre-cab
+
+
+jre-cab: optimized debug
+
+
+$(OBJDIR)/$(TARGET): $(FILES_res) $(FILES_o)
+	$(LINK) $(LDFLAGS) $(FILES_res) $(FILES_o)
+
+build: $(OBJDIR)/$(TARGET)
+
+debug:
+
+optimized: $(OBJDIR)
+	$(MAKE) -f Makefile.cab build VARIANT=OPT
+
+clean::
+	$(RM) -r $(TEMPDIR)
+
+#
+# Phonies to avoid accidents.
+#
+.PHONY: all optimized debug clobber clean build
+

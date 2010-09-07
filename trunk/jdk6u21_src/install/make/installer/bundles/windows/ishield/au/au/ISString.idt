@@ -1,0 +1,482 @@
+ISString	ISLanguage_	Value	Encoded	Comment	TimeStamp
+s255	s50	S0	I2	S0	I4
+1252	ISString	ISString	ISLanguage_
+ID_STRING_64	1033	This product is not supported on Itanium 64-bit systems.  You may obtain a Windows Itanium 64-bit J2SE Development Kit installer from http://java.sun.com.	0		-1005144527
+ID_STRING_APPLETTAG	1033	Default Java for browsers	0		1167458792
+ID_STRING_APPLETTAGDES	1033	Use this Java VM to handle Java applets by default in popular browsers.  This setting is also available in the Java Control Panel.  This feature will not require any additional disk space.	0		1167458792
+ID_STRING_APPLETTAGIE	1033	Default Java for Internet Explorer	0		1167458792
+ID_STRING_APPLETTAGIEDES	1033	Use this Java VM to handle Java applets by default in Microsoft Internet Explorer.  This setting is also available in the Java Control Panel.  This feature will not require any additional disk space.	0		1167458792
+ID_STRING_BACK	1033	< &Back	0		1922490861
+ID_STRING_BROWSERREG	1033	[ProductName] - Browser Registration	0		1922490861
+ID_STRING_BROWSERREG2	1033	{&MSSansBold8}Browser Registration	0		1922490861
+ID_STRING_CONTINUEJAVA	1033	&Continue	0		2106990415
+ID_STRING_CUSTOM_TITLE	1033	[ProductName] - Custom Setup	0		-1021928859
+ID_STRING_DISKSPACE_TITLE	1033	[ProductName] - Disk Space	0		-1021928859
+ID_STRING_EXIT_TITLE	1033	[ProductName] - Complete	0		-1021928859
+ID_STRING_FILESINUSE_TITLE	1033	[ProductName] - Files In Use	0		-1021928859
+ID_STRING_FILESRLOCKED	1033	It appears that you have java running from your system directory.  Please close any programs that are using java.exe or javaw.exe in the windows system directory.  Also, close the system control panel and/or your java control panel.	0		2107035217
+ID_STRING_INSTALL	1033	&Install>	0		1922490861
+ID_STRING_INSTALLTO	1033	Install to:	0		622236840
+ID_STRING_IsFilesInUse_4	1033	Your system has locked files in the directory chosen for installation.  You will need to exit the installation, reboot, and run the installer again.	0		-1021928859
+ID_STRING_LICENSE	1033	[ProductName] - License	0		-1021928859
+ID_STRING_MAINT_TITLE	1033	[ProductName] - Maintenance	0		-1021928859
+ID_STRING_MOZILLA	1033	Mozilla Family	0		1167458792
+ID_STRING_MOZILLADES	1033	Use this Java VM to handle Java applets by default in Mozilla family browsers.  This setting is also available in the Java Control Panel.  This feature will not require any additional disk space.	0		1167458792
+ID_STRING_NOTSUPPORTED	1033	{&MSSansBold8}Warning: This is not a supported Operating System	0		2107002543
+ID_STRING_OTHER	1033	Additional Languages	0		337005579
+ID_STRING_PRIV	1033	This account does not have sufficient privileges to install Java(TM).  Please login to an account with administrative permissions.	0		-1005144527
+ID_STRING_PROGRESS_TITLE	1033	[ProductName] - Progress	0		-1021928859
+ID_STRING_RAM	1033	This machine does not have the recommended amount of memory to install this product.	0		-1005144527
+ID_STRING_REMOVE_TITLE	1033	[ProductName] - Remove	0		-1021928859
+ID_STRING_SELECTBROWSER	1033	Select the browsers you want to register with Java(TM) Plug-In.	0		1922490861
+ID_STRING_SEMICOLON	1033	{&MSSansBold8}Semi-Colon found in selected path	0		-1248439795
+ID_STRING_SEMICOLON2	1033	A path with a semi-colon in it, is not supported for this product.  Please select a directory path without a semi-colon.	0		-1248439795
+ID_STRING_SETUP_TITLE	1033	[ProductName] - Setup Type	0		-1021928859
+ID_STRING_UI18	1033	You may change the settings later in the Java(TM) Control Panel.	0		-1005144527
+ID_STRING_UNPACKING	1033	Removing backup files	0		-1021928859
+ID_STRING_WESTERN	1033	J2SE Runtime Environment	0		-1433007797
+ID_STRING_WESTERN2	1033	The J2SE Runtime Environment with support for European languages will be installed.  Select optional features to install from the list below.	0		1922490861
+ID_STRING_WHENREQUIRED	1033	Don't install this feature now.	0		-1021928859
+ID_STRING_WINBUILD	1033	Thank you for choosing the Java(TM) Platform. You may continue with this installation, but for best results we recommend running on one of the following operating systems:  Windows XP, Windows 2003 Server, Windows 2000 with Service Pack 2 or later, Windows NT 4.0 with Service Pack 5 or later, Windows ME, Windows 98 Second Edition.	0		-719922032
+ID_STRING1	1033	Support for non-European languages.  This requires [Other]MB on your hard drive.	0		899036852
+ID_STRING2	1033	The J2SE Runtime Environment with European languages.  This requires [Core]MB on your hard drive.	0		1167469678
+ID_STRING3	1033	Additional Font and Media Support	0		1167469774
+ID_STRING8	1033	Lucida fonts other than the default Lucida Sans Regular, a MIDI soundbank for use by Java Sound, and a color-management profile for use in performing color map conversions.  These features require [Extra]MB on your hard drive.	0		1167488462
+ID_STRINGMAINTWEL_TITLE	1033	[ProductName] - Maintenance Welcome	0		-1021928859
+IDPUB	1033	This software has already been installed on your computer.  Would you like to reinstall it?	0		-635950606
+IDS__AgreeToLicense_0	1033	Custom setup - Specify the features to install.  For advanced users.	0		-1021928859
+IDS__AgreeToLicense_1	1033	Typical setup - All recommended features will be installed.	0		-1021928859
+IDS__DatabaseFolder_1	1033	Cancel	0		-1021928859
+IDS__IsBrowseFolderDlg_0	1033	[ProductName]	0		2023229068
+IDS__IsBrowseFolderDlg_10	1033	OK	0		-1021928859
+IDS__IsBrowseFolderDlg_11	1033		0		-1021928859
+IDS__IsBrowseFolderDlg_12	1033	&Folder name:	0		-1021928859
+IDS__IsBrowseFolderDlg_13	1033	Up One Level|	0		-1021928859
+IDS__IsBrowseFolderDlg_3	1033	Cancel	0		-1021928859
+IDS__IsBrowseFolderDlg_4	1033		0		-1021928859
+IDS__IsBrowseFolderDlg_5	1033	&Look in:	0		-1021928859
+IDS__IsBrowseFolderDlg_6	1033	Browse to the destination folder.	0		-1021928859
+IDS__IsBrowseFolderDlg_7	1033	{&MSSansBold8}Change Current Destination Folder	0		-1021928859
+IDS__IsBrowseFolderDlg_8	1033		0		-1021928859
+IDS__IsBrowseFolderDlg_9	1033	Create New Folder|	0		-1021928859
+IDS__IsCancelDlg_0	1033	[ProductName]	0		2023255660
+IDS__IsCancelDlg_4	1033	Are you sure you want to cancel [ProductName] installation?	0		-1021928859
+IDS__IsCancelDlg_6	1033	&No	0		-1021928859
+IDS__IsCancelDlg_8	1033	&Yes	0		-1021928859
+IDS__IsCustomSelectionDlg_1	1033	< &Back	0		-1021928859
+IDS__IsCustomSelectionDlg_11	1033	&Next >	0		-1021928859
+IDS__IsCustomSelectionDlg_14	1033	Multiline description of the currently selected item	0		-1021928859
+IDS__IsCustomSelectionDlg_15	1033	Feature Description	0		-1021928859
+IDS__IsCustomSelectionDlg_16	1033	&Change...	0		-1021928859
+IDS__IsCustomSelectionDlg_17	1033	<selected feature path>	0		-1021928859
+IDS__IsCustomSelectionDlg_4	1033	Cancel	0		-1021928859
+IDS__IsCustomSelectionDlg_6	1033	Select the program features you want installed.	0		-1021928859
+IDS__IsCustomSelectionDlg_8	1033	{&MSSansBold8}Custom Setup	0		-1021928859
+IDS__IsDiskSpaceDlg_10	1033	OK	0		-1021928859
+IDS__IsDiskSpaceDlg_4	1033	Disk space required for the installation exceeds available disk space.	0		-1021928859
+IDS__IsDiskSpaceDlg_5	1033	The highlighted volumes do not have enough disk space available for the currently selected features. You can remove files from the highlighted volumes, choose to install less features onto local drives, or select different destination drives.	0		-1021928859
+IDS__IsDiskSpaceDlg_6	1033	{&MSSansBold8}Out of Disk Space	0		-1021928859
+IDS__IsDiskSpaceDlg_7	1033	&Exit	0		-1021928859
+IDS__IsDiskSpaceDlg_9	1033	{120}{70}{70}{70}{70}	0		-1021928859
+IDS__IsErrorDlg_0	1033	[ProductName] Installer Information	0		-1021928859
+IDS__IsErrorDlg_1	1033	&Abort	0		-1021928859
+IDS__IsErrorDlg_2	1033	&Cancel	0		-1021928859
+IDS__IsErrorDlg_3	1033	<error text goes here><error text goes here><error text goes here><error text goes here><error text goes here><error text goes here><error text goes here><error text goes here><error text goes here><error text goes here><error text goes here>	0		-1021928859
+IDS__IsErrorDlg_4	1033	&Ignore	0		-1021928859
+IDS__IsErrorDlg_5	1033	&No	0		-1021928859
+IDS__IsErrorDlg_6	1033	&OK	0		-1021928859
+IDS__IsErrorDlg_7	1033	&Retry	0		-1021928859
+IDS__IsErrorDlg_8	1033	&Yes	0		-1021928859
+IDS__IsErrorDlg_9	1033	<ISProductFolder>\Redist\Language Independent\OS Independent\WarningIcon.ibd	0		-1021928859
+IDS__IsExitDialog_1	1033	< &Back	0		-1021928859
+IDS__IsExitDialog_2	1033	Cancel	0		-1021928859
+IDS__IsExitDialog_3	1033	&Finish	0		-1021928859
+IDS__IsExitDialog_4	1033	{&TahomaBold10}Complete	0		2023241388
+IDS__IsExitDialog_5	1033	The Install Wizard has successfully installed [ProductName]. Click Finish to exit the wizard.	0		-1021928859
+IDS__IsExitDialog_6	1033	The Wizard has successfully uninstalled [ProductName]. Click Finish to exit the wizard.	0		2023249580
+IDS__IsFatalError_0	1033	[ProductName]	0		2023257740
+IDS__IsFatalError_1	1033	< &Back	0		-1021928859
+IDS__IsFatalError_2	1033	Cancel	0		-1021928859
+IDS__IsFatalError_3	1033	&Finish	0		-1021928859
+IDS__IsFatalError_4	1033	Your system has not been modified. To complete installation at another time, please run setup again.	0		-1021928859
+IDS__IsFatalError_5	1033	Click Finish to exit the wizard.	0		-1021928859
+IDS__IsFatalError_6	1033	You can either keep any existing installed elements on your system to continue this installation at a later time or you can restore your system to its original state prior to the installation.	0		-1021928859
+IDS__IsFatalError_7	1033	Click Restore or Continue Later to exit the wizard.	0		-1021928859
+IDS__IsFatalError_8	1033	{&TahomaBold10}Installation Completed	0		2023278220
+IDS__IsFatalError_9	1033	The wizard was interrupted before [ProductName] could be completely installed.	0		-1021928859
+IDS__IsFilesInUse_0	1033	[ProductName]	0		2023282284
+IDS__IsFilesInUse_3	1033	Some files that need to be updated are currently in use.	0		-1021928859
+IDS__IsFilesInUse_4	1033	The following applications are using files that need to be updated by this setup. Close these applications and click Retry to continue.	0		-1021928859
+IDS__IsFilesInUse_5	1033	{&MSSansBold8}Files in Use	0		-1021928859
+IDS__IsFilesInUse_6	1033	&Exit	0		-1021928859
+IDS__IsFilesInUse_7	1033	&Ignore	0		-1021928859
+IDS__IsFilesInUse_8	1033	&Retry	0		-1021928859
+IDS__IsInitDlg_0	1033	[ProductName]	0		2023255756
+IDS__IsInitDlg_1	1033		0		-1021928859
+IDS__IsInitDlg_2	1033		0		-1021928859
+IDS__IsInitDlg_3	1033	< &Back	0		-1021928859
+IDS__IsInitDlg_4	1033	Cancel	0		-1021928859
+IDS__IsInitDlg_5	1033	&Next >	0		-1021928859
+IDS__IsInitDlg_6	1033	{&TahomaBold10}Welcome to the Installation Wizard for [ProductName]	0		2023274188
+IDS__IsInitDlg_7	1033	[ProductName] Setup is preparing the Windows Installer which will guide you through the program setup process.  Please wait.	0		2023229164
+IDS__IsLicenseDlg_4	1033	&Accept >	0		-1021928859
+IDS__IsLicenseDlg_5	1033	Please read the following license agreement carefully.	0		-1021928859
+IDS__IsLicenseDlg_7	1033	{&MSSansBold8}License Agreement	0		-1021928859
+IDS__IsLicenseDlg_8	1033	&Decline	0		-1021928859
+IDS__IsLicenseDlg_EULA	1033	<ISProductFolder>\Redist\0409\Eula.rtf	0		-1021928859
+IDS__IsMaintenanceDlg_1	1033	< &Back	0		-1021928859
+IDS__IsMaintenanceDlg_10	1033	{&MSSansBold8}&Remove	0		-1021928859
+IDS__IsMaintenanceDlg_11	1033		0		-1021928859
+IDS__IsMaintenanceDlg_12	1033	Change which program features are installed. This option displays the Custom Selection dialog in which you can change the way features are installed.	0		-1021928859
+IDS__IsMaintenanceDlg_14	1033	Remove [ProductName] from your computer.	0		-1021928859
+IDS__IsMaintenanceDlg_4	1033	Cancel	0		-1021928859
+IDS__IsMaintenanceDlg_5	1033	Modify or remove the program.	0		-1021928859
+IDS__IsMaintenanceDlg_6	1033	{&MSSansBold8}Program Maintenance	0		-1021928859
+IDS__IsMaintenanceDlg_7	1033	&Next >	0		-1021928859
+IDS__IsMaintenanceDlg_8	1033	{&MSSansBold8}&Modify	0		-1021928859
+IDS__IsMaintenanceWelcome_1	1033	< &Back	0		-1021928859
+IDS__IsMaintenanceWelcome_2	1033	Cancel	0		-1021928859
+IDS__IsMaintenanceWelcome_3	1033	&Next >	0		-1021928859
+IDS__IsMaintenanceWelcome_4	1033	{&TahomaBold10}Welcome to the Install Wizard for [ProductName]	0		-1021928859
+IDS__IsMaintenanceWelcome_5	1033	The Installer Wizard will allow you to modify or remove [ProductName]. To continue, click Next.	0		-1021928859
+IDS__IsProgressDlg_1	1033	Progress done	0		-1021928859
+IDS__IsProgressDlg_10	1033	(Hidden for now)Sec.	0		-1021928859
+IDS__IsProgressDlg_11	1033	Status:	0		-1021928859
+IDS__IsProgressDlg_12	1033	&Next >	0		-1021928859
+IDS__IsProgressDlg_13	1033	(Hidden for now)	0		-1021928859
+IDS__IsProgressDlg_14	1033	)Hidden for now)Estimated time remaining:	0		-1021928859
+IDS__IsProgressDlg_15	1033	{&MSSansBold8}Uninstalling	0		-1021928859
+IDS__IsProgressDlg_16	1033	The program features you selected are being uninstalled.	0		-1021928859
+IDS__IsProgressDlg_17	1033	Please wait while the Wizard uninstalls [ProductName]. This may take several minutes.	0		2023274220
+IDS__IsProgressDlg_2	1033		0		-1021928859
+IDS__IsProgressDlg_3	1033	< &Back	0		-1021928859
+IDS__IsProgressDlg_6	1033	Cancel	0		-1021928859
+IDS__IsProgressDlg_7	1033	The program features you selected are being installed.	0		-1021928859
+IDS__IsProgressDlg_8	1033	Please wait while the Install Wizard installs [ProductName]. This may take several minutes.	0		-1021928859
+IDS__IsProgressDlg_9	1033	{&MSSansBold8}Installing Java Auto Update Software	0		-1021928859
+IDS__IsRegisterUserDlg_14	1033	&Anyone who uses this computer (all users)	0		-1021928859
+IDS__IsRegisterUserDlg_15	1033	Only for &me ([USERNAME])	0		-1021928859
+IDS__IsUserExit_0	1033	[ProductName]	0		2023245548
+IDS__IsUserExit_1	1033	< &Back	0		-1021928859
+IDS__IsUserExit_2	1033	Cancel	0		-1021928859
+IDS__IsUserExit_3	1033	&Finish	0		-1021928859
+IDS__IsUserExit_4	1033	Your system has not been modified. To install this program at a later time, please run the installation again.	0		-1021928859
+IDS__IsUserExit_5	1033	Click Finish to exit the wizard.	0		-1021928859
+IDS__IsUserExit_6	1033	You can either keep any existing installed elements on your system to continue this installation at a later time or you can restore your system to its original state prior to the installation.	0		-1021928859
+IDS__IsUserExit_7	1033	Click Restore or Continue Later to exit the wizard.	0		-1021928859
+IDS__IsUserExit_8	1033	{&TahomaBold10}Installation Completed	0		2023253740
+IDS__IsUserExit_9	1033	The wizard was interrupted before [ProductName] could be completely installed.	0		-1021928859
+IDS__TargetReq_DESC_COLOR	1033	The color settings of your system are not adequate for running [ProductName].	0		-1021928859
+IDS__TargetReq_DESC_OS	1033	The operating system is not adequate for running [ProductName].	0		-1021928859
+IDS__TargetReq_DESC_PROCESSOR	1033	The processor is not adequate for running [ProductName].	0		-1021928859
+IDS__TargetReq_DESC_RAM	1033	The amount of RAM is not adequate for running [ProductName].	0		-1021928859
+IDS__TargetReq_DESC_RESOLUTION	1033	The screen resolution is not adequate for running [ProductName].	0		-1021928859
+IDS_ACTIONTEXT_1	1033	Advertising application	0		-1021928859
+IDS_ACTIONTEXT_10	1033	Computing space requirements	0		-1021928859
+IDS_ACTIONTEXT_100	1033	MIME Content Type: [1], Extension: [2]	0		-1021928859
+IDS_ACTIONTEXT_101	1033	Unregistering program identifiers	0		-1021928859
+IDS_ACTIONTEXT_102	1033	ProgID: [1]	0		-1021928859
+IDS_ACTIONTEXT_103	1033	Unregistering type libraries	0		-1021928859
+IDS_ACTIONTEXT_104	1033	LibID: [1]	0		-1021928859
+IDS_ACTIONTEXT_105	1033	Updating environment strings	0		-1021928859
+IDS_ACTIONTEXT_106	1033	Name: [1], Value: [2], Action [3]	0		-1021928859
+IDS_ACTIONTEXT_107	1033	Writing INI file values	0		-1021928859
+IDS_ACTIONTEXT_108	1033	File: [1],  Section: [2],  Key: [3], Value: [4]	0		-1021928859
+IDS_ACTIONTEXT_109	1033	Writing system registry values	0		-1021928859
+IDS_ACTIONTEXT_11	1033	Creating folders	0		-1021928859
+IDS_ACTIONTEXT_110	1033	Key: [1], Name: [2], Value: [3]	0		-1021928859
+IDS_ACTIONTEXT_111	1033	Registering COM+ Applications and Components	0		-1021928859
+IDS_ACTIONTEXT_112	1033	AppId: [1]{{, AppType: [2], Users: [3], RSN: [4]}}	0		-1021928859
+IDS_ACTIONTEXT_113	1033	Unregistering COM+ Applications and Components	0		-1021928859
+IDS_ACTIONTEXT_114	1033	AppId: [1]{{, AppType: [2]}}	0		-1021928859
+IDS_ACTIONTEXT_115	1033	Searching for related applications	0		-1021928859
+IDS_ACTIONTEXT_116	1033	Found application: [1]	0		-1021928859
+IDS_ACTIONTEXT_117	1033	Migrating feature states from related applications	0		-1021928859
+IDS_ACTIONTEXT_118	1033	Application: [1]	0		-1021928859
+IDS_ACTIONTEXT_119	1033	Removing applications	0		-1021928859
+IDS_ACTIONTEXT_12	1033	Folder: [1]	0		-1021928859
+IDS_ACTIONTEXT_120	1033	Application: [1], Command line: [2]	0		-1021928859
+IDS_ACTIONTEXT_121	1033	Installing system catalog	0		-1021928859
+IDS_ACTIONTEXT_122	1033	File: [1],  Dependencies: [2]	0		-1021928859
+IDS_ACTIONTEXT_123	1033	Creating IIS Virtual Roots...	0		-1021928859
+IDS_ACTIONTEXT_124	1033	Removing IIS Virtual Roots...	0		-1021928859
+IDS_ACTIONTEXT_13	1033	Creating shortcuts	0		-1021928859
+IDS_ACTIONTEXT_14	1033	Shortcut: [1]	0		-1021928859
+IDS_ACTIONTEXT_15	1033	Deleting services	0		-1021928859
+IDS_ACTIONTEXT_16	1033	Service: [1]	0		-1021928859
+IDS_ACTIONTEXT_17	1033	Creating duplicate files	0		-1021928859
+IDS_ACTIONTEXT_18	1033	File: [1],  Directory: [9],  Size: [6]	0		-1021928859
+IDS_ACTIONTEXT_19	1033	Computing space requirements	0		-1021928859
+IDS_ACTIONTEXT_2	1033	Allocating registry space	0		-1021928859
+IDS_ACTIONTEXT_20	1033	Generating script operations for action:	0		-1021928859
+IDS_ACTIONTEXT_21	1033	[1]	0		-1021928859
+IDS_ACTIONTEXT_22	1033	Copying files to the network	0		-1021928859
+IDS_ACTIONTEXT_23	1033	File: [1], Directory: [9], Size: [6]	0		-1021928859
+IDS_ACTIONTEXT_25	1033	File: [1],  Directory: [9],  Size: [6]	0		-1021928859
+IDS_ACTIONTEXT_26	1033	Installing ODBC components	0		-1021928859
+IDS_ACTIONTEXT_27	1033	Installing new services	0		-1021928859
+IDS_ACTIONTEXT_28	1033	Service: [2]	0		-1021928859
+IDS_ACTIONTEXT_29	1033	Validating install	0		-1021928859
+IDS_ACTIONTEXT_3	1033	Free space: [1]	0		-1021928859
+IDS_ACTIONTEXT_30	1033	Evaluating launch conditions	0		-1021928859
+IDS_ACTIONTEXT_31	1033	Moving files	0		-1021928859
+IDS_ACTIONTEXT_32	1033	File: [1],  Directory: [9],  Size: [6]	0		-1021928859
+IDS_ACTIONTEXT_33	1033	Patching files	0		-1021928859
+IDS_ACTIONTEXT_34	1033	File: [1],  Directory: [2],  Size: [3]	0		-1021928859
+IDS_ACTIONTEXT_35	1033	Updating component registration	0		-1021928859
+IDS_ACTIONTEXT_36	1033	Publishing qualified components	0		-1021928859
+IDS_ACTIONTEXT_37	1033	Component ID: [1], Qualifier: [2]	0		-1021928859
+IDS_ACTIONTEXT_38	1033	Publishing product features	0		-1021928859
+IDS_ACTIONTEXT_39	1033	Feature: [1]	0		-1021928859
+IDS_ACTIONTEXT_4	1033	Searching for installed applications	0		-1021928859
+IDS_ACTIONTEXT_40	1033	Publishing product information	0		-1021928859
+IDS_ACTIONTEXT_41	1033	Registering class servers	0		-1021928859
+IDS_ACTIONTEXT_42	1033	Class ID: [1]	0		-1021928859
+IDS_ACTIONTEXT_43	1033	Registering extension servers	0		-1021928859
+IDS_ACTIONTEXT_44	1033	Extension: [1]	0		-1021928859
+IDS_ACTIONTEXT_45	1033	Registering fonts	0		-1021928859
+IDS_ACTIONTEXT_46	1033	Font: [1]	0		-1021928859
+IDS_ACTIONTEXT_47	1033	Registering MIME info	0		-1021928859
+IDS_ACTIONTEXT_48	1033	MIME Content Type: [1], Extension: [2]	0		-1021928859
+IDS_ACTIONTEXT_49	1033	Registering product	0		-1021928859
+IDS_ACTIONTEXT_5	1033	Property: [1], Signature: [2]	0		-1021928859
+IDS_ACTIONTEXT_50	1033	[1]	0		-1021928859
+IDS_ACTIONTEXT_51	1033	Registering program identifiers	0		-1021928859
+IDS_ACTIONTEXT_52	1033	ProgID: [1]	0		-1021928859
+IDS_ACTIONTEXT_53	1033	Registering type libraries	0		-1021928859
+IDS_ACTIONTEXT_54	1033	LibID: [1]	0		-1021928859
+IDS_ACTIONTEXT_55	1033	Registering user	0		-1021928859
+IDS_ACTIONTEXT_56	1033	[1]	0		-1021928859
+IDS_ACTIONTEXT_57	1033	Removing duplicated files	0		-1021928859
+IDS_ACTIONTEXT_58	1033	File: [1], Directory: [9]	0		-1021928859
+IDS_ACTIONTEXT_59	1033	Updating environment strings	0		-1021928859
+IDS_ACTIONTEXT_6	1033	Binding executables	0		-1021928859
+IDS_ACTIONTEXT_60	1033	Name: [1], Value: [2], Action [3]	0		-1021928859
+IDS_ACTIONTEXT_61	1033	Removing files	0		-1021928859
+IDS_ACTIONTEXT_62	1033	File: [1], Directory: [9]	0		-1021928859
+IDS_ACTIONTEXT_63	1033	Removing folders	0		-1021928859
+IDS_ACTIONTEXT_64	1033	Folder: [1]	0		-1021928859
+IDS_ACTIONTEXT_65	1033	Removing INI file entries	0		-1021928859
+IDS_ACTIONTEXT_66	1033	File: [1],  Section: [2],  Key: [3], Value: [4]	0		-1021928859
+IDS_ACTIONTEXT_67	1033	Removing ODBC components	0		-1021928859
+IDS_ACTIONTEXT_68	1033	Removing system registry values	0		-1021928859
+IDS_ACTIONTEXT_69	1033	Key: [1], Name: [2]	0		-1021928859
+IDS_ACTIONTEXT_7	1033	File: [1]	0		-1021928859
+IDS_ACTIONTEXT_70	1033	Removing shortcuts	0		-1021928859
+IDS_ACTIONTEXT_71	1033	Shortcut: [1]	0		-1021928859
+IDS_ACTIONTEXT_72	1033	Searching for qualifying products	0		-1021928859
+IDS_ACTIONTEXT_73	1033	Rolling back action:	0		-1021928859
+IDS_ACTIONTEXT_74	1033	[1]	0		-1021928859
+IDS_ACTIONTEXT_76	1033	File: [1]	0		-1021928859
+IDS_ACTIONTEXT_77	1033	Registering modules	0		-1021928859
+IDS_ACTIONTEXT_78	1033	File: [1], Folder: [2]	0		-1021928859
+IDS_ACTIONTEXT_79	1033	Unregistering modules	0		-1021928859
+IDS_ACTIONTEXT_8	1033	Searching for qualifying products	0		-1021928859
+IDS_ACTIONTEXT_80	1033	File: [1], Folder: [2]	0		-1021928859
+IDS_ACTIONTEXT_81	1033	Initializing ODBC directories	0		-1021928859
+IDS_ACTIONTEXT_82	1033	Starting services	0		-1021928859
+IDS_ACTIONTEXT_83	1033	Service: [1]	0		-1021928859
+IDS_ACTIONTEXT_84	1033	Stopping services	0		-1021928859
+IDS_ACTIONTEXT_85	1033	Service: [1]	0		-1021928859
+IDS_ACTIONTEXT_86	1033	Removing moved files	0		-1021928859
+IDS_ACTIONTEXT_87	1033	File: [1], Directory: [9]	0		-1021928859
+IDS_ACTIONTEXT_88	1033	Unpublishing Qualified Components	0		-1021928859
+IDS_ACTIONTEXT_89	1033	Component ID: [1], Qualifier: [2]	0		-1021928859
+IDS_ACTIONTEXT_9	1033	Computing space requirements	0		-1021928859
+IDS_ACTIONTEXT_90	1033	Unpublishing product features	0		-1021928859
+IDS_ACTIONTEXT_91	1033	Feature: [1]	0		-1021928859
+IDS_ACTIONTEXT_92	1033	Unpublishing product information	0		-1021928859
+IDS_ACTIONTEXT_93	1033	Unregister class servers	0		-1021928859
+IDS_ACTIONTEXT_94	1033	Class ID: [1]	0		-1021928859
+IDS_ACTIONTEXT_95	1033	Unregistering extension servers	0		-1021928859
+IDS_ACTIONTEXT_96	1033	Extension: [1]	0		-1021928859
+IDS_ACTIONTEXT_97	1033	Unregistering fonts	0		-1021928859
+IDS_ACTIONTEXT_98	1033	Font: [1]	0		-1021928859
+IDS_ACTIONTEXT_99	1033	Unregistering MIME info	0		-1021928859
+IDS_ACTIONTEXT_CP	1033	Copying new files	0		-1021928859
+IDS_ACTIONTEXT_DL	1033	Downloading files (expect pauses as cabinet files are downloaded)	0		-1021928859
+IDS_ERROR_0	1033	{{Fatal error: }}	0		-1021928859
+IDS_ERROR_1	1033	Error [1].	0		-1021928859
+IDS_ERROR_10	1033	=== Logging started: [Date]  [Time] ===	0		-1021928859
+IDS_ERROR_100	1033	Could not remove shortcut [2]. Verify that the shortcut file exists and that you can access it.	0		-1021928859
+IDS_ERROR_101	1033	Could not register type library for file [2].  Contact your support personnel.	0		-1021928859
+IDS_ERROR_102	1033	Could not unregister type library for file [2].  Contact your support personnel.	0		-1021928859
+IDS_ERROR_103	1033	Could not update the INI file [2][3].  Verify that the file exists and that you can access it.	0		-1021928859
+IDS_ERROR_104	1033	Could not schedule file [2] to replace file [3] on reboot.  Verify that you have write permissions to file [3].	0		-1021928859
+IDS_ERROR_105	1033	Error removing ODBC driver manager, ODBC error [2]: [3]. Contact your support personnel.	0		-1021928859
+IDS_ERROR_106	1033	Error installing ODBC driver manager, ODBC error [2]: [3]. Contact your support personnel.	0		-1021928859
+IDS_ERROR_107	1033	Error removing ODBC driver [4], ODBC error [2]: [3]. Verify that you have sufficient privileges to remove ODBC drivers.	0		-1021928859
+IDS_ERROR_108	1033	Error installing ODBC driver [4], ODBC error [2]: [3]. Verify that the file [4] exists and that you can access it.	0		-1021928859
+IDS_ERROR_109	1033	Error configuring ODBC data source [4], ODBC error [2]: [3]. Verify that the file [4] exists and that you can access it.	0		-1021928859
+IDS_ERROR_11	1033	=== Logging stopped: [Date]  [Time] ===	0		-1021928859
+IDS_ERROR_110	1033	Service [2] ([3]) failed to start.  Verify that you have sufficient privileges to start system services.	0		-1021928859
+IDS_ERROR_111	1033	Service [2] ([3]) could not be stopped.  Verify that you have sufficient privileges to stop system services.	0		-1021928859
+IDS_ERROR_112	1033	Service [2] ([3]) could not be deleted.  Verify that you have sufficient privileges to remove system services.	0		-1021928859
+IDS_ERROR_113	1033	Service [2] ([3]) could not be installed.  Verify that you have sufficient privileges to install system services.	0		-1021928859
+IDS_ERROR_114	1033	Could not update environment variable [2].  Verify that you have sufficient privileges to modify environment variables.	0		-1021928859
+IDS_ERROR_115	1033	You do not have sufficient privileges to complete this installation for all users of the machine.  Log on as an administrator and then retry this installation.	0		-1021928859
+IDS_ERROR_116	1033	Could not set file security for file [3]. Error: [2].  Verify that you have sufficient privileges to modify the security permissions for this file.	0		-1021928859
+IDS_ERROR_117	1033	Component Services (COM+ 1.0) are not installed on this computer.  This installation requires Component Services in order to complete successfully.  Component Services are available on Windows 2000.	0		-1021928859
+IDS_ERROR_118	1033	Error registering COM+ application.  Contact your support personnel for more information.	0		-1021928859
+IDS_ERROR_119	1033	Error unregistering COM+ application.  Contact your support personnel for more information.	0		-1021928859
+IDS_ERROR_12	1033	Action start [Time]: [1].	0		-1021928859
+IDS_ERROR_120	1033	Removing older versions of this application	0		-1021928859
+IDS_ERROR_121	1033	Preparing to remove older versions of this application	0		-1021928859
+IDS_ERROR_122	1033	Error applying patch to file [2].  It has probably been updated by other means, and can no longer be modified by this patch.  For more information contact your patch vendor.  {{System Error: [3]}}	0		-1021928859
+IDS_ERROR_123	1033	[2] cannot install one of its required products. Contact your technical support group.  {{System Error: [3].}}	0		-1021928859
+IDS_ERROR_124	1033	The older version of [2] cannot be removed.  Contact your technical support group.  {{System Error [3].}}	0		-1021928859
+IDS_ERROR_125	1033	The description for service '[2]' ([3]) could not be changed.	0		-1021928859
+IDS_ERROR_126	1033	The Windows Installer service cannot update the system file [2] because the file is protected by Windows.  You may need to update your operating system for this program to work correctly. {{Package version: [3], OS Protected version: [4]}}	0		-1021928859
+IDS_ERROR_127	1033	The Windows Installer service cannot update the protected Windows file [2]. {{Package version: [3], OS Protected version: [4], SFP Error: [5]}}	0		-1021928859
+IDS_ERROR_128	1033	This setup requires Internet Information Server 4.0 or higher for configuring IIS Virtual Roots. Please make sure that you have IIS 4.0 or higher.	0		-1021928859
+IDS_ERROR_129	1033	This setup requires Administrator privileges for configuring IIS Virtual Roots.	0		-1021928859
+IDS_ERROR_13	1033	Action ended [Time]: [1]. Return value [2].	0		-1021928859
+IDS_ERROR_14	1033	Time remaining: {[1] minutes }{[2] seconds}	0		-1021928859
+IDS_ERROR_15	1033	Out of memory. Shut down other applications before retrying.	0		-1021928859
+IDS_ERROR_16	1033	Installer is no longer responding.	0		-1021928859
+IDS_ERROR_17	1033	Installer terminated prematurely.	0		-1021928859
+IDS_ERROR_18	1033	Please wait while Windows configures Java AutoUpdate	0		622444021
+IDS_ERROR_19	1033	Gathering required information...	0		-1021928859
+IDS_ERROR_2	1033	Warning [1].	0		-1021928859
+IDS_ERROR_20	1033	{[ProductName] }Setup completed successfully.	0		-1021928859
+IDS_ERROR_21	1033	{[ProductName] }Setup failed.	0		-1021928859
+IDS_ERROR_22	1033	Error reading from file: [2]. {{ System error [3].}}  Verify that the file exists and that you can access it.	0		-1021928859
+IDS_ERROR_23	1033	Cannot create the file [3].  A directory with this name already exists.  Cancel the installation and try installing to a different location.	0		-1021928859
+IDS_ERROR_24	1033	Please insert the disk: [2]	0		-1021928859
+IDS_ERROR_25	1033	The installer has insufficient privileges to access this directory: [2].  The installation cannot continue.  Log on as an administrator or contact your system administrator.	0		-1021928859
+IDS_ERROR_26	1033	Error writing to file [2].  Verify that you have access to that directory.	0		-1021928859
+IDS_ERROR_27	1033	Error reading from file [2].  Verify that the file exists and that you can access it.	0		-1021928859
+IDS_ERROR_28	1033	Another application has exclusive access to the file [2].  Please shut down all other applications, then click Retry.	0		-1021928859
+IDS_ERROR_29	1033	There is not enough disk space to install thi file [2].  Free some disk space and click Retry, or click Cancel to exit.	0		-1021928859
+IDS_ERROR_3	1033	Info [1].	0		-1021928859
+IDS_ERROR_30	1033	Source file not found: [2].  Verify that the file exists and that you can access it.	0		-1021928859
+IDS_ERROR_31	1033	Error reading from file: [3]. {{ System error [2].}}  Verify that the file exists and that you can access it.	0		-1021928859
+IDS_ERROR_32	1033	Error writing to file: [3]. {{ System error [2].}}  Verify that you have access to that directory.	0		-1021928859
+IDS_ERROR_33	1033	Source file not found{{(cabinet)}}: [2].  Verify that the file exists and that you can access it.	0		-1021928859
+IDS_ERROR_34	1033	Cannot create the directory [2].  A file with this name already exists.  Please rename or remove the file and click Retry, or click Cancel to exit.	0		-1021928859
+IDS_ERROR_35	1033	The volume [2] is currently unavailable.  Please select another.	0		-1021928859
+IDS_ERROR_36	1033	The specified path [2] is unavailable.	0		-1021928859
+IDS_ERROR_37	1033	Unable to write to the specified folder [2].	0		-1021928859
+IDS_ERROR_38	1033	A network error occurred while attempting to read from the file [2]	0		-1021928859
+IDS_ERROR_39	1033	An error occurred while attempting to create the directory [2]	0		-1021928859
+IDS_ERROR_4	1033	Internal Error [1]. [2]{, [3]}{, [4]}	0		-1021928859
+IDS_ERROR_40	1033	A network error occurred while attempting to create the directory [2]	0		-1021928859
+IDS_ERROR_41	1033	A network error occurred while attempting to open the source file cabinet [2].	0		-1021928859
+IDS_ERROR_42	1033	The specified path is too long [2].	0		-1021928859
+IDS_ERROR_43	1033	The Installer has insufficient privileges to modify the file [2].	0		-1021928859
+IDS_ERROR_44	1033	A portion of the path [2] exceeds the length allowed by the system.	0		-1021928859
+IDS_ERROR_45	1033	The path [2] contains words that are not valid in folders.	0		-1021928859
+IDS_ERROR_46	1033	The path [2] contains an invalid character.	0		-1021928859
+IDS_ERROR_47	1033	[2] is not a valid short file name.	0		-1021928859
+IDS_ERROR_48	1033	Error getting file security: [3] GetLastError: [2]	0		-1021928859
+IDS_ERROR_49	1033	Invalid Drive: [2]	0		-1021928859
+IDS_ERROR_5	1033	{{Disk full: }}	0		-1021928859
+IDS_ERROR_50	1033	Could not create key [2]. {{ System error [3].}}  Verify that you have sufficient access to that key, or contact your support personnel.	0		-1021928859
+IDS_ERROR_51	1033	Could not open key: [2]. {{ System error [3].}}  Verify that you have sufficient access to that key, or contact your support personnel.	0		-1021928859
+IDS_ERROR_52	1033	Could not delete value [2] from key [3]. {{ System error [4].}}  Verify that you have sufficient access to that key, or contact your support personnel.	0		-1021928859
+IDS_ERROR_53	1033	Could not delete key [2]. {{ System error [3].}}  Verify that you have sufficient access to that key, or contact your support personnel.	0		-1021928859
+IDS_ERROR_54	1033	Could not read value [2] from key [3]. {{ System error [4].}}  Verify that you have sufficient access to that key, or contact your support personnel.	0		-1021928859
+IDS_ERROR_55	1033	Could not write value [2] to key [3]. {{ System error [4].}}  Verify that you have sufficient access to that key, or contact your support personnel.	0		-1021928859
+IDS_ERROR_56	1033	Could not get value names for key [2]. {{ System error [3].}}  Verify that you have sufficient access to that key, or contact your support personnel.	0		-1021928859
+IDS_ERROR_57	1033	Could not get sub key names for key [2]. {{ System error [3].}}  Verify that you have sufficient access to that key, or contact your support personnel.	0		-1021928859
+IDS_ERROR_58	1033	Could not read security information for key [2]. {{ System error [3].}}  Verify that you have sufficient access to that key, or contact your support personnel.	0		-1021928859
+IDS_ERROR_59	1033	Could not increase the available registry space. [2] KB of free registry space is required for the installation of this application.	0		-1021928859
+IDS_ERROR_6	1033	Action [Time]: [1]. [2]	0		-1021928859
+IDS_ERROR_60	1033	Another installation is in progress. You must complete that installation before continuing this one.	0		-1021928859
+IDS_ERROR_61	1033	Error accessing secured data. Please make sure the Windows Installer is configured properly and try the installation again.	0		-1021928859
+IDS_ERROR_62	1033	User [2] has previously initiated an installation for product [3].  That user will need to run that installation again before using that product.  Your current installation will now continue.	0		-1021928859
+IDS_ERROR_63	1033	User [2] has previously initiated an installation for product [3].  That user will need to run that installation again before using that product.	0		-1021928859
+IDS_ERROR_64	1033	Out of disk space -- Volume: '[2]'; required space: [3] KB; available space: [4] KB.  Free some disk space and retry.	0		-1021928859
+IDS_ERROR_65	1033	Are you sure you want to cancel?	0		-1021928859
+IDS_ERROR_66	1033	The file [2][3] is being held in use{ by the following process: Name: [4], ID: [5], Window Title: [6]}.  Close that application and retry.	0		-1021928859
+IDS_ERROR_67	1033	The product [2] is already installed, preventing the installation of this product.  The two products are incompatible.	0		-1021928859
+IDS_ERROR_68	1033	Out of disk space -- Volume: [2]; required space: [3] KB; available space: [4] KB.  If rollback is disabled, enough space is available. Click Cancel to quit, Retry to check available disk space again, or Ignore to continue without rollback.	0		-1021928859
+IDS_ERROR_69	1033	Could not access network location [2].	0		-1021928859
+IDS_ERROR_7	1033	[ProductName]	0		-1021928859
+IDS_ERROR_70	1033	The following applications should be closed before continuing the installation:	0		-1021928859
+IDS_ERROR_71	1033	Could not find any previously installed compliant products on the machine for installing this product.	0		-1021928859
+IDS_ERROR_72	1033	The key [2] is not valid.  Verify that you entered the correct key.	0		-1021928859
+IDS_ERROR_73	1033	The installer must restart your system before configuration of [2] can continue.  Click Yes to restart now or No if you plan to restart later.	0		-1021928859
+IDS_ERROR_74	1033	You must restart your system for the configuration changes made to [2] to take effect. Click Yes to restart now or No if you plan to restart later.	0		-1021928859
+IDS_ERROR_75	1033	An installation for [2] is currently suspended.  You must undo the changes made by that installation to continue.  Do you want to undo those changes?	0		-1021928859
+IDS_ERROR_76	1033	A previous installation for this product is in progress.  You must undo the changes made by that installation to continue.  Do you want to undo those changes?	0		-1021928859
+IDS_ERROR_77	1033	No valid source could be found for product [2].  The Windows Installer cannot continue.	0		-1021928859
+IDS_ERROR_78	1033	Installation operation completed successfully.	0		-1021928859
+IDS_ERROR_79	1033	Installation operation failed.	0		-1021928859
+IDS_ERROR_8	1033	{[2]}{, [3]}{, [4]}	0		-1021928859
+IDS_ERROR_80	1033	Product: [2] -- [3]	0		-1021928859
+IDS_ERROR_81	1033	You may either restore your computer to its previous state or continue the installation later. Would you like to restore?	0		-1021928859
+IDS_ERROR_82	1033	An error occurred while writing installation information to disk.  Check to make sure enough disk space is available, and click Retry, or Cancel to end the installation.	0		-1021928859
+IDS_ERROR_83	1033	One or more of the files required to restore your computer to its previous state could not be found.  Restoration will not be possible.	0		-1021928859
+IDS_ERROR_84	1033	The path [2] is not valid.  Please specify a valid path.	0		-1021928859
+IDS_ERROR_85	1033	Out of memory. Shut down other applications before retrying.	0		-1021928859
+IDS_ERROR_86	1033	There is no disk in drive [2]. Please insert one and click Retry, or click Cancel to go back to the previously selected volume.	0		-1021928859
+IDS_ERROR_87	1033	There is no disk in drive [2]. Please insert one and click Retry, or click Cancel to return to the browse dialog and select a different volume.	0		-1021928859
+IDS_ERROR_88	1033	The folder [2] does not exist.  Please enter a path to an existing folder.	0		-1021928859
+IDS_ERROR_89	1033	You have insufficient privileges to read this folder.	0		-1021928859
+IDS_ERROR_9	1033	Message type: [1], Argument: [2]	0		-1021928859
+IDS_ERROR_90	1033	A valid destination folder for the installation could not be determined.	0		-1021928859
+IDS_ERROR_91	1033	Error attempting to read from the source installation database: [2].	0		-1021928859
+IDS_ERROR_92	1033	Scheduling reboot operation: Renaming file [2] to [3]. Must reboot to complete operation.	0		-1021928859
+IDS_ERROR_93	1033	Scheduling reboot operation: Deleting file [2]. Must reboot to complete operation.	0		-1021928859
+IDS_ERROR_94	1033	Module [2] failed to register.  HRESULT [3].  Contact your support personnel.	0		-1021928859
+IDS_ERROR_95	1033	Module [2] failed to unregister.  HRESULT [3].  Contact your support personnel.	0		-1021928859
+IDS_ERROR_96	1033	Failed to cache package [2]. Error: [3]. Contact your support personnel.	0		-1021928859
+IDS_ERROR_97	1033	Could not register font [2].  Verify that you have sufficient permissions to install fonts, and that the system supports this font.	0		-1021928859
+IDS_ERROR_98	1033	Could not unregister font [2]. Verify that you have sufficient permissions to remove fonts.	0		-1021928859
+IDS_ERROR_99	1033	Could not create shortcut [2]. Verify that the destination folder exists and that you can access it.	0		-1021928859
+IDS_ERROR_SN_INVALID	1033	The serial number is invalid.	0		-1021928859
+IDS_ISSCRIPT_VERSION_MISSING	1033	The InstallScript engine is missing from this machine.  If available, please run ISScript.msi, or contact your support personnel for further assistance.	0		-1021928859
+IDS_ISSCRIPT_VERSION_OLD	1033	The InstallScript engine on this machine is older than the version required to run this setup.  If available, please install the latest version of ISScript.msi, or contact your support personnel for further assistance.	0		-1021928859
+IDS_PRODUCT_DEFAULT_1	1033	Your Product Name	0	SYSTEM_GENERATED	-1021928859
+IDS_STANDARD_USE_SETUPEXE	1033	This installation cannot be run by directly launching the MSI package. You must run setup.exe.	0		-1021928859
+IDS_UITEXT_0	1033	bytes	0		-1021928859
+IDS_UITEXT_1	1033	GB	0		-1021928859
+IDS_UITEXT_10	1033	This feature will remain uninstalled.	0		-1021928859
+IDS_UITEXT_11	1033	This feature will be set to be installed when required.	0		-1021928859
+IDS_UITEXT_12	1033	This feature will be installed to run from CD.	0		-1021928859
+IDS_UITEXT_13	1033	This feature will be installed on the local hard drive.	0		-1021928859
+IDS_UITEXT_14	1033	This feature will be installed to run from the network.	0		-1021928859
+IDS_UITEXT_15	1033	This feature will become unavailable.	0		-1021928859
+IDS_UITEXT_16	1033	Will be installed when required.	0		-1021928859
+IDS_UITEXT_17	1033	This feature will be available to run from CD.	0		-1021928859
+IDS_UITEXT_18	1033	This feature will be installed on your local hard drive.	0		-1021928859
+IDS_UITEXT_19	1033	This feature will be available to run from the network.	0		-1021928859
+IDS_UITEXT_2	1033	KB	0		-1021928859
+IDS_UITEXT_20	1033	This feature will be uninstalled completely, and you won't be able to run it from CD.	0		-1021928859
+IDS_UITEXT_21	1033	This feature was run from the CD but will be set to be installed when required.	0		-1021928859
+IDS_UITEXT_22	1033	This feature will continue to be run from the CD	0		-1021928859
+IDS_UITEXT_23	1033	This feature was run from the CD but will be installed on the local hard drive.	0		-1021928859
+IDS_UITEXT_24	1033	This feature frees up [1] on your hard drive.	0		-1021928859
+IDS_UITEXT_25	1033	This feature requires [1] on your hard drive.	0		-1021928859
+IDS_UITEXT_26	1033	Compiling cost for this feature...	0		-1021928859
+IDS_UITEXT_27	1033	This feature will be completely removed.	0		-1021928859
+IDS_UITEXT_28	1033	This feature will be removed from your local hard drive but will be set to be installed when required.	0		-1021928859
+IDS_UITEXT_29	1033	This feature will be removed from your local hard drive but will still be available to run from CD.	0		-1021928859
+IDS_UITEXT_3	1033	MB	0		-1021928859
+IDS_UITEXT_30	1033	This feature will remain on your local hard drive.	0		-1021928859
+IDS_UITEXT_31	1033	This feature will be removed from your local hard drive, but will be still available to run from the network.	0		-1021928859
+IDS_UITEXT_32	1033	This feature will be uninstalled completely, and you won't be able to run it from the network.	0		-1021928859
+IDS_UITEXT_33	1033	This feature was run from the network but will be installed when required.	0		-1021928859
+IDS_UITEXT_34	1033	This feature was run from the network but will be installed on the local hard drive.	0		-1021928859
+IDS_UITEXT_35	1033	This feature will continue to be run from the network	0		-1021928859
+IDS_UITEXT_36	1033	This feature frees up [1] on your hard drive. It has [2] of [3] subfeatures selected. The subfeatures free up [4] on your hard drive.	0		-1021928859
+IDS_UITEXT_37	1033	This feature frees up [1] on your hard drive. It has [2] of [3] subfeatures selected. The subfeatures require [4] on your hard drive.	0		-1021928859
+IDS_UITEXT_38	1033	This feature requires [1] on your hard drive. It has [2] of [3] subfeatures selected. The subfeatures free up [4] on your hard drive.	0		-1021928859
+IDS_UITEXT_39	1033	This feature requires [1] on your hard drive. It has [2] of [3] subfeatures selected. The subfeatures require [4] on your hard drive.	0		-1021928859
+IDS_UITEXT_4	1033	This feature will not be available.	0		-1021928859
+IDS_UITEXT_40	1033	Time remaining: {[1] min }[2] sec	0		-1021928859
+IDS_UITEXT_41	1033	Available	0		-1021928859
+IDS_UITEXT_42	1033	Differences	0		-1021928859
+IDS_UITEXT_43	1033	Required	0		-1021928859
+IDS_UITEXT_44	1033	Disk Size	0		-1021928859
+IDS_UITEXT_45	1033	Volume	0		-1021928859
+IDS_UITEXT_46	1033	This feature, and all subfeatures, will be installed to run from the network.	0		-1021928859
+IDS_UITEXT_47	1033	This feature, and all subfeatures, will be installed to run from the CD.	0		-1021928859
+IDS_UITEXT_48	1033	This feature, and all subfeatures, will be installed on local hard drive.	0		-1021928859
+IDS_UITEXT_6	1033	This feature will be installed to run from CD.	0		-1021928859
+IDS_UITEXT_7	1033	This feature will be installed on local hard drive.	0		-1021928859
+IDS_UITEXT_8	1033	This feature will be installed to run from network.	0		-1021928859
+IDS_UITEXT_9	1033	Fldr|New Folder	0		-1021928859
+NEW_STRING1	1033	{&MSSansBold8}{\MSSansBold8}Java AutoUpdate	0		1276755279
+JAVASETUP_TITLE	1033	Java Setup	0		-1021928859

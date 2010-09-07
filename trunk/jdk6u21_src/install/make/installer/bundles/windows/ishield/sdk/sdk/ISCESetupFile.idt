@@ -1,0 +1,3 @@
+AppKey	SetupFileKey	Name	Source	Processor	Platform
+s50	s50	s255	s255	i4	i4
+ISCESetupFile	AppKey	SetupFileKey
