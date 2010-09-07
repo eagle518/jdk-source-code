@@ -1,0 +1,32 @@
+#
+# 
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+#
+#
+
+
+PROPERTY_FILES = \
+	$(PKGDIR)/MessageBundle.properties \
+	$(PKGDIR)/reader/xmlschema/MessageBundle.properties \
+	$(PKGDIR)/generator/bean/MessageBundle.properties \
+ 	$(PKGDIR)/reader/dtd/bindinfo/MessageBundle.properties \
+ 	$(PKGDIR)/reader/dtd/MessageBundle.properties \
+ 	$(PKGDIR)/reader/internalizer/MessageBundle.properties \
+ 	$(PKGDIR)/reader/xmlschema/bindinfo/MessageBundle.properties \
+ 	$(PKGDIR)/reader/xmlschema/ct/MessageBundle.properties \
+ 	$(PKGDIR)/reader/xmlschema/parser/MessageBundle.properties \
+ 	$(PKGDIR)/reader/MessageBundle.properties \
+	$(PKGDIR)/generator/bean/field/MessageBundle.properties \
+ 	$(PKGDIR)/util/MessageBundle.properties 
+
+
+XSD_FILES = \
+	$(TARGDIR)com/sun/tools/internal/xjc/reader/xmlschema/bindinfo/binding.xsd	 \
+	$(TARGDIR)com/sun/tools/internal/xjc/reader/xmlschema/bindinfo/xjc.xsd	\
+	$(TARGDIR)com/sun/tools/internal/xjc/reader/xmlschema/bindinfo/xs.xsd	
+
+MISC_FILES = \
+	$(TARGDIR)com/sun/tools/internal/xjc/runtime/JAXBContextFactory.java	 \
+	$(TARGDIR)com/sun/tools/internal/xjc/runtime/ZeroOneBooleanAdapter.java	 

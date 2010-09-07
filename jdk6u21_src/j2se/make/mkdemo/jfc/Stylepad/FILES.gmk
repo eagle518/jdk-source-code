@@ -1,0 +1,44 @@
+#
+# @(#)FILES.gmk	1.15 10/03/23
+# 
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+DEMO_java = \
+  $(DEMODST_SRC)HelloWorld.java \
+  $(DEMODST_SRC)Stylepad.java \
+  $(DEMODST_SRC)Wonderland.java \
+
+
+DEMO_class = \
+  $(DEMODST_CLASS)/HelloWorld.class \
+  $(DEMODST_CLASS)/Stylepad.class \
+  $(DEMODST_CLASS)/Wonderland.class \
+
+
+DEMO_dirs = \
+  $(DEMODST) \
+  $(DEMODST)/resources \
+
+
+DEMO_other = \
+  $(DEMODST)/README.txt \
+  $(DEMODST)/resources/alice.gif \
+  $(DEMODST)/resources/bold.gif \
+  $(DEMODST)/resources/bullets.gif \
+  $(DEMODST)/resources/caterpillar.gif \
+  $(DEMODST)/resources/center.gif \
+  $(DEMODST)/resources/fg.gif \
+  $(DEMODST)/resources/hatter.gif \
+  $(DEMODST)/resources/italic.gif \
+  $(DEMODST)/resources/left.gif \
+  $(DEMODST)/resources/rabbit.gif \
+  $(DEMODST)/resources/rabbit2.gif \
+  $(DEMODST)/resources/right.gif \
+  $(DEMODST)/resources/Stylepad.properties \
+  $(DEMODST)/resources/Stylepad_sv.properties \
+  $(DEMODST)/resources/Stylepad_zh_CN.properties \
+  $(DEMODST)/resources/underline.gif \
+
+

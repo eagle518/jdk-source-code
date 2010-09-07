@@ -1,0 +1,12 @@
+#
+# @(#)FILES_java.gmk	1.3 02/09/19
+#
+FILES_java = \
+	$(TARGDIR)org/ietf/jgss/Oid.java \
+	$(TARGDIR)org/ietf/jgss/GSSName.java \
+	$(TARGDIR)org/ietf/jgss/GSSManager.java \
+	$(TARGDIR)org/ietf/jgss/ChannelBinding.java \
+	$(TARGDIR)org/ietf/jgss/GSSException.java \
+	$(TARGDIR)org/ietf/jgss/MessageProp.java \
+	$(TARGDIR)org/ietf/jgss/GSSContext.java \
+	$(TARGDIR)org/ietf/jgss/GSSCredential.java

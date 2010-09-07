@@ -1,0 +1,22 @@
+#
+# @(#)FILES_c.gmk	1.9 02/09/19
+#
+FILES_c = \
+	$(CTARGDIR)CRC32.c \
+	$(CTARGDIR)Adler32.c \
+	$(CTARGDIR)Deflater.c \
+	$(CTARGDIR)Inflater.c \
+	$(CTARGDIR)ZipFile.c \
+	$(CTARGDIR)ZipEntry.c \
+	$(CTARGDIR)zadler32.c \
+	$(CTARGDIR)zcrc32.c \
+	$(CTARGDIR)deflate.c \
+	$(CTARGDIR)trees.c \
+	$(CTARGDIR)zutil.c \
+	$(CTARGDIR)inflate.c \
+	$(CTARGDIR)infblock.c \
+	$(CTARGDIR)inftrees.c \
+	$(CTARGDIR)infcodes.c \
+	$(CTARGDIR)infutil.c \
+	$(CTARGDIR)inffast.c \
+	$(CTARGDIR)zip_util.c

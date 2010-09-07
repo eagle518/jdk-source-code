@@ -1,0 +1,27 @@
+#
+# @(#)FILES_java.gmk	1.6 06/07/31
+#
+JAVA_ZIP_java = \
+	$(TARGDIR)java/util/zip/Adler32.java \
+	$(TARGDIR)java/util/zip/CRC32.java \
+	$(TARGDIR)java/util/zip/Checksum.java \
+	$(TARGDIR)java/util/zip/CheckedInputStream.java \
+	$(TARGDIR)java/util/zip/CheckedOutputStream.java \
+	$(TARGDIR)java/util/zip/DataFormatException.java \
+	$(TARGDIR)java/util/zip/Deflater.java \
+	$(TARGDIR)java/util/zip/DeflaterInputStream.java \
+	$(TARGDIR)java/util/zip/DeflaterOutputStream.java \
+	$(TARGDIR)java/util/zip/GZIPInputStream.java \
+	$(TARGDIR)java/util/zip/GZIPOutputStream.java \
+	$(TARGDIR)java/util/zip/Inflater.java \
+	$(TARGDIR)java/util/zip/InflaterInputStream.java \
+	$(TARGDIR)java/util/zip/InflaterOutputStream.java \
+	$(TARGDIR)java/util/zip/ZipConstants.java \
+	$(TARGDIR)java/util/zip/ZipEntry.java \
+	$(TARGDIR)java/util/zip/ZipError.java \
+	$(TARGDIR)java/util/zip/ZipException.java \
+	$(TARGDIR)java/util/zip/ZipFile.java \
+	$(TARGDIR)java/util/zip/ZipInputStream.java \
+	$(TARGDIR)java/util/zip/ZipOutputStream.java
+
+FILES_java = $(JAVA_ZIP_java)

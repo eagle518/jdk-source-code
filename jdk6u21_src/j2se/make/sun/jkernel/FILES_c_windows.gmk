@@ -1,0 +1,16 @@
+FILES_cpp = \
+	stdafx.cpp \
+	kernel.cpp \
+	DownloadDialog.cpp \
+	DownloadHelper.cpp \
+	atlthunk.cpp
+
+FILES_rc = kernel.rc
+
+# FILES_export definitions for Win32
+
+FILES_export = \
+	sun/jkernel/DownloadManager.java \
+	sun/jkernel/Mutex.java \
+	sun/jkernel/Bundle.java \
+	sun/jkernel/BackgroundDownloader.java \

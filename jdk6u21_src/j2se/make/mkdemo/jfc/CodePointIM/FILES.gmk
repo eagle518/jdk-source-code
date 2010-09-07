@@ -1,0 +1,28 @@
+#
+# @(#)FILES.gmk	1.6 10/03/23
+# 
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# @(#)FILES.gmk	1.6 10/03/23
+#
+# CodePointIM
+#
+
+FILES_java = \
+	$(TARGDIR)CodePointIM.java \
+	$(TARGDIR)CodePointInputMethodDescriptor.java \
+	$(TARGDIR)CodePointInputMethod.java
+
+FILES_resources = \
+	$(TARGDIR)resources/codepoint.properties \
+	$(TARGDIR)resources/codepoint_ja.properties \
+	$(TARGDIR)resources/codepoint_zh_CN.properties
+
+FILES_readme = \
+	$(TARGDIR)README.html \
+	$(TARGDIR)README_ja.html \
+	$(TARGDIR)README_zh_CN.html
+

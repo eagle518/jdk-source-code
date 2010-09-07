@@ -1,0 +1,91 @@
+#
+# 
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+#
+#
+#
+
+PROPERTY_FILES = \
+	$(PKGDIR)/internal/messaging/saaj/soap/impl/LocalStrings.properties \
+	$(PKGDIR)/internal/messaging/saaj/client/p2p/LocalStrings.properties \
+	$(PKGDIR)/internal/messaging/saaj/soap/LocalStrings.properties \
+	$(PKGDIR)/internal/messaging/saaj/soap/name/LocalStrings.properties \
+	$(PKGDIR)/internal/messaging/saaj/soap/ver1_1/LocalStrings.properties \
+	$(PKGDIR)/internal/messaging/saaj/soap/ver1_2/LocalStrings.properties \
+	$(PKGDIR)/internal/messaging/saaj/util/LocalStrings.properties \
+	$(PKGDIR)/internal/rngom/binary/Messages.properties \
+	$(PKGDIR)/internal/rngom/parse/compact/Messages.properties \
+	$(PKGDIR)/internal/rngom/parse/Messages.properties \
+	$(PKGDIR)/internal/rngom/parse/xml/Messages.properties \
+	$(PKGDIR)/internal/rngom/dt/builtin/Messages.properties \
+	$(PKGDIR)/internal/xsom/impl/parser/Messages.properties \
+	$(PKGDIR)/internal/xsom/impl/parser/Messages_ja.properties \
+	$(PKGDIR)/internal/xsom/util/NameGetter.properties \
+	$(PKGDIR)/internal/bind/marshaller/Messages.properties \
+	$(PKGDIR)/internal/bind/unmarshaller/Messages.properties \
+	$(PKGDIR)/internal/bind/v2/Messages.properties \
+	$(PKGDIR)/internal/bind/v2/model/annotation/Messages.properties \
+	$(PKGDIR)/internal/bind/v2/model/impl/Messages.properties \
+	$(PKGDIR)/internal/bind/v2/runtime/property/Messages.properties \
+	$(PKGDIR)/internal/bind/v2/runtime/Messages.properties \
+	$(PKGDIR)/internal/bind/v2/schemagen/Messages.properties \
+	$(PKGDIR)/internal/bind/v2/runtime/reflect/Messages.properties \
+	$(PKGDIR)/internal/bind/v2/runtime/unmarshaller/Messages.properties \
+	$(PKGDIR)/../tools/internal/xjc/MessageBundle.properties \
+	$(PKGDIR)/../tools/internal/xjc/reader/xmlschema/MessageBundle.properties \
+	$(PKGDIR)/../tools/internal/xjc/generator/bean/field/MessageBundle.properties \
+	$(PKGDIR)/../tools/internal/xjc/generator/bean/MessageBundle.properties \
+	$(PKGDIR)/internal/dtdparser/resources/Messages.properties \
+	$(PKGDIR)/../tools/internal/jxc/apt/MessageBundle.properties \
+	$(PKGDIR)/../tools/internal/jxc/MessageBundle.properties \
+	$(PKGDIR)/../tools/internal/xjc/reader/dtd/bindinfo/MessageBundle.properties \
+	$(PKGDIR)/../tools/internal/xjc/reader/dtd/MessageBundle.properties \
+	$(PKGDIR)/../tools/internal/xjc/reader/internalizer/MessageBundle.properties \
+	$(PKGDIR)/../tools/internal/xjc/reader/xmlschema/bindinfo/MessageBundle.properties \
+	$(PKGDIR)/../tools/internal/xjc/reader/xmlschema/ct/MessageBundle.properties \
+	$(PKGDIR)/../tools/internal/xjc/reader/xmlschema/parser/MessageBundle.properties \
+	$(PKGDIR)/../tools/internal/xjc/reader/MessageBundle.properties \
+	$(PKGDIR)/../tools/internal/xjc/api/util/Messages.properties \
+	$(PKGDIR)/../tools/internal/xjc/util/MessageBundle.properties \
+	$(PKGDIR)/internal/ws/resources/client.properties \
+	$(PKGDIR)/internal/ws/resources/dispatch.properties\
+	$(PKGDIR)/internal/ws/resources/addressing.properties\
+	$(PKGDIR)/internal/ws/resources/providerApi.properties\
+	$(PKGDIR)/internal/ws/resources/encoding.properties \
+	$(PKGDIR)/internal/ws/resources/handler.properties \
+	$(PKGDIR)/internal/ws/resources/httpserver.properties \
+	$(PKGDIR)/internal/ws/resources/modeler.properties \
+	$(PKGDIR)/internal/ws/resources/sender.properties \
+	$(PKGDIR)/internal/ws/resources/server.properties \
+	$(PKGDIR)/internal/ws/resources/soap.properties \
+	$(PKGDIR)/internal/ws/resources/streaming.properties \
+	$(PKGDIR)/internal/ws/resources/util.properties \
+	$(PKGDIR)/internal/ws/resources/wsservlet.properties \
+	$(PKGDIR)/internal/ws/resources/xmlmessage.properties \
+	$(PKGDIR)/internal/fastinfoset/resources/ResourceBundle.properties \
+	$(PKGDIR)/internal/ws/util/resources/Messages_en.properties \
+	$(PKGDIR)/internal/ws/util/version.properties \
+	$(PKGDIR)/../tools/internal/ws/version.properties \
+	$(PKGDIR)/../tools/internal/ws/resources/model.properties \
+	$(PKGDIR)/../tools/internal/ws/resources/util.properties \
+	$(PKGDIR)/../tools/internal/ws/resources/wsdl.properties \
+	$(PKGDIR)/../tools/internal/ws/resources/configuration.properties \
+	$(PKGDIR)/../tools/internal/ws/resources/generator.properties \
+	$(PKGDIR)/../tools/internal/ws/resources/javacompiler.properties \
+	$(PKGDIR)/../tools/internal/ws/resources/processor.properties \
+	$(PKGDIR)/../tools/internal/ws/resources/webserviceap.properties \
+	$(PKGDIR)/../tools/internal/ws/resources/modeler.properties \
+	$(PKGDIR)/../tools/internal/ws/resources/wscompile.properties
+
+
+
+
+MISC_FILES = \
+	$(CLASSDESTDIR)/com/sun/xml/internal/xsom/impl/parser/datatypes.xsd	\
+	$(CLASSDESTDIR)/com/sun/tools/internal/xjc/reader/xmlschema/bindinfo/binding.xsd	 \
+	$(CLASSDESTDIR)/com/sun/tools/internal/xjc/reader/xmlschema/bindinfo/xjc.xsd	 \
+	$(CLASSDESTDIR)/com/sun/tools/internal/xjc/reader/xmlschema/bindinfo/xs.xsd	 \
+	$(CLASSDESTDIR)/com/sun/tools/internal/xjc/reader/dtd/bindinfo/bindingfile.xsd \
+	$(CLASSDESTDIR)/com/sun/tools/internal/xjc/reader/dtd/bindinfo/xjc.xsd 

@@ -1,0 +1,79 @@
+#
+# @(#)DemoJava2D.gmk	1.24 10/03/23
+# 
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# @(#)DemoJava2D.gmk	1.24 10/03/23
+#
+# Boiler plate for Java 2D demo. The following variables should have
+# sensible values before you include this makefile:
+#   		DEMO_dirs DEMO_other DEMO_java DEMONAME
+#
+
+# identify this as a jvf/Java2D product - used only to identify a
+# unique name for OBJDIR
+PRODUCT = jfc/Java2D
+
+DEMODST         = $(DEMODIR)/jfc/Java2D
+DEMOSRC         = $(DEMOSRCDIR)/jfc/Java2D
+DEMO_class      = $(DEMO_java:%.java=%.class)
+
+all build: $(OBJDIR) $(DEMO_dirs) $(DEMO_java) $(DEMO_other) .demo.classes 
+
+clean clobber: .delete.classlist
+	$(RM) -r $(DEMODST)/$(DEMONAME) $(OBJDIR)
+
+#
+# A union of different kinds of directories found in different
+# demos. Hopefully none of the demos has a file named like the
+# directory in another demo.
+#
+$(OBJDIR)			\
+$(DEMODIR)/jfc $(DEMODST)/images \
+$(DEMODST) $(DEMODST)/demos $(DEMODST)/demos/Arcs_Curves \
+$(DEMODST)/demos/Clipping $(DEMODST)/demos/Composite \
+$(DEMODST)/demos/Colors $(DEMODST)/demos/Fonts \
+$(DEMODST)/demos/Lines $(DEMODST)/demos/Mix $(DEMODST)/demos/Images \
+$(DEMODST)/demos/Paths $(DEMODST)/demos/Paint $(DEMODST)/demos/Transforms:
+	$(MKDIR) -p $@
+
+#
+# How to install files?
+#
+$(DEMODST)/%: $(DEMOSRC)/% 
+	$(install-file)
+
+$(DEMODST)/%.html: $(DEMOSRC)/%.html
+	$(install-file)
+
+$(DEMODST)/README.txt: $(DEMOSRC)/README.txt
+	$(install-file)
+
+$(DEMODST)/java2d/demos/Colors/%.pf: $(DEMOSRC)/java2d/demos/Colors/%.pf
+	$(install-file)
+
+$(DEMODST)/images/%: $(DEMOSRC)/images/%
+	$(install-file)
+
+#
+# Compile the installed .java files.
+#
+.demo.classes: .delete.classlist $(DEMO_class) .compile.classlist
+
+.delete.classlist:
+	@$(RM) $(TEMPDIR)/.classes.list
+
+.compile.classlist:
+	if [ -s $(TEMPDIR)/.classes.list ] ; \
+	then $(JAVAC) $(OTHER_JAVACFLAGS) -classpath "$(CLASSBINDIR)$(CLASSPATH_SEPARATOR)$(DEMOSRC)$(CLASSPATH_SEPARATOR)$(DEMODST)" -d $(DEMODST) \
+	    $(shell if [ -s $(TEMPDIR)/.classes.list ] ; then $(CAT) $(TEMPDIR)/.classes.list; fi ) ; \
+	fi
+
+$(DEMODST)/%.class: $(DEMOSRC)/%.java
+	@$(ECHO) $? >> $(TEMPDIR)/.classes.list
+
+.PHONY: all build clobber .demo.classes \
+	.delete.classlist .compile.classlist 

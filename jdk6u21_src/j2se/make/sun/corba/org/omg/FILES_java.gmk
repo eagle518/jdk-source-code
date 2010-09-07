@@ -1,0 +1,58 @@
+#
+# @(#)FILES_java.gmk	1.2 02/09/19
+#
+
+SENDINGCONTEXT = \
+	$(TARGDIR)com/sun/org/omg/SendingContext/_CodeBaseStub.java \
+        $(TARGDIR)com/sun/org/omg/SendingContext/CodeBase.java \
+        $(TARGDIR)com/sun/org/omg/SendingContext/CodeBaseHelper.java \
+        $(TARGDIR)com/sun/org/omg/SendingContext/CodeBaseOperations.java \
+        $(TARGDIR)com/sun/org/omg/SendingContext/CodeBasePackage/URLHelper.java \
+        $(TARGDIR)com/sun/org/omg/SendingContext/CodeBasePackage/URLSeqHelper.java \
+        $(TARGDIR)com/sun/org/omg/SendingContext/CodeBasePackage/ValueDescSeqHelper.java \
+	\
+        $(TARGDIR)com/sun/org/omg/SendingContext/_CodeBaseImplBase.java
+
+CORBA = \
+        $(TARGDIR)com/sun/org/omg/CORBA/_IDLTypeStub.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/AttrDescriptionSeqHelper.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/AttributeDescription.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/AttributeDescriptionHelper.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/AttributeMode.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/AttributeModeHelper.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/ContextIdentifierHelper.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/ContextIdSeqHelper.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/DefinitionKindHelper.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/ExcDescriptionSeqHelper.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/ExceptionDescription.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/ExceptionDescriptionHelper.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/IdentifierHelper.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/IDLTypeHelper.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/Initializer.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/InitializerHelper.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/InitializerSeqHelper.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/OpDescriptionSeqHelper.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/OperationDescription.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/OperationDescriptionHelper.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/OperationMode.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/OperationModeHelper.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/ParameterDescription.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/ParameterDescriptionHelper.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/ParameterMode.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/ParameterModeHelper.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/ParDescriptionSeqHelper.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/Repository.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/RepositoryHelper.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/RepositoryIdHelper.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/RepositoryIdSeqHelper.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/StructMemberHelper.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/StructMemberSeqHelper.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/ValueMemberHelper.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/ValueMemberSeqHelper.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/VersionSpecHelper.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/VisibilityHelper.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/ValueDefPackage/FullValueDescription.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/ValueDefPackage/FullValueDescriptionHelper.java \
+        $(TARGDIR)com/sun/org/omg/CORBA/portable/ValueHelper.java 
+
+FILES_java = $(SENDINGCONTEXT) $(CORBA)

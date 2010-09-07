@@ -1,0 +1,28 @@
+#
+# @(#)mapfile-vers	1.3 10/03/23
+#
+# Copyright (c) 2005, Oracle and/or its affiliates. All rights reserved.
+# Use is subject to license terms.
+#
+
+# Define public interface.
+
+SUNWprivate_1.1 {
+	global:
+		JLI_ParseManifest;
+		JLI_JarUnpackFile;
+		JLI_FreeManifest;
+		JLI_ManifestIterate;
+		JLI_ExactVersionId;
+		JLI_PrefixVersionId;
+		JLI_AcceptableRelease;
+		JLI_ValidVersionString;
+		JLI_WildcardExpandClasspath;
+		JLI_MemAlloc;
+		JLI_MemRealloc;
+		JLI_StringDup;
+		JLI_MemFree;
+
+	local:
+		*;
+};

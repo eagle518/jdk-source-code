@@ -1,0 +1,155 @@
+#
+# @(#)FILES_java.gmk	1.2 02/09/19
+#
+
+IDL = \
+        $(TARGDIR)com/sun/tools/corba/se/idl/Arguments.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/AttributeEntry.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/AttributeGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/Comment.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/Compile.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/ConstEntry.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/ConstGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/DefaultSymtabFactory.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/EnumEntry.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/EnumGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/ExceptionEntry.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/ExceptionGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/Factories.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/ForwardEntry.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/ForwardGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/ForwardValueEntry.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/ForwardValueGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/GenFactory.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/GenFileStream.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/Generator.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/IDLID.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/IncludeEntry.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/IncludeGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/InterfaceEntry.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/InterfaceGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/InterfaceState.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/InvalidArgument.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/InvalidCharacter.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/MethodEntry.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/MethodGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/ModuleEntry.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/ModuleGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/NativeEntry.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/NativeGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/NoPragma.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/Noop.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/ParameterEntry.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/ParameterGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/ParseException.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/Parser.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/PragmaEntry.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/PragmaGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/PragmaHandler.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/Preprocessor.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/PrimitiveEntry.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/PrimitiveGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/RepositoryID.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/Scanner.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/SequenceEntry.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/SequenceGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/StringEntry.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/StringGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/StructEntry.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/StructGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/SymtabEntry.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/SymtabFactory.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/Token.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/TokenBuffer.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/TypedefEntry.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/TypedefGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/UnionBranch.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/UnionEntry.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/UnionGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/Util.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/ValueBoxEntry.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/ValueBoxGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/ValueEntry.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/ValueGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/ValueRepositoryId.java
+
+CONSTEXRP = \
+        $(TARGDIR)com/sun/tools/corba/se/idl/constExpr/And.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/constExpr/BinaryExpr.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/constExpr/BooleanAnd.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/constExpr/BooleanNot.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/constExpr/BooleanOr.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/constExpr/DefaultExprFactory.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/constExpr/Divide.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/constExpr/Equal.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/constExpr/EvaluationException.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/constExpr/ExprFactory.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/constExpr/Expression.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/constExpr/GreaterEqual.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/constExpr/GreaterThan.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/constExpr/LessEqual.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/constExpr/LessThan.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/constExpr/Minus.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/constExpr/Modulo.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/constExpr/Negative.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/constExpr/Not.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/constExpr/NotEqual.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/constExpr/Or.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/constExpr/Plus.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/constExpr/Positive.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/constExpr/ShiftLeft.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/constExpr/ShiftRight.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/constExpr/Terminal.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/constExpr/Times.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/constExpr/UnaryExpr.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/constExpr/Xor.java
+
+TOJAVAPORTABLE = \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/Arguments.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/AttributeGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/AuxGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/Compile.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/ConstGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/EnumGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/ExceptionGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/Factories.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/ForwardValueGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/GenFactory.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/Helper.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/Holder.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/InterfaceGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/JavaGenerator.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/MethodGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/ModuleGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/NativeGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/NameModifier.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/NameModifierImpl.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/PrimitiveGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/SequenceGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/Skeleton.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/StringGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/StructGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/Stub.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/TCOffsets.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/TypedefGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/UnionGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/Util.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/ValueBoxGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/ValueGen.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/ValueFactory.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/ValueBoxGen24.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/ValueGen24.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/MethodGen24.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/Helper24.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/MethodGenClone24.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/AttributeGen24.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/toJavaPortable/DefaultFactory.java
+
+CFF = \
+	$(TARGDIR)com/sun/tools/corba/se/idl/som/cff/FileLocator.java \
+        $(TARGDIR)com/sun/tools/corba/se/idl/som/cff/Messages.java
+
+IDLEMIT = \
+	$(TARGDIR)com/sun/tools/corba/se/idl/som/idlemit/MetaPragma.java
+
+FILES_java = $(IDL) $(CONSTEXPR) $(TOJAVAPORTABLE) $(CFF) $(IDLEMIT)

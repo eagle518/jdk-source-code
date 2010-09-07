@@ -1,0 +1,23 @@
+#
+# @(#)Exportedfiles.gmk	1.17 05/11/02
+#   
+# These are the names of Java classes for which we will make .h files.
+#   
+   
+FILES_export = \
+    java/net/SocketOptions.java \
+    java/nio/MappedByteBuffer.java \
+    sun/nio/ch/DatagramChannelImpl.java \
+    sun/nio/ch/DatagramDispatcher.java \
+    sun/nio/ch/FileChannelImpl.java \
+    sun/nio/ch/FileDispatcher.java \
+    sun/nio/ch/FileKey.java \
+    sun/nio/ch/FileLockImpl.java \
+    sun/nio/ch/IOStatus.java \
+    sun/nio/ch/IOUtil.java \
+    sun/nio/ch/Net.java \
+    sun/nio/ch/PollArrayWrapper.java \
+    sun/nio/ch/ServerSocketChannelImpl.java \
+    sun/nio/ch/SocketChannelImpl.java \
+    sun/nio/ch/SocketDispatcher.java \
+    java/io/FileDescriptor.java \

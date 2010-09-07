@@ -1,0 +1,3 @@
+FILES_export += \
+	$(TARGDIR)com/sun/security/auth/module/SolarisLoginModule.java \
+	$(TARGDIR)com/sun/security/auth/module/SolarisSystem.java \

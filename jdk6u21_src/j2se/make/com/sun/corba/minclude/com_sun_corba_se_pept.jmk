@@ -1,0 +1,41 @@
+#
+# Files for the PEPt architecture (Presentation, Encoding, Protocol, transport)
+#
+com_sun_corba_se_pept_java = \
+	$(com_sun_corba_se_pept_broker_java) \
+	$(com_sun_corba_se_pept_encoding_java) \
+	$(com_sun_corba_se_pept_protocol_java) \
+	$(com_sun_corba_se_pept_transport_java)
+
+com_sun_corba_se_pept_broker_java = \
+	$(TARGDIR)com/sun/corba/se/pept/broker/Broker.java
+
+com_sun_corba_se_pept_encoding_java = \
+	$(TARGDIR)com/sun/corba/se/pept/encoding/InputObject.java \
+	$(TARGDIR)com/sun/corba/se/pept/encoding/OutputObject.java
+
+com_sun_corba_se_pept_protocol_java = \
+	$(TARGDIR)com/sun/corba/se/pept/protocol/ClientDelegate.java \
+	$(TARGDIR)com/sun/corba/se/pept/protocol/ClientInvocationInfo.java \
+	$(TARGDIR)com/sun/corba/se/pept/protocol/ClientRequestDispatcher.java \
+	$(TARGDIR)com/sun/corba/se/pept/protocol/MessageMediator.java \
+	$(TARGDIR)com/sun/corba/se/pept/protocol/ProtocolHandler.java \
+	$(TARGDIR)com/sun/corba/se/pept/protocol/ServerRequestDispatcher.java
+
+com_sun_corba_se_pept_transport_java = \
+	$(TARGDIR)com/sun/corba/se/pept/transport/Acceptor.java \
+	$(TARGDIR)com/sun/corba/se/pept/transport/ByteBufferPool.java \
+	$(TARGDIR)com/sun/corba/se/pept/transport/Connection.java \
+	$(TARGDIR)com/sun/corba/se/pept/transport/ConnectionCache.java \
+	$(TARGDIR)com/sun/corba/se/pept/transport/ContactInfo.java \
+	$(TARGDIR)com/sun/corba/se/pept/transport/ContactInfoList.java \
+	$(TARGDIR)com/sun/corba/se/pept/transport/ContactInfoListIterator.java \
+	$(TARGDIR)com/sun/corba/se/pept/transport/EventHandler.java \
+	$(TARGDIR)com/sun/corba/se/pept/transport/InboundConnectionCache.java \
+	$(TARGDIR)com/sun/corba/se/pept/transport/ListenerThread.java \
+	$(TARGDIR)com/sun/corba/se/pept/transport/OutboundConnectionCache.java \
+	$(TARGDIR)com/sun/corba/se/pept/transport/ReaderThread.java \
+	$(TARGDIR)com/sun/corba/se/pept/transport/ResponseWaitingRoom.java \
+	$(TARGDIR)com/sun/corba/se/pept/transport/Selector.java \
+	$(TARGDIR)com/sun/corba/se/pept/transport/TransportManager.java 
+

@@ -1,0 +1,25 @@
+FILES_java = \
+	$(TARGDIR)/com/sun/security/auth/login/ConfigFile.java \
+	$(TARGDIR)/com/sun/security/auth/NTDomainPrincipal.java \
+	$(TARGDIR)/com/sun/security/auth/NTNumericCredential.java \
+	$(TARGDIR)/com/sun/security/auth/NTSid.java \
+	$(TARGDIR)/com/sun/security/auth/NTSidDomainPrincipal.java \
+	$(TARGDIR)/com/sun/security/auth/NTSidGroupPrincipal.java \
+	$(TARGDIR)/com/sun/security/auth/NTSidPrimaryGroupPrincipal.java \
+	$(TARGDIR)/com/sun/security/auth/NTSidUserPrincipal.java \
+	$(TARGDIR)/com/sun/security/auth/NTUserPrincipal.java \
+	$(TARGDIR)/com/sun/security/auth/SolarisNumericUserPrincipal.java \
+	$(TARGDIR)/com/sun/security/auth/SolarisPrincipal.java \
+	$(TARGDIR)/com/sun/security/auth/SolarisNumericGroupPrincipal.java \
+	$(TARGDIR)/com/sun/security/auth/UnixNumericUserPrincipal.java \
+	$(TARGDIR)/com/sun/security/auth/UnixPrincipal.java \
+	$(TARGDIR)/com/sun/security/auth/UnixNumericGroupPrincipal.java \
+	$(TARGDIR)/com/sun/security/auth/X500Principal.java \
+	$(TARGDIR)/com/sun/security/auth/UserPrincipal.java \
+	$(TARGDIR)/com/sun/security/auth/LdapPrincipal.java \
+	$(TARGDIR)/com/sun/security/auth/PolicyFile.java \
+	$(TARGDIR)/com/sun/security/auth/SubjectCodeSource.java \
+	$(TARGDIR)/com/sun/security/auth/PolicyParser.java \
+	$(TARGDIR)/com/sun/security/auth/PrincipalComparator.java \
+	$(TARGDIR)com/sun/security/auth/callback/TextCallbackHandler.java\
+	$(TARGDIR)com/sun/security/auth/callback/DialogCallbackHandler.java

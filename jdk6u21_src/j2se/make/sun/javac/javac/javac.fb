@@ -1,0 +1,7 @@
+[Jar files]
+../../../../build/linux-i586/classes
+[Source dirs]
+../../../../src/share/classes
+[Aux classpath entries]
+[Options]
+relative_paths=true

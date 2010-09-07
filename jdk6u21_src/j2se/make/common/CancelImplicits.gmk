@@ -1,0 +1,43 @@
+#
+# @(#)CancelImplicits.gmk	1.3 99/11/17
+#
+# Cancel some GNU make implicit rules.  This causes far fewer stats
+# (crucial in incremental builds, when all that is being done is stats -- I
+# notice upto 20% speedup on local disk). See sections "10.2 Catalogue of
+# Implicit Rules" and "10.5.6 Canceling Implicit Rules" in make.dvi; see
+# also the output of gnumake -p.
+#
+# CAUTION! This is the first thing included in our makefiles, so you must
+# not add any targets here.  Canceling %.f: %.F doesn't make any sense
+# because we don't have any targets ending with .f.
+#
+
+#
+# We don't make binaries directly from .{source} files with implicit
+# rules, so disable all of them.
+#
+ifndef USE_IMPLICITS
+%: %.o
+%: %.obj
+%: %.dll
+%: %.c
+%: %.cc
+%: %.C
+%: %.p
+%: %.f
+%: %.s
+%: %.F
+%: %.r
+%: %.S
+%: %.mod
+%: %.sh
+endif
+
+#
+# If you are using RCS, you must set the variable USE_RCS at the make
+# command line. Otherwise we disable RCS.
+#
+ifndef USE_RCS
+%:: %,v
+%:: RCS/%,v
+endif

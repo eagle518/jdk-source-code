@@ -1,0 +1,100 @@
+#
+# @(#)SoundDefs.gmk	1.13 10/03/23
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+# defines common for all Java Sound native code
+
+SUBDIRS=
+EXTRA_SOUND_JNI_LIBS=
+
+#
+# Use JNI for generating header files
+#
+JAVAHFLAGS += -jni
+
+#
+# Extra cc/linker flags.
+#
+# flags needed for all platforms
+CPPFLAGS += -DJAVA_SOUND -DJAVA_THREAD $(AUDIO_DEBUG_FLAGS) \
+		-I$(SHARE_SRC)/native/com/sun/media/sound \
+		-I$(SHARE_SRC)/native/com/sun/media/sound/engine
+
+# the following extra defines are needed by the native code.
+#
+ifeq ($(ARCH), ia64)
+  CPPFLAGS += -Dia64
+endif
+
+#
+# system dependent flags
+#
+ifeq ($(PLATFORM), windows)
+  CPPFLAGS += -DX_PLATFORM=X_WINDOWS
+  LDLIBS += winmm.lib user32.lib 
+endif # PLATFORM win32
+
+ifeq ($(PLATFORM), linux)
+  CPPFLAGS += -DX_PLATFORM=X_LINUX
+endif # PLATFORM linux
+
+ifeq ($(PLATFORM), solaris)
+  CPPFLAGS += -DX_PLATFORM=X_SOLARIS
+
+  # Solaris needs specific binding to libc
+  LDFLAGS += -lc
+
+  #
+  # Turn off C++ exception handling.
+  #
+  ifneq ($(CC_VERSION),gcc)
+    CXXFLAGS += -noex
+  endif # CC_VERSION
+
+endif # PLATFORM solaris
+
+#
+# Add to the ambient VPATH.
+#
+vpath %.c $(SHARE_SRC)/native/com/sun/media/sound/engine
+vpath %.c $(PLATFORM_SRC)/native/com/sun/media/sound/engine
+vpath %.cpp $(PLATFORM_SRC)/native/com/sun/media/sound/engine
+vpath %.c $(SHARE_SRC)/native/com/sun/media/sound
+
+# files needed for MIDI i/o
+MIDIFILES_c = \
+	$(CTARGDIR)MidiInDevice.c \
+	$(CTARGDIR)MidiInDeviceProvider.c \
+	$(CTARGDIR)MidiOutDevice.c \
+	$(CTARGDIR)MidiOutDeviceProvider.c \
+	$(CTARGDIR)PlatformMidi.c
+
+MIDIFILES_export = \
+	com/sun/media/sound/MidiInDevice.java \
+	com/sun/media/sound/MidiInDeviceProvider.java \
+	com/sun/media/sound/MidiOutDevice.java \
+	com/sun/media/sound/MidiOutDeviceProvider.java
+
+AUTO_FILES_JAVA_DIRS = com/sun/media/sound
+
+# files needed for ports
+PORTFILES_c = \
+	$(CTARGDIR)PortMixerProvider.c \
+	$(CTARGDIR)PortMixer.c
+
+PORTFILES_export = \
+	com/sun/media/sound/PortMixer.java \
+	com/sun/media/sound/PortMixerProvider.java
+
+# files needed for direct audio
+DAUDIOFILES_c = \
+	$(CTARGDIR)DirectAudioDeviceProvider.c \
+	$(CTARGDIR)DirectAudioDevice.c
+
+DAUDIOFILES_export = \
+	com/sun/media/sound/DirectAudioDeviceProvider.java \
+	com/sun/media/sound/DirectAudioDevice.java
+

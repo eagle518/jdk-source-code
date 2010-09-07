@@ -1,0 +1,29 @@
+#
+# @(#)FILES.gmk	1.11 10/03/23
+# 
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+DEMO_java = \
+  $(DEMODST_SRC)ExampleFileView.java \
+  $(DEMODST_SRC)FileChooserDemo.java \
+
+
+DEMO_class = \
+  $(DEMODST_CLASS)/ExampleFileView.class \
+  $(DEMODST_CLASS)/FileChooserDemo.class \
+
+
+DEMO_dirs = \
+  $(DEMODST) \
+  $(DEMODST)/resources \
+  $(DEMODST)/resources/images \
+
+
+DEMO_other = \
+  $(DEMODST)/resources/images/gifIcon.gif \
+  $(DEMODST)/resources/images/jpgIcon.jpg \
+  $(DEMODST)/README.txt \
+
+

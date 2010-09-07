@@ -1,0 +1,241 @@
+#
+# @(#)Check.gmk	1.79 10/03/23
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# @(#)Check.gmk	1.79 10/03/23
+#
+# Makefile for building javac. Generic rules from *.gmk are not used
+# because of the special bootstrapping requirements.
+#
+# NOTE: This makefile performed a more thorough three-stage bootstrap,
+# comparing the compiler built during the final two stages for bitwise
+# equality.  It is currently not used, and will likely no longer work
+# with the current makefile architecture.  It is retained because it
+# should be updated in the future and made available for testing and
+# diagnostic purposes.  (maddox@eng, 07/26/2000)
+
+BUILDDIR = ../..
+
+PROGRAM = javac
+PACKAGE = sun.tools
+PRODUCT = sun
+
+include $(BUILDDIR)/common/Defs.gmk
+
+
+#
+# Useful variables
+#
+
+# sun_javac.jmk defines CLASSFILES -- the sources that constitute javac
+include $(BUILDDIR)/sun/javac/javac/FILES_java.gmk
+include $(BUILDDIR)/java/java/FILES_java.gmk
+
+JAVAC_CLASSES = $(CLASSFILES:%.java=%.class) $(FILES_java:%.java=%.class)
+SRC_PATH      = $(SHARE_SRC)/classes:$(PLATFORM_SRC)/classes
+VM_OPTIONS    = -$(THREADS_FLAG) -ms16m -mx64m
+RESOURCE_DIR  = sun/tools/javac/resources
+RESOURCE      = $(RESOURCE_DIR)/javac.properties 
+
+#
+# Standard targets
+#
+all build classes install: RuntimeConstants.java .build_compiler
+clean clobber::
+	$(RM) -r stage1 stage2 stage3
+	@$(ECHO) -n "Removing javac classfiles from $(CLASSBINDIR) ... "
+	@$(RM) -r $(JAVAC_CLASSES:%.class=$(CLASSBINDIR)/%.class)
+	@$(ECHO) "done!"
+	$(RM) genconst RuntimeConstants.java
+
+
+#
+# Rules to install the wrappers
+#
+PROG_SH = javac
+include $(BUILDDIR)/common/Wrapper.gmk
+
+
+#
+#                   Notes on the build procedure
+#                   ----------------------------
+#
+# Step 1. Use an external compiler (ie ALT_BOOTDIR) to build javac and
+#         its dependent classes into stage1. Dependent classes are the
+#         transitive closure of all classes required to run javac.
+# 
+# Step 2. Use stage1 compiler to build javac and its dependents into stage2.
+# 
+# Step 3. Check for differences between class files in stage1 and stage2.
+#          . If there are differences, this means the compiler in your
+#            workspace is generating different bytecodes (compared to
+#            the ALT_BOOTDIR compiler). Do Step 4.
+#          . If there are no differences, copy class files and STOP NOW.
+#
+# Step 4. If you didn't stop in Step 3, use stage2 compiler to build
+#         javac and its dependents into stage3.  Note that we fork
+#         another make process to build stage3.
+# 
+# Step 5. Check for differences between class files in stage2 and stage3.
+#          . If there are differences, the compiler is broken.
+#          . If there are no differences, copy class files and STOP NOW.
+#
+# Caveats:
+#
+# 1.  Firstly, notice that there are two -classpaths in the compile
+#     commands: one for the VM and one for the compiler.  For correct
+#     operation of this makefile, these invariants should hold:
+#        - the VM's -classpath points to the most recently built set of classes
+#        - the compiler's -classpath points only to the sources, and points
+#          to the last built set of classes in the _end_ (so it can pick up
+#          RuntimeConstants.class if that is not being generated again).
+#
+# 2.  This caveat is temporarily deprecated [I am experimenting to see if
+#     if we can build without the -depend flag, and instead explicitly list 
+#     all the java_java.jmk files]. But since I may back out, here is the
+#     comment anyway:
+#     The -depend option forces the compilation of lots of classes from
+#     (at least) the packages sun.misc, java.lang,
+#     java.lang.reflect, java.util, java.util.zip, java.io, java.text,
+#     java.security, java.net. This is considered
+#     a good thing because we want javac to be able to compile these
+#     sources as a sanity check.
+#
+# 3.  Having said that, note that changing any of the classes in the
+#     other packages will not force a recompile of javac (the targets
+#     are written to depend solely on javac sources). The bad thing
+#     about this is that if there are any API changes in java.lang
+#     that break the compiler we won't catch it till we clobber and
+#     build the compiler. The good thing is that you can avoid the
+#     multi-stage compiling drama when fixing bugs in, say, java.lang.
+#
+# 4.  Set JAVAC_OPT_FLAG to -O if you want that to be passed to
+#     javac. This is present only for historical reasons in this
+#     makefile. The -O option is NOT given to the compiler when
+#     building other class files in the JDK. Default is no -O flag.
+#
+
+#
+# Step 3: stage1 vs. stage2
+# Step 5: stage2 vs. stage3
+#
+.build_compiler: .stage1 .stage2
+	@if $(DIFF) -r stage1 stage2; then \
+	    if [ -s .stage2.classes.list ]; then \
+                $(ECHO) "Javac made. Copying classfiles into $(CLASSBINDIR)"; \
+                ($(CD) stage2; $(TAR) cf - .) | ($(CD) $(CLASSBINDIR); $(TAR) xf -); \
+            else \
+                $(ECHO) "Javac made. Nothing to copy."; \
+            fi \
+	else \
+	    $(ECHO) -n "***Whoa there! Current compiler generates different code"; \
+	    $(ECHO) " compared to '$(JAVAC_BOOT_CMD)'"; \
+	    $(ECHO) -n "***Will try making stage3 to ensure current compiler"; \
+	    $(ECHO) " is okay."; \
+	    $(MAKE) .stage3; \
+	    if $(DIFF) -r stage2 stage3; then \
+		if [ -s .stage3.classes.list ]; then \
+		    $(ECHO) "Javac made in stage3. Copying classfiles into $(CLASSBINDIR)"; \
+		   ($(CD) stage3; $(TAR) cf - .) | ($(CD) $(CLASSBINDIR); $(TAR) xf -); \
+		else \
+		   $(ECHO) "Javac made in stage3. Nothing to copy."; \
+		fi \
+	    else \
+		$(ECHO) "***Compiler broken. Scream for help."; \
+		exit 1; \
+	    fi \
+	fi
+
+#
+# Step 1: Build stage1
+#
+.stage1: .delete.stage1.classes.list $(JAVAC_CLASSES:%.class=stage1/%.class)
+	@$(MKDIR) -p stage1
+	@$(ECHO) ">>> Starting stage1 compile @ `$(DATE)`"
+	if [ -s .stage1.classes.list ]; then \
+	    $(JAVAC_BOOT_CMD) -classpath $(SRC_PATH):stage1 $(JAVAC_OPT_FLAG) \
+		-d stage1 \
+		$(shell if [ -s .stage1.classes.list ]; then \
+			    $(CAT) .stage1.classes.list; \
+			fi); \
+	fi
+	-$(MKDIR) -p stage1/$(RESOURCE_DIR)
+	$(RM) stage1/$(RESOURCE)
+	$(CP)$(SHARE_SRC)/classes/$(RESOURCE) stage1/$(RESOURCE)
+
+#
+# Step 2: Build stage2
+#
+.stage2: .delete.stage2.classes.list $(JAVAC_CLASSES:%.class=stage2/%.class)
+	@$(MKDIR) -p stage2
+	@$(ECHO) ">>> Starting stage2 compile @ `$(DATE)`"
+	if [ -s .stage2.classes.list ]; then \
+	    $(BINDIR)/java $(VM_OPTIONS) -classpath stage1 \
+		sun.tools.javac.Main $(JAVAC_OPT_FLAG) -d stage2 \
+		    -classpath $(SRC_PATH):stage2 \
+		    $(shell if [ -s .stage2.classes.list ]; then \
+			        $(CAT) .stage2.classes.list; \
+			    fi); \
+	fi
+	-$(MKDIR) -p stage2/$(RESOURCE_DIR)
+	$(RM) stage2/$(RESOURCE)
+	$(CP)$(SHARE_SRC)/classes/$(RESOURCE) stage2/$(RESOURCE)
+
+#
+# Step 4: Build stage3
+#
+.stage3: .delete.stage3.classes.list $(JAVAC_CLASSES:%.class=stage3/%.class)
+	@$(MKDIR) -p stage3
+	@$(ECHO) ">>> Starting stage3 compile @ `$(DATE)`"
+	if [ -s .stage3.classes.list ]; then \
+	    $(BINDIR)/java $(VM_OPTIONS) -classpath stage2 \
+		sun.tools.javac.Main $(JAVAC_OPT_FLAG) -d stage3 \
+		    -classpath $(SRC_PATH):stage3 \
+		    $(shell if [ -s .stage3.classes.list ]; then \
+			        $(CAT) .stage3.classes.list; \
+			    fi); \
+	fi
+	-$(MKDIR) -p stage3/$(RESOURCE_DIR)
+	$(RM) stage3/$(RESOURCE)
+	$(CP)$(SHARE_SRC)/classes/$(RESOURCE) stage3/$(RESOURCE)
+
+#
+# Generate a list of .java files that need recompilation, by checking
+# against the date stamp of the corresponding .class file.
+#
+
+stage1/sun/tools/java/RuntimeConstants.class: RuntimeConstants.java
+	@$(ECHO) $? >> .stage1.classes.list
+stage1/%.class: $(SHARE_SRC)/classes/%.java
+	@$(ECHO) $? >> .stage1.classes.list
+stage1/%.class: $(PLATFORM_SRC)/classes/%.java 
+	@$(ECHO) $? >> .stage1.classes.list
+.delete.stage1.classes.list: 
+	$(RM) .stage1.classes.list
+
+stage2/sun/tools/java/RuntimeConstants.class: RuntimeConstants.java
+	@$(ECHO) $? >> .stage2.classes.list
+stage2/%.class: $(SHARE_SRC)/classes/%.java 
+	@$(ECHO) $? >> .stage2.classes.list
+stage2/%.class: $(PLATFORM_SRC)/classes/%.java 
+	@$(ECHO) $? >> .stage2.classes.list
+.delete.stage2.classes.list: 
+	$(RM) .stage2.classes.list
+
+stage3/sun/tools/java/RuntimeConstants.class: RuntimeConstants.java
+	@$(ECHO) $? >> .stage3.classes.list
+stage3/%.class: $(SHARE_SRC)/classes/%.java 
+	@$(ECHO) $? >> .stage3.classes.list
+stage3/%.class: $(PLATFORM_SRC)/classes/%.java 
+	@$(ECHO) $? >> .stage3.classes.list
+.delete.stage3.classes.list: 
+	$(RM) .stage3.classes.list
+
+.PHONY = .build_compiler .stage1 .stage2 .stage3 \
+	 .delete.stage1.classes.list .delete.stage2.classes.list \
+	 .delete.stage3.classes.list
+

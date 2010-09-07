@@ -1,0 +1,23 @@
+#
+# @(#)CORBAX_java.gmk	1.5 02/09/19
+#
+# CORBA IDL Generated Files
+#
+
+CORBA_java = \
+	$(TARGDIR)org/omg/CORBA/ParameterMode.java \
+	$(TARGDIR)org/omg/CORBA/ParameterModeHelper.java \
+	$(TARGDIR)org/omg/CORBA/ParameterModeHolder.java \
+	$(TARGDIR)org/omg/CORBA/PolicyErrorCodeHelper.java \
+	$(TARGDIR)org/omg/CORBA/PolicyErrorHelper.java \
+	$(TARGDIR)org/omg/CORBA/PolicyErrorHolder.java \
+	$(TARGDIR)org/omg/CORBA/StringSeqHelper.java \
+	$(TARGDIR)org/omg/CORBA/StringSeqHolder.java \
+	$(TARGDIR)org/omg/CORBA/WStringSeqHelper.java \
+	$(TARGDIR)org/omg/CORBA/WStringSeqHolder.java
+
+CORBA_Duplicate_java = \
+	$(TARGDIR)org/omg/CORBA/OctetSeqHelper.java \
+	$(TARGDIR)org/omg/CORBA/OctetSeqHolder.java \
+	$(TARGDIR)org/omg/CORBA/PolicyError.java \
+	$(TARGDIR)org/omg/CORBA/RepositoryIdHelper.java 

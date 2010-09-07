@@ -1,0 +1,6 @@
+#
+# @(#)gmt	1.3 05/06/08
+#
+
+# Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
+Zone	GMT		0:00	-	GMT

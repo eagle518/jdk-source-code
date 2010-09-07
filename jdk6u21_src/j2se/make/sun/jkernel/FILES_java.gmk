@@ -1,0 +1,23 @@
+#
+# @(#)FILES_java.gmk	1.4 10/03/23
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+FILES_java = \
+	$(TARGDIR)sun/jkernel/BackgroundDownloader.java \
+	$(TARGDIR)sun/jkernel/Bundle.java \
+	$(TARGDIR)sun/jkernel/ByteArrayToFromHexDigits.java \
+	$(TARGDIR)sun/jkernel/BundleCheck.java \
+	$(TARGDIR)sun/jkernel/DownloadManager.java \
+	$(TARGDIR)sun/jkernel/Mutex.java \
+	$(TARGDIR)sun/jkernel/StandaloneByteArrayAccess.java \
+	$(TARGDIR)sun/jkernel/StandaloneMessageDigest.java \
+	$(TARGDIR)sun/jkernel/StandaloneSHA.java \
+
+FILES_export = \
+     sun/jkernel/DownloadManager.java \
+     sun/jkernel/Mutex.java \
+     sun/jkernel/Bundle.java \
+     sun/jkernel/BackgroundDownloader.java

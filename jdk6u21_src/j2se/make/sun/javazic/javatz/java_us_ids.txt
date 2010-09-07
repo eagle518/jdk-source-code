@@ -1,0 +1,45 @@
+# @(#)java_us_ids.txt	1.1 00/11/21
+#
+# U.S. and Canada zone IDs
+#
+# United States
+America/New_York
+EST
+America/Chicago
+CST
+America/Denver
+MST
+America/Los_Angeles
+PST
+America/Anchorage
+AST
+America/Adak
+Pacific/Honolulu
+HST
+America/Phoenix
+PNT
+America/Indianapolis
+IET
+#"Atlantic time zone - Puerto Rico & Virgin Islands, no Daylight Saving"
+America/Caracas
+America/Puerto_Rico
+PRT
+America/St_Thomas
+#"Samoa time zone - American Samoa, no Daylight Saving"
+Pacific/Pago_Pago
+# Pacific Territories
+Pacific/Kosrae
+Pacific/Ponape
+Pacific/Palau
+Pacific/Guam
+Pacific/Kwajalein
+# Canada
+America/St_Johns
+CNT
+America/Halifax
+America/Montreal
+America/Winnipeg
+America/Regina
+
+GMT
+UTC

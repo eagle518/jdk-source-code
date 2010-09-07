@@ -1,0 +1,8 @@
+FILES_java = \
+	$(TARGDIR)com/sun/corba/se/impl/monitoring/MonitoredAttributeInfoFactoryImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/monitoring/MonitoredAttributeInfoImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/monitoring/MonitoredObjectFactoryImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/monitoring/MonitoredObjectImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/monitoring/MonitoringManagerImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/monitoring/MonitoringManagerFactoryImpl.java 
+

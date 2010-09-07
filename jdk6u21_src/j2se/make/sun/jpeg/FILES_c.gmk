@@ -1,0 +1,53 @@
+#
+# @(#)FILES_c.gmk	1.8 02/09/19
+#
+FILES_c = \
+	$(CTARGDIR)imageioJPEG.c \
+	$(CTARGDIR)jpegdecoder.c \
+	$(CTARGDIR)jcomapi.c \
+	$(CTARGDIR)jdapimin.c \
+	$(CTARGDIR)jdapistd.c \
+	$(CTARGDIR)jdcoefct.c \
+	$(CTARGDIR)jdcolor.c \
+	$(CTARGDIR)jddctmgr.c \
+	$(CTARGDIR)jdhuff.c \
+	$(CTARGDIR)jdinput.c \
+	$(CTARGDIR)jdmainct.c \
+	$(CTARGDIR)jdmarker.c \
+	$(CTARGDIR)jdmaster.c \
+	$(CTARGDIR)jdmerge.c \
+	$(CTARGDIR)jdphuff.c \
+	$(CTARGDIR)jdpostct.c \
+	$(CTARGDIR)jdsample.c \
+	$(CTARGDIR)jerror.c \
+	$(CTARGDIR)jidctflt.c \
+	$(CTARGDIR)jidctfst.c \
+	$(CTARGDIR)jidctint.c \
+	$(CTARGDIR)jidctred.c \
+	$(CTARGDIR)jmemmgr.c \
+	$(CTARGDIR)jmemnobs.c \
+	$(CTARGDIR)jquant1.c \
+	$(CTARGDIR)jquant2.c \
+	$(CTARGDIR)jutils.c \
+	$(CTARGDIR)jpegimagedecoderimpl.c \
+	$(CTARGDIR)jpegimageencoderimpl.c \
+	$(CTARGDIR)jpegparam.c \
+	$(CTARGDIR)jcapimin.c \
+	$(CTARGDIR)jcapistd.c \
+	$(CTARGDIR)jccoefct.c \
+	$(CTARGDIR)jccolor.c \
+	$(CTARGDIR)jcdctmgr.c \
+	$(CTARGDIR)jchuff.c \
+	$(CTARGDIR)jcinit.c \
+	$(CTARGDIR)jcmainct.c \
+	$(CTARGDIR)jcmarker.c \
+	$(CTARGDIR)jcmaster.c \
+	$(CTARGDIR)jcparam.c \
+	$(CTARGDIR)jcphuff.c \
+	$(CTARGDIR)jcprepct.c \
+	$(CTARGDIR)jcsample.c \
+	$(CTARGDIR)jctrans.c \
+	$(CTARGDIR)jdtrans.c \
+	$(CTARGDIR)jfdctflt.c \
+	$(CTARGDIR)jfdctfst.c \
+	$(CTARGDIR)jfdctint.c

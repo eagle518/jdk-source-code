@@ -1,0 +1,81 @@
+# @(#)org_omg_DynamicAny.jmk	1.9 03/11/24
+#
+# Files
+#   Please keep this sorted. 
+#
+
+DYNANY_GENERATED_java = \
+	$(TARGDIR)org/omg/DynamicAny/DynAny.java \
+	$(TARGDIR)org/omg/DynamicAny/DynAnyFactory.java \
+	$(TARGDIR)org/omg/DynamicAny/DynAnyFactoryOperations.java \
+	$(TARGDIR)org/omg/DynamicAny/DynAnyOperations.java \
+	$(TARGDIR)org/omg/DynamicAny/DynArray.java \
+	$(TARGDIR)org/omg/DynamicAny/DynArrayOperations.java \
+	$(TARGDIR)org/omg/DynamicAny/DynEnum.java \
+	$(TARGDIR)org/omg/DynamicAny/DynEnumOperations.java \
+	$(TARGDIR)org/omg/DynamicAny/DynFixed.java \
+	$(TARGDIR)org/omg/DynamicAny/DynFixedOperations.java \
+	$(TARGDIR)org/omg/DynamicAny/DynSequence.java \
+	$(TARGDIR)org/omg/DynamicAny/DynSequenceOperations.java \
+	$(TARGDIR)org/omg/DynamicAny/DynStruct.java \
+	$(TARGDIR)org/omg/DynamicAny/DynStructOperations.java \
+	$(TARGDIR)org/omg/DynamicAny/DynUnion.java \
+	$(TARGDIR)org/omg/DynamicAny/DynUnionOperations.java \
+	$(TARGDIR)org/omg/DynamicAny/DynValue.java \
+	$(TARGDIR)org/omg/DynamicAny/DynValueOperations.java \
+	$(TARGDIR)org/omg/DynamicAny/NameDynAnyPair.java \
+	$(TARGDIR)org/omg/DynamicAny/NameValuePair.java \
+	$(TARGDIR)org/omg/DynamicAny/DynAnyPackage/InvalidValue.java \
+	$(TARGDIR)org/omg/DynamicAny/DynAnyPackage/InvalidValueHelper.java \
+	$(TARGDIR)org/omg/DynamicAny/DynAnyPackage/TypeMismatch.java \
+	$(TARGDIR)org/omg/DynamicAny/DynAnyPackage/TypeMismatchHelper.java \
+	$(TARGDIR)org/omg/DynamicAny/DynAnyFactoryPackage/InconsistentTypeCode.java \
+	$(TARGDIR)org/omg/DynamicAny/DynAnyFactoryPackage/InconsistentTypeCodeHelper.java \
+	$(TARGDIR)org/omg/DynamicAny/AnySeqHelper.java \
+	$(TARGDIR)org/omg/DynamicAny/DynStructHelper.java \
+	$(TARGDIR)org/omg/DynamicAny/DynAnyFactoryHelper.java \
+	$(TARGDIR)org/omg/DynamicAny/DynUnionHelper.java \
+	$(TARGDIR)org/omg/DynamicAny/DynAnyHelper.java \
+	$(TARGDIR)org/omg/DynamicAny/DynValueHelper.java \
+	$(TARGDIR)org/omg/DynamicAny/DynArrayHelper.java \
+	$(TARGDIR)org/omg/DynamicAny/DynAnySeqHelper.java \
+	$(TARGDIR)org/omg/DynamicAny/DynEnumHelper.java \
+	$(TARGDIR)org/omg/DynamicAny/DynFixedHelper.java \
+	$(TARGDIR)org/omg/DynamicAny/FieldNameHelper.java \
+	$(TARGDIR)org/omg/DynamicAny/NameDynAnyPairHelper.java \
+	$(TARGDIR)org/omg/DynamicAny/DynSequenceHelper.java \
+	$(TARGDIR)org/omg/DynamicAny/NameDynAnyPairSeqHelper.java \
+	$(TARGDIR)org/omg/DynamicAny/NameValuePairHelper.java \
+	$(TARGDIR)org/omg/DynamicAny/NameValuePairSeqHelper.java 
+
+
+DYNANY_HELP_HOLD_java = \
+	$(TARGDIR)org/omg/DynamicAny/AnySeqHolder.java \
+	$(TARGDIR)org/omg/DynamicAny/DynStructHolder.java \
+	$(TARGDIR)org/omg/DynamicAny/DynAnyFactoryHolder.java \
+	$(TARGDIR)org/omg/DynamicAny/DynUnionHolder.java \
+	$(TARGDIR)org/omg/DynamicAny/DynAnyHolder.java \
+	$(TARGDIR)org/omg/DynamicAny/DynValueHolder.java \
+	$(TARGDIR)org/omg/DynamicAny/DynArrayHolder.java \
+	$(TARGDIR)org/omg/DynamicAny/DynAnySeqHolder.java \
+	$(TARGDIR)org/omg/DynamicAny/DynEnumHolder.java \
+	$(TARGDIR)org/omg/DynamicAny/DynFixedHolder.java \
+	$(TARGDIR)org/omg/DynamicAny/DynSequenceHolder.java \
+	$(TARGDIR)org/omg/DynamicAny/NameDynAnyPairHelper.java \
+	$(TARGDIR)org/omg/DynamicAny/NameDynAnyPairHolder.java \
+	$(TARGDIR)org/omg/DynamicAny/NameDynAnyPairSeqHolder.java \
+	$(TARGDIR)org/omg/DynamicAny/NameValuePairHolder.java \
+	$(TARGDIR)org/omg/DynamicAny/NameValuePairSeqHolder.java \
+	$(TARGDIR)org/omg/DynamicAny/DynAnyPackage/InvalidValueHolder.java \
+	$(TARGDIR)org/omg/DynamicAny/DynAnyPackage/TypeMismatchHolder.java \
+	$(TARGDIR)org/omg/DynamicAny/DynAnyFactoryPackage/InconsistentTypeCodeHolder.java
+
+
+DYNANY_TO_DELETE_FILES = \
+	$(TARGDIR)org/omg/DynamicAny/DynValueBoxHelper.java \
+	$(TARGDIR)org/omg/DynamicAny/DynValueCommonHelper.java \
+	$(TARGDIR)org/omg/DynamicAny/_DynValueCommonStub.java \
+	$(TARGDIR)org/omg/DynamicAny/_DynValueBoxStub.java \
+	$(TARGDIR)org/omg/DynamicAny/DynAnyPackage/TypeMismatchHolder.java \
+	$(TARGDIR)org/omg/DynamicAny/DynAnyPackage/InvalidValueHolder.java \
+	$(TARGDIR)org/omg/DynamicAny/DynAnyFactoryPackage/InconsistentTypeCodeHolder.java

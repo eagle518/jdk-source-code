@@ -1,0 +1,218 @@
+#
+# @(#)FILES_c_unix.gmk	1.126 10/03/23
+# 
+# Copyright (c) 2007, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# @(#)FILES_c_unix.gmk	1.126 10/03/23
+#
+# The debug_* files included here aren't for 2D specifically but they
+# have no X dependency.
+
+FILES_2D_vis = \
+	$(TARGDIR)vis_FuncArray.c           \
+	$(TARGDIR)java2d_Mlib.c             \
+	$(TARGDIR)mlib_ImageCreate.c        \
+	$(TARGDIR)mlib_ImageZoom_NN.c       \
+	$(TARGDIR)mlib_ImageCopy_Bit.c      \
+	$(TARGDIR)mlib_sys.c                \
+	$(TARGDIR)mlib_v_ImageClear.c       \
+	$(TARGDIR)mlib_v_ImageClear_f.c     \
+	$(TARGDIR)mlib_v_ImageConstXor.c    \
+	$(TARGDIR)mlib_v_ImageCopy.c        \
+	$(TARGDIR)mlib_v_ImageCopy_f.c      \
+	$(TARGDIR)mlib_v_ImageXor.c         \
+	$(TARGDIR)mlib_v_ImageZoom_NN_f.c   \
+	$(TARGDIR)vis_Interp.c              \
+	$(TARGDIR)vis_AlphaMacros.c         \
+	$(TARGDIR)vis_AlphaMaskBlit.c       \
+	$(TARGDIR)vis_AlphaMaskFill.c       \
+	$(TARGDIR)vis_ByteGray.c            \
+	$(TARGDIR)vis_ByteGray_FromRgb.c    \
+	$(TARGDIR)vis_ByteGray_Mask.c       \
+	$(TARGDIR)vis_ByteIndexed.c         \
+	$(TARGDIR)vis_DrawLine.c            \
+	$(TARGDIR)vis_FourByteAbgr.c        \
+	$(TARGDIR)vis_IntArgb.c             \
+	$(TARGDIR)vis_IntArgbPre.c          \
+	$(TARGDIR)vis_IntArgbPre_Mask.c     \
+	$(TARGDIR)vis_IntBgr.c              \
+	$(TARGDIR)vis_IntRgb.c              \
+	$(TARGDIR)vis_IntRgbx.c             \
+	$(TARGDIR)vis_SrcMaskFill.c         \
+	$(TARGDIR)vis_SrcOverMaskBlit.c     \
+	$(TARGDIR)vis_SrcOverMaskFill.c     \
+	$(TARGDIR)vis_FourByteAbgrPre.c     \
+	$(TARGDIR)vis_GlyphList.c           \
+	$(TARGDIR)vis_GlyphListXor.c        \
+	$(TARGDIR)vis_IntArgbBm.c           \
+	$(TARGDIR)vis_ThreeByteBgr.c        \
+	$(TARGDIR)vis_UshortGray.c          \
+	$(TARGDIR)vis_UshortGray_FromRgb.c  \
+	$(TARGDIR)vis_XorBlit.c
+
+FILES_2D_c = \
+	$(TARGDIR)gifdecoder.c \
+	$(TARGDIR)imageInitIDs.c \
+	$(TARGDIR)img_colors.c \
+        $(TARGDIR)img_globals.c \
+	$(TARGDIR)SurfaceData.c \
+	$(TARGDIR)Region.c \
+	$(TARGDIR)BufImgSurfaceData.c \
+	$(TARGDIR)Disposer.c \
+        $(TARGDIR)Trace.c \
+	$(TARGDIR)GraphicsPrimitiveMgr.c \
+	$(TARGDIR)Blit.c \
+	$(TARGDIR)BlitBg.c \
+	$(TARGDIR)ScaledBlit.c \
+	$(TARGDIR)FillRect.c \
+	$(TARGDIR)FillSpans.c \
+	$(TARGDIR)FillParallelogram.c \
+	$(TARGDIR)DrawParallelogram.c \
+	$(TARGDIR)DrawLine.c \
+	$(TARGDIR)DrawRect.c \
+	$(TARGDIR)DrawPolygons.c \
+        $(TARGDIR)DrawPath.c \
+        $(TARGDIR)FillPath.c \
+        $(TARGDIR)ProcessPath.c \
+	$(TARGDIR)MaskBlit.c \
+	$(TARGDIR)MaskFill.c \
+	$(TARGDIR)TransformHelper.c \
+        $(TARGDIR)AlphaMath.c \
+	$(TARGDIR)AlphaMacros.c \
+	$(TARGDIR)AnyByte.c \
+        $(TARGDIR)ByteBinary1Bit.c \
+        $(TARGDIR)ByteBinary2Bit.c \
+        $(TARGDIR)ByteBinary4Bit.c \
+	$(TARGDIR)ByteIndexed.c \
+	$(TARGDIR)ByteGray.c \
+	$(TARGDIR)Index8Gray.c \
+	$(TARGDIR)Index12Gray.c \
+	$(TARGDIR)AnyShort.c \
+	$(TARGDIR)Ushort555Rgb.c \
+	$(TARGDIR)Ushort565Rgb.c \
+	$(TARGDIR)Ushort4444Argb.c \
+	$(TARGDIR)Ushort555Rgbx.c \
+	$(TARGDIR)UshortGray.c \
+	$(TARGDIR)UshortIndexed.c \
+	$(TARGDIR)Any3Byte.c \
+	$(TARGDIR)ThreeByteBgr.c \
+	$(TARGDIR)AnyInt.c \
+	$(TARGDIR)IntArgb.c \
+        $(TARGDIR)IntArgbPre.c \
+        $(TARGDIR)IntArgbBm.c \
+	$(TARGDIR)IntRgb.c \
+	$(TARGDIR)IntBgr.c \
+	$(TARGDIR)IntRgbx.c \
+	$(TARGDIR)Any4Byte.c \
+        $(TARGDIR)FourByteAbgr.c \
+        $(TARGDIR)FourByteAbgrPre.c \
+	$(TARGDIR)BufferedMaskBlit.c \
+	$(TARGDIR)BufferedRenderPipe.c \
+	$(TARGDIR)RenderBuffer.c \
+	$(TARGDIR)ShapeSpanIterator.c \
+	$(TARGDIR)SpanClipRenderer.c \
+	$(TARGDIR)awt_ImageRep.c \
+        $(TARGDIR)awt_ImagingLib.c \
+        $(TARGDIR)awt_Mlib.c \
+        $(TARGDIR)awt_parseImage.c \
+	$(TARGDIR)DataBufferNative.c \
+	$(TARGDIR)RemoteOffScreenImage.c \
+	$(TARGDIR)dither.c \
+	$(TARGDIR)debug_assert.c \
+	$(TARGDIR)debug_mem.c \
+	$(TARGDIR)debug_trace.c \
+	$(TARGDIR)debug_util.c
+
+# These files rely on motif to be built, and should not be included
+# in a headless build.
+
+FILES_MOTIF_c = \
+	$(TARGDIR)awt_AWTEvent.c \
+	$(TARGDIR)awt_Button.c \
+	$(TARGDIR)awt_Canvas.c \
+	$(TARGDIR)awt_Checkbox.c \
+	$(TARGDIR)awt_Component.c \
+	$(TARGDIR)awt_Cursor.c \
+	$(TARGDIR)awt_DataTransferer.c \
+	$(TARGDIR)awt_DrawingSurface.c \
+	$(TARGDIR)awt_Event.c \
+	$(TARGDIR)awt_FileDialog.c \
+	$(TARGDIR)awt_GlobalCursorManager.c \
+	$(TARGDIR)awt_GraphicsEnv.c \
+	$(TARGDIR)awt_InputMethod.c \
+	$(TARGDIR)awt_Insets.c \
+	$(TARGDIR)awt_KeyboardFocusManager.c \
+	$(TARGDIR)awt_Label.c \
+	$(TARGDIR)awt_List.c \
+	$(TARGDIR)awt_Menu.c \
+	$(TARGDIR)awt_MenuBar.c \
+	$(TARGDIR)awt_MenuComponent.c \
+	$(TARGDIR)awt_MenuItem.c \
+	$(TARGDIR)awt_motif.c \
+	$(TARGDIR)awt_Plugin.c \
+	$(TARGDIR)awt_PopupMenu.c \
+	$(TARGDIR)awt_Robot.c \
+	$(TARGDIR)awt_Scrollbar.c \
+	$(TARGDIR)awt_ScrollPane.c \
+	$(TARGDIR)awt_Selection.c \
+	$(TARGDIR)awt_UNIXToolkit.c \
+	$(TARGDIR)awt_TextArea.c \
+	$(TARGDIR)awt_TextField.c \
+	$(TARGDIR)awt_TopLevel.c \
+	$(TARGDIR)awt_mgrsel.c \
+	$(TARGDIR)awt_util.c \
+	$(TARGDIR)awt_wm.c \
+	$(TARGDIR)awt_XmDnD.c \
+	$(TARGDIR)awt_dnd.c \
+	$(TARGDIR)awt_dnd_ds.c \
+	$(TARGDIR)awt_dnd_dt.c \
+	$(TARGDIR)canvas.c \
+	$(TARGDIR)cursor.c \
+	$(TARGDIR)multi_font.c \
+	$(TARGDIR)robot_common.c \
+        $(TARGDIR)list.c \
+        $(TARGDIR)multiVis.c \
+	$(TARGDIR)XDrawingArea.c \
+	$(TARGDIR)MouseInfo.c \
+	$(TARGDIR)awt_xembed.c \
+	$(TARGDIR)awt_xembed_server.c \
+        $(TARGDIR)gtk2_interface.c \
+        $(TARGDIR)swing_GTKNativeEngine.c \
+        $(TARGDIR)swing_GTKNativeStyle.c
+
+
+# These files are required to be built, with or without motif.  Some of
+# these are only dependent on X11, and some contain native source that
+# is required, even in a headless build.
+
+FILES_NO_MOTIF_c = \
+	$(TARGDIR)awt_Font.c \
+	$(TARGDIR)awt_MToolkit.c \
+	$(TARGDIR)fontpath.c \
+	$(TARGDIR)VDrawingArea.c \
+	$(TARGDIR)X11Color.c \
+ 	$(TARGDIR)X11CachingSurfaceManager.c \
+	$(TARGDIR)X11Renderer.c \
+	$(TARGDIR)X11PMBlitLoops.c \
+	$(TARGDIR)X11SurfaceData.c \
+	$(TARGDIR)X11FontScaler_md.c \
+	$(TARGDIR)X11TextRenderer_md.c \
+        $(TARGDIR)OGLBlitLoops.c \
+        $(TARGDIR)OGLBufImgOps.c \
+        $(TARGDIR)OGLContext.c \
+        $(TARGDIR)OGLFuncs.c \
+        $(TARGDIR)OGLMaskBlit.c \
+        $(TARGDIR)OGLMaskFill.c \
+        $(TARGDIR)OGLPaints.c \
+        $(TARGDIR)OGLRenderQueue.c \
+        $(TARGDIR)OGLRenderer.c \
+        $(TARGDIR)OGLSurfaceData.c \
+        $(TARGDIR)OGLTextRenderer.c \
+        $(TARGDIR)OGLVertexCache.c \
+        $(TARGDIR)GLXGraphicsConfig.c \
+        $(TARGDIR)GLXSurfaceData.c \
+        $(TARGDIR)AccelGlyphCache.c \
+	$(TARGDIR)CUPSfuncs.c

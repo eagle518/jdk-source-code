@@ -1,0 +1,16 @@
+#
+# Java IDL Server Activation Files
+#
+
+com_sun_corba_se_impl_activation_java = \
+	$(TARGDIR)com/sun/corba/se/impl/activation/ProcessMonitorThread.java \
+	$(TARGDIR)com/sun/corba/se/impl/activation/RepositoryImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/activation/ServerTool.java \
+	$(TARGDIR)com/sun/corba/se/impl/activation/ORBD.java \
+	$(TARGDIR)com/sun/corba/se/impl/activation/CommandHandler.java \
+	$(TARGDIR)com/sun/corba/se/impl/activation/ServerManagerImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/activation/ServerTableEntry.java \
+	$(TARGDIR)com/sun/corba/se/impl/activation/NameServiceStartThread.java \
+	$(TARGDIR)com/sun/corba/se/impl/activation/ServerMain.java
+
+FILES_java = $(com_sun_corba_se_impl_activation_java)

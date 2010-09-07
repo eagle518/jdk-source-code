@@ -1,0 +1,29 @@
+#
+# @(#)Exportedfiles.gmk	1.4 10/03/23
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# These are the names of Java classes for which we will make .h files.
+#
+
+ifeq ($(PLATFORM), windows)
+FILES_export = \
+        sun/tools/attach/WindowsAttachProvider.java \
+	sun/tools/attach/WindowsVirtualMachine.java
+endif
+
+ifeq ($(PLATFORM), solaris)
+FILES_export = \
+	sun/tools/attach/SolarisVirtualMachine.java
+endif
+
+ifeq ($(PLATFORM), linux)
+FILES_export = \
+	sun/tools/attach/LinuxVirtualMachine.java
+endif
+
+
+

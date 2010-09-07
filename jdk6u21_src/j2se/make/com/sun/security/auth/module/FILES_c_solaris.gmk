@@ -1,0 +1,2 @@
+FILES_c += \
+	$(CTARGDIR)Solaris.c

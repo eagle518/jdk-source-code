@@ -1,0 +1,11 @@
+com_sun_corba_se_impl_naming_namingutil_java = \
+	$(TARGDIR)com/sun/corba/se/impl/naming/namingutil/INSURL.java \
+	$(TARGDIR)com/sun/corba/se/impl/naming/namingutil/INSURLBase.java \
+	$(TARGDIR)com/sun/corba/se/impl/naming/namingutil/CorbalocURL.java \
+	$(TARGDIR)com/sun/corba/se/impl/naming/namingutil/CorbanameURL.java \
+	$(TARGDIR)com/sun/corba/se/impl/naming/namingutil/INSURLHandler.java \
+	$(TARGDIR)com/sun/corba/se/impl/naming/namingutil/IIOPEndpointInfo.java \
+	$(TARGDIR)com/sun/corba/se/impl/naming/namingutil/NamingConstants.java \
+	$(TARGDIR)com/sun/corba/se/impl/naming/namingutil/Utility.java 
+
+FILES_java = $(com_sun_corba_se_impl_naming_namingutil_java)

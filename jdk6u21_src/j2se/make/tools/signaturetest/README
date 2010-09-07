@@ -1,0 +1,17 @@
+@(#)README	1.2 99/02/16
+
+These files are from the JCK test suite, and shouldn't be directly modified.
+If a bug needs to be fixed in them, it should be fixed in the JCK source
+and then the updated file copied into this directory.  (This is why the
+SCCS ID values are stored.)
+
+Full instructions on how to run this test can be found in the
+APIChangesTest.java file.  Here are some simple examples:
+
+    To create a signature file:
+        java javasoft.sqe.tests.api.APIChangesTest -TestURL file://`pwd`/ \
+             -Filename mySignatureFile -setup
+
+    To run the test with that signature file:
+        java javasoft.sqe.tests.api.APIChangesTest -TestURL file://`pwd`/ \
+             -Filename mySignatureFile 

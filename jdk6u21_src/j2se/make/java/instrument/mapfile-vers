@@ -1,0 +1,28 @@
+#
+#ident	"@(#)mapfile-vers	1.11 10/04/01"
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+#
+# This software is the proprietary information of Oracle.
+# Use is subject to license terms.
+#
+
+# Define public interface.
+
+SUNWprivate_1.1 {
+	global:
+	    Agent_OnLoad;
+	    Agent_OnAttach;
+            Java_sun_instrument_InstrumentationImpl_isModifiableClass0;
+            Java_sun_instrument_InstrumentationImpl_isRetransformClassesSupported0;
+            Java_sun_instrument_InstrumentationImpl_setHasRetransformableTransformers;
+            Java_sun_instrument_InstrumentationImpl_retransformClasses0;
+            Java_sun_instrument_InstrumentationImpl_getAllLoadedClasses0;
+            Java_sun_instrument_InstrumentationImpl_getInitiatedClasses0;
+            Java_sun_instrument_InstrumentationImpl_redefineClasses0;
+            Java_sun_instrument_InstrumentationImpl_getObjectSize0;
+	    Java_sun_instrument_InstrumentationImpl_appendToClassLoaderSearch0;
+	    Java_sun_instrument_InstrumentationImpl_setNativeMethodPrefixes;
+	local:
+		*;
+};

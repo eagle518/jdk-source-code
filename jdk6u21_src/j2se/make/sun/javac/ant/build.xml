@@ -1,0 +1,67 @@
+<project name="javac Ant Task" default="compile" basedir="../../../..">
+    <property name="project.dir" value="."/>
+    <property file="make/sun/javac/ant/project.properties"/>
+    <target name="dist" depends="compile,javadoc,src"
+            description="creates all distribution files"/>
+    <target name="compile" description="builds sources">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${dist.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${build.dir}" debug="true" sourcepath="" nowarn="true" includeantruntime="false">
+            <patternset>
+               <include name="com/sun/tools/javac/**"/>
+               <include name="com/sun/tools/javadoc/**"/>
+               <include name="javax/tools/**"/>
+               <include name="javax/lang/model/**"/>
+               <include name="javax/annotation/processing/**"/>
+               <include name="javax/annotation/ToDo.java"/>
+               <include name="javax/annotation/Note.java"/>
+               <include name="com/sun/source/tree/**"/>
+               <include name="com/sun/source/util/**"/>
+	       <include name="com/sun/javadoc/**"/>
+               <exclude name="**/package-info.java"/>
+             </patternset>
+        </javac>
+        <javac srcdir="${src.dir}" destdir="${build.dir}" debug="true" sourcepath="">
+            <patternset includes="com/sun/mirror/**,com/sun/tools/apt/**"
+                        excludes="java/**,**/package-info.java"/>
+        </javac>
+        <mkdir dir="${build.dir}/META-INF/services/"/>
+        <copy todir="${build.dir}/META-INF/services/">
+            <fileset dir="${src.dir}/com/sun/tools/javac/services"/>
+        </copy>
+        <copy todir="${build.dir}/com/sun/tools/javac/resources">
+            <fileset dir="${src.dir}/com/sun/tools/javac/resources"/>
+        </copy>
+        <jar destfile="${dist.dir}/jsr199.jar" basedir="${build.dir}"/>
+    </target>
+    <target name="clean" 
+            description="deletes all build-generated files and directories">
+        <delete dir="${shared.build.dir}"/>
+    </target>
+    <target name="javadoc" depends="compile"
+            description="creates documentation of the public tools APIs">
+        <javadoc destdir="${shared.build.dir}/docs">
+             <packageset dir="${src.dir}">
+                 <include name="javax/tools"/>
+                 <include name="javax/lang/model/**"/>
+                 <include name="com/sun/source/tree"/>
+                 <include name="com/sun/source/util"/>
+             </packageset>
+        </javadoc>
+        <zip destfile="${dist.dir}/docs.zip" basedir="${shared.build.dir}"
+             includes="docs/**"/>
+    </target>
+    <target name="src"
+            description="builds a src.zip of the javac tool source files">
+        <mkdir dir="${dist.dir}"/>
+        <zip destfile="${dist.dir}/src.zip">
+	    <zipfileset dir="${src.dir}">
+               <include name="com/sun/tools/javac/**"/>
+               <include name="javax/tools/**"/>
+               <include name="javax/lang/model/**"/>
+               <include name="com/sun/source/tree/**"/>
+               <include name="com/sun/source/util/**"/>
+            </zipfileset>
+        </zip>
+    </target>
+</project>

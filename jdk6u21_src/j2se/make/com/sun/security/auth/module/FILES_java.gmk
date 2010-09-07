@@ -1,0 +1,6 @@
+FILES_java =  \
+	$(TARGDIR)com/sun/security/auth/module/Krb5LoginModule.java \
+	$(TARGDIR)com/sun/security/auth/module/JndiLoginModule.java \
+	$(TARGDIR)com/sun/security/auth/module/LdapLoginModule.java \
+	$(TARGDIR)com/sun/security/auth/module/KeyStoreLoginModule.java \
+	$(TARGDIR)com/sun/security/auth/module/Crypt.java 

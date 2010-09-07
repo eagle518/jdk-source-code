@@ -1,0 +1,236 @@
+#
+# @(#)Demo.gmk	1.28 10/03/23
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# Template Makefile for Demo
+#
+#    Usage: (in subdirectory)
+#        DEMO_NAME=name
+#        USES_AGENT_UTIL=true or false (if the source agent_util/*.c is used)
+#        USES_CRW=true or false  (if the java_crw_demo library is used)
+#        FILES_c=names of C source files
+#        FILES_cpp=names of C++ source files (.cpp suffix)
+#        FILES_classes=names of class files needed
+#        include ../Demo.gmk
+#
+#    Subdirectory has name "$(DEMO_NAME)".
+#    All source located at src/*/demo/jvmti/$(DEMO_NAME)
+#
+
+BUILDDIR = ../../..
+PRODUCT = sun/demo/jvmti
+
+# Only build library if native sources are specified
+ifdef FILES_c
+  LIBRARY = $(DEMO_NAME)
+else
+  ifdef FILES_cpp
+    LIBRARY = $(DEMO_NAME)
+  endif
+endif
+
+# Absolute path to demo destination area
+ABS_DEMODESTDIR=$(ABS_OUTPUTDIR)/demo/jvmti/$(DEMO_NAME)
+
+# Source directories
+SRCDIR=$(SHARE_SRC)/demo/jvmti/$(DEMO_NAME)
+PSRCDIR=$(PLATFORM_SRC)/demo/jvmti/$(DEMO_NAME)
+
+include $(BUILDDIR)/common/Defs.gmk
+
+# Only needed if we are building a library
+ifdef LIBRARY
+
+# We need to locate a few things at build time and runtime
+ifneq ($(PLATFORM), windows)
+  # On Unix, the build time location of libjava_crw_demo.so is not an issue,
+  #   the directory is already available during the build of this library.
+  # At runtime we need to provide a relative access to the libjava_crw_demo.so
+  #   library from the install location of this demo library 
+  #   (see -R and -rpath options below).
+  # So we determine the relative path to the main java lib/arch directory 
+  #   from this demo lib directory (and also the jre/lib directory)
+  ifdef ISA_DIR
+    # An extra directory sits below the 'lib' directory in this case
+    LIB_LOCATION=$(ABS_DEMODESTDIR)/lib$(ISA_DIR)
+    # Example: SDK/demo/jvmti/mtrace/lib/$(LIBARCH)/libmtrace.so
+    #    Needs to find:
+    #          SDK/lib/$(LIBARCH)/libjava_crw_demo.so
+    #    or:
+    #          SDK/jre/lib/$(LIBARCH)/libjava_crw_demo.so
+    REL_TO_SDK_LIBARCH_DIR=../../../../../lib/$(LIBARCH)
+    REL_TO_JRE_LIBARCH_DIR=../../../../../jre/lib/$(LIBARCH)
+  else
+    # Simplier case, no isa directory
+    LIB_LOCATION=$(ABS_DEMODESTDIR)/lib
+    # Example: SDK/demo/jvmti/mtrace/lib/libmtrace.so
+    #    Needs to find:
+    #          SDK/lib/$(LIBARCH)/libjava_crw_demo.so
+    #    or:
+    #          SDK/jre/lib/$(LIBARCH)/libjava_crw_demo.so
+    REL_TO_SDK_LIBARCH_DIR=../../../../lib/$(LIBARCH)
+    REL_TO_JRE_LIBARCH_DIR=../../../../jre/lib/$(LIBARCH)
+  endif
+else
+  # On Windows the trick is to locate the temporary java_crw_demo.lib file
+  #   so we can create the library dependence at build time.
+  #   (At runtime the .dll is found via the search of PATH)
+  #   NOTE: This depends on how deep we are in the tmp object directory
+  #         and where java_crw_demo is located in this tmp directory.
+  #   Example: OBJDIR=tmp/$(PRODUCT)/$(LIBRARY)/obj
+  #       Or   OBJDIR=tmp/sun/demo/jvmti/mtrace/obj
+  #       Need to get to: tmp/sun/java_crw_demo/obj
+  #        where PRODUCT=sun and LIBRARY=java_crw_demo in 
+  #                          make/java/java_crw_demo/Makefile
+  LIB_LOCATION=$(ABS_DEMODESTDIR)/lib
+  ifdef USES_CRW
+    JAVA_CRW_DEMO_OBJDIR=$(OBJDIR)/../../../../../sun/java_crw_demo/$(OBJDIRNAME)
+  endif
+endif
+
+# Places to look for source files
+vpath %.c $(SRCDIR):$(PSRCDIR)
+vpath %.cpp $(SRCDIR):$(PSRCDIR)
+
+# If agent_utils is used, add it in here
+ifdef USES_AGENT_UTIL
+  # Source location
+  AGENT_UTIL_SRCDIR=$(SHARE_SRC)/demo/jvmti/agent_util
+  AGENT_UTIL_PSRCDIR=$(PLATFORM_SRC)/demo/jvmti/agent_util
+  # Add it as a source file built into the library
+  FILES_c += $(CTARGDIR)agent_util.c
+  vpath %.c $(AGENT_UTIL_SRCDIR):$(AGENT_UTIL_PSRCDIR)
+  # Find agent_utils.h file
+  OTHER_INCLUDES += -I$(AGENT_UTIL_SRCDIR)
+endif
+
+# If this demo uses java_crw_demo, we need to add access
+ifdef USES_CRW
+  # Source location
+  CRW_SRCDIR=$(SHARE_SRC)/demo/jvmti/java_crw_demo
+  CRW_PSRCDIR=$(PLATFORM_SRC)/demo/jvmti/java_crw_demo
+  # Find java_crw_demo.h file
+  OTHER_INCLUDES += -I$(CRW_SRCDIR)
+  # Add in java_crw_demo library to link
+  ifeq ($(PLATFORM), windows)
+    # To link with java_crw_demo, we need to refer to .lib file in tmp area
+    OTHER_LDLIBS += /LIBPATH:$(JAVA_CRW_DEMO_OBJDIR)
+    # Add dependence on java_crw_demo
+    OTHER_LDLIBS += java_crw_demo.lib
+  else
+    ifeq ($(PLATFORM), solaris)
+      # Add runpath options so that this library can find java_crw_demo
+      OTHER_LDLIBS += -R\$$ORIGIN/$(REL_TO_SDK_LIBARCH_DIR)
+      OTHER_LDLIBS += -R\$$ORIGIN/$(REL_TO_JRE_LIBARCH_DIR)
+    else
+      # Add runpath options so that this library can find java_crw_demo
+      OTHER_LDLIBS += -Xlinker -z -Xlinker origin
+      OTHER_LDLIBS += -Xlinker -rpath -Xlinker \$$ORIGIN/$(REL_TO_SDK_LIBARCH_DIR)
+      OTHER_LDLIBS += -Xlinker -rpath -Xlinker \$$ORIGIN/$(REL_TO_JRE_LIBARCH_DIR)
+    endif
+    # Add dependence on java_crw_demo
+    OTHER_LDLIBS += -ljava_crw_demo
+  endif
+endif
+
+# If C++ used, add C++ runtime
+ifdef FILES_cpp
+  OTHER_LDLIBS += $(LIBCXX)
+  # On Linux, remove -lc, we don't want it 
+  ifeq ($(PLATFORM), linux)
+    #  If you don't do this, you'll see:
+    #   undefined versioned symbol name __register_frame_info@@GLIBC_2.0
+    EXTRA_LIBS=
+  endif
+endif
+
+# Standard Java Agent Library Mapfile
+FILES_m = ../mapfile-vers
+include $(BUILDDIR)/common/Mapfile-vers.gmk
+
+# We don't want to link against -ljava
+JAVALIB=
+
+#
+# Library Building Rules.
+#
+# Make sure these things get built first
+.PHONY: $(LIB_LOCATION)
+INIT += $(LIB_LOCATION)
+
+endif # LIBRARY
+
+
+# Always build demo src layout
+INIT += demo_src_dir_layout
+
+# Does a jar file need to be built?
+ifdef FILES_classes
+# Path to jar file for this demo
+JAR_FILE=$(ABS_DEMODESTDIR)/$(DEMO_NAME).jar
+
+# Make sure these things get built first
+INIT += $(JAR_FILE)
+
+endif
+
+# Library building rules
+ifdef LIBRARY
+include $(BUILDDIR)/common/Library.gmk
+
+# Make sure the library location gets created
+$(LIB_LOCATION):
+	$(MKDIR) -p $@
+
+else
+
+# Dummy rules for when we aren't building the demo here
+all build clean clobber ::
+	@echo "No library to build."
+
+all build :: demo_src_dir_layout
+
+endif # LIBRARY
+
+# Includes java source and needs a jar file built
+ifdef FILES_classes
+
+# Keep classes in temporary area
+CLASSES_DIR=$(TEMPDIR)/$(DEMO_NAME)/classes
+
+# Compile the class files
+$(CLASSES_DIR)/%.class: $(SRCDIR)/%.java
+	$(prep-target)
+	$(JAVAC) -d $(@D) $<
+	@$(java-vm-cleanup)
+
+# Build the jar file
+$(JAR_FILE): $(FILES_classes:%.class=$(CLASSES_DIR)/%.class)
+	$(prep-target)
+	$(JAR) cf $@ -C $(CLASSES_DIR) . $(JAR_JFLAGS)
+	@$(java-vm-cleanup)
+endif
+
+# Create source directory layout, does not depend on FILES_c* macros
+demo_src_dir_layout:
+	$(RM) -r $(ABS_DEMODESTDIR)/src
+	$(MKDIR) -p $(ABS_DEMODESTDIR)/src
+	$(CP) $(SRCDIR)/*.* $(ABS_DEMODESTDIR)/src
+	$(RM) $(ABS_DEMODESTDIR)/README.txt
+	$(MV) $(ABS_DEMODESTDIR)/src/README.txt $(ABS_DEMODESTDIR)
+	@if [ -d $(PSRCDIR) ] ; then \
+	    $(RM) -r $(ABS_DEMODESTDIR)/src/$(PLATFORM); \
+	    $(MKDIR) -p $(ABS_DEMODESTDIR)/src/$(PLATFORM); \
+	    $(CP) $(PSRCDIR)/*.* $(ABS_DEMODESTDIR)/src/$(PLATFORM); \
+	fi
+	@if [ "$(DEMO_NAME)" = hprof ] ; then \
+	    $(CP) $(SHARE_SRC)/classes/sun/tools/hprof/*.java $(ABS_DEMODESTDIR)/src; \
+	fi
+
+clean::
+	$(RM) -r $(CLASSES_DIR)
+	$(RM) -r $(ABS_DEMODESTDIR)

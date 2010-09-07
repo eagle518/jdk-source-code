@@ -1,0 +1,429 @@
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+# @(#)Defs-windows.gmk	1.173 10/07/16
+#
+# Makefile to specify compiler flags for programs and libraries
+# targeted to Windows builds.  Should not contain any rules.
+#
+# WARNING: This file is shared with other workspaces. 
+#          So when it includes other files, it must use J2SE_TOPDIR.
+#
+
+# Get shared JDK settings
+include $(J2SE_SHARED_DIR)/Defs.gmk
+
+# CC compiler object code output directive flag value
+CC_OBJECT_OUTPUT_FLAG = -Fo
+
+# The suffix applied to the library name for FDLIBM
+FDDLIBM_SUFFIX = lib
+# The suffix applied to scripts (.bat for windows, nothing for unix)
+SCRIPT_SUFFIX = .bat
+
+HPIS = windows
+# LIB_LOCATION, which for windows identifies where .exe files go, may be
+# set by each GNUmakefile. The default is BINDIR.
+ifndef LIB_LOCATION
+  LIB_LOCATION = $(BINDIR)
+endif # LIB_LOCATION
+
+# PLATFORM_SRC may be set by .../ext/*/build/.../Defs.gmk
+ifndef PLATFORM_SRC
+  PLATFORM_SRC  = $(J2SE_TOPDIR)/src/windows
+endif # PLATFORM_SRC
+
+# for backwards compatability, the old "win32" is used here instead of 
+# the more proper "windows"
+PLATFORM_INCLUDE_NAME = win32
+PLATFORM_INCLUDE      = $(INCLUDEDIR)/$(PLATFORM_INCLUDE_NAME)
+
+# The following DLL's are considered MS runtime libraries and should
+#     not to be REBASEd, see deploy/make/common/Release.gmk.
+#     unicows.dll: Signed images cannot be rebased in VS2003
+#     msvcrt.dll, msvcr71.dll: Microsoft runtimes
+MS_RUNTIME_LIBRARIES = msvcrt.dll
+ifeq ($(ARCH_DATA_MODEL), 32)
+  ifeq ($(COMPILER_VERSION), VS2003)
+    MS_RUNTIME_LIBRARIES += msvcr71.dll
+  endif
+  MS_RUNTIME_LIBRARIES += unicows.dll
+endif
+
+
+EXTRA_LFLAGS += /LIBPATH:$(DXSDK_LIB_PATH)
+
+#
+# Default for COMPILER_WARNINGS_FATAL on Windows (C++ compiler warnings)
+#
+#    Level: Default is 3, 0 means none, 4 is the most but may be unreliable
+#    Some makefiles may have set this to 0 to turn off warnings completely,
+#    which also effectively creates a COMPILER_WARNINGS_FATAL=false situation.
+#    Program.gmk may turn this down to 2 (building .exe's).
+#    Windows 64bit platforms are less likely to be warning free.
+#    Historically, Windows 32bit builds should be mostly warning free.
+#
+COMPILER_WARNING_LEVEL=3
+COMPILER_WARNINGS_FATAL=false
+
+# C Compiler flag definitions
+
+#
+# Default optimization
+#
+ifeq ($(CC_VERSION),msvc)
+  # Visual Studio .NET 2003 or VS2003 compiler option definitions:
+  #   -O1      Favors reduced size over speed (-Og     -Os -Oy -Ob2 -Gs -GF -Gy)
+  #   -O2      Favors speed over reduced size (-Og -Oi -Ot -Oy -Ob2 -Gs -GF -Gy)
+  #   -Ox      Full optimization (use -O2)    (-Og -Oi -Ot -Oy -Ob2)
+  #              (Removed in Visual Studio 2005 or VS2005)
+  #   -Ob2     More aggressive inlining
+  #   -Og      Global optimizations
+  #   -Oi      Replace some functions with intrinsic or special forms
+  #   -Op      Improve floating point calculations (disables some optimizations)
+  #              (Replaced with -fp:precise in VS2005, /Op is default now)
+  #   -Os      Favor small code
+  #   -Ot      Favor faster code
+  #   -Oy      Frame pointer omission
+  #   -GB      Optimize for pentium (old VC6 option?)
+  #   -G6      VS2003 version of -GB?
+  #   -GF      Pool strings in read-only memory
+  #   -Gf      Pool strings in read-write memory (the default)
+  #   -Gs      Controls stack probess
+  #   -GS      Adds buffer overflow checks on stacks
+  #              (Default in VS2005)
+  #   -GX      Enables exception handling 
+  #              (Replaced with /EHsc in VS2005)
+  #   -Gy      Function level linking only
+  #
+  # NOTE: With VC6, -Ox included -Gs.
+  # NOTE: With VC6, -Ox, -O1, and -O2 used -Ob1, not -Ob2.
+  # NOTE: With VC6, -O1 and -O2 used -Gf, not -GF.
+  #
+  ifeq ($(COMPILER_VERSION), VC6)
+    # VC6 (6.2) msvc compiler (the way Tiger and early Mustang were built)
+    GX_OPTION = -GX
+    ifeq ($(ARCH_DATA_MODEL), 32)
+      CC_HIGHEST_OPT = -Ox -Gy -Os -GB
+      CC_HIGHER_OPT  = -Ox -Gy -Os -GB
+      CC_LOWER_OPT   = -Ox -Gy -Os -GB
+    else
+      CC_HIGHEST_OPT = -Ox -Gy -Op
+      CC_HIGHER_OPT  = -Ox -Gy -Op
+      CC_LOWER_OPT   = -Ox -Gy -Op
+    endif
+  endif
+  ifeq ($(COMPILER_VERSION), VS2003)
+    # Also known as VC7 compiler
+    GX_OPTION = -GX
+    ifeq ($(ARCH_DATA_MODEL), 32)
+      # Lowered opt level to try and reduce footprint, dll size especially.
+      #     Was: CC_HIGHEST_OPT = -O2 -G6
+      #     Was: CC_HIGHER_OPT  = -O2
+      CC_HIGHEST_OPT = -O2
+      CC_HIGHER_OPT  = -O1
+      CC_LOWER_OPT   = -O1
+    else
+      CC_HIGHEST_OPT = -O2 -Op
+      CC_HIGHER_OPT  = -O2 -Op
+      CC_LOWER_OPT   = -O1 -Op
+    endif
+  endif
+  ifeq ($(COMPILER_VERSION), VS2005)
+    # VS2005 compiler, only with Platform SDK right now?
+    GX_OPTION = -EHsc
+    ifeq ($(ARCH_DATA_MODEL), 32)
+      CC_HIGHEST_OPT = -O2
+      CC_HIGHER_OPT  = -O1
+      CC_LOWER_OPT   = -O1
+    else
+      CC_HIGHEST_OPT = -O2
+      CC_HIGHER_OPT  = -O1
+      CC_LOWER_OPT   = -O1
+    endif
+  endif
+  CC_NO_OPT      = -Od
+else # CC_VERSION
+  # GCC not supported, but left for historical reference...
+  CC_HIGHEST_OPT = -O3
+  CC_HIGHER_OPT  = -O2
+  CC_LOWER_OPT   = -O2
+  CC_NO_OPT      = 
+endif
+
+# If NO_OPTIMIZATIONS is defined in the environment, turn all optimzations off
+ifdef NO_OPTIMIZATIONS
+  CC_HIGHEST_OPT = $(CC_NO_OPT)
+  CC_HIGHER_OPT  = $(CC_NO_OPT)
+  CC_LOWER_OPT   = $(CC_NO_OPT)
+endif
+
+ifeq ($(PRODUCT), java)
+    _OPT = $(CC_HIGHER_OPT)
+else
+    _OPT = $(CC_LOWER_OPT)
+endif
+
+# Select the runtime support library carefully, need to be consistent
+#
+# VS2003 compiler option definitions:
+#   -MD        Use dynamic multi-threaded runtime library
+#   -MDd       Use debug version (don't use, doesn't mix with -MD DLL's)
+#   -MT        Use static multi-threaded runtime library (-ML is going away)
+#   -MTd       Use static debug version (better than -MDd, no runtime issues)
+#   -D_DEBUG   Change use of malloc/free/etc to use special debug ones (-MTd)
+#
+#      NOTE: We also will use /D _STATIC_CPPLIB  so we don't need msvcp71.dll
+#
+ifeq ($(MS_RUNTIME_STATIC),true)
+  MS_RUNTIME_OPTION=-MT
+else
+  MS_RUNTIME_OPTION=-MD
+endif
+# The _DEBUG macro option (changes things like malloc to use debug version)
+MS_RUNTIME_DEBUG_OPTION=
+MS_RC_DEBUG_OPTION=
+# Externally set environment variable can force any build to use the debug vers
+ifeq ($(MFC_DEBUG), true)
+  ifeq ($(MS_RUNTIME_STATIC),true)
+    MS_RUNTIME_OPTION=-MTd
+  else
+    # This MS debugging flag forces a dependence on the debug
+    #     version of the runtime library (MSVCRTD.DLL), as does -MDd.
+    #     We cannot re-distribute this debug runtime.
+    MS_RUNTIME_OPTION=-MDd
+  endif
+  MS_RUNTIME_DEBUG_OPTION= -D_DEBUG
+  MS_RC_DEBUG_OPTION= -d _DEBUG
+endif
+
+# Always add _STATIC_CPPLIB definition
+STATIC_CPPLIB_OPTION = /D _STATIC_CPPLIB
+MS_RUNTIME_OPTION += $(STATIC_CPPLIB_OPTION)
+
+ifeq ($(CC_VERSION),msvc)
+  # VS2003 compiler option definitions:
+  #   -Zi      Cause *.pdb file to be created (-Z7 leaves it in obj/exe?)
+  #   -Zl      Don't add runtime library name to obj file?
+  #   -Od      Turns off optimization and speeds compilation
+  #   -YX -Fp/.../foobar.pch   Use precompiled headers (try someday?)
+  #   -nologo  Don't print out startup message
+  #   /D _STATIC_CPPLIB  
+  #            Use static link for the C++ runtime (so msvcp71.dll not needed)
+  #   
+  CFLAGS_COMMON  += -Zi -nologo
+  CFLAGS_OPT      = $(POPT)
+  CFLAGS_DBG      = -Od $(MS_RUNTIME_DEBUG_OPTION)
+
+  # All builds get the same runtime setting
+  CFLAGS_COMMON  += $(MS_RUNTIME_OPTION)
+  
+  LDEBUG = /debug
+  
+  ifeq ($(VTUNE_SUPPORT), true)
+    OTHER_CFLAGS = -Z7 -Ox 
+    LDEBUG += /pdb:NONE
+  endif
+  
+  # The new Platform SDK and VS2005 has /GS as a default and requires 
+  #    bufferoverflowU.lib on the link command line, otherwise 
+  #    we get missing __security_check_cookie externals at link time. 
+  BUFFEROVERFLOWLIB = bufferoverflowU.lib
+  # Always add bufferoverflowU.lib to VS2005 link commands (pack uses LDDFLAGS)
+  LFLAGS_VS2005 = $(BUFFEROVERFLOWLIB)
+
+  # LFLAGS are the flags given to $(LINK) and used to build the actual DLL file
+  BASELFLAGS = -nologo /opt:REF /incremental:no
+  LFLAGS = $(BASELFLAGS) $(LDEBUG) $(EXTRA_LFLAGS) $(LFLAGS_$(COMPILER_VERSION))
+  LDDFLAGS += $(LFLAGS_$(COMPILER_VERSION))
+  
+endif
+
+#
+# Preprocessor macro definitions
+#
+CPPFLAGS_COMMON = -DWIN32 -DIAL -D_LITTLE_ENDIAN
+ifeq ($(ARCH), amd64)
+  CPPFLAGS_COMMON += -D_AMD64_ -Damd64
+else
+  CPPFLAGS_COMMON += -DWIN32 -D_X86_ -Dx86 
+endif
+CPPFLAGS_COMMON += -DWIN32_LEAN_AND_MEAN
+
+#
+# Output options
+#
+CFLAGS_COMMON += -Fd$(OBJDIR)/ -Fe$(OBJDIR)/ -Fm$(OBJDIR)/ 
+
+#
+# Add warnings and extra on 64bit issues
+#
+ifeq ($(ARCH_DATA_MODEL), 64)
+  CFLAGS_COMMON += -Wp64 
+endif
+CFLAGS_COMMON += -W$(COMPILER_WARNING_LEVEL)
+
+#
+# Treat compiler warnings as errors, if requested
+#
+ifeq ($(COMPILER_WARNINGS_FATAL),true)
+  CFLAGS_COMMON += -WX
+endif
+
+CPPFLAGS_OPT    = 
+CPPFLAGS_DBG    = -DDEBUG -DLOGGING
+
+CXXFLAGS_COMMON = $(CFLAGS_COMMON)
+CXXFLAGS_OPT    = $(CFLAGS_OPT)
+CXXFLAGS_DBG    = $(CFLAGS_DBG)
+
+ifneq ($(LIBRARY),fdlibm)
+  ifeq ($(ARCH), amd64)
+    EXTRA_LIBS += advapi32.lib bufferoverflowu.lib
+  else
+    EXTRA_LIBS += advapi32.lib
+  endif
+endif
+
+#
+# Path and option to link against the VM, if you have to. 
+#
+JVMLIB = $(LIBDIR)/jvm.lib
+JAVALIB = $(LIBDIR)/java.lib
+
+ifeq ($(CC_VERSION), msvc)
+  CC_DEPEND        = -FD
+  CC_DEPEND_FILTER = 
+else # CC_VERSION
+# not supported, but left for historical reference...
+  CC_DEPEND        = -MM
+  CC_DEPEND_FILTER = $(SED) -e 's!$*\.$(OBJECT_SUFFIX)!$(dir $@)&!g'
+endif # CC_VERSION
+
+LIBRARY_SUFFIX = dll
+LIB_SUFFIX     = lib
+
+# Settings for the JDI - Serviceability Agent binding.
+HOTSPOT_SALIB_PATH   = $(HOTSPOT_IMPORT_PATH)/jre/bin
+SALIB_NAME = $(LIB_PREFIX)sawindbg.$(LIBRARY_SUFFIX)
+SAMAP_NAME = $(LIB_PREFIX)sawindbg.map
+SAPDB_NAME = $(LIB_PREFIX)sawindbg.pdb
+
+ifeq ($(ARCH), ia64)
+  # SA will never be supported here.
+  INCLUDE_SA = false
+else
+  # Hopefully, SA will be supported here one of these days,
+  # and these will be changed to true.  Until then,
+  # to build SA on windows, do a control build with
+  #    BUILD_WIN_SA=1
+  # on the make command.
+  ifdef BUILD_WIN_SA
+    ifeq ($(ARCH), amd64)
+      INCLUDE_SA = true
+    else
+      INCLUDE_SA = true
+    endif
+  else
+    ifeq ($(ARCH), amd64)
+      INCLUDE_SA = false
+    else
+      INCLUDE_SA = false
+    endif
+  endif
+endif
+
+# Settings for the VERSIONINFO tap on windows. 
+VERSIONINFO_RESOURCE = $(J2SE_TOPDIR)/src/windows/resource/version.rc
+
+ifneq ($(JDK_BUILD_NUMBER),)
+ COOKED_BUILD_NUMBER = $(shell $(ECHO) $(JDK_BUILD_NUMBER) | $(SED) -e 's/^b//' -e 's/^0//')
+else
+ COOKED_BUILD_NUMBER = 0
+endif
+
+# If the update version contains non-numeric characters, we need
+# to massage it into a numeric format. 
+# We use the following formula:
+# J2SE_UPDATE_VER = JDK_UPDATE_VERSION * 10 + EXCEPTION_VERSION
+#
+# Here are some examples:
+#     1.5.0    b01  ->  5,0,0,1
+#     1.5.0_10 b01  ->  5,0,100,1
+#     1.4.2 b01     ->  4,2,0,1
+#     1.4.2_02 b01  ->  4,2,20,1
+#     1.4.2_02a b01 ->  4,2,21,1
+#     1.4.2_02b b01 ->  4,2,22,1
+ifdef JDK_UPDATE_VERSION
+  VTMP := $(shell $(ECHO) $(JDK_UPDATE_VERSION) | $(TR) "abcde" "12345")
+  CAB_CHAR1 := $(shell $(ECHO) $(VTMP) | $(NAWK) '{print substr($$1, 1, 1);}')
+  CAB_CHAR2 := $(shell $(ECHO) $(VTMP) | $(NAWK) '{print substr($$1, 2, 1);}')
+  CAB_CHAR3 := $(shell $(ECHO) $(VTMP) | $(NAWK) '{print substr($$1, 3, 1);}')
+  J2SE_UPDATE_META_TAG := U$(MARKETING_NUMBER)
+  ifeq ($(CAB_CHAR3),)
+    CAB_CHAR3 := 0
+  endif
+  ifeq ($(CAB_CHAR1), 0)
+    J2SE_UPDATE_VER := $(CAB_CHAR2)$(CAB_CHAR3)
+  else
+    J2SE_UPDATE_VER := $(CAB_CHAR1)$(CAB_CHAR2)$(CAB_CHAR3)
+  endif
+else
+  J2SE_UPDATE_VER := 0
+endif
+J2SE_VER = $(JDK_MINOR_VERSION),$(JDK_MICRO_VERSION),$(J2SE_UPDATE_VER),$(COOKED_BUILD_NUMBER)
+IMVERSIONVALUE=$(JDK_MINOR_VERSION).$(JDK_MICRO_VERSION).$(J2SE_UPDATE_VER).$(COOKED_BUILD_NUMBER)
+
+RC_FLAGS = /l 0x409 /r
+
+ifeq ($(VARIANT), OPT)
+  RC_FLAGS += -d NDEBUG 
+else
+  RC_FLAGS += $(MS_RC_DEBUG_OPTION)
+endif 
+
+RC_FLAGS += -d "J2SE_BUILD_ID=$(FULL_VERSION)" \
+            -d "J2SE_COMPANY=Sun Microsystems, Inc." \
+            -d "J2SE_COMPONENT=Java(TM) Platform SE binary" \
+            -d "J2SE_VER=$(JDK_MINOR_VERSION).$(JDK_MICRO_VERSION).$(J2SE_UPDATE_VER).$(COOKED_BUILD_NUMBER)" \
+            -d "J2SE_COPYRIGHT=Copyright \xA9 $(COPYRIGHT_YEAR)" \
+            -d "J2SE_NAME=Java(TM) Platform SE $(JDK_MINOR_VERSION) $(J2SE_UPDATE_META_TAG)" \
+            -d "J2SE_FVER=$(J2SE_VER)"
+
+# Enable 7-Zip LZMA file (de)compression for Java Kernel if it is available
+
+ifneq ($(KERNEL), off)
+  # This is a hack to use until  7-Zip (and UPX) bundles can be put
+  # under /java/devtools.
+  ifndef DEPLOY_TOPDIR
+    DEPLOY_TOPDIR=$(J2SE_TOPDIR)/../deploy
+  endif
+  # Uncomment this block to cause build failure if above assumption false
+  #DCHK = $(shell if [ ! -d $(DEPLOY_TOPDIR) ] ; then \
+  #  $(ECHO) deploy_not_a_peer_of_j2se ; \
+  #fi )
+  #ifeq ($(DCHK), deploy_not_a_peer_of_j2se)
+  #  If a build failure points to control coming here it means
+  #  it means deploy is not in the same directory
+  #  as j2se. Java Kernel can't tolerate that for the time being.
+  #endif
+  EC_TMP = $(shell if [ -d $(DEPLOY_TOPDIR)/make/lzma ] ; then \
+    $(ECHO) true ; \
+  else \
+    $(ECHO) false ; \
+  fi )
+  ifeq ($(EC_TMP), true)
+    EXTRA_COMP_INSTALL_PATH = lib\\\\deploy\\\\lzma.dll
+    # Crazy but true: deploy/make/plugin/jinstall/Makefile.jkernel does
+    # not include deploy/make/common/Defs-windows.gmk, either directly
+    # or indirectly. But it does include this file, so redundantly declare
+    # these variables that are in deploy/make/common/Defs-windows.gmk for
+    # the sake of the Java Kernel part of the deploy build. Whew!
+    EXTRA_COMP_LIB_NAME = lzma.dll
+    EXTRA_COMP_PATH = $(OUTPUTDIR)/tmp/deploy/lzma/win32/obj
+    EXTRA_COMP_CMD_PATH = $(EXTRA_COMP_PATH)/lzma.exe
+    EXTRA_COMP_LIB_PATH = $(EXTRA_COMP_PATH)/$(EXTRA_COMP_LIB_NAME)
+  endif
+endif

@@ -1,0 +1,65 @@
+#
+# @(#)FILES_c.gmk	1.66 10/03/23
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+FILES_c = \
+	$(CTARGDIR)AccessController.c \
+	$(CTARGDIR)Array.c \
+	$(CTARGDIR)String.c \
+	$(CTARGDIR)Class.c \
+	$(CTARGDIR)ClassLoader.c \
+	$(CTARGDIR)Compiler.c \
+	$(CTARGDIR)Console_md.c \
+	$(CTARGDIR)Double.c \
+	$(CTARGDIR)FileSystem_md.c \
+	$(CTARGDIR)FileDescriptor_md.c \
+	$(CTARGDIR)FileInputStream.c \
+	$(CTARGDIR)FileInputStream_md.c \
+	$(CTARGDIR)FileOutputStream_md.c \
+	$(CTARGDIR)Finalizer.c \
+	$(CTARGDIR)Float.c \
+	$(CTARGDIR)Object.c \
+	$(CTARGDIR)ObjectOutputStream.c \
+	$(CTARGDIR)ObjectInputStream.c \
+	$(CTARGDIR)ObjectStreamClass.c \
+	$(CTARGDIR)Package.c \
+	$(CTARGDIR)ProcessEnvironment_md.c \
+	$(CTARGDIR)Proxy.c \
+	$(CTARGDIR)RandomAccessFile.c \
+	$(CTARGDIR)RandomAccessFile_md.c \
+	$(CTARGDIR)ResourceBundle.c \
+	$(CTARGDIR)Runtime.c \
+	$(CTARGDIR)SecurityManager.c \
+	$(CTARGDIR)Shutdown.c \
+	$(CTARGDIR)StrictMath.c \
+	$(CTARGDIR)System.c \
+	$(CTARGDIR)Thread.c \
+	$(CTARGDIR)Throwable.c \
+	$(CTARGDIR)Signal.c \
+	$(CTARGDIR)NativeSignalHandler.c \
+	$(CTARGDIR)verify_stub.c \
+	$(CTARGDIR)io_util.c \
+	$(CTARGDIR)io_util_md.c \
+	$(CTARGDIR)jio.c \
+	$(CTARGDIR)logging.c \
+	$(CTARGDIR)jni_util.c \
+	$(CTARGDIR)jni_util_md.c \
+	$(CTARGDIR)jdk_util.c \
+	$(CTARGDIR)jdk_util_md.c \
+	$(CTARGDIR)check_version.c \
+	$(CTARGDIR)java_props_md.c \
+	$(CTARGDIR)DriverManager.c \
+	$(CTARGDIR)ConstantPool.c \
+	$(CTARGDIR)MessageUtils.c \
+	$(CTARGDIR)GC.c \
+	$(CTARGDIR)NativeAccessors.c \
+	$(CTARGDIR)Reflection.c \
+	$(CTARGDIR)Bits.c \
+	$(CTARGDIR)Atomic.c \
+	$(CTARGDIR)AtomicLong.c \
+	$(CTARGDIR)Version.c \
+	$(CTARGDIR)VM.c \
+	$(CTARGDIR)VMSupport.c 

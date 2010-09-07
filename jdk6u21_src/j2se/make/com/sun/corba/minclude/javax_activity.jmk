@@ -1,0 +1,13 @@
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+javax_activity_java = \
+	$(GROUP0)
+
+GROUP0 =  \
+	$(TARGDIR)javax/activity/InvalidActivityException.java \
+	$(TARGDIR)javax/activity/ActivityRequiredException.java \
+	$(TARGDIR)javax/activity/ActivityCompletedException.java
+

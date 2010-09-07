@@ -1,0 +1,27 @@
+#
+# @(#)mapfile-vers	1.6 10/03/23
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+# Define public interface.
+
+SUNWprivate_1.1 {
+	global:
+		JNI_OnLoad;
+		Java_sun_security_smartcardio_PlatformPCSC_initialize;
+		Java_sun_security_smartcardio_PCSC_SCardEstablishContext;
+		Java_sun_security_smartcardio_PCSC_SCardListReaders;
+		Java_sun_security_smartcardio_PCSC_SCardConnect;
+		Java_sun_security_smartcardio_PCSC_SCardTransmit;
+		Java_sun_security_smartcardio_PCSC_SCardStatus;
+		Java_sun_security_smartcardio_PCSC_SCardDisconnect;
+		Java_sun_security_smartcardio_PCSC_SCardGetStatusChange;
+		Java_sun_security_smartcardio_PCSC_SCardBeginTransaction;
+		Java_sun_security_smartcardio_PCSC_SCardEndTransaction;
+		Java_sun_security_smartcardio_PCSC_SCardControl;
+		
+	local:
+		*;
+};

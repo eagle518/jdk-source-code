@@ -1,0 +1,24 @@
+#
+# @(#)FILES_c.gmk	1.4 10/03/23
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+ifeq ($(PLATFORM),windows)
+FILES_c = \
+        WindowsAttachProvider.c \
+	WindowsVirtualMachine.c
+endif
+
+ifeq ($(PLATFORM),solaris)
+FILES_c = \
+	SolarisVirtualMachine.c
+endif	
+
+ifeq ($(PLATFORM),linux)
+FILES_c = \
+	LinuxVirtualMachine.c
+endif
+
+

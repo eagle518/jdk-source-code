@@ -1,0 +1,58 @@
+#
+# @(#)SwingHTML32DTD.gmk	1.34 10/03/23
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# Build the dtd for text.html.parser swing package. 
+#
+
+swing-html32dtd:
+	$(MAKE) make-html32dtd
+
+#
+# Files to compile.
+#
+FILES_java = 	dtdbuilder/PublicMapping.java \
+		dtdbuilder/DTDParser.java \
+		dtdbuilder/DTDInputStream.java \
+		dtdbuilder/DTDBuilder.java
+
+#
+# Rules.
+#
+include $(BUILDDIR)/common/Defs.gmk
+include $(BUILDDIR)/common/Classes.gmk
+
+BUILDTOOLSDIR = $(BUILDDIR)/tools
+
+$(CLASSDESTDIR)/%.class: $(BUILDTOOLSDIR)/%.java
+	@$(ECHO) $? >> $(TEMPDIR)/.classes.list
+
+SWINGPKG        = javax/swing
+
+#
+# Shared defintions.
+#
+HTML32DTD = $(CLASSBINDIR)/$(SWINGPKG)/text/html/parser/html32.bdtd
+
+#
+# Real rules.
+#
+make-html32dtd: classes $(HTML32DTD)
+
+$(HTML32DTD): $(FILES_class)
+	$(RM) $(HTML32DTD)
+	($(JAVA) \
+		-classpath "$(CLASSDESTDIR)" \
+		-Ddtd_home=$(BUILDTOOLSDIR)/dtdbuilder/dtds \
+		dtdbuilder.DTDBuilder html32 > $@) || exit 1
+	@$(java-vm-cleanup)
+
+html32dtd.clean:: 
+	$(RM) -r $(CLASSDESTDIR)
+	$(RM) $(TEMPDIR)/.classes.list
+
+.PHONY: swing-html32dtd make-html32dtd html32dtd.clean 

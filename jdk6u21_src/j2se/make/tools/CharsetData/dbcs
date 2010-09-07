@@ -1,0 +1,2 @@
+#clzName  csName     hisName  base              pkg             b1minL b1maxL b1minR b1maxR b2min b2max
+IBM1364	  x-IBM1364  null     IBM_EBCDIC_DBCS	sun.nio.cs.ext	0x40   0x6e   0x80   0xde   0x40  0xfe

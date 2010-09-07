@@ -1,0 +1,64 @@
+#
+# @(#)com_sun_corba_se_impl_orbutil.jmk	1.40 10/03/23
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+com_sun_corba_se_impl_orbutil_java = \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/CacheTable.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/CorbaResourceUtil.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/DenseIntMapImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/HexOutputStream.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/IIOPInputStream_1_3.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/IIOPInputStream_1_3_1.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/IIOPOutputStream_1_3.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/IIOPOutputStream_1_3_1.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/LegacyHookGetFields.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/LegacyHookPutFields.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/LogKeywords.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/ObjectStreamClass_1_3_1.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/ObjectStreamField.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/ObjectWriter.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/ObjectUtility.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/ObjectStreamClassUtil_1_3.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/ORBConstants.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/ORBUtility.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/ORBClassLoader.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/RepIdDelegator.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/RepIdDelegator_1_3.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/RepIdDelegator_1_3_1.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/RepositoryIdCache_1_3.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/RepositoryId_1_3.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/RepositoryIdFactory.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/RepositoryIdStrings.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/RepositoryIdUtility.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/RepositoryIdInterface.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/RepositoryIdCache_1_3_1.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/RepositoryId_1_3_1.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/StackImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/ValueHandlerImpl_1_3_1.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/ValueHandlerImpl_1_3.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/closure/Future.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/closure/Constant.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/concurrent/Sync.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/concurrent/SyncUtil.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/concurrent/ReentrantMutex.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/concurrent/DebugMutex.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/concurrent/Mutex.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/concurrent/CondVar.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/fsm/GuardedAction.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/fsm/NameBase.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/fsm/StateEngineImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/threadpool/ThreadPoolImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/threadpool/ThreadPoolManagerImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/threadpool/TimeoutException.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/threadpool/WorkQueueImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/copyobject/CopierManagerImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/copyobject/FallbackObjectCopierImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/copyobject/ORBStreamObjectCopierImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/copyobject/ReferenceObjectCopierImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/graph/Node.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/graph/NodeData.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/graph/Graph.java \
+	$(TARGDIR)com/sun/corba/se/impl/orbutil/graph/GraphImpl.java 

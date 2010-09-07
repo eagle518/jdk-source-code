@@ -1,0 +1,37 @@
+#
+# @(#)FILES.gmk	1.10 10/03/23
+# 
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+DEMO_java = \
+  $(DEMODST_SRC)JDBCAdapter.java \
+  $(DEMODST_SRC)OldJTable.java \
+  $(DEMODST_SRC)TableExample.java \
+  $(DEMODST_SRC)TableExample2.java \
+  $(DEMODST_SRC)TableExample3.java \
+  $(DEMODST_SRC)TableExample4.java \
+  $(DEMODST_SRC)TableMap.java \
+  $(DEMODST_SRC)TableSorter.java \
+
+
+DEMO_class = \
+  $(DEMODST_CLASS)/JDBCAdapter.class \
+  $(DEMODST_CLASS)/OldJTable.class \
+  $(DEMODST_CLASS)/TableExample.class \
+  $(DEMODST_CLASS)/TableExample2.class \
+  $(DEMODST_CLASS)/TableExample3.class \
+  $(DEMODST_CLASS)/TableExample4.class \
+  $(DEMODST_CLASS)/TableMap.class \
+  $(DEMODST_CLASS)/TableSorter.class \
+
+
+DEMO_dirs = \
+  $(DEMODST) \
+
+
+DEMO_other = \
+  $(DEMODST)/README.txt \
+
+

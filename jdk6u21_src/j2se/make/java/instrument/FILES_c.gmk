@@ -1,0 +1,24 @@
+#
+# %W% %E%
+# 
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# %W% %E%
+#
+FILES_c = \
+	EncodingSupport.c \
+	EncodingSupport_md.c \
+	FileSystemSupport_md.c \
+	InstrumentationImplNativeMethods.c \
+	InvocationAdapter.c \
+	JarFacade.c \
+	JPLISAgent.c \
+	JPLISAssert.c \
+	JavaExceptions.c \
+	PathCharsValidator.c \
+	Reentrancy.c \
+	Utilities.c
+

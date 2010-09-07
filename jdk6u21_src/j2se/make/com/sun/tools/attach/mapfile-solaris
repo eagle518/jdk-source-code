@@ -1,0 +1,22 @@
+#
+#ident	"@(#)mapfile-solaris	1.4 10/04/01"
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+#
+# This software is the proprietary information of Oracle.
+# Use is subject to license terms.
+#
+
+# Define public interface.
+
+SUNWprivate_1.1 {
+	global:
+            Java_sun_tools_attach_SolarisVirtualMachine_checkPermissions;
+            Java_sun_tools_attach_SolarisVirtualMachine_enqueue;
+            Java_sun_tools_attach_SolarisVirtualMachine_open;
+	    Java_sun_tools_attach_SolarisVirtualMachine_close;
+	    Java_sun_tools_attach_SolarisVirtualMachine_read;
+	    Java_sun_tools_attach_SolarisVirtualMachine_sigquit;
+	local:
+		*;
+};

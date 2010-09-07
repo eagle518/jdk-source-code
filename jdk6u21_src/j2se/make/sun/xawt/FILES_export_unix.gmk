@@ -1,0 +1,20 @@
+#
+# @(#)FILES_export_unix.gmk	1.40 10/03/23
+# 
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+# @(#)FILES_export_unix.gmk 1.33 02/03/98
+
+#
+# include rules
+#
+
+FILES_export =   \
+      sun/awt/X11/XlibWrapper.java \
+      sun/awt/X11/XWindow.java \
+      sun/awt/X11/XDesktopPeer.java \
+      sun/awt/X11/XToolkit.java \
+      sun/awt/X11/XComponentPeer.java \
+      sun/awt/X11/XInputMethod.java

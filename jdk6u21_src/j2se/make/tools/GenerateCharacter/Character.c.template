@@ -1,0 +1,73 @@
+/*
+ * @(#)Character.c.template	1.3 10/04/01
+ *
+ * Copyright (c) 1994, 2002, Oracle and/or its affiliates. All rights reserved.
+ *
+ * This software is the proprietary information of Oracle.
+ * Use is subject to license terms.
+ *
+ */
+
+
+#include <ctype.h>
+
+#include "bool.h"
+#include "utf.h"
+
+  $$Tables
+
+/* Take pointer to a string.  Skip over the longest part of the string that
+ * could be taken as a fieldname.  Allow '/' if slash_okay is TRUE.
+ *
+ * Return a pointer to just past the fieldname.  Return NULL if no fieldname
+ * at all was found, or in the case of slash_okay being true, we saw
+ * consecutive slashes (meaning we were looking for a qualified path but
+ * found something that was badly-formed). 
+ */
+
+#define bool_t int
+
+char *
+skip_over_fieldname(char *name, bool_t slash_okay)
+{
+    char *p = name;
+    char *last_p;
+    unicode ch;
+    unicode last_ch = 0;
+
+    ch = *p;
+    if (ch == (ch & 0x7F))
+	++p;
+    else
+	ch = next_utf2unicode(&p);
+    if (($$Lookup(ch) & $$bitJavaStart) == 0)
+	return 0;
+    for (;;) {
+	last_p = p;
+	last_ch = ch;
+	ch = *p;
+	if (ch == (ch & 0x7F))
+	    ++p;
+	else
+	    ch = next_utf2unicode(&p);
+        if (($$Lookup(ch) & $$bitJavaPart) == 0) {
+	    if (ch == '/' && slash_okay) {
+		if (last_ch == '/')
+		    return 0;
+	    }
+	    else {
+		return last_p;
+	    }
+	}
+    }
+}
+
+void main() {
+  int j;
+  for (j = 0; j < (1 << 16); j++) {
+    int q = $$Lookup(j);
+    printf("%04x%s%s\n", j,
+	   (q & $$bitJavaStart ? " Start" : ""),
+	   (q & $$bitJavaPart ? " Part" : ""));
+  }
+}

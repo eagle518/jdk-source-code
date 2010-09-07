@@ -1,0 +1,3 @@
+sun_corba_java = \
+	$(TARGDIR)sun/corba/BridgePermission.java \
+	$(TARGDIR)sun/corba/Bridge.java

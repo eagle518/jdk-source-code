@@ -1,0 +1,66 @@
+#
+# @(#)FILES.gmk	1.14 10/03/23
+# 
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# @(#)FILES.gmk	1.14 10/03/23
+#
+
+DEMO_java  = $(DEMODST)/AnimatingContext.java \
+	     $(DEMODST)/CloningFeature.java \
+	     $(DEMODST)/Controls.java \
+	     $(DEMODST)/CustomControls.java \
+	     $(DEMODST)/DemoGroup.java \
+	     $(DEMODST)/DemoImages.java \
+	     $(DEMODST)/DemoPanel.java \
+	     $(DEMODST)/DemoSurface.java \
+	     $(DEMODST)/Intro.java \
+	     $(DEMODST)/Java2Demo.java \
+	     $(DEMODST)/Java2DemoApplet.java \
+	     $(DEMODST)/MemoryMonitor.java \
+	     $(DEMODST)/PerformanceMonitor.java \
+	     $(DEMODST)/RunWindow.java \
+	     $(DEMODST)/TextureChooser.java \
+	     $(DEMODST)/GlobalPanel.java \
+	     $(DEMODST)/Tools.java
+
+DEMO_dirs  = $(DEMODIR) \
+	     $(DEMODST) \
+	     $(DEMODST)/images
+
+DEMO_other = \
+	     $(DEMODST)/Java2DemoApplet.html \
+	     $(DEMODST)/README.txt \
+	     $(DEMODST)/images/HotJava-16.gif \
+	     $(DEMODST)/images/bld.jpg \
+	     $(DEMODST)/images/boat.gif \
+	     $(DEMODST)/images/box.gif \
+	     $(DEMODST)/images/boxwave.gif \
+	     $(DEMODST)/images/clone.gif \
+	     $(DEMODST)/images/clouds.jpg \
+	     $(DEMODST)/images/duke.gif \
+	     $(DEMODST)/images/duke.running.gif \
+	     $(DEMODST)/images/dukeplug.gif \
+	     $(DEMODST)/images/fight.gif \
+	     $(DEMODST)/images/globe.gif \
+	     $(DEMODST)/images/jumptojavastrip.gif \
+	     $(DEMODST)/images/magnify.gif \
+	     $(DEMODST)/images/painting.gif \
+	     $(DEMODST)/images/stop.gif \
+	     $(DEMODST)/images/stop2.gif \
+	     $(DEMODST)/images/remove.gif \
+	     $(DEMODST)/images/start.gif \
+	     $(DEMODST)/images/start2.gif \
+	     $(DEMODST)/images/loop.gif \
+	     $(DEMODST)/images/looping.gif \
+	     $(DEMODST)/images/snooze.gif \
+	     $(DEMODST)/images/star7.gif \
+	     $(DEMODST)/images/surfing.gif \
+	     $(DEMODST)/images/thumbsup.gif \
+	     $(DEMODST)/images/tip.gif \
+	     $(DEMODST)/images/print.gif \
+	     $(DEMODST)/images/cupanim.gif \
+	     $(DEMODST)/images/java_logo.gif

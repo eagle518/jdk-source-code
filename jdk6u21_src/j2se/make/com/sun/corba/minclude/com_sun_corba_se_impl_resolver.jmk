@@ -1,0 +1,10 @@
+com_sun_corba_se_impl_resolver_java = \
+	$(TARGDIR)com/sun/corba/se/impl/resolver/BootstrapResolverImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/resolver/CompositeResolverImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/resolver/INSURLOperationImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/resolver/LocalResolverImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/resolver/ORBDefaultInitRefResolverImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/resolver/ORBInitRefResolverImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/resolver/SplitLocalResolverImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/resolver/FileResolverImpl.java
+

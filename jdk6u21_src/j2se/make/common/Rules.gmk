@@ -1,0 +1,435 @@
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+dummy:=$(warning, "FILES_java=$(FILES_java)")
+
+#
+# @(#)Rules.gmk	1.117 10/03/23
+#
+# Rules shared by all Java makefiles.
+#
+
+# Make sure the default rule is all
+rules_default_rule: all
+
+#
+# Directory set up.  (Needed by deploy workspace)
+# 
+$(CLASSDESTDIR) $(CLASSHDRDIR) $(OBJDIR) $(OUTPUTDIR) $(BINDIR) $(LIBDIR) $(LIBDIR)/$(LIBARCH) $(TEMPDIR) $(EXTDIR):
+	$(MKDIR) -p $@ 
+
+#
+# Convert any *.properties files to *.java files with CompileProperties
+#
+
+#
+# If AUTO_FILES_PROPERTIES_DIRS used, automatically find properties files
+#
+ifdef AUTO_FILES_PROPERTIES_DIRS
+  AUTO_FILES_PROPERTIES_FILTERS1  = SCCS 'X-*' '*-X-*' ',*'
+  AUTO_FILES_PROPERTIES_FILTERS1 += $(AUTO_PROPERTIES_PRUNE)
+  FILES_properties_find_filters1 = $(AUTO_FILES_PROPERTIES_FILTERS1:%=-name % -prune -o)
+  FILES_properties_auto1 := \
+     $(shell \
+        for dir in $(SHARE_SRC)/classes $(PLATFORM_SRC)/classes ; do \
+          if [ -d $$dir ] ; then \
+            ( $(CD) $$dir; \
+              for sdir in $(AUTO_FILES_PROPERTIES_DIRS); do \
+                if [ -d $$sdir ] ; then \
+                  $(FIND) $$sdir $(FILES_properties_find_filters1) \
+                                 -name '*.properties' -print ; \
+                fi ; \
+              done \
+            ); \
+          fi; \
+        done \
+      )
+else
+  FILES_properties_auto1 =
+endif # AUTO_FILES_PROPERTIES_DIRS
+
+# Add any automatically found properties files to the properties file list
+FILES_properties += $(FILES_properties_auto1)
+
+# Make sure we have at least a dummy rule
+compile_properties::
+compile_properties_clean::
+
+# Compile properties files into java source?
+ifdef COMPILED_PROPERTIES_SUPERCLASS
+
+# Add all properties files to the compiled properties list (all or nothing)
+COMPILED_PROPERTIES := $(FILES_compiled_properties) $(FILES_properties)
+
+# Skip all this logic if there are no properties files to deal with
+ifneq ($(COMPILED_PROPERTIES),)
+
+# Make sure we have a properties compiler
+PCOMPILER_TEMPDIR=$(TEMPDIR)/properties_compiler
+PCOMPILER_JAVA=$(J2SE_TOPDIR)/make/tools/CompileProperties/CompileProperties.java
+PCOMPILER_CLASS=$(PCOMPILER_TEMPDIR)/CompileProperties.class
+PCOMPILER=$(JAVA) -classpath $(PCOMPILER_TEMPDIR) CompileProperties
+
+$(PCOMPILER_CLASS): $(PCOMPILER_JAVA)
+	@$(prep-target)
+	$(JAVAC_BOOT) -d $(PCOMPILER_TEMPDIR) $<
+
+# File that will hold properties compiler options, so we run compiler once
+PCOMPILER_OPTIONS=$(PCOMPILER_TEMPDIR)/pcompiler_options
+
+# On each properties file, if we need a java source file, add to the options
+#    and also add the source name to the list of java sources to compile.
+$(GENSRCDIR)/%.java: $(PLATFORM_SRC)/classes/%.properties
+	@$(prep-target)
+	@$(ECHO) "-compile $? $@ $(COMPILED_PROPERTIES_SUPERCLASS)" \
+	      >> $(PCOMPILER_OPTIONS)
+	@$(ECHO) "$@" >> $(JAVA_SOURCE_LIST)
+$(GENSRCDIR)/%.java: $(SHARE_SRC)/classes/%.properties
+	@$(prep-target)
+	@$(ECHO) "-compile $? $@ $(COMPILED_PROPERTIES_SUPERCLASS)" \
+	      >> $(PCOMPILER_OPTIONS)
+	@$(ECHO) "$@" >> $(JAVA_SOURCE_LIST)
+
+# List of java files converted from properties files needed
+GENERATED_java = $(COMPILED_PROPERTIES:%.properties=$(GENSRCDIR)/%.java)
+
+# Construct properties compile options file
+pcompiler_options_prime:
+	@$(MKDIR) -p $(PCOMPILER_TEMPDIR)
+$(PCOMPILER_OPTIONS): pcompiler_options_prime $(GENERATED_java)
+	@$(TOUCH) $@
+pcompiler_options_clean::
+	$(RM) $(PCOMPILER_OPTIONS)
+
+# Make sure all are compiled, one compiler run
+compile_properties:: pcompiler_options_prime pcompiler_options_clean pcompile_properties
+pcompile_properties: $(PCOMPILER_CLASS) $(PCOMPILER_OPTIONS)
+	@$(MKDIR) -p $(GENSRCDIR)
+	@if [ `$(CAT) $(PCOMPILER_OPTIONS) | $(WC) -l` -ge 1 ] ; then \
+	  $(ECHO) "$(PCOMPILER) -optionsfile $(PCOMPILER_OPTIONS)"; \
+	  $(PCOMPILER) -optionsfile $(PCOMPILER_OPTIONS) ; \
+	fi
+	@$(java-vm-cleanup)
+
+# Cleanup generated sources
+compile_properties_clean::
+	@$(RM) $(GENERATED_java)
+	$(RM) -r $(PCOMPILER_TEMPDIR)
+
+endif # FILES_compiled_properties
+
+endif # COMPILED_PROPERTIES_SUPERCLASS
+
+#
+# Compiling .java files.
+#
+
+#
+# Automatically add to FILES_java if AUTO_FILES_JAVA_DIRS is defined
+#
+#    There are two basic types of sources, normal source files and the
+#    generated ones. The Normal sources will be located in:
+#         $(SHARE_SRC)/classes and $(PLATFORM_SRC)/classes.
+#    The generated sources, which might show up late to dinner, are at:
+#         $(GENSRCDIR)
+#    and since they could be generated late, we need to be careful that
+#    we look for these sources late and not use the ':=' assignment which
+#    might miss their generation.
+
+ifdef AUTO_FILES_JAVA_DIRS
+  # Filter out these files or directories
+  AUTO_FILES_JAVA_SOURCE_FILTERS1  = SCCS 'X-*' '*-X-*' '*-template.java' ',*'
+  AUTO_FILES_JAVA_SOURCE_FILTERS2  = 
+  AUTO_FILES_JAVA_SOURCE_FILTERS1 += $(AUTO_JAVA_PRUNE)
+  AUTO_FILES_JAVA_SOURCE_FILTERS2 += $(AUTO_JAVA_PRUNE)
+
+  # First list is the normal sources that should always be there,
+  #   by using the ':=', which means we do this processing once.
+  FILES_java_find_filters1 = $(AUTO_FILES_JAVA_SOURCE_FILTERS1:%=-name % -prune -o)
+  FILES_java_auto1 := \
+     $(shell \
+        for dir in $(SHARE_SRC)/classes $(PLATFORM_SRC)/classes ; do \
+          if [ -d $$dir ] ; then \
+            ( $(CD) $$dir; \
+              for sdir in $(AUTO_FILES_JAVA_DIRS); do \
+                if [ -d $$sdir ] ; then \
+                  $(FIND) $$sdir $(FILES_java_find_filters1) \
+                                 -name '*.java' -print ; \
+                fi ; \
+              done \
+            ); \
+          fi; \
+        done \
+      )
+  # Second list is the generated sources that should be rare, but will likely
+  #   show up late and we need to look for them at the last minute, so we
+  #   cannot use the ':=' assigment here. But if this gets expanded multiple
+  #   times, the if tests should make them relatively cheap.
+  FILES_java_find_filters2 = $(AUTO_FILES_JAVA_SOURCE_FILTERS2:%=-name % -prune -o)
+  FILES_java_auto2 = \
+     $(shell \
+        for dir in $(GENSRCDIR); do \
+          if [ -d $$dir ] ; then \
+            ( $(CD) $$dir; \
+              for sdir in $(AUTO_FILES_JAVA_DIRS); do \
+                if [ -d $$sdir ] ; then \
+                  $(FIND) $$sdir $(FILES_java_find_filters2) \
+                                 -name '*.java' -print ; \
+                fi ; \
+              done \
+            ); \
+          fi; \
+        done \
+      )
+else
+  FILES_java_auto1 =
+  FILES_java_auto2 =
+endif
+
+# Add all found java sources to FILES_java macro (if AUTO_FILES_JAVA_DIRS used)
+FILES_java += $(FILES_java_auto1) $(FILES_java_auto2)
+
+# File that will hold java source names that need compiling
+JAVA_SOURCE_LIST=$(TEMPDIR)/.classes.list
+
+ifdef DEMOS
+$(CLASSDESTDIR)/%.class: $(SOURCEPATH)/%.java
+	@$(ECHO) "$?" >> $(JAVA_SOURCE_LIST)
+	@$(check-conventions)
+#Redirect zh_HK java files to tmp directory which created from zh_TW
+#$(CLASSDESTDIR)/%_zh_HK.class: $(J2SE_L10N_TMP_OUTPUTDIR)/%_zh_HK.java
+#	@$(ECHO) "$?" >> $(JAVA_SOURCE_LIST)
+else
+$(CLASSDESTDIR)/%.class: $(GENSRCDIR)/%.java
+	@$(ECHO) "$?" >> $(JAVA_SOURCE_LIST)
+	@$(check-conventions)
+$(CLASSDESTDIR)/%.class: $(PLATFORM_SRC)/classes/%.java
+	@$(ECHO) "$?" >> $(JAVA_SOURCE_LIST)
+	@$(check-conventions)
+$(CLASSDESTDIR)/%.class: $(SHARE_SRC)/classes/%.java
+	@$(ECHO) "$?" >> $(JAVA_SOURCE_LIST)
+	@$(check-conventions)
+#Redirect zh_HK java files to tmp directory which created from zh_TW
+$(CLASSDESTDIR)/%_zh_HK.class: $(J2SE_L10N_TMP_OUTPUTDIR)/%_zh_HK.java
+	@$(ECHO) "$?" >> $(JAVA_SOURCE_LIST)
+	@$(check-conventions)
+endif
+
+# List of class files needed
+FILES_class = $(FILES_java:%.java=$(CLASSDESTDIR)/%.class)
+
+# Got to include exported files.
+FILES_class += $(FILES_export:%.java=$(CLASSDESTDIR)/%.class)
+
+# Construct list of java sources we need to compile
+source_list_prime:
+	@$(MKDIR) -p $(TEMPDIR)
+# Note that we slip compile_properties in here:
+$(JAVA_SOURCE_LIST) : source_list_prime compile_properties $(FILES_class)
+	@$(TOUCH) $@
+
+.delete.classlist:
+	@$(RM) $(JAVA_SOURCE_LIST)
+
+# Make sure all newer sources are compiled (in a batch)
+classes : $(CLASSES_INIT) .delete.classlist .compile.classlist
+
+.compile.classlist : $(JAVA_SOURCE_LIST)
+	@$(MKDIR) -p $(CLASSDESTDIR)
+	@if [ `$(CAT) $(JAVA_SOURCE_LIST) | $(WC) -l` -ge 1 ] ; then \
+	  $(ECHO) "# Java sources to be compiled: (listed in file $(JAVA_SOURCE_LIST))"; \
+	  $(CAT) $(JAVA_SOURCE_LIST); \
+	  $(ECHO) "# Running javac:"; \
+	  $(ECHO) $(JAVAC_CMD) @$(JAVA_SOURCE_LIST); \
+	  $(JAVAC_CMD) @$(JAVA_SOURCE_LIST); \
+	fi
+	@$(java-vm-cleanup)
+
+clean :: compile_properties_clean
+	$(RM) $(JAVA_SOURCE_LIST)
+
+ifndef DONT_CLOBBER_CLASSES
+  ifndef PACKAGE
+    DONT_CLOBBER_CLASSES = true
+  else
+    DONT_CLOBBER_CLASSES = false
+  endif
+endif
+
+packages.clean:
+ifeq ($(DONT_CLOBBER_CLASSES),false)
+  ifdef AUTO_FILES_JAVA_DIRS
+	@for sdir in $(AUTO_FILES_JAVA_DIRS); do \
+	  $(ECHO) "$(RM) -r $(CLASSDESTDIR)/$$sdir"; \
+	  $(RM) -r $(CLASSDESTDIR)/$$sdir; \
+        done
+  else
+	$(RM) -r $(CLASSDESTDIR)/$(PKGDIR)
+  endif
+endif
+
+ifdef DEMOS
+classes.clean:
+	$(RM) -r $(DEMODST) $(CLASSDESTDIR)
+else
+classes.clean: packages.clean
+	$(RM) $(JAVA_SOURCE_LIST)
+endif
+
+#
+# C and C++ make dependencies
+#
+
+#
+# INCREMENTAL_BUILD: Record the #include file dependencies.
+#
+# NOTE: On non-windows, we build make include files with the suffix
+#       $(DEPEND_SUFFIX) on every compilation. These are initially 
+#       created as temp files just in case a ^C kills it in the middle.
+#	Compiler is smart enough to handle ^C and not create the .o file, or
+#	is supposed to be that smart, but the .$(DEPEND_SUFFIX) file creation here isn't.
+#	These .$(DEPEND_SUFFIX) files are included by Library.gmk and Program.gmk, 
+#       when they exist (Search for 'make dependencies').
+#
+
+ifneq ($(PLATFORM), windows)
+ifeq ($(INCREMENTAL_BUILD),true)
+
+$(OBJDIR)/%.$(DEPEND_SUFFIX): %.c
+	@$(prep-target)
+	@$(ECHO) "Creating $@"
+	@$(RM) $@.temp
+	@$(CC) $(CC_DEPEND) $(CPPFLAGS) $< 2> $(DEV_NULL) | \
+	    $(CC_DEPEND_FILTER) > $@.temp
+	@$(MV) $@.temp $@
+
+$(OBJDIR)/%.$(DEPEND_SUFFIX): %.cpp
+	@$(prep-target)
+	@$(ECHO) "Creating $@"
+	@$(RM) $@.temp
+	@$(CXX) $(CC_DEPEND) $(CPPFLAGS) $(CXXFLAGS) $< 2> $(DEV_NULL) | \
+	    $(CC_DEPEND_FILTER) > $@.temp
+	@$(MV) $@.temp $@
+
+endif # INCREMENTAL_BUILD
+endif # PLATFORM
+
+#
+# C, C++, asm files.
+#
+
+$(OBJDIR)/%.$(OBJECT_SUFFIX): %.c
+	@$(prep-target)
+	$(COMPILE.c) $(CC_OBJECT_OUTPUT_FLAG)$@ $(CFLAGS_GPROF) $<
+	@$(check-conventions)
+
+$(OBJDIR)/%.$(OBJECT_SUFFIX): %.cpp
+	@$(prep-target)
+	$(COMPILE.cc) $(CC_OBJECT_OUTPUT_FLAG)$@ $(CFLAGS_GPROF) $<
+	@$(check-conventions)
+
+# newer as does not handle c++ style comments
+$(OBJDIR)/%.$(OBJECT_SUFFIX): %.s
+    ifneq ($(CC_VERSION), gcc)
+	@$(prep-target)
+	$(COMPILE.s) $(CC_OBJECT_OUTPUT_FLAG)$@ $<
+    else
+	@$(prep-target)
+	$(CPP) -x assembler-with-cpp $< | $(COMPILE.s) -o $@
+    endif
+	@$(check-conventions)
+
+#
+# Quick hack for making the compiler generate just the assembly file.
+#	$ gnumake obj/sparc/myfile.s
+#
+$(OBJDIR)/%.s: %.c
+	@$(prep-target)
+	$(COMPILE.c) $(CC_OBJECT_OUTPUT_FLAG)$@ -S $<
+	@$(check-conventions)
+
+#
+# Running Javah to generate stuff into CClassHeaders.
+#
+
+ifdef FILES_export
+
+CLASSES.export  = $(subst /,.,$(FILES_export:%.java=%))
+CLASSES.export += $(subst /,.,$(FILES_export2:%.java=%))
+CLASSES.export += $(subst /,.,$(FILES_export3:%.java=%))
+CLASSES_export  = $(FILES_export:%.java=$(CLASSDESTDIR)/%.class)
+CLASSES_export += $(FILES_export2:%.java=$(CLASSDESTDIR)/%.class)
+CLASSES_export += $(FILES_export3:%.java=$(CLASSDESTDIR)/%.class)
+
+# Fix when deploy workspace makefiles don't depend on this name
+#CLASSHDR_DOTFILE=$(CLASSHDRDIR)/.classheaders
+
+CLASSHDR_DOTFILE=$(OBJDIR)/.class.headers.$(ARCH)
+
+classheaders: classes $(CLASSHDR_DOTFILE)
+
+$(CLASSHDR_DOTFILE): $(CLASSES_export)
+	$(prep-target)
+	@$(ECHO) "# Running javah:"
+	$(JAVAH_CMD) $(JAVAHFLAGS) -bootclasspath $(CLASSDESTDIR) \
+		-d $(CLASSHDRDIR)/ \
+		$(CLASSES.export) $(subst $$,\$$,$(EXPORTED_inner))
+	@$(java-vm-cleanup)
+	@$(TOUCH) $@
+
+classheaders.clean:
+	$(RM) $(CLASSHDR_DOTFILE)
+	$(RM) -r $(CLASSHDRDIR)
+
+else # FILES_export
+
+classheaders: classes
+
+classheaders.clean: 
+
+endif # FILES_export
+
+
+# remove the intermediate files from the directories.
+#    (If VARIANT=OPT, this removes all debug and fastdebug files too)
+objects.clean:
+	$(RM) -r $(OBJDIR)
+	$(RM) -r $(OBJDIR)_*
+
+#
+# Lint support
+#	(The 'lint' rule below is an older rule not using the .$(LINT_SUFFIX) files)
+#
+
+ifeq ($(PLATFORM), solaris)
+$(OBJDIR)/%.$(LINT_SUFFIX): %.c
+	@$(prep-target)
+	$(LINT.c) -dirout=$(OBJDIR) -c $<
+lint.clean:
+	$(RM) $(OBJDIR)/*.$(LINT_SUFFIX)
+# Old rule
+lint: $(FILES_c)
+        ifneq ($(FILES_c),)
+	  $(LINT.c) -Ncheck -Nlevel=3 $? $(LDLIBS) > lint.$(ARCH) 2>&1
+        endif
+endif
+
+clean clobber:: classheaders.clean classes.clean objects.clean .delete.classlist
+
+# 
+# Default dependencies
+#
+
+all: build
+
+build: classheaders
+
+default: all
+
+.PHONY: all build clean clobber \
+        .delete.classlist classes .compile.classlist classes.clean \
+	 classheaders classheaders.clean objects.clean \
+	 compile_properties \
+	 pcompiler_options_prime pcompiler_options_clean pcompile_properties
+

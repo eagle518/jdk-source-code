@@ -1,0 +1,45 @@
+#
+# @(#)mapfile-vers	1.5 10/03/23
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+# Define public interface.
+
+SUNWprivate_1.1 {
+	global:
+		JNI_OnLoad;
+		JNI_OnUnload;
+		Java_sun_security_jgss_wrapper_GSSLibStub_releaseName;
+		Java_sun_security_jgss_wrapper_GSSLibStub_importName;
+		Java_sun_security_jgss_wrapper_GSSLibStub_compareName;
+		Java_sun_security_jgss_wrapper_GSSLibStub_canonicalizeName;
+		Java_sun_security_jgss_wrapper_GSSLibStub_exportName;
+		Java_sun_security_jgss_wrapper_GSSLibStub_displayName;
+		Java_sun_security_jgss_wrapper_GSSLibStub_acquireCred;
+		Java_sun_security_jgss_wrapper_GSSLibStub_releaseCred;
+		Java_sun_security_jgss_wrapper_GSSLibStub_getCredName;
+		Java_sun_security_jgss_wrapper_GSSLibStub_getCredTime;
+		Java_sun_security_jgss_wrapper_GSSLibStub_getCredUsage;
+		Java_sun_security_jgss_wrapper_GSSLibStub_importContext;
+		Java_sun_security_jgss_wrapper_GSSLibStub_initContext;
+		Java_sun_security_jgss_wrapper_GSSLibStub_acceptContext;
+		Java_sun_security_jgss_wrapper_GSSLibStub_getContextName;
+		Java_sun_security_jgss_wrapper_GSSLibStub_getContextMech;
+		Java_sun_security_jgss_wrapper_GSSLibStub_inquireContext;
+		Java_sun_security_jgss_wrapper_GSSLibStub_deleteContext;
+		Java_sun_security_jgss_wrapper_GSSLibStub_getContextTime;
+		Java_sun_security_jgss_wrapper_GSSLibStub_wrapSizeLimit;
+		Java_sun_security_jgss_wrapper_GSSLibStub_exportContext;
+		Java_sun_security_jgss_wrapper_GSSLibStub_getMic;
+		Java_sun_security_jgss_wrapper_GSSLibStub_verifyMic;
+		Java_sun_security_jgss_wrapper_GSSLibStub_wrap;
+		Java_sun_security_jgss_wrapper_GSSLibStub_unwrap;
+		Java_sun_security_jgss_wrapper_GSSLibStub_indicateMechs;
+		Java_sun_security_jgss_wrapper_GSSLibStub_inquireNamesForMech;
+		Java_sun_security_jgss_wrapper_GSSLibStub_init;
+		Java_sun_security_jgss_wrapper_GSSLibStub_getMechPtr;
+	local:
+		*;
+};
