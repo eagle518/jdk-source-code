@@ -1,0 +1,64 @@
+#
+# @(#)Defs.gmk	1.20 10/03/29
+# 
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+PRODUCT = deploy/plugin
+
+# Default to build 64bit JRE on Window and Linux
+BUILD_DEPLOY_AMD64=true
+
+# Choose the default output directory.
+_OUTPUTDIR = $(DEPLOY_TOPDIR)/build/$(PLATFORM)-$(ARCH)
+
+include $(DEPLOY_TOPDIR)/make/plugin/common/Plugin.gmk
+
+CLASSDIR = $(TEMPDIR)/classes
+
+JAVASRCDIR = $(DEPLOY_TOPDIR)/src/plugin/share/classes
+
+PLUGIN_JARFILE = $(LIBDIR)/plugin.jar
+
+ifeq ($(MILESTONE), rc)
+  CPPFLAGS += -DFCSRCBUILD
+endif
+ifeq ($(MILESTONE), fcs)
+  CPPFLAGS += -DFCSRCBUILD
+endif
+
+ifndef J2SE_TOPDIR
+  ifdef ALT_J2SE_TOPDIR
+    J2SE_TOPDIR=$(ALT_J2SE_TOPDIR)
+  else
+    ifndef J2SE_TOPDIR_NAME
+      J2SE_TOPDIR_NAME=j2se
+    endif #J2SE_TOPDIR_NAME
+    ifdef ALT_TOPDIR
+      J2SE_TOPDIR=$(ALT_TOPDIR)/$(J2SE_TOPDIR_NAME)
+    else
+      J2SE_TOPDIR=$(DEPLOY_TOPDIR)/../$(J2SE_TOPDIR_NAME)
+    endif
+  endif #ALT_J2SE_TOPDIR
+endif #J2SE_TOPDIR
+
+include $(DEPLOY_TOPDIR)/make/common/Defs-BaselineVersions.gmk
+
+PLUGIN_LOCALES = de es fr it ja ko pt_BR sv zh_CN zh_TW
+
+include $(J2SE_TOPDIR)/make/common/Defs.gmk
+
+# Use -source 1.4 not only because the old plugin's sources aren't
+# 1.5-clean (use of `enum', use of non-ASCII characters in
+# resources/Activator_it.java, security/StripClassFile.java), but also
+# because the new plugin, by design, must be multiple JRE capable as
+# far back as the 1.4 platform
+LANGUAGE_VERSION = -source 1.4
+CLASS_VERSION = -target 1.4
+
+#Define and create l10n tmp directory for deploy
+DEPLOY_L10N_TMP_OUTPUTDIR=$(OUTPUTDIR)/tmp/l10n/deploy
+dummy := $(shell $(MKDIR) -p $(DEPLOY_L10N_TMP_OUTPUTDIR))
+
+include $(DEPLOY_TOPDIR)/make/plugin/common/Defs-$(PLATFORM).gmk

@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://www.netbeans.org/ns/project/1">
+    <type>org.netbeans.modules.ant.freeform</type>
+    <configuration>
+        <general-data xmlns="http://www.netbeans.org/ns/freeform-project/1">
+            <name>JDK Deploy</name>
+        </general-data>
+        <general-data xmlns="http://www.netbeans.org/ns/freeform-project/2">
+            <!-- Do not use Project Properties customizer when editing this file manually. -->
+            <name>JDK Deploy</name>
+            <properties>
+                <property name="ant.script">../../ant/build.xml</property>
+            </properties>
+            <folders>
+                <source-folder>
+                    <label>Kernel Share Classes</label>
+                    <location>../../../src/kernel/share/classes</location>
+                </source-folder>
+                <source-folder>
+                    <label>JavaWS Unix Classes</label>
+                    <location>../../../src/javaws/unix/classes</location>
+                </source-folder>
+                <source-folder>
+                    <label>Plugin Windows Classes</label>
+                    <location>../../../src/plugin/win32/classes</location>
+                </source-folder>
+                <source-folder>
+                    <label>Common Share Classes</label>
+                    <location>../../../src/common/share/classes</location>
+                </source-folder>
+                <source-folder>
+                    <label>Plugin Unix Classes</label>
+                    <location>../../../src/plugin/solaris/classes</location>
+                </source-folder>
+                <source-folder>
+                    <label>Common Windows Classes</label>
+                    <location>../../../src/common/windows/classes</location>
+                </source-folder>
+                <source-folder>
+                    <label>Common Unix Classes</label>
+                    <location>../../../src/common/unix/classes</location>
+                </source-folder>
+                <source-folder>
+                    <label>Common MacOSX Classes</label>
+                    <location>../../../src/common/macosx/classes</location>
+                </source-folder>
+                <source-folder>
+                    <label>Plugin Share Classes</label>
+                    <location>../../../src/plugin/share/classes</location>
+                </source-folder>
+                <source-folder>
+                    <label>JavaWS Share Classes</label>
+                    <location>../../../src/javaws/share/classes</location>
+                </source-folder>
+                <source-folder>
+                    <label>JavaWS MacOSX Classes</label>
+                    <location>../../../src/javaws/macosx/classes</location>
+                </source-folder>
+                <source-folder>
+                    <label>Plugin MacOSX Classes</label>
+                    <location>../../../src/plugin/macosx/classes</location>
+                </source-folder>
+                <source-folder>
+                    <label>JavaWS Windows Classes</label>
+                    <location>../../../src/javaws/win32/classes</location>
+                </source-folder>
+                <source-folder>
+                    <label>JDK Deploy</label>
+                    <location>.</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>Common Share Classes</label>
+                    <type>java</type>
+                    <location>../../../src/common/share/classes</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>Common Unix Classes</label>
+                    <type>java</type>
+                    <location>../../../src/common/unix/classes</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>Common Windows Classes</label>
+                    <type>java</type>
+                    <location>../../../src/common/windows/classes</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>Common MacOSX Classes</label>
+                    <type>java</type>
+                    <location>../../../src/common/macosx/classes</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>JavaWS Share Classes</label>
+                    <type>java</type>
+                    <location>../../../src/javaws/share/classes</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>JavaWS Unix Classes</label>
+                    <type>java</type>
+                    <location>../../../src/javaws/unix/classes</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>JavaWS Windows Classes</label>
+                    <type>java</type>
+                    <location>../../../src/javaws/win32/classes</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>JavaWS MacOSX Classes</label>
+                    <type>java</type>
+                    <location>../../../src/javaws/macosx/classes</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>Plugin Share Classes</label>
+                    <type>java</type>
+                    <location>../../../src/plugin/share/classes</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>Plugin Unix Classes</label>
+                    <type>java</type>
+                    <location>../../../src/plugin/solaris/classes</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>Plugin Windows Classes</label>
+                    <type>java</type>
+                    <location>../../../src/plugin/win32/classes</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>Plugin MacOSX Classes</label>
+                    <type>java</type>
+                    <location>../../../src/plugin/macosx/classes</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>Kernel Share Classes</label>
+                    <type>java</type>
+                    <location>../../../src/kernel/share/classes</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <build-folder>
+                    <location>/home/roman/src/teamware/jdk6u18/control/build/ant/classes/common</location>
+                </build-folder>
+                <build-folder>
+                    <location>/home/roman/src/teamware/jdk6u18/control/build/ant/classes/javaws</location>
+                </build-folder>
+                <build-file>
+                    <location>/home/roman/src/teamware/jdk6u18/control/build/ant/jars/javaws.jar</location>
+                </build-file>
+                <build-file>
+                    <location>/home/roman/src/teamware/jdk6u18/control/build/ant/jars/deploy.jar</location>
+                </build-file>
+            </folders>
+            <ide-actions>
+                <action name="build">
+                    <script>${ant.script}</script>
+                    <target>compile</target>
+                </action>
+                <action name="Dist">
+                    <script>${ant.script}</script>
+                    <target>dist</target>
+                </action>
+                <action name="clean">
+                    <script>${ant.script}</script>
+                    <target>clean</target>
+                </action>
+                <action name="rebuild">
+                    <script>${ant.script}</script>
+                    <target>clean</target>
+                    <target>compile</target>
+                </action>
+            </ide-actions>
+            <export>
+                <type>folder</type>
+                <location>/home/roman/src/teamware/jdk6u18/control/build/ant/classes/common</location>
+                <script>${ant.script}</script>
+                <build-target>compile</build-target>
+            </export>
+            <export>
+                <type>folder</type>
+                <location>/home/roman/src/teamware/jdk6u18/control/build/ant/classes/javaws</location>
+                <script>${ant.script}</script>
+                <build-target>compile</build-target>
+            </export>
+            <export>
+                <type>jar</type>
+                <location>/home/roman/src/teamware/jdk6u18/control/build/ant/jars/javaws.jar</location>
+                <script>${ant.script}</script>
+                <build-target>compile</build-target>
+            </export>
+            <export>
+                <type>jar</type>
+                <location>/home/roman/src/teamware/jdk6u18/control/build/ant/jars/deploy.jar</location>
+                <script>${ant.script}</script>
+                <build-target>compile</build-target>
+            </export>
+            <view>
+                <items>
+                    <source-folder style="packages">
+                        <label>Common Share Classes</label>
+                        <location>../../../src/common/share/classes</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>Common Unix Classes</label>
+                        <location>../../../src/common/unix/classes</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>Common Windows Classes</label>
+                        <location>../../../src/common/windows/classes</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>Common MacOSX Classes</label>
+                        <location>../../../src/common/macosx/classes</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>JavaWS Share Classes</label>
+                        <location>../../../src/javaws/share/classes</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>JavaWS Unix Classes</label>
+                        <location>../../../src/javaws/unix/classes</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>JavaWS Windows Classes</label>
+                        <location>../../../src/javaws/win32/classes</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>JavaWS MacOSX Classes</label>
+                        <location>../../../src/javaws/macosx/classes</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>Plugin Share Classes</label>
+                        <location>../../../src/plugin/share/classes</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>Plugin Unix Classes</label>
+                        <location>../../../src/plugin/solaris/classes</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>Plugin Windows Classes</label>
+                        <location>../../../src/plugin/win32/classes</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>Plugin MacOSX Classes</label>
+                        <location>../../../src/plugin/macosx/classes</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>Kernel Share Classes</label>
+                        <location>../../../src/kernel/share/classes</location>
+                    </source-folder>
+                    <source-file>
+                        <location>${ant.script}</location>
+                    </source-file>
+                </items>
+                <context-menu>
+                    <ide-action name="build"/>
+                    <ide-action name="Dist"/>
+                    <ide-action name="rebuild"/>
+                    <ide-action name="clean"/>
+                </context-menu>
+            </view>
+            <subprojects/>
+        </general-data>
+        <java-data xmlns="http://www.netbeans.org/ns/freeform-project-java/1">
+            <compilation-unit>
+                <package-root>../../../src/common/share/classes</package-root>
+                <package-root>../../../src/common/unix/classes</package-root>
+                <package-root>../../../src/common/windows/classes</package-root>
+                <package-root>../../../src/common/macosx/classes</package-root>
+                <package-root>../../../src/javaws/share/classes</package-root>
+                <package-root>../../../src/javaws/unix/classes</package-root>
+                <package-root>../../../src/javaws/win32/classes</package-root>
+                <package-root>../../../src/javaws/macosx/classes</package-root>
+                <package-root>../../../src/plugin/share/classes</package-root>
+                <package-root>../../../src/plugin/solaris/classes</package-root>
+                <package-root>../../../src/plugin/win32/classes</package-root>
+                <package-root>../../../src/plugin/macosx/classes</package-root>
+                <package-root>../../../src/kernel/share/classes</package-root>
+                <built-to>/home/roman/src/teamware/jdk6u18/control/build/ant/classes/common</built-to>
+                <built-to>/home/roman/src/teamware/jdk6u18/control/build/ant/classes/javaws</built-to>
+                <built-to>/home/roman/src/teamware/jdk6u18/control/build/ant/jars/javaws.jar</built-to>
+                <built-to>/home/roman/src/teamware/jdk6u18/control/build/ant/jars/deploy.jar</built-to>
+                <source-level>1.3</source-level>
+            </compilation-unit>
+        </java-data>
+    </configuration>
+</project>

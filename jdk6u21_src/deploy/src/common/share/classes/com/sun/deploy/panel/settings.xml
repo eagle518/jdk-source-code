@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- <!DOCTYPE java-control-panel SYSTEM "settings.xml_java-control-panel.dtd"> -->
+
+<!-- Created by Administrator on February 10, 2003, 10:49 PM -->
+
+<java-control-panel version="1.0">
+    <advanced-settings>
+        <label text="deployment.console.debugging">
+            <checkbox propertyName="deployment.trace" checked="false"/>
+            <checkbox propertyName="deployment.log" checked="false"/>  
+            <checkbox propertyName="deployment.javapi.lifecycle.exception" checked="false"/>
+ <!--       <checkbox propertyName="deployment.control.panel.log" checked="false"/>      -->
+        </label>
+        <label text="deployment.console.startup.mode">
+            <radiogroup propertyName="deployment.console.startup.mode" checked="HIDE">
+                <rButton text="SHOW"/>
+                <rButton text="HIDE"/>
+                <rButton text="DISABLE"/>
+            </radiogroup>
+        </label>
+
+<!-- Options below should be displayed for Windows platform only.  -->
+       <platform text="windows">
+            <label text="deployment.browsers.applet.tag">
+                <checkbox propertyName="deployment.browser.vm.iexplorer" checked="true"/>
+                <checkbox propertyName="deployment.browser.vm.mozilla" checked="true"/> 
+            </label>
+	    <label text="deployment.jpi.mode">
+		<checkbox propertyName="deployment.jpi.mode.new" checked="true"/>
+	    </label>
+        </platform>
+
+        <platform text="windows, gnome">
+            <label text="deployment.javaws.shortcut">
+                <radiogroup propertyName="deployment.javaws.shortcut"  checked="ASK_IF_HINTED">
+                    <rButton text="ALWAYS"/>
+                    <rButton text="ALWAYS_IF_HINTED"/>
+                    <rButton text="ASK_USER"/>
+                    <rButton text="ASK_IF_HINTED"/>
+                    <rButton text="NEVER"/>
+                </radiogroup>
+            </label>
+        </platform>
+    <platform text="windows, gnome">
+         <label text="deployment.javaws.associations">
+                <radiogroup propertyName="deployment.javaws.associations"  checked="ASK_USER">
+                    <rButton text="ALWAYS"/>
+                    <rButton text="ASK_USER"/>
+                    <rButton text="NEVER"/>
+                </radiogroup>
+            </label>
+    </platform>
+        <label text="deployment.javaws.autodownload">
+            <radiogroup propertyName="deployment.javaws.autodownload"  checked="ALWAYS">
+                <rButton text="ALWAYS"/>
+                <rButton text="PROMPT"/>
+                <rButton text="NEVER"/>
+            </radiogroup>
+        </label>
+
+        <label text="deployment.security.settings">
+	    <label text="deployment.security.general">
+            <checkbox propertyName="deployment.security.askgrantdialog.show" checked="true"/>
+            <checkbox propertyName="deployment.security.askgrantdialog.notinca" checked="true"/>
+            <checkbox propertyName="deployment.security.browser.keystore.use" checked="true"/>
+            <checkbox propertyName="deployment.security.clientauth.keystore.auto" checked="true"/>
+            <checkbox propertyName="deployment.security.jsse.hostmismatch.warning" checked="true"/>
+            <checkbox propertyName="deployment.security.https.warning.show" checked="false"/>
+            <checkbox propertyName="deployment.security.sandbox.awtwarningwindow" checked="true"/>
+            <checkbox propertyName="deployment.security.sandbox.jnlp.enhanced" checked="true"/>
+            <checkbox propertyName="deployment.security.validation.crl" checked="true"/>
+            <checkbox propertyName="deployment.security.validation.ocsp" checked="true"/>
+            <checkbox propertyName="deployment.security.pretrust.list" checked="true"/>
+            <checkbox propertyName="deployment.security.blacklist.check" checked="true"/>
+            <checkbox propertyName="deployment.security.password.cache" checked="true"/>
+            <checkbox propertyName="deployment.security.SSLv2Hello" checked="false" />
+            <checkbox propertyName="deployment.security.SSLv3" checked="true" />
+            <checkbox propertyName="deployment.security.TLSv1" checked="true" />
+        </label>   
+            <label text="deployment.security.mixcode">
+                <radiogroup propertyName="deployment.security.mixcode"  checked="ENABLE">
+                    <rButton text="ENABLE"/>
+                    <rButton text="HIDE_RUN"/>
+                    <rButton text="HIDE_CANCEL"/>
+                    <rButton text="DISABLE"/>
+                </radiogroup>
+            </label>
+        </label>  
+        <platform text="windows">
+            <label text="deployment.misc.label">
+                <checkbox propertyName="deployment.system.tray.icon" checked="true" />
+                    <permission text="admin"> 
+                        <checkbox propertyName="java.quick.starter" checked="false" />
+                    </permission> 
+            </label>
+        </platform>
+        
+        <platform text="SunOS, Linux">
+            <label text="deployment.browser.default">
+                <textField propertyName="deployment.browser.path" />
+            </label>
+        </platform>
+
+    </advanced-settings>
+</java-control-panel>
+	

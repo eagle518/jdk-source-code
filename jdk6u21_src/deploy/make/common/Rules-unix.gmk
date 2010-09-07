@@ -1,0 +1,187 @@
+#
+# @(#)Rules-unix.gmk	1.2 10/03/24
+#
+# Copyright (c) 2005, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+# Rules common to Solaris, Linux and any other UNIX variant.
+
+FILES_java = $(JDK_1_2_FILES) $(UNIX_SHARE_FILES)
+
+JAVA_ICON = sun-java.png
+JAVAWS_ICON = sun-javaws.png
+JCONTROL_ICON = sun-jcontrol.png
+JAVA_TEXT_ICON = gnome-mime-text-x-java.png
+JAVA_JAR_ICON = gnome-mime-application-x-java-archive.png
+JAVA_JNLP_ICON = gnome-mime-application-x-java-jnlp-file.png
+
+X_JAR_XML = x-java-archive.xml
+X_JNLP_XML = x-java-jnlp-file.xml
+
+basic-dirs:
+	$(MKDIR) -p $(LIB_SECURITY_DIR) $(BIN_DIR) $(LIB_JAVAWS_DIR) \
+		    $(LIB_DESKTOP_DIR) $(LIB_DIR)/$(LIBARCH) \
+		    $(LIB_ICONS_DIR) $(LIB_LEGACY_ICONS_DIR)
+
+icons-unix:
+	$(MKDIR) -p $(LIB_ICONS_DIR)/hicolor \
+		    $(LIB_ICONS_DIR)/hicolor/16x16 \
+		    $(LIB_ICONS_DIR)/hicolor/16x16/apps \
+		    $(LIB_ICONS_DIR)/hicolor/16x16/mimetypes \
+		    $(LIB_ICONS_DIR)/hicolor/48x48 \
+		    $(LIB_ICONS_DIR)/hicolor/48x48/apps \
+		    $(LIB_ICONS_DIR)/hicolor/48x48/mimetypes
+	$(MKDIR) -p $(LIB_ICONS_DIR)/HighContrast \
+		    $(LIB_ICONS_DIR)/HighContrast/16x16 \
+		    $(LIB_ICONS_DIR)/HighContrast/16x16/apps \
+		    $(LIB_ICONS_DIR)/HighContrast/16x16/mimetypes \
+		    $(LIB_ICONS_DIR)/HighContrast/48x48 \
+		    $(LIB_ICONS_DIR)/HighContrast/48x48/apps \
+		    $(LIB_ICONS_DIR)/HighContrast/48x48/mimetypes
+	$(MKDIR) -p $(LIB_ICONS_DIR)/HighContrastInverse \
+		    $(LIB_ICONS_DIR)/HighContrastInverse/16x16 \
+		    $(LIB_ICONS_DIR)/HighContrastInverse/16x16/apps \
+		    $(LIB_ICONS_DIR)/HighContrastInverse/16x16/mimetypes \
+		    $(LIB_ICONS_DIR)/HighContrastInverse/48x48 \
+		    $(LIB_ICONS_DIR)/HighContrastInverse/48x48/apps \
+		    $(LIB_ICONS_DIR)/HighContrastInverse/48x48/mimetypes
+	$(MKDIR) -p $(LIB_ICONS_DIR)/LowContrast \
+		    $(LIB_ICONS_DIR)/LowContrast/16x16 \
+		    $(LIB_ICONS_DIR)/LowContrast/16x16/apps \
+		    $(LIB_ICONS_DIR)/LowContrast/16x16/mimetypes \
+		    $(LIB_ICONS_DIR)/LowContrast/48x48 \
+		    $(LIB_ICONS_DIR)/LowContrast/48x48/apps \
+		    $(LIB_ICONS_DIR)/LowContrast/48x48/mimetypes
+	$(CP) -f $(GNOME_ICON_SRC)/hicolor/16x16/mimetypes/$(JAVA_TEXT_ICON) \
+		 $(LIB_ICONS_DIR)/hicolor/16x16/mimetypes/$(JAVA_TEXT_ICON)
+	$(CP) -f $(GNOME_ICON_SRC)/hicolor/16x16/mimetypes/$(JAVA_JAR_ICON) \
+		 $(LIB_ICONS_DIR)/hicolor/16x16/mimetypes/$(JAVA_JAR_ICON)
+	$(CP) -f $(GNOME_ICON_SRC)/hicolor/16x16/mimetypes/$(JAVA_JNLP_ICON) \
+		 $(LIB_ICONS_DIR)/hicolor/16x16/mimetypes/$(JAVA_JNLP_ICON)
+	$(CP) -f $(FREE_ICON_SRC)/hicolor/16x16/apps/$(JAVA_ICON) \
+		 $(LIB_ICONS_DIR)/hicolor/16x16/apps/$(JAVA_ICON)
+	$(CP) -f $(FREE_ICON_SRC)/hicolor/16x16/apps/$(JAVAWS_ICON) \
+		 $(LIB_ICONS_DIR)/hicolor/16x16/apps/$(JAVAWS_ICON)
+	$(CP) -f $(FREE_ICON_SRC)/hicolor/16x16/apps/$(JCONTROL_ICON) \
+		 $(LIB_ICONS_DIR)/hicolor/16x16/apps/$(JCONTROL_ICON)
+	$(CP) -f $(GNOME_ICON_SRC)/hicolor/48x48/mimetypes/$(JAVA_TEXT_ICON) \
+		 $(LIB_ICONS_DIR)/hicolor/48x48/mimetypes/$(JAVA_TEXT_ICON)
+	$(CP) -f $(GNOME_ICON_SRC)/hicolor/48x48/mimetypes/$(JAVA_JAR_ICON) \
+		 $(LIB_ICONS_DIR)/hicolor/48x48/mimetypes/$(JAVA_JAR_ICON)
+	$(CP) -f $(GNOME_ICON_SRC)/hicolor/48x48/mimetypes/$(JAVA_JNLP_ICON) \
+		 $(LIB_ICONS_DIR)/hicolor/48x48/mimetypes/$(JAVA_JNLP_ICON)
+	$(CP) -f $(FREE_ICON_SRC)/hicolor/48x48/apps/$(JAVA_ICON) \
+		 $(LIB_ICONS_DIR)/hicolor/48x48/apps/$(JAVA_ICON)
+	$(CP) -f $(FREE_ICON_SRC)/hicolor/48x48/apps/$(JAVAWS_ICON) \
+		 $(LIB_ICONS_DIR)/hicolor/48x48/apps/$(JAVAWS_ICON)
+	$(CP) -f $(FREE_ICON_SRC)/hicolor/48x48/apps/$(JCONTROL_ICON) \
+		 $(LIB_ICONS_DIR)/hicolor/48x48/apps/$(JCONTROL_ICON)
+	$(CP) -f $(GNOME_ICON_SRC)/HighContrast/16x16/mimetypes/$(JAVA_TEXT_ICON) \
+		 $(LIB_ICONS_DIR)/HighContrast/16x16/mimetypes/$(JAVA_TEXT_ICON)
+	$(CP) -f $(GNOME_ICON_SRC)/HighContrast/16x16/mimetypes/$(JAVA_JAR_ICON) \
+		 $(LIB_ICONS_DIR)/HighContrast/16x16/mimetypes/$(JAVA_JAR_ICON)
+	$(CP) -f $(GNOME_ICON_SRC)/HighContrast/16x16/mimetypes/$(JAVA_JNLP_ICON) \
+		 $(LIB_ICONS_DIR)/HighContrast/16x16/mimetypes/$(JAVA_JNLP_ICON)
+	$(CP) -f $(FREE_ICON_SRC)/HighContrast/16x16/apps/$(JAVA_ICON) \
+		 $(LIB_ICONS_DIR)/HighContrast/16x16/apps/$(JAVA_ICON)
+	$(CP) -f $(FREE_ICON_SRC)/HighContrast/16x16/apps/$(JAVAWS_ICON) \
+		 $(LIB_ICONS_DIR)/HighContrast/16x16/apps/$(JAVAWS_ICON)
+	$(CP) -f $(FREE_ICON_SRC)/HighContrast/16x16/apps/$(JCONTROL_ICON) \
+		 $(LIB_ICONS_DIR)/HighContrast/16x16/apps/$(JCONTROL_ICON)
+	$(CP) -f $(GNOME_ICON_SRC)/HighContrast/48x48/mimetypes/$(JAVA_TEXT_ICON) \
+		 $(LIB_ICONS_DIR)/HighContrast/48x48/mimetypes/$(JAVA_TEXT_ICON)
+	$(CP) -f $(GNOME_ICON_SRC)/HighContrast/48x48/mimetypes/$(JAVA_JAR_ICON) \
+		 $(LIB_ICONS_DIR)/HighContrast/48x48/mimetypes/$(JAVA_JAR_ICON)
+	$(CP) -f $(GNOME_ICON_SRC)/HighContrast/48x48/mimetypes/$(JAVA_JNLP_ICON) \
+		 $(LIB_ICONS_DIR)/HighContrast/48x48/mimetypes/$(JAVA_JNLP_ICON)
+	$(CP) -f $(FREE_ICON_SRC)/HighContrast/48x48/apps/$(JAVA_ICON) \
+		 $(LIB_ICONS_DIR)/HighContrast/48x48/apps/$(JAVA_ICON)
+	$(CP) -f $(FREE_ICON_SRC)/HighContrast/48x48/apps/$(JAVAWS_ICON) \
+		 $(LIB_ICONS_DIR)/HighContrast/48x48/apps/$(JAVAWS_ICON)
+	$(CP) -f $(FREE_ICON_SRC)/HighContrast/48x48/apps/$(JCONTROL_ICON) \
+		 $(LIB_ICONS_DIR)/HighContrast/48x48/apps/$(JCONTROL_ICON)
+	$(CP) -f $(GNOME_ICON_SRC)/HighContrastInverse/16x16/mimetypes/$(JAVA_TEXT_ICON) \
+		 $(LIB_ICONS_DIR)/HighContrastInverse/16x16/mimetypes/$(JAVA_TEXT_ICON)
+	$(CP) -f $(GNOME_ICON_SRC)/HighContrastInverse/16x16/mimetypes/$(JAVA_JAR_ICON) \
+		 $(LIB_ICONS_DIR)/HighContrastInverse/16x16/mimetypes/$(JAVA_JAR_ICON)
+	$(CP) -f $(GNOME_ICON_SRC)/HighContrastInverse/16x16/mimetypes/$(JAVA_JNLP_ICON) \
+		 $(LIB_ICONS_DIR)/HighContrastInverse/16x16/mimetypes/$(JAVA_JNLP_ICON)
+	$(CP) -f $(FREE_ICON_SRC)/HighContrastInverse/16x16/apps/$(JAVA_ICON) \
+		 $(LIB_ICONS_DIR)/HighContrastInverse/16x16/apps/$(JAVA_ICON)
+	$(CP) -f $(FREE_ICON_SRC)/HighContrastInverse/16x16/apps/$(JAVAWS_ICON) \
+		 $(LIB_ICONS_DIR)/HighContrastInverse/16x16/apps/$(JAVAWS_ICON)
+	$(CP) -f $(FREE_ICON_SRC)/HighContrastInverse/16x16/apps/$(JCONTROL_ICON) \
+		 $(LIB_ICONS_DIR)/HighContrastInverse/16x16/apps/$(JCONTROL_ICON)
+	$(CP) -f $(GNOME_ICON_SRC)/HighContrastInverse/48x48/mimetypes/$(JAVA_TEXT_ICON) \
+		 $(LIB_ICONS_DIR)/HighContrastInverse/48x48/mimetypes/$(JAVA_TEXT_ICON)
+	$(CP) -f $(GNOME_ICON_SRC)/HighContrastInverse/48x48/mimetypes/$(JAVA_JAR_ICON) \
+		 $(LIB_ICONS_DIR)/HighContrastInverse/48x48/mimetypes/$(JAVA_JAR_ICON)
+	$(CP) -f $(GNOME_ICON_SRC)/HighContrastInverse/48x48/mimetypes/$(JAVA_JNLP_ICON) \
+		 $(LIB_ICONS_DIR)/HighContrastInverse/48x48/mimetypes/$(JAVA_JNLP_ICON)
+	$(CP) -f $(FREE_ICON_SRC)/HighContrastInverse/48x48/apps/$(JAVA_ICON) \
+		 $(LIB_ICONS_DIR)/HighContrastInverse/48x48/apps/$(JAVA_ICON)
+	$(CP) -f $(FREE_ICON_SRC)/HighContrastInverse/48x48/apps/$(JAVAWS_ICON) \
+		 $(LIB_ICONS_DIR)/HighContrastInverse/48x48/apps/$(JAVAWS_ICON)
+	$(CP) -f $(FREE_ICON_SRC)/HighContrastInverse/48x48/apps/$(JCONTROL_ICON) \
+		 $(LIB_ICONS_DIR)/HighContrastInverse/48x48/apps/$(JCONTROL_ICON)
+	$(CP) -f $(GNOME_ICON_SRC)/LowContrast/16x16/mimetypes/$(JAVA_TEXT_ICON) \
+		 $(LIB_ICONS_DIR)/LowContrast/16x16/mimetypes/$(JAVA_TEXT_ICON)
+	$(CP) -f $(GNOME_ICON_SRC)/LowContrast/16x16/mimetypes/$(JAVA_JAR_ICON) \
+		 $(LIB_ICONS_DIR)/LowContrast/16x16/mimetypes/$(JAVA_JAR_ICON)
+	$(CP) -f $(GNOME_ICON_SRC)/LowContrast/16x16/mimetypes/$(JAVA_JNLP_ICON) \
+		 $(LIB_ICONS_DIR)/LowContrast/16x16/mimetypes/$(JAVA_JNLP_ICON)
+	$(CP) -f $(FREE_ICON_SRC)/LowContrast/16x16/apps/$(JAVA_ICON) \
+		 $(LIB_ICONS_DIR)/LowContrast/16x16/apps/$(JAVA_ICON)
+	$(CP) -f $(FREE_ICON_SRC)/LowContrast/16x16/apps/$(JAVAWS_ICON) \
+		 $(LIB_ICONS_DIR)/LowContrast/16x16/apps/$(JAVAWS_ICON)
+	$(CP) -f $(FREE_ICON_SRC)/LowContrast/16x16/apps/$(JCONTROL_ICON) \
+		 $(LIB_ICONS_DIR)/LowContrast/16x16/apps/$(JCONTROL_ICON)
+	$(CP) -f $(GNOME_ICON_SRC)/LowContrast/48x48/mimetypes/$(JAVA_TEXT_ICON) \
+		 $(LIB_ICONS_DIR)/LowContrast/48x48/mimetypes/$(JAVA_TEXT_ICON)
+	$(CP) -f $(GNOME_ICON_SRC)/LowContrast/48x48/mimetypes/$(JAVA_JAR_ICON) \
+		 $(LIB_ICONS_DIR)/LowContrast/48x48/mimetypes/$(JAVA_JAR_ICON)
+	$(CP) -f $(GNOME_ICON_SRC)/LowContrast/48x48/mimetypes/$(JAVA_JNLP_ICON) \
+		 $(LIB_ICONS_DIR)/LowContrast/48x48/mimetypes/$(JAVA_JNLP_ICON)
+	$(CP) -f $(FREE_ICON_SRC)/LowContrast/48x48/apps/$(JAVA_ICON) \
+		 $(LIB_ICONS_DIR)/LowContrast/48x48/apps/$(JAVA_ICON)
+	$(CP) -f $(FREE_ICON_SRC)/LowContrast/48x48/apps/$(JAVAWS_ICON) \
+		 $(LIB_ICONS_DIR)/LowContrast/48x48/apps/$(JAVAWS_ICON)
+	$(CP) -f $(FREE_ICON_SRC)/LowContrast/48x48/apps/$(JCONTROL_ICON) \
+		 $(LIB_ICONS_DIR)/LowContrast/48x48/apps/$(JCONTROL_ICON)
+
+#
+# Note that sun_java.desktop, the poorly named desktop file for jcontrol
+# (the Java Control Panel) comes from the plugin build.
+#
+desktop-unix:
+	$(MKDIR) -p $(LIB_DESKTOP_DIR)/applications
+	$(CP) -f $(APPS_SRC)/sun-java.desktop \
+		 $(LIB_DESKTOP_DIR)/applications/sun-java.desktop
+	$(CP) -f $(APPS_SRC)/sun-javaws.desktop \
+		 $(LIB_DESKTOP_DIR)/applications/sun-javaws.desktop
+
+mime-unix:
+	$(MKDIR) -p $(LIB_MIME_DIR)/packages
+	$(CP) -f $(MIME_SRC)/packages/${X_JAR_XML} \
+		 $(LIB_MIME_DIR)/packages/${X_JAR_XML}
+	$(CP) -f $(MIME_SRC)/packages/${X_JNLP_XML} \
+		 $(LIB_MIME_DIR)/packages/${X_JNLP_XML}
+
+obsolete-unix:
+	$(CP) -f $(RESOURCE_SRC)/sun-java.png $(LIB_LEGACY_ICONS_DIR)
+	$(CP) -f $(RESOURCE_SRC)/sun-java_HighContrast.png $(LIB_LEGACY_ICONS_DIR)
+	$(CP) -f $(RESOURCE_SRC)/sun-java_HighContrastInverse.png $(LIB_LEGACY_ICONS_DIR)
+	$(CP) -f $(RESOURCE_SRC)/sun-java_LowContrast.png $(LIB_LEGACY_ICONS_DIR)
+
+proto-unix: basic-dirs icons-unix desktop-unix mime-unix obsolete-unix
+	$(CP) -f $(RESOURCE_SRC)/java-icon.ico  $(LIB_JAVAWS_DIR)
+	$(CP) -f $(SHARE_SRC)/config/javaws.policy $(LIB_SECURITY_DIR)
+	$(CP) -f $(DEPLOY_COMMON_JAR) $(LIB_DIR)
+	$(CP) -f $(DEPLOY_COMMON_LIB) $(LIB_DIR)/$(LIBARCH)
+
+dev-unix:
+
+FRC:
+
+.PHONY: basic-dirs icons-unix desktop-unix mime-unix obsolete-unix proto-unix dev-unix

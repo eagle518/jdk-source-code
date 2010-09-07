@@ -1,0 +1,58 @@
+<html>
+<head>
+<title>Regression test for 6735312</title>
+<script language="javascript">
+
+function pass1()
+{
+    testApp.pass1();
+}
+
+function fail1()
+{
+    testApp.fail1();
+}
+
+function reportResult(res, description)
+{
+    var text = (res ? "Test passed." : "TEST FAILED") + "<br>" + description;
+    document.getElementById("result").innerHTML = text;
+}
+</script>
+</head>
+<body>
+
+<h1>Regression test for 6735312</h1>
+
+<h2>AppletContext.showDocument fails silently in IE7 if target contains hyphens</h2>
+
+<applet id="testApp" code="ShowDocumentTest" width="100" height="100">
+    <param name="main" value="true">
+    <param name="test_popups" value="true">
+</applet>
+
+<P>
+
+This test is intended to be run in IE on Windows, but should execute
+correctly in Firefox 3 as well. It should only be run with the new
+Java Plug-In.
+
+</P>
+<P>
+
+In order for this test to run correctly, the pop-up it opens must be
+allowed. On IE you can allow it manually within the first ten seconds
+of running the test. On Firefox it appears the only way to allow the
+popup is to turn off the pop-up blocker while running this test.
+
+</P>
+
+<P>
+
+<div id="result">
+</div>
+
+</P>
+
+</body>
+</html>

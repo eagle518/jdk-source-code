@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+"
+      codebase="http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/codebasedir"
+      href="JRERelaunch1.4-jnlp-application-abs.jnlp">
+  <information>
+    <title>JRERelaunch1.4 Applet (max-heapsize, properties and insec vm-args)</title>
+    <vendor>SUN Deployment</vendor>
+    <description kind='tootltip'>A simple JNLP test</description>
+    <description kind='one-line'>Applet</description>
+    <homepage href='JRERelaunch1-jnlp-application-abs-check3.html' />
+    <offline-allowed/>
+  </information>
+  <resources>
+    <!-- no href   : this is the platform version: java.specification.version -->
+    <!-- href given: this is the product  version: java.version -->
+    <j2se href="http://java.sun.com/products/autodl/j2se" version="1.2+" max-heap-size="134217728"
+                                                          java-vm-args="-verbose -Xint -client -Dclasspath=c:/temp"/>
+    <property name="sun.java2d.noddraw" value="true"/>
+    <property name="sun.java2d.d3d" value="true"/>
+    <jar href="JRERelaunch1.jar"/>
+    <extension name="SimpleApplet" href="SimpleApplet-jnlp-applet-abs.jnlp"/>
+  </resources>
+  <application-desc main-class="JRERelaunch1" />
+</jnlp>

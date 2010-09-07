@@ -1,0 +1,100 @@
+/*
+ * @(#)kernel_zh.rc	1.2 %E
+ *
+ * Copyright (c) 2007, Oracle and/or its affiliates. All rights reserved.
+ * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DOWNLOAD_DIALOG DIALOGEX 0, 0, 340, 120
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "所需的其他组件"
+EXSTYLE WS_EX_APPWINDOW
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "", IDC_DOWNLOAD_MASTHEAD, 0, 0, 340, 39
+    LTEXT           "", IDC_MASTHEAD_TEXT, 60, 14, 200, 12
+    CONTROL         "", IDC_STATIC,"Static", SS_BLACKFRAME | SS_SUNKEN,
+                    0, 39, 340, 1
+    LTEXT           "", IDC_DOWNLOAD_TEXT, 12, 60, 316, 20
+    LTEXT           "", IDC_TIME_REMAINING, 12, 90, 316, 10
+    CONTROL         "Progress1",1006,"msctls_progress32",PBS_SMOOTH,
+                    12, 100, 265, 14
+    PUSHBUTTON	    "取消",  2, 285, 100, 46, 14
+END
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    105, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 236
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 63
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_HTTP_INSTRUCTION_REQUEST_TIMEOUT      "Connection Timed Out"
+    IDS_HTTP_INSTRUCTION_SERVER_NOT_REACHABLE "Unable to connect to the Internet"
+    IDS_HTTP_INSTRUCTION_UNKNOWN_ERROR        "Server error (Error %s)"
+    IDS_HTTP_INSTRUCTION_SERVICE_UNAVAIL      "Service Unavailable (Error %s)"
+    IDS_HTTP_INSTRUCTION_FORBIDDEN            "Access Denied or Forbidden (Error %s)"
+    IDS_HTTP_STATUS_OTHER                     "An error has occured during this request. Do you want to try the request again?"
+
+// HTTP status code
+    IDS_HTTP_STATUS_REQUEST_TIMEOUT "服务器等待请求时超时。"
+    IDS_HTTP_STATUS_FORBIDDEN		"服务器已接受请求，但拒绝执行。"
+    IDS_HTTP_STATUS_SERVER_ERROR	"服务器遇到意外情况，无法完成请求。"
+    IDS_HTTP_STATUS_SERVICE_UNAVAIL	"服务暂时过载。"
+
+
+    IDS_DOWNLOAD_STATUS_RETRY		"服务器正忙，请在 %ld 秒后重试..."
+
+    IDS_ERROR_CAPTION               "错误 - Java Kernel"
+    IDS_HOURSMINUTESECOND	    "估计剩余时间:%d 小时 %d 分钟 %.0f 秒"
+    IDS_HOURMINUTESECOND	    "估计剩余时间:%d 小时  %d 分钟 %.0f 秒"
+    IDS_MINUTESECOND 		    "估计剩余时间:%d 分钟 %.0f 秒"
+    IDS_SECOND                      "估计剩余时间:%.0f 秒"
+    IDS_DISK_FULL_ERROR_CAPTION     "磁盘已满"
+    IDS_DISK_FULL_ERROR             "由于磁盘已满，Java Kernel 无法下载所需的组件。是否重试？"
+    IDS_DISK_WRITE_ERROR_CAPTION    "磁盘写入错误"
+    IDS_DISK_WRITE_ERROR            "在向磁盘执行写入操作时 Java Kernel 遇到错误。是否重试？"
+    IDS_HTTP_STATUS_SERVER_NOT_REACHABLE "在使用系统当前的 Internet 连接设置的情况下，Java Kernel 无法继续执行。在 Windows""控制面板""中，请检查""Internet 选项""->""连接""以确保设置和代理信息正确。"
+
+    IDS_DOWNLOAD_RETRY             "下载错误"
+    IDS_DOWNLOAD_RETRY_TEXT        "在下载某些请求的组件期间发生错误。是否要再试一次下载这些组件？"
+
+    IDS_DOWNLOAD                   "安装其他组件"
+	IDS_DOWNLOAD_UNPACKING         "正在解压缩包"
+    IDS_DOWNLOAD_TEXT              "下载并安装 Java 应用程序所需的其他组件后，该应用程序将启动。"
+    
+    IDS_FILE_UPDATE_ERROR          "更新 %s%s 时发生错误。"
+    IDS_FILE_DELETE_ERROR          "删除 %s 时发生错误。"
+    IDS_JAVA_HOME_ERROR            "无法确定 Java 主目录。"
+    IDS_KERNEL_HOME_ERROR          "无法确定 jkernel.dll 的路径。"
+    IDS_JBROKER_ERROR              "无法启动 jbroker.exe。"
+    IDS_FATAL_ERROR                "Java 无法下载所需的组件。现在程序将退出。"
+    IDS_ERROR_DOWNLOADING_BUNDLE_PROPERTIES "Java 无法与下载服务器进行通信。现在程序将退出。"
+    IDS_ERROR_MALFORMED_BUNDLE_PROPERTIES "Java 在与下载服务器进行通信时遇到错误。现在程序将退出。"
+    IDS_ERROR_MALFORMED_URL "Java 无法从 URL '%s' 执行下载。现在程序将退出。"
+END

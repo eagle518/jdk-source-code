@@ -1,0 +1,14 @@
+<head>
+<script language="javascript">
+function doit()
+{
+    if (window.name == "used-to-not-work") {
+        top.frames['main'].pass1();
+    } else {
+        top.frames['main'].fail1();
+    }
+}
+</script>
+</head>
+<body onload="doit()">
+</body>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0"
+      href="SimpleGraph-applet-rel.jnlp">
+  <information>
+    <title>SimpleGraph Applet</title>
+    <vendor>SUN Deployment</vendor>
+    <description kind='tootltip'>A simple JNLP test</description>
+    <description kind='one-line'>Applet</description>
+    <homepage href='SimpleGraph-applet.html' />
+    <offline-allowed/>
+  </information>
+    <resources>
+      <j2se href="http://java.sun.com/products/autodl/j2se" version="1.2+"/>
+      <jar href="SimpleGraph.jar"/>
+    </resources>
+  <applet-desc 
+      name="SimpleGraph"
+      main-class="GraphApplet"
+      width="400" 
+      height="300">
+      <param name="code2" value="GraphApplet"/>
+  </applet-desc>
+</jnlp>

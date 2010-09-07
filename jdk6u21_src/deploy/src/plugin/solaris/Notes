@@ -1,0 +1,443 @@
+			Miscellaneous developer notes 
+			=============================
+
+This file describes some design issues, debug flags and miscellaneous other
+things that I thought should be documented somewhere.
+						Ben Gomes
+
+Bugs/Potential bugs
+-------------------
+- Moving from one page to another while a JS request is outstanding.
+  i.e. terminating the plugin instance may leave things in a bad state.
+- Look into shutdown  - should it actually force something in the plugin?
+	What should the flag realshutdown trigger? The current implementation
+	does not look right.
+
+
+To Interanationalize
+--------------------
+
+Files and Modules
+-----------------
+Main plugin: common/, navig4/  -> javaplugin.so
+5.0        : common/  navig5/  -> libjavaplugin_moz5.so
+JVM excecutable:  jvm_exec     -> java_vm, java_vm_native
+JVM native methods: jvm_natives -> libjavaplugin11.so and libjavaplugin12.so
+Dummy Setup :  dummy -> For a standalone plugin - may no longer work.
+
+----------------------------------------------------------------------
+JAVA_PLUGIN_DOMAIN used by dgettext is set to "sunw_java_plugin"
+	in utils.c and in java_vm.c.
+But the domain is not bound to any directory.
+
+----------------------------------------------------------------------
+Linking problems with libimg - there are 2 - one in the jre and one in
+nspr, so make sure mozilla libs come first.
+----------------------------------------------------------------------
+
+Environment variables
+---------------------
+They are mostly used for debugging.
+
+_JAVA_OPTIONS           Std VM option. Useful for turning off the JIT
+			and turning on checking
+			-Djava.compiler=NONE -Xcheck:jni
+JAVA_PLUGIN_TRACE 	Turn on tracing  - see below
+JAVA_PLUGIN_TRACE_VERBOSE 	Verbose tracing includes the contents of
+			some files such as the preferences etc.
+JAVA_VM_WAIT 		To make the child process pause to permit a dbx attach
+			before starting up the VM
+
+
+The child gets the following env vars:
+JAVA_HOME
+CLASSPATH
+LD_LIBRARY_PATH
+
+
+Hack for maintaining state
+--------------------------
+	One problem with the plugin apis is that they destroy the plugin
+factory whenever the last instance is destroyed. However, the cost of 
+actually terminating and restarting the out-of-process VM is too high
+to follow this model. So we don't shut down the VM. Instead, we store
+the relevant variables in an environmental variable (JAVA_PLUGIN_STATE).
+When a new factory is created, it first checks this environmental variable
+and if it exists, reads the state (such as the file descriptors etc) from
+this environmental variable. The state stored in the environmental vaiable
+is denoted by the "State" structure defined in JavaVM.h.
+
+
+Proxy support
+-------------
+	Normally the JDK protocol handlers deal with the proxy support
+themselves when explicit proxies are used. However, netscape provides
+an "auto proxy" service which we need to use in the context of the
+plugin.  Hence, all the handlers are subclassed so that they call the
+proxy support in the browser. Since the plugin, but not the jdk, provides
+https support, we get that https protocol handler from ssl, and subclass
+it specially.
+
+Tracing support
+---------------
+Setting the environment variable with
+JAVA_PLUGIN_TRACE = <filename>
+	Results in files defined in plugin_defs.h
+Tracing support is constantly changing due to debugging, so this may not
+be accurate, but it is a starting point.
+
+
+The need for the event widget
+-----------------------------
+	The older versions (pre 5.0) of navigator require that all
+calls into the plugin are from the main thread and all callbacks are
+also in the main thread. Hence, the plugin cannot indefinitely wait
+for data from the JVM. When there's nothing in the worker pipe,
+it proceeds. Then, when work has to be done, the JVM calls an
+even on the event widget, which triggers its callback handler.
+The callback handler (child_event_handler in JavaVM.cpp), processes
+work in the work queue.
+	
+
+Environment variables when forking the child
+--------------------------------------------
+	The environment variables for the child are setup before the
+child is forked in JavaVM.cpp so that there are no mallocs
+etc. between the fork1 and the exec. Otherwise, various child calls
+can block since the threads holding the locks are not replicated in
+the child.
+
+Mozilla information 
+--------------------
+Unfortunately we have to use a private field of the PR data structures
+to convert a PRFileDesc to an honest-to-goodness unix fd.
+
+PRFileDesc see nsprpub/pr/src/md/unix/
+
+PRFileDesc in  nsprpub/pr/include/prio.h defines PRFileDesc
+
+PRFilePrivate in  nsprpub/pr/include/private/primpl.h
+_MDFileDesc in nspr/include/md/_unixos.h
+
+filedesc->secret->md.osfd is the actual file descriptor
+
+
+Communication
+-------------
+Browser creates pipes in CJavaVM::StartJavaVM.
+				buffered data output stream and a DIS on 11
+				Worker pipe: Likewise for 12. - passed to
+				 Worker
+				java/sun/plugin/navig/motif/Worker.java 
+		1)browser reads the worker pipe waiting for acknowlegement
+		1)writes an acknowledgement on the worker pipe 
+Thread attach, goes via invoke, and then calls an actual attach.
+browser calls attach_thread (in invoke.cpp)
+		1) Call of JAVA_PLUGIN_ATTACH_THREAD on the command pipe.		
+
+Why are there dummy versions of libhpi and libjni?
+-------------------------------------------------
+	For linking with 1.1 .
+
+	
+Locks
+-----
+JavaPluginFactory->JavaVMMonitor - locks access to the VM and the
+	plugin factory. Initialized during the plugin factory's Initialize.
+
+
+
+
+Endianness 
+----------
+Note that Java has a fixed endianness while C does not. 
+This is handled by the put/get_int, get_short etc. methods in utils.c
+which are used when writing in C something that will be read in Java
+or vice-versa.
+
+FD passing
+SVR4 FD passing was used. Refer to the Stevens text for versions in
+other strains of Unix.
+Various other versions have been tried. We currently use Sockets (Jan 99)
+
+
+File descriptors for communication with browser
+-----------------------------------------------
+See common/plugin_defs.h
+
+Creation of an applet/plugin instance
+-------------------------------------
+The browser creates a plugin instance peer and asks the Java plugin
+factory to create a plugin instance.  The plugin instance registers
+itself and receives an ID and then calls the plugin factory to create
+the applet proper. The plugin instance creation /initialization gets
+most of its information by calls on the plugin instance peer.
+
+
+Applet/Instance ID
+------------------
+	Each applet has a unique ID.  It is generated by the registration
+of the applet with the factory and provided in the call to 
+CreateApplet, and stored in the MotifAppletViewer's MotifAppletContext.
+The JSObject calls have access to this ID and pass it back as a handle
+to obtain the plugin instance and plugin instance peer if needed.
+
+Signed Applet Support
+---------------------
+The TrustDecider is called on the main thread using the worker pipe.
+
+Java Protection Domain Implies
+------------------------------
+Called on the appropriate JS thread or the spontaneous thread
+
+Https support
+-------------
+Called on the main thread using the worker pipe. In JavaVM5, the
+worker thread is woken up and told to fetch a https stream for a particular
+URL. When data is available, the plugin instance is woken up and it
+is asked to create a JavaStream5. While the JavaStream5 is being created
+we allocate space in the Plugin instance to store the resulting data.
+Note that only one https query may be in progress at a time, so there
+should be no possibility of over-writing this data with another query
+(any old plugin instance is used for the query, and if it goes away in
+the middle  of the query, the result is undefined)
+
+
+The work pipe is used for SHOW_STATUS, SHOW_DOCUMENT
+
+
+JS calls
+--------
+navig5/JSObject.java calls 
+-> server.c: Java_sun_plugin_javascript_navig5_JSObject_JSObjectEval
+   -> server.c: SendJNIJSMessage - which packs a message.
+      -> server.c: AcquireThreadPipe
+         -> OJIPlugin.java: acquirePipeForCurrentThread
+	    -> OJIPlugin.java - check if the current thread is in the map.
+			Otherwise create a new AThread
+		-> AThread.acquirePipe
+			if spontaneous then use the spontaneous pipe and
+			enter the spontaneous monitor
+		   -> OJIPlugin.enterSpontaneousMonitor
+			-> server.c: enterSpontaneousMonitor
+		-> Return the pipe
+      -> Write message to pipe
+      -> server.c: handleJNIJSResponse
+	  if JAVA_PLUGIN_RETURN - , then read retval and return
+	  if JAVA_PLUGIN_REQUEST - then call handle_single_request
+     -> end of SendJNIJSMessage and return the result
+
+
+
+Mapping to win32 classes
+-------------------------
+I don't follow the Hungarian notation used in the Win32 version, but many of the
+files here are highly modified versions of the win32 versions.
+Representation of the VM state:
+		COJIJNI     =   JavaVM	
+Plugin Factory:
+(C)JavaPluginFactory    = JavaPluginFactory, 
+			   JavaPluginFactory5, CJavaPluginFactory
+Termination issues
+------------------
+	There are several requests that the browser makes to the
+plugin which may meet with an untimely demise. Only
+one request should be outstanding at a time.
+a) VM->Browser, instance dead 
+	status, show_doc - no response needed, just ignore request
+	javascript - 
+		the instance is specified, the worker
+		thread is not blocked (only the motif applet viewer
+		instance, which will be killed with the instance)
+		so no response is needed.
+	cookie, cache, find proxy - 
+		no instance specified, so a random instance chosen
+		- due to single threading of browser, instance
+		can't be killed between instance selection and
+		request
+b) Before browser reply, instance dies
+	javascript - the java instance will also die and the blocked
+			the motif applet viewer will also die.
+	cookie, cache, find proxy 
+		- check the flag in the instance when it is being
+		  destroyed and send a dummy response.
+c) Stream alive, instance dead 	
+	javascript, cookie, cache, find proxy -
+		 stream checks instance before sending reply.
+		(use a flag - is_being_killed to handle the case when
+		the instance is alive and is in the process of
+		being destroyed i.e. sending its dummy response).
+c) Browser->Java - instance has been killed by the time the reply 
+		arrives. Should not be possible - the stream will
+		check for the liveness of the instance 
+		(is_being_killed is false)		
+
+Proxy initialization
+--------------------
+a) When a JavaPluginInstance is created it initializes the proxmap
+	PluginFactory->GetProxySupport->ProxmapInitialize(instance)
+	ProxySupport::ProxmapInitialize looks at the 
+		state->proxy_config_url
+	If it is null, then it calls
+		ProxySupport::FindProxyConfigURL
+	If it is -1, then it returns - not supported
+	If it is not null, then it returns (already initialized)
+		
+
+
+Cookie call path
+----------------
+VM SIDE
+MotifCookieHandler (subtype of ActivatorCookieHandler)::findCookieForURL(String url)
+Worker::findCookieForURL(url)
+		WorkerPipe -> JAVA_PLUGIN_FIND_COOKIE
+		Send event on X widget
+
+			BROWSER(plugin) SIDE
+			JavaVM::ProcessWorkQueue
+			JavaVM::DoWork
+				pick an instance 'i' whose codebase is a prefix of URL
+				GetURL(i, url, JAVA_PLUGIN_COOKIE_QUERY)
+						
+						BROWSER HANDLES QUERY
+						    call 'i'.NewStream()
+			BROWSER(plugin) SIDE
+			c = instance.NewStream() returns new CJavaStream 
+					with notify data of JAVA_PLUGIN_COOKIE_QUERY
+					on the stream peer
+			
+			c.Write(char* buffer, int offset, int len)
+				Get notifyData (= JAVA_PLUGIN_COOKIE_QUERY)
+			PluginInstance->CookieReply(buffer+offset);
+				Write to command pipe JAVA_PLUGIN_COOKIE and cookie
+			<----
+Plugin::doit() 
+	Read code from command pipe.
+Worker.setCookieString - set cookieString and cookieReady to true.
+Worker.endRequest
+Worker.notifyAll
+Worker.findCookie wakes up and returns cookieString to MotifCookieHandler
+		
+Proxy Support Initialization
+---------------------------
+BROWSER (plugin code)
+For each instance, find 'p', the ProxySupport
+ProxySupport->ProxmapInitialize.
+	Check the state's proxy_script to make sure we haven't done this
+	already.
+	Calls GetURL with JAVA_PLUGIN_PROXMAP_INPUT
+	
+						BROWSER code
+						Eventually calls 'c' = 'i'->NewStream
+						'c'->Write
+						'i'->URLNotify
+
+BROWSER (plugin Code)
+Returns, creating a new stream 'c', CJavaStream.
+'c'.Write calls
+	'p'->ProxmapInput(char *data, int length)
+'i'.URLNotify calls 
+	'p'->ProxmapInputDone
+	set the state's proxy_script.
+	Send PROXMAP_INPUT_DONE to the browser.
+
+VM (Java Code)
+Plugin.doit
+	JAVA_PLUGIN_PROXMAP_READY
+Worker.proxmapReady()
+	Sets the proxmap to a new hashtable
+
+
+Getting Proxy URL
+----------------
+Worker.getProxySettings(String url)
+	Wait for proxmap to be non-null (set during initialization)
+	Look up proxy in the proxmap. If non-null, return the mapping
+	else
+	Make proxy request: JAVA_PLUGIN_FIND_PROXY
+
+			BROWSER (plugin code)
+			DoWork
+			   Pick a random instance 'i'. Get it's
+			   ProxySupport object, 'p'
+			'p'->ProxmapFindProxy('i', 'url','host')
+			Does two getURL calls
+			 1) with 0x333 and the proxy_script
+				The response to this is ignored.
+				It merely defines some functions.
+			 2) with FindProxyForURL('%s','%s') 
+				and JAVA_PLUGIN_PROXMAP_QUERY
+						
+							     BROWSER handles query
+
+			BROWSER (plugin code)
+			CJavaStream c = 'i'.NewStream 
+			Check for the notify data of the stream (key)
+			If it is PROXMAP_QUERY call
+				'p'->ProxmapReply
+			ProxySupport.ProxmapReply
+
+				Sends JAVA_PLUGIN_PROXY_MAPPING to the VM
+			  	
+VM (Java code)
+Plugin.doit
+Worker.addProxyMapping(url, proxy)
+Wakes up the thread waiting in getProxySettings which looks up the
+	proxy in the proxmap and returns it.
+
+
+
+Cache request
+-------------
+VM 
+plugin/protocol/jdk12/HttpHandler.getInputStream
+plugin/CacheHandler.getCacheFile(URL u) 
+native.c getCacheFileName(CacheReceiver (null), URL)
+Worker.getCacheFileForURL(url)
+			
+			WORKER PIPE: JAVA_PLUGIN_CACHE_URL
+			BROWSER (plugin code) 
+			JavaVM::DoWork
+			 Choose a random instance 'inst'
+			 If null, abrupt termination
+							GetURL(JAVA_PLUGIN_CACHE_QUERY)
+			CJavaStream 'c' = 'inst'->NewStream
+			'c'->GetStreamType 
+				if notifyData is CACHE_QUERY, return asFile
+			'c'->AsFile			
+				if notifyData == CACHE_QUERY, get the file name
+				Send back the result.
+
+			COMMAND PIPE: JAVA_PLUGIN_CACHED_FILE
+
+Plugin.doIt
+Worker.setCacheFile(fileName)
+Wake up getCacheFileForUrl and return the string
+		
+
+Proxy support
+-------------
+	Normally the JDK protocol handlers deal with the proxy support
+themselves when explicit proxies are used. However, netscape provides
+an "auto proxy" service which we need to use in the context of the
+plugin.  Hence, all the handlers are subclassed so that they call the
+proxy support in the browser. Since the plugin, but not the jdk, provides
+https support, we get that https protocol handler from ssl, and subclass
+it specially.
+
+Plugin invocation in Classic
+-----------------
+[mozilla/modules/plugin/src/npglue.cpp] 
+[mozilla/modules/oji/src/jvmmgr.cpp] 
+[mozilla/modules/cmd/xfe/src/plugin.cpp] 
+[mozilla/js/jsj/jsjava.c]    has JSJ_Init
+[mozilla/js/{src,ref}/liveconnect/jsjava.c] has JSJ_ConnectToJavaVM and JSJ_Init
+(npglue.cpp) NPL_JSJInit
+	(jvmmgr.cpp) nsJVMMgr::JSJInit
+	    nsJVMMgr::GetJVMPlugin
+	    (jsj/jsjava.c) JSJ_Init(&jsj_callbacks)
+		    js_SetInterpreterHooks(&js_Hooks);
+	    nsJVMMgr::StartupJVM()
+	    (liveJSJ_ConnectToJavaVM(JVM_GetJavaVM(), classpath)
+
+

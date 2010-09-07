@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+"
+      codebase="http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/codebasedir"
+      href="hello5.no-jredesc.jnlp">
+  <information>
+    <title>Simple Applet Kit (without JREDesc)</title>
+    <vendor>SUN Deployment</vendor>
+    <description kind='tootltip'>A simple JNLP Applet Toolkit</description>
+    <offline-allowed/>
+  </information>
+    <resources>
+      <jar href="SimpleApplet.jar"/>
+    </resources>
+    <component-desc/>
+</jnlp>

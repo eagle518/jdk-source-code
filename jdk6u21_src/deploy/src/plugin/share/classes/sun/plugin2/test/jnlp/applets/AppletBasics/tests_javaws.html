@@ -1,0 +1,68 @@
+<HTML>
+<HEAD>
+<TITLE>
+Tests JAVAWS
+</TITLE>
+</HEAD>
+<BODY>
+<H1>Tests JAVAWS</H1>
+
+<H3>Test 0: JAVAWS - Launch Type </H3>
+<P>
+<OL>
+<LI> Visit <a href="codebasedir/hello2.jredesc.jnlp">JAVAWS application launch with JREDesc</a>.
+<LI> Visit <a href="codebasedir/hello3.no-jredesc.jnlp">JAVAWS application launch without JREDesc</a>.
+<LI> Visit <a href="codebasedir/hello4.jredesc.jnlp">JAVAWS component launch with JREDesc (shall be ignored)</a>.
+<LI> Visit <a href="codebasedir/hello5.no-jredesc.jnlp">JAVAWS component launch without JREDesc</a>.
+</OL>
+</P>
+<H3>Test 1: JAVAWS - JRE1.5 Launch</H3>
+<P>
+<OL>
+<LI> Visit <a href="codebasedir/JREVersion1.1-jnlp-application-abs.jnlp">JAVAWS launch of JRE1.5</a>.
+<LI> Launching a JRE1.5 application
+</OL>
+</P>
+<H3>Test 2: JAVAWS - JRE1.4.2 Launch</H3>
+<P>
+<OL>
+<LI> Visit <a href="codebasedir/JREVersion1.4-jnlp-application-abs.jnlp">JAVAWS launch of JRE1.4.2</a>.
+<LI> Launching a JRE1.4.2 application
+</OL>
+</P>
+<H3>Test 3.1: JAVAWS - Insecure Arguments - non signed JAR's - FAIL (Not using insecure arguments)</H3>
+<P>
+<OL>
+<LI> Visit <a href="codebasedir/JRERelaunch1.4-jnlp-application-abs.jnlp">JAVAWS Insecure Args - Unsigned JARs</a>.
+</OL>
+</P>
+<H3>Test 3.2: JAVAWS - Insecure Arguments - Signed JAR's (OK)</H3>
+<P>
+<OL>
+<LI> Visit <a href="scodebasedir/JRERelaunch1.4-jnlp-application-sec.jnlp">JAVAWS Insecure Args - Signed JARs</a>.
+</OL>
+</P>
+<H3>Test 4.0: JAVAWS - Long Secure Properties - Unsigned - OK (Using secure arguments)</H3>
+<P>
+<OL>
+<LI> Visit <a href="codebasedir/JNLPLongProperties0.1.abs.jnlp">JAVAWS long properties 0.1 (as vm-args)</a>.
+<LI> Visit <a href="codebasedir/JNLPLongProperties0.2.abs.jnlp">JAVAWS long properties 0.2 (as properties)</a>.
+<LI> Visit <a href="codebasedir/JNLPLongProperties0.3.abs.jnlp">JAVAWS long properties 0.3 (both - very very long)</a>.
+</OL>
+</P>
+<H3>Test 4.1: JAVAWS - Long Insecure Properties - Unsigned - FAIL (Not using insecure arguments)</H3>
+<P>
+<OL>
+<LI> Visit <a href="codebasedir/JNLPLongProperties1.1.abs.jnlp">JAVAWS long properties 1.1 (as vm-args)</a>.
+<LI> Visit <a href="codebasedir/JNLPLongProperties1.2.abs.jnlp">JAVAWS long properties 1.2 (as properties)</a>.
+</OL>
+</P>
+<H3>Test 4.2: JAVAWS - Long Insecure Properties (Signed - OK)</H3>
+<P>
+<OL>
+<LI> Visit <a href="scodebasedir/JNLPLongProperties1.1.abs.sec.jnlp">JAVAWS long properties 1.1 (as vm-args)</a>.
+<LI> Visit <a href="scodebasedir/JNLPLongProperties1.2.abs.sec.jnlp">JAVAWS long properties 1.2 (as properties)</a>.
+</OL>
+</P>
+</BODY>
+</HTML>

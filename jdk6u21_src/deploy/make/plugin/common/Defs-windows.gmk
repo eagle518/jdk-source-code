@@ -1,0 +1,85 @@
+#
+# @(#)Defs-windows.gmk	1.34 10/03/24
+#
+# Copyright (c) 2009, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+DEPLOY_COMMON_WIN_SRC = $(DEPLOY_TOPDIR)/src/common/windows/native
+
+DEPLOY_MSSDK_LIB=$(DEPLOY_MSSDK)/lib
+ifeq ($(ARCH_DATA_MODEL), 64)
+    DEPLOY_MSSDK_LIB=$(DEPLOY_MSSDK)/lib/$(ARCH)
+endif
+
+ifeq ($(ARCH_DATA_MODEL), 32)
+    USE_LOCAL_COPY_OF_ATL=true
+    LOCAL_ATL_FILE_PATH=$(J2SE_TOPDIR)/src/windows/native/common
+endif
+
+# fix for 5043602: windows-i586 deploy build have some linker warning.
+# we want to use our own resource file in plugin
+LOCAL_RESOURCE_FILE=true
+
+# Base address for dll relocation.  Above the recommended 0x60000000 to allow
+# larger heaps.
+REBASE_ADDR = 0x6D000000
+
+PLUGIN_PLATFORM_SRC := $(DEPLOY_TOPDIR)/src/plugin/win32
+VERSION_SRC   := $(DEPLOY_TOPDIR)/src/plugin/win32/common/PluginVersion.hpp
+VERSION_DEST  := $(TEMPDIR)/PluginVersion.h
+#Version numbers for AU
+AU_VERSION_SRC   := $(DEPLOY_TOPDIR)/src/plugin/win32/common/AUVersionInfo.h
+AU_VERSION_DEST  := $(TEMPDIR)/AUVersionInfo.h
+
+ifeq ($(VARIANT), DBG)
+  CPPFLAGS1  = $(MS_RUNTIME_OPTION) $(MS_RUNTIME_DEBUG_OPTION) 
+  CPPFLAGS1 += -W3 -Od $(GX_OPTION) -Gm  -Zi -Fd"$(OBJDIR)\debug" 
+  LFLAGS = -nologo -map -mapinfo:exports -incremental:no -debug -opt:noref
+  ifeq ($(ARCH_DATA_MODEL), 64)
+    LFLAGS += -nodefaultlib:libc.lib
+  else
+    CPPFLAGS1 += -GZ -ZI
+    LFLAGS += -mapinfo:lines -machine:I386
+  endif
+  RSCFLAGS = -l 0x409 -r $(MS_RC_DEBUG_OPTION)
+else
+  CPPFLAGS1  = $(MS_RUNTIME_OPTION) $(MS_RUNTIME_DEBUG_OPTION) 
+  CPPFLAGS1 += -W3 -Ox -Os $(GX_OPTION) -Zi -DNDEBUG -Fd"$(OBJDIR)\release" 
+  LFLAGS = -nologo -map -mapinfo:exports -incremental:no -debug -opt:ref 
+  ifeq ($(ARCH_DATA_MODEL), 64)
+    LFLAGS += -nodefaultlib:libc.lib
+  else
+    LFLAGS += -mapinfo:lines -machine:I386
+  endif
+  RSCFLAGS = -l 0x409 -r $(MS_RC_DEBUG_OPTION)
+endif
+
+CPPFLAGS= $(patsubst %,-I%,$(CPPINCPATH)) $(patsubst %,-I%,$(subst $(CLASSPATH_SEPARATOR), ,$(VPATH.h))) -nologo $(CPPFLAGS1) -DXP_WIN -DXP_PC -D_MBCS -D_ATL_STATIC_REGISTRY -DWIN32 -D_WINDOWS -DARCH=\"$(ARCH)\" -c -Fm$(OBJDIR) $(EXTRA_CPPFLAGS)
+
+# Set AU OFF depending if this is "Java for Business" or not.
+ifeq ($(J4B), true)
+  CPPFLAGS += -DJ4B
+  J4B_AU_OFF = true
+  J4B_JQS_ON = true
+else
+  J4B_AU_OFF = false
+  J4B_JQS_ON = false
+endif
+
+ifeq ($(J4B_AU_OFF), true)
+  CPPFLAGS += -DJ4B_AU_OFF
+endif
+
+ifeq ($(J4B_JQS_ON), true)
+  CPPFLAGS += -DJ4B_JQS_ON
+endif
+CXXFLAGS = $(MS_RUNTIME_OPTION)
+
+#Bundle names for xpi & jxpi install methods
+#
+XPI_BUNDLE=xpiinstall.exe
+JXPI_BUNDLE=jxpiinstall.exe
+
+#Path to the Visual Studio command line build tool
+DEVENV_PATH = $(MSDEVTOOLS_PATH)/../../Common7/IDE/devenv.exe

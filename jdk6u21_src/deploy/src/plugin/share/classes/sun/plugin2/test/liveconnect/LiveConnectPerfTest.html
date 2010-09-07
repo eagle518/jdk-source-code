@@ -1,0 +1,48 @@
+<HTML>
+<HEAD>
+<TITLE>
+LiveConnect Performance Test
+</TITLE>
+<SCRIPT LANGUAGE="javascript">
+function downcall() {
+}
+
+function doUpcalls(num) {
+    var app = document.getElementById("perfTest");
+    for (i = 0; i < num; i++) {
+        app.upcall();
+    }
+}
+
+function roundtrip() {
+    perfTest.upcall();
+}
+
+function printResult(res) {
+    document.getElementById("resultDiv").innerHTML += res;
+}
+</SCRIPT>
+</HEAD>
+<BODY>
+<H1>LiveConnect Performance Test</H1>
+
+<DIV ID="appletDiv">
+<APPLET ID="perfTest" name="perfTest" code="LiveConnectPerfTest" width="1" height="1" MAYSCRIPT></APPLET>
+</DIV>
+
+<P>
+
+Before running this test, make sure that in the Java Control Panel,
+tracing and logging are both turned off, and that the Java Console is
+disabled ("Do not start console"). Also make sure that the environment
+variables JPI_PLUGIN2_DEBUG and JPI_PLUGIN2_VERBOSE are not set.
+
+</P>
+
+<P>
+<DIV ID="resultDiv">
+</DIV>
+</P>
+
+</BODY>
+</HTML>

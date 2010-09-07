@@ -1,0 +1,17 @@
+#
+# @(#)Rules-linux.gmk	1.58 10/03/24
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# Linux specific rules used when building the JavaWS JAR file.
+#
+
+# Rules common to Solaris, Linux and any other UNIX variant.
+include $(DEPLOY_TOPDIR)/make/common/Rules-unix.gmk
+
+# Specific Linux rules follow.
+
+proto-platform: proto-unix
+
+dev-platform: dev-unix

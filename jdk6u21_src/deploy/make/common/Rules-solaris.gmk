@@ -1,0 +1,17 @@
+#
+# @(#)Rules-solaris.gmk	1.77 10/03/24
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# Solaris specific rules used when building the JavaWS JAR file.
+#
+
+# Rules common to Solaris, Linux and any other UNIX variant.
+include $(DEPLOY_TOPDIR)/make/common/Rules-unix.gmk
+
+# Specific Solaris rules follow.
+
+proto-platform: proto-unix
+
+dev-platform: dev-unix

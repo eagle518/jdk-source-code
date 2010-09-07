@@ -1,0 +1,28 @@
+#ident "@(#)mapfile-vers	1.2 10/03/24"
+# 
+# Copyright (c) 2003, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+# Define public interface.
+
+SUNWprivate_1.1 {
+	global:
+            Java_sun_plugin_navig_motif_Plugin_getenv;
+            Java_sun_plugin_services_MNetscape6BrowserAuthenticator_getBrowserAuthentication;
+            Java_sun_plugin_javascript_navig5_JSObject_JSObjectInvoke;
+            Java_sun_plugin_javascript_navig5_JSObject_JSGetILiveConnect;
+            Java_sun_plugin_navig_motif_Plugin_attachThread;
+            Java_sun_plugin_javascript_navig5_JSObject_JSObjectCleanup;
+            Java_sun_plugin_navig_motif_AThread_handleRequest;
+            Java_sun_plugin_navig_motif_OJIPlugin_nativeInitializePipe;
+            Java_sun_plugin_navig_motif_Plugin_getPipe;
+            Java_sun_plugin_javascript_navig_JSObject_evalScript;
+            Java_sun_plugin_viewer_MNetscapePluginObject_convertToGlobalRef;
+            Java_sun_plugin_javascript_navig5_JSObject_JSGetThreadID;
+            Java_sun_plugin_navig_motif_Plugin_parentAlive;
+            Java_sun_plugin_navig_motif_AThread_initGlobals;
+            Java_sun_plugin_viewer_MNetscapePluginObject_releaseGlobalRef;
+	local:
+	    *;
+};

@@ -1,0 +1,27 @@
+<HTML>
+  <TITLE>
+    <title>JREVersion1 Applet 2 - jre 1.5, Xmx128m</title>
+  </TITLE>
+  <HEAD>
+  </HEAD>
+
+  <BODY>
+      <br>
+      launch (jre version, max-heap sz relaunch) verify relaunch and platform version, <br>
+      and vm-args: max-heap (properties) and other properties
+      <br>
+      <h1>Simple Applet 1.2</h1>
+      <hr>
+      <APPLET ID="JRERelaunch1ID1" NAME="JRERelaunch1" CODEBASE=scodebasedir/ CODE=JRERelaunch1 WIDTH=800 HEIGHT=120>
+      <PARAM name="check.java.isRelaunch" VALUE="false">
+      <PARAM name="check.java.version_platform" VALUE="1.5">
+      <PARAM name="check.java.version_product" VALUE="1.5.0">
+      <PARAM name="check.java.maxheapsize" VALUE="134217728">
+      <PARAM name="check.java.jvm_args" VALUE="-Xmx128m -Dsun.java2d.noddraw=true -Dsun.java2d.d3d=false">
+      <PARAM name="jnlp_href" VALUE="JREVersion1.2-jnlp-applet-rel.jnlp">
+      </APPLET>
+      <br>
+      Watch the console output ..<br>
+  </body>
+</html>
+

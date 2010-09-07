@@ -1,0 +1,68 @@
+<HTML>
+<HEAD>
+<TITLE>
+Tests: JNLP Services
+</TITLE>
+</HEAD>
+<BODY>
+<H1>Tests: JNLP Services</H1>
+
+<H2>Basic Service</H2>
+<P>
+<OL>
+<LI> <a href="JNLPBasicService1-jnlp-applet-rel.html">Basic Service 1</a>
+<LI> <a href="JNLPBasicService1-jnlp-applet-rel-showurl0.html">Basic Service 1 url-0</a> (plain html page)
+<LI> <a href="JNLPBasicService1-jnlp-applet-rel-showurl1.html">Basic Service 1 url-1</a> (simple JNLP Applet)
+</OL>
+</P>
+
+<H2>Extended Service</H2>
+<P>
+<OL>
+<LI> <a href="JNLPExtendedService1-jnlp-applet-rel.html">Extended Service 1 Normal</a>
+<LI> <a href="JNLPExtendedService1-jnlp-applet-sec.html">Extended Service 1 Signed</a>
+</OL>
+</P>
+
+
+<H2>Persistent Service</H2>
+<P>
+<OL>
+<LI> <a href="JNLPPersistenceService1-jnlp-applet-rel-round0.html">Persistent Service 1 Round0</a>
+<LI> <a href="JNLPPersistenceService1-jnlp-applet-rel-round1.html">Persistent Service 1 Round1</a>
+<LI> <a href="JNLPPersistenceService1-jnlp-applet-rel-round2.html">Persistent Service 1 Round2</a>
+</OL>
+</P>
+
+<H2>SingleInstance Service</H2>
+<P>
+<OL>
+<!-- <LI> <a href="JNLPSingleInstanceService1-jnlp-applet-rel-2x.html">SingleInstance Service 1</a> -->
+<LI> <a href="JNLPSingleInstanceService1-jnlp-applet-rel.html">SingleInstance Service 1</a>
+<PRE>
+How to run SingleInstance service test ?
+
+- Execute it in the same browser.
+
+- Start the 1st instance in one tab.
+
+        The console window shall make it visible,
+        that this applet is waiting for another another trial of instantiation.
+        You shall see the countdown!
+
+- Start the 2nd instance (same URL) in another browser tab
+        This applet shall never ever really start.
+        Instead, trying to start it shall notify the first applet/instance
+        that such an attempt has made, which shall lead to a successful test result.
+
+You cannot start both instances at the very same time.
+The first instance must have started completely,
+before you can attampt to start the 2nd one !
+
+</PRE>
+</OL>
+</P>
+
+</BODY>
+</HTML>
+

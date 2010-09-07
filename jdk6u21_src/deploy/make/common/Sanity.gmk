@@ -1,0 +1,114 @@
+#
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# @(#)Sanity.gmk	1.54 10/03/24
+#
+
+.PHONY: \
+	pre-sanity \
+	sanity \
+	sanity-base \
+	post-sanity-all \
+	sanity-all \
+	sanity-plugin \
+	post-sanity-plugin \
+	sane-deploy-settings \
+	security_baseline_131 \
+	security_baseline_142 \
+	security_baseline_150
+
+include  $(J2SE_TOPDIR)/make/common/shared/Sanity.gmk
+
+# EXTERNALSANITYCONTROL means that this j2se workspace build is being controlled by
+# the control workspace, and that workspace is managing what is done to the sanity
+# check files, and this sanity check run is only appending to those files.
+pre-sanity: 
+ifndef EXTERNALSANITYCONTROL
+	@$(RM) $(ERROR_FILE) $(WARNING_FILE) $(MESSAGE_FILE)
+endif
+
+sanity-base:: \
+	$(OUTPUTDIR) \
+	$(TEMPDIR) \
+	pre-sanity \
+	sane-insane \
+	sane-make \
+	sane-os_version \
+	sane-makeflags \
+	sane-alt_outputdir \
+	sane-outputdir \
+	sane-devtools_path \
+	sane-compiler_path \
+	sane-unixcommand_path \
+	sane-usrbin_path \
+	sane-unixccs_path \
+	sane-msdevtools_path \
+	sane-mssdk_path \
+	sane-compiler \
+	sane-deploy-settings
+
+sanity-plugin: \
+	sane-copyrightyear \
+	sanity-base \
+	sane-gcc-compiler \
+	sane-mozilla \
+	security_baseline_131 \
+	security_baseline_142 \
+	security_baseline_150
+
+ifndef EXTERNALSANITYCONTROL
+  sane-deploy-settings:: sane-settings
+endif
+
+# The rules sanity-* have a one-to-one correspondence with the major targets
+# Each sanity-* rule should have no body to ensure that the post-sanity-* is the
+# last rule executed. The pre-sanity rule should be the first dependency. This design 
+# expects the execution of pre-sanity only once per gnumake command invocation, 
+# thus, info written to ERROR_FILE and/or WARNING_FILE will not be removed by subsequent
+# targets in the same 'gnumake' command line.
+
+sanity-all:: \
+	sanity-base \
+	sane-classpath \
+	sane-java_home \
+	sane-ld_library_path \
+	sane-ld_library_path_64 \
+	sane-ld_options \
+	sane-ld_run_path \
+	sane-alt_bootdir \
+	sane-kernel-vm \
+	sanity-javaws
+
+# This is for running without a control ws
+sanity-comprehensive:: \
+	sanity-all \
+	post-sanity
+
+# invoked by control ws build
+sanity:: sanity-javaws-all
+
+ifeq ($(BUILD_PLUGIN), true)
+  sanity:: sanity-plugin 
+endif
+
+sanity:: post-sanity
+
+sanity-javaws-all:: \
+	$(OUTPUTDIR) \
+	$(TEMPDIR) \
+	pre-sanity \
+	sane-insane \
+	sane-alt_outputdir \
+	sane-outputdir \
+	sane-alt_bootdir \
+	sanity-javaws \
+	sane-deploy-settings 
+
+sanity-javaws::
+
+# this should be the last rule in any target's sanity rule.
+post-sanity post-sanity-all: sane-lastrule

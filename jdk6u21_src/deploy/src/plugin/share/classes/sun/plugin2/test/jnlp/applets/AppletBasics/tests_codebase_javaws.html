@@ -1,0 +1,57 @@
+<HTML>
+<HEAD>
+<TITLE>
+Tests CODEBASE JAVAWS
+</TITLE>
+</HEAD>
+<BODY>
+<H1>Tests CODEBASE JAVAWS</H1>
+<H2>JAVAWS ressource location</H2>
+
+<H3>Test 1: JAVAWS - Launch of a JNLP file (no subdir)</H3>
+<P>
+<OL>
+
+<LI> Visit <a href="codebasedir/hello0.jnlp">JAVAWS launch no subdirectories</a>.
+
+<LI> This launches normal JNLP descriptions, where all ressources,
+     JAR's and extensions, reside in the same codebase directory.
+</OL>
+</P>
+
+<PRE>
+http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/codebasedir/hello0.jnlp
+
+codebase: http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/codebasedir
+href:     hello0.jnlp
+jar:      hellojavaws.jar
+ext:      SimpleApplet.jnlp
+</PRE>
+
+<H3>Test 2: JAVAWS - Launch of a JNLP file (subdir)</H3>
+<P>
+<OL>
+
+<LI> Visit <a href="codebasedir/hello1.jnlp">JAVAWS launch with subdirectories</a>.
+
+<LI> This launches unorganized JNLP descriptions
+
+<LI> JNLP extension is referenced using a relative URL
+
+<LI> JNLP extension doesn't reside in the codebase directory
+
+<PRE>
+http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/codebasedir/hello1.jnlp
+
+codebase: http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/codebasedir
+href:     hello1.jnlp
+jar:      hellojavaws.jar
+ext:      jnlpdir2/SimpleApplet2.jnlp
+    codebase: http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/codebasedir
+    href:     jnlpdir2/SimpleApplet2.jnlp
+    jar:      SimpleApplet.jar
+</PRE>
+</OL>
+</P>
+</BODY>
+</HTML>

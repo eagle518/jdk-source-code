@@ -1,0 +1,36 @@
+#
+# @(#)Defs-linux.gmk	1.28 10/03/24
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# these are specific to Linux (RH6.1)
+include $(CONTROL_TOPDIR)/make/common/Defs-linux.gmk
+
+BUNDLE_SUFFIX  = .zip
+CC            ?= $(COMPILER_PATH)gcc
+HEAD           = $(USRBIN_PATH)head
+CLASSPATH_SEP  = $(CLASSPATH_SEPARATOR)
+JUMP_EXE       = $(BIN_DIR)/javaws
+PATH_SEP       = /
+
+ifeq ($(ARCH), amd64)
+LIBS           = -L$(OPENWIN_LIB) -lX11 -lnsl
+else
+LIBS           = -L$(OPENWIN_LIB) -lX11 -lnsl -ldl
+endif
+MD_SRC         = $(DEPLOY_TOPDIR)/src/javaws/solaris
+
+C_FLAGS_COMMON = -I$(SHARE_SRC)/native -I$(MD_SRC)/native -I$(SHARE_SRC)/native/jpeg -I$(GENHDIR) -DLINUX
+CC_FLAGS_COMMON = -I$(JAVAWS_BOOTDIR)/include -I$(JAVAWS_BOOTDIR)/include/linux -I$(SHARE_SRC)/native -I$(MD_SRC)/native -I$(SHARE_SRC)/native/jpeg -I$(GENHDIR) -DLINUX
+LINK_FLAGS_COMMON = 
+
+C_FLAGS_OPT =
+CC_FLAGS_OPT =
+C_FLAGS_DBG = -g -D_DEBUG
+CC_FLAGS_DBG = -g -D_DEBUG
+
+PLATFORM_SRC   = $(DEPLOY_TOPDIR)/src/javaws/linux
+UNIX_SHARE_SRC = $(DEPLOY_TOPDIR)/src/javaws/unix
+
+JAVAWS_SUBSTITUTE_VERSIONS = $(CAT)

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+"
+      href="JRERelaunch1.5-jnlp-applet-rel.jnlp">
+  <information>
+    <title>JRERelaunch1.5 Applet (max-heapsize, properties and insec vm-args)</title>
+    <vendor>SUN Deployment</vendor>
+    <description kind='tootltip'>A simple JNLP test</description>
+    <description kind='one-line'>Applet</description>
+    <homepage href='JRERelaunch1-jnlp-applet-rel-check4.html' />
+    <offline-allowed/>
+  </information>
+  <security>    <all-permissions/>  </security>
+  <resources>
+    <!-- no href   : this is the platform version: java.specification.version -->
+    <!-- href given: this is the product  version: java.version -->
+    <j2se href="http://java.sun.com/products/autodl/j2se" version="1.2+" max-heap-size="134217728"/>
+    <property name="sun.java2d.noddraw" value="true"/>
+    <property name="sun.java2d.d3d" value="true"/>
+    <jar href="JRERelaunch1.jar"/>
+    <extension name="SimpleApplet" href="SimpleApplet-jnlp-applet-rel.jnlp"/>
+  </resources>
+  <applet-desc 
+      name="JRERelaunch1"
+      main-class="JRERelaunch1"
+      width="666" 
+      height="999">
+  </applet-desc>
+</jnlp>

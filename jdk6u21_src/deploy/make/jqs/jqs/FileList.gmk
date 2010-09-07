@@ -1,0 +1,19 @@
+FILES_cpp = jqs_api.cpp \
+	    jqs_api_client.cpp \
+	    jqs_api_server.cpp \
+	    jqs_profile.cpp \
+	    main.cpp \
+	    messages.cpp \
+	    os_layer.cpp \
+	    os_utils.cpp \
+	    parse.cpp \
+	    prefetch.cpp \
+	    print.cpp \
+	    qsentry.cpp \
+	    service.cpp \
+	    sockets.cpp \
+	    thread.cpp \
+	    timer.cpp \
+	    utils.cpp
+
+FILES_rc = jqs.rc

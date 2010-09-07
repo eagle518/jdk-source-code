@@ -1,0 +1,16 @@
+<HTML>
+<BODY ONLOAD="runTest()">
+
+<!-- This HTML file and the associated .class file must be deployed on
+     two different servers -->
+
+<SCRIPT LANGUAGE="JavaScript">
+function runTest() {
+  permTest.runTest(true);
+}
+</SCRIPT>
+
+<applet id="permTest" codebase="http://host2/path_to_test/" code="PermissionTest" width="1" height="1" MAYSCRIPT></applet>
+
+</BODY>
+</HTML>

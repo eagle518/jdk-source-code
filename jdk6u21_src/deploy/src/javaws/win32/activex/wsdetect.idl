@@ -1,0 +1,53 @@
+/*
+ * @(#)wsdetect.idl	1.11 10/03/24
+ * 
+ * Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+ * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
+
+// JavaWebStart.idl : IDL source for JavaWebStart.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (JavaWebStart.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+	typedef enum propertydispids
+	{
+		id_dnsResolve = 7
+	}
+	PROPERTYDISPIDS;
+
+	[
+		object,
+		uuid(5852F5EC-8BF4-11D4-A245-0080C6F74284),
+		dual,
+		helpstring("IisInstalled Interface"),
+		pointer_default(unique)
+	]
+	interface IisInstalled : IDispatch
+	{
+		[id(id_dnsResolve), helpstring("dnsResolve")] HRESULT dnsResolve([in] BSTR hostname, [out, retval] BSTR *ipAddr);
+	};
+
+[
+	uuid(5852F5E0-8BF4-11D4-A245-0080C6F74284),
+	version(1.0),
+	helpstring("JavaWebStart 1.0 Type Library")
+]
+library JAVAWEBSTARTLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(5852F5ED-8BF4-11D4-A245-0080C6F74284),
+		helpstring("isInstalled Class")
+	]
+	coclass isInstalled
+	{
+		[default] interface IisInstalled;
+	};
+};

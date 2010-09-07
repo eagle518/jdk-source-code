@@ -1,0 +1,62 @@
+<html>
+<head>
+<title>
+Bridge Negative Test
+</title>
+</head>
+<body>
+<h1>Bridge Negative Test</h1>
+
+<P>
+Verifies that the inter-language LiveConnect Bridge can not be
+accessed from untrusted code.
+</P>
+<P>
+
+<applet id="app" code="BridgeNegativeTest" width="100" height="100">
+</applet>
+
+<script language="javascript">
+function runTest() {
+    try {
+        if (app.passed()) {
+            pass();
+        } else {
+            fail();
+        }
+    } catch (e) {
+        reportException(e);
+        fail();
+    }
+}
+
+function pass() {
+    document.write("<br>Test Passed.");
+}
+
+function fail() {
+    document.write("<br><B>TEST FAILED</B>");
+}
+
+function reportException(e) {
+    var str = getExceptionString(e);
+    document.write("<pre>" + str + "</pre>");
+}
+
+function getExceptionString(e) {
+    if (typeof e == "string") {
+        return e;
+    } else {
+        var s = "";
+        for (var i in e) {
+            s += "" + i + " = " + e[i] + "\n";
+        }
+        return s;
+    }
+}
+
+runTest();
+</script>
+
+</body>
+</html>

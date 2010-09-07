@@ -1,0 +1,41 @@
+//
+// Copyright (c) 2007, Oracle and/or its affiliates. All rights reserved.
+// ORACLE PROPRIETARY/CONFIDENTIAL.  Use is subject to license terms.
+//
+
+// JQSIEStartDetector.idl : IDL source for JQSIEStartDetector
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (JQSIEStartDetector.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	object,
+	uuid(AD5FB04F-5A8D-44D4-8206-6A8734186EA2),
+	dual,
+	nonextensible,
+	helpstring("IJQSIEStartDetectorImpl Interface"),
+	pointer_default(unique)
+]
+interface IJQSIEStartDetectorImpl : IDispatch{
+};
+[
+	uuid(D85100D8-894D-4F80-9697-C220AF4202EB),
+	version(1.0),
+	helpstring("JQSIEStartDetector 1.0 Type Library")
+]
+library JQSIEStartDetectorLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(E7E6F031-17CE-4C07-BC86-EABFE594F69C),
+		helpstring("JQSIEStartDetectorImpl Class")
+	]
+	coclass JQSIEStartDetectorImpl
+	{
+		[default] interface IJQSIEStartDetectorImpl;
+	};
+};

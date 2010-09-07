@@ -1,0 +1,48 @@
+#
+# @(#)FILES_c.gmk	1.23 10/03/24
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+# List of Deploy related C++ source files
+DEPLOY_FILES_cpp =         \
+        BasicPerfStore.cpp \
+        DeployPerf.cpp     \
+        PerfHelper.cpp     \
+        PerfLabel.cpp
+
+ifeq ($(PLATFORM),windows)
+    # List of Windows specific DeployPerf related C++ source files
+    DEPLOY_FILES_cpp +=        \
+        auth.cpp               \
+	common.cpp             \
+        config.cpp             \
+        console.cpp            \
+        cookie.cpp             \
+        dllmain.cpp            \
+        jscriptengine.cpp      \
+        offline.cpp            \
+        proxy.cpp              \
+        registry.cpp           \
+        security.cpp           \
+        stdafx.cpp             \
+        WindowsJavaTrayIcon.cpp\
+        WinRegistryWrapper.cpp \
+        WinTime.cpp
+else
+    # List of Unix specific Deploy related C++ source files
+    DEPLOY_FILES_cpp += \
+        UnixTime.cpp
+
+    # List of Unix specific Deploy related C source files
+    DEPLOY_FILES_c +=         \
+        config.c              \
+        console.c             \
+        GnomeVfsWrapper.c     \
+        MSystemProxyHandler.c \
+        NetworkUtil.c         \
+        UnixDomainSocket.c
+endif
+
+DEPLOY_FILES_rc = version.rc

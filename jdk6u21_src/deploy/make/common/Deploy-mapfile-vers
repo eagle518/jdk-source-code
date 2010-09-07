@@ -1,0 +1,36 @@
+#ident "@(#)Deploy-mapfile-vers	1.2 10/03/24"
+# 
+# Copyright (c) 2005, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+# Define public interface.
+
+SUNWprivate_1.1 {
+	global:
+            Java_com_sun_deploy_association_utility_DesktopEntryFile_ensure_1load_1gnome_1vfs_1lib;
+            Java_com_sun_deploy_association_utility_DesktopEntryFile_gnome_1vfs_1delete_1file;
+            Java_com_sun_deploy_association_utility_DesktopEntryFile_gnome_1vfs_1file_1exists;
+            Java_com_sun_deploy_association_utility_DesktopEntryFile_gnome_1vfs_1mkdir;
+            Java_com_sun_deploy_association_utility_DesktopEntryFile_gnome_1vfs_1read_1file;
+            Java_com_sun_deploy_association_utility_DesktopEntryFile_gnome_1vfs_1write_1file;
+            Java_com_sun_deploy_association_utility_GnomeVfsWrapper_closeGNOMELibrary;
+            Java_com_sun_deploy_association_utility_GnomeVfsWrapper_getenv;
+            Java_com_sun_deploy_association_utility_GnomeVfsWrapper_getenv2;
+            Java_com_sun_deploy_association_utility_GnomeVfsWrapper_gnome_1vfs_1get_1mime_1type;
+            Java_com_sun_deploy_association_utility_GnomeVfsWrapper_gnome_1vfs_1get_1registered_1mime_1types;
+            Java_com_sun_deploy_association_utility_GnomeVfsWrapper_gnome_1vfs_1mime_1get_1default_1application_1command;
+            Java_com_sun_deploy_association_utility_GnomeVfsWrapper_gnome_1vfs_1mime_1get_1description;
+            Java_com_sun_deploy_association_utility_GnomeVfsWrapper_gnome_1vfs_1mime_1get_1extensions_1list;
+            Java_com_sun_deploy_association_utility_GnomeVfsWrapper_gnome_1vfs_1mime_1get_1icon;
+            Java_com_sun_deploy_association_utility_GnomeVfsWrapper_gnome_1vfs_1mime_1get_1key_1list;
+            Java_com_sun_deploy_association_utility_GnomeVfsWrapper_gnome_1vfs_1mime_1get_1value;
+            Java_com_sun_deploy_association_utility_GnomeVfsWrapper_initGNOMELibrary;
+            Java_com_sun_deploy_association_utility_GnomeVfsWrapper_openGNOMELibrary;
+            Java_com_sun_deploy_config_UnixConfig_getEnv;
+            Java_com_sun_deploy_net_proxy_MSystemProxyHandler_getSystemProxy;
+            Java_com_sun_deploy_net_proxy_MSystemProxyHandler_init;
+            Java_com_sun_deploy_util_ConsoleHelper_dumpAllStacks;
+	local:
+	    *;
+};

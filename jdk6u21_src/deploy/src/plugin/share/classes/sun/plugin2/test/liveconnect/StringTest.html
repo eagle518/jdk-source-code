@@ -1,0 +1,14 @@
+<SCRIPT LANGUAGE="javascript">
+function runTest() {
+    var hostname = new String(window.location.hostname);
+    stringTest.beginTest();
+    try {
+        stringTest.javaMethod("aString", hostname);
+    } catch (e) {
+    }
+    stringTest.endTest();
+}
+</SCRIPT>
+<BODY ONLOAD="runTest()">
+<APPLET id="stringTest" code="StringTest" width="1" height="1" MAYSCRIPT></APPLET>
+</BODY>

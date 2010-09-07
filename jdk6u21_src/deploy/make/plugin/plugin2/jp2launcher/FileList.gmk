@@ -1,0 +1,10 @@
+#
+#  @(#)FileList.gmk	1.2 10/03/24 12:01:15
+#
+# Copyright (c) 2007, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+FILES_cpp = JP2Launcher.cpp \
+            common.cpp
+FILES_rc = version.rc

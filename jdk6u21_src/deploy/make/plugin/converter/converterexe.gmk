@@ -1,0 +1,47 @@
+#
+# @(#)Makefile	1.00 07/21/01
+#
+# Makefile for HtmlConverter wrapper
+
+# Build HtmlConverter.exe and copy to BINDIR
+
+
+PROGRAM = HtmlConverter
+DEPLOY_TOPDIR = ../../..
+
+SRCDIR = ../src/win32/converter
+
+include $(DEPLOY_TOPDIR)/make/common/Defs.gmk
+
+
+OPTIONS = /c /nologo $(MS_RUNTIME_OPTION) /W3 $(GX_OPTION) /O2     
+DEBUG_OPTIONS = /c /nologo /Z7
+LINKFILES = user32.lib
+DEBUG_LINK = /PDB:NONE
+
+all :  $(BINDIR)/HtmlConverter.exe
+
+
+$(BINDIR)/$(PROGRAM)$(EXE_SUFFIX) : $(TEMPDIR)/$(PROGRAM).$(OBJECT_SUFFIX) $(TEMPDIR)/$(PROGRAM).res
+	$(LINK) $(TEMPDIR)/$(PROGRAM).$(OBJECT_SUFFIX) $(TEMPDIR)/$(PROGRAM).res $(LINKFILES)
+	$(MV) $(PROGRAM)$(EXE_SUFFIX) $(BINDIR)
+
+
+$(TEMPDIR)/$(PROGRAM).$(OBJECT_SUFFIX) : $(SRCDIR)/$(PROGRAM).cpp
+	$(CPP) $(OPTIONS) $(SRCDIR)/$(PROGRAM).cpp
+	$(MV) $(PROGRAM).$(OBJECT_SUFFIX) $(TEMPDIR)
+
+$(TEMPDIR)/$(PROGRAM).res : $(SRCDIR)/$(PROGRAM).rc
+	$(RC) $(SRCDIR)/$(PROGRAM).rc
+	$(MV) $(SRCDIR)/$(PROGRAM).res $(TEMPDIR)
+
+
+$(SRCDIR)/HtmlConverter.cpp:
+
+
+
+clobber :
+	$(RM) -r $(TEMPDIR)
+	$(RM) $(BINDIR)/$(PROGRAM).exe
+
+.phony: all clobber 

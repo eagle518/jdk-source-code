@@ -1,0 +1,77 @@
+#
+# @(#)Makefile.javaws	1.1 06/03/08
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# Makefile to build the Java Web Start components.
+#
+DEPLOY_TOPDIR = ../..
+
+#
+# Statically link javaws to avoid the dependency on msvcr71.dll.  This
+# must be set before Defs.gmk is included.
+#
+MS_RUNTIME_STATIC = true
+
+include ../common/Defs.gmk
+
+# File groupings
+include FILES_java.gmk
+include FILES_c.gmk
+include FILES_resource.gmk
+
+# Main Rules
+
+dummy := $(shell $(MKDIR) -p $(OUTPUTDIR) $(TEMPDIR))
+
+ifndef EXTERNALSANITYCONTROL
+build:: sanity-comprehensive
+endif
+
+build:: jump
+
+all:: build
+
+clean::
+	$(RM) -r $(GENSRCBASE)      \
+	         $(CLASSDIR)        \
+	         $(SERVLET_DESTDIR) \
+	         $(OBJDIR)          \
+	         $(JARDIFF_DESTDIR) \
+	         $(JAVAWSDEMODIR)   \
+	         $(PROTO_DIR)       \
+	         $(IMAGE_DIR)       \
+	         $(BUNDLE_DIR)/jnlp*.*
+
+include ../common/Sanity.gmk
+include ../common/Rules.gmk
+include ../common/Release.gmk
+
+# for deploy.jar
+include ../common/FILES_c.gmk
+include ../common/FILES_java.gmk
+include ../common/DeployRules.gmk
+
+ifeq ($(PLATFORM), windows)
+   include ../common/DeployRules-windows.gmk
+else
+   include ../common/DeployRules-solaris.gmk
+endif
+
+
+ifeq ($(PLATFORM), windows)
+SUBDIRS=activex
+
+all build clean::
+	@for i in $(SUBDIRS) ; do \
+	    $(ECHO) ">>>Recursively making "$$i" "$@" @ `$(DATE)` ..."; \
+	    $(CD) $$i; $(MAKE) $(MAKEOVERRIDES) $@ || exit 1; $(CD) ..; \
+	    $(ECHO) "<<<Finished Recursively making "$$i" "$@" @ `$(DATE)`."; \
+	done
+endif
+
+# for zh_HK RFE 4463546 
+include ../common/Resources.gmk
+
+.PHONY: all clean

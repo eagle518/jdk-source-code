@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>JavaPlugIn2Safari</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.sun.JavaPlugin2Safari</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>JavaPlugin2Safari</string>
+	<key>CFBundlePackageType</key>
+	<string>WBPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>12.1.0</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>12.1.0</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright © 2008 Sun Microsystems, Inc. All Rights Reserved.</string>
+	<key>NSPrincipalClass</key>
+	<string>JavaPlugin2Safari</string>
+	<key>WebPluginDescription</key>
+	<string>Java Plug-In 2 for Safari</string>
+	<key>WebPluginMIMETypes</key>
+	<dict>
+		<key>application/x-java-applet</key>
+		<dict>
+			<key>WebPluginExtensions</key>
+			<array>
+				<string>javaapplet</string>
+			</array>
+			<key>WebPluginTypeDescription</key>
+			<string>Basic Java Applets</string>
+		</dict>
+		<key>application/x-java-applet;jpi-version=1.5.0_13</key>
+		<dict>
+			<key>WebPluginTypeDescription</key>
+			<string>Java applet</string>
+		</dict>
+		<key>application/x-java-applet;version=1.1</key>
+		<dict>
+			<key>WebPluginTypeDescription</key>
+			<string>Java applet</string>
+		</dict>
+		<key>application/x-java-applet;version=1.1.1</key>
+		<dict>
+			<key>WebPluginTypeDescription</key>
+			<string>Java applet</string>
+		</dict>
+		<key>application/x-java-applet;version=1.1.2</key>
+		<dict>
+			<key>WebPluginTypeDescription</key>
+			<string>Java applet</string>
+		</dict>
+		<key>application/x-java-applet;version=1.1.3</key>
+		<dict>
+			<key>WebPluginTypeDescription</key>
+			<string>Java applet</string>
+		</dict>
+		<key>application/x-java-applet;version=1.2</key>
+		<dict>
+			<key>WebPluginTypeDescription</key>
+			<string>Java applet</string>
+		</dict>
+		<key>application/x-java-applet;version=1.2.1</key>
+		<dict>
+			<key>WebPluginTypeDescription</key>
+			<string>Java applet</string>
+		</dict>
+		<key>application/x-java-applet;version=1.2.2</key>
+		<dict>
+			<key>WebPluginTypeDescription</key>
+			<string>Java applet</string>
+		</dict>
+		<key>application/x-java-applet;version=1.3</key>
+		<dict>
+			<key>WebPluginTypeDescription</key>
+			<string>Java applet</string>
+		</dict>
+		<key>application/x-java-applet;version=1.3.1</key>
+		<dict>
+			<key>WebPluginTypeDescription</key>
+			<string>Java applet</string>
+		</dict>
+		<key>application/x-java-applet;version=1.4</key>
+		<dict>
+			<key>WebPluginTypeDescription</key>
+			<string>Java applet</string>
+		</dict>
+		<key>application/x-java-applet;version=1.4.2</key>
+		<dict>
+			<key>WebPluginTypeDescription</key>
+			<string>Java applet</string>
+		</dict>
+		<key>application/x-java-applet;version=1.5</key>
+		<dict>
+			<key>WebPluginTypeDescription</key>
+			<string>Java applet</string>
+		</dict>
+	</dict>
+	<key>WebPluginName</key>
+	<string>Java Plug-In 2 for Safari</string>
+</dict>
+</plist>

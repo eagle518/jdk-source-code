@@ -1,0 +1,27 @@
+<HTML>
+<HEAD>
+<TITLE>JavaScript -> Java Test 2</TITLE>
+</HEAD>
+<BODY>
+
+<applet id="myApplet" code="java.applet.Applet" width="1" height="1" MAYSCRIPT></applet>
+<SCRIPT LANGUAGE="JavaScript">
+function runTest() {
+    try {
+        var l = new myApplet.Packages.java.util.ArrayList();
+        l.add("hello");
+        l.add(new java.lang.Integer(5));
+        myApplet.Packages.java.lang.System.out.println(l.toString());
+    } catch (e) {
+        alert("Exception: " + e);
+    }
+}
+</SCRIPT>
+<FORM NAME="myform1" ACTION="" METHOD="GET">
+<INPUT TYPE="button" NAME="button1" Value="Run Test" onClick="runTest()">
+</FORM>
+<P ID="RESULT">
+Check Java Console for output. Should see "[hello, 5]".
+</P>
+</BODY>
+</HTML>

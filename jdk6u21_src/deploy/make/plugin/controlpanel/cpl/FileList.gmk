@@ -1,0 +1,5 @@
+FILES_cpp = javacpl.cpp	\
+            UserProfile.cpp \
+            common.cpp
+
+FILES_rc = javacpl.rc

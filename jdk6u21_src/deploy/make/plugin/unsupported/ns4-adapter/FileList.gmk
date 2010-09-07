@@ -1,0 +1,10 @@
+FILES_c = \
+          stubs.c
+
+FILES_cpp =  \
+          initialize.cpp \
+          adaptercommon.cpp \
+          CJavaInstanceCB.cpp \
+          UnixShell.cpp \
+          CFDMonitor.cpp
+          

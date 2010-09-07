@@ -1,0 +1,87 @@
+<HTML>
+<HEAD>
+<TITLE>
+Test: JNLP NOT FOUND
+</TITLE>
+</HEAD>
+<BODY>
+<H1>Test: JNLP NOT FOUND</H1>
+<H2>JNLP OOPP (Negative scenario) Browser hangs after throwing exceptions if JNLP is not found</H2>
+
+<H3>Test 1: Attempt to launch of a non exitent root JNLP file</H3>
+<P>
+<OL>
+
+<LI> Visit <a href="NonExistentJNLPFile1-jnlp-applet-rel.html">Non existent root JNLP file</a>.
+
+<LI> The root JNLP file does not exist.
+<LI> Initialization failed, but Plugin2Manager continues to throw a proper UI error
+</OL>
+</P>
+
+<H3>Test 2: Attempt to launch with a non exitent subsequent JNLP component file</H3>
+<P>
+<OL>
+
+<LI> Visit <a href="NonExistentJNLPFile2-jnlp-applet-rel.html">Non existent subsequent JNLP component file</a>.
+
+<LI> A subsequent JNLP component file does not exist.
+<LI> Initialization passed , but the final 'loadJarFiles' failes - Plugin2Manager throws a proper UI error
+</OL>
+</P>
+
+<H3>Test 3: Attempt to launch with a non exitent root JNLP jar file</H3>
+<P>
+<OL>
+
+<LI> Visit <a href="NonExistentJNLPFile3-jnlp-applet-rel.html">Non existent root JNLP jar file</a>.
+
+<LI> The root JNLP's jar file does not exist.
+<LI> Initialization passed , but the final 'loadJarFiles' failes - Plugin2Manager throws a proper UI error
+</OL>
+</P>
+
+<H3>Test 3: Attempt to launch with a non exitent root JNLP jar file</H3>
+<P>
+<OL>
+
+<LI> Visit <a href="NonExistentJNLPFile3-jnlp-applet-rel.html">Non existent root JNLP jar file</a>.
+
+<LI> The root JNLP file does exist.
+<LI> The root JNLP's jar file does not exist.
+<LI> Initialization passed , but the final 'loadJarFiles' failes - Plugin2Manager throws a proper UI error
+</OL>
+</P>
+
+<H3>Test 4: Attempt to launch with a non exitent component JNLP jar file</H3>
+<P>
+<OL>
+
+<LI> Visit <a href="NonExistentJNLPFile4-jnlp-applet-rel.html">Non existent component JNLP jar file</a>.
+
+<LI> The component JNLP's jar file does not exist.
+<LI> Initialization passed , but the final 'loadJarFiles' failes - Plugin2Manager throws a proper UI error
+</OL>
+</P>
+
+<H3>Test 5: Attempt to launch with an incomplete component JNLP jar file</H3>
+<P>
+<OL>
+
+<LI> Visit <a href="NonExistentJNLPFile5-jnlp-applet-rel.html">Incomplete component JNLP jar file</a>.
+
+<LI> The component JNLP's jar file does not contain all class files
+<LI> Initialization passed , but the final 'loadJarFiles' failes - Plugin2Manager throws a proper UI error
+</OL>
+</P>
+
+<H3>Test 6: Attempt to launch an application</H3>
+<P>
+<OL>
+
+<LI> Visit <a href="JNLPAppletWithApplicationLaunchError.html">JNLP Applet With Application Launch - Error</a>.
+</OL>
+</P>
+
+</BODY>
+</HTML>

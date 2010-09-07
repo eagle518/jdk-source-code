@@ -1,0 +1,107 @@
+JRE 1.6.0: PERF: 21.0 us, dT 21.0 us :PluginMain - run() - BEGINJRE 1.6.0: 
+JRE 1.6.0: PERF: 40674.0 us, dT 40653.0 us :PluginMain - run() - pre Applet2Manager.setDefaultAppletExecutionContext()JRE 1.6.0: 
+JRE 1.6.0: PERF: 44300.0 us, dT 3626.0 us :PluginMain - run() - post Applet2Manager.setDefaultAppletExecutionContext()JRE 1.6.0: 
+JRE 1.6.0: PERF: 51482.0 us, dT 7182.0 us :PluginMain - run() - post PluginProxySelector.initialize()JRE 1.6.0: 
+JRE 1.6.0: PERF: 52896.0 us, dT 1414.0 us :PluginMain - run() - post PluginCookieSelector.initialize()JRE 1.6.0: 
+JRE 1.6.0: PERF: 54257.0 us, dT 1361.0 us :PluginMain - run() - pre mainLoop()JRE 1.6.0: 
+JRE 1.6.0: PERF: 55469.0 us, dT 1212.0 us :PluginMain - handleMessageSetJVMID() - BEGINJRE 1.6.0: 
+JRE 1.6.0: PluginMain: The running JVM is secure+
+	JVMParameters: [JVMParameters: isSecure: true, args: -Xbootclasspath/a:/opt-linux-x86/jre-dev/lib/deploy.jar:/opt-linux-x86/jre-dev/lib/javaws.jar:/opt-linux-x86/jre-dev/lib/plugin.jar -Djava.class.path=/opt-linux-x86/jre-dev/classes]JRE 1.6.0: 
+JRE 1.6.0: PERF: 61276.0 us, dT 5807.0 us :PluginMain - handleMessageSetJVMID() - pre ServiceDelegate.initialize()JRE 1.6.0: 
+JRE 1.6.0: PERF: 62284.0 us, dT 1008.0 us :PluginMain - handleMessageSetJVMID() - post ServiceDelegate.initialize()JRE 1.6.0: 
+JRE 1.6.0: PERF: 62864.0 us, dT 580.0 us :PluginMain - handleMessageSetJVMID() - pre Applet2Environment.initialize()JRE 1.6.0: 
+JRE 1.6.0: PERF: 64674.0 us, dT 1810.0 us :START - Java   - ENV - Replaced Applet2Environment.initialize - initJavaRunTime()JRE 1.6.0: 
+JRE 1.6.0: PERF: 65972.0 us, dT 1298.0 us :START - Java   - ENV - Replaced AppletViewer.loadPropertiesFilesJRE 1.6.0: 
+JRE 1.6.0: PERF: 75108.0 us, dT 9136.0 us :END   - Java   - ENV - Replaced AppletViewer.loadPropertiesFilesJRE 1.6.0: 
+Running JVMParams: [JVMParameters: isSecure: true, args: -Xbootclasspath/a:/opt-linux-x86/jre-dev/lib/deploy.jar:/opt-linux-x86/jre-dev/lib/javaws.jar:/opt-linux-x86/jre-dev/lib/plugin.jar -Djava.class.path=/opt-linux-x86/jre-dev/classes]
+	-> [JVMParameters: isSecure: true, args: -Xbootclasspath/a:/opt-linux-x86/jre-dev/lib/deploy.jar:/opt-linux-x86/jre-dev/lib/javaws.jar:/opt-linux-x86/jre-dev/lib/plugin.jar -Djava.class.path=/opt-linux-x86/jre-dev/classes]
+PERF: 75889.0 us, dT 781.0 us :END - Java   - ENV - Replaced Applet2Environment.initialize - initJavaRunTime()
+PERF: 76119.0 us, dT 230.0 us :POST - Java   - ENV - Trace.addTraceListener()
+PERF: 76753.0 us, dT 634.0 us :START - Java   - ENV - Applet2Environment.initialize - PluginSysUtil.getPluginThreadGroup
+PERF: 129481.0 us, dT 52728.0 us :END   - Java   - ENV - Applet2Environment.initialize - PluginSysUtil.getPluginThreadGroup
+PERF: 129667.0 us, dT 186.0 us :START - Java   - ENV - Applet2Environment.initialize - Applet2BrowserService.install
+PERF: 140319.0 us, dT 10652.0 us :END   - Java   - ENV - Applet2Environment.initialize - Applet2BrowserService.install
+PERF: 144277.0 us, dT 3958.0 us :START - Java   - ENV - Applet2Environment.initialize - JDK11ClassFileTransformer.init
+PERF: 144835.0 us, dT 558.0 us :END   - Java   - ENV - Applet2Environment.initialize - JDK11ClassFileTransformer.init
+PERF: 144969.0 us, dT 134.0 us :START - Java   - ENV - Applet2Environment.initialize - load deploy.properties
+PERF: 151039.0 us, dT 6070.0 us :START - Java   - ENV - Applet2Environment.initialize - URLConnection.setDefaultAllowUserInteraction
+PERF: 151894.0 us, dT 855.0 us :END   - Java   - ENV - Applet2Environment.initialize - URLConnection.setDefaultAllowUserInteraction
+PERF: 152081.0 us, dT 187.0 us :START - Java   - ENV - Applet2Environment.initialize - JavaRunTime.initTraceEnvironment
+Java Plug-in 1.6.0
+Using JRE version 1.6.0 Java HotSpot(TM) Server VM
+User home directory = /home/svenPERF: 164631.0 us, dT 12550.0 us :END   - Java   - ENV - Applet2Environment.initialize - JavaRunTime.initTraceEnvironment
+PERF: 164807.0 us, dT 176.0 us :START - Java   - ENV - Applet2Environment.initialize - display JavaConsole
+PERF: 165010.0 us, dT 203.0 us :END   - Java   - ENV - Applet2Environment.initialize - display JavaConsole
+PERF: 165112.0 us, dT 102.0 us :START - Java   - ENV - Applet2Environment.initialize - setup system tray icon
+PERF: 165704.0 us, dT 592.0 us :END - Java   - ENV - Applet2Environment.initialize - setup system tray icon
+PERF: 165827.0 us, dT 123.0 us :START - Java   - ENV - Applet2Environment.initialize - install extension package
+PERF: 167177.0 us, dT 1350.0 us :END   - Java   - ENV - Applet2Environment.initialize - install extension package
+PERF: 167368.0 us, dT 191.0 us :START - Java   - ENV - Applet2Environment.initialize - enable proxy/web server authentication
+PERF: 168413.0 us, dT 1045.0 us :END   - Java   - ENV - Applet2Environment.initialize - enable proxy/web server authentication
+PERF: 168549.0 us, dT 136.0 us :END   - Java   - ENV - Applet2Environment.initialize - load deploy.properties
+
+PERF: 168696.0 us, dT 147.0 us :START - Java   - ENV - Applet2Environment.initialize - DeployOfflineManager.reset
+PERF: 169183.0 us, dT 487.0 us :END   - Java   - ENV - Applet2Environment.initialize - DeployOfflineManager.reset
+
+PERF: 169328.0 us, dT 145.0 us :START - Java   - ENV - Applet2Environment.initialize - DeployCacheHandler.reset
+PERF: 169833.0 us, dT 505.0 us :END   - Java   - ENV - Applet2Environment.initialize - DeployCacheHandler.reset
+
+PERF: 169975.0 us, dT 142.0 us :START - Java   - ENV - Applet2Environment.initialize - prep MIME types table
+PERF: 180579.0 us, dT 10604.0 us :END   - Java   - ENV - Applet2Environment.initialize - prep MIME types table
+PERF: 180735.0 us, dT 156.0 us :START - Java   - ENV - Applet2Environment.initialize - ProgressMonitor.setDefault
+PERF: 181390.0 us, dT 655.0 us :END   - Java   - ENV - Applet2Environment.initialize - ProgressMonitor.setDefault
+PERF: 181499.0 us, dT 109.0 us :START - Java   - ENV - Applet2Environment.initialize - install security manager
+PERF: 192732.0 us, dT 11233.0 us :END   - Java   - ENV - Applet2Environment.initialize - install security manager
+PERF: 192915.0 us, dT 183.0 us :START - Java   - ENV - Applet2Environment.initialize - ConsoleHelper.displayHelp
+----------------------------------------------------
+c:   clear console window
+f:   finalize objects on finalization queue
+g:   garbage collect
+h:   display this help message
+l:   dump classloader list
+m:   print memory usage
+o:   trigger logging
+q:   hide console
+r:   reload policy configuration
+s:   dump system and deployment properties
+t:   dump thread list
+v:   dump thread stack
+x:   clear classloader cache
+0-5: set trace level to <n>
+----------------------------------------------------
+
+PERF: 193339.0 us, dT 424.0 us :END   - Java   - ENV - Applet2Environment.initialize - ConsoleHelper.displayHelp
+PERF: 193442.0 us, dT 103.0 us :START - Java   - ENV - Applet2Environment.initialize - Config.validateSystemCacheDirectory
+PERF: 193563.0 us, dT 121.0 us :END   - Java   - ENV - Applet2Environment.initialize - Config.validateSystemCacheDirectory
+PERF: 193672.0 us, dT 109.0 us :START - Java   - ENV - Applet2Environment.initialize - URLJarFile.setCallBack
+PERF: 194279.0 us, dT 607.0 us :END   - Java   - ENV - Applet2Environment.initialize - URLJarFile.setCallBack
+PERF: 195776.0 us, dT 1497.0 us :START - Java   - ENV - Applet2Environment.initialize - upgrade cache
+PERF: 195933.0 us, dT 157.0 us :END   - Java   - ENV - Applet2Environment.initialize - upgrade cache
+PERF: 196201.0 us, dT 268.0 us :END   - Java   - ENV - Applet2Environment.initialize
+PERF: 196319.0 us, dT 118.0 us :PluginMain - handleMessageSetJVMID() - post Applet2Environment.initialize()
+PERF: 197167.0 us, dT 848.0 us :JNLP2Manager - initializeExecutionEnvironment() - BEGIN
+PERF: 199303.0 us, dT 2136.0 us :JNLP2Manager - initializeExecutionEnvironment() - post setProperty(javawebstart.version) 
+PERF: 199978.0 us, dT 675.0 us :JNLP2Manager - initializeExecutionEnvironment() - post ServiceManager.setServiceManagerStub()
+security: property package.access value sun.
+security: property package.access new value sun.,com.sun.javaws
+security: property package.access value sun.,com.sun.javaws
+security: property package.access new value sun.,com.sun.javaws,com.sun.deploy
+security: property package.definition value null
+security: property package.definition new value com.sun.javaws
+security: property package.definition value com.sun.javaws
+security: property package.definition new value com.sun.javaws,com.sun.deploy
+security: property package.definition value com.sun.javaws,com.sun.deploy
+security: property package.definition new value com.sun.javaws,com.sun.deploy,com.sun.jnlp
+security: property package.access value sun.,com.sun.javaws,com.sun.deploy
+security: property package.access new value sun.,com.sun.javaws,com.sun.deploy,org.mozilla.jss
+security: property package.definition value com.sun.javaws,com.sun.deploy,com.sun.jnlp
+security: property package.definition new value com.sun.javaws,com.sun.deploy,com.sun.jnlp,org.mozilla.jss
+PERF: 201353.0 us, dT 1375.0 us :JNLP2Manager - initializeExecutionEnvironment() - post addToSecurityProperty
+PERF: 201763.0 us, dT 410.0 us :JNLP2Manager - initializeExecutionEnvironment() - post UIFactory.setDialogListener
+PERF: 201893.0 us, dT 130.0 us :JNLP2Manager - initializeExecutionEnvironment() - post DeployOfflineManager.isGlobalOffline()
+PERF: 202031.0 us, dT 138.0 us :JNLP2Manager - initializeExecutionEnvironment() - post Environment.isSystemCacheMode()
+PERF: 202140.0 us, dT 109.0 us :JNLP2Manager - initializeExecutionEnvironment() - post Globals.TCKHarnessRun
+PERF: 202261.0 us, dT 121.0 us :JNLP2Manager - initializeExecutionEnvironment() - END
+PERF: 202364.0 us, dT 103.0 us :PluginMain - handleMessageSetJVMID() - post JNLP2Manager.initializeExecutionEnvironment()
+PERF: 205764.0 us, dT 3400.0 us :PluginMain - handleMessageSetJVMID() - post LiveConnectSupport.initialize()
+PERF: 206031.0 us, dT 267.0 us :PluginMain - handleMessageSetJVMID() - END

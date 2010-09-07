@@ -1,0 +1,17 @@
+#
+# @(#)FileList.gmk	1.5 10/03/24
+#
+# Copyright (c) 2007, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+FILES_cpp = stdafx.cpp \
+            RegCommon.cpp \
+            RegJavaConsole.cpp \
+            common.cpp \
+            jbroker.cpp \
+            maps.cpp \
+            security.cpp \
+            securemove.cpp \
+            log.cpp
+FILES_rc = version.rc

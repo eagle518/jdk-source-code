@@ -1,0 +1,1149 @@
+<bundles>
+  <!-- 
+      Generally we assume that java kernel is mostly used for GUI
+    applications (at least on the first java run). Swing applications
+    require large subset of 2D and AWT code and Webstart is based on Swing. 
+    Keeping this in mind we are considering following common scenarios:
+       1) Applet without any Swing code
+       2) Webstart-based java Swing application 
+       3) Webstart based FX application (do not use Swing components)
+       4) Regular Swing app run from command line
+
+    For some of bundles/packages we use tests to identify minimal or typical
+    sets of used classes. Typically, we try to avoid mixing classes from
+    very different packages in the same bundle because we do not want extra
+    download if only one of these packages is needed (e.g. we do not want
+    to download security classes only because someone needs java.util.List). 
+    Note that neededToRun supports filter attribute used to avoid inclusion
+    of classes from other packages.
+
+    Good reasons to mix packages in the same bundle are:    
+       1) we know they are tightly coupled and we know that there are no
+          scenarios where only one of these packages will be touched
+          (e.g. public and private parts of the same API or interfaces that
+            can be pulled due to instanceof and other checks)
+       2) bundles are small, so overhead of merging 2 different packages is small
+       3) this is special code that needs to be loaded for almost any application
+          (this is mostly applicable to content of core and java_awt_min bundles only)
+          
+    Important note:
+       Fine granularity (smaller bundles) helps to decrease amount of bytes
+      transfered but if bundles are too small then connection and request
+      overhead may become too noticeable. There are no numbers available
+      but as of now we are trying to keep bundles to be at least 25-50k.
+      
+    NB: 
+       Currently needToRun only detects class loads, it does not detect
+      resource loads and therefore fine granularity might require manual
+      tuning.
+  -->
+  <bundle name="core" install="true">
+    <classes>
+      <!-- basic classes -->
+      <neededToRun args="-Dkernel.download.enabled=false -jar SplitJRE.jar exit"/>
+      <!-- get download support, along with security manager, charset, and  
+           -verify support so we can pass JCK --> 
+      <neededToRun args="-verify -Xbootclasspath/a:SplitJRE.jar
+                    -Djava.security.manager sun.kernel.DownloadTest"/> 
+
+      <!-- since the neededToRun above can't identify required resources -->
+      <class>com/sun/java/util/jar/pack/intrinsic.properties</class>
+
+      <!-- for safety's sake... 
+           (but skip instrumentation, annotation and management support) -->
+      <class>java/lang/*</class>
+      <class>java/lang/ref/...</class>
+      <class>java/lang/reflect/...</class>
+      <class>java/security/*Exception*</class>
+
+      <!-- Some of these are needed for other locales, and the rest are likely
+           to be needed anyway. Simplify things by just putting them in the
+           core. -->
+      <class>java/nio/...</class>
+      <class>sun/nio/...</class>
+      
+      <!-- without this, we receive NoClassDefFoundErrors on sun.reflect.Unsafe*.
+           haven't investigated this yet. -->
+      <class>sun/reflect/*</class>
+      
+      <class>sun/misc/...</class>
+      
+      <class>sun/jkernel/...</class>
+
+      <!-- various SPI files -->
+      <class>java/util/spi/...</class>
+      <class>META-INF/services/...</class>
+      <class>META-INF/mailcap.default</class>
+      <class>META-INF/mimetypes.default</class>
+      
+      <!-- Otherwise uninstaller will hang -->
+      <!-- commented out since plugin was made installed by default;  this class
+           is now always present and leaving this line around leads to duplicate
+           jar entries. -->
+      <!-- <class>com/sun/deploy/panel/JreLocator</class> -->
+    </classes>
+    
+    <files>
+      <!-- core files, required for proper JRE function -->
+      <file>bin/hpi.dll</file> 
+      <file>bin/java.dll</file>
+      <file>bin/verify.dll</file>
+      <file>bin/zip.dll</file> 
+      <file>bin/msvcr71.dll</file>
+      <file>lib/i386/jvm.cfg</file>
+      <file>bin/unpack.dll</file>
+      <file>bin/nio.dll</file>
+      
+      <!-- basic launchers -->
+      <file>bin/java.exe</file>
+      <file>bin/javaw.exe</file>
+
+      <!-- deployment files -->
+      <file>bin/javacpl.exe</file>
+      <file>bin/javaws.exe</file>
+      <file>bin/javacpl.cpl</file>
+      <file>lib/deploy/messages.properties</file>
+
+      <!-- needed for installer to function -->      
+      <file>bin/regutils.dll</file>
+      <file>bin/unpack200.exe</file> 
+      
+      <!-- needed to display splash screens -->
+      <file>bin/splashscreen.dll</file>
+      
+      <!-- needed for both Web Start and Plug-In -->
+      <file>bin/deploy.dll</file>
+
+      <!-- needed for the plug-in -->
+      <file>bin/jp2iexp.dll</file>
+      <file>bin/jp2launcher.exe</file>
+      <file>bin/jp2native.dll</file>
+      <file>bin/jp2ssv.dll</file>
+      <file>bin/jpinscp.dll</file>
+      <file>bin/jpioji.dll</file>
+      <file>bin/jpishare.dll</file>
+      <file>bin/npjpi*.dll</file>
+      <file>bin/npoji610.dll</file>
+      <file>bin/ssv.dll</file>
+      <file>bin/ssvagent.exe</file>
+      <file>bin/new_plugin/npjp2.dll</file>
+      <file>lib/security/...</file>
+
+      <!-- kernel files -->      
+      <file>bin/jkernel.dll</file>
+      <file>bin/jbroker.exe</file>
+      <file optional="true">lib/deploy/lzma.dll</file>
+      
+      <!-- deployment toolkit -->
+      <file>bin/deployJava1.dll</file>
+      <file>bin/npdeployJava1.dll</file>
+     
+      <!-- needed for web start to be detected in IE -->
+      <file>bin/wsdetect.dll</file>
+      <!-- needed to avoid a JVM panic if an attempt is made to
+       instantiate java.awt.image.ColorConvertOp before "regular" GUI
+       system initialization. -->
+      <file>lib/cmm/sRGB.pf</file>
+
+      <!-- needed by logging subsystem -->
+      <file>lib/logging.properties</file>
+    </files>
+  </bundle>
+
+  <!-- Bundles with install="true" (and their dependencies) are treated as part 
+       of the core install.  Of course we could simply merge their definitions 
+       into the core bundle above - there's no technical reason for them to be 
+       separate - but the idea is that the core bundle should contain everything
+       strictly required to boot the JVM and download additional bundles,
+       and as little else as posssssible.
+       
+       For ergonomic reasons we also include additional code, like AWT, which
+       is required by the vast majority of targeted Java programs.  But because 
+       this code is not strictly required, we could theoretically change our 
+       minds in the future and thus I prefer to keep the definitions separate. -->
+
+  <bundle name="time" install="true">
+    <classes>
+      <class>sun/util/calendar/...</class>
+      <class>java/util/TimeZone</class>
+    </classes>
+    
+    <files>
+      <!-- Time Zone support -->
+      <file>lib/tzmappings</file>
+      <file>lib/zi/...</file>
+    </files>
+  </bundle> 
+  
+  <bundle name="client_jvm">
+    <files>
+      <file>bin/client/jvm.dll</file>
+      <file>bin/client/Xusage.txt</file>
+      <file>bin/dt_shmem.dll</file>
+      <file>bin/dt_socket.dll</file>
+      <file>bin/instrument.dll</file>
+      <file>bin/hprof.dll</file>
+      <file>bin/jdwp.dll</file>
+      <file>bin/jli.dll</file>
+      <file>lib/jvm.hprof.txt</file>
+      <file wait="true">lib/i386/jvm.cfg</file>
+      <file>lib/classlist</file>
+    </files>
+  </bundle>
+  
+  <bundle name="extra_exes">
+    <files>
+      <file>bin/java-rmi.exe</file>
+      <file>bin/keytool.exe</file>
+      <file>bin/kinit.exe</file>
+      <file>bin/klist.exe</file>
+      <file>bin/ktab.exe</file>
+      <file>bin/orbd.exe</file>
+      <file>bin/pack200.exe</file>
+      <file>bin/policytool.exe</file>
+      <file>bin/rmid.exe</file>
+      <file>bin/rmiregistry.exe</file>
+      <file>bin/servertool.exe</file>
+      <file>bin/tnameserv.exe</file>
+    </files>
+  </bundle>
+  
+  <bundle name="javaws" jarPath="lib/javaws.jar" install="true">
+    <files>
+      <file>lib/deploy/splash.gif</file>
+    </files>
+  </bundle>
+
+  <bundle name="deploy" jarPath="lib/deploy.jar"/>
+
+  <bundle name="plugin" jarPath="lib/plugin.jar">
+    <dependencies>
+      <bundle ref="deploy"/>
+      <bundle ref="java_awt_core"/>
+      <bundle ref="java_net"/>
+      <bundle ref="javaws"/>
+    </dependencies>
+  </bundle>
+  
+  <bundle name="jsse" jarPath="lib/jsse.jar" pack="false"/>
+
+  <bundle name="jce" jarPath="lib/jce.jar" pack="false"/>
+  
+  <bundle name="charsets" jarPath="lib/charsets.jar"/>
+
+  <bundle name="localedata" jarPath="lib/ext/localedata.jar"/>
+
+  <bundle name="dnsns" jarPath="lib/ext/dnsns.jar" install="true"/>
+
+  <bundle name="sunjce_provider" jarPath="lib/ext/sunjce_provider.jar" pack="false"/>
+
+  <bundle name="sunmscapi" jarPath="lib/ext/sunmscapi.jar" pack="false"/>
+
+  <bundle name="sunpkcs11" jarPath="lib/ext/sunpkcs11.jar" pack="false"/>
+  
+  <bundle name="indicim" jarPath="lib/im/indicim.jar" pack="false"/>
+
+  <bundle name="thaiim" jarPath="lib/im/thaiim.jar" pack="false"/>
+
+  <!-- Some popular common small things -->
+  <bundle name="common" install="true">
+    <classes>
+      <class>java/util/regex/...</class>
+      <class>java/security/PermissionsEnumerator</class>
+      <class>java/security/DomainCombiner</class>
+      <class>sun/security/provider/PolicyParser*</class>
+      <class>sun/security/util/PolicyUtil</class>
+      <class>sun/security/util/PropertyExpander</class>
+      <class>java/math/...</class>
+      <!-- These are tiny (about 4K). No sense to separate them -->
+      <class>java/net/URI*</class>
+      <class>sun/net/www/Mime*</class>
+      <class>sun/net/*Progress*</class>
+      <!-- English language resources.
+           They take about 9k, so it has little sense to keep them in
+           the separate bundle and they are used reasonably often -->
+      <class>..._en[\.|_]...</class>      
+    </classes>
+  </bundle>
+
+
+  <!-- 
+       Keep language-specific resource files separately. 
+
+       For some languages we have separate bundles, for languages with few
+       resource files we keep them in the single bundle.  Note that this has
+       to be done before other we prepare bundles (or resource files will be
+       included elsewhere).
+       
+       We define language resource file as file that name contains
+       substrings like "_en." or "_en_" where "en" can be replaced with
+       sequence of any 2 latin letters.
+       
+       Implementation note:
+         bundle.xml has its own regex syntax and therefore we can not have 4
+         dots in the row.  Therefore brackets are essential.
+  -->
+  <bundle name="resources_de">
+    <classes>
+      <class>..._de[\.|_]...</class>
+    </classes>
+  </bundle>
+
+  <bundle name="resources_es">
+    <classes>
+      <class>..._es[\.|_]...</class>
+    </classes>
+  </bundle>
+
+  <bundle name="resources_fr">
+    <classes>
+      <class>..._fr[\.|_]...</class>
+    </classes>
+  </bundle>
+
+  <bundle name="resources_it">
+    <classes>
+      <class>..._it[\.|_]...</class>
+    </classes>
+  </bundle>
+
+  <bundle name="resources_ja">
+    <classes>
+      <class>..._ja[\.|_]...</class>
+    </classes>
+  </bundle>
+
+  <bundle name="resources_ko">
+    <classes>
+      <class>..._ko[\.|_]...</class>
+    </classes>
+  </bundle>
+
+  <bundle name="resources_zh">
+    <classes>
+      <class>..._zh[\.|_]...</class>
+    </classes>
+  </bundle>
+
+  <bundle name="resources_sv">
+    <classes>
+      <class>..._sv[\.|_]...</class>
+    </classes>
+  </bundle>
+
+  <bundle name="resources_other">
+    <classes>
+      <class>..._[a-z][a-z][\.|_]...</class>
+    </classes>
+  </bundle>
+
+  <!-- GUI bundles:         
+         We use several tests to extract:
+          1) part of Swing that is needed for minimalistic scenarios:
+             minimal applet and minimal webstart based app) (motivation:
+             webstart based application may not need much of Swing itself
+             (e.g. FX demo))
+          2) part of Windows LAF needed for minimal webstart app
+             (motivation: application may use other LAF and we do not need
+             to download all of Swing LAF)
+          3) part of AWT needed to run minimal applet and webstart based
+             application (motivation: some parts of AWT/2D are not needed to
+             run many apps (e.g. jpeg.dll needed only if app deals with JPEG
+             images))
+             
+         There are number of classes/interfaces (from GUI and non-GUI
+         packages) we need to add manually because they could be pulled in
+         from listener or other init code. E.g. java.rmi.Remote is
+         mentioned in the DnD code.
+   -->
+
+  <!-- TODO:
+        Webstart explicitly sets platform LAF (i.e. Windows) for its
+        progress dialogs but application may choose to use different LAF.
+        Then full Windows LAF is not needed.
+
+        Theoretically, we can have smaller windowsLAFforWebstart bundle that
+        can be build by running SwingMinTest with
+           filter="javax/swing/plaf/windows/...|com/sun/swing/internal/plaf/windows/...
+                   |sun/swing/plaf/windows/...|com/sun/java/swing/plaf/windows/..."
+        
+        However, there are several complications:
+          1) neededToRun does not track resources, it only tracks classes
+             (and this makes splitting win LAF bundle complicated)
+          2) WindowsLookAndFeel class should not be pulled in here. We need
+             it in the swing_core to support applications that iterate
+             through list of available LAFs
+          3) Windows LAF is too eager pulling resources and this needs to be
+             revised on the Swing side.  As of now minimal subset of Windows
+             LAF is not differ much from full Windows LAF.
+
+        Therefore we are not splitting Windows LAF until we find solution
+        for these issues.
+   -->
+
+  <!-- Minimal AWT support needed for base Webstart/Swing apps.
+       I.e. something we need to show JFrame, etc. -->
+  <bundle name="java_awt_min" install="true">
+    <files>
+      <file>bin/awt.dll</file>
+      <file>bin/fontmanager.dll</file>
+      <file>lib/fontconfig*</file>
+      <file>lib/content-types.properties</file>
+      <file>lib/flavormap.properties</file>
+      <file>lib/images/...</file>
+    </files>
+
+    <classes>
+      <neededToRun args="-classpath SplitJRE.jar;%JAVA_HOME%/lib/plugin.jar;%JAVA_HOME%/lib/deploy.jar sun.kernel.SwingMinTest"
+          filter="javax/[^s]...|com/sun/[^s]...|sun/[^s]...|com/sun/java/[^s]...|java/...|sun/security/..."/>
+      <!-- ImageIcon is explicitly referenced in the plugin code to prevent
+           memory leak. It is possible that workaround is not needed anymore
+           but we want to play it safe -->
+      <neededToRun args="-classpath SplitJRE.jar;%JAVA_HOME%/lib/plugin.jar;%JAVA_HOME%/lib/deploy.jar sun.kernel.ImageIconTest"
+          filter="...swing..."/>
+      <!-- In addition to test above we request all ImageIcon related classes
+           explicitly as workaround (for some reason set of classes pulled
+           may be different -->
+      <class>javax/swing/*Icon*</class>
+
+      <class>java/awt/Toolkit*</class>
+      <class>java/awt/event/...</class>
+      <class>sun/awt/event/...</class>
+      <class>sun/awt/*Event*</class>
+      <class>sun/awt/MostRecentThreadAppContext</class>
+      <!-- Toolkit needs it -->
+      <class>sun/awt/AWTSecurity*</class>
+      <!-- used by webstart code -->
+      <class>sun/awt/DesktopBrowse</class>
+      <!-- This one actively is loaded if someone touch SwingUtilities2 and
+           some components -->
+      <class>java/awt/print/PrinterGraphics</class>
+
+      <!-- This is mostly here simply to compensate effect of using
+           appletviewer for testing.  However, this is small interface that
+           can be implemented by different components.  Worth to have in the
+           core. 
+      -->
+      <class>java/awt/print/Printable</class>
+      <class>java/awt/print/Pageable</class>
+
+      <!-- This one is pulled in if Swing MenuBar and Accessibility is
+           initialized (using reflection) 
+           NB: (perhaps can be reworked in AWT?)
+      -->
+      <class>java/awt/MenuBar</class>
+      
+      <!-- These are important to have here because they can be pulled in by
+           event handlers -->
+      <class>javax/sound/sampled/LineListener</class>
+      <class>java/rmi/Remote</class>
+      <class>java/beans/PropertyChange*</class>
+      <class>java/beans/VetoableChange*</class>
+  
+      <!-- Needed for UIDefaults under some circumstances -->
+      <class>sun/reflect/misc/Trampoline</class>
+    </classes>
+  </bundle> 
+
+  <bundle name="javax_swing_min">
+    <classes>
+      <!-- pull in all basic Swing classes - note the 'filter' attribute -->
+      <neededToRun args="-classpath SplitJRE.jar;%JAVA_HOME%/lib/plugin.jar;%JAVA_HOME%/lib/deploy.jar sun.kernel.SwingMinTest" 
+           filter="javax/swing/...|com/sun/swing/...|sun/swing/...|com/sun/java/swing/...|sun/swing/..."/>
+      <class>javax/swing/Timer*</class>
+    </classes>
+    <dependencies>
+      <bundle ref="java_awt_min"/>
+    </dependencies>        
+  </bundle>  
+
+  <bundle name="javax_swing_core">
+    <classes>
+      <!-- pull in all basic Swing classes - note the 'filter' attribute -->
+      <neededToRun args="-classpath SplitJRE.jar;%JAVA_HOME%/lib/plugin.jar;%JAVA_HOME%/lib/deploy.jar sun.kernel.SwingTest" 
+           filter="javax/swing/...|com/sun/swing/...|sun/swing/...|com/sun/java/swing/...|sun/swing/..."/>
+      <class>javax/swing/event/...</class>
+      <class>javax/swing/Menu*</class>
+      <class>javax/swing/Popup*</class>
+      <class>javax/swing/ButtonGroup*</class>
+      <class>javax/swing/*ListSelection*</class>
+      <class>javax/swing/InputVerifier</class>
+      <class>javax/swing/plaf/*</class>
+      <class>javax/swing/plaf/basic/*</class>
+      <!-- Pulled in by PopupFactory -->
+      <class>javax/swing/JApplet</class>
+      <!-- Need all of basic LAF -->
+      <class>javax/swing/plaf/basic/...</class>
+      <class>com/sun/swing/internal/plaf/basic/resources/...</class>
+      <!-- Needed at least for text components -->
+      <class>javax/swing/undo/...</class>
+    </classes>
+    
+    <dependencies>
+      <bundle ref="javax_swing_min"/>
+    </dependencies>
+  </bundle>  
+  
+  <bundle name="javax_swing">
+    <classes>
+      <class>javax/swing/*</class>
+      <class>javax/swing/border/...</class>
+      <!-- Only 3k, put it here -->
+      <class>javax/swing/plaf/multi/...</class>
+    </classes>
+  </bundle>
+  
+  <bundle name="javax_swing_extracomponents">
+    <classes>
+      <class>javax/swing/colorchooser/...</class>
+      <class>javax/swing/filechooser/...</class>
+    </classes>
+  </bundle>  
+  
+  <bundle name="javax_swing_plaf_metal">
+    <classes>
+      <class>javax/swing/plaf/metal/...</class>
+      <class>com/sun/swing/internal/plaf/metal/resources/...</class>
+    </classes>
+  </bundle>
+  
+  <bundle name="javax_swing_plaf_windows">
+    <classes>
+      <class>javax/swing/plaf/windows/...</class>
+      <class>com/sun/java/swing/plaf/windows/...</class>
+      <class>com/sun/swing/internal/plaf/windows/resources/...</class>
+      <class>sun/swing/plaf/windows/...</class>
+    </classes>
+  </bundle>
+    
+  <bundle name="javax_swing_plaf_synth">
+    <classes>
+      <class>javax/swing/plaf/synth/...</class>
+      <class>com/sun/swing/internal/plaf/synth/resources/...</class>
+      <class>sun/swing/plaf/synth/...</class>
+    </classes>
+  </bundle>
+  
+  <bundle name="javax_swing_plaf_motif">
+    <classes>
+      <class>com/sun/java/swing/plaf/motif/...</class>
+    </classes>
+  </bundle>
+    
+  <bundle name="javax_swing_text">
+    <classes>
+      <class>javax/swing/text/*</class>
+      <class>sun/swing/text/*</class>
+    </classes>
+  </bundle>
+
+  <bundle name="javax_swing_text_html">
+    <classes>
+      <class>javax/swing/text/html/...</class>
+      <class>sun/swing/text/html/...</class>
+    </classes>
+  </bundle>
+  
+  <bundle name="javax_swing_text_rtf">
+    <classes>
+      <class>javax/swing/text/rtf/...</class>
+      <class>sun/swing/text/rtf/...</class>
+    </classes>
+  </bundle>
+  
+  <bundle name="javax_swing_table">
+    <classes>
+      <class>javax/swing/table/...</class>
+      <class>sun/swing/table/...</class>
+    </classes>
+  </bundle>
+
+  <bundle name="sun_swing">
+    <classes>
+      <class>sun/swing/...</class>
+    </classes>
+  </bundle>  
+
+
+  <!-- This bundle includes typical AWT/2D things needed to run applets and
+       basic AWT applications (in addition to what we have in java_awt_min
+       bundle) 
+  -->
+  <bundle name="java_awt_core">
+    <classes>
+      <neededToRun args="-classpath SplitJRE.jar;%JAVA_HOME%/lib/plugin.jar;%JAVA_HOME%/lib/deploy.jar sun.kernel.SwingTest"/>
+      <class>java/awt/Component*</class>
+      <class>java/awt/Container*</class>
+      <class>java/awt/Cursor*</class>
+      <class>java/awt/*PaintContext*</class>
+      <class>java/awt/*Layout*</class>
+      <class>java/awt/*Constraints*</class>
+      <class>java/awt/*Exception*</class>
+      <class>sun/awt/shell/...</class>
+      <class>sun/awt/CustomCursor</class>
+      <class>sun/awt/windows/WCustomCursor</class>
+      <class>sun/awt/windows/WMouseDragGestureRecognizer</class>
+      <class>java/awt/font/GlyphVector</class>
+      <class>sun/awt/image/BufferedImageDevice</class>
+      <class>sun/awt/windows/WEmbeddedFrame*</class>
+    </classes>
+
+    <dependencies>
+      <bundle ref="java_awt_min"/>
+    </dependencies>
+  </bundle>  
+
+
+  <bundle name="java_applet">
+    <classes>
+      <class>java/applet/Applet*</class>
+      <class>java/applet/...</class>
+      <class>sun/applet/...</class>
+      <class>netscape/javascript/...</class>
+      <class>com/sun/java/browser/...</class>      
+    </classes>
+    
+    <files>
+      <file>lib/applet/...</file>
+    </files>    
+  </bundle>
+    
+  <bundle name="java_awt_services">
+    <classes>
+      <class>java/awt/dnd/...</class>
+      <class>java/awt/datatransfer/...</class>
+      <class>sun/awt/datatransfer/...</class>
+      <class>sun/awt/dnd/...</class>            
+      <!-- Cobundle because they are small and swing often needs both -->
+      <class>javax/accessibility/...</class>
+      <class>com/sun/accessibility/...</class>      
+    </classes>
+  </bundle>
+    
+  <bundle name="java_geom">
+    <classes>
+      <class>java/awt/geom/...</class>
+      <class>sun/awt/geom/...</class>
+    </classes>
+  </bundle>
+
+  <!-- Used for AA graphics primitives only -->
+  <bundle name="dcpr">
+    <files>
+      <file>bin/dcpr.dll</file>
+    </files>
+    <classes>
+      <class>sun/dc/...</class>
+    </classes>
+  </bundle>
+  
+  <bundle name="java_2d">
+    <classes>
+      <class>sun/java2d/...</class>
+    </classes>
+  </bundle>
+
+  <!-- Needed only if JPEG images are actually used -->
+  <!-- NB: if JPEGImageDecoder kept here we may avoid loading other 
+       image related bundles for some applications! -->
+  <bundle name="jpeg">
+    <classes>
+      <class>com/sun/image/codec/jpeg/...</class>
+      <class>sun/awt/image/codec/JPEG*</class>
+      <class>sun/awt/image/JPEGImageDecoder</class>
+    </classes>
+    
+    <files>
+      <file>bin/jpeg.dll</file>
+    </files>
+  </bundle>
+
+  <bundle name="java_image">
+    <classes>
+          <class>java/awt/image/...</class>
+          <class>sun/awt/image/...</class>
+    </classes>
+  </bundle>
+
+  <!-- Swing is not using ImageIO -->
+  <bundle name="javax_imageio">
+    <classes>
+      <class>javax/imageio/...</class>
+      <class>com/sun/imageio/...</class>
+    </classes>
+  </bundle>
+
+  <!-- These 2 color profiles profiles are large and rarely used -->
+  <bundle name="cmm_rare">
+    <files>
+      <file>lib/cmm/CIEXYZ.pf</file>
+      <file>lib/cmm/PYCC.pf</file>
+    </files>
+  </bundle>
+
+  <!-- This is only needed if someone does use ColorConvolveOp 
+       or something similar -->    
+  <bundle name="cmm">
+    <files>
+      <file>bin/cmm.dll</file>
+      <file>lib/cmm/...</file>
+    </files>
+  </bundle>
+
+  <bundle name="java_text" install="true">
+    <classes>
+      <class>java/text/...</class>
+    </classes>
+  </bundle>
+
+  <bundle name="sun_text" install="true">
+    <classes>
+      <class>sun/text/*</class>
+      <class>sun/text/normalizer/...</class>
+      <class>sun/text/resources/FormatData</class>
+      <class>sun/text/resources/CollationData</class>
+    </classes>
+  </bundle>
+
+  <bundle name="sun_font">
+    <classes>
+      <class>sun/font/...</class>
+    </classes>
+  </bundle>
+
+  <!-- This particular font is important for logical fonts such Dialog. -->  
+  <bundle name="font_lucidasansregular">
+    <files>
+      <file>lib/fonts/LucidaSansRegular*</file>
+    </files>
+  </bundle>
+
+  <!-- Other fonts -->
+  <bundle name="fonts">
+    <files>
+      <file>lib/fonts/...</file>
+      <file>lib/psfont*</file>
+    </files>
+  </bundle>
+
+  <!-- Rest of AWT/2D -->
+  <bundle name="java_awt">
+    <files>
+      <file>bin/jawt.dll</file>
+    </files>
+  
+    <classes>
+      <class>java/awt/...</class>
+      <class>sun/awt/...</class>
+      <class>sun/java2d/...</class>
+    </classes>
+    
+    <dependencies>
+      <bundle ref="java_awt_core"/>
+    </dependencies>
+  </bundle>
+
+  <!-- This should be after AWT core because we want most popular beans
+       events and Listeners to stay in the AWT bundle -->
+  <bundle name="java_beans_core">
+    <classes>
+      <neededToRun args="-classpath SplitJRE.jar sun.kernel.BeansTest"/>
+      <class>java/beans/*Exception*</class>
+    </classes>
+  </bundle>
+  
+  <bundle name="java_beans">
+    <classes>
+      <class>java/beans/...</class>
+      <class>com/sun/beans/...</class>
+      <class>sun/beans/...</class>
+      <!-- these are small, co-bundle them -->
+      <class>javax/activation/...</class>
+      <class>com/sun/activation/...</class>
+    </classes>
+  </bundle>
+  
+  <!-- All code related to audio. Major parts are native anyway -->
+  <bundle name="javax_sound">
+    <classes>
+      <class>javax/sound/...</class>
+      <class>sun/audio/...</class>
+      <class>com/sun/media/sound/...</class>
+    </classes>
+    
+    <files>
+      <file>bin/jsound.dll</file>
+      <file>bin/jsoundds.dll</file>
+      <file>lib/sound.properties</file>
+    </files>
+  </bundle>
+
+  <bundle name="soundbanks">
+    <files>
+      <file>lib/audio/...</file>
+    </files>
+  </bundle>
+
+  
+  <!-- Security code:
+     We split it into following parts:
+       - Something that unsigned applet or webstart application may need
+       - Something needed for basic security check
+       - More advanced security support split by area (x509, krb5, ...)
+  -->
+
+  <bundle name="java_security_core">
+    <classes>
+      <neededToRun args="-classpath SplitJRE.jar sun.kernel.SecurityTest" filter="java/security/...|javax/security/...|sun/security/...|com/sun/security/..."/>
+      <class>java/security/*Exception*</class>
+      <class>java/security/AllPermissionCollection</class>
+      <class>sun/security/provider/MD5</class>
+      <class>sun/security/provider/DSA</class>
+      <class>sun/security/provider/DSA$*</class>
+      <class>sun/security/action/*</class>
+    </classes>
+  </bundle>
+  
+  <bundle name="sun_security_x509">
+    <classes>
+      <class>sun/security/x509/...</class>
+    </classes>
+  </bundle>
+
+  <bundle name="sun_security_krb5">
+    <classes>
+      <class>sun/security/krb5/...</class>
+    </classes>
+  </bundle>
+
+  <bundle name="sun_security_jgss">
+    <classes>
+      <class>sun/security/jgss/...</class>
+      <!-- This one is small and both are not used often, so merge them. -->
+      <class>org/ietf/jgss/...</class>
+    </classes>
+  </bundle>
+
+  <bundle name="javax_security">
+    <classes>
+      <class>javax/security/...</class>
+    </classes>
+  </bundle>
+  
+  <bundle name="sun_security">
+    <classes>
+      <class>sun/security/...</class>
+    </classes>
+  </bundle>
+
+  <bundle name="com_sun_security">
+    <classes>
+      <class>com/sun/security/...</class>
+    </classes>
+  </bundle>
+
+  <bundle name="java_security">
+    <classes>
+      <class>java/security/...</class>
+    </classes>
+  </bundle>
+
+  <!-- XML Support:
+         - webstart has own XML support. 
+         - plugin does not depend on XML (unless liveconnect is used?)
+         - small java apps often need either SAX or DOM access to content of
+           xml file, they do not need org.w3c.*
+         - only some apps need advanced things such as XPath support/etc.
+  -->
+
+  <!-- web services -->
+  <bundle name="javax_ws">
+    <classes>
+      <class>javax/jws/...</class>
+      <class>javax/xml/ws/...</class>
+      <class>com/sun/xml/internal/ws/...</class>
+
+      <!-- Tiny and used internally.
+           NB: may consider putting this somethere else because it seems to
+           be used not only by WS code.
+      -->
+      <class>com/sun/istack/...</class>
+    </classes>
+  </bundle>
+
+  <bundle name="javax_xml_core_sax">
+    <classes>
+      <neededToRun args="-classpath SplitJRE.jar sun.kernel.XMLTestSAX"/>
+      <class>javax/xml/parsers/ParserConfigurationException</class>
+      <class>org/xml/sax/helpers/DefaultHandler</class>
+
+      <!-- Add these explicitly. 
+           Only 9k of classes are not touched by the XMLTestSAX anyway -->
+      <class>org/sax/...</class>
+      <class>org/xml/sax/...</class>
+    </classes>
+  </bundle>
+
+  <!-- DOM parser -->
+  <bundle name="javax_xml_core_dom">
+    <classes>
+      <neededToRun args="-classpath SplitJRE.jar sun.kernel.XMLTest"/>
+      <class>javax/xml/parsers/...</class>
+    </classes>
+  </bundle>
+
+  <bundle name="javax_xml_w3c">
+    <classes>
+      <class>org/w3c/...</class>
+    </classes>
+  </bundle>
+  
+  <bundle name="javax_xml">
+    <classes>
+      <class>javax/xml/...</class>
+    </classes>
+  </bundle>
+
+  <bundle name="javax_xml_xerces">
+    <classes>
+      <class>com/sun/org/apache/xerces/internal/...</class>
+    </classes>
+  </bundle>
+  
+  <bundle name="com_sun_org_apache_xalan_internal">
+    <classes>
+      <class>com/sun/org/apache/xalan/internal/...</class>
+      <!-- small and used by xsltc only -->
+      <class>com/sun/java_cup/...</class>
+    </classes>
+  </bundle>
+  
+  <bundle name="com_sun_org_apache_xml_internal">
+    <classes>
+      <class>com/sun/org/apache/xml/internal/...</class>
+    </classes>
+  </bundle>
+  
+  <bundle name="com_sun_org_apache_xpath_internal">
+    <classes>
+      <class>com/sun/org/apache/xpath/internal/...</class>
+    </classes>
+  </bundle>
+  
+  <bundle name="com_sun_org_apache_bcel_internal">
+    <classes>
+      <class>com/sun/org/apache/bcel/internal/...</class>
+    </classes>
+  </bundle>
+
+  <bundle name="com_sun_xml">
+    <classes>
+      <class>com/sun/xml/...</class>
+    </classes>
+  </bundle>
+
+  <bundle name="org_jcp_xml_dsig">
+    <classes>
+      <class>org/jcp/xml/dsig/...</class>
+    </classes>
+  </bundle>
+    
+  <!-- Other bundles -->
+
+  <bundle name="java_io" install="true">
+    <classes>
+      <class>java/io/...</class>
+      <class>sun/io/...</class>
+      <class>java/nio/...</class>
+      <class>sun/nio/...</class>
+    </classes>
+  </bundle>
+  
+  <!-- keep it before rmi bundle to keep RMI-related CORBA code in this bundle.
+       Very rarely used. -->
+  <bundle name="org_omg_CORBA">
+    <classes>
+      <class>org/omg/...</class>
+      <class>com/sun/org/omg/...</class>
+      <class>com/sun/corba/...</class>
+      <class>javax/rmi/CORBA/...</class>
+      <class>sun/corba/...</class>
+      <class>javax/activity/...</class>
+    </classes>
+  </bundle>
+
+  <bundle name="java_rmi">
+    <classes>
+      <class>java/rmi/...</class>
+      <class>com/sun/rmi/...</class>
+      <class>sun/rmi/...</class>
+      <class>javax/rmi/...</class>
+    </classes>
+    
+    <files>
+      <file>bin/rmi.dll</file>
+    </files>
+  </bundle>
+
+  <bundle name="java_net" install="true">
+    <classes>
+      <class>java/net/*</class>
+      <class>sun/net/...</class>
+    </classes>
+    
+    <files>
+      <file>bin/net.dll</file>
+      <file>lib/net.properties</file>
+    </files>
+  </bundle>
+  
+  <bundle name="java_util_misc" install="true">
+    <classes>
+      <class>java/util/zip/...</class>
+      <class>java/util/jar/...</class>
+      <class>sun/util/...</class>
+      <class>java/util/logging/...</class>
+    </classes>
+  </bundle>
+  
+  <bundle name="javax_lang">
+    <classes>
+      <class>java/lang/annotation/...</class>
+      <class>javax/lang/...</class>
+      <class>javax/annotation/...</class>
+      <class>sun/reflect/...</class>
+      <class>javax/tools/...</class>      
+    </classes>
+  </bundle>
+ 
+  <bundle name="com_sun_jndi">
+    <classes>
+      <class>com/sun/jndi/...</class>
+    </classes>
+  </bundle>
+  
+  <bundle name="sun_org_mozilla">
+    <classes>
+      <class>sun/org/mozilla/...</class>
+    </classes>
+  </bundle>
+  
+  <bundle name="javax_naming">
+    <classes>
+      <class>javax/naming/...</class>
+      <class>com/sun/naming/...</class>
+    </classes>
+  </bundle>
+  
+  <!-- Should not be needed unless someone need to print -->
+  <bundle name="javax_print">
+    <classes>
+      <class>java/awt/print/...</class>
+      <class>javax/print/...</class>
+      <class>sun/print/...</class>
+    </classes>
+  </bundle>
+
+  <bundle name="tools">
+    <classes>
+      <class>com/sun/tools/...</class>
+      <class>sun/tools/...</class>
+    </classes>
+  </bundle>
+    
+  <bundle name="java_util_concurrent" install="true">
+    <classes>
+      <class>java/util/concurrent/...</class>
+    </classes>
+  </bundle>
+  
+  <bundle name="java_util" install="true">
+    <classes>
+      <class>java/util/...</class>
+    </classes>
+  </bundle>
+
+  <!-- Something that is unlikely to be used goes here -->      
+  <bundle name="rare">
+    <classes>
+      <!-- OpenGL has to be turned manually -->
+      <class>sun/java2d/opengl/...</class>
+      <class>sun/awt/UNIXToolkit</class>      
+      <!-- rarely used backward compatibility stuff -->
+      <class>sunw/...</class>
+      <!-- unlikely needed for applets -->
+      <class>com/sun/net/httpserver/...</class>
+      <class>javax/smartcardio/...</class>
+      <!-- used by JVMTI agents -->
+      <class>sun/instrument/...</class>
+      <class>java/lang/instrument/...</class>
+    </classes>
+  </bundle>
+    
+  <!-- These could be split into smaller bundles but it does not seem any of
+       this is needed often.  So keep it merged for now. -->
+  <bundle name="javax_management">
+    <classes>
+      <class>java/lang/management/...</class>
+      <class>javax/management/...</class>
+      <class>com/sun/jmx/...</class>
+      <class>com/sun/management/...</class>
+      <class>sun/management/...</class>
+      <class>com/sun/demo/jvmti/hprof/...</class>
+    </classes>
+    <files>
+      <file>bin/management.dll</file>
+      <file>lib/management/...</file>
+    </files>
+  </bundle>
+
+  <bundle name="extras_plugin">
+    <files>
+      <file>bin/axbridge.dll</file>
+      <file>bin/jpicom.dll</file>
+      <file>bin/jpiexp.dll</file>
+    </files>
+  </bundle>
+
+  <!-- Scripting support -->
+  <bundle name="javax_script">
+    <classes>
+      <class>javax/script/...</class>
+      <class>com/sun/script/...</class>
+    </classes>
+  </bundle>
+  
+  <!-- DB-related things -->
+  <bundle name="db">
+    <classes>
+      <class>javax/transaction/...</class>
+      <class>sun/jdbc/odbc/...</class>
+      <class>javax/transaction/...</class>
+      <class>java/sql/...</class>
+      <class>javax/sql/...</class>
+      <class>com/sun/rowset/...</class>
+      <class>com/sun/sql/...</class>
+    </classes>
+  </bundle>  
+  
+  <bundle name="extras">
+    <files>
+      <file>Welcome.html</file>
+      <file>bin/eula.dll</file>
+      <file>README.txt</file>
+      <file>bin/msvcrt.dll</file>
+      <file>bin/unicows.dll</file>
+      <file wait="true">.../meta-index</file>
+      <file>*LICENSE*</file>
+    </files>
+  </bundle>
+
+  <bundle name="extra_dlls">
+    <!-- dlls which haven't been sorted into more specific locations yet.  This
+         bundle will be downloaded whenever a loadLibrary() is issued against
+         one of these dlls. -->
+    <files>
+      <file>bin/*.dll</file>
+    </files>
+  </bundle>
+</bundles>

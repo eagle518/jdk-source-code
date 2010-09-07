@@ -1,0 +1,105 @@
+<html>
+<head>
+<title>
+Applet Drag and Drop Tests
+</title>
+</head>
+<body>
+
+<H1>
+Applet Drag and Drop Tests
+</H1>
+
+<P>
+
+These tests illustrate the functionality in the new Java Plug-In of
+dragging applets out of the web browser to the desktop.
+
+</P>
+
+<H2>
+Test 1: Basic
+</H2>
+
+<p>
+
+This test uses only the most basic functionality of the drag and drop
+support. It does not customize the look or behavior. Use Alt + Left
+Click + Drag to drag the applet out of the browser. A small floating
+close box will appear at the upper right of the applet once it is
+dragged out of the browser. To move the applet around afterward, use
+the same gesture. Click the close button to close the applet. If the
+web page where the applet came from is still open when it is closed,
+it will pop back into its original place on the web page; otherwise,
+it will be shut down.
+
+</p>
+<p>
+
+The "Reopen Web Page" button uses AppletContext.showDocument() to
+re-display the web page from which the applet came. Note that it
+works, launching the default system browser, even if the browser has
+been completely shut down after the applet was launched.
+
+</p>
+<p>
+
+The "Connect Back to Server" button opens a URLConnection back to the
+server and downloads some data. If the web page originally hosting the
+applet has been left or the browser has been shut down, this exercises
+the code path where a proxy query is made with no browser to support
+it.
+
+</p>
+
+<p>
+
+<applet code="DragTest1" width="200" height="200">
+    <param name="draggable" value="true">
+</applet>
+
+</p>
+<p>
+HTML:
+<PRE>
+  &lt;applet code="DragTest1" width="200" height="200"&gt;
+      &lt;param name="draggable" value="true"&gt;
+  &lt;/applet&gt;
+</PRE>
+Source code: <a href="DragTest1.java">DragTest1.java</a>
+<p>
+
+<H2>
+Test 2: More Advanced
+</H2>
+
+<p>
+
+This test uses some of the more advanced functionality, in particular
+customizing the drag gesture and look and feel of the close button.
+Click and drag with the left mouse button in the red region to move
+the applet around. Note that if any modifier keys are held down, the
+click will be deliberately ignored. Click the "x" in the upper right
+of the applet to shut it down. Note that the close behavior is the
+same as in test 1, only the displaying of the close button is now
+handled by the applet.
+
+</p>
+
+<applet code="DragTest2" width="200" height="200">
+    <param name="draggable" value="true">
+</applet>
+
+</p>
+<p>
+HTML:
+<PRE>
+  &lt;applet code="DragTest2" width="200" height="200"&gt;
+      &lt;param name="draggable" value="true"&gt;
+  &lt;/applet&gt;
+</PRE>
+Source code: <a href="DragTest2.java">DragTest2.java</a>
+<p>
+
+</body>
+</html>

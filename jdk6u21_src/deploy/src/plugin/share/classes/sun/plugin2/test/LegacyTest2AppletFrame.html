@@ -1,0 +1,41 @@
+
+
+
+
+<script language="javascript">
+function waitForLoad() {
+    legacyApplet1.waitForLoad();
+    legacyApplet2.waitForLoad();
+}
+
+function check(numInits, numStarts, numStops, numDestroys) {
+    return (legacyApplet1.check(numInits, numStarts, numStops, numDestroys) &&
+            legacyApplet2.check(numInits, numStarts, numStops, numDestroys));
+}
+
+function pass() {
+    legacyApplet1.pass();
+}
+
+function fail() {
+    legacyApplet1.fail(legacyApplet2.state());
+}
+</script>
+<body>
+<P>
+Legacy Lifecycle Automated Test #2 -- two legacy_lifecycle applets on the same page
+</P>
+<P>
+Clear class loader cache first, or open in a fresh browser session
+</P>
+<P>
+<applet name="legacyApplet1" id="legacyApplet1" code="LegacyTest" width="0" height="0" MAYSCRIPT>
+    <param name="legacy_lifecycle" value="true"></param>
+</applet>
+</P>
+<P>
+<applet name="legacyApplet2" id="legacyApplet2" code="LegacyTest" width="0" height="0" MAYSCRIPT>
+    <param name="legacy_lifecycle" value="true"></param>
+</applet>
+</P>
+</body>

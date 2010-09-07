@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+"
+      href="JREDescSelection-1.2-jnlp-applet-rel.jnlp">
+  <information>
+    <title>JREDescSelection1.2 Applet (2nd j2se incl its properties)</title>
+    <vendor>SUN Deployment</vendor>
+    <description kind='tootltip'>A simple JNLP test</description>
+    <description kind='one-line'>Applet</description>
+    <homepage href='JREDescSelection-1.2-jnlp-applet-rel.html' />
+    <offline-allowed/>
+  </information>
+  <resources>
+    <!-- no href   : this is the platform version: java.specification.version -->
+    <!-- href given: this is the product  version: java.version -->
+    <java version="1.2" java-vm-args="-esa">
+        <resources>
+            <property name="sun.java2d.d3d" value="ERROR"/>
+        </resources>
+    </java>
+    <java version="1.7 1.6" java-vm-args="-da">
+        <resources>
+            <property name="sun.java2d.d3d" value="true"/> <!-- property # 2 -->
+        </resources>
+    </java>
+    <java version="1.5.9 1.5*" java-vm-args="-ea"/>
+    <property name="sun.java2d.noddraw" value="true"/>     <!-- property # 1 -->
+    <jar href="JRERelaunch1.jar"/>
+    <extension name="SimpleApplet" href="SimpleApplet-jnlp-applet-rel.jnlp"/>
+  </resources>
+  <applet-desc 
+      name="JRERelaunch1"
+      main-class="JRERelaunch1"
+      width="666" 
+      height="999">
+  </applet-desc>
+</jnlp>

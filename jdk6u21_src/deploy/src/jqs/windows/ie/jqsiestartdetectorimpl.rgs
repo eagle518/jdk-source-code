@@ -1,0 +1,27 @@
+HKCR
+{
+	ieplugin.JQSIEStartDetectorImpl.1 = s 'JQSIEStartDetectorImpl Class'
+	{
+		CLSID = s '{E7E6F031-17CE-4C07-BC86-EABFE594F69C}'
+	}
+	ieplugin.JQSIEStartDetectorImpl = s 'JQSIEStartDetectorImpl Class'
+	{
+		CLSID = s '{E7E6F031-17CE-4C07-BC86-EABFE594F69C}'
+		CurVer = s 'ieplugin.JQSIEStartDetectorImpl.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {E7E6F031-17CE-4C07-BC86-EABFE594F69C} = s 'JQSIEStartDetectorImpl Class'
+		{
+			ProgID = s 'ieplugin.JQSIEStartDetectorImpl.1'
+			VersionIndependentProgID = s 'ieplugin.JQSIEStartDetectorImpl'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			val AppID = s '%APPID%'
+			'TypeLib' = s '{D85100D8-894D-4F80-9697-C220AF4202EB}'
+		}
+	}
+}

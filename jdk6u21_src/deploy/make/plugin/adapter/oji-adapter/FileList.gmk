@@ -1,0 +1,18 @@
+FILES_cpp = StdAfx.cpp \
+	    CNSAdapter_PluginManager.cpp \
+	    CNSAdapter_PluginInstancePeer.cpp \
+	    CNSAdapter_JVMManager.cpp \
+	    CNSAdapter_SecureJNIEnv.cpp \
+	    CNSAdapter_SecurityContext.cpp \
+	    CNSAdapter_SecurityContextPeer.cpp \
+	    CNSAdapter_JavaPluginFactory.cpp \
+	    CNSAdapter_JavaPlugin.cpp \
+	    CNSAdapter_Liveconnect.cpp \
+	    CNSAdapter_BrowserAuthenticator.cpp \
+	    CNS7Adapter_Observer.cpp \
+	    CNS7Adapter_ObserverService.cpp \
+	    CNS7Adapter_JavaPluginFactory.cpp \
+	    CNS7Adapter_PluginServiceProvider.cpp
+           
+	    
+FILES_rc = version.rc

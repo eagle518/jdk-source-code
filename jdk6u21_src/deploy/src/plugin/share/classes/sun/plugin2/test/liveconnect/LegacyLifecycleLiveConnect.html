@@ -1,0 +1,58 @@
+<html>
+<head>
+<title>
+Legacy Lifecycle LiveConnect Test
+</title>
+</head>
+<body>
+<h1>Legacy Lifecycle LiveConnect Test</h1>
+
+<P>
+
+Tests LiveConnect against a legacy_lifecycle applet. Reload and switch
+between pages to confirm that the call count isn't reset when
+navigating to another page and back to this one.
+
+</P>
+<P>
+
+<applet id="app" code="LegacyLifecycleLiveConnect" width="100" height="100">
+    <param name="legacy_lifecycle" value="true">
+</applet>
+
+<script language="javascript">
+function callApplet() {
+    try {
+        resultDiv.innerHTML = "Call count: " + app.callCount();
+    } catch (e) {
+        reportException(e);
+    }
+}
+
+function reportException(e) {
+    var str = getExceptionString(e);
+    resultDiv.innerHTML = "<pre>" + str + "</pre>";
+}
+
+function getExceptionString(e) {
+    if (typeof e == "string") {
+        return e;
+    } else {
+        var s = "";
+        for (var i in e) {
+            s += "" + i + " = " + e[i] + "\n";
+        }
+        return s;
+    }
+}
+</script>
+
+<form name="myform" action="" method="GET">
+<input type="button" name="mybutton" value="Call Applet" onClick="callApplet()">
+</form>
+
+<div id="resultDiv">
+</div>
+
+</body>
+</html>

@@ -1,0 +1,12 @@
+content	javaconsole_JDK_VERSION	chrome/content/ffjcext/
+overlay	chrome://browser/content/browser.xul	chrome://javaconsole_JDK_VERSION/content/ffjcext.xul
+locale		javaconsole_JDK_VERSION	en-US	chrome/locale/en-US/ffjcext/
+locale		javaconsole_JDK_VERSION	de-DE	chrome/locale/de-DE/ffjcext/
+locale		javaconsole_JDK_VERSION	es-ES	chrome/locale/es-ES/ffjcext/
+locale		javaconsole_JDK_VERSION	fr-FR	chrome/locale/fr-FR/ffjcext/
+locale		javaconsole_JDK_VERSION	it-IT	chrome/locale/it-IT/ffjcext/
+locale		javaconsole_JDK_VERSION	ja-JP	chrome/locale/ja-JP/ffjcext/
+locale		javaconsole_JDK_VERSION	ko-KR	chrome/locale/ko-KR/ffjcext/
+locale		javaconsole_JDK_VERSION	sv-SE	chrome/locale/sv-SE/ffjcext/
+locale		javaconsole_JDK_VERSION	zh-CN	chrome/locale/zh-CN/ffjcext/
+locale		javaconsole_JDK_VERSION	zh-TW	chrome/locale/zh-TW/ffjcext/

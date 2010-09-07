@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+"
+      href="SimpleApplet2-jnlp-applet-rel.jnlp">
+  <information>
+    <title>Simple Applet 1.2 (jnlp title)</title>
+    <vendor>SUN Deployment</vendor>
+    <description kind='tootltip'>A simple JNLP test</description>
+    <description kind='one-line'>Applet</description>
+    <homepage href='SimpleApplet2-jnlp-applet-rel.html' />
+    <offline-allowed/>
+  </information>
+    <resources>
+      <j2se href="http://java.sun.com/products/autodl/j2se" version="1.2+"/>
+      <jar href="SimpleApplet2.jar"/>
+      <extension name="SimpleApplet" href="SimpleApplet-jnlp-applet-rel.jnlp"/>
+    </resources>
+  <applet-desc 
+      name="NameShouldBeOverwrittenByAppletTagDuh"
+      main-class="SimpleApplet2"
+      width="666" 
+      height="999">
+      <param name="param1" value="param1ShallBeOverwrittenDuh"/>
+      <param name="param2" value="param2ShallBeOverwrittenDuh"/>
+  </applet-desc>
+</jnlp>
