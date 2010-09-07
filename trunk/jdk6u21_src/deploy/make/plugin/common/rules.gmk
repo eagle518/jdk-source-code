@@ -1,0 +1,35 @@
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# @(#)rules.gmk	1.11 10/03/24
+#
+# additional rules
+#
+
+ifeq ($(PLATFORM), windows)
+
+ifdef SUBDIR
+FILES_res += $(patsubst %.rc, %.res, $(addprefix $(OBJDIR)/$(SUBDIR)/, $(FILES_rc)))
+else
+FILES_res += $(patsubst %.rc, %.res, $(addprefix $(OBJDIR)/, $(FILES_rc)))
+endif
+
+FILES_o += $(FILES_res)
+
+$(OBJDIR)/$(LIBRARY).lcf: $(FILES_res)
+
+$(OBJDIR)/$(EXECUTABLE).lcf: $(FILES_res)
+
+ifdef SUBDIR
+$(OBJDIR)/$(SUBDIR)/%.res:%.rc
+	@$(prep-target)
+	$(RSC) $(RC_FLAGS) $(RSCINC) $(RSCFLAGS) -fo$@ $<
+else
+$(OBJDIR)/%.res:%.rc
+	@$(prep-target)
+	$(RSC) $(RC_FLAGS) $(RSCINC) $(RSCFLAGS) -fo$@ $<
+endif
+
+else
+endif

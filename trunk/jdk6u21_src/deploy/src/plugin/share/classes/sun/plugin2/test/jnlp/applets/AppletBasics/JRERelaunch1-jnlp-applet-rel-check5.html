@@ -1,0 +1,28 @@
+<html>
+  <head>
+      <title>JRERelaunch1 Applet 4</title>
+  </head>
+  <body>
+      <br>
+      Shall run in a JNLP env and as a pure applet !<br>
+      Shall fail, since it demands all permissions using the security check
+      <br>
+      Relaunch:<br>
+      - relaunch <br>
+      - properties<br>
+      - security: all-permissions<br>
+      <br>
+      <h1>Simple Applet 1.2</h1>
+      <hr>
+      <APPLET NAME=JRERelaunch1 CODEBASE=codebasedir/ CODE=JRERelaunch1 ARCHIVE="JRERelaunch1.jar, JRERelaunch1.jar" WIDTH=800 HEIGHT=120>
+      <PARAM name="check.java.isRelaunch" VALUE="true">
+      <PARAM name="check.java.jvm_args" VALUE="-Xmx128m -Dsun.java2d.noddraw=true -Dsun.java2d.d3d=true">
+      <PARAM name="jnlp_href" VALUE="JRERelaunch1.5-jnlp-applet-rel.jnlp">
+      </APPLET>
+      <hr>
+      Nothing to see here ;-) <br>
+      <br>
+      Watch the console output ..<br>
+  </body>
+</html>
+

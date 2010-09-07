@@ -1,0 +1,23 @@
+#
+# @(#)FileList.gmk	1.6 07/10/07
+#
+# Copyright (c) 2007, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+FILES_cpp = AbstractPlugin.cpp \
+	    AxControl.cpp     \
+	    CJavaDispatch.cpp \
+	    Clsid.cpp         \
+	    Clsid2.cpp        \
+	    common.cpp        \
+	    DllServer.cpp     \
+	    EULAUtil.cpp      \
+	    StdAfx.cpp        \
+	    PrintHelper.cpp   \
+        utils_md.cpp
+
+FILES_c = JavaVM.c            \
+	  WindowsHelper.c
+	  
+FILES_rc = jp2iexp.rc

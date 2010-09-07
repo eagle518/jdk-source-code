@@ -1,0 +1,33 @@
+#
+# @(#)FILES_c.gmk	1.25 10/03/24
+# 
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+LAUNCHER_c = $(TARGDIR)launcher.c
+
+FILES_less2_c =                       \
+        $(TARGDIR)launcher_md.c       \
+        $(TARGDIR)configurationFile.c \
+        $(TARGDIR)launchFile.c        \
+        $(TARGDIR)xmlparser.c         \
+        $(TARGDIR)propertyParser.c    \
+        $(TARGDIR)versionId.c         \
+        $(TARGDIR)secure.c            \
+        $(TARGDIR)system.c            \
+        $(TARGDIR)system_md.c         \
+        $(TARGDIR)splash_md.c         \
+        $(TARGDIR)msgString.c         \
+	$(TARGDIR)splashFile.c        \
+	$(TARGDIR)util.c
+
+FILES_c = $(LAUNCHER_c) $(FILES_less2_c) 
+
+FILES_GENH = $(SHARE_SRC)/native/version/jawsversion.h
+GENH = $(FILES_GENH:$(SHARE_SRC)/native/version/%.h=$(GENHDIR)/%.h)
+
+ifeq ($(PLATFORM),windows)
+   FILES_GENRGS = $(PLATFORM_SRC)/activex/isInstalled_pre.rgs
+   GENRGS = $(FILES_GENRGS:$(PLATFORM_SRC)/activex/%_pre.rgs=$(GENHDIR)/%.rgs)
+endif

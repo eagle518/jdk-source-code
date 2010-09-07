@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="deploy" default="install" basedir=".">
+    <!-- Pull in GlueGen cpptasks build file -->
+    <property name="cpptasks.dir" location="../lib" />
+    <import file="${cpptasks.dir}/gluegen-cpptasks.xml" />
+
+    <property name="build_dir" location="../../../build" />
+    <property name="src" location="../../.."/> <!-- sources -->
+    <property name="classes" location="${build_dir}/deploy/classes"/> <!-- intermediate build products -->
+    <property name="obj" location="${build_dir}/deploy/obj" />
+    <property name="jars" location="${build_dir}"/> <!-- jar files -->
+    <property name="lib" location="${build_dir}"/> <!-- local libraries linked against -->
+    <property name="resources" location="${src}/src/common/share/classes"/> <!-- location of general java resources -->
+    <property name="compile.debug" value="true"/>
+    <property name="nativelib.name" value="deploy"/>
+
+    <!-- lib directory should contain any pre-built jar files needed to build the project -->
+    <fileset id="lib.jars" dir="${lib}">
+    </fileset>
+
+    <path id="lib.path">
+        <fileset refid="lib.jars"/>
+    </path>
+
+    <fileset id="resource_files" dir="${resources}">
+        <!-- FIXME: add in the Deployment localized resources -->
+        <include name="com/sun/deploy/resources/image/*.png" />
+        <include name="com/sun/deploy/resources/image/*.gif" />
+    </fileset>
+
+    <!-- Initialization target, for any prelimary setup needed to build -->
+    <target name="init" description="Preparation">
+        <mkdir dir="${build_dir}"/>
+    </target>
+
+    <target name="compile" depends="init" description="Compile code">
+        <mkdir dir="${classes}"/>
+        <javac srcdir="${src}" destdir="${classes}"
+               source="1.4" target="1.4"
+               includeAntRuntime="no"
+               classpathref="lib.path" debug="${compile.debug}">
+              <include name="src/common/share/classes/**/*.java" />
+              <include name="src/common/unix/classes/**/*.java" />
+              <include name="src/common/macosx/classes/**/*.java" />
+              <include name="make/macosx/deploy/SecurityBaseline.java" />
+              <exclude name="**/s.*.java" />
+              <exclude name="**/p.*.java" />
+              <exclude name="src/common/share/classes/com/sun/deploy/util/SecurityBaseline_pre.java" />
+              <!-- This one is critically important to pick up the MacOSXConfig -->
+              <exclude name="src/common/unix/classes/com/sun/deploy/config/ConfigFactory.java" />
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile" description="Build jar">
+        <mkdir dir="${jars}"/>
+<!-- manifest="${resources}/Manifest" -->
+        <jar jarfile="${jars}/${ant.project.name}.jar" basedir="${classes}" >
+            <!-- Inject resources -->
+            <fileset refid="resource_files" />
+            <!-- Merge library jars into final jar file -->
+            <!-- <zipgroupfileset refid="lib.jars"/>  -->
+        </jar>
+    </target>
+    
+    <target name="nativelib" depends="gluegen.cpptasks.detect.os,gluegen.cpptasks.configure.compiler,declare.compiler" description="Build native code for libdeploy.jnilib">
+        <mkdir dir="${obj}" />
+
+        <!-- NOTE: the value of the debug and optimise attributes will not be overridden if already set externally -->
+        <property name="c.compiler.debug"     value="false" /> 
+        <!-- Optimize flags one of { none, size, speed, minimal, full, aggressive, extreme, unsafe } --> 
+        <property name="c.compiler.optimize"  value="none" /> 
+
+        <!-- Generate headers needed for compilation -->
+        <mkdir dir="${obj}/headers" />
+        <javah classpath="${classes}"
+               destdir="${obj}/headers">
+            <class name="com.sun.deploy.net.socket.UnixSocketImpl" />
+        </javah>
+
+        <cc outtype="shared"
+            objdir="${obj}"
+            outfile="${obj}/${nativelib.name}"
+            optimize="${c.compiler.optimize}" 
+            debug="${c.compiler.debug}"
+            multithreaded="true" 
+            exceptions="false" 
+            rtti="false">   
+
+            <fileset dir="${src}">
+                <include name="src/common/unix/native/NetworkUtil.c" />
+                <include name="src/common/unix/native/UnixDomainSocket.c" />
+                <include name="src/common/unix/native/config.c" />
+                <include name="src/common/unix/native/console.c" />
+            </fileset>
+
+            <compiler extends="${compiler.cfg.id}" >
+                <sysincludepath path="/System/Library/Frameworks/JavaVM.framework/Headers/" />
+                <includepath path="${src}/src/common/unix/native"/>
+                <includepath path="${obj}/headers"/>
+            </compiler>
+
+            <linker extends="${linker.cfg.id}" />
+        </cc>            
+        <move file="${obj}/lib${nativelib.name}.dylib" tofile="${obj}/lib${nativelib.name}.jnilib" />
+    </target>
+
+    <target name="install" depends="jar,nativelib" description="Put all the pieces together in the dist directory">
+                <!-- We don't need this target -->
+    </target>
+
+
+    <target name="run" depends="install" description="Run the tool">
+        <java classname="${ant.project.name}" classpath="${classes}" fork="true">
+        </java>
+    </target>
+    
+    <target name="clean" description="Remove build and dist directories">
+        <delete dir="${classes}"/>
+        <delete dir="${obj}"/>
+        <delete file="${jars}/${ant.project.name}.jar" />
+    </target>
+</project>

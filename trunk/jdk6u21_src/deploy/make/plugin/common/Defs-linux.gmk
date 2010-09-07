@@ -1,0 +1,28 @@
+#
+# @(#)Defs-linux.gmk	1.2 03/01/23
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# these are specific to Linux (RH6.1)
+
+VERSION_SRC  := $(DEPLOY_TOPDIR)/src/plugin/solaris/common/pluginversion.hpp 
+VERSION_DEST := $(TEMPDIR)/pluginversion.h
+
+ifeq ($(VARIANT), DBG)
+  CPPFLAGS1 = -DDEBUG_VERSION
+else
+  CPPFLAGS1 = 
+endif
+
+LDFLAGS_COMMON = 
+
+ifdef JDK_UPDATE_VERSION
+  UVSUFFIX = _$(JDK_UPDATE_VERSION)
+endif
+
+CPPFLAGS = $(patsubst %,-I%,$(CPPINCPATH)) $(patsubst %,-I%,$(subst $(CLASSPATH_SEPARATOR), ,$(VPATH.h))) $(CPPFLAGS1) -D_GNU_SOURCE -DXP_UNIX -DNO_XEMBED_MOZILLA -DSVR4 -DPLUGIN_NODOTVERSION=\"$(JDK_MAJOR_VERSION)$(JDK_MINOR_VERSION)$(JDK_MICRO_VERSION)$(UVSUFFIX)\" -DPLUGIN_VERSION=\"$(JDK_VERSION)\" -DVERSION=\"$(FULL_VERSION)\" -DRELEASE=\"$(RELEASE)\" -DARCH=\"$(ARCH)\" -DLIBARCH=\"$(LIBARCH)\" $(EXTRA_CPPFLAGS)
+
+PLUGIN_PLATFORM_SRC := $(DEPLOY_TOPDIR)/src/plugin/solaris
+
+OTHER_LDFLAGS = -L$(OPENWIN_LIB)

@@ -1,0 +1,54 @@
+<html>
+  <head>
+      <title>Simple Applet 1</title>
+  </head>
+  <body>
+      <br>
+      This test fails in the browser,
+      since the browser will instantiate both applets at once (multithreaded).
+
+      The first applet.start() method is called after both applets are created,
+      therefor the second applet cannot connect to the 1st applet's SingleInstanceServer.
+
+      The SingleInstanceServer is started with the very first SingleInstanceService.addSingleInstanceListener(),
+      which of course can only be done in the applet.start() method .. as a very first point in time.
+
+      We have to think about, if this is a bug, or a feature :)
+
+      A solution might be to change the applet creation sequence, i.e:
+        - For all applet's 
+            - create/instanciate
+            - init
+            - start
+
+      instead of (current situation):
+        - For all applet's 
+            - create/instanciate
+        - For all applet's 
+            - init
+            - start
+
+      <br>
+      <h1>Instance 1</h1>
+      <hr>
+      <APPLET NAME=JNLPSingleInstanceService1 CODEBASE=codebasedir/ CODE=JNLPSingleInstanceService1 ARCHIVE="JNLPSingleInstanceService1.jar, SimpleApplet.jar" WIDTH=800 HEIGHT=120>
+      <PARAM name="activations_expected" VALUE="1">
+      <PARAM name="sleep" VALUE="0">
+      <PARAM name="jnlp_href" VALUE="JNLPSingleInstanceService1-jnlp-applet-rel.jnlp">
+      </APPLET>
+      <hr>
+      <br>
+      <h1>Instance 2</h1>
+      <hr>
+      <APPLET NAME=JNLPSingleInstanceService1 CODEBASE=codebasedir/ CODE=JNLPSingleInstanceService1 ARCHIVE="JNLPSingleInstanceService1.jar, SimpleApplet.jar" WIDTH=480 HEIGHT=120>
+      <PARAM name="activations_expected" VALUE="1">
+      <PARAM name="sleep" VALUE="10">
+      <PARAM name="jnlp_href" VALUE="JNLPSingleInstanceService1-jnlp-applet-rel.jnlp">
+      </APPLET>
+      <hr>
+      Nothing to see here ;-) <br>
+      <br>
+      Watch the console output ..<br>
+  </body>
+</html>
+

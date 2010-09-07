@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!--
+    Typical usage:
+
+    <?xml version="1.0"?>
+
+    <!DOCTYPE java-control-panel SYSTEM "settings.xml_java-control-panel.dtd">
+
+    <java-control-panel>
+    ...
+    </java-control-panel>
+-->
+
+<!ELEMENT advanced-settings (label|radiogroup|checkbox|platform)*>
+
+<!ELEMENT checkbox (label|radiogroup|checkbox|platform)*>
+<!ATTLIST checkbox
+    text CDATA #IMPLIED
+    propertyName CDATA #IMPLIED
+    checked CDATA #IMPLIED
+  >
+
+<!ELEMENT java-control-panel (advanced-settings)*>
+<!ATTLIST java-control-panel
+    version CDATA #IMPLIED
+  >
+
+<!ELEMENT label (label|radiogroup|checkbox|platform)*>
+<!ATTLIST label
+    text CDATA #IMPLIED
+  >
+
+<!ELEMENT radiogroup (rButton)*>
+<!ATTLIST radiogroup
+    propertyName CDATA #IMPLIED
+    rButtons CDATA #IMPLIED
+    checked CDATA #IMPLIED
+  >
+
+<!ELEMENT rButton EMPTY>
+<!ATTLIST rButton
+    text CDATA #IMPLIED
+  >
+
+<!ELEMENT platform (label|radiogroup|checkbox)*>
+<!ATTLIST platform
+    text CDATA #IMPLIED
+  >

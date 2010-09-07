@@ -1,0 +1,13 @@
+;
+; jpins4.def : COM modules for Netscape 4.x Adapter
+;
+; By X. Lu
+;
+
+LIBRARY      "jpins4.DLL"
+
+EXPORTS
+	DllCanUnloadNow		@1 PRIVATE
+	DllGetClassObject	@2 PRIVATE
+	DllRegisterServer	@3 PRIVATE
+	DllUnregisterServer	@4 PRIVATE

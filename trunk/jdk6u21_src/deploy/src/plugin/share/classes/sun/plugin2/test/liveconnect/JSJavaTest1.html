@@ -1,0 +1,31 @@
+<HTML>
+<HEAD>
+<TITLE>JavaScript -> Java Test 1</TITLE>
+</HEAD>
+<BODY>
+
+<applet id="jsJavaTest" name="jsJavaTest" code="JSJavaTest1" width="1" height="1" MAYSCRIPT></applet>
+<SCRIPT LANGUAGE="JavaScript">
+function runTest() {
+    // Note: we can't use document.getElementById("jsJavaTest") despite the fact
+    // that Firefox recommends it; our workaround for Firefox's not calling
+    // NPP_GetValue(NPPVpluginScriptableNPObject) on us doesn't work at that level
+    // and we don't get our scriptable object back
+    jsJavaTest.startTest();
+    jsJavaTest.test5Hello(5, "hello");
+    var result = document.getElementById("RESULT");
+    if (jsJavaTest.endTest()) {
+        result.innerHTML = "Test passed.";
+    } else {
+        var failingTest = jsJavaTest.getFirstFailingTest();
+        result.innerHTML = "TEST FAILED: first failing test = " + failingTest;
+    }
+}
+</SCRIPT>
+<FORM NAME="myform1" ACTION="" METHOD="GET">
+<INPUT TYPE="button" NAME="button1" Value="Run Test" onClick="runTest()">
+</FORM>
+<P ID="RESULT">
+</P>
+</BODY>
+</HTML>

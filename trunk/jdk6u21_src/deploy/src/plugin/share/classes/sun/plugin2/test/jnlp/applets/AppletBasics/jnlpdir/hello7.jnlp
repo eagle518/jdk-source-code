@@ -1,0 +1,14 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp codebase="http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics" href="jnlpdir/hello7.jnlp">
+   <information>
+      <title>Hello test Start</vendor>
+      <vendor>me </vendor>
+   </information>
+   <resources>
+      <j2se version="1.5+" />
+      <jar href="codebasedir/hellojavaws.jar" />
+      <extension name="SimpleApplet" href="jnlpdir/SimpleApplet4.jnlp"/>
+   </resources>
+ <application-desc main-class="hellojavaws"/>
+</jnlp>

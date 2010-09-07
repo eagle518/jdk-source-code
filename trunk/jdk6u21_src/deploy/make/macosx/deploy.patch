@@ -1,0 +1,89 @@
+--- old/src/common/share/classes/com/sun/deploy/config/Config.java	Wed Apr 30 16:14:02 2008
++++ new/src/common/share/classes/com/sun/deploy/config/Config.java	Wed Apr 30 16:13:59 2008
+@@ -820,7 +820,9 @@
+      */
+     public static boolean isJREComplete() {
+         try {
+-            return sun.jkernel.DownloadManager.isJREComplete();
++	    return true;
++	    // FIXME
++            // return sun.jkernel.DownloadManager.isJREComplete();
+         } catch (Error e) {
+             // The DownloadManager isn't present on earlier JREs
+             return true;
+--- old/src/common/share/classes/com/sun/deploy/panel/ControlPanel.java	Wed Apr 30 16:14:04 2008
++++ new/src/common/share/classes/com/sun/deploy/panel/ControlPanel.java	Wed Apr 30 16:14:03 2008
+@@ -25,8 +25,8 @@
+ import com.sun.deploy.ui.DialogTemplate;
+ import com.sun.deploy.ui.UIFactory;
+ import com.sun.deploy.services.PlatformType;
+-import sun.jkernel.DownloadManager;
+-import sun.jkernel.Mutex;
++//import sun.jkernel.DownloadManager;
++//import sun.jkernel.Mutex;
+ 
+ 
+ public class ControlPanel extends JFrame 
+@@ -310,16 +310,19 @@
+     public static void main(final String args[]) {
+ 
+         boolean isWindows = (Config.getOSName().indexOf("Windows") != -1);
+-        Mutex mutex = null;
++        // Mutex mutex = null;
+  
+ 	// Setup services
+         if (isWindows) {
+             com.sun.deploy.services.ServiceManager.setService(
+                     PlatformType.STANDALONE_TIGER_WIN32);
++	    // FIXME
++	    /*
+             if (!DownloadManager.isJREComplete()) {
+                 mutex = Mutex.create("com.sun.deploy.panel.ControlPanelMutex");
+                 mutex.acquire();
+             }
++	    */
+         } else {
+             com.sun.deploy.services.ServiceManager.setService(
+                     PlatformType.STANDALONE_TIGER_UNIX);
+@@ -332,10 +335,13 @@
+ 	}
+ 	if (SingleInstanceManager.isServerRunning(JCP_ID)) {
+ 	    if (SingleInstanceManager.connectToServer(outputString)) {
++		// FIXME
++		/*
+                 if (mutex != null) {
+                     mutex.release();
+                     mutex = null;
+                 }
++		*/
+                 System.exit(0);
+             }
+ 	}
+@@ -360,10 +366,13 @@
+ 		}
+ 	    }
+ 	});
++	// FIXME
++	/*
+         if (mutex != null) {
+             mutex.release();
+             mutex = null;
+         }
++	*/
+     }
+ 
+     public void newActivation(String[] params) {
+--- old/src/common/share/classes/com/sun/deploy/panel/UpdatePanel.java	Wed Apr 30 16:14:06 2008
++++ new/src/common/share/classes/com/sun/deploy/panel/UpdatePanel.java	Wed Apr 30 16:14:05 2008
+@@ -520,8 +520,9 @@
+         
+         // Enable "Update Now" button if manual update enalbed and
+         // JRE download is complete
+-	updateNowBtn.setEnabled(manualUpdateEnabled && 
+-                sun.jkernel.DownloadManager.isJREComplete());
++	// FIXME
++	updateNowBtn.setEnabled(manualUpdateEnabled /* && 
++						       sun.jkernel.DownloadManager.isJREComplete() */);
+         
+         updateNowPanel.add(lastUpdatedTextArea, BorderLayout.CENTER);
+         updateNowPanel.add(updateNowBtn, BorderLayout.EAST);

@@ -1,0 +1,26 @@
+#
+# @(#)FileList.gmk	1.7 07/12/05
+#
+# Copyright (c) 2007, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+FILES_cpp = AbstractPlugin.cpp           \
+	    MozExports.cpp	  	 \
+	    MozPluginExports.cpp  	 \
+	    MozPluginInstance.cpp        \
+	    MozPluginInstance_pd.cpp     \
+	    MozPluginNatives.cpp         \
+	    JavaObject.cpp               \
+	    utils_md.cpp
+
+FILES_c = JavaVM.c
+
+ifeq ($(PLATFORM), windows) 
+FILES_cpp += common.cpp \
+	    PrintHelper.cpp
+FILES_c += WindowsHelper.c
+FILES_rc = resource.rc
+else
+FILES_c += PrintHelper.c
+endif # PLATFORM

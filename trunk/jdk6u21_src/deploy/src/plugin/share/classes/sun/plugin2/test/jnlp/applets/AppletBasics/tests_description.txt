@@ -1,0 +1,404 @@
+
+Simple Applet Class
+
+ 1: SimpleApplet1-java-applet-rel.html
+    Type: Pure applet, with all APPLET parameters.
+    Code Location: JAR
+    Ressources Location: JAR
+    Test1: HTML Applet tag parameter correct: 
+        Standard Parameter: width, height, NAME
+        Custom Parameter: param1, param2
+    Method: Automatic with JNLP2Viewer/tests_run_auto.sh, and manual in browser !
+    Result: ALL PASSED 2007-12-24
+
+
+ 2: SimpleApplet1-jnlp-applet-rel.html
+    Type: jnlp/java applet, with all APPLET parameters.
+    Code Location: JNLP (with referenced JNLP extension), JAR
+    Ressources Location: JNLP/JAR
+    Test1: Full applet tag with 'jnlp_href', runs as ole applet and jnlp applet
+    Test2: Java-Applet - HTML Applet tag parameter correct: 
+        Standard Parameter: width, height, NAME
+        Custom Parameter: param1, param2
+    Test3: JNLP-Applet - HTML Applet tag parameter correct: 
+        Standard Parameter: width, height, NAME
+        Custom Parameter: param1, param2
+    Test4: JNLP-Applet - HTML Applet tags overwrites JNLP Applet tags
+        Standard Parameter: codebase, documentbase, width, height, NAME
+        Custom Parameter: param1, param2
+    Test5: JNLP extension loading
+    Test6: JNLP caching/update/fresh
+    Method: Automatic with JNLP2Viewer/tests_run_auto.sh, and manual in browser !
+    Result: ALL PASSED 2007-12-24
+
+    
+  3: SimpleApplet2-java-applet-rel.html 
+    Type: Pure applets (2x), with all APPLET parameters, LiveConnect.
+    Code Location: JAR
+    Ressources Location: JAR
+    Test1: Access and verification of both applets by each.
+    Method: Manual in browser !
+    Result: ALL PASSED 2007-12-24
+
+
+  4: SimpleApplet2-jnlp-applet-rel.html
+    Type: JNLP applets (2x), with all APPLET parameters, LiveConnect.
+    Code Location: JNLP (with referenced JNLP extension), JAR
+    Ressources Location: JNLP/JAR
+    Test1: Access and verification of both applets by each.
+    Method: Manual in browser !
+    Result: FAILED 2007-12-24 - Class object could not be casted !
+        - Each Applet has it's own ClassLoader -> investigate
+
+
++++
+
+JNLP Services Class
+
+  1: JNLPBasicService1-jnlp-applet-rel.html
+    Type: JNLP applet, using JNLP BasicService
+    Code Location: JNLP (with referenced JNLP extension), JAR
+    Ressources Location: JNLP/JAR
+    Test1: Instantiate/Locate JNLP BasicService and compare attributes with applet ones
+    Method: Automatic with JNLP2Viewer/tests_run_auto.sh, and manual in browser !
+    Result: ALL PASSED 2007-12-31
+
+
+  2: JNLPSingleInstanceService1-jnlp-applet-rel.html
+    Type: JNLP applet, using JNLP SingleInstanceService
+    Code Location: JNLP (with referenced JNLP extension), JAR
+    Ressources Location: JNLP/JAR
+    Test1: Start 2 JNLPSingleInstanceService1 applets on the same native machine (seperate JVM's),
+           expect the 'newActivation' count to be 2.
+
+           Details:
+               The 2nd start will abort, 
+               due to an already started singular JNLP with the same name.
+               Before the abortion, 'newActivation' of the 1st will be called.
+
+               The 1st waits up to 10s for the 'newActivation' count of 2.
+
+    Method: Automatic with JNLP2Viewer/tests_run_auto.sh, and manual in browser !
+    Result: ALL PASSED 2008-01-08
+
+  3: JNLPExtendedService1-jnlp-applet-rel.html
+    Type: JNLP applet, using JNLP Persistence / ExtendedService 
+    Code Location: JNLP (with referenced JNLP extension), JAR
+    Ressources Location: JNLP/JAR
+    Test1: Instantiate/Locate JNLP ExtendedService and write, read, compare a datum.
+    Method: Manual in JNLP2Viewer/Browser, due to the permission dialog !
+    Result: ALL PASSED 2008-01-08
+
+  4: JNLPPersistenceService1-jnlp-applet-rel-round[012].html
+    Type: JNLP applet, using JNLP Persistence / PersistenceService 
+    Code Location: JNLP (with referenced JNLP extension), JAR
+    Ressources Location: JNLP/JAR
+    Test1: Instantiate/Locate JNLP PersistenceService; cookie: create/write (w. verify) initial one
+           File: JNLPPersistenceService1-jnlp-applet-rel-round0.html
+    Test2: cookie: verify old value (Test1) and write (w. verify) new value
+           File: JNLPPersistenceService1-jnlp-applet-rel-round1.html
+    Test3: cookie: verify old value (test2) and delete cookie
+           File: JNLPPersistenceService1-jnlp-applet-rel-round2.html
+
+    Method: Automatic with JNLP2Viewer/tests_run_auto.sh, and manual in browser !
+    Result: ALL PASSED 2008-01-09
+
++++
+
+JRE Relaunch
+
+  1: JRERelaunch1-jnlp-applet-rel-nop.html
+    Type: JNLP applet, using java specification
+    Code Location: JNLP (with referenced JNLP extension), JAR
+    Ressources Location: JNLP/JAR
+    Test1: NOP, ie just show that no JRE roundtrip will be issued (verified) !
+    Method: Automatic with JNLP2Viewer/tests_run_auto.sh, and manual in browser !
+    Result: ALL PASSED 2008-01-12
+
+  2: JRERelaunch1-jnlp-applet-rel-check0.html
+    Type: JNLP applet, using java specification
+    Code Location: JNLP (with referenced JNLP extension), JAR
+    Ressources Location: JNLP/JAR
+    Test1: Relaunch maxHeapSize, verify relaunch and maxHeapSize !
+    Method: Manual in JNLP2Viewer/Browser, due to unsupported C/S roundtrip of JNLP2Viewer
+    Result: ALL PASSED 2008-01-12
+
+  3: JRERelaunch1-jnlp-applet-rel-check1.html
+    Type: JNLP applet, using java specification
+    Code Location: JNLP (with referenced JNLP extension), JAR
+    Ressources Location: JNLP/JAR
+    Test1: Relaunch jvm_args: properties, verify relaunch and jvm_args: properties !
+    Method: Manual in JNLP2Viewer/Browser, due to unsupported C/S roundtrip of JNLP2Viewer
+    Result: ALL PASSED 2008-02-12
+
+  4: JRERelaunch1-jnlp-applet-rel-check2.html
+    Type: JNLP applet, using java specification
+    Code Location: JNLP (with referenced JNLP extension), JAR
+    Ressources Location: JNLP/JAR
+    Test1: Relaunch jvm_args: properties, verify relaunch and jvm_args: java-vm-args !
+    Method: Manual in JNLP2Viewer/Browser, due to unsupported C/S roundtrip of JNLP2Viewer
+    Result: ALL PASSED 2008-02-12
+
+  5: JRERelaunch1-jnlp-applet-rel-check0_1.html
+    Type: JNLP applet, using java specification
+    Code Location: JNLP (with referenced JNLP extension), JAR
+    Ressources Location: JNLP/JAR
+    Test1: Relaunch maxHeapSize and jvm_args: properties, verify relaunch, maxHeapSize and jvm_args: java-vm-args !
+    Method: Manual in JNLP2Viewer/Browser, due to unsupported C/S roundtrip of JNLP2Viewer
+    Result: ALL PASSED 2008-02-14
+
+  6: JRERelaunch1-jnlp-applet-rel-LC-nop.html
+    Type: JNLP applet, using java specification
+    Code Location: JNLP (with referenced JNLP extension), JAR
+    Ressources Location: JNLP/JAR
+    Test1: LiveConnect with no relaunch - NOP, ie just show that no JRE roundtrip will be issued (verified) !
+    Method: Automatic with JNLP2Viewer/tests_run_auto.sh, and manual in browser !
+    Result: ALL PASSED 2008-01-14
+
+  7: JRERelaunch1-jnlp-applet-rel-LC-check0.html
+    Type: JNLP applet, using java specification
+    Code Location: JNLP (with referenced JNLP extension), JAR
+    Ressources Location: JNLP/JAR
+    Test1: LiveConnect with relaunch maxHeapSize, verify relaunch and maxHeapSize !
+    Method: Manual in JNLP2Viewer/Browser, due to unsupported C/S roundtrip of JNLP2Viewer
+    Result: ALL PASSED 2008-01-14
+
++++
+
+JNLP OOPP unavailable JNLP files
+
+  1: NonExistentJNLPFile1-jnlp-applet-rel.html
+    Type: JNLP applet, using java specification
+    Code Location: JNLP (with referenced JNLP extension), JAR
+    Ressources Location: JNLP/JAR
+    Test1: Error case: Root JNLP file does not exist
+    Method: Manual in JNLP2Viewer and FF3 browser !
+    Result: ALL PASSED 2008-02-11
+
+  2: NonExistentJNLPFile2-jnlp-applet-rel.html
+    Type: JNLP applet, using java specification
+    Code Location: JNLP (with referenced JNLP extension), JAR
+    Ressources Location: JNLP/JAR
+    Test1: Error case: Subsequect JNLP component file does not exist
+    Method: Manual in JNLP2Viewer and FF3 browser !
+    Result: ALL PASSED 2008-02-11
+
+  3: NonExistentJNLPFile3-jnlp-applet-rel.html
+    Type: JNLP applet, using java specification
+    Code Location: JNLP (with referenced JNLP extension), JAR
+    Ressources Location: JNLP/JAR
+    Test1: Error case: Root JNLP's JAR file does not exist
+    Method: Manual in JNLP2Viewer and FF3 browser !
+    Result: ALL PASSED 2008-02-11
+
++++
++++
+
+JNLP OOPP codebase
+
+test 0: relative codebase and relative references: all the above existing tests, e.g.:
+
+http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/SimpleApplet1-jnlp-applet-rel.html
+
+codebase: codebasedir
+href:     SimpleApplet1-jnlp-applet-rel.jnlp
+    codebase: <to be overwritten>
+    href:     SimpleApplet1-jnlp-applet-rel.jnlp
+    jar:      SimpleApplet1.jar
+    ext:      href="SimpleApplet-jnlp-applet-rel.jnlp
+        codebase: <to be overwritten>
+        href:     SimpleApplet-jnlp-applet-rel.jnlp
+        jar:      SimpleApplet.jar
+
++++
+
+test 1: codebase and relative references, subdir references in extension
+
+http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/SimpleApplet1-jnlp-applet-cbt1.html
+
+codebase: codebasedir
+href:     SimpleApplet1-jnlp-applet-cbt1.jnlp
+    codebase: <parent>
+    href:     SimpleApplet1-jnlp-applet-cbt1.jnlp
+    jar:      SimpleApplet1.jar
+    ext:      href="jnlpdir2/SimpleApplet-jnlp-applet-2.jnlp
+        codebase: <parent>
+        href:     jnlpdir2/SimpleApplet-jnlp-applet-2.jnlp
+        jar:      SimpleApplet.jar
+
++++
+
+test 2: codebase and 2 relative recursive extension
+
+http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/SimpleApplet1-jnlp-applet-cbt2.html
+
+codebase: codebasedir
+href:     SimpleApplet1-jnlp-applet-cbt2.jnlp
+    codebase: <parent>
+    href:     SimpleApplet1-jnlp-applet-cbt2.jnlp
+    ext:      href="jnlpdir2/SimpleApplet1.2-jnlp-applet-cbt2.jnlp
+        codebase: jnlpdir2
+        href:     SimpleApplet1.2-jnlp-applet-cbt2.jnlp
+        jar:      SimpleApplet1.jar
+        ext:      href="jnlpdir3/SimpleApplet-jnlp-applet-2.1.jnlp
+            codebase: jnlpdir3
+            href:     SimpleApplet-jnlp-applet-2.1.jnlp
+            jar:      SimpleApplet.jar
+
+
++++
++++
++++
+
+JNLP Core JAVAWS codebase
+
+test 0: codebase and relative references
+
+http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/codebasedir/hello0.jnlp
+
+codebase: http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/codebasedir
+href:     hello0.jnlp
+jar:      hellojavaws.jar
+ext:      SimpleApplet.jnlp
+
++++
+
+test 1: codebase and relative references, subdir references in extension
+
+http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/codebasedir/hello1.jnlp
+
+codebase: http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/codebasedir
+href:     hello1.jnlp
+jar:      hellojavaws.jar
+ext:      jnlpdir2/SimpleApplet2.jnlp
+    codebase: http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/codebasedir
+    href:     jnlpdir2/SimpleApplet2.jnlp
+    jar:      SimpleApplet.jar
+
++++
+
+test 2: codebase and relative subdir references
+
+http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/codebasedir/jnlpdir2/hello2.jnlp
+
+codebase: http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/codebasedir
+href:     jnlpdir2/hello2.jnlp
+jar:      hellojavaws.jar
+ext:      SimpleApplet.jnlp
+    codebase: http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/codebasedir
+    href:     SimpleApplet.jnlp
+    jar:      SimpleApplet.jar
+
++++
+
+test 3: codebase and relative subdir references
+
+http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/codebasedir/jnlpdir2/hello3.jnlp
+
+codebase: http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/codebasedir/jnlpdir2
+href:     hello3.jnlp
+jar:      ../hellojavaws.jar
+ext:      ../SimpleApplet.jnlp
+    codebase: http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/codebasedir
+    href:     SimpleApplet.jnlp
+    jar:      SimpleApplet.jar
+
++++
+
+test 4: codebase and relative subdir references
+
+http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/jnlpdir/hello4.jnlp
+
+codebase: http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics
+href:     jnlpdir/hello4.jnlp
+jar:      codebasedir/hellojavaws.jar
+ext:      codebasedir/SimpleApplet.jnlp
+    codebase: http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/codebasedir
+    href:     SimpleApplet.jnlp
+    jar:      SimpleApplet.jar
+
++++
+
+test 5: absolute references
+
+http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/jnlpdir/hello5.jnlp
+
+codebase: http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/jnlpdir/
+href:     hello5.jnlp
+jar:      http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/codebasedir/hellojavaws.jar
+ext:      http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/codebasedir/SimpleApplet.jnlp
+    codebase: http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/codebasedir
+    href:     SimpleApplet.jnlp
+    jar:      SimpleApplet.jar
+
++++
+
+test 6: no codebase, absolute references
+
+http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/jnlpdir/hello6.jnlp
+
+codebase: http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/codebasedir
+href:     ../jnlpdir/hello6.jnlp
+jar:      hellojavaws.jar
+ext:      jnlpdir2/SimpleApplet3.jnlp
+    codebase: none
+    href:     http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/codebasedir/jnlpdir2/SimpleApplet3.jnlp
+    href:     http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/codebasedir/SimpleApplet.jar
+
++++
+
+test 7: codebase and relative references, subdir references in extension
+
+http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/jnlpdir/hello7.jnlp
+
+codebase: http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics
+href:     jnlpdir/hello7.jnlp
+jar:      codebasedir/hellojavaws.jar
+ext:      jnlpdir/SimpleApplet4.jnlp
+    codebase: http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/emptydir
+    href:     ../jnlpdir/SimpleApplet4.jnlp
+    href:     ../codebasedir/SimpleApplet.jar
+
++++
+
+test 8: codebase and relative references, abs references and no codebase in extension
+
+http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/jnlpdir/hello8.jnlp
+
+codebase: http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics
+href:     jnlpdir/hello8.jnlp
+jar:      codebasedir/hellojavaws.jar
+ext:      codebase=codebasedir href=./jnlpdir/SimpleApplet5.jnlp
+    href:     http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/jnlpdir/SimpleApplet5.jnlp
+    href:     http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/codebasedir/SimpleApplet.jar
+
++++
+
+test Fail 1: ext no codebase, relative references -> ERROR
+
+http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/jnlpdir/helloFail1.jnlp
+
+codebase: http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/codebasedir
+href:     ../jnlpdir/helloFail1.jnlp
+jar:      hellojavaws.jar
+ext:      jnlpdir2/SimpleAppletFail1.jnlp
+    codebase: none
+    href:     jnlpdir2/SimpleAppletFail1.jnlp
+    href:     SimpleApplet.jar
+
++++
+
+test Fail 2: ext rel codebase, rel references -> ERROR
+
+http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/jnlpdir/helloFail2.jnlp
+
+codebase: http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics
+href:     jnlpdir/hello6.jnlp
+jar:      codebasedir/hellojavaws.jar
+ext:      codebasedir/jnlpdir2/SimpleAppletFail2.jnlp
+    codebase: codebasedir
+    href:     jnlpdir2/SimpleAppletFail2.jnlp
+    href:     SimpleApplet.jar
+
++++
+

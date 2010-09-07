@@ -1,0 +1,11 @@
+FILES_cpp = utils.cpp \
+	    thread.cpp \
+	    sockets.cpp \
+	    print.cpp \
+	    os_utils.cpp \
+	    os_layer.cpp \
+	    jqsiestartdetectorimpl.cpp \
+	    jqsiestartdetector.cpp \
+	    jqs_api_client.cpp
+
+FILES_rc  = jqsiestartdetector.rc

@@ -1,0 +1,56 @@
+#
+# @(#)Rules-windows.gmk	1.36 10/03/24
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# Windows specific rules used when building the JavaWS JAR file and library.
+#
+
+FILES_java = $(JDK_1_2_FILES) $(WINDOWS_FILES)
+
+PLATFORM_SRC   = $(DEPLOY_TOPDIR)/src/javaws/win32
+WINRESDIR      = $(DEPLOY_TOPDIR)/make/javaws/windows/resources
+
+$(GENRGS):
+	@$(MKDIR) -p $(@D)
+	$(CAT) $(FILES_GENRGS) | $(JAVAWS_SUBSTITUTE_VERSIONS) > $@
+
+$(OBJDIR)/%.o: $(PLATFORM_SRC)/native/%.cpp
+	$(MKDIR) -p $(@D)
+	$(CC) /I$(JAVAWS_BOOTDIR)/include /I$(JAVAWS_BOOTDIR)/include/win32 -c -Fo$@ $?
+
+# for javaws.exe
+$(JUMP_EXE): $(FILES_o) FRC
+	$(MKDIR) -p $(BIN_DIR)
+	$(LINK) $(LINK_FLAGS) $(FILES_o) \
+		/out:$(JUMP_EXE)
+	@$(MKDIR) -p $(@D)
+	@$(TOUCH) $@
+	$(CP) $(JUMP_EXE) $(BIN_OUTPUTDIR)
+
+$(OBJDIR)/%.o: $(SHARE_SRC)/native/%.c
+	$(CC) $(C_FLAGS) -c -Fo$@ $?
+
+$(OBJDIR)/%.o: $(PLATFORM_SRC)/native/%.c
+	$(CC) $(C_FLAGS) -c -Fo$@ $?
+
+$(OBJDIR)/%.o: $(SHARE_SRC)/native/jpeg/%.c
+	$(CC) $(C_FLAGS) -c -Fo$@ $?
+
+$(OBJDIR)/%.o: $(DEPLOY_TOPDIR)/src/common/windows/native/common.cpp
+	$(CC) $(C_FLAGS) -c -Fo$@ $?
+
+proto-platform::
+	$(MKDIR) -p $(LIB_SECURITY_DIR) $(LIB_JAVAWS_DIR)
+	$(CP) -f $(DEPLOY_TOPDIR)/src/javaws/share/config/javaws.policy $(LIB_SECURITY_DIR)
+	$(CP) -f $(DEPLOY_COMMON_JAR) $(LIB_DIR)
+	$(CP) -f $(DEPLOY_COMMON_LIB) $(BIN_DIR)
+
+$(JUMP_JAR_TAG):
+	$(TOUCH) $(JUMP_JAR_TAG)
+
+dev-platform:
+
+FRC:
+.PHONY: installer clean dev-platform proto-platform build

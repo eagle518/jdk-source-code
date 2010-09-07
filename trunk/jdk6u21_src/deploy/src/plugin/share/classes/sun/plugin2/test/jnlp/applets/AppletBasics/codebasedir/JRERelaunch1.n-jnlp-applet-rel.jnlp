@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+"
+      href="JRERelaunch1.n-jnlp-applet-rel.jnlp">
+  <information>
+    <title>JRERelaunch1.n Applet (nop)</title>
+    <vendor>SUN Deployment</vendor>
+    <description kind='tootltip'>A simple JNLP test</description>
+    <description kind='one-line'>Applet</description>
+    <homepage href='JRERelaunch1-jnlp-applet-rel-nop.html' />
+    <offline-allowed/>
+  </information>
+  <resources>
+    <!-- no href   : this is the platform version: java.specification.version -->
+    <!-- href given: this is the product  version: java.version -->
+    <j2se href="http://java.sun.com/products/autodl/j2se" version="1.2+"/>
+    <jar href="JRERelaunch1.jar"/>
+    <extension name="SimpleApplet" href="SimpleApplet-jnlp-applet-rel.jnlp"/>
+  </resources>
+  <applet-desc 
+      name="NameShouldBeOverwrittenByAppletTagDuh"
+      main-class="JRERelaunch1"
+      width="666" 
+      height="999">
+  </applet-desc>
+</jnlp>

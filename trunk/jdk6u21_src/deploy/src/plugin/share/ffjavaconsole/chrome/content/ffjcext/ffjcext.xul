@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE overlay SYSTEM "chrome://javaconsole_JDK_VERSION/locale/ffjcext.dtd">
+<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+<script type="application/x-javascript" src="chrome://javaconsole_JDK_VERSION/content/ffjcext.js"/>
+
+
+<menupopup id="menu_ToolsPopup">  
+		<menuitem 
+		id="javaconsole_JDK_VERSION" 
+		label="&javaConsoleCmd.label;" 
+		accesskey="&javaConsoleCmd.accesskey;"
+		insertafter="devToolsSeparator"/>
+</menupopup>
+
+	
+</overlay>
+

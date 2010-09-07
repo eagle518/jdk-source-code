@@ -1,0 +1,48 @@
+<SCRIPT LANGUAGE="javascript">
+function getTestArray() {
+    var arr = new Array();
+    arr[0] = 5;
+    arr[2] = "Hello";
+    return arr;
+}
+
+function testIntArray1() {
+    // Note that the size and contents of this array are known to the other side
+    var arr = new Array();
+    arr[0] = 5;
+    arr[2] = 7;
+    test.passIntArray(arr);
+}
+
+function testIntArray2() {
+    // Note that the size and contents of this array are known to the other side
+    var arr = new Array();
+    arr[0] = "5";
+    arr[2] = "7";
+    test.passIntArray(arr);
+}
+
+function testStringArray() {
+    // Note that the size and contents of this array are known to the other side
+    var arr = new Array();
+    arr[0] = "Hello";
+    arr[1] = "world";
+    test.passStringArray(arr);
+}
+
+function runTest() {
+    try {
+        testIntArray1();
+        testIntArray2();
+        testStringArray();
+    } catch (e) {
+    }
+    test.expect(3);
+}
+</SCRIPT>
+<BODY ONLOAD="runTest()">
+<P>
+Regression test for 6611904
+</P>
+<APPLET NAME="test" CODE="ArrayTest" WIDTH="1" height="1" MAYSCRIPT></APPLET>
+</BODY>

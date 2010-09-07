@@ -1,0 +1,62 @@
+# Test machine:
+#   GNU/Linux 2.6.24.2 x86_64, 2 CPUs
+#   FF3/OOPP 32bit on 64bit
+#   Memory: 2GB
+#   Distribution: OpenSuSE 10.3 64bit
+
+Log files, see subdirectory 'Applet2StartupTime.logs'
+
+# Performed tests: (Trace.flush() removed for all)
+#
+# 0: old .. 
+0  : 2180444 us
+
+# A: Trace.flush() removed
+A0 : startup_time_new.logA0.txt  JPI_PLUGIN2_DEBUG=1, DEPLOY_PERF_ENABLED=1; no console
+A1 : startup_time_new.logA1.txt  DEPLOY_PERF_ENABLED=1; no console
+A2 : startup_time_new.logA2.txt  DEPLOY_PERF_ENABLED=1; SHOW console
+
+# B: Trace.flush() removed , JavaRunTime.initEnvironment() replaced
+B0 : startup_time_new.logB0.txt  JPI_PLUGIN2_DEBUG=1, DEPLOY_PERF_ENABLED=1; no console
+B1 : startup_time_new.logB1.txt  DEPLOY_PERF_ENABLED=1; no console
+B2 : startup_time_new.logB2.txt  DEPLOY_PERF_ENABLED=1; SHOW console
+
+# C: Trace.flush() removed , JavaRunTime.initEnvironment() replaced, CacheUpdateHelper.updateCache() fast path
+C0 : startup_time_new.logC0.txt  JPI_PLUGIN2_DEBUG=1, DEPLOY_PERF_ENABLED=1; no console
+C1 : startup_time_new.logC1.txt  DEPLOY_PERF_ENABLED=1; no console
+
+# Total Startup Time:
+#   Time until we have reached: 'PluginMain - handleMessageSetJVMID() - END'
+#
+A0: 443212 us
+A1: 380444 us   **** 
+A2: 679674 us
+
+B0: 374828 us
+B1: 292321 us   **** 
+B2: 594930 us
+
+C0: 206031 us
+C1: 172118 us   **** good !
+
+# Show Console Costs:
+    A2-A1: 299230 us -> +79% (A2-A1)/A1
+
+#
+# Summary
+#
+
+Results: *** 2015 ms JVM starup time boost ***
+    - Removing the costly Trace.flush() boosts the startup time about ** 1800 ms **
+
+    - Replacing JavaRunTime.initEnvironment() with the only necessary initialization 
+        - Replacing AppletViewer.loadPropertiesFiles() - boosts startup time about ** 100 ms **,
+          Where the specific codepath is reduced by 200 ms.
+
+    - Fast path for : CacheUpdateHelper.updateCache() call - boosts startup time about ** 115 ms **
+        - extracting the condition IF(Config.getBooleanProperty(Config.JAVAPI_UPDATE_KEY))
+          out of the new process, so the new process is created only, if necessary!
+
+    - Show Console costs about 299 ms, i.e. +79% of the startup time, compared to no SHOW
+
+

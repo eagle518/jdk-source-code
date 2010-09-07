@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+"
+      codebase="../../codebasedir"
+      href="jnlpdir2/SimpleApplet1.2-jnlp-applet-cbt2.jnlp">
+    <information>
+      <title>Simple Test (jnlp title)</title>
+      <vendor>SUN Deployment</vendor>
+      <description kind='tootltip'>A simple JNLP Applet Test</description>
+      <offline-allowed/>
+    </information>
+    <resources>
+      <!--property name="sun.java2d.noddraw" value="false"/-->
+      <jar href="SimpleApplet1.jar"/>
+      <extension name="SimpleApplet" href="jnlpdir2/jnlpdir3/SimpleApplet-jnlp-applet-2.1.jnlp"/>
+    </resources>
+    <component-desc/>
+</jnlp>

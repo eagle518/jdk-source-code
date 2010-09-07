@@ -1,0 +1,11 @@
+set LIBXCB_ALLOW_SLOPPY_LOCK=1
+set JPI_PLUGIN2_DEBUG=1
+set JPI_PLUGIN2_VERBOSE=1
+set JAVAWS_TRACE_NATIVE=1
+
+set J2RE_HOME=C:\jre1.6.0_10
+set JAVA=%J2RE_HOME%\bin\java
+set JAVAW=%J2RE_HOME%\bin\javaw
+
+%JAVA% -classpath .  ExecRuntime 0
+

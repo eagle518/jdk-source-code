@@ -1,0 +1,81 @@
+#
+# @(#)DeployRules-solaris.gmk	1.25 10/03/24
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# Unix specific rules used when building the generic Deploy JAR file and
+# libraries.
+#
+
+DEPLOY_COMMON_LIB    = $(DEPLOY_COMMON_DIR)/lib/libdeploy.so
+DEPLOY_OUTPUT_LIB    = $(OUTPUTDIR)/lib/$(LIBARCH)/libdeploy.so
+
+vpath %.c   $(DEPLOY_SHARE_SRC)/native $(DEPLOY_PLATFORM_SRC)/native
+vpath %.cpp $(DEPLOY_SHARE_SRC)/native $(DEPLOY_PLATFORM_SRC)/native
+
+SO_o  = $(DEPLOY_FILES_c:%.c=$(DEPLOYOBJDIR)/%.o)
+SO_o += $(DEPLOY_FILES_cpp:%.cpp=$(DEPLOYOBJDIR)/%.o)
+
+FILES_m = $(DEPLOY_TOPDIR)/make/common/Deploy-mapfile-vers
+ifeq ($(PLATFORM), solaris)
+    CC   ?= $(COMPILER_PATH)cc
+    ifeq (,$(CXX))
+        CXX  = $(COMPILER_PATH)CC
+        LINK = $(COMPILER_PATH)CC
+    else
+        LINK = $(CXX)
+    endif
+
+    # Option used to create a shared library
+    SHARED_LIBRARY_FLAG = -G
+
+    LDFLAGS = -xnolib -norunpath -lCrun -lnsl -ldl -lc
+else
+    CC   ?= $(COMPILER_PATH)gcc
+    ifeq (,$(CXX))
+        CXX  = $(COMPILER_PATH)g++
+        LINK = $(COMPILER_PATH)g++
+    else
+        LINK = $(CXX)
+    endif
+
+
+    # Option used to create a shared library
+    SHARED_LIBRARY_FLAG = -shared
+
+    # do not use -Xlinker and -lc here, it does not work together with 
+    # -static-libgcc
+    LDFLAGS =
+    DEPLOY_STATIC_LINK_CPP_FLAG = -static-libgcc -L$(DEPLOYOBJDIR)
+
+    ifeq ($(PLATFORM), linux)
+        SO_o += $(shell $(CXX) -print-file-name=libstdc++.a)
+    endif
+endif
+
+$(DEPLOY_COMMON_LIB): $(SO_o)
+	$(LINK) $(LDFLAGS) $(SHARED_LIBRARY_FLAG) $(DEPLOY_STATIC_LINK_CPP_FLAG) $(SO_o) -o $(DEPLOY_COMMON_LIB)
+	$(CP) $(DEPLOY_COMMON_LIB) $(DEPLOY_OUTPUT_LIB)
+
+$(DEPLOYOBJDIR)/%.o: %.c
+	@$(prep-target)
+	$(CC) -I$(BOOTDIR)/include             \
+	      -I$(BOOTDIR)/include/$(PLATFORM) \
+	      -I$(DEPLOY_SHARE_SRC)/native     \
+	      -I$(DEPLOY_PLATFORM_SRC)/native  \
+	      -I$(DEPLOYCLASSHDRDIR)           \
+              -fPIC                            \
+	      -c -o $@ $?
+
+$(DEPLOYOBJDIR)/%.o: %.cpp
+	@$(prep-target)
+	$(CXX) -I$(BOOTDIR)/include             \
+	       -I$(BOOTDIR)/include/$(PLATFORM) \
+	       -I$(DEPLOY_SHARE_SRC)/native     \
+	       -I$(DEPLOY_PLATFORM_SRC)/native  \
+	       -I$(DEPLOYCLASSHDRDIR)           \
+               -fPIC                            \
+	       -c -o $@ $?
+
+deploy-native: deploy-mkdir $(DEPLOY_COMMON_LIB)

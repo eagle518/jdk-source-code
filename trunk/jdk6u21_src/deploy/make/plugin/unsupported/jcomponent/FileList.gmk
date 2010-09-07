@@ -1,0 +1,7 @@
+FILES_cpp = \
+        CJavaService.cpp \
+	CJavaInstance.cpp \
+	CPluginVM_OP_public.cpp \
+	CPluginVM_OP.cpp \
+	CWriteBuffer.cpp \
+	CReadBuffer.cpp 

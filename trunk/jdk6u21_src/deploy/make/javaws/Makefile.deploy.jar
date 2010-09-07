@@ -1,0 +1,57 @@
+#
+# @(#)Makefile.deploy.jar	1.4 10/03/24
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# Makefile to build the deploy.jar.
+#
+DEPLOY_TOPDIR = ../..
+
+include ../common/Defs.gmk
+
+# File groupings
+include FILES_java.gmk
+include FILES_c.gmk
+include FILES_resource.gmk
+
+# Main Rules
+dummy := $(shell $(MKDIR) -p $(OUTPUTDIR) $(TEMPDIR))
+
+ifndef EXTERNALSANITYCONTROL
+build:: sanity-comprehensive
+endif
+
+all:: deploy-jar
+
+clean::
+	# The next group of directories should really have their own target so
+	# that the common Deployment files can be cleaded up separately.
+	$(RM) -r $(DEPLOYCLASSDESTDIR) \
+	         $(DEPLOY_COMMON_JAR)  \
+	         $(DEPLOYOBJDIR)       \
+	         $(DEPLOY_COMMON_LIB)
+	#Since deploy.jar/libdeploy.so is not built against J2SE rules, we need
+	# to remove it manually
+	$(RM) -r $(DEPLOY_OUTPUT_JAR) \
+	         $(DEPLOY_OUTPUT_LIB)
+
+include ../common/Sanity.gmk
+include ../common/Rules.gmk
+include ../common/Release.gmk
+
+# for deploy.jar
+include ../common/FILES_c.gmk
+include ../common/FILES_java.gmk
+include ../common/DeployRules.gmk
+
+ifeq ($(PLATFORM), windows)
+   include ../common/DeployRules-windows.gmk
+else
+   include ../common/DeployRules-solaris.gmk
+endif
+
+# for zh_HK RFE 4463546 
+include ../common/Resources.gmk
+
+.PHONY: all clean

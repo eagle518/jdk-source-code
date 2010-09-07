@@ -1,0 +1,65 @@
+#
+# @(#)DeployRules-windows.gmk	1.22 10/03/24
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# Windows specific rules used when building the generic Deploy JAR file and
+# libraries.
+#
+
+DEPLOY_COMMON_LIB    = $(DEPLOY_COMMON_DIR)/bin/deploy.dll
+DEPLOY_OUTPUT_LIB    = $(OUTPUTDIR)/bin/deploy.dll
+
+vpath %.cpp $(DEPLOY_SHARE_SRC)/native $(DEPLOY_PLATFORM_SRC)/native
+
+DLL_o  = $(DEPLOY_FILES_cpp:%.cpp=$(DEPLOYOBJDIR)/%.o)
+DLL_o += $(DEPLOY_FILES_rc:%.rc=$(DEPLOYOBJDIR)/%.res)
+
+DEPLOY_COMMON_o = $(DEPLOYOBJDIR)/common.o
+
+$(DEPLOYOBJDIR)/%.res: $(DEPLOY_PLATFORM_SRC)/native/%.rc
+	@$(prep-target)
+	$(RSC) $(RC_FLAGS) -l 0x409 -r -d NDEBUG -fo$@ $<
+
+$(DEPLOYOBJDIR)/%.o: %.cpp
+	@$(prep-target)
+	$(CC) -I$(DEPLOYOBJDIR)               \
+	      -I$(DEPLOY_SHARE_SRC)/native    \
+	      -I$(DEPLOY_PLATFORM_SRC)/native \
+	      -I$(DEPLOYCLASSHDRDIR)          \
+	      -I$(BOOTDIR)/include            \
+	      -I$(BOOTDIR)/include/win32      \
+	      -DWIN32                         \
+	      -DPERFLIB_EXPORTS               \
+	      -c $(MS_RUNTIME_OPTION) -O2 -Fo$@ $?
+
+$(DEPLOY_COMMON_LIB): $(DLL_o)
+	@$(prep-target)
+	$(LINK) $(DEPLOYOBJDIR)/crypt32.lib      \
+	        $(LINK_FLAGS) -DLL \
+	        $(DLL_o)                         \
+	        -OUT:$(DEPLOY_COMMON_LIB)
+
+# These files should be copied to $(DEPLOYOBJDIR) if they aren't already there,
+# or if they have been changed since the last build.
+deploy-copy-files: $(DEPLOYOBJDIR)/BaseTsd.h  \
+                   $(DEPLOYOBJDIR)/Wincrypt.h \
+                   $(DEPLOYOBJDIR)/crypt32.lib
+
+$(DEPLOYOBJDIR)/BaseTsd.h: $(DEPLOY_MSSDK)/include/BaseTsd.h
+	$(CP) $(DEPLOY_MSSDK)/include/BaseTsd.h $(DEPLOYOBJDIR)/BaseTsd.h
+
+$(DEPLOYOBJDIR)/Wincrypt.h: $(DEPLOY_MSSDK)/include/Wincrypt.h
+	$(CP) $(DEPLOY_MSSDK)/include/Wincrypt.h $(DEPLOYOBJDIR)/Wincrypt.h
+
+$(DEPLOYOBJDIR)/crypt32.lib: $(DEPLOY_MSSDK)/lib/crypt32.lib
+	$(CP) $(DEPLOY_MSSDK)/lib/crypt32.lib $(DEPLOYOBJDIR)/crypt32.lib
+
+deploy-native: deploy-mkdir deploy-copy-files $(DEPLOY_COMMON_LIB)
+	$(CP) $(DEPLOY_COMMON_LIB) $(DEPLOY_OUTPUT_LIB)
+
+deploy-mkdir:: $(DEPLOY_COMMON_DIR)/bin
+
+$(DEPLOY_COMMON_DIR)/bin:
+	$(MKDIR) -p $@

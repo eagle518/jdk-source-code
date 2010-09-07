@@ -1,0 +1,84 @@
+<html>
+<head>
+<title>Regression test for 6691674</title>
+</head>
+<body>
+
+<h1>Regression test for 6691674</h1>
+
+<h2>Additional security checks needed around applet drag-and-drop operation</h2>
+
+<p>
+
+Test should be run in IE 6+ on Windows and in Firefox 3 on all
+platforms.
+
+</p>
+<p>
+
+<applet code="DragSecurityTest" width="200" height="200">
+    <param name="draggable" value="true">
+</applet>
+
+</p>
+<p>
+
+<h3>Test 1</h3>
+
+</p>
+<p>
+
+The applet above attempts to drag itself out of the web browser by
+synthesizing mouse events like "mouse pressed" and "mouse released"
+over itself using EventQueue.postEvent(). This should not be allowed
+and is a security hole. Once the applet above loads (it should show up
+as a red square), drag the web browser window around. If the applet is
+separated from the browser, the test has failed, as the applet has
+succeeded at popping itself out of the browser. If the applet stays in
+its appropriate location on the page, this part of the test has
+passed. Re-load the web page several times, re-running this portion of
+the test, to best verify that the security hole has been fixed.
+
+</p>
+<p>
+
+<h3>Test 2</h3>
+
+</p>
+<p>
+
+Use Alt + Left click + Drag to drag the above applet out of the
+browser. If the drag operation succeeds, this portion of the test has
+passed. If it does not (the applet can not be dragged out of the
+browser), this portion of the test has failed. (This ensures that the
+drag operation has not been broken with the introduction of this
+security fix.)
+
+</p>
+<p>
+
+<h3>Test 3</h3>
+
+<applet code="SwingDragTest" width="200" height="200">
+    <param name="draggable" value="true">
+</applet>
+
+<p>
+
+Use Alt + Left click + Drag to drag the above applet out of the
+browser. If the drag operation succeeds, this portion of the test has
+passed. If it does not (the applet can not be dragged out of the
+browser), this portion of the test has failed. (This ensures that the
+drag operation has not been broken for applets incorporating Swing
+components with the introduction of this security fix.)
+
+</p>
+<p>
+
+If all of the portions of this test have passed, the test has
+passed. If any have failed, the test has failed.
+
+</p>
+
+</body>
+</html>

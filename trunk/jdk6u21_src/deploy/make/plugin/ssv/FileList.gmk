@@ -1,0 +1,17 @@
+FILES_cpp = StdAfx.cpp \
+	    SSV.cpp \
+	    SSVHelper.cpp \
+	    SSVUtils.cpp \
+	    SSVCommonUtils.cpp \
+	    CollisionDialog.cpp \
+	    RegCommon.cpp \
+	    RegJavaConsole.cpp \
+	    SSVClassFactory.cpp \
+	    SecurityDialog.cpp \
+	    ErrorDialog.cpp \
+	    Clsid.cpp \
+	    UserProfile.cpp \
+            common.cpp
+
+
+FILES_rc = SSV.rc

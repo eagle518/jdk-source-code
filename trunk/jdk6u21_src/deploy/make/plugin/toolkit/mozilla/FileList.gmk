@@ -1,0 +1,20 @@
+FILES_cpp = np_entry.cpp		\
+		npn_gate.cpp		\
+		npp_gate.cpp		\
+		ScriptablePluginObjectBase.cpp \
+		ScriptablePluginObject.cpp \
+		ScriptableDeployObject.cpp \
+		ScriptableDeployObjectList.cpp \
+		Utils.cpp \
+		plugin.cpp \
+                Module.cpp \
+                utils_md.cpp \
+                JREInstall.cpp \
+                DownloadDialog.cpp \
+                SecurityDialog.cpp \
+                privileges.cpp \
+                StdAfx.cpp     \
+                XMLParser.cpp  \
+                Locale.cpp
+	    
+FILES_rc = version.rc

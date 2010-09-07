@@ -1,0 +1,182 @@
+<HTML>
+<HEAD>
+<TITLE>
+Tests CODEBASE OOPP JNLP
+</TITLE>
+</HEAD>
+<BODY>
+<H1>Tests CODEBASE OOPP JNLP</H1>
+<H2>JNLP-OOPP ressource location</H2>
+
+<H3>Test 1: Codebase - 2 rel. redirections</H3>
+<P>
+<OL>
+
+<LI> Visit <a href="SimpleApplet1-jnlp-applet-cbt1.html">SimpleApplet1-jnlp-applet-cbt1</a>.
+
+<PRE>
+
+SimpleApplet1-jnlp-applet-cbt1.html
+codebasedir/SimpleApplet1-jnlp-applet-cbt1.jnlp
+codebasedir/SimpleApplet1.jar
+codebasedir/SimpleApplet.jar
+codebasedir/jnlpdir2/SimpleApplet-jnlp-applet-2.jnlp
+
+
+http://test/SimpleApplet1-jnlp-applet-cbt1.html
+codebase: codebasedir
+href:     SimpleApplet1-jnlp-applet-cbt1.jnlp
+            -> http://test/codebasedir/SimpleApplet1-jnlp-applet-cbt1.jnlp
+
+http://test/codebasedir/SimpleApplet1-jnlp-applet-cbt1.jnlp
+codebase: null
+href:     SimpleApplet1-jnlp-applet-cbt1.jnlp
+jar:      SimpleApplet1.jar
+            -> http://test/codebasedir/SimpleApplet1.jar
+ext:      jnlpdir2/SimpleApplet-jnlp-applet-2.jnlp
+            -> http://test/codebasedir/jnlpdir2/SimpleApplet-jnlp-applet-2.jnlp
+
+http://test/codebasedir/jnlpdir2/SimpleApplet-jnlp-applet-2.jnlp
+codebase: ../../codebasedir
+href:     SimpleApplet-jnlp-applet-2.jnlp
+jar:      SimpleApplet.jar
+            -> http://test/codebasedir/SimpleApplet.jar
+</PRE>
+</OL>
+</P>
+
+<H3>Test 2: Codebase - 3 rel. redirections</H3>
+<P>
+<OL>
+
+<LI> Visit <a href="SimpleApplet1-jnlp-applet-cbt2.html">SimpleApplet1-jnlp-applet-cbt2</a>.
+
+<PRE>
+
+SimpleApplet1-jnlp-applet-cbt2.html
+codebasedir/SimpleApplet1-jnlp-applet-cbt2.jnlp
+codebasedir/SimpleApplet1.jar
+codebasedir/jnlpdir2/SimpleApplet1.2-jnlp-applet-cbt2.jnlp
+codebasedir/jnlpdir2/jnlpdir3/SimpleApplet-jnlp-applet-2.1.jnlp
+codebasedir/jnlpdir2/jnlpdir3/SimpleApplet-2.1.jar
+
+
+http://test/SimpleApplet1-jnlp-applet-cbt2.html
+codebase: codebasedir
+href:     SimpleApplet1-jnlp-applet-cbt2.jnlp
+            -> http://test/codebasedir/SimpleApplet1-jnlp-applet-cbt2.jnlp
+
+http://test/codebasedir/SimpleApplet1-jnlp-applet-cbt2.jnlp
+codebase: null
+href:     SimpleApplet1-jnlp-applet-cbt2.jnlp
+ext:      jnlpdir2/SimpleApplet1.2-jnlp-applet-cbt2.jnlp
+            -> http://test/codebasedir/jnlpdir2/SimpleApplet1.2-jnlp-applet-cbt2.jnlp
+
+http://test/codebasedir/jnlpdir2/SimpleApplet1.2-jnlp-applet-cbt2.jnlp
+codebase: ../../codebasedir
+href:     SimpleApplet1.2-jnlp-applet-cbt2.jnlp
+jar:      SimpleApplet1.jar
+            -> http://test/codebasedir/SimpleApplet1.jar
+ext:      jnlpdir2/jnlpdir3/SimpleApplet-jnlp-applet-2.1.jnlp
+            -> http://test/codebasedir/jnlpdir2/jnlpdir3/SimpleApplet-jnlp-applet-2.1.jnlp
+
+http://test/codebasedir/jnlpdir2/jnlpdir3/SimpleApplet-jnlp-applet-2.1.jnlp
+codebase: null
+href:     SimpleApplet-jnlp-applet-2.1.jnlp
+jar:      SimpleApplet-2.1.jar
+            -> http://test/codebasedir/jnlpdir2/jnlpdir3/SimpleApplet-2.1.jar
+</PRE>
+<PRE>
+</OL>
+</P>
+
+<H3>Test 3: No Codebase - 3 rel. redirections- html subdir</H3>
+<P>
+<OL>
+
+<LI> Visit <a href="subdir/SimpleApplet1-jnlp-applet-cbt3p2.html">SimpleApplet1-jnlp-applet-cbt3</a>.
+
+<PRE>
+
+subdir/SimpleApplet1-jnlp-applet-cbt3p2.html
+codebasedir/SimpleApplet1-jnlp-applet-cbt2.jnlp
+codebasedir/SimpleApplet1.jar
+codebasedir/jnlpdir2/SimpleApplet1.2-jnlp-applet-cbt2.jnlp
+codebasedir/jnlpdir2/jnlpdir3/SimpleApplet-jnlp-applet-2.1.jnlp
+codebasedir/jnlpdir2/jnlpdir3/SimpleApplet-2.1.jar
+
+
+http://test/subdir/SimpleApplet1-jnlp-applet-cbt3p2.html
+codebase: null
+href:     ../codebasedir/SimpleApplet1-jnlp-applet-cbt2.jnlp
+            -> http://test/codebasedir/SimpleApplet1-jnlp-applet-cbt2.jnlp
+
+http://test/codebasedir/SimpleApplet1-jnlp-applet-cbt2.jnlp
+codebase: null
+href:     SimpleApplet1-jnlp-applet-cbt2.jnlp
+ext:      jnlpdir2/SimpleApplet1.2-jnlp-applet-cbt2.jnlp
+            -> http://test/codebasedir/jnlpdir2/SimpleApplet1.2-jnlp-applet-cbt2.jnlp
+
+http://test/codebasedir/jnlpdir2/SimpleApplet1.2-jnlp-applet-cbt2.jnlp
+codebase: ../../codebasedir
+href:     SimpleApplet1.2-jnlp-applet-cbt2.jnlp
+jar:      SimpleApplet1.jar
+            -> http://test/codebasedir/SimpleApplet1.jar
+ext:      jnlpdir2/jnlpdir3/SimpleApplet-jnlp-applet-2.1.jnlp
+            -> http://test/codebasedir/jnlpdir2/jnlpdir3/SimpleApplet-jnlp-applet-2.1.jnlp
+
+http://test/codebasedir/jnlpdir2/jnlpdir3/SimpleApplet-jnlp-applet-2.1.jnlp
+codebase: null
+href:     SimpleApplet-jnlp-applet-2.1.jnlp
+jar:      SimpleApplet-2.1.jar
+            -> http://test/codebasedir/jnlpdir2/jnlpdir3/SimpleApplet-2.1.jar
+</PRE>
+<PRE>
+</OL>
+</P>
+
+<H3>Test 4: No Codebase - 2 rel. redirections- html subdir</H3>
+<P>
+<OL>
+
+<LI> Visit <a href="subdir/SimpleApplet1-jnlp-applet-cbt4p2.html">SimpleApplet1-jnlp-applet-cbt4</a>.
+
+<PRE>
+
+subdir/SimpleApplet1-jnlp-applet-cbt4p2.html
+subdir/SimpleApplet1-jnlp-applet-cbt4.jnlp
+
+codebasedir/SimpleApplet1-jnlp-applet-cbt2.jnlp
+codebasedir/SimpleApplet1.jar
+codebasedir/jnlpdir2/SimpleApplet1.2-jnlp-applet-cbt2.jnlp
+codebasedir/jnlpdir2/jnlpdir3/SimpleApplet-jnlp-applet-2.1.jnlp
+codebasedir/jnlpdir2/jnlpdir3/SimpleApplet-2.1.jar
+
+
+http://test/subdir/SimpleApplet1-jnlp-applet-cbt4p2.html
+codebase: null
+href:     SimpleApplet1-jnlp-applet-cbt4.jnlp
+            -> http://test/subdir/SimpleApplet1-jnlp-applet-cbt4.jnlp
+
+http://test/subdir/SimpleApplet1-jnlp-applet-cbt4.jnlp
+codebase: null
+href:     SimpleApplet1-jnlp-applet-cbt4.jnlp
+jar:      ../codebasedir/SimpleApplet1.jar
+            -> http://test/codebasedir/SimpleApplet1.jar
+ext:      ../codebasedir/SimpleApplet-jnlp-applet-rel.jnlp
+            -> http://test/codebasedir/SimpleApplet-jnlp-applet-rel.jnlp
+
+http://test/codebasedir/SimpleApplet-jnlp-applet-rel.jnlp
+codebase: null
+href:     SimpleApplet-jnlp-applet-rel.jnlp
+jar:      SimpleApplet.jar
+            -> http://test/codebasedir/SimpleApplet.jar
+
+</PRE>
+<PRE>
+</OL>
+</P>
+
+
+</BODY>
+</HTML>

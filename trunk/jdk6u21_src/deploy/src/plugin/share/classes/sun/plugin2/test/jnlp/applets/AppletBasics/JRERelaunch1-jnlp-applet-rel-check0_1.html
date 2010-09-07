@@ -1,0 +1,32 @@
+<html>
+  <head>
+      <title>JRERelaunch1 Applet 0 + 1</title>
+  </head>
+  <body>
+      <br>
+      Shall run in a JNLP env and as a pure applet !
+      <br>
+      Relaunch:<br>
+      - relaunch <br>
+      - max-heapsize <br>
+      - properties<br>
+      <br>
+      Note: Order of jvm args is:<br>
+      <LI> internal stuff, i.e.: custom memory spec if different than default
+      <LI> additional jnlp jvm arguments
+      <br>
+      <h1>Simple Applet 1.2</h1>
+      <hr>
+      <APPLET NAME=JRERelaunch1 CODEBASE=codebasedir/ CODE=JRERelaunch1 ARCHIVE="JRERelaunch1.jar, JRERelaunch1.jar" WIDTH=800 HEIGHT=120>
+      <PARAM name="check.java.isRelaunch" VALUE="true">
+      <PARAM name="check.java.maxheapsize" VALUE="134217728">
+      <PARAM name="check.java.jvm_args" VALUE="-Xmx128m -Dsun.java2d.noddraw=true -Dsun.java2d.d3d=false">
+      <PARAM name="jnlp_href" VALUE="JRERelaunch1.0_1-jnlp-applet-rel.jnlp">
+      </APPLET>
+      <hr>
+      Nothing to see here ;-) <br>
+      <br>
+      Watch the console output ..<br>
+  </body>
+</html>
+

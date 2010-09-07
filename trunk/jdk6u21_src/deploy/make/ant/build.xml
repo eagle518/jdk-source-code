@@ -1,0 +1,154 @@
+<project basedir="../../.." name="JDK Deploy" default="dist">
+
+  <property file="${basedir}/deploy/make/ant/user.properties" />
+  <property file="${basedir}/deploy/make/ant/build.properties" />
+
+  <property name="javac.nowarn" value="false" />
+  <property name="javac.debug" value="true" />
+  <property name="javac.source" value="1.3" />
+
+  <property name="dir.src" value="${basedir}/deploy/src" />
+  <property name="dir.build" value="${basedir}/control/build/ant" />
+  <property name="dir.tmp" value="${dir.build}/tmp" />
+
+  <property name="dir.build.classes" value="${dir.build}/classes" />
+  <property name="dir.build.classes.common" value="${dir.build.classes}/common" />
+  <property name="dir.build.classes.javaws" value="${dir.build.classes}/javaws" />
+  <property name="dir.build.classes.plugin" value="${dir.build.classes}/plugin" />
+  <property name="dir.build.classes.kernel" value="${dir.build.classes}/kernel" />
+
+  <property name="dir.build.jars" value="${dir.build}/jars" />
+
+  <path path="${build.outputdir}/classes:${dir.build.classes.common}:${dir.build.classes.javaws}" id="classpath" />
+
+  <target name="compile" depends="compile-common,compile-javaws,compile-plugin,compile-kernel">
+  </target>
+
+  <target name="compile-common" depends="prepare-common">
+    <mkdir dir="${dir.build.classes.common}" />
+    <javac destdir="${dir.build.classes.common}"
+           classpathref="classpath"
+           nowarn="${javac.nowarn}"
+           debug="${javac.debug}"
+           source="${javac.source}"
+           target="${javac.source}">
+      <src path="${dir.src}/common/share/classes" />
+      <src path="${dir.src}/common/unix/classes" />
+      <src path="${dir.tmp}/common/gensrc" />
+      <!-- TODO: Including other OS paths leads to duplicated classes. -->
+      <include name="**/*.java" />
+      <exclude name="com/sun/deploy/util/SecurityBaseline_pre.java" />
+    </javac>
+    <copy todir="${dir.build.classes.common}">
+      <fileset dir="${dir.src}/common/share/classes">
+        <include name="**/*.png" />
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="compile-javaws" depends="compile-common,prepare-javaws">
+    <mkdir dir="${dir.build.classes.javaws}" />
+    <javac destdir="${dir.build.classes.javaws}"
+           classpathref="classpath"
+           nowarn="${javac.nowarn}"
+           debug="${javac.debug}"
+           source="${javac.source}"
+           target="${javac.source}">
+      <src path="${dir.src}/javaws/share/classes" />
+      <src path="${dir.src}/javaws/unix/classes" />
+      <src path="${dir.tmp}/javaws/gensrc" />
+      <!-- TODO: Including other OS paths leads to duplicated classes. -->
+      <include name="**/*.java" />
+      <exclude name="com/sun/javaws/Globals_pre.java" />
+    </javac>
+  </target>
+
+  <target name="compile-plugin" depends="compile-javaws">
+    <mkdir dir="${dir.build.classes.plugin}" />
+    <javac destdir="${dir.build.classes.plugin}"
+           classpathref="classpath"
+           nowarn="${javac.nowarn}"
+           debug="${javac.debug}"
+           source="1.4"
+           target="1.4">
+      <src path="${dir.src}/plugin/share/classes" />
+      <src path="${dir.src}/plugin/solaris/classes" />
+<!--      <src path="${dir.tmp}/javaws/gensrc" /> -->
+      <!-- TODO: Including other OS paths leads to duplicated classes. -->
+      <include name="**/*.java" />
+      <exclude name="sun/plugin2/test/**/*.java" />
+      <exclude name="sun/plugin/com/BeanCustomizer.java" />
+      <exclude name="sun/plugin/services/*.java" />
+      <exclude name="sun/plugin/viewer/**/*.java" />
+      <exclude name="sun/plugin2/main/client/WIExplorerServiceDelegate.java" />
+      <exclude name="sun/plugin2/main/client/WMozillaServiceDelegate.java" />
+      <exclude name="sun/plugin2/main/server/SafariPlugin.java" />
+    </javac>
+  </target>
+
+  <target name="compile-kernel" />
+
+  <target name="dist" depends="prepare-dist,dist-common,dist-javaws" />
+
+  <target name="prepare-common">
+    <!-- TODO: Generate SecurityBaseline.java -->
+    <mkdir dir="${dir.tmp}/common/gensrc/com/sun/deploy/util" />
+    <copy file="${dir.src}/common/share/classes/com/sun/deploy/util/SecurityBaseline_pre.java"
+          tofile="${dir.tmp}/common/gensrc/com/sun/deploy/util/SecurityBaseline.java">
+      <filterchain>
+        <tokenfilter>
+          <replaceregex pattern="_SECURITY_BASELINE_131" replace="1.3.1_21" flags="g" />
+          <replaceregex pattern="_SECURITY_BASELINE_142" replace="1.4.2_16" flags="g" />
+          <replaceregex pattern="_SECURITY_BASELINE_150" replace="1.5.0_14" flags="g" />
+          <replaceregex pattern="_SECURITY_BASELINE_160" replace="1.6.0_11" flags="g" />
+          <replaceregex pattern="_PLUGIN_MAJOR_VER"      replace="1" flags="g" />
+          <replaceregex pattern="_PLUGIN_MINOR_VER"      replace="6" flags="g" />
+          <replaceregex pattern="_PLUGIN_MICRO_VER"      replace="0" flags="g" />
+          <replaceregex pattern="_PLUGIN_UNDERSCORE_UPDAT_VER" replace="" flags="g" />
+        </tokenfilter>
+      </filterchain>
+    </copy>
+  </target>
+
+  <target name="prepare-javaws">
+    <!-- TODO: Generate SecurityBaseline.java -->
+    <mkdir dir="${dir.tmp}/javaws/gensrc/com/sun/javaws" />
+    <copy file="${dir.src}/javaws/share/classes/com/sun/javaws/Globals_pre.java"
+          tofile="${dir.tmp}/javaws/gensrc/com/sun/javaws/Globals.java">
+      <filterchain>
+        <tokenfilter>
+          <replaceregex pattern="##RELEASE##" replace="1.6.0-internal" flags="g" />
+        </tokenfilter>
+      </filterchain>
+    </copy>
+  </target>
+
+  <target name="prepare-dist">
+    <mkdir dir="${dir.build.jars}" />
+  </target>
+
+  <target name="dist-common" depends="compile-common">
+      <jar basedir="${dir.build.classes.common}"
+           includes="**/*.class **/*.png"
+           destfile="${dir.build.jars}/deploy.jar" />
+  </target>
+
+  <target name="dist-javaws" depends="compile-javaws">
+      <jar basedir="${dir.build.classes.javaws}"
+           includes="**/*.class"
+           destfile="${dir.build.jars}/javaws.jar" />
+  </target>
+
+  <target name="dist-plugin" depends="compile-plugin">
+      <jar basedir="${dir.build.classes.plugin}"
+           includes="**/*.class"
+           destfile="${dir.build.jars}/plugin.jar" />
+  </target>
+
+  <target name="clean">
+    <delete dir="${dir.build.classes}" />
+    <delete dir="${dir.build.jars}" />
+    <delete dir="${dir.tmp}" />
+  </target>
+
+</project>

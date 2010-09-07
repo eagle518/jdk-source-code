@@ -1,0 +1,9 @@
+FILES_cpp = jqs_api_client.cpp \
+	    jqsnotify.cpp \
+	    os_layer.cpp \
+	    os_utils.cpp \
+	    print.cpp \
+	    sockets.cpp \
+	    utils.cpp
+
+FILES_rc = jqsnotify.rc

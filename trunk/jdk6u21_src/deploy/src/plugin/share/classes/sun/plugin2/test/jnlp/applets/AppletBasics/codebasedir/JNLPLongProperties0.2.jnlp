@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp 
+      href="JNLPLongProperties0.2.jnlp">
+  <information>
+    <title>JREVersion0.1 Applet (launch long props 0.2) rel</title>
+    <vendor>SUN Deployment</vendor>
+    <description kind='tootltip'>A simple JNLP test</description>
+    <description kind='one-line'>Applet</description>
+    <homepage href='JREVersion1-jnlp-applet-rel-LC-check1.html' />
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.4+" java-vm-args="-client"/>
+    <property name="jnlp.minimumJRE" value="1.4.2" />
+    <property name="jnlp.WarningMessage" value="The query exceeds the allowed number of search terms.NL Results matching the first 40 terms have been returned.NL This may include more or less results than what the full query would have returned." />
+    <property name="jnlp.LimitationCount" value="40" />
+    <jar href="JRERelaunch1.jar"/>
+    <extension name="SimpleApplet" href="SimpleApplet-jnlp-applet-rel.jnlp"/>
+  </resources>
+  <applet-desc 
+      name="JRERelaunch1"
+      main-class="JRERelaunch1"
+      width="666" 
+      height="999">
+  </applet-desc>
+</jnlp>

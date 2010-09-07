@@ -1,0 +1,14 @@
+;
+; Copyright 2007 Sun Microsystems, Inc.  All rights reserved.
+; ORACLE PROPRIETARY/CONFIDENTIAL.  Use is subject to license terms.
+;
+
+; JQSIEStartDetector.def : Declares the module parameters.
+
+LIBRARY      "jqs_plugin.dll"
+
+EXPORTS
+        DllCanUnloadNow         PRIVATE
+        DllGetClassObject       PRIVATE
+        DllRegisterServer       PRIVATE
+        DllUnregisterServer     PRIVATE

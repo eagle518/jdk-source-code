@@ -1,0 +1,154 @@
+#
+# @(#)DeployRules.gmk	1.38 10/03/24
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# Base rules used when building the generic Deploy JAR file and libraries.
+#
+
+include ../common/Defs.gmk
+
+DEPLOYOBJDIR         = $(OUTPUTDIR)/tmp/deploy/deployObj
+DEPLOYCLASSDESTDIR   = $(OUTPUTDIR)/tmp/deploy/deployClasses
+JAVAWSCLASSDESTDIR   = $(OUTPUTDIR)/tmp/deploy/javaws/jawsClasses
+DEPLOY_SHARE_SRC     = $(DEPLOY_TOPDIR)/src/common/share
+DEPLOY_COMMON_DIR    = $(OUTPUTDIR)/tmp/deploy/common
+DEPLOY_COMMON_JAR    = $(DEPLOY_COMMON_DIR)/lib/deploy.jar
+DEPLOY_OUTPUT_JAR    = $(OUTPUTDIR)/lib/deploy.jar
+DEPLOY_JAR_CLASSPATH = $(DEPLOYCLASSDESTDIR)$(CLASSPATH_SEPARATOR)$(DEPLOY_SHARE_SRC)/classes$(CLASSPATH_SEPARATOR)$(DEPLOY_PLATFORM_SRC)/classes
+DEPLOYCLASSHDRDIR    = $(OUTPUTDIR)/tmp/deploy/deployClassHeaders
+COMMONCLASSDESTDIR   = "$(OUTPUTDIR)/classes$(CLASSPATH_SEPARATOR)$(CLASSDIR)$(CLASSPATH_SEPARATOR)$(DEPLOYCLASSDESTDIR)"
+DEPLOY_DIRS          = $(DEPLOYOBJDIR)          \
+                       $(DEPLOY_COMMON_DIR)     \
+                       $(DEPLOY_COMMON_DIR)/lib \
+                       $(DEPLOYCLASSDESTDIR)    \
+                       $(DEPLOYCLASSHDRDIR)
+
+DEPLOY_FILES = $(DEPLOY_COMMON_FILES)
+
+ifeq ($(PLATFORM), windows)
+    DEPLOY_FILES        += $(DEPLOY_WINDOWS_FILES)
+    DEPLOY_PLATFORM_SRC := $(DEPLOY_TOPDIR)/src/common/windows
+    DEPLOY_SHARE_SRC    := $(DEPLOY_TOPDIR)/src/common/share
+else
+    DEPLOY_FILES        += $(DEPLOY_SOLARIS_FILES)
+    DEPLOY_PLATFORM_SRC  = $(DEPLOY_TOPDIR)/src/common/unix
+endif
+
+DEPLOY_GENSRC_L10N = $(DEPLOY_FILES_GENSRC_L10N:%.java=$(DEPLOY_L10N_TMP_OUTPUTDIR)/%.java)
+DEPLOY_GENSRC = $(DEPLOY_FILES_GENSRC:%.java=$(DEPLOY_GENSRC_OUTPUTDIR)/%.java)
+CONVERT_COPYRIGHT_CMD = "s/@@COPYRIGHT_YEAR@@/$(COPYRIGHT_YEAR)/g"
+
+CONVERT_MAJOR = $(SED) -e "s/_PLUGIN_MAJOR_VER/$(JDK_MAJOR_VERSION)/g"
+CONVERT_MINOR = $(SED) -e "s/_PLUGIN_MINOR_VER/$(JDK_MINOR_VERSION)/g"
+CONVERT_MICRO = $(SED) -e "s/_PLUGIN_MICRO_VER/$(JDK_MICRO_VERSION)/g"
+ifndef JDK_UPDATE_VERSION
+  CONVERT_UNDERSCORE_UPDAT = $(SED) -e "s/_PLUGIN_UNDERSCORE_UPDAT_VER//g"
+else
+  CONVERT_UNDERSCORE_UPDAT = $(SED) -e "s/_PLUGIN_UNDERSCORE_UPDAT_VER/"_$(JDK_UPDATE_VERSION)"/g"
+endif
+CONVERT_SECURITY_BASELINE_131 = $(SED) -e "s/_SECURITY_BASELINE_131/$(SECURITY_BASELINE_131)/g"
+CONVERT_SECURITY_BASELINE_142 = $(SED) -e "s/_SECURITY_BASELINE_142/$(SECURITY_BASELINE_142)/g"
+CONVERT_SECURITY_BASELINE_150 = $(SED) -e "s/_SECURITY_BASELINE_150/$(SECURITY_BASELINE_150)/g"
+CONVERT_SECURITY_BASELINE_160 = $(SED) -e "s/_SECURITY_BASELINE_160/$(SECURITY_BASELINE_160)/g"
+
+SUBSTITUTE_VERSIONS_JAVA_SRC = $(CONVERT_MAJOR) | $(CONVERT_MINOR) | $(CONVERT_MICRO) | $(CONVERT_UNDERSCORE_UPDAT) | $(CONVERT_SECURITY_BASELINE_131) | $(CONVERT_SECURITY_BASELINE_142) | $(CONVERT_SECURITY_BASELINE_150) | $(CONVERT_SECURITY_BASELINE_160)
+
+# Java files for Deploy common jar file
+FILES_java_deploy_common = $(DEPLOY_FILES)
+FILES_class_deploy_common = $(FILES_java_deploy_common:%.java=$(DEPLOYCLASSDESTDIR)/%.class)
+
+# replace these java files' copyright year
+$(DEPLOY_L10N_TMP_OUTPUTDIR)/com/sun/deploy/resources/%.java: $(DEPLOY_SHARE_SRC)/classes/com/sun/deploy/resources/%.java
+	@$(MKDIR) -p $(@D)
+	$(SED) $(CONVERT_COPYRIGHT_CMD) $? > $@
+	
+# generate the BaselineVersion.java
+$(DEPLOY_GENSRC_OUTPUTDIR)/com/sun/deploy/util/%.java: $(DEPLOY_SHARE_SRC)/classes/com/sun/deploy/util/SecurityBaseline_pre.java
+	$(RM) $@
+	$(MKDIR) -p $(@D)
+	$(CAT) $< | $(SUBSTITUTE_VERSIONS_JAVA_SRC) > $@
+
+# Redirect resources/%.java files to tmp directory
+$(DEPLOYCLASSDESTDIR)/%.class: $(DEPLOY_L10N_TMP_OUTPUTDIR)/%.java
+	$(JAVAC) -classpath "$(DEPLOY_JAR_CLASSPATH)" -d $(DEPLOYCLASSDESTDIR) $?
+	
+$(DEPLOYCLASSDESTDIR)/%.class: $(DEPLOY_GENSRC_OUTPUTDIR)/%.java
+	$(JAVAC) -classpath "$(DEPLOY_JAR_CLASSPATH)" -d $(DEPLOYCLASSDESTDIR) $?
+
+$(DEPLOYCLASSDESTDIR)/%.class: $(DEPLOY_SHARE_SRC)/classes/%.java
+	$(JAVAC) -classpath "$(DEPLOY_JAR_CLASSPATH)" -d $(DEPLOYCLASSDESTDIR) $?
+
+$(DEPLOYCLASSDESTDIR)/%.class: $(DEPLOY_PLATFORM_SRC)/classes/%.java
+	$(JAVAC) -classpath "$(DEPLOY_JAR_CLASSPATH)" -d $(DEPLOYCLASSDESTDIR) $?
+
+# Redirect zh_HK java files to tmp directory which created from zh_TW
+$(DEPLOYCLASSDESTDIR)/%_zh_HK.class: $(DEPLOY_L10N_TMP_OUTPUTDIR)/%_zh_HK.java
+	$(JAVAC) -classpath "$(DEPLOY_JAR_CLASSPATH)" -d $(DEPLOYCLASSDESTDIR) $?
+
+#
+# Running Javah to generate stuff into CClassHeaders.
+#
+ifdef FILES_export
+CLASSES.export  = $(subst /,.,$(FILES_export:%.java=%))
+CLASSES.export += $(subst /,.,$(FILES_export2:%.java=%))
+CLASSES.export += $(subst /,.,$(FILES_export3:%.java=%))
+CLASSES_export  = $(FILES_export:%.java=$(DEPLOYCLASSDESTDIR)/%.class)
+
+#
+# 64-bit builds require a larger thread stack size.
+#
+ifeq ($(ARCH_DATA_MODEL), 32)
+    STACKSIZE = 768
+else
+    STACKSIZE = 1024
+endif
+STACKSIZEFLAG  = -XX:ThreadStackSize=$(STACKSIZE)
+JAVAHFLAGS    += -J$(STACKSIZEFLAG)
+JAVAH          = $(OUTPUTDIR)/bin/javah
+
+deployclassheaders: $(DEPLOYOBJDIR)/.class.headers.$(ARCH)
+
+$(DEPLOYOBJDIR)/.class.headers.$(ARCH) : $(CLASSES_export)
+	$(JAVAH) $(JAVAHFLAGS) -bootclasspath $(COMMONCLASSDESTDIR) -d $(DEPLOYCLASSHDRDIR)/ \
+		$(CLASSES.export)
+	-$(TOUCH) $@
+deployclassheaders.clean:
+	$(RM) -r $(DEPLOYCLASSHDRDIR) $(OBJDIR)/.class.headers.$(ARCH)
+else # FILES_export
+deployclassheaders deployclassheaders.clean: 
+	@$(TRUE)
+endif # FILES_export
+
+deploy-gensrc-all: $(DEPLOY_GENSRC_L10N) $(DEPLOY_GENSRC)
+
+deploy-mkdir:: $(DEPLOY_DIRS)
+
+$(DEPLOY_DIRS):
+	$(MKDIR) -p $@
+
+deploy-jar: sanity-comprehensive               \
+            deploy-gensrc-all                  \
+            deploy-mkdir                       \
+            $(FILES_class_deploy_common)       \
+            $(FILES_debug_class_deploy_common) \
+            deployclassheaders                 \
+            deploy-native
+	@$(ECHO) "Building deploy.jar ... "
+	@for i in $(DEPLOYCLASSDESTDIR) ; do \
+	  $(MKDIR) -p $$i/com/sun/deploy/resources/image; \
+	  $(MKDIR) -p $$i/com/sun/deploy/panel; \
+	  $(RM) $$i/com/sun/deploy/resources/image/*.*; \
+	  $(RM) $$i/com/sun/deploy/panel/*.xml; \
+	  $(RM) $$i/com/sun/deploy/panel/*.dtd; \
+	  $(CP) $(DEPLOY_SHARE_SRC)/classes/com/sun/deploy/resources/image/*.* $$i/com/sun/deploy/resources/image; \
+	  $(CP) $(DEPLOY_SHARE_SRC)/classes/com/sun/deploy/panel/*.xml $$i/com/sun/deploy/panel; \
+	  $(CP) $(DEPLOY_SHARE_SRC)/classes/com/sun/deploy/panel/*.dtd $$i/com/sun/deploy/panel; \
+	done
+
+	$(JAR) cf $(DEPLOY_COMMON_JAR) -C "$(DEPLOYCLASSDESTDIR)" com/sun/deploy -C "$(DEPLOYCLASSDESTDIR)" sun/net/www/protocol/http
+
+	$(CP) $(DEPLOY_COMMON_JAR) $(DEPLOY_OUTPUT_JAR) 
+	
+	@$(ECHO) "Finish building deploy.jar ... "

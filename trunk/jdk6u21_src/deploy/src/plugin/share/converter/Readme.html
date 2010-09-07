@@ -1,0 +1,526 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 4.0">
+   <TITLE>HTML Converter README</TITLE>
+</HEAD>
+<BODY>
+
+<UL><FONT COLOR="#990000"><FONT SIZE=+2>Java(tm) Plug-in HTML Converter&nbsp;
+Readme</FONT></FONT>
+
+<P><FONT COLOR="#000099">Version:&nbsp; 1.4</FONT>
+
+<P><B>*****&nbsp;</B>&nbsp; <FONT COLOR="#CC0000">BACKUP ALL FILES BEFORE
+CONVERTING THEM WITH THIS TOOL</FONT>
+<BR><B>*****</B>&nbsp;&nbsp; <FONT COLOR="#CC0000">CANCELLING A CONVERSION
+WILL NOT ROLLBACK THE CHANGES.</FONT>
+<BR><B>*****</B>&nbsp;&nbsp; <FONT COLOR="#CC0000">COMMENTS WITHIN THE
+APPLET TAG ARE IGNORED.</FONT>
+
+<P><B><U><FONT COLOR="#000099"><FONT SIZE=+1>Contents of this file:</FONT></FONT></U></B>
+<BR>&nbsp;
+<OL>
+<LI>
+&nbsp;New Features</LI>
+
+<LI>
+&nbsp;Bug Fixes</LI>
+
+<LI>
+&nbsp;About Java(tm) Plug-in HTML Converter</LI>
+
+<LI>
+&nbsp;The conversion process</LI>
+
+<LI>
+&nbsp;Choosing files within folders to convert</LI>
+
+<LI>
+&nbsp;Choosing backup folder</LI>
+
+<LI>
+&nbsp;Generating a log file</LI>
+
+<LI>
+&nbsp;Choosing a conversion template</LI>
+
+<LI>
+&nbsp;Converting</LI>
+
+<LI>
+&nbsp;More Conversions or Quit</LI>
+
+<LI>
+&nbsp;Using the command line interface method of running the converter</LI>
+
+<LI>
+&nbsp;Details about templates</LI>
+
+<LI>
+&nbsp;Running HTML Converter (Windows &amp; Solaris)</LI>
+</OL>
+  &nbsp;
+
+<P><B><FONT COLOR="#000099">1)&nbsp; New Features:</FONT></B>
+<BR>&nbsp;
+<UL>
+<LI>
+Updated extended templates to support Netscape 6.</LI>
+
+<LI>
+Updated all templates to support new Multi-versioning features<br>
+	    in Java Plug-in.</LI>
+
+<LI>
+Enhanced user interface with Swing 1.1 for i18n support.</LI>
+
+<LI>
+Enhanced Advanced Option dialog to support new SmartUpdate and</LI>
+</UL>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MimeType template
+tags.
+<UL>
+<LI>
+Enhanced HTML Converter to be used with both Java Plug-in 1.1.x,</LI>
+</UL>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Java Plug-in 1.2.x
+, Java Plug-in 1.3.x and Java Plug-in 1.4.x.
+<UL>
+<LI>
+Enhanced SmartUpdate and MimeType support in all conversion</LI>
+</UL>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; templates.
+<UL>
+<LI>
+Added "scriptable=false" to the OBJECT/EMBED tag in all templates.</LI>
+</UL>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This is used for
+disable typelib generation when Java Plug-in is not
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; used for scripting.
+
+<P>&nbsp;
+<BR><B><FONT COLOR="#000099">2)&nbsp; Bugs Fixed:</FONT></B>
+<BR>&nbsp;
+<UL>
+<LI>
+Enhanced error handling when properties files are not found.</LI>
+
+<LI>
+Enhanced HTML conversion so the result EMBED/OBJECT tag can be</LI>
+</UL>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; used in AppletViewer
+in JDK 1.2.x.
+<UL>
+<LI>
+Eliminated unnecessary files which were left over from HTML</LI>
+</UL>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Converter 1.1.x.
+<UL>
+<LI>
+Generated EMBED/OBJECT with CODE, CODEBASE, etc attribute names</LI>
+</UL>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; instead of JAVA_CODE,
+JAVA_CODEBASE, etc. This enabled generated
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; page to be used
+in JDK 1.2.x AppletViewer.
+<UL>
+<LI>
+Support MAYSCRIPT conversion if it is presented in the APPLET tag.</LI>
+</UL>
+  &nbsp;
+
+<P><B><FONT COLOR="#000099">3)&nbsp; About Java(tm) Plug-in HTML Converter:</FONT></B>
+
+<P>&nbsp; Java(tm) Plug-in HTML Converter is a utility that allows you
+to convert any
+<BR>&nbsp; HTML page which contains applets to a format that will use the
+Java(tm)
+<BR>&nbsp; Plug-in.
+<BR>&nbsp;
+
+<P><B><FONT COLOR="#000099">4)&nbsp; The conversion process:</FONT></B>
+<BR>&nbsp;
+<BR>&nbsp; The Java(tm) Plug-in HTML Converter will convert any file(s)
+containing
+<BR>&nbsp; applets to a form that can be used with the Java(tm) Plug-in.
+<BR>&nbsp;
+<BR>&nbsp; The process of converting each file is as follows:
+<BR>&nbsp;
+<BR>&nbsp; First, HTML that is not part of an applet is transferred from
+the source
+<BR>&nbsp; file to a temporary file.&nbsp; When an &lt;APPLET tag is reached,
+the converter
+<BR>&nbsp; will parse the applet to the first &lt;/APPLET tag (not contained
+in qoutes),
+<BR>&nbsp; and merge the applet data with the template. (See Details about
+templates,
+<BR>&nbsp; below) If this completes without error, the original html file
+will be moved
+<BR>&nbsp; to the backup folder and the temporary file will then be renamed
+to the
+<BR>&nbsp; original file's name.&nbsp; Thus, your original files will never
+be removed
+<BR>&nbsp; from disk.
+<BR>&nbsp;
+<BR>&nbsp; Note that the converter will effectively convert the files in
+place.&nbsp; So,
+<BR>&nbsp; once you have run the converter, your files will be setup to
+use the
+<BR>&nbsp; Java(tm) Plug-in.
+
+<P>&nbsp;
+<BR><B><FONT COLOR="#000099">5)&nbsp; Choosing files within folders to
+convert:</FONT></B>
+
+<P>To convert all files within a folder, you may type in the path to the
+folder,
+<BR>or choose the browse button to select a folder from a dialog.&nbsp;
+Once you have
+<BR>chosen a path, you may supply any number to file specifiers in the
+"Matching
+<BR>File Names".&nbsp; Each specifier must be separated by a comma.&nbsp;
+You may use<FONT SIZE=+2> </FONT><B><FONT COLOR="#FF0000"><FONT SIZE=+1>*</FONT><FONT SIZE=+2>
+</FONT></FONT></B>as
+<BR>a wildcard.&nbsp; If you put a filename with wildcard, only that single
+file will
+<BR>be converted. Lastly, select the checkbox "Include Subfolders", if
+you would
+<BR>like all files in nested folders which match the file name to be converted.
+<BR>&nbsp;
+
+<P><B><FONT COLOR="#000099">6)&nbsp; Choosing backup folder:</FONT></B>
+
+<P>The default backup folder path is the source path with an "_BAK" appended
+<BR>to the name. i.e.&nbsp; If the source path is c:/html/applet.html&nbsp;
+(converting
+<BR>one file) then the backup path would be c:/html_BAK.&nbsp; If the source
+path
+<BR>is c:/html (converting all files in path) then the backup path would
+be
+<BR>c:/html_BAK. The backup path may be changed by typing a path in the
+field
+<BR>next to "Backup files to folder:", or by browsing for a folder.
+
+<P>Unix(Solaris):
+<BR>The default backup folder path is the source path with an "_BAK" appended
+to
+<BR>the name. i.e.&nbsp; If the source path is /home/user1/html/applet.html
+(converting
+<BR>one file) then the backup path would be /home/user1/html_BAK. If the
+source
+<BR>path is /home/user1/html (converting all files in path) then the backup
+path
+<BR>would be /home/user1/html_BAK. The backup path may be changed by typing
+<BR>a path in the field next to "Backup files to folder:", or by browsing
+for a folder.
+<BR>&nbsp;
+
+<P><B><FONT COLOR="#000099">7)&nbsp; Generating a log file:</FONT></B>
+
+<P>If you would like a log file to be generated, choose the checkbox
+<BR>"Generate Log File". Type in a path or browse to choose a folder.&nbsp;
+The
+<BR>log file contains basic information related to the converting process.
+<BR>&nbsp;
+
+<P><B><FONT COLOR="#000099">8)&nbsp; Choosing a conversion template:</FONT></B>
+
+<P>If a default template will be used if none is chosen.&nbsp; This template
+will
+<BR>produce converted html files that will work with IE and Netscape.&nbsp;
+If you
+<BR>would like to use a different template, you may choose it from the
+menu on
+<BR>the main screen.&nbsp; If you choose other, you will be allowed to
+choose a file
+<BR>that will be used as the template.&nbsp; If you choose a file, BE SURE
+THAT IT
+<BR>IS A TEMPLATE.
+<BR>&nbsp;
+
+<P><B><FONT COLOR="#000099">9)&nbsp; Converting:</FONT></B>
+
+<P>Click the "Convert..." button to begin the conversion process.&nbsp;
+A process
+<BR>dialog will show the files being processed, the number for files process,
+<BR>the number of applets found, and number of errors found.
+<BR>&nbsp;
+
+<P><B><FONT COLOR="#000099">10)&nbsp; More Conversions or Quit:</FONT></B>
+<BR>&nbsp;
+<BR>When the conversion is complete, the button in the process dialog will
+change
+<BR>from "Cancel" to "Done".&nbsp; You may choose "Done" to close the dialog.&nbsp;
+At this
+<BR>point, choose "Quit" to close the Java(tm) Plug-in HTML Converter,
+or selected
+<BR>another set of files to convert and choose "Convert..." again.
+<BR>&nbsp;
+
+<P><B><FONT COLOR="#000099">11)&nbsp; Using the command line interface
+method of running the converter:</FONT></B>
+
+<P><B>COMMAND LINE INTERFACE:</B>
+
+<P>&nbsp;The converted now supports a command line interface. From a command
+<BR>line, you may type:
+
+<P>java HTMLConverter [ filespecs ] [-simulate] [-options1 value1 [-option2
+value2 [...]]]
+
+<P>If only "java HTMLConverter" is specified (no filespecs or options)
+the GUI version
+<BR>of the converter will be launched.&nbsp; Otherwise, the GUI will be
+suppressed.
+
+<P>filespecs:&nbsp; space delimited list of file specs, * wildcard.&nbsp;
+(*.html *.htm)
+
+<P><B><FONT COLOR="#663300">Options:</FONT></B>
+<BR>&nbsp;<B><I>source:</I></B>&nbsp;&nbsp;&nbsp;&nbsp; Path to files.&nbsp;
+(c:\htmldocs in Windows,
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/home/user1/htmldocs in Unix) Default: &lt;userdir>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+If the path is relative, it is assumed to be relative to the
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+directory that HTMLConverter was launched.
+
+<P>&nbsp;<B><I>backup:</I></B>&nbsp;&nbsp;&nbsp; Path to write backup files.&nbsp;
+Default: &lt;userdir>/&lt;source>_bak
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+If the path is relative, it is assumed to be relative to the
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+directory that HTMLConverter was launched.
+
+<P>&nbsp;<B><I>subdirs:</I></B>&nbsp;&nbsp;&nbsp; Should files in subdirectories
+be processed.&nbsp; Default:&nbsp; FALSE
+
+<P>&nbsp;<B><I>template:&nbsp;</I></B> Name of template file.&nbsp; Default:&nbsp;
+default.tpl-Standard (IE &amp; Navigator)
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+for Windows &amp; Solaris Only.&nbsp; USE DEFAULT IF UNSURE.
+
+<P>&nbsp;<B><I>log:&nbsp;</I></B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Path and filename to write log.&nbsp; (Default &lt;userdir>/convert.log)
+
+<P>&nbsp;<B><I>progress:&nbsp;</I></B> Display standard out progress while
+converting.&nbsp; Default: false
+
+<P>&nbsp;<B><I>simulate:&nbsp;</I></B>&nbsp; Display the specifics to the
+conversion without converting.
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+USE THIS OPTION IF UNSURE ABOUT CONVERTING.
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+YOU WILL BE GIVEN A LIST OF DETAILS SPECIFIC TO
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+THE CONVERSION.
+<BR>&nbsp;
+
+<P><B><FONT COLOR="#000099">12)&nbsp; Details about templates:</FONT></B>
+<BR>&nbsp;
+<BR>The template file is the basis behind converting applets.&nbsp; It
+is simply a text
+<BR>file containing tag the represent parts of the original applet.&nbsp;
+By
+<BR>add/removing/moving the tags in a template file, you can alter the
+output
+<BR>of the converted file.
+
+<P><B><I>Supported Tags:</I></B>
+
+<P><FONT COLOR="#993300">$OriginalApplet$</FONT><B>&nbsp;</B>&nbsp;&nbsp;
+This tag is substituted with the complete text of the
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+original applet.
+
+<P><FONT COLOR="#993300">$AppletAttributes$&nbsp;</FONT> This tag is substituted
+with all of the applets attributes.
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(code, codebase, width, height, etc.)
+
+<P><FONT COLOR="#993300">$ObjectAttributes$&nbsp;</FONT> This tag is substituted
+with all the attributes required by
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+the object tag.
+
+<P><FONT COLOR="#993300">$EmbedAttributes$</FONT><B> </B>This tag is substituted
+with all the attributes required by
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+the embed tag.
+
+<P><FONT COLOR="#993300">$AppletParams$</FONT>&nbsp;&nbsp;&nbsp;&nbsp;
+This tag is substituted with all the applet's &lt;param ...> tags
+
+<P><FONT COLOR="#993300">$ObjectParams$</FONT>&nbsp;&nbsp;&nbsp;&nbsp;
+This tag is substituted with all the &lt;param...> tags required
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+by the object tag.
+
+<P><FONT COLOR="#993300">$EmbedParams$</FONT>&nbsp;&nbsp;&nbsp;&nbsp; This
+tag is substituted with all the &lt;param...> tags required by
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+the embed tag in the form&nbsp; NAME=VALUE
+
+<P><FONT COLOR="#993300">$AlternateHTML$</FONT>&nbsp; This tag is substituted
+with the text in the No support for
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+applets area of the original applet
+<BR>&nbsp;
+<BR><FONT COLOR="#993300">$CabFileLocation$</FONT>&nbsp;&nbsp; This is
+the URL of the cab file that should be used in each
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+template that targets IE.
+<BR>&nbsp;
+<BR><FONT COLOR="#993300">$NSFileLocation$</FONT>&nbsp;&nbsp;&nbsp; This
+is the URL of the Netscape plugin that be used in each
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+template that targets Netscape
+
+<P><FONT COLOR="#993300">$SmartUpdate$</FONT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+This is the URL of the Netscape SmartUpdate that be used in
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+each template that targets Netscape Navigator 4.0 or later.
+
+<P><FONT COLOR="#993300">$MimeType$</FONT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+This is the MIME type of the Java object
+<BR>&nbsp;
+
+<P><B><I><U>default.tpl</U></I></B> (the default template for the converter) --
+the converted page can
+<BR>be used in IE and Navigator on Windows to invoke Java(TM) Plug-in.
+<BR>This template can also be used with Netscape on Unix (Solaris)
+
+<PRE>
+&lt;!-- HTML CONVERTER --&gt;
+&lt;object
+    classid="$ClassId$"
+    $ObjectAttributes$
+    codebase="$CabFileLocation$"&gt;
+    $ObjectParams$
+    &lt;param name="type" value="$MimeType$"&gt;
+    &lt;param name="scriptable" value="false"&gt;
+$AppletParams$
+    &lt;comment&gt;
+	&lt;embed
+            type="$MimeType$" $EmbedAttributes$ $EmbedParams$ 
+	    scriptable=false 
+	    pluginspage="$NSFileLocation$"&gt;
+	        &lt;noembed&gt;
+		$AlternateHTML$
+		&lt;/noembed&gt;
+	&lt;/embed&gt;
+    &lt;/comment&gt;
+&lt;/object&gt;
+
+&lt;!--
+$ORIGINALAPPLET$
+--&gt;
+</PRE>
+
+<P><B><I><U>ieonly.tpl</U></I></B> -- the converted page can be used to
+invoke Java(TM) Plug-in in IE
+<BR>on Windows only.
+
+<PRE>
+&lt;!-- HTML CONVERTER --&gt;
+&lt;object
+    classid="$ClassId$"
+    $ObjectAttributes$
+    codebase="$CabFileLocation$"&gt;
+    $ObjectParams$
+    &lt;param name="type" value="$MimeType$"&gt;
+    &lt;param name="scriptable" value="false"&gt;
+$AppletParams$
+    $AlternateHTML$
+&lt;/object&gt;
+
+&lt;!--
+$ORIGINALAPPLET$
+--&gt;
+</PRE>
+
+<P><B><I><U>nsonly.tpl</U></I></B> -- the converted page can be used to
+invoke Java(TM) Plug-in in
+<BR>Navigator on Windows and Solaris.
+
+<PRE>
+&lt;!-- HTML CONVERTER --&gt;
+&lt;embed
+            type="$MimeType$" $EmbedAttributes$ $EmbedParams$
+            scriptable=false
+            pluginspage="$NSFileLocation$"&gt;
+	        &lt;noembed&gt;
+		$AlternateHTML$
+		&lt;/noembed&gt;
+&lt;/embed&gt;
+
+&lt;!--
+$ORIGINALAPPLET$
+--&gt;
+</PRE>
+
+<P><B><I><U>extend.tpl </U></I></B>-- the converted page can be used in
+any browser and any platform.
+<BR>If the browser is IE or Navigator on Windows (Navigator on Solaris),
+Java(TM)
+<BR>Plug-in will be invoked. Otherwise, the browser's default JVM is used.
+
+<PRE>
+&lt;!-- HTML CONVERTER --&gt;
+&lt;script language="JavaScript" type="text/javascript"&gt;&lt;!--
+    var _info = navigator.userAgent;
+    var _ns = false;
+    var _ns6 = false;
+    var _ie = (_info.indexOf("MSIE") &gt; 0 &amp;&amp _info.indexOf("Win") &gt; 0 &amp;&amp _info.indexOf("Windows 3.1") &lt; 0);
+//--&gt;&lt;/script&gt;
+    &lt;comment&gt;
+        &lt;script language="JavaScript" type="text/javascript"&gt;&lt;!--
+        var _ns = (navigator.appName.indexOf("Netscape") &gt;= 0 &amp;&amp ((_info.indexOf("Win") &gt; 0 &amp;&amp _info.indexOf("Win16") &lt; 0 &amp;&amp java.lang.System.getProperty("os.version").indexOf("3.5") &lt; 0) || (_info.indexOf("Sun") &gt; 0) || (_info.indexOf("Linux") &gt; 0) || (_info.indexOf("AIX") &gt; 0) || (_info.indexOf("OS/2") &gt; 0) || (_info.indexOf("IRIX") &gt; 0)));
+        var _ns6 = ((_ns == true) &amp;&amp (_info.indexOf("Mozilla/5") &gt;= 0));
+//--&gt;&lt;/script&gt;
+    &lt;/comment&gt;
+
+&lt;script language="JavaScript" type="text/javascript"&gt;&lt;!--
+    if (_ie == true) document.writeln('&lt;object classid="$ClassId$" $ObjectAttributes$ codebase="$CabFileLocation$"&gt;&lt;noembed&gt;&lt;xmp&gt;');
+    else if (_ns == true &amp;&amp _ns6 == false) document.writeln('&lt;embed ' +
+	    'type="$MimeType$"$EmbedAttributes$$EmbedParams$ ' +
+	    'scriptable=false ' +
+	    'pluginspage="$NSFileLocation$"&gt;&lt;noembed&gt;&lt;xmp&gt;');
+//--&gt;&lt;/script&gt;
+&lt;applet $AppletAttributes$&gt;&lt;/xmp&gt;
+    $ObjectParams$
+    &lt;param name="type" value="$MimeType$"&gt;
+    &lt;param name="scriptable" value="false"&gt;
+$AppletParams$
+$AlternateHTML$
+&lt;/applet&gt;
+&lt;/noembed&gt;
+&lt;/embed&gt;
+&lt;/object&gt;
+
+&lt;!--
+$ORIGINALAPPLET$
+--&gt;
+</PRE>
+
+<P><B><FONT COLOR="#000099">13)&nbsp; Running HTML Converter:</FONT></B>
+
+<P>Once the installation is done, change directory to the install folder,
+<BR>and do the following for your specific platform:
+
+<P>For example, on <I>Windows:</I>
+
+<P>> cd &lt;HTML Converter Directory>
+<BR>> java -jar htmlconv-140.jar
+
+<P>On <I>Unix(Solaris):</I>
+
+<P>%&nbsp; cd &lt;HTML Converter Directory>
+<BR>%&nbsp; java -jar htmlconv-140.jar
+
+<BR></APPLET></UL>
+
+</BODY>
+</HTML>

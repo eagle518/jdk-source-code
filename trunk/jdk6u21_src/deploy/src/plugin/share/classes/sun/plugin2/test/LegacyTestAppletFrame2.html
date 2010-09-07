@@ -1,0 +1,28 @@
+<!-- Note: we need a separate HTML page for this alternate applet,
+     though the content is basically the same, to have semantically
+     different applets -->
+
+<script language="javascript">
+function waitForLoad() {
+    legacyApplet1.waitForLoad();
+}
+
+function check(numInits, numStarts, numStops, numDestroys) {
+    return legacyApplet1.check(numInits, numStarts, numStops, numDestroys);
+}
+
+function state() {
+    return legacyApplet1.state();
+}
+</script>
+<body>
+<P>
+Legacy Lifecycle Automated Test
+</P>
+<P>
+Clear class loader cache first, or open in a fresh browser session
+</P>
+<applet name="legacyApplet1" id="legacyApplet1" code="LegacyTest" width="0" height="0" MAYSCRIPT>
+    <param name="legacy_lifecycle" value="true"></param>
+</applet>
+</body>

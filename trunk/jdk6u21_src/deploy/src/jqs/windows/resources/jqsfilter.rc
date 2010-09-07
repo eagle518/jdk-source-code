@@ -1,0 +1,64 @@
+/*
+ * Copyright (c) 2007, Oracle and/or its affiliates. All rights reserved.
+ * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
+
+#include "afxres.h"
+
+// Need 2 defines so macro argument to XSTR will get expanded before quoting.
+#define XSTR(x) STR(x)
+#define STR(x)  #x
+
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION    J2SE_FVER
+ PRODUCTVERSION J2SE_FVER
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ // FILEOS 0x4 is Win32, 0x40004 is Win32 NT only
+ FILEOS 0x4L
+ // FILETYPE should be 0x1 for .exe and 0x2 for .dll
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "000004b0"
+        BEGIN
+            VALUE "CompanyName",      XSTR(J2SE_COMPANY)       "\0"
+            VALUE "FileDescription",  "Java(TM) Quick Starter Toolkit binary\0"
+            VALUE "FileVersion",      XSTR(J2SE_VER)           "\0"
+            VALUE "Full Version",     XSTR(J2SE_BUILD_ID)      "\0"
+            VALUE "InternalName",     "jqsfilter\0"
+            VALUE "LegalCopyright",   XSTR(J2SE_COPYRIGHT)     "\0"
+            VALUE "OriginalFilename", "jqsfilter.exe\0"
+            VALUE "ProductName",      XSTR(J2SE_NAME)          "\0"
+            VALUE "ProductVersion",   XSTR(J2SE_VER)           "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x0, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+//IDI_JQS_ICON     ICON    DISCARDABLE     "..\\..\\share\\resources\\java-icon.ico"
+

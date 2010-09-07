@@ -1,0 +1,38 @@
+#
+# @(#)Defs-solaris.gmk	1.28 10/03/24
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+# these are specific to Solaris
+
+include $(CONTROL_TOPDIR)/make/common/Defs-solaris.gmk
+
+BUNDLE_SUFFIX  = .zip
+HEAD           = $(UNIXCOMMAND_PATH)head
+LD             = $(UNIXCCS_PATH)ld
+JUMP_EXE       = $(BIN_DIR)/javaws
+CLASSPATH_SEP  = $(CLASSPATH_SEPARATOR)
+PATH_SEP       = /
+LIBS           = -lX11 -lsocket -lnsl -lw -ldl
+LINK_FLAGS     = -xildoff
+MD_SRC         = $(DEPLOY_TOPDIR)/src/javaws/solaris
+
+C_FLAGS_COMMON = -I$(SHARE_SRC)/native -I$(MD_SRC)/native \
+	-I$(SHARE_SRC)/native/jpeg -I$(GENHDIR) -DSOLARIS -D$(ARCH)
+
+CC_FLAGS_COMMON = -I$(JAVAWS_BOOTDIR)/include \
+	-I$(JAVAWS_BOOTDIR)/include/solaris -I$(SHARE_SRC)/native \
+	-I$(MD_SRC)/native -I$(SHARE_SRC)/native/jpeg -I$(GENHDIR) -DSOLARIS
+LINK_FLAGS_COMMON = -xildoff
+
+C_FLAGS_OPT = -xO2
+CC_FLAGS_OPT = -xO2
+C_FLAGS_DBG = -g -D_DEBUG
+CC_FLAGS_DBG = -g -D_DEBUG
+
+PLATFORM_SRC   = $(DEPLOY_TOPDIR)/src/javaws/solaris
+UNIX_SHARE_SRC = $(DEPLOY_TOPDIR)/src/javaws/unix
+
+JAVAWS_SUBSTITUTE_VERSIONS = $(CAT)

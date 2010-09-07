@@ -1,0 +1,74 @@
+<HTML>
+  <TITLE>
+    <title>Simple Applet LC 1 Test - with LiveConnect post init() results</title>
+  </TITLE>
+  <HEAD>
+  <SCRIPT LANGUAGE="javascript">
+    function runTest() {
+        var appletname = null;
+        var passed = false;
+        var postinitval = null;
+        var excStr = null;
+        try {
+            appletname = SimpleAppletLC.getAppletName();
+            postinitval = SimpleAppletLC.getPostInitValue();
+            if(postinitval == "OK") {
+                SimpleAppletLC.setTestResult(true);
+            }
+            passed = SimpleAppletLC.getTestResult();
+        } catch (e) {
+            excStr = getExceptionString(e);
+        }
+        reportResult(appletname, passed, postinitval, excStr);
+    }
+
+    function getExceptionString(e) {
+        if (typeof e == "string") {
+            return e;
+        } else {
+            var s = "";
+            for (var i in e) {
+                s += "" + i + " = " + e[i] + "\n";
+            }
+            return s;
+        }
+    }
+
+    function reportResult(appletname, passed, postinitval, excStr) {
+        var text1 = (passed ? "Test passed." : "TEST FAILED");
+        var text2 = "Applet post init: "+postinitval;
+        var text3 = "Life is good for Applet: "+appletname
+        if (excStr != null) {
+            text3 = "<BR>Exception:<PRE>" + excStr + "</PRE>";
+        }
+        document.getElementById("text1").innerHTML = text1;
+        document.getElementById("text2").innerHTML = text2;
+        document.getElementById("text3").innerHTML = text3;
+    }
+  </SCRIPT>
+  </HEAD>
+
+  <BODY ONLOAD="runTest()">
+      <br>
+      gathering information produced by applet's init method<br>
+      applet init() sleeps for 5s, before it produces the fetched result<br>
+      test results reported and verified with JavaScript/LiveConnect communication<br>
+      <br>
+      <h1>Simple Applet LC 1 Test - with LiveConnect init() results</h1>
+      <hr>
+      <APPLET ID="SimpleAppletLCID1" NAME="SimpleAppletLC" CODEBASE=codebasedir/ CODE=SimpleAppletLC1 WIDTH=800 HEIGHT=120>
+      </APPLET>
+      <br>
+      Watch the console output ..<br>
+      <br>
+      And the following 2 lines as a result of LiveConnext:<br>
+      <br>
+      <DIV ID="text1">
+      </DIV>
+      <DIV ID="text2">
+      </DIV>
+      <DIV ID="text3">
+      </DIV>
+  </body>
+</html>
+

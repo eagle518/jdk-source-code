@@ -1,0 +1,12 @@
+#
+# @(#)FileList.gmk	1.4 10/03/24
+#
+# Copyright (c) 2008, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+FILES_cpp = stdafx.cpp \
+	    ssvagent.cpp \
+	    common.cpp
+	    
+FILES_rc = version.rc 

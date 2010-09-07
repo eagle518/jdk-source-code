@@ -1,0 +1,75 @@
+<HTML>
+  <TITLE>
+    <title>Test Applet with LiveConnect results</title>
+  </TITLE>
+  <HEAD>
+  <SCRIPT LANGUAGE="javascript">
+    function runTest() {
+        var passed = false;
+        var relaunched = false;
+        var excStr = null;
+        try {
+            passed = document.JRERelaunch1.getTestResult();
+            relaunched = document.JRERelaunch1.getIsAppletRelaunched();
+        } catch (e) {
+            excStr = getExceptionString(e);
+        }
+        reportResult(passed, relaunched, excStr);
+    }
+
+    function getExceptionString(e) {
+        if (typeof e == "string") {
+            return e;
+        } else {
+            var s = "";
+            for (var i in e) {
+                s += "" + i + " = " + e[i] + "\n";
+            }
+            return s;
+        }
+    }
+
+    function reportResult(passed, relaunched, excStr) {
+        var text1 = (passed ? "Test passed." : "TEST FAILED");
+        var text2 = (relaunched ? "Applet relaunched." : "Applet 1st run");
+        var text3 = "Life is good"
+        if (excStr != null) {
+            text3 = "<BR>Exception:<PRE>" + excStr + "</PRE>";
+        }
+        document.getElementById("text1").innerHTML = text1;
+        document.getElementById("text2").innerHTML = text2;
+        document.getElementById("text3").innerHTML = text3;
+    }
+  </SCRIPT>
+  </HEAD>
+
+  <BODY ONLOAD="runTest()">
+      <br>
+      Shall run in a JNLP env and as a pure applet !
+
+      launch (jvm_args JRE relaunch) verify relaunch and jvm_args (properties)
+
+      test results reported and verified with JavaScript/LiveConnect communication
+      <br>
+      <h1>Simple Applet 1.2</h1>
+      <hr>
+      <APPLET ID="JRERelaunch1ID1" NAME="JRERelaunch1" CODEBASE=codebasedir/ CODE=JRERelaunch1 WIDTH=800 HEIGHT=120>
+      <PARAM name="check.java.isRelaunch" VALUE="true">
+      <PARAM name="check.java.maxheapsize" VALUE="134217728">
+      <PARAM name="check.java.jvm_args" VALUE="-Xmx128m">
+      <PARAM name="jnlp_href" VALUE="JRERelaunch1.0-jnlp-applet-rel.jnlp">
+      </APPLET>
+      <br>
+      Watch the console output ..<br>
+      <br>
+      And the following 3 lines as a result of LiveConnext:<br>
+      <br>
+      <DIV ID="text1">
+      </DIV>
+      <DIV ID="text2">
+      </DIV>
+      <DIV ID="text3">
+      </DIV>
+  </body>
+</html>
+

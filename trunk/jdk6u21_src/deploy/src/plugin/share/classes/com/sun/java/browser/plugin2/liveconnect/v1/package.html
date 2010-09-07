@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<!--
+ Copyright 2008 Sun Microsystems, Inc. All rights reserved.
+ SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+-->
+
+</head>
+<body>
+
+Provides an inter-language bridge between the JavaScript engine in the
+web browser and arbitrary languages hosted on the Java&trade;
+platform.
+
+<h2>Overview</h2>
+
+<p>
+
+The Java platform and virtual machine implementation hosts both Java
+and non-Java language implementations. Developers can write many
+different kinds of programs in these languages, including desktop
+applications and applets in the web browser.
+
+</p>
+<p>
+
+When a Java program is hosted as an applet in the browser, JavaScript
+on the web page may interact with it, and call methods, access fields,
+and create new Java objects. The capability of a web page to interact
+with a Java applet originated in the Netscape browser and is
+generically called "LiveConnect".
+
+</p>
+<p>
+
+This package provides interfaces to support calling into arbitrary
+languages hosted on the Java platform from the JavaScript engine in
+the web browser. Using these interfaces, the language implementor can
+customize:
+
+<ul>
+
+<li> How JavaScript field accesses and sets, array accesses, and
+     method invocations work against objects in the language
+<li> How new object instances are created from JavaScript
+<li> How values are converted back and forth between the JavaScript
+     engine and the language
+<li> Which fields and methods are visible to the JavaScript engine,
+     including creating synthetic fields with special semantics
+</ul>
+
+</p>
+<p>
+
+The applet's content can then be accessed from JavaScript on the web
+page. For example, HTML links or buttons on the web page can call into
+the applet or objects referred to by the applet to affect its state.
+Some of the objects returned to the web browser might correspond to a
+third-party language hosted on the Java platform, in which case the
+language implementor defines the mapping between JavaScript syntax on
+the web page and their language.
+
+</p>
+<p>
+
+<em>Naming convention note:</em> it is anticipated that these APIs may
+need to change in incompatible ways in the future, as concepts like
+conversion costs and algorithms for overloaded method resolution and
+invocation are refined. For this reason the package name contains
+{@code v1} to indicate version 1 of the inter-language LiveConnect
+bridge.
+
+</p>
+
+</body>
+</html>

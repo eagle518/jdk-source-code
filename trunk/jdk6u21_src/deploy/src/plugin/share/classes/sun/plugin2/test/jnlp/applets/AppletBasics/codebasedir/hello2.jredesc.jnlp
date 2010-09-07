@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp codebase="http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/codebasedir" href="hello2.jredesc.jnlp">
+   <information>
+      <title>Hello test Start (JREDesc)</vendor>
+      <vendor>me </vendor>
+   </information>
+   <resources>
+      <j2se version="1.5+" />
+      <jar href="JRERelaunch1.jar"/>
+      <extension name="SimpleApplet" href="SimpleApplet-jnlp-applet-abs.jnlp"/>
+   </resources>
+ <application-desc main-class="JRERelaunch1" />
+</jnlp>

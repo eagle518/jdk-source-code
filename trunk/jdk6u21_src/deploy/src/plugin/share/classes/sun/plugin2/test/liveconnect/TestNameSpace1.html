@@ -1,0 +1,53 @@
+<HTML>
+<HEAD>
+<TITLE>Java Name Space Tests</TITLE>
+</HEAD>
+<!--  <BODY ONLOAD="testParseInt();"> -->
+<BODY>
+
+<applet code="NoopApplet" width="1" height="1" MAYSCRIPT></applet>
+<SCRIPT LANGUAGE="JavaScript">
+function testParseInt() {
+   val = java.lang.Integer.parseInt("5");
+   alert("Result of java.lang.Integer.parseInt(\"5\") = " + val);
+}
+
+function testSystemOut() {
+   java.lang.System.out.println("Testing printing to System.out from JavaScript");
+}
+
+function testJOptionPane() {
+   Packages.javax.swing.JOptionPane.showMessageDialog(null, "Testing JOptionPane.showMessageDialog() from JavaScript");
+}
+
+function testConstructor() {
+   val = new java.lang.Integer(6);
+   alert("new java.lang.Integer(6) = " + val);
+}
+
+function testJFrameConstruction() {
+   frame = new Packages.javax.swing.JFrame("JavaScript JFrame Creation");
+   frame.setDefaultCloseOperation(Packages.javax.swing.JFrame.DISPOSE_ON_CLOSE);
+   frame.add(new Packages.javax.swing.JTextField("Hello, World!"));
+   frame.setSize(400, 200);
+   frame.setVisible(true);
+}
+
+</SCRIPT>
+<FORM NAME="myform1" ACTION="" METHOD="GET">
+<INPUT TYPE="button" NAME="button1" Value="Test Integer.parseInt()" onClick="testParseInt()">
+</FORM>
+<FORM NAME="myform2" ACTION="" METHOD="GET">
+<INPUT TYPE="button" NAME="button2" Value="Test System.out.println()" onClick="testSystemOut()">
+</FORM>
+<FORM NAME="myform3" ACTION="" METHOD="GET">
+<INPUT TYPE="button" NAME="button3" Value="Test JOptionPane" onClick="testJOptionPane()">
+</FORM>
+<FORM NAME="myform4" ACTION="" METHOD="GET">
+<INPUT TYPE="button" NAME="button4" Value="Test Constructor" onClick="testConstructor()">
+</FORM>
+<FORM NAME="myform4" ACTION="" METHOD="GET">
+<INPUT TYPE="button" NAME="button4" Value="Test JFrame Construction" onClick="testJFrameConstruction()">
+</FORM>
+</BODY>
+</HTML>

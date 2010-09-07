@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp 
+      href="JNLPJARVersionServlet2.0.rel.jnlp">
+  <information>
+    <title>JNLPJARVersionServlet2.0 (JAR versioning) rel</title>
+    <vendor>SUN Deployment</vendor>
+    <description kind='tootltip'>A simple JNLP test</description>
+    <description kind='one-line'>Applet</description>
+    <homepage href='JREVersion1-jnlp-applet-rel-LC-check1.html' />
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.4+"/>
+    <jar href="JNLPJARVersion.jar" version="2.0"/>
+    <extension name="SimpleApplet" href="SimpleApplet-jnlp-applet-rel.jnlp"/>
+  </resources>
+  <applet-desc 
+      name="JNLPJARVersion"
+      main-class="JNLPJARVersion"
+      width="666" 
+      height="999">
+  </applet-desc>
+</jnlp>

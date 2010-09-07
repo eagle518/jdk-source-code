@@ -1,0 +1,19 @@
+FILES_cpp = StdAfx.cpp \
+            BrowserJVM.cpp \
+            deployJava1Module.cpp \
+            DeployTk.cpp \
+            JVM.cpp \
+            JVMList.cpp \
+            RunningJVM.cpp \
+            Utils.cpp \
+	    utils_md.cpp \
+	    JREInstall.cpp \
+	    DownloadDialog.cpp \
+	    SecurityDialog.cpp \
+	    privileges.cpp     \
+            XMLParser.cpp      \
+            Locale.cpp
+
+FILES_rc = DeployTk.rc
+
+FILES_idl = deployJava1.idl

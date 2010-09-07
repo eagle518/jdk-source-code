@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="plugin" default="install" basedir=".">
+    <!-- Pull in GlueGen cpptasks build file -->
+    <property name="cpptasks.dir" location="../lib" />
+    <import file="${cpptasks.dir}/gluegen-cpptasks.xml" />
+
+    <property name="build_dir" location="../../../build" />
+    <property name="src" location="../../.."/> <!-- sources -->
+    <property name="plugin_src" value="src/plugin/share/classes" />
+    <property name="plugin_macosx_src" value="src/plugin/macosx/classes" />
+    <property name="classes" location="${build_dir}/plugin/classes"/> <!-- intermediate build products -->
+    <property name="obj" location="${build_dir}/plugin/obj" />
+    <property name="jars" location="${build_dir}"/> <!-- jar files -->
+    <property name="lib" location="${build_dir}"/> <!-- local libraries linked against -->
+    <property name="dist" location="dist"/> <!-- build product location -->
+    <property name="resources" location="${src}/${plugin_src}"/> <!-- location of general java resources -->
+    <property name="resources_macosx" location="resources_macosx"/> <!-- location of Mac OS X specific resources -->
+    <property name="compile.debug" value="true"/>
+    <!-- This build.xml assumes the "mozilla_headers" directory
+         containing both mozilla_headers_18 and
+         plugin2_mozilla_headers is a sibling directory to the deploy
+         workspace -->
+    <property name="plugin2_mozilla_headers" location="../../../../mozilla_headers/plugin2_mozilla_headers" />
+    <property name="mozilla_headers_18" location="../../../../mozilla_headers/mozilla_headers_18" />
+
+    <property name="plugin.bundle.name" value="JavaPlugIn2"/>
+    <property name="bundle.suffix" value="plugin"/>
+
+    <!-- lib directory should contain any pre-built jar files needed to build the project -->
+    <fileset id="lib.jars" dir="${lib}">
+        <include name="deploy.jar"/>
+        <include name="javaws.jar"/>
+    </fileset>
+
+    <path id="lib.path">
+        <fileset refid="lib.jars"/>
+    </path>
+
+    <fileset id="resource_files" dir="${resources}">
+        <include name="sun/plugin/util/*.gif" />
+        <include name="sun/plugin/util/*.png" />
+    </fileset>
+
+    <!-- Initialization target, for any prelimary setup needed to build -->
+    <target name="init" description="Preparation">
+    </target>
+
+    <target name="compile" depends="init" description="Compile code">
+        <mkdir dir="${classes}"/>
+        <javac deprecation="on" srcdir="${src}" destdir="${classes}"
+               source="1.4" target="1.4"
+               includeAntRuntime="no"
+               classpathref="lib.path" debug="${compile.debug}">
+            <include name="${plugin_src}/**/*.java" />
+            <exclude name="${plugin_src}/**/s.*.java" />
+            <exclude name="${plugin_src}/**/p.*.java" />
+            <exclude name="${plugin_src}/sun/plugin/com/**/*.java" />
+            <exclude name="${plugin_src}/sun/plugin/AppletViewer.java" />
+            <exclude name="${plugin_src}/sun/plugin/BeansViewer.java" />
+            <exclude name="${plugin_src}/sun/plugin/ClassLoaderInfo.java" />
+            <exclude name="${plugin_src}/sun/plugin/javascript/navig/*.java" />
+            <exclude name="${plugin_src}/sun/plugin/javascript/navig4/*.java" />
+            <exclude name="${plugin_src}/sun/plugin/javascript/navig5/*.java" />
+            <exclude name="${plugin_src}/sun/plugin/javascript/ocx/*.java" />
+            <exclude name="${plugin_src}/sun/plugin/navig/**/*.java" />
+            <exclude name="${plugin_src}/sun/plugin/net/cookie/*.java" />
+            <exclude name="${plugin_src}/sun/plugin/net/proxy/MNetscape6BrowserProxyHandler.java" />
+            <exclude name="${plugin_src}/sun/plugin/net/proxy/PluginAutoProxyHandler.java" />
+            <exclude name="${plugin_src}/sun/plugin/net/proxy/WNetscape6BrowserProxyHandler.java" />
+            <exclude name="${plugin_src}/sun/plugin/security/ActivatorSecurityManager.java" />
+            <exclude name="${plugin_src}/sun/plugin/security/PluginClassLoader.java" />
+            <exclude name="${plugin_src}/sun/plugin/util/PluginConsoleController.java" />
+            <exclude name="${plugin_src}/sun/plugin/viewer/**/*.java" />
+            <exclude name="${plugin_src}/sun/plugin/services/AxBridgeBrowserService.java" />
+            <exclude name="${plugin_src}/sun/plugin/services/MNetscape4BrowserService.java" />
+            <exclude name="${plugin_src}/sun/plugin/services/MNetscape6BrowserAuthenticator.java" />
+            <exclude name="${plugin_src}/sun/plugin/services/MNetscape6BrowserService.java" />
+            <exclude name="${plugin_src}/sun/plugin/services/MPlatformService.java" />
+            <exclude name="${plugin_src}/sun/plugin/services/WIExplorerBrowserService.java" />
+            <exclude name="${plugin_src}/sun/plugin/services/WNetscape4BrowserService.java" />
+            <exclude name="${plugin_src}/sun/plugin/services/WNetscape6BrowserAuthenticator.java" />
+            <exclude name="${plugin_src}/sun/plugin/services/WNetscape6BrowserService.java" />
+            <exclude name="${plugin_src}/sun/plugin/services/WPlatformService.java" />
+            <exclude name="${plugin_src}/sun/plugin2/main/client/WIExplorerServiceDelegate.java" />
+            <exclude name="${plugin_src}/sun/plugin2/main/client/WMozillaServiceDelegate.java" />
+            <exclude name="${plugin_src}/sun/plugin2/test/**/*.java" />
+            <include name="${plugin_macosx_src}/**/*.java" />
+            <exclude name="${plugin_macosx_src}/**/s.*.java" />
+            <exclude name="${plugin_macosx_src}/**/p.*.java" />
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile" description="Build jar">
+        <mkdir dir="${jars}"/>
+        <!-- manifest="${resources}/Manifest" -->
+        <jar jarfile="${jars}/${ant.project.name}.jar" basedir="${classes}" >
+            <!-- Inject resources -->
+            <fileset refid="resource_files" />
+            <!--
+                <fileset dir="${resources}/"
+                excludes="${resources}/Manifest"
+                />
+            -->
+            <!-- Merge library jars into final jar file -->
+            <!-- <zipgroupfileset refid="lib.jars"/>  -->
+        </jar>
+    </target>
+    
+    <target name="init.c.compiler" depends="gluegen.cpptasks.detect.os,gluegen.cpptasks.configure.compiler,declare.compiler" description="Initialize C compiler" />
+
+    <target name="plugin.bundle" description="Builds the browser-side bundle for the plug-in">
+        <mkdir dir="${obj}" />
+
+        <!-- Generate headers needed for compilation -->
+        <mkdir dir="${obj}/headers" />
+        <javah classpath="${classes}"
+               destdir="${obj}/headers">
+            <class name="sun.plugin2.main.server.MozillaPlugin" />
+            <class name="sun.plugin2.main.server.MozillaBrowserService" />
+        </javah>
+
+        <!-- NOTE: the value of the debug and optimise attributes will not be overridden if already set externally -->
+        <property name="c.compiler.debug"     value="true" /> 
+        <!-- Optimize flags one of { none, size, speed, minimal, full, aggressive, extreme, unsafe } --> 
+        <property name="c.compiler.optimize"  value="none" /> 
+
+        <cc outtype="executable"
+            objdir="${obj}"
+            outfile="${obj}/${plugin.bundle.name}"
+            optimize="${c.compiler.optimize}" 
+            debug="${c.compiler.debug}"
+            multithreaded="true" 
+            exceptions="false" 
+            rtti="false">   
+
+            <fileset dir="${src}">
+                <include name="src/plugin/share/plugin2/npjp2/JavaObject.cpp" />
+                <include name="src/plugin/share/plugin2/npjp2/MozExports.cpp" />
+                <include name="src/plugin/share/plugin2/npjp2/MozPluginExports.cpp" />
+                <include name="src/plugin/share/plugin2/npjp2/MozPluginInstance.cpp" />
+                <include name="src/plugin/share/plugin2/npjp2/MozPluginNatives.cpp" />
+                <include name="src/plugin/macosx/plugin2/npjp2/MozPluginInstance_pd.cpp" />
+                <include name="src/plugin/macosx/plugin2/common/JavaVM.cpp" />
+                <include name="src/plugin/share/plugin2/common/AbstractPlugin.cpp" />
+            </fileset>
+
+            <compiler extends="${compiler.cfg.id}" >
+                <sysincludepath path="/System/Library/Frameworks/JavaVM.framework/Headers/" />
+                <compilerarg value="-F/System/Library/Frameworks/Carbon.framework/Frameworks" />
+                <includepath path="${plugin2_mozilla_headers}" />
+                <includepath path="${plugin2_mozilla_headers}/nspr" />
+                <includepath path="${mozilla_headers_18}/xpcom" />
+                <includepath path="${mozilla_headers_18}/oji" />
+                <includepath path="${mozilla_headers_18}/plugin" />
+                <includepath path="${src}/src/plugin/share/plugin2/npjp2" />
+                <includepath path="${src}/src/plugin/macosx/plugin2/npjp2" />
+                <includepath path="${src}/src/plugin/share/plugin2/common" />
+                <includepath path="${obj}/headers" />
+                <compilerarg value="-ObjC++" />
+            </compiler>
+
+            <linker extends="${linker.cfg.id}">
+                <linkerarg value="-Wl,-exported_symbols_list" />
+                <linkerarg value="-Wl,../../../make/macosx/plugin/exported_symbols.txt" />
+                <!-- For JavaVM.cpp -->
+                <linkerarg value="-framework" />
+                <linkerarg value="JavaVM" />
+                <linkerarg value="-framework" />
+                <linkerarg value="CoreFoundation" />
+                <linkerarg value="-framework" />
+                <linkerarg value="Carbon" />
+                <!-- For all code -->
+                <linkerarg value="-lstdc++" />
+                <linkerarg value="-bundle" />
+            </linker>
+        </cc>
+        <!-- Now that we have the executable built, create the "bundle" directory structure -->
+        <mkdir dir="${obj}/${plugin.bundle.name}.${bundle.suffix}/Contents/MacOS" />
+        <mkdir dir="${obj}/${plugin.bundle.name}.${bundle.suffix}/Contents/Resources" />
+        <!-- Move in the bundle we just built -->
+        <move file="${obj}/${plugin.bundle.name}" todir="${obj}/${plugin.bundle.name}.${bundle.suffix}/Contents/MacOS" />
+        <!-- Copy in the jars we just built -->
+        <copy file="${build_dir}/deploy.jar" todir="${obj}/${plugin.bundle.name}.${bundle.suffix}/Contents/Resources" />
+        <copy file="${build_dir}/javaws.jar" todir="${obj}/${plugin.bundle.name}.${bundle.suffix}/Contents/Resources" />
+        <copy file="${build_dir}/plugin.jar" todir="${obj}/${plugin.bundle.name}.${bundle.suffix}/Contents/Resources" />
+        <!-- And our jnilibs -->
+        <copy file="${build_dir}/deploy/obj/libdeploy.jnilib" todir="${obj}/${plugin.bundle.name}.${bundle.suffix}/Contents/Resources" />
+        <!-- Copy in the Info.plist and version.plist -->
+        <copy file="${plugin.bundle.name}-Info.plist" tofile="${obj}/${plugin.bundle.name}.${bundle.suffix}/Contents/Info.plist" />
+        <copy file="${plugin.bundle.name}-version.plist" tofile="${obj}/${plugin.bundle.name}.${bundle.suffix}/Contents/version.plist" />
+    </target>
+
+    <target name="plugin.natives" depends="init.c.compiler, plugin.bundle" description="Builds all native code for the plugin" />
+
+    <target name="install" depends="jar, plugin.natives" description="Put all the pieces together in the dist directory">
+        <!-- We don't need this target -->
+    </target>
+
+    <target name="run" depends="install" description="Run the tool">
+        <java classname="${ant.project.name}" classpath="${classes}" fork="true">
+        </java>
+    </target>
+    
+    <target name="clean" description="Remove build and dist directories">
+        <delete dir="${classes}"/>
+        <delete dir="${obj}"/>
+        <delete file="${jars}/${ant.project.name}.jar" />
+    </target>
+</project>

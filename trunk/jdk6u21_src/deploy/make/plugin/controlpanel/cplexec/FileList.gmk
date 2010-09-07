@@ -1,0 +1,6 @@
+FILES_cpp = UserProfile.cpp \
+	    CplLauncher.cpp \
+            common.cpp
+
+FILES_rc = javacpl.rc
+

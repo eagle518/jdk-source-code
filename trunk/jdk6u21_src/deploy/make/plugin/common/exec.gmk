@@ -1,0 +1,63 @@
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# @(#)exec.gmk	1.10 10/03/24
+#
+# Rules to build our executables,  mostly stolen from Library.gmk
+#
+
+.PHONY: all build clean .exported.classes
+
+all: build
+
+ifeq ($(PLATFORM),windows)
+EXEC_SUFFIX = .exe
+else
+EXEC_SUFFIX =
+endif
+
+include $(J2SE_TOPDIR)/make/common/Classes.gmk
+
+build: program
+
+program: $(BINDIR)/$(EXECUTABLE)$(EXEC_SUFFIX)
+
+FILES_o   = $(patsubst %.c,   %.$(OBJECT_SUFFIX), $(addprefix $(OBJDIR)/, $(notdir $(FILES_c))))
+FILES_o  += $(patsubst %.s,   %.$(OBJECT_SUFFIX), $(addprefix $(OBJDIR)/, $(notdir $(FILES_s))))
+FILES_o  += $(patsubst %.cpp, %.$(OBJECT_SUFFIX), $(addprefix $(OBJDIR)/, $(notdir $(FILES_cpp))))
+
+$(BINDIR)/$(EXECUTABLE)$(EXEC_SUFFIX):: $(INIT) $(OBJDIR) $(TEMPDIR) $(LIBDIR) $(EXTDIR) $(BINDIR) classheaders
+
+#
+# Executable building rules.
+#
+LINKER=$(LINK.c)
+
+ifeq ($(PLATFORM), windows)
+$(BINDIR)/$(EXECUTABLE)$(EXEC_SUFFIX):: $(OBJDIR)/$(EXECUTABLE).lcf 
+	$(LINK) -out:$(OBJDIR)/$(@F) $(LFLAGS) @$(OBJDIR)/$(EXECUTABLE).lcf $(OTHER_LCF) $(JAVALIB) $(LDLIBS)
+	$(CP) $(OBJDIR)/$(@F) $@
+
+
+#$(OBJDIR)/$(EXECUTABLE).lcf: $(FILES_o) $(FILES_m)
+$(OBJDIR)/$(EXECUTABLE).lcf: $(FILES_o)
+	@$(ECHO) $(FILES_o) > $@ 
+	@$(ECHO) Created $@ 
+else
+$(BINDIR)/$(EXECUTABLE)$(EXEC_SUFFIX):: $(FILES_o)
+	$(LINKER) -o $@ $(FILES_o) $(LDLIBS)
+endif
+
+clean::
+	$(RM) -r $(BINDIR)/$(EXECUTABLE)$(EXEC_SUFFIX)
+
+clobber:: clean
+
+#
+# Include make dependancies
+#
+files := $(foreach file, $(wildcard $(OBJDIR)/*.d), $(file))
+ifneq ($(strip $(files)),)
+    include $(files)
+endif

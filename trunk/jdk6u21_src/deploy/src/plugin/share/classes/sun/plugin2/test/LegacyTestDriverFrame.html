@@ -1,0 +1,62 @@
+<script language="javascript">
+var numReloads = 0;
+
+function start() {
+    top.appletFrame1.waitForLoad();
+    top.appletFrame2.waitForLoad();
+    setTimeout("reloadApplet()", 1000);
+}
+
+function reloadApplet() {
+    if (numReloads == 3) {
+        check();
+    } else {
+        reloadFrame1();
+        if (numReloads < 2) {
+            reloadFrame2();
+        }
+        ++numReloads;
+        setTimeout("reloadApplet()", 1000);
+    }
+}
+
+// All of these hacks are workarounds for Firefox which doesn't seem
+// to fully destroy the old page before loading the new one when
+// calling frame.location.reload() (or even when setting and resetting
+// the location.href in consecutive lines of JavaScript)
+
+var frame1href;
+var frame2href;
+
+function reloadFrame1() {
+    frame1href = top.appletFrame1.location.href;
+    top.appletFrame1.location.href = "LegacyTestEmptyFrame.html";
+    setTimeout("reloadFrame1_2()", 500);
+}
+
+function reloadFrame1_2() {
+    top.appletFrame1.location.href = frame1href;
+}
+
+function reloadFrame2() {
+    frame2href = top.appletFrame2.location.href;
+    top.appletFrame2.location.href = "LegacyTestEmptyFrame.html";
+    setTimeout("reloadFrame2_2()", 500);
+}
+
+function reloadFrame2_2() {
+    top.appletFrame2.location.href = frame2href;
+}
+
+function check() {
+    // Check results
+    if (top.appletFrame1.check(1, 4, 3, 0) &&
+        top.appletFrame2.check(1, 3, 2, 0)) {
+        top.appletFrame1.pass();
+    } else {
+        top.appletFrame1.fail(top.appletFrame2.state());
+    }
+}
+</script>
+<body onload="start()">
+</body>

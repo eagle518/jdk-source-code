@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+"
+      codebase="http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/codebasedir"
+      href="JNLPPersistenceService1-jnlp-applet-abs.jnlp">
+  <information>
+    <title>Simple Applet 1.2 (jnlp title)</title>
+    <vendor>SUN Deployment</vendor>
+    <description kind='tootltip'>A simple JNLP test</description>
+    <description kind='one-line'>Applet</description>
+    <homepage href='http://demo.goethel.localnet/SUN/JDK6/deploy/src/plugin/share/classes/sun/plugin2/test/jnlp/applets/AppletBasics/JNLPPersistenceService1-jnlp-applet-rel.html' />
+    <offline-allowed/>
+  </information>
+    <resources>
+      <j2se href="http://java.sun.com/products/autodl/j2se" version="1.2+"/>
+      <jar href="JNLPPersistenceService1.jar"/>
+      <extension name="SimpleApplet" 
+                 href="SimpleApplet-jnlp-applet-abs.jnlp"/>
+    </resources>
+  <applet-desc 
+      name="JNLPPersistenceService1"
+      main-class="JNLPPersistenceService1"
+      width="480" 
+      height="120">
+      <param name="offline" value="false"/>
+      <param name="browsersupported" value="true"/>
+  </applet-desc>
+</jnlp>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+"
+      href="SimpleApplet-jnlp-applet-rel.jnlp">
+  <information>
+    <title>Simple Applet Kit (jnlp title)</title>
+    <vendor>SUN Deployment</vendor>
+    <description kind='tootltip'>A simple JNLP Applet Toolkit</description>
+    <offline-allowed/>
+  </information>
+    <resources>
+      <jar href="SimpleApplet.jar"/>
+    </resources>
+    <component-desc/>
+</jnlp>

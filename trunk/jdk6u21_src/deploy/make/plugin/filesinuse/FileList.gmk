@@ -1,0 +1,6 @@
+FILES_cpp = StdAfx.cpp \
+            common.cpp \
+            FilesInUse.cpp
+
+FILES_rc = FilesInUse.rc
+

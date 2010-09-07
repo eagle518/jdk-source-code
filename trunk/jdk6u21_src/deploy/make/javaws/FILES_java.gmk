@@ -1,0 +1,194 @@
+#
+# @(#)FILES_java.gmk	1.187 10/03/24
+# 
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+FILES_GENSRC = \
+        com/sun/javaws/Globals_pre.java
+
+JDK_1_2_FILES = \
+        $(TARGDIR)com/sun/javaws/LocalInstallHandler.java \
+        $(TARGDIR)com/sun/javaws/Main.java \
+        $(TARGDIR)com/sun/javaws/JnlpxArgs.java \
+        $(TARGDIR)com/sun/javaws/Launcher.java \
+        $(TARGDIR)com/sun/javaws/LaunchDownload.java \
+        $(TARGDIR)com/sun/javaws/JAuthenticator.java \
+        $(TARGDIR)com/sun/javaws/BrowserSupport.java \
+        $(TARGDIR)com/sun/javaws/ExtensionInstallHandler.java \
+        $(TARGDIR)com/sun/javaws/IcoEncoder.java \
+        $(TARGDIR)com/sun/javaws/OperaPreferences.java \
+        $(TARGDIR)com/sun/javaws/OperaSupport.java \
+        $(TARGDIR)com/sun/javaws/Globals.java \
+        $(TARGDIR)com/sun/javaws/CacheUtil.java \
+        $(TARGDIR)com/sun/javaws/CacheUpdateHelper.java \
+        $(TARGDIR)com/sun/javaws/jnl/ApplicationDesc.java \
+        $(TARGDIR)com/sun/javaws/jnl/AppletDesc.java \
+        $(TARGDIR)com/sun/javaws/jnl/JARDesc.java \
+        $(TARGDIR)com/sun/javaws/jnl/JARUpdater.java \
+        $(TARGDIR)com/sun/javaws/jnl/ResourcesDesc.java \
+        $(TARGDIR)com/sun/javaws/jnl/ExtensionDesc.java \
+        $(TARGDIR)com/sun/javaws/jnl/ExtDownloadDesc.java \
+        $(TARGDIR)com/sun/javaws/jnl/InformationDesc.java \
+        $(TARGDIR)com/sun/javaws/jnl/LDUpdater.java \
+        $(TARGDIR)com/sun/javaws/jnl/ShortcutDesc.java \
+        $(TARGDIR)com/sun/javaws/jnl/RContentDesc.java \
+        $(TARGDIR)com/sun/javaws/jnl/JREDesc.java \
+        $(TARGDIR)com/sun/javaws/jnl/LaunchDesc.java \
+        $(TARGDIR)com/sun/javaws/jnl/LaunchDescFactory.java \
+        $(TARGDIR)com/sun/javaws/jnl/LaunchSelection.java \
+        $(TARGDIR)com/sun/javaws/jnl/DefaultMatchJRE.java \
+        $(TARGDIR)com/sun/javaws/jnl/UpdateDesc.java \
+        $(TARGDIR)com/sun/javaws/jnl/IconDesc.java \
+        $(TARGDIR)com/sun/javaws/jnl/PropertyDesc.java \
+        $(TARGDIR)com/sun/javaws/jnl/ResourceType.java \
+        $(TARGDIR)com/sun/javaws/jnl/ResourceVisitor.java \
+        $(TARGDIR)com/sun/javaws/jnl/PackageDesc.java \
+        $(TARGDIR)com/sun/javaws/jnl/LibraryDesc.java \
+        $(TARGDIR)com/sun/javaws/jnl/InstallerDesc.java \
+        $(TARGDIR)com/sun/javaws/jnl/XMLFormat.java \
+        $(TARGDIR)com/sun/javaws/jnl/XMLUtils.java \
+        $(TARGDIR)com/sun/javaws/progress/Progress.java \
+        $(TARGDIR)com/sun/javaws/progress/ProgressListener.java \
+        $(TARGDIR)com/sun/javaws/progress/CustomProgress.java \
+        $(TARGDIR)com/sun/javaws/net/protocol/jar/Handler.java \
+        $(TARGDIR)com/sun/javaws/util/GeneralUtil.java \
+        $(TARGDIR)com/sun/javaws/util/JavawsDialogListener.java \
+        $(TARGDIR)com/sun/javaws/util/JavawsConsoleController.java \
+        $(TARGDIR)com/sun/javaws/util/JavawsConsoleController14.java \
+        $(TARGDIR)com/sun/javaws/security/JavaWebStartSecurity.java \
+        $(TARGDIR)com/sun/javaws/security/AppPolicy.java \
+        $(TARGDIR)com/sun/javaws/security/AppContextUtil.java \
+        $(TARGDIR)com/sun/javaws/security/SigningInfo.java \
+        $(TARGDIR)com/sun/javaws/security/Resource.java \
+        $(TARGDIR)com/sun/javaws/ui/AutoDownloadPrompt.java \
+        $(TARGDIR)com/sun/javaws/ui/SecureStaticVersioning.java \
+        $(TARGDIR)com/sun/javaws/ui/CacheViewer.java \
+        $(TARGDIR)com/sun/javaws/ui/CacheTable.java \
+        $(TARGDIR)com/sun/javaws/ui/CacheObject.java \
+        $(TARGDIR)com/sun/javaws/ui/UpdateDialog.java \
+        $(TARGDIR)com/sun/javaws/ui/DownloadWindow.java \
+        $(TARGDIR)com/sun/javaws/ui/DownloadWindowHelper.java \
+        $(TARGDIR)com/sun/javaws/ui/SplashScreen.java \
+        $(TARGDIR)com/sun/javaws/ui/LaunchErrorDialog.java \
+        $(TARGDIR)com/sun/javaws/ui/JavawsSysRun.java \
+        $(TARGDIR)com/sun/jnlp/JNLPRMIClassLoaderSpi.java \
+        $(TARGDIR)com/sun/jnlp/CheckServicePermission.java \
+        $(TARGDIR)com/sun/jnlp/MeteredFileOutputStream.java \
+        $(TARGDIR)com/sun/jnlp/JNLPRandomAccessFileImpl.java \
+        $(TARGDIR)com/sun/jnlp/FileContentsImpl.java \
+        $(TARGDIR)com/sun/jnlp/PersistenceServiceImpl.java \
+        $(TARGDIR)com/sun/jnlp/ClipboardServiceImpl.java \
+        $(TARGDIR)com/sun/jnlp/PrintServiceImpl.java \
+        $(TARGDIR)com/sun/jnlp/DownloadServiceImpl.java \
+        $(TARGDIR)com/sun/jnlp/DownloadService2Impl.java \
+        $(TARGDIR)com/sun/jnlp/IntegrationServiceImpl.java \
+        $(TARGDIR)com/sun/jnlp/ExtensionInstallerServiceImpl.java \
+        $(TARGDIR)com/sun/jnlp/BasicServiceImpl.java \
+        $(TARGDIR)com/sun/jnlp/FileOpenServiceImpl.java \
+        $(TARGDIR)com/sun/jnlp/FileSaveServiceImpl.java \
+        $(TARGDIR)com/sun/jnlp/JNLPFileFilter.java \
+        $(TARGDIR)com/sun/jnlp/ExtendedServiceImpl.java \
+        $(TARGDIR)com/sun/jnlp/SingleInstanceServiceImpl.java \
+        $(TARGDIR)com/sun/jnlp/JnlpLookupStub.java \
+        $(TARGDIR)com/sun/jnlp/AppletContainer.java \
+        $(TARGDIR)com/sun/jnlp/AppletContainerCallback.java \
+        $(TARGDIR)com/sun/jnlp/JNLPClassLoaderUtil.java \
+        $(TARGDIR)com/sun/jnlp/JNLPClassLoaderIf.java \
+        $(TARGDIR)com/sun/jnlp/JNLPClassLoader.java \
+        $(TARGDIR)com/sun/jnlp/JNLPPreverifyClassLoader.java \
+        $(TARGDIR)com/sun/jnlp/PreverificationClassLoader.java \
+        $(TARGDIR)com/sun/jnlp/JNLPCachedJarURLConnection.java \
+        $(TARGDIR)com/sun/jnlp/ApiDialog.java \
+        $(TARGDIR)com/sun/javaws/exceptions/BadFieldException.java \
+        $(TARGDIR)com/sun/javaws/exceptions/BadMimeTypeResponseException.java \
+        $(TARGDIR)com/sun/javaws/exceptions/BadJARFileException.java \
+        $(TARGDIR)com/sun/javaws/exceptions/BadVersionResponseException.java \
+        $(TARGDIR)com/sun/javaws/exceptions/CacheAccessException.java \
+        $(TARGDIR)com/sun/javaws/exceptions/CouldNotLoadArgumentException.java \
+        $(TARGDIR)com/sun/javaws/exceptions/DownloadException.java \
+        $(TARGDIR)com/sun/javaws/exceptions/ErrorCodeResponseException.java \
+        $(TARGDIR)com/sun/javaws/exceptions/ExitException.java \
+        $(TARGDIR)com/sun/javaws/exceptions/JRESelectException.java \
+        $(TARGDIR)com/sun/javaws/exceptions/FailedDownloadingResourceException.java \
+        $(TARGDIR)com/sun/javaws/exceptions/InvalidJarDiffException.java \
+        $(TARGDIR)com/sun/javaws/exceptions/JNLPException.java \
+        $(TARGDIR)com/sun/javaws/exceptions/JNLPSigningException.java \
+        $(TARGDIR)com/sun/javaws/exceptions/JNLParseException.java \
+        $(TARGDIR)com/sun/javaws/exceptions/JreExecException.java \
+        $(TARGDIR)com/sun/javaws/exceptions/LaunchDescException.java \
+        $(TARGDIR)com/sun/javaws/exceptions/NativeLibViolationException.java \
+        $(TARGDIR)com/sun/javaws/exceptions/MissingFieldException.java \
+        $(TARGDIR)com/sun/javaws/exceptions/MissingVersionResponseException.java \
+        $(TARGDIR)com/sun/javaws/exceptions/MultipleHostsException.java \
+        $(TARGDIR)com/sun/javaws/exceptions/NoLocalJREException.java \
+        $(TARGDIR)com/sun/javaws/exceptions/InvalidArgumentException.java \
+        $(TARGDIR)com/sun/javaws/exceptions/UnsignedAccessViolationException.java \
+        $(TARGDIR)com/sun/javaws/exceptions/OfflineLaunchException.java 
+
+
+JNLP_API_FILES = \
+        $(TARGDIR)javax/jnlp/BasicService.java \
+        $(TARGDIR)javax/jnlp/JNLPRandomAccessFile.java \
+        $(TARGDIR)javax/jnlp/FileContents.java \
+        $(TARGDIR)javax/jnlp/FileOpenService.java \
+        $(TARGDIR)javax/jnlp/FileSaveService.java \
+        $(TARGDIR)javax/jnlp/ExtensionInstallerService.java \
+        $(TARGDIR)javax/jnlp/ServiceManager.java \
+        $(TARGDIR)javax/jnlp/ServiceManagerStub.java \
+        $(TARGDIR)javax/jnlp/UnavailableServiceException.java \
+        $(TARGDIR)javax/jnlp/ClipboardService.java \
+        $(TARGDIR)javax/jnlp/DownloadService.java \
+        $(TARGDIR)javax/jnlp/DownloadServiceListener.java \
+        $(TARGDIR)javax/jnlp/DownloadService2.java \
+        $(TARGDIR)javax/jnlp/IntegrationService.java \
+        $(TARGDIR)javax/jnlp/PersistenceService.java \
+        $(TARGDIR)javax/jnlp/PrintService.java \
+        $(TARGDIR)javax/jnlp/ExtendedService.java \
+        $(TARGDIR)javax/jnlp/SingleInstanceService.java \
+        $(TARGDIR)javax/jnlp/SingleInstanceListener.java 
+
+
+DEMO_SRC_DIR = $(TARGDIR)../sample/servlet/src/classes/jnlp/sample/
+
+JARDIFF_FILES = \
+        $(DEMO_SRC_DIR)jardiff/Patcher.java \
+        $(DEMO_SRC_DIR)jardiff/JarDiffConstants.java \
+        $(DEMO_SRC_DIR)jardiff/JarDiffPatcher.java \
+        $(DEMO_SRC_DIR)jardiff/JarDiff.java
+
+SERVLET_FILES = \
+        $(DEMO_SRC_DIR)servlet/JnlpDownloadServlet.java \
+        $(DEMO_SRC_DIR)servlet/JnlpFileHandler.java \
+        $(DEMO_SRC_DIR)servlet/DownloadRequest.java \
+        $(DEMO_SRC_DIR)servlet/DownloadResponse.java \
+        $(DEMO_SRC_DIR)servlet/ErrorResponseException.java \
+        $(DEMO_SRC_DIR)servlet/JnlpResource.java \
+        $(DEMO_SRC_DIR)servlet/ResourceCatalog.java \
+        $(DEMO_SRC_DIR)servlet/JarDiffHandler.java \
+        $(DEMO_SRC_DIR)servlet/XMLParsing.java \
+        $(DEMO_SRC_DIR)servlet/XMLNode.java \
+        $(DEMO_SRC_DIR)servlet/XMLAttribute.java \
+        $(DEMO_SRC_DIR)servlet/Logger.java \
+        $(DEMO_SRC_DIR)util/VersionID.java \
+        $(DEMO_SRC_DIR)util/VersionString.java \
+        $(DEMO_SRC_DIR)jardiff/JarDiff.java \
+        $(DEMO_SRC_DIR)jardiff/JarDiffConstants.java
+
+UNIX_SHARE_FILES = \
+        $(TARGDIR)com/sun/javaws/LocalInstallHandlerFactory.java \
+        $(TARGDIR)com/sun/javaws/ExtensionInstallHandlerFactory.java \
+        $(TARGDIR)com/sun/javaws/UnixInstallHandler.java \
+        $(TARGDIR)com/sun/javaws/BrowserSupportFactory.java \
+        $(TARGDIR)com/sun/javaws/UnixBrowserSupport.java \
+        $(TARGDIR)com/sun/javaws/UnixOperaSupport.java
+
+WINDOWS_FILES = \
+        $(TARGDIR)com/sun/javaws/WinBrowserSupport.java \
+        $(TARGDIR)com/sun/javaws/WinOperaSupport.java \
+        $(TARGDIR)com/sun/javaws/BrowserSupportFactory.java \
+        $(TARGDIR)com/sun/javaws/LocalInstallHandlerFactory.java \
+        $(TARGDIR)com/sun/javaws/WinInstallHandler.java \
+        $(TARGDIR)com/sun/javaws/ExtensionInstallHandlerFactory.java \
+        $(TARGDIR)com/sun/javaws/WinExtensionInstallHandler.java 

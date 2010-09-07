@@ -1,0 +1,51 @@
+#
+# @(#)converter.gmk	1.18 10/03/24
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# @(#)converter.gmk	1.18 03/24/10
+#
+# Other source files for the HTML converter
+#
+
+TEMPLATES =	templates/nsonly.tpl \
+		templates/default.tpl \
+		templates/extend.tpl \
+		templates/ieonly.tpl
+
+MISC =		readme.txt \
+		Readme.html
+
+LOCALE_SUFFIXES = \
+                $(PLUGIN_LOCALES)
+
+FILES_other =	$(TEMPLATES) $(MISC) 
+
+MANIFEST =	MANIFEST.MF
+
+SCRIPTS +=	$(BINDIR)/HtmlConverter$(EXE_SUFFIX)
+
+DEPLOY_SHARE_SRC=${CONVERTER_SRC}/share/converter
+
+# replace copyright year to setted value
+define replace_copyrightyear
+@if [ ! -f $@ -o -w $@ ]; then \
+	dirname=`$(DIRNAME) $@`; \
+	if [ ! -d $${dirname} ]; then \
+		$(MKDIR) -p $${dirname}; \
+	fi; \
+	$(SED) -e 's/COPYRIGHT_YEAR/${COPYRIGHT_YEAR}/g'  $<  > $@ ;\
+	$(CHMOD) 777 $@; \
+fi
+endef
+
+# replace these java files' copyright year
+$(DEPLOY_L10N_TMP_OUTPUTDIR)/sun/plugin/converter/resources/Converter_%.java: $(DEPLOY_SHARE_SRC)/sun/plugin/converter/resources/Converter_%.java
+	$(replace_copyrightyear)
+
+# replace this java files' copyright year
+$(DEPLOY_L10N_TMP_OUTPUTDIR)/sun/plugin/converter/resources/Converter.java: $(DEPLOY_SHARE_SRC)/sun/plugin/converter/resources/Converter.java
+	$(replace_copyrightyear)

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+"
+      href="JNLPExtendedService1-jnlp-applet-rel.jnlp">
+  <information>
+    <title>Simple Applet 1.2 (jnlp title)</title>
+    <vendor>SUN Deployment</vendor>
+    <description kind='tootltip'>A simple JNLP test</description>
+    <description kind='one-line'>Applet</description>
+    <homepage href='JNLPExtendedService1-jnlp-applet-rel.html' />
+    <offline-allowed/>
+  </information>
+    <resources>
+      <j2se href="http://java.sun.com/products/autodl/j2se" version="1.2+"/>
+      <jar href="JNLPExtendedService1.jar"/>
+      <extension name="SimpleApplet" 
+                 href="SimpleApplet-jnlp-applet-rel.jnlp"/>
+    </resources>
+  <applet-desc 
+      name="JNLPExtendedService1"
+      main-class="JNLPExtendedService1"
+      width="480" 
+      height="120">
+      <param name="offline" value="false"/>
+      <param name="browsersupported" value="true"/>
+  </applet-desc>
+</jnlp>

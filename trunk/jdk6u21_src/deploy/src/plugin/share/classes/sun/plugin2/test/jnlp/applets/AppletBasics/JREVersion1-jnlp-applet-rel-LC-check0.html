@@ -1,0 +1,80 @@
+<HTML>
+  <TITLE>
+    <title>JREVersion1 LC Applet 0</title>
+  </TITLE>
+  <HEAD>
+  <SCRIPT LANGUAGE="javascript">
+    function runTest() {
+        var vers_prod = null;
+        var vers_plat = null;
+        var passed = false;
+        var relaunched = false;
+        var excStr = null;
+        try {
+            passed = document.JRERelaunch1.getTestResult();
+            relaunched = document.JRERelaunch1.getIsAppletRelaunched();
+            vers_plat = document.JRERelaunch1.getVersionPlatform();
+            vers_prod = document.JRERelaunch1.getVersionProduct();
+        } catch (e) {
+            excStr = getExceptionString(e);
+        }
+        reportResult(vers_prod, vers_plat, passed, relaunched, excStr);
+    }
+
+    function getExceptionString(e) {
+        if (typeof e == "string") {
+            return e;
+        } else {
+            var s = "";
+            for (var i in e) {
+                s += "" + i + " = " + e[i] + "\n";
+            }
+            return s;
+        }
+    }
+
+    function reportResult(vers_prod, vers_plat, passed, relaunched, excStr) {
+        var text0 = "Product "+vers_prod+", Platform "+vers_plat;
+        var text1 = (passed ? "Test passed." : "TEST FAILED");
+        var text2 = (relaunched ? "Applet relaunched." : "Applet 1st run");
+        var text3 = "Life is good"
+        if (excStr != null) {
+            text3 = "<BR>Exception:<PRE>" + excStr + "</PRE>";
+        }
+        document.getElementById("text0").innerHTML = text0;
+        document.getElementById("text1").innerHTML = text1;
+        document.getElementById("text2").innerHTML = text2;
+        document.getElementById("text3").innerHTML = text3;
+    }
+  </SCRIPT>
+  </HEAD>
+
+  <BODY ONLOAD="runTest()">
+      <br>
+      simple launch, no relaunch
+
+      test results reported and verified with JavaScript/LiveConnect communication
+      <br>
+      <h1>Simple Applet 1.2</h1>
+      <hr>
+      <APPLET ID="JRERelaunch1ID1" NAME="JRERelaunch1" CODEBASE=codebasedir/ CODE=JRERelaunch1 WIDTH=800 HEIGHT=120>
+      <PARAM name="check.java.isRelaunch" VALUE="false">
+      <PARAM name="check.java.version_platform" VALUE="1.6">
+      <PARAM name="jnlp_href" VALUE="JREVersion1.0-jnlp-applet-rel.jnlp">
+      </APPLET>
+      <br>
+      Watch the console output ..<br>
+      <br>
+      And the following 3 lines as a result of LiveConnext:<br>
+      <br>
+      <DIV ID="text0">
+      </DIV>
+      <DIV ID="text1">
+      </DIV>
+      <DIV ID="text2">
+      </DIV>
+      <DIV ID="text3">
+      </DIV>
+  </body>
+</html>
+

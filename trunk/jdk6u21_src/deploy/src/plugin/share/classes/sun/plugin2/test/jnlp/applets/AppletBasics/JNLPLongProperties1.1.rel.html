@@ -1,0 +1,26 @@
+<html>
+  <head>
+      <title>JRERelaunch1 Applet 5</title>
+  </head>
+  <body>
+      <br>
+      Shall run in a JNLP env and as a pure applet !<br>
+      Shall fail, since it uses insecure args and is not signed!
+      <br>
+      Relaunch:<br>
+      - long insecure properties as vmargs<br>
+      <br>
+      <h1>Simple Applet 1.2</h1>
+      <hr>
+      <APPLET NAME=JRERelaunch1 CODEBASE=codebasedir/ CODE=JRERelaunch1 ARCHIVE="JRERelaunch1.jar, JRERelaunch1.jar" WIDTH=800 HEIGHT=120>
+      <PARAM name="check.java.isRelaunch" VALUE="true">
+      <PARAM name="check.java.jvm_args" VALUE='-DminimumJRE=1.4.2 -DQueryResult.WarningMessage="The query exceeds the allowed number of search terms.NL Results matching the first 40 terms have been returned.NL This may include more or less results than what the full query would have returned." -DQueryResult.LimitationCount=40 -client'>
+      <PARAM name="jnlp_href" VALUE="JNLPLongProperties1.1.jnlp">
+      </APPLET>
+      <hr>
+      Nothing to see here ;-) <br>
+      <br>
+      Watch the console output ..<br>
+  </body>
+</html>
+

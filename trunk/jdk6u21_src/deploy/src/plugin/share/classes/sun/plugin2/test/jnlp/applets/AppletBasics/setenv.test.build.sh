@@ -1,0 +1,16 @@
+#! /bin/sh
+
+JAVA_HOME=$1
+J2RE_HOME=$1
+# export JAVA_HOME J2RE_HOME
+shift
+
+export LIBXCB_ALLOW_SLOPPY_LOCK=1
+
+export JPI_PLUGIN2_DEBUG=1
+export JPI_PLUGIN2_VERBOSE=1
+export JAVAWS_TRACE_NATIVE=1
+
+PATH=$JAVA_HOME/bin:$PATH
+export PATH
+
