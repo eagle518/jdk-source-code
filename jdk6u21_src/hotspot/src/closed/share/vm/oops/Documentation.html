@@ -1,0 +1,60 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>Java Virtual Machine - Oops</TITLE>
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.0b1 (WinNT; I) [Netscape]">
+</HEAD>
+<BODY>
+
+<P><!"$Revision: 1.6 $"></P>
+
+<H1 ALIGN=CENTER>Heap Objects</H1>
+
+<CENTER><DT>&nbsp;</DT></CENTER>
+
+<DT>The oops directory contains implementation of all heap objects:</DT>
+
+<H3>instanceOop</H3>
+
+<DT>&nbsp;&nbsp;&nbsp; instanceOop -&gt; klassOop[instanceKlass] -&gt;
+the klassOop [instanceKlassKlass] -&gt; *</DT>
+
+<H3>objArrayOop</H3>
+
+<DT>&nbsp;&nbsp;&nbsp; objArrayOop -&gt; klassOop[objArrayKlass] -&gt;
+the klassOop [objArrayKlassKlass] -&gt; *</DT>
+
+<H3>methodOop</H3>
+
+<DT>&nbsp;&nbsp;&nbsp; methodOop -&gt; the klassOop[methodKlass] -&gt;
+*</DT>
+
+<H3>symbolOop</H3>
+
+<DT>&nbsp;&nbsp;&nbsp; symbolOop -&gt; klassOop[symbolKlass] -&gt; the
+klassOop [typeArrayKlassKlass] -&gt; *</DT>
+
+<H3>typeArrayOop</H3>
+
+<DT>&nbsp;&nbsp;&nbsp; typeArrayOop -&gt; klassOop[typeArrayKlass] -&gt;
+the klassOop [typeArrayKlassKlass] -&gt; *</DT>
+
+<H3>constantPoolOop</H3>
+
+<DT>&nbsp;&nbsp;&nbsp; constantPoolOop -&gt; klassOop[constantPoolKlass]
+-&gt;&nbsp;*</DT>
+
+<H3>vframeArrayOop</H3>
+
+<DT>&nbsp;&nbsp;&nbsp;&nbsp; vframeArrayOop -&gt; klassOop[vframeArrayKlass]
+-&gt; *</DT>
+
+<DT>&nbsp;</DT>
+
+<DT>&nbsp;* denotes the klassOop[klassKlass] which is the fixpoint for
+the klass chain.</DT>
+
+</BODY>
+</HTML>
+
+

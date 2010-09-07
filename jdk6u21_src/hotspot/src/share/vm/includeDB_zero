@@ -1,0 +1,55 @@
+//
+// Copyright (c) 2001, 2009, Oracle and/or its affiliates. All rights reserved.
+// Copyright 2009 Red Hat, Inc.
+// ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//  
+//
+
+// NOTE: DO NOT CHANGE THIS COPYRIGHT TO NEW STYLE - IT WILL BREAK makeDeps!
+
+entryFrame_<arch>.hpp                   javaCalls.hpp
+entryFrame_<arch>.hpp                   stack_<arch>.hpp
+
+fakeStubFrame_<arch>.hpp                stack_<arch>.hpp
+
+frame.hpp                               stack_<arch>.hpp
+
+frame.inline.hpp                        fakeStubFrame_<arch>.hpp
+frame.inline.hpp                        entryFrame_<arch>.hpp
+frame.inline.hpp                        interpreterFrame_<arch>.hpp
+frame.inline.hpp                        sharkFrame_<arch>.hpp
+
+frame_<arch>.cpp                        interpreterRuntime.hpp
+frame_<arch>.cpp                        scopeDesc.hpp
+
+interpreter.hpp                         entry_<arch>.hpp
+
+interpreterFrame_<arch>.hpp             bytecodeInterpreter.hpp
+interpreterFrame_<arch>.hpp             methodOop.hpp
+interpreterFrame_<arch>.hpp             stack_<arch>.hpp
+interpreterFrame_<arch>.hpp             thread.hpp
+
+sharkFrame_<arch>.hpp                   methodOop.hpp
+sharkFrame_<arch>.hpp                   stack_<arch>.hpp
+
+stack_<arch>.hpp                        sizes.hpp
+
+thread.hpp                              stack_<arch>.hpp

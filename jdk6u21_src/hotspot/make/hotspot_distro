@@ -1,0 +1,32 @@
+# 
+# Copyright (c) 2006, 2008, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+# 
+
+#
+# This file format must remain compatible with both
+# GNU Makefile and Microsoft nmake formats.
+#
+
+# Don't put quotes (fail windows build).
+HOTSPOT_VM_DISTRO=Java HotSpot(TM)
+COMPANY_NAME=Sun Microsystems, Inc.
+PRODUCT_NAME=Java(TM) Platform SE

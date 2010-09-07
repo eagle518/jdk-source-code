@@ -1,0 +1,548 @@
+-*- mode: outline -*-
+
+Fast and Decisive Class Checking in the Hotspot VM
+John Rose & Cliff Click, 8/2001
+
+* Definitions
+
+DEF 0: A check is __decisive__ if it always produces an answer in a
+bounded number of CPU operations.  A check is __semi-decisive__ if
+it always produces an answer without a VM call.
+
+DEF 1: A __klass__ is (the Hotspot VM representation of) any non-null
+reference type (Java class, interface, or array type).
+
+DEF 2: A klass T is a __primary supertype__ iff T is a loaded proper class,
+or an array of a primary supertype, or an array of primitive values.
+
+Note that this T is called a primary supertype independently of any
+subtypes it may have.  Under this definition, even a final class can be
+called a primary supertype.
+
+We say "T is a primary supertype of S" iff T is a primary supertype
+and T is a supertype of S.  Likewise for "T a secondary supertype of S".
+
+DEF 3: A klass T is a __secondary supertype__ iff T is a loaded interface,
+or an array of a secondary supertype.
+
+As before, such a T is intrinsically a secondary supertype, without
+reference to any subtypes it may have.  When we wish to observe T
+with reference to some subtype S, we say "T is a secondary supertype
+of S."
+
+DEF 4: The __super depth__ of any klass S is zero if S has no primary
+supertypes, and otherwise is one plus the number of primary supertypes
+of S (exclusive of S).
+
+DEF 5: Given a type S with primary supertypes, the __direct primary
+supertype__ T of S is a "minimal" primary supertype of S.  By "minimal"
+we mean that any other primary supertype T' of S is also a supertype of T.
+
+Note that if S has any primary supertypes, the direct primary supertype
+T exists and is unique.  Thus the set of all primary supertypes forms a
+tree under the subtype relation.
+
+Therefore, "super depth" is tree depth within the primary supertype relation.
+
+* Examples
+
+Object, Object[], Object[][], int[], int[][], String, and String[] are
+primary supertypes.
+
+Comparable, Comparable[], and Comparable[][] are secondary supertypes.
+
+The super depth of Object is 0, of String and Number is 1, and of
+Integer is 2.  The super depth of Comparable (or any interface) is 1.
+(In our VM, currently, every interface inherits directly from Object.)
+
+The primary supertypes of Integer are Object and Number.  Its secondary
+supertypes are Comparable and Serializable.
+
+The primary supertypes of Integer[][] are (by increasing super depth):
+  Object, Object[], Object[][], Number[][]
+
+The secondary supertypes of Integer[][] are (in no particular order):
+  Cloneable, Serializable, Cloneable[], Serializable[], Comparable[][],
+  Serializable[][]
+
+* Hotspot VM Data Structures
+
+The Klass::super_depth accessor of every klass S reports S's super depth.
+
+The Klass::_primary_supers field of a klass S provides a list of all
+primary supertypes of S.  Its format will be described below.  Its
+order, which is highly significant, is by increasing super depth.
+(The first element, if any, is always the Object klass.)
+
+The Klass::_secondary_supers field of a klass S provides a list of all
+secondary supertypes of S.  It points to an objArray of klasses.
+
+An integer Klass::_super_check_offset will be added.  It is described below.
+
+(These fields are new, after 1.4.)
+
+* Checking Primary Supertypes, Trial Version
+
+Thus, one can decisively determine if a test klass T is a supertype of
+an object klass S, by checking S's _primary_supers and _secondary_supers
+lists.
+
+Moreover, T is not in S's _primary_supers if it is a secondary supertype,
+and T is not on S's _secondary_supers list is a primary supertype.
+This means that, by inspecting T, we only need to seach one of S's lists.
+
+Moreover, if T is a primary supertype, its position on S's _primary_supers
+is determined by T's super depth, and without reference to S.  For
+example, if T's super depth is 0 (i.e., T is java.lang.Object), then
+T will be the first element in S's _primary_supers, if it is there at all.
+Or, if T's super depth is 1 (e.g., T is java.lang.Throwable), T will
+be the second in S's _primary_supers.
+
+Now consider the operation S->super_of_depth(D) which produces the unique
+element of S's _primary_supers whose super depth is D.  (Define the operation
+to produce NULL for D > S->super_depth().)  Then the following formula
+is true for every klass S and primary supertype T:
+
+   S->is_subtype_of(T)  :=  (T == S->super_of_depth(T->super_depth()))
+
+These insights would allow us to reorganize S's list of primary super
+into an array indexed by super depth, leading immediately to a fast
+decisive test for all primary supertypes:
+
+   S->super_of_depth(D)  :=  D <= S->super_depth()? S->_primary_supers[D]: NULL
+
+This technique does not map perfectly to a few machine instructions.
+It includes an undesirable range check, and also the layout of Hotspot
+klasses does not allow us to place a variable-length array of supertypes
+at a fixed offset in the Klass layout.  Also, it does not help much in
+the case where T is a secondary supertype.  (It happens to produce the
+right answer for secondaries only if T==S.)
+
+* Checking Primary Supertypes, Production Version
+
+We can adjust the previous algorithm ensure that checking an unknown
+type S against a known primary supertype T can be done with one memory
+access, by making the _primary_supers an embedded array within the Klass
+layout, and giving it a statically fixed size (SUPER_LIMIT, e.g., 8).
+
+Then we can enjoy a one-load implementation of super_of_depth:
+
+   S->super_of_depth(D)  :=  S->_primary_supers[D]
+
+In effect, we wish to remove the need for range checks and floating
+arrays by putting a limit on the super depth of all klasses.  This is
+easily done, by adjusting the definitions of primary and secondary
+supertypes:
+
+DEF 2': A klass is an __restricted primary supertype__ iff it is a
+loaded proper class, or an array of a primary supertype, or an array of
+primitive values, and also that klass's restricted super depth is less
+than SUPER_LIMIT.
+
+DEF 3': A klass is a __restricted secondary supertype__ iff it is a loaded
+interface, or an array of a secondary supertype, or any klass of
+restricted super depth SUPER_LIMIT.
+
+DEF 4': The __restricted super depth__ of a klass S is zero if S has no
+restricted primary supertypes, and otherwise is one plus the number of
+restricted primary supertypes of S (exclusive of S).
+
+Note that the definition of "restricted super depth" is recursively
+involved with the first two definitions, and that no klass ever has a
+restricted super depth larger than SUPER_LIMIT.
+
+All examples given above also hold true for the corresponding
+"restricted" definitions, assuming that SUPER_LIMIT is at least 4.
+
+By using these restricted definitions, we can constrain the size of the
+Klass::_primary_supers array.  The type checks against restricted primary
+types will go faster because of the removal of indirections and range
+checks.  
+
+Overflows in the primary array (because you are too deep in the type
+heirarchy) go into the secondary array.  Type checks against very deep
+classes will be slow.
+
+* Checking Secondary Supertypes
+
+In order to quickly check secondary supertypes, we could introduce a
+global numbering on them, as IBM does with interfaces.  It is easy to
+envision a decisive type check based on a global type numbering which
+indexes a two-dimensional bit table.
+
+However, this is difficult to do well in the presence of dynamic loading
+and unloading of types.  A simpler technique which performs a linear
+search on the Klass::_secondary_supers list is slower, but still
+semi-decisive, because we can do a short linear search inline, without
+visiting the VM.  It is also still reasonably fast, given the typically
+short length of supertype lists.
+
+(Note that creation of VM calls is a significant compile-time cost.
+Thus, semi-decisive techniques are usually preferable over non-decisive
+ones, even if the VM calls are dynamically very rare.)
+
+If we prepend cache checks to the linear search, we can avoid the search
+in most cases.
+
+A secondary supertype check, with a one-element supertype cache, looks
+like this:
+
+   S->has_secondary_supertype(T)  :=  {
+     if (S->_secondary_super_cache == T)
+       return true;
+     for (int i = 0; i < S->_secondary_supers->_length; i++)
+       if (S->_secondary_supers->at(i) == T) {
+         S->_secondary_super_cache = T;
+         return true;
+       }
+     return false;
+   }
+
+* Combining the Checks
+
+The last problem to solve is quickly determining whether a given test
+klass is a primary or secondary supertype.  This might be done by means
+of a bit in the header of the klass, etc.
+
+The best approach is to force the super depth property of restricted
+secondary supertypes to contain a distinguished value (SUPER_LIMIT).
+
+Note that super depth is only useful in primary supertypes, as a
+parameter to super_of_depth, and for restricted supertypes it is always
+less than SUPER_LIMIT.
+
+A further variation this approach gives the best code.  Define a new
+field Klass::_super_check_offset, which holds the bytewise offset of
+a klassOop field relative to the base of the Klass layout.
+
+For a restricted primary supertype T, the _super_check_offset is the
+offset of Klass::_primary_supers[T->super_depth()].
+
+For a restricted secondary supertype T, the _super_check_offset is the
+offset of Klass::_secondary_super_cache.
+
+This means that most type checks can be carried out in two memory
+references, without regard to whether the test type is primary or
+secondary:
+
+   S->is_subtype_of(T)  :=  {
+     int      off = T->_super_check_offset;
+     klassOop sup = *(klassOop*)( (address)S + off );
+     if (sup == T)
+       return true;   // usually wins
+     if (off != &Klass::_secondary_super_cache)
+       return false;  // always taken for primary supertype T
+     if (S == T)
+       return true;   // S is not in its own super lists
+     if (S->search_for_secondary(T)) {
+       S->_secondary_super_cache = T;
+       return true;
+     } else
+       return false;
+   }
+
+Note that the second test determines whether the first test was decisive
+or not.
+
+This combined test is decisive for primary supertypes, in two memory
+references.  Depending on the effectiveness of the _secondary_super_cache,
+it usually produces an answer in the same two memory references for
+secondary supertypes also.
+
+The code shape of this test is very easy to optimize.  If T is constant,
+then its _super_check_offset may be constant folded, as can the second
+test.  This is true in most cases, and allows most type checks to obtain
+an answer in one memory reference.
+
+Note that the first two tests are independent, and may be reordered
+if the CPU allows a compare to be issued concurrently with a branch
+on a previous compare:
+
+      ld   [%T + &Klass::_super_check_offset], %X1
+      cmp  %X1, &Klass::_secondary_super_cache
+      ld   [%S + %X1], %X2		# %X1, %X2 can be the same temp reg
+      bne  done
+      cmp  %T, %X2
+      be   done
+      cmp  %T, %S
+      be   done
+      nop
+      # slow case
+      ...
+      done:
+      bne  check_failed
+      nop
+
+It is quite natural to place the _secondary_super_cache near the zero-th
+element of the _primary_supers array.  If the _super_check_offset field
+is also placed near the array, then the entire check will use a minimum
+number of memory cache lines.  The _not_super_cache, if any, should be
+located nearby also.
+
+* More On Secondary Supertype Arrays
+
+The final test in the code shape above performs a linear search over a
+second supertype array.  It may be augmented by further cache checks,
+such as additional super type caches, or the two-word subtype cache in
+the 1.4 Hotspot VM.  Note that the 1.4 subtype cache is independent of
+the supertype cache described above.
+
+(If the secondary supertype list is represented as an array contiguous
+with a multi-word supertype cache, it would be possible to search both
+together in the same loop.  However, this would prevent sharing of
+secondary supertype lists, and the list as a whole could not be treated
+as a mutable cache, because MT programs could cause elements to be lost.)
+
+For the sake of the instanceof operator, we may desire to speed negative
+results on secondary supertypes by including a field in every klass S
+Klass::_not_super_cache, which contains the last secondary supertype
+that failed to be a subtype of S.
+
+When compiling this code, the final search_for_secondary operation may
+be hidden in a single graph node, and implemented with hand-written
+assembly instructions.  Since it is uncommon, there is no need to worry
+about optimizing that code.
+
+Secondary supertype arrays (Klass::_secondary_supers) are immutable and
+hence may be shared between klasses with the same supertype lists.
+
+Arrays always have the same two-element list of secondary supertypes.
+
+We make sharing more likely among subclasses by refusing to put the
+klass itself on its own supertype lists, even though that requires
+an extra compare-and-branch in the shape of the type-checking code,
+to cover the case of T==S.
+
+* Comparisons with Jalapeno
+
+Compared with IBM's published claims on their experimental VM, our
+scheme is better in that it:
+
+ + supports decisive checks for common array types,
+ + handles all checks, usually, in one to two memory operations,
+ + works well with class loading and unloading, and
+ + is at least semi-decisive in all cases (no VM calls at all).
+
+Our scheme does not include decisive interface checks, but even the
+Jalapeno checks were slightly indecisive, in that an initial VM call
+is required to fill in the "maybe" entries in their trit table.
+
+* Checking Against Non-Constant Types
+
+Most checks compare a non-constant reference against a statically
+determined type, so that the "_super_check_offset" value is a compile
+time constant.  This is true of checkcast and instanceof operations.
+
+The reflective method Class.isInstance can also produce checks against
+non-constant types.  The compiler implements it as an intrinsic.  In the
+absence of a constant class operand, the intrinsic code will produce a
+decisive answer in two memory references, for most classes and arrays,
+and not much more than two in most other cases.
+
+A Java reference array variable is polymorphic, in that the variable can
+point to various kinds of arrays.  This leads to the infamous "store
+check" requirement, where every reference stored into an array must be
+checked against the element type of the array.  This is inconvenient,
+because the element type may vary at runtime.
+
+The Jalapeno paper notes that nearly all array variables are
+monomorphic, in the sense that they hold (at runtime) references
+to objects of exactly the statically determined array type,
+and not a subtype thereof.
+
+This means that when an element is stored to an array, the array
+may be verified (in one memory reference) to be of exactly the
+expected type, and then the array element may be tested against
+the expected element type, as if by a checkcast.
+
+Thus, most array store checks can optimistically verify an element type
+in one memory reference.  In those rare cases where the optimistic
+technique fails, because an array variable is polymorphic, the element
+type to be tested is non-constant, and must be loaded (in two memory
+references) from the array object.  In this case, two more memory
+references will usually finish the array store check.
+
+* Conclusion
+
+We have described a type-checking mechanism which usually succeeds in
+one memory reference for instanceof and checkcast, one or two memory
+references for array store checks, and two memory references for
+Class.isInstance.
+
+For most proper classes and many array types (i.e., all restricted
+primary supertypes), the mechanism is fully decisive after one memory
+reference, when compiling instanceof or checkcast.
+
+The memory cost for new super lists and caches is 30-40 bytes per klass
+compared with 8 bytes for the 1.4 mechanism.  The _secondary_supers
+array is almost identical with the existing _transitive_interfaces
+array (in instanceKlass), and can subsume it.
+
+The compilation costs are favorable, in that there are no slow paths
+with their associated call structure and register spills.
+
+The new type-checking mechanism is easy to implement in the Hotspot
+runtime.
+
+* Appendix:  An Experiment with Spec
+
+The following numbers were derived by instrumenting the runtime
+and running the VM in -Xint mode with all type checks redirected
+to the runtime.  (I.e., the interpreter's subtype cache logic
+was disabled.)  The exact run was:
+
+  java -Xint SpecApplication _200_check _202_jess _213_javac _228_jack
+
+Bottom line:  Optimal FastSuperclassLimit for spec is 5.
+
+Robustly optimal setting is 2 or 3 more:  7 or 8.
+
+These numbers tell me that the 1-element secondary subtype cache is
+important: It hits on 6.5% of all queries, or 99.9% of all secondary
+queries.  Basically it makes the cost of searching the secondary array
+disappear completely.  Given that even in the best case a secondary
+array search requires two loads in addition to the first two loads,
+this means that the secondary cache saves at least 7% of the total
+cost of type checking.  The cache also adds a margin of robustness to
+the performance of the VM, which is important since we do not know
+all the applications that will be performance sensitive.
+
+The "=secondary" case is not important to performance, but allows for
+(an unknown amount of) footprint reduction, by enabling sharing of more
+secondary arrays.  The idea is that a class might be its own secondary
+supertype, but it can share the secondary supertypes array with its own
+superclass.  It might be possible to get rid of the "=secondary" case
+with a small cost to footprint.  We haven't measured footprint effects
+yet.
+
+(We haven't measured JBB effects yet.)
+
+Key:
+  FastSuperclassLimit  = # elements in primary supertype array
+  subtype query        = # type checks by interpreter (aastore, i'of, c'cast)
+  subtype primary      = # checks against 1ary super w/ true outcome
+  subtype !primary     = # checks against 1ary super w/ false outcome
+  subtype cache        = # checks against 2ary super w/ cache hit, true outcome
+  subtype =secondary   = # checks against 2ary super == self type, true outcome
+  subtype !cache1      = # checks against 2ary w/ hit in negative cache #1
+  subtype !cache2      = # checks against 2ary w/ hit in negative cache #2
+  subtype secondary    = # linear searches of 2ary array w/ true outcome
+  subtype !secondary   = # linear searches of 2ary array w/ false outcome
+
+subtype statistics: (FastSuperclassLimit=1)
+subtype query        =  12504552 = 100.0%
+subtype primary      =   1464914 =  11.7%
+subtype !primary     =         0 =   0.0%
+subtype cache        =   8640060 =  69.1%
+subtype =secondary   =    587122 =   4.7%
+subtype !cache1      =    557221 =   4.5%
+subtype !cache2      =    432263 =   3.5%
+subtype secondary    =    460346 =   3.7%
+subtype !secondary   =    362626 =   2.9%
+
+(Note that with FastSuperclassLimit=1 the only
+"primary" superclass is java/lang/Object itself.
+Therefore, the 11.7% primary hits in this case
+are exactly all tests against Object itself.
+Since the javac compiler never emits instanceof
+or checkcast operations against that type, it
+follows that 11.7% of all type checking operations,
+in this experiment, were due to aastores to
+Object arrays.)
+
+subtype statistics: (FastSuperclassLimit=2)
+subtype query        =  12504552 = 100.0%
+subtype primary      =   8839736 =  70.7%
+subtype !primary     =    377148 =   3.0%
+subtype cache        =   1508841 =  12.1%
+subtype =secondary   =    581350 =   4.6%
+subtype !cache1      =    539204 =   4.3%
+subtype !cache2      =    309926 =   2.5%
+subtype secondary    =    222515 =   1.8%
+subtype !secondary   =    125832 =   1.0%
+
+subtype statistics: (FastSuperclassLimit=3)
+subtype query        =  12504552 = 100.0%
+subtype primary      =   9668198 =  77.3%
+subtype !primary     =    654151 =   5.2%
+subtype cache        =    828912 =   6.6%
+subtype =secondary   =    577967 =   4.6%
+subtype !cache1      =    451748 =   3.6%
+subtype !cache2      =    194151 =   1.6%
+subtype secondary    =     77365 =   0.6%
+subtype !secondary   =     52060 =   0.4%
+
+subtype statistics: (FastSuperclassLimit=4)
+subtype query        =  12504552 = 100.0%
+subtype primary      =  10016074 =  80.1%
+subtype !primary     =   1188958 =   9.5%
+subtype cache        =    804298 =   6.4%
+subtype =secondary   =    287054 =   2.3%
+subtype !cache1      =    157502 =   1.3%
+subtype !cache2      =      4907 =   0.0%
+subtype secondary    =     45016 =   0.4%
+subtype !secondary   =       743 =   0.0%
+
+(The negative caches were experimental.  These numbers
+indicate that they are completely unused by SpecApplication.
+Hypothetical applications which do if/then/else logic on
+interface types will want them.)
+
+subtype statistics: (FastSuperclassLimit=5)
+subtype query        =  12504552 = 100.0%
+subtype primary      =  10341031 =  82.7%
+subtype !primary     =   1351410 =  10.8%
+subtype cache        =    810323 =   6.5%
+subtype =secondary   =       750 =   0.0%
+subtype !cache1      =         0 =   0.0%
+subtype !cache2      =         0 =   0.0%
+subtype secondary    =       338 =   0.0%
+subtype !secondary   =       700 =   0.0%
+
+subtype statistics: (FastSuperclassLimit=6)
+subtype query        =  12504552 = 100.0%
+subtype primary      =  10341349 =  82.7%
+subtype !primary     =   1351431 =  10.8%
+subtype cache        =    810275 =   6.5%
+subtype =secondary   =       546 =   0.0%
+subtype !cache1      =         0 =   0.0%
+subtype !cache2      =         0 =   0.0%
+subtype secondary    =       272 =   0.0%
+subtype !secondary   =       679 =   0.0%
+
+subtype statistics: (FastSuperclassLimit=7)
+subtype query        =  12504552 = 100.0%
+subtype primary      =  10341667 =  82.7%
+subtype !primary     =   1351451 =  10.8%
+subtype cache        =    810202 =   6.5%
+subtype =secondary   =       307 =   0.0%
+subtype !cache1      =         0 =   0.0%
+subtype !cache2      =         0 =   0.0%
+subtype secondary    =       266 =   0.0%
+subtype !secondary   =       659 =   0.0%
+
+subtype statistics: (FastSuperclassLimit=8)
+subtype query        =  12504552 = 100.0%
+subtype primary      =  10341709 =  82.7%
+subtype !primary     =   1351457 =  10.8%
+subtype cache        =    810202 =   6.5%
+subtype =secondary   =       265 =   0.0%
+subtype !cache1      =         0 =   0.0%
+subtype !cache2      =         0 =   0.0%
+subtype secondary    =       266 =   0.0%
+subtype !secondary   =       653 =   0.0%
+
+subtype statistics: (FastSuperclassLimit=9)
+subtype query        =  12504552 = 100.0%
+subtype primary      =  10341709 =  82.7%
+subtype !primary     =   1351457 =  10.8%
+subtype cache        =    810202 =   6.5%
+subtype =secondary   =       265 =   0.0%
+subtype !cache1      =         0 =   0.0%
+subtype !cache2      =         0 =   0.0%
+subtype secondary    =       266 =   0.0%
+subtype !secondary   =       653 =   0.0%
+
+subtype statistics: (FastSuperclassLimit=10)
+[fixpoint; identical to limit=9 case]
+

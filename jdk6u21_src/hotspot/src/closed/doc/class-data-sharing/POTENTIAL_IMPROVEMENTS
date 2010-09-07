@@ -1,0 +1,29 @@
+
+POTENTIAL IMPROVEMENTS
+
++ Constant pool sharing.  During the creation of the shared file,
+  classes and methods already loaded can be modified to refer to a
+  small(er) number of constant pool objects, so that duplicate constant
+  pool entries can be eliminated.  Faster because constant pool entry
+  resolution take place less often.
+
+  - Ths depends on the 'holder' field of the constant pool being
+    removed. I've done this in a prototype workspace.  It involves
+    passing constant pool references as arguments in several method
+    calls. 
+
+  - Bytecodes must be rewritten so that constant pool indices are
+    consistent. 
+
+  - Constant pool entries in a test set of classes:  257,370.
+    Unique constants:  99,882.  This is 61% fewer entries.
+
+
++ Combine constant pool and cpcache data structures?
+
++ Reevaluate whether preconstucting String objects used as constants in
+  the constant pools was a good idea.
+
++ Pay attention to page fault patterns in the shared file to verify that
+  the data in the file is suitably ordered.
+

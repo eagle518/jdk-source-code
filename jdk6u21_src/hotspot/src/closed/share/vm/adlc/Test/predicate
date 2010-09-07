@@ -1,0 +1,14 @@
+operand X_reg(REG_C rall)
+%{
+  predicate(0 <= rall < 7 );
+  match(VREG) %{ rall = new_VR(); /* Test Comment */ %}
+  encode %{ return(rall); %}
+%}
+
+instruct add_X_reg(X_reg dst, X_reg src)
+%{
+  // Another Test Comment
+  match(SET dst (ADD dst src));
+  /* Yet another Test Comment */
+  encode %{ return encode_addX(); %}
+%}

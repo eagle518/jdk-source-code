@@ -1,0 +1,42 @@
+#
+# Copyright (c) 2007, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#  
+#
+
+After making any changes to libproc.so, the shell scripts described
+below can be run to verify that it does not break Java Serviceability
+Agent.
+
+Setup:
+
+You need to have jdk 1.5 installed to run this test. Set environment
+variable SA_JAVA to point to the java executable of jdk
+1.5. Otherwise, the script picks-up 'java' from PATH.
+
+Running the tests:
+
+run libproctest.sh (32-bit debuggee) and libproctest64.sh (64-bit
+debuggee)
+
+Interpreting result:
+
+"PASSED" or "FAILED" is printed in standard output.

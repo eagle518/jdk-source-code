@@ -1,0 +1,13 @@
+// ***************************************************************************
+// Define the source block that will be placed at the beginning of output file
+// ***************************************************************************
+
+source 
+%{
+
+// This is a C++ comment that will be eliminated.
+
+#define  Foo(bar)     (bar++)
+
+%}
+

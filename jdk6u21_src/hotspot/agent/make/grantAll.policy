@@ -1,0 +1,30 @@
+//
+// Copyright (c) 2000, Oracle and/or its affiliates. All rights reserved.
+// ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//  
+//
+
+// Do NOT use this policy file in a production system!
+
+grant {
+        // Allow everything for now
+        permission java.security.AllPermission;
+};

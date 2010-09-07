@@ -1,0 +1,56 @@
+// 
+// Copyright (c) 2004, Oracle and/or its affiliates. All rights reserved.
+// ORACLE PROPRIETARY/CONFIDENTIAL.  Use is subject to license terms.
+// 
+
+// This includeDB is currently unused by the ADLC and only provides
+// a list of files used by the ADLC. This list is needed to extract
+// files from the workspace for release engin. builds. - gri 7/8/98
+//
+// Please adjust it if files are added to/removed from the ADLC.
+
+
+adlc.hpp                                
+
+adlcVMDeps.hpp                          
+
+adlparse.cpp                            
+
+adlparse.hpp                            
+
+archDesc.cpp                            
+
+archDesc.hpp                            
+
+arena.cpp                               
+
+arena.hpp                               
+
+dfa.cpp                                 
+
+dict2.cpp                               
+
+dict2.hpp                               
+
+filebuff.cpp                            
+
+filebuff.hpp                            
+
+forms.cpp                               
+
+forms.hpp                               
+
+formsopt.cpp                            
+
+formsopt.hpp                            
+
+formssel.cpp                            
+
+formssel.hpp                            
+
+main.cpp                                
+
+output_c.cpp                            
+
+output_h.cpp                            
+

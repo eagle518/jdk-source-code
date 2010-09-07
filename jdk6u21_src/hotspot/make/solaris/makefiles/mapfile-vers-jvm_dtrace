@@ -1,0 +1,37 @@
+#
+
+#
+# Copyright (c) 2006, 2008, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#  
+#
+
+# Define library interface for JVM-DTrace interface
+
+SUNWprivate_1.1 {
+        global:
+            jvm_attach;
+            jvm_get_last_error;
+            jvm_enable_dtprobes;
+            jvm_detach;
+        local:
+                *;
+};

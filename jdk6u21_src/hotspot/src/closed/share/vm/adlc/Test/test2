@@ -1,0 +1,150 @@
+// *********************************************************
+// Define the individual registers and the register classes.
+// *********************************************************
+
+register %{
+// General Registers
+reg_def EAX(SOC);
+reg_def EBX(SOC);
+reg_def ECX(SOC);
+reg_def EDX(SOC);
+reg_def EBP(SOC);
+reg_def ESP(SOC);
+reg_def ESI(SOC);
+reg_def EDI(SOC);
+
+// Class for general registers
+reg_class gen_reg(EAX, EBX, ECX, EDX, EBP, ESP, ESI, EDI);
+  // ESP can not be used as an index operand
+// alloc_class gen_reg_alloc( EAX, EBX, ECX, EDX);
+
+// Singleton class for stack pointer
+reg_class sp_reg(ESP);
+
+// Singleton class for condition codes
+reg_def EFLAGS;
+reg_class flags_reg(EFLAGS);
+%}
+
+// ***************************************************************************
+// Define the source block that will be placed at the beginning of output file
+// ***************************************************************************
+
+source %{
+// This is a C++ comment that will be eliminated.
+
+// Define SOC==SaveOnCall to be zero
+#define  SOC          0
+
+#define  INS_BASE_COST 5
+
+// Define filepointer for format output to be "stderr", for debugging.
+const static FILE  *fp = stdout;
+
+static int registerIsGPR(int i) { return i; }
+static int rID = 0;
+static int rall = 0;
+%}
+// ***********************************************************************
+// Define the pipelines, their resources, and their resource consumption
+// ***********************************************************************
+
+pipeline %{
+// Pipeline Resources
+resource(addr1);
+resource(addr2);
+
+resource(membus);
+
+resource(alu1);
+resource(int_alu2);
+
+// Describe the pipeline phases that are interesting
+pipe_desc(Address, Access, Read, Execute);
+pipe_class V_pipe(addr1; membus; alu1, int_alu2);
+pipe_class U_pipe(addr2; membus; int_alu2);
+%}
+
+op_attrib op_cost(10);
+
+ins_attrib ins_cost( 7 );
+
+operand XRegI(RegI rall)
+%{
+//  predicate(registerIsGPR(rall));
+  match(RegI) %{ rall = new_VR(); /* Test Comment */ %}
+  encode %{ return; /* (rall) */ %}
+  format() %{
+	char id = 'A'; // + this->_id;
+	std->print("E%cX",id);
+  %}
+%}
+
+operand XRegP(RegP rID)
+%{
+//  predicate(registerIsGPR(rID));
+  match(RegP) %{ rID = new_VR(); /* Test Comment */ %}
+  encode %{ return; /* (rID) */ %}
+  format() %{
+	char id = 'B'; // + this->_id;
+	std->print("E%cX",id);
+  %}
+%}
+
+instruct Ret(XRegP addr, XRegI val)
+%{
+  // Another Test Comment
+  match(Return addr val);
+
+  // Use the following format syntax
+  format() %{
+	std->print("Ret    ; procedure epilog");
+	std->print("\n");
+  %}
+
+%}
+
+instruct ParmI(XRegP reg)
+%{
+  // Cookie for parameters
+  match(Parm);
+
+  format() %{ 
+    std->print("ParmI");
+    std->print("\n");
+  %}
+%}
+
+instruct addI_XReg(XRegI dst, XRegI src)
+%{
+  // Another Test Comment
+  match(Set dst (AddI dst src));
+  /* Yet another Test Comment */
+  encode %{ /* encode_addX(); */ %}
+
+  ins_cost(365);
+
+  effect (dst, OP_KILL);
+
+  expand %{
+	XRegI  temp;
+	instruct LoadI_X_reg(temp, mem);  
+	instruct LddI_X_reg(XRegI dst, XRegI src);
+  %}
+
+  rewrite (XRegI dst, XRegI dst)
+  %{
+	// Test instruction block
+	AddI_X_reg(dst,src); 
+  %}
+
+  // Use the following format syntax
+  format() %{
+	std->print("Add ");
+	// this->inp1->format(fp);
+	std->print(", ");
+	// this->inp1->next->format(fp);
+	std->print("\n");
+  %}
+
+%}

@@ -1,0 +1,44 @@
+// *********************************************************
+// Define the individual registers and the register classes.
+// *********************************************************
+
+register %{
+// General Registers
+reg_def EAX(SOC);
+reg_def EBX(SOC);
+reg_def ECX(SOC);
+reg_def EDX(SOC);
+reg_def EBP(SOC);
+reg_def ESP(SOC);
+reg_def ESI(SOC);
+reg_def EDI(SOC);
+
+// Class for general registers
+reg_class gen_reg(EAX, EBX, ECX, EDX, EBP, ESP, ESI, EDI);
+  // ESP can not be used as an index operand
+alloc_class gen_reg_alloc( EAX, EBX, ECX, EDX);
+
+// Singleton class for stack pointer
+reg_class sp_reg(ESP);
+
+// Segment Registers
+reg_def CS(SOC);
+reg_def SS(SOC);
+reg_def DS(SOC);
+reg_def ES(SOC);
+reg_def FS(SOC);
+reg_def GS(SOC);
+
+// Class for segment registers
+reg_class seg_reg(CS, SS, DS, ES, FS, GS)
+
+
+// Singleton class for condition codes
+reg_def EFLAGS;
+reg_class flags_reg(EFLAGS);
+
+// Singleton class for instruction pointer
+reg_def EIP;
+reg_class ip_reg(EIP);
+
+%}

@@ -1,0 +1,23 @@
+
+KNOWN BUGS
+
++ Since the shared spaces must appear at the same address in all Java
+  processes, the heap must be located in a spot more likely to be
+  compatible with embedding apps.
+
++ Unix: need to allocate the heap at the correct address.  Need heuristic
+  approach.  (mmap overwrites previous mappings.)
+
++ Shared spaces are not (yet) compatible with CMS or train collectors.
+
++ Pay attention to page locality, avoid page faults which will wreck
+  coldstart time.
+
++ Constant Pool Compression: Let many classes share the same constant
+  pool (and cache).  Remove (huge numbers of ?) duplicate constants.
+  Saves footprint.  Saves coldstart time: less disk image to read.
+  Better startup time: fewer constant pool entries to need resolution.
+  (John Rose comment:  constant pool entries appear twice on average
+  over some set of classes he analyzed.)
+
++ Anything else that can be done to reduce coldstart time?
