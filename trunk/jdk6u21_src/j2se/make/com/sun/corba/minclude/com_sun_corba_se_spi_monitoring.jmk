@@ -1,0 +1,14 @@
+FILES_java = \
+	$(TARGDIR)com/sun/corba/se/spi/monitoring/StatisticsAccumulator.java \
+	$(TARGDIR)com/sun/corba/se/spi/monitoring/StatisticMonitoredAttribute.java \
+	$(TARGDIR)com/sun/corba/se/spi/monitoring/MonitoredAttributeBase.java \
+	$(TARGDIR)com/sun/corba/se/spi/monitoring/StringMonitoredAttributeBase.java \
+	$(TARGDIR)com/sun/corba/se/spi/monitoring/LongMonitoredAttributeBase.java \
+	$(TARGDIR)com/sun/corba/se/spi/monitoring/MonitoringFactories.java \
+	$(TARGDIR)com/sun/corba/se/spi/monitoring/MonitoredAttributeInfo.java \
+	$(TARGDIR)com/sun/corba/se/spi/monitoring/MonitoredObject.java \
+	$(TARGDIR)com/sun/corba/se/spi/monitoring/MonitoredObjectFactory.java \
+	$(TARGDIR)com/sun/corba/se/spi/monitoring/MonitoredAttribute.java \
+	$(TARGDIR)com/sun/corba/se/spi/monitoring/MonitoredAttributeInfoFactory.java \
+	$(TARGDIR)com/sun/corba/se/spi/monitoring/MonitoringManager.java \
+	$(TARGDIR)com/sun/corba/se/spi/monitoring/MonitoringManagerFactory.java 

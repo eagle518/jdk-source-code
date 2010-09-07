@@ -1,0 +1,27 @@
+# @(#)FILES_c.gmk	1.9 02/09/19
+
+FILES_c = \
+	$(CTARGDIR)CJError.c \
+	$(CTARGDIR)doeObject.c \
+	$(CTARGDIR)doeSun.c \
+	$(CTARGDIR)dcPool.c \
+	$(CTARGDIR)CJPathConsumer.c \
+	$(CTARGDIR)dcPathConsumer.c \
+	$(CTARGDIR)dcPathStore.c \
+	$(CTARGDIR)dcPathError.c \
+	$(CTARGDIR)dcPathException.c \
+	$(CTARGDIR)PathFiller.c \
+	$(CTARGDIR)PathDasher.c \
+	$(CTARGDIR)PathStroker.c \
+	$(CTARGDIR)dcLLFiller.c \
+	$(CTARGDIR)dcLLFillerH.c \
+	$(CTARGDIR)dcLLFillerS.c \
+        $(CTARGDIR)dcPRError.c \
+        $(CTARGDIR)dcPRException.c \
+	$(CTARGDIR)dcPathFiller.c \
+	$(CTARGDIR)dcPathDasher.c \
+	$(CTARGDIR)dcPathStorage.c \
+	$(CTARGDIR)dcPathStroker.c \
+	$(CTARGDIR)affine.c \
+	$(CTARGDIR)angles.c \
+	$(CTARGDIR)arcs.c

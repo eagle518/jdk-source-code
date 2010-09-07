@@ -1,0 +1,207 @@
+#
+# @(#)Resources.gmk	1.18 03/10/09
+# 
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# @(#)Resources.gmk	1.25 10/03/23
+# 
+# Generic mechanism for installing resource bundles and other properties
+# files.
+#
+# Resource bundles to be installed are identified using the following variables.
+# Note that only the file name of the base bundle is given; localized versions
+# are added automatically. For Java files, use a format suitable for inclusion
+# in the FILES_java list; for properties, use a path relative to the values of
+# RESOURCE_SRC_DIR and RESOURCE_DEST_DIR.
+#
+#       NEW_RESOURCE_BUNDLES_JAVA        - new resource bundles implemented in
+#                                          Java, not localized yet
+#       NEW_RESOURCE_BUNDLES_PROPERTIES  - new resource bundles implemented as
+#                                          properties files, not localized yet
+#       RESOURCE_BUNDLES_JAVA            - resource bundles implemented in
+#                                          Java, localization exists
+#       RESOURCE_BUNDLES_PROPERTIES      - new resource bundles implemented as
+#                                          properties files, localization exists
+#
+# The following variable is now used for most .properties files in the
+# JDK. It uses the CompileProperties tool to translate the .properties
+# file into a .java file which is then compiled using javac. The
+# resulting .class files are usually smaller and are always faster to
+# load. It does not use the RESOURCE_DEST_DIR directory and assumes
+# that the filenames provided specify, through their subdirectories,
+# the package names of the resulting .java files. When this variable
+# is used, the inclusion of Resources.gmk must precede the inclusion
+# of the Makefile which contains the rules for classes (usually
+# Classes.gmk, Library.gmk, or Program.gmk), but must also come after
+# the first assignment to FILES_java (typically via an minclude.) This
+# placement of Resources.gmk implies that
+# RESOURCE_BUNDLES_COMPILED_PROPERTIES is incompatible with
+# RESOURCE_BUNDLES_PROPERTIES and OTHER_PROPERTIES, as they add
+# dependencies to the targets set up by e.g., Program.gmk but
+# RESOURCE_BUNDLES_COMPILED_PROPERTIES adds its dependencies to
+# FILES_java.
+#
+# This rule also looks at the source directory RESOURCE_SRC_DIR_2 (for
+# situations where properties files from two different source directories
+# must be compiled -- currently only in the sun/awt Makefile.)
+#
+#       RESOURCE_BUNDLES_COMPILED_PROPERTIES - resource bundles implemented as
+#                                          properties files, localization exists,
+#                                          where the .properties file should be
+#                                          compiled into a .java file and from
+#                                          there into a .class
+#
+#       NEW_RESOURCE_BUNDLES_COMPILED_PROPERTIES - same as above but not localized yet
+#
+# Other properties files to be installed are identified using the variable:
+#
+#       OTHER_PROPERTIES
+#
+# The following variable allows you to control which locales are included:
+#
+#       LOCALE_SET_DEFINITION            - values: j2re, plugin, j2sdk;
+#                                          determines set of locales to
+#                                          localize for.
+#
+# The following variables specify source and destination of properties files:
+#
+#	RESOURCE_SRC_DIR
+#	RESOURCE_DEST_DIR
+#	RESOURCE_SRC_DIR_2 (see RESOURCE_BUNDLES_COMPILED_PROPERTIES above)
+#
+#
+
+# Make sure default rule is all
+resources_default_rule: all
+
+# Determine the locale suffixes needed beyond the base bundle
+
+ifeq ($(LOCALE_SET_DEFINITION), plugin)
+LOCALE_SUFFIXES = $(PLUGIN_LOCALES)
+else
+ifeq ($(LOCALE_SET_DEFINITION), j2sdk)
+LOCALE_SUFFIXES = $(J2SDK_LOCALES)
+else
+LOCALE_SUFFIXES = $(J2RE_LOCALES)
+endif
+endif
+
+# for l10n files use
+J2SE_L10N_TMP_OUTPUTDIR = $(OUTPUTDIR)/tmp/l10n/j2se
+
+dummy := $(shell $(MKDIR) -p $(J2SE_L10N_TMP_OUTPUTDIR))
+
+#create HK java file from zh_TW
+define create-hk-java-file
+@if [ ! -f $@ -o -w $@ ]; then \
+        dirname=`$(DIRNAME) $@`; \
+        if [ ! -d $${dirname} ]; then \
+                $(MKDIR) -p $${dirname}; \
+        fi; \
+        $(CAT) $< | $(SED) -e '/class/s/_zh_TW/_zh_HK/' > $@; \
+        $(CHMOD) 777 $@; \
+fi
+endef
+
+#create HK properties file from zh_TW
+define create-hk-properties-file
+@dirname=`$(DIRNAME) $@`; \
+if [ ! -d $${dirname} ]; then \
+     $(MKDIR) -p $${dirname}; \
+fi; \
+$(CP) $< $@; \
+$(CHMOD) 777 $@
+endef
+
+#Java files get tacked onto the standard list of files to compile
+
+RESOURCE_BUNDLE_FILES_java = \
+    $(NEW_RESOURCE_BUNDLES_JAVA)
+RESOURCE_BUNDLE_FILES_java += \
+    $(RESOURCE_BUNDLES_JAVA)
+RESOURCE_BUNDLE_FILES_java += \
+    $(foreach file,$(RESOURCE_BUNDLES_JAVA),$(foreach locale,$(LOCALE_SUFFIXES),$(basename $(file))_$(locale).java))
+FILES_java += $(RESOURCE_BUNDLE_FILES_java)
+
+
+# Compiled properties files (the new common case) are translated from
+# .properties to .java using the CompileProperties tool and then
+# compiled using javac. The .java files are generated into GENSRCDIR.
+# These rules do not use RESOURCE_DEST_DIR.
+
+COMPILED_PROPERTIES_FILES = \
+    $(RESOURCE_BUNDLES_COMPILED_PROPERTIES)
+COMPILED_PROPERTIES_FILES += \
+    $(NEW_RESOURCE_BUNDLES_COMPILED_PROPERTIES)
+COMPILED_PROPERTIES_FILES += \
+    $(foreach file,$(RESOURCE_BUNDLES_COMPILED_PROPERTIES),$(foreach locale,$(LOCALE_SUFFIXES),$(basename $(file))_$(locale)$(suffix $(file))))
+COMPILED_PROPERTIES_FILES_java = \
+    $(COMPILED_PROPERTIES_FILES:%.properties=$(GENSRCDIR)/%.java)
+# Don't delete these intermediate .java files
+.PRECIOUS: $(COMPILED_PROPERTIES_FILES_java)
+FILES_java += $(COMPILED_PROPERTIES_FILES:%.properties=%.java)
+
+# Redirect zh_HK java files to tmp directory which created from zh_TW
+$(GENSRCDIR)/%_zh_HK.java: $(J2SE_L10N_TMP_OUTPUTDIR)/%_zh_HK.properties
+	$(compile-properties-file)
+
+$(GENSRCDIR)/%.java: $(RESOURCE_SRC_DIR)/%.properties
+	$(compile-properties-file)
+
+$(GENSRCDIR)/%.java: $(RESOURCE_SRC_DIR_2)/%.properties
+	$(compile-properties-file)
+
+# Properties files get copied from RESOURCE_SRC_DIR to RESOURCE_DEST_DIR
+
+PROPERTIES_FILES = \
+    $(NEW_RESOURCE_BUNDLES_PROPERTIES)
+PROPERTIES_FILES += \
+    $(RESOURCE_BUNDLES_PROPERTIES)
+PROPERTIES_FILES += \
+    $(foreach file,$(RESOURCE_BUNDLES_PROPERTIES),$(foreach locale,$(LOCALE_SUFFIXES),$(basename $(file))_$(locale)$(suffix $(file))))
+PROPERTIES_FILES += $(OTHER_PROPERTIES)
+
+PFILES = $(PROPERTIES_FILES:%=$(RESOURCE_DEST_DIR)/%)
+
+$(RESOURCE_DEST_DIR)/%.properties: $(RESOURCE_SRC_DIR)/%.properties
+	$(install-stripped-properties-file)
+
+# Redirect zh_HK java files to tmp directory which created from zh_TW
+$(RESOURCE_DEST_DIR)/%_zh_HK.properties: $(J2SE_L10N_TMP_OUTPUTDIR)/%_zh_HK.properties
+	$(install-stripped-properties-file)
+
+# will be compiled to java if they are included in COMPILED_PROPERTIES_FILES
+
+# generates zh_HK properties files from zh_TW properties files
+$(J2SE_L10N_TMP_OUTPUTDIR)/%_zh_HK.properties: $(RESOURCE_SRC_DIR)/%_zh_TW.properties
+	$(create-hk-properties-file)
+
+$(J2SE_L10N_TMP_OUTPUTDIR)/%_zh_HK.properties: $(RESOURCE_SRC_DIR_2)/%_zh_TW.properties
+	$(create-hk-properties-file)
+
+# generates zh_HK java file from zh_TW java file
+$(J2SE_L10N_TMP_OUTPUTDIR)/%_zh_HK.java: $(RESOURCE_SRC_DIR)/%_zh_TW.java
+	$(create-hk-java-file)
+
+# needed by common/Rules.gmk except java in gensrc which will get from properties files
+$(J2SE_L10N_TMP_OUTPUTDIR)/%_zh_HK.java: $(SHARE_SRC)/classes/%_zh_TW.java
+	$(create-hk-java-file)
+
+$(J2SE_L10N_TMP_OUTPUTDIR)/%_zh_HK.java: $(PLATFORM_SRC)/classes/%_zh_TW.java
+	$(create-hk-java-file)
+
+#$(J2SE_L10N_TMP_OUTPUTDIR)/%_zh_HK.java: $(SOURCEPATH)/%_zh_TW.java
+#	$(create-hk-java-file)
+
+# IDL has slightly different properties files
+
+$(RESOURCE_DEST_DIR)/%.prp: $(RESOURCE_SRC_DIR)/%.prp
+	$(install-file)
+
+# Trigger building all those properties files
+
+build: $(PFILES)
+

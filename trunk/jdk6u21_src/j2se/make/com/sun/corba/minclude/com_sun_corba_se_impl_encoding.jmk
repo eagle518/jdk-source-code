@@ -1,0 +1,43 @@
+# @(#)com_sun_corba_se_impl_encoding.jmk	1.6 03/03/28
+
+com_sun_corba_se_impl_encoding_java = \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/BufferManagerFactory.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/BufferQueue.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/BufferManagerReadStream.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/BufferManagerWrite.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/BufferManagerRead.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/BufferManagerReadGrow.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/BufferManagerWriteGrow.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/BufferManagerWriteCollect.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/BufferManagerWriteStream.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/ByteBufferWithInfo.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/CDRInputObject.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/CDRInputStream.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/CDRInputStreamBase.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/CDRInputStream_1_0.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/CDRInputStream_1_1.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/CDRInputStream_1_2.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/CDROutputObject.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/CDROutputStream.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/CDROutputStreamBase.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/CDROutputStream_1_0.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/CDROutputStream_1_1.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/CDROutputStream_1_2.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/CachedCodeBase.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/CodeSetCache.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/CodeSetConversion.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/CodeSetComponentInfo.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/EncapsInputStream.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/EncapsOutputStream.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/MarkAndResetHandler.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/MarshalInputStream.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/MarshalOutputStream.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/OSFCodeSetRegistry.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/RestorableInputStream.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/TypeCodeInputStream.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/TypeCodeOutputStream.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/TypeCodeReader.java \
+	$(TARGDIR)com/sun/corba/se/impl/encoding/WrapperInputStream.java
+
+
+

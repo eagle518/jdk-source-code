@@ -1,0 +1,25 @@
+#
+# @(#)com_sun_corba_se_impl_interceptors.jmk	1.15 03/11/17
+# Portable Interceptors Files
+#
+# $(TARGDIR)com/sun/corba/se/impl/interceptors/PIORB.java \
+
+com_sun_corba_se_impl_interceptors_java = \
+	$(TARGDIR)com/sun/corba/se/impl/interceptors/CDREncapsCodec.java \
+	$(TARGDIR)com/sun/corba/se/impl/interceptors/ClientRequestInfoImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/interceptors/CodecFactoryImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/interceptors/ORBInitInfoImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/interceptors/InterceptorInvoker.java \
+	$(TARGDIR)com/sun/corba/se/impl/interceptors/InterceptorList.java \
+	$(TARGDIR)com/sun/corba/se/impl/interceptors/IORInfoImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/interceptors/PICurrent.java \
+	$(TARGDIR)com/sun/corba/se/impl/interceptors/RequestInfoImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/interceptors/ServerRequestInfoImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/interceptors/SlotTable.java \
+	$(TARGDIR)com/sun/corba/se/impl/interceptors/SlotTableStack.java \
+	$(TARGDIR)com/sun/corba/se/impl/interceptors/PIHandlerImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/interceptors/PINoOpHandlerImpl.java
+
+
+
+FILES_java = $(com_sun_corba_se_impl_interceptors_java)

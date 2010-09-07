@@ -1,0 +1,128 @@
+#
+# @(#)FILES.gmk	1.15 10/03/23
+# 
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# @(#)FILES.gmk	1.15 10/03/23
+#
+# Java2Demo.
+#
+
+FILES_java = \
+	$(TARGDIR)java2d/demos/Arcs_Curves/Arcs.java \
+	$(TARGDIR)java2d/demos/Arcs_Curves/BezierAnim.java \
+	$(TARGDIR)java2d/demos/Arcs_Curves/Curves.java \
+	$(TARGDIR)java2d/demos/Arcs_Curves/Ellipses.java \
+	$(TARGDIR)java2d/demos/Clipping/ClipAnim.java \
+	$(TARGDIR)java2d/demos/Clipping/Text.java \
+	$(TARGDIR)java2d/demos/Clipping/Areas.java \
+	$(TARGDIR)java2d/demos/Clipping/Intersection.java \
+	$(TARGDIR)java2d/demos/Colors/ColorConvert.java \
+	$(TARGDIR)java2d/demos/Colors/BullsEye.java \
+	$(TARGDIR)java2d/demos/Colors/Rotator3D.java \
+	$(TARGDIR)java2d/demos/Composite/ACimages.java \
+	$(TARGDIR)java2d/demos/Composite/FadeAnim.java \
+	$(TARGDIR)java2d/demos/Composite/ACrules.java \
+	$(TARGDIR)java2d/demos/Fonts/AllFonts.java \
+	$(TARGDIR)java2d/demos/Fonts/Outline.java \
+	$(TARGDIR)java2d/demos/Fonts/Highlighting.java \
+	$(TARGDIR)java2d/demos/Fonts/Tree.java \
+	$(TARGDIR)java2d/demos/Fonts/AttributedStr.java \
+	$(TARGDIR)java2d/demos/Images/DukeAnim.java \
+	$(TARGDIR)java2d/demos/Images/ImageOps.java \
+	$(TARGDIR)java2d/demos/Images/WarpImage.java \
+	$(TARGDIR)java2d/demos/Images/JPEGFlip.java \
+	$(TARGDIR)java2d/demos/Lines/LineAnim.java \
+	$(TARGDIR)java2d/demos/Lines/Caps.java \
+	$(TARGDIR)java2d/demos/Lines/Joins.java \
+	$(TARGDIR)java2d/demos/Lines/Dash.java \
+	$(TARGDIR)java2d/demos/Mix/Stars3D.java \
+	$(TARGDIR)java2d/demos/Mix/Balls.java \
+	$(TARGDIR)java2d/demos/Mix/BezierScroller.java \
+	$(TARGDIR)java2d/demos/Paths/Append.java \
+	$(TARGDIR)java2d/demos/Paths/CurveQuadTo.java \
+	$(TARGDIR)java2d/demos/Paths/FillStroke.java \
+	$(TARGDIR)java2d/demos/Paths/WindingRule.java \
+	$(TARGDIR)java2d/demos/Transforms/Rotate.java \
+	$(TARGDIR)java2d/demos/Transforms/SelectTx.java \
+	$(TARGDIR)java2d/demos/Transforms/TransformAnim.java \
+	$(TARGDIR)java2d/demos/Paint/GradAnim.java \
+	$(TARGDIR)java2d/demos/Paint/TextureAnim.java \
+	$(TARGDIR)java2d/demos/Paint/Gradient.java \
+	$(TARGDIR)java2d/demos/Paint/Texture.java \
+	$(TARGDIR)java2d/DemoPanel.java \
+	$(TARGDIR)java2d/GlobalControls.java \
+	$(TARGDIR)java2d/MemoryMonitor.java \
+	$(TARGDIR)java2d/Surface.java \
+	$(TARGDIR)java2d/Java2Demo.java \
+	$(TARGDIR)java2d/Tools.java \
+	$(TARGDIR)java2d/PerformanceMonitor.java \
+	$(TARGDIR)java2d/RunWindow.java \
+	$(TARGDIR)java2d/TextureChooser.java \
+	$(TARGDIR)java2d/DemoGroup.java \
+	$(TARGDIR)java2d/GlobalPanel.java \
+	$(TARGDIR)java2d/Java2DemoApplet.java \
+	$(TARGDIR)java2d/DemoImages.java \
+	$(TARGDIR)java2d/DemoFonts.java \
+	$(TARGDIR)java2d/AnimatingSurface.java \
+	$(TARGDIR)java2d/AnimatingControlsSurface.java \
+	$(TARGDIR)java2d/ControlsSurface.java \
+	$(TARGDIR)java2d/Intro.java \
+	$(TARGDIR)java2d/CustomControlsContext.java \
+	$(TARGDIR)java2d/CustomControls.java \
+	$(TARGDIR)java2d/CloningFeature.java
+
+FILES_other = \
+	$(DEMODST)/src/images/stop.gif \
+	$(DEMODST)/src/images/clouds.jpg \
+	$(DEMODST)/src/images/java-logo.gif \
+	$(DEMODST)/src/images/duke.gif \
+	$(DEMODST)/src/images/duke.png \
+	$(DEMODST)/src/images/box.gif \
+	$(DEMODST)/src/images/start.gif \
+	$(DEMODST)/src/images/boxwave.gif \
+	$(DEMODST)/src/images/clone.gif \
+	$(DEMODST)/src/images/bld.jpg \
+	$(DEMODST)/src/images/boat.png \
+	$(DEMODST)/src/images/fight.gif \
+	$(DEMODST)/src/images/remove.gif \
+	$(DEMODST)/src/images/snooze.gif \
+	$(DEMODST)/src/images/tip.gif \
+	$(DEMODST)/src/images/surfing.gif \
+	$(DEMODST)/src/images/thumbsup.gif \
+	$(DEMODST)/src/images/duke.running.gif \
+	$(DEMODST)/src/images/dukeplug.gif \
+	$(DEMODST)/src/images/globe.gif \
+	$(DEMODST)/src/images/magnify.gif \
+	$(DEMODST)/src/images/painting.gif \
+	$(DEMODST)/src/images/jumptojavastrip.png \
+	$(DEMODST)/src/images/star7.gif \
+	$(DEMODST)/src/images/print.gif \
+	$(DEMODST)/src/images/stop2.gif \
+	$(DEMODST)/src/images/start2.gif \
+	$(DEMODST)/src/images/cupanim.gif \
+	$(DEMODST)/src/images/java_logo.png \
+	$(DEMODST)/src/images/looping.gif \
+	$(DEMODST)/src/images/loop.gif \
+	$(DEMODST)/src/fonts/A.ttf
+
+FILES_dirs = \
+	$(DEMODST) \
+	$(SRCDST) \
+	$(SRCDST)/demos \
+	$(SRCDST)/demos/Arcs_Curves \
+	$(SRCDST)/demos/Clipping \
+	$(SRCDST)/demos/Colors \
+	$(SRCDST)/demos/Composite \
+	$(SRCDST)/demos/Fonts \
+	$(SRCDST)/demos/Images \
+	$(SRCDST)/demos/Lines \
+	$(SRCDST)/demos/Mix \
+	$(SRCDST)/demos/Paths \
+	$(SRCDST)/demos/Transforms \
+	$(SRCDST)/demos/Paint \
+	$(DEMODST)/fonts \
+	$(DEMODST)/images

@@ -1,0 +1,48 @@
+#
+# @(#)org_omg_IOP.jmk	1.11 04/08/03
+#
+# IOP IDL Generated Files
+#
+
+IOP_java = \
+	$(TARGDIR)org/omg/IOP/CodeSets.java \
+	$(TARGDIR)org/omg/IOP/ComponentIdHelper.java \
+	$(TARGDIR)org/omg/IOP/IOR.java \
+	$(TARGDIR)org/omg/IOP/IORHelper.java \
+	$(TARGDIR)org/omg/IOP/IORHolder.java \
+	$(TARGDIR)org/omg/IOP/MultipleComponentProfileHelper.java \
+	$(TARGDIR)org/omg/IOP/MultipleComponentProfileHolder.java \
+	$(TARGDIR)org/omg/IOP/ProfileIdHelper.java \
+	$(TARGDIR)org/omg/IOP/RMICustomMaxStreamFormat.java \
+	$(TARGDIR)org/omg/IOP/ServiceContext.java \
+	$(TARGDIR)org/omg/IOP/ServiceContextHelper.java \
+	$(TARGDIR)org/omg/IOP/ServiceContextHolder.java \
+	$(TARGDIR)org/omg/IOP/ServiceContextListHelper.java \
+	$(TARGDIR)org/omg/IOP/ServiceContextListHolder.java \
+	$(TARGDIR)org/omg/IOP/ServiceIdHelper.java \
+	$(TARGDIR)org/omg/IOP/TAG_INTERNET_IOP.java \
+	$(TARGDIR)org/omg/IOP/TAG_MULTIPLE_COMPONENTS.java \
+	$(TARGDIR)org/omg/IOP/TAG_ALTERNATE_IIOP_ADDRESS.java \
+	$(TARGDIR)org/omg/IOP/TAG_CODE_SETS.java \
+	$(TARGDIR)org/omg/IOP/TAG_JAVA_CODEBASE.java \
+	$(TARGDIR)org/omg/IOP/TAG_ORB_TYPE.java \
+	$(TARGDIR)org/omg/IOP/TAG_RMI_CUSTOM_MAX_STREAM_FORMAT.java \
+	$(TARGDIR)org/omg/IOP/TAG_POLICIES.java \
+	$(TARGDIR)org/omg/IOP/TaggedComponent.java \
+	$(TARGDIR)org/omg/IOP/TaggedComponentHelper.java \
+	$(TARGDIR)org/omg/IOP/TaggedComponentHolder.java \
+	$(TARGDIR)org/omg/IOP/TaggedProfile.java \
+	$(TARGDIR)org/omg/IOP/TaggedProfileHelper.java \
+	$(TARGDIR)org/omg/IOP/TaggedProfileHolder.java \
+	$(TARGDIR)org/omg/IOP/TransactionService.java
+
+IOP_TO_DELETE_FILES = \
+	$(TARGDIR)org/omg/IOP/BI_DIR_IIOP.java \
+	$(TARGDIR)org/omg/IOP/ChainBypassCheck.java \
+	$(TARGDIR)org/omg/IOP/ChainBypassInfo.java \
+	$(TARGDIR)org/omg/IOP/FORWARDED_IDENTITY.java \
+	$(TARGDIR)org/omg/IOP/INVOCATION_POLICIES.java \
+	$(TARGDIR)org/omg/IOP/LogicalThreadId.java \
+	$(TARGDIR)org/omg/IOP/SendingContextRunTime.java \
+	$(TARGDIR)org/omg/IOP/UnknownExceptionInfo.java \
+	$(TARGDIR)org/omg/IOP/TaggedComponentSeqHolder.java

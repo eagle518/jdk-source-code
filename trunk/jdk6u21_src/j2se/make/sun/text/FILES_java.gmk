@@ -1,0 +1,75 @@
+#
+# @(#)FILES_java.gmk	1.32 10/03/23
+# 
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+# Locale data files for lib/ext/localedata.jar.
+# This includes resource bundles and data for non-European
+# languages in sun.text.resources as well as sun.util.resources.
+#
+# Locale data for European languages is built from
+# - make/java/text for classes in sun.text.resources
+# - make/java/util for classes in sun.util.resources
+#
+
+FILES_java = \
+		$(TARGDIR)sun/text/resources/BreakIteratorInfo_th.java \
+		\
+		$(TARGDIR)sun/text/resources/CollationData_ar.java \
+		$(TARGDIR)sun/text/resources/CollationData_hi.java \
+		$(TARGDIR)sun/text/resources/CollationData_iw.java \
+		$(TARGDIR)sun/text/resources/CollationData_ja.java \
+		$(TARGDIR)sun/text/resources/CollationData_ko.java \
+		$(TARGDIR)sun/text/resources/CollationData_th.java \
+		$(TARGDIR)sun/text/resources/CollationData_vi.java \
+		$(TARGDIR)sun/text/resources/CollationData_zh.java \
+		$(TARGDIR)sun/text/resources/CollationData_zh_HK.java \
+ 		$(TARGDIR)sun/text/resources/CollationData_zh_TW.java \
+		\
+		$(TARGDIR)sun/text/resources/FormatData_ar.java \
+		$(TARGDIR)sun/text/resources/FormatData_ar_AE.java \
+		$(TARGDIR)sun/text/resources/FormatData_ar_BH.java \
+		$(TARGDIR)sun/text/resources/FormatData_ar_DZ.java \
+		$(TARGDIR)sun/text/resources/FormatData_ar_EG.java \
+		$(TARGDIR)sun/text/resources/FormatData_ar_IQ.java \
+		$(TARGDIR)sun/text/resources/FormatData_ar_JO.java \
+		$(TARGDIR)sun/text/resources/FormatData_ar_KW.java \
+		$(TARGDIR)sun/text/resources/FormatData_ar_LB.java \
+		$(TARGDIR)sun/text/resources/FormatData_ar_LY.java \
+		$(TARGDIR)sun/text/resources/FormatData_ar_MA.java \
+		$(TARGDIR)sun/text/resources/FormatData_ar_OM.java \
+		$(TARGDIR)sun/text/resources/FormatData_ar_QA.java \
+		$(TARGDIR)sun/text/resources/FormatData_ar_SA.java \
+		$(TARGDIR)sun/text/resources/FormatData_ar_SD.java \
+		$(TARGDIR)sun/text/resources/FormatData_ar_SY.java \
+		$(TARGDIR)sun/text/resources/FormatData_ar_TN.java \
+		$(TARGDIR)sun/text/resources/FormatData_ar_YE.java \
+                $(TARGDIR)sun/text/resources/FormatData_hi_IN.java \
+		$(TARGDIR)sun/text/resources/FormatData_iw.java \
+		$(TARGDIR)sun/text/resources/FormatData_iw_IL.java \
+		$(TARGDIR)sun/text/resources/FormatData_ja.java \
+		$(TARGDIR)sun/text/resources/FormatData_ja_JP.java \
+		$(TARGDIR)sun/text/resources/FormatData_ja_JP_JP.java \
+		$(TARGDIR)sun/text/resources/FormatData_ko.java \
+		$(TARGDIR)sun/text/resources/FormatData_ko_KR.java \
+		$(TARGDIR)sun/text/resources/FormatData_th.java \
+		$(TARGDIR)sun/text/resources/FormatData_th_TH.java \
+		$(TARGDIR)sun/text/resources/FormatData_th_TH_TH.java \
+		$(TARGDIR)sun/text/resources/FormatData_vi.java \
+		$(TARGDIR)sun/text/resources/FormatData_vi_VN.java \
+		$(TARGDIR)sun/text/resources/FormatData_zh.java \
+		$(TARGDIR)sun/text/resources/FormatData_zh_CN.java \
+		$(TARGDIR)sun/text/resources/FormatData_zh_HK.java \
+		$(TARGDIR)sun/text/resources/FormatData_zh_SG.java \
+		$(TARGDIR)sun/text/resources/FormatData_zh_TW.java \
+		\
+                $(TARGDIR)sun/util/resources/LocaleNames_zh_HK.java \
+                $(TARGDIR)sun/util/resources/TimeZoneNames_hi.java \
+		$(TARGDIR)sun/util/resources/TimeZoneNames_ja.java \
+		$(TARGDIR)sun/util/resources/TimeZoneNames_ko.java \
+		$(TARGDIR)sun/util/resources/TimeZoneNames_zh_CN.java \
+		$(TARGDIR)sun/util/resources/TimeZoneNames_zh_TW.java \
+		$(TARGDIR)sun/util/resources/TimeZoneNames_zh_HK.java
+

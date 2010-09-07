@@ -1,0 +1,74 @@
+#
+# @(#)DemoApplets.gmk	1.30 10/03/23
+# 
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# @(#)DemoApplets.gmk	1.30 10/03/23
+#
+# Boiler plate for demo applets. The following variables should have
+# sensible values before you include this makefile:
+#   		DEMO_dirs DEMO_other DEMO_java DEMONAME
+#
+
+# identify this as a applets product - used only to identify a
+# unique name for OBJDIR
+PRODUCT = applets
+
+DEMODST         = $(DEMODIR)/applets/$(DEMONAME)
+DEMOSRC         = $(DEMOSRCDIR)/applets/$(DEMONAME)
+DEMO_JAVAC_FLAGS =
+
+DEMO_class      = $(DEMO_java:%.java=%.class)
+
+DEMO_JAVAC_FLAGS += $(OTHER_JAVACFLAGS)
+
+all build: $(OBJDIR) $(DEMO_dirs) $(DEMO_other) $(DEMO_java) .demo.classes
+
+clean clobber: .delete.classlist
+	$(RM) -r $(DEMODST) $(OBJDIR)
+
+#
+# A union of different kinds of directories found in different
+# demos. Hopefully none of the demos has a file named like the
+# directory in another demo.
+#
+$(OBJDIR)				\
+$(DEMODST) $(DEMODST)/images		\
+$(DEMODST)/images/SimpleAnimation 	\
+$(DEMODST)/images/Beans			\
+$(DEMODST)/audio $(DEMODST)/sounds	\
+$(DEMODST)/models			:
+	$(MKDIR) -p $@
+
+#
+# How to install files?
+#
+$(DEMODST)/%: $(DEMOSRC)/%
+	$(install-file)
+
+#
+# Compile the installed .java files.
+#
+.demo.classes: .delete.classlist $(DEMO_class) .compile.classlist
+
+.delete.classlist:
+	@$(RM) $(TEMPDIR)/.classes.list
+
+.compile.classlist: $(OBJDIR)
+	if [ -s $(TEMPDIR)/.classes.list ] ; \
+	then $(JAVAC) $(DEMO_JAVAC_FLAGS) -classpath \
+        "$(CLASSBINDIR)$(CLASSPATH_SEPARATOR)$(DEMOSRC)$(CLASSPATH_SEPARATOR)$(DEMODST)" \
+        $(LANGUAGE_VERSION) -d $(DEMODST) \
+	    $(shell if [ -s $(TEMPDIR)/.classes.list ] ; then $(CAT) $(TEMPDIR)/.classes.list; fi ) ; \
+	fi
+	@$(java-vm-cleanup)
+
+$(DEMODST)/%.class: $(DEMOSRC)/%.java
+	@$(ECHO) $? >> $(TEMPDIR)/.classes.list
+
+.PHONY: all build clobber .demo.classes \
+	.delete.classlist .compile.classlist 
+

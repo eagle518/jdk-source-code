@@ -1,0 +1,35 @@
+#
+# @(#)FILES.gmk	1.10 10/03/23
+# 
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+DEMO_java = \
+  $(DEMODST_SRC)DynamicTreeNode.java \
+  $(DEMODST_SRC)SampleData.java \
+  $(DEMODST_SRC)SampleTree.java \
+  $(DEMODST_SRC)SampleTreeCellRenderer.java \
+  $(DEMODST_SRC)SampleTreeModel.java \
+
+
+DEMO_class = \
+  $(DEMODST_CLASS)/DynamicTreeNode.class \
+  $(DEMODST_CLASS)/SampleData.class \
+  $(DEMODST_CLASS)/SampleTree.class \
+  $(DEMODST_CLASS)/SampleTreeCellRenderer.class \
+  $(DEMODST_CLASS)/SampleTreeModel.class \
+
+
+DEMO_dirs = \
+  $(DEMODST) \
+  $(DEMODST)/resources \
+  $(DEMODST)/resources/images \
+
+
+DEMO_other = \
+  $(DEMODST)/resources/images/collapsed.gif \
+  $(DEMODST)/resources/images/expanded.gif \
+  $(DEMODST)/README.txt \
+
+

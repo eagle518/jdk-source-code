@@ -1,0 +1,31 @@
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# @(#)Compiler.gmk	1.7 10/04/01
+#
+# WARNING: This file is shared with other workspaces.
+#
+
+#
+# Compiler settings for all platforms and the default compiler for each.
+#
+
+# Windows uses Microsoft compilers by default
+ifeq ($(PLATFORM), windows)
+  override CC_VERSION = msvc
+endif
+
+# Solaris Studio compilers are the default on Solaris
+ifeq ($(PLATFORM), solaris)
+  override CC_VERSION = sun
+endif
+
+# Linux uses GNU compilers by default
+ifeq ($(PLATFORM), linux)
+  override CC_VERSION = gcc
+endif
+
+# Get the compiler specific settings
+include $(J2SE_SHARED_DIR)/Compiler-$(CC_VERSION).gmk
+

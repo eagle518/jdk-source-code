@@ -1,0 +1,11 @@
+#
+# Files for TOA implementation 
+#
+
+com_sun_corba_se_impl_oa_toa_java = \
+	$(TARGDIR)com/sun/corba/se/impl/oa/toa/TOA.java \
+	$(TARGDIR)com/sun/corba/se/impl/oa/toa/TOAImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/oa/toa/TOAFactory.java \
+	$(TARGDIR)com/sun/corba/se/impl/oa/toa/TransientObjectManager.java
+
+FILES_java = $(com_sun_corba_se_impl_oa_toa_java)

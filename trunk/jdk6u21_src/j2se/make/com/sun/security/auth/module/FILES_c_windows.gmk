@@ -1,0 +1,1 @@
+FILES_c = $(CTARGDIR)nt.c

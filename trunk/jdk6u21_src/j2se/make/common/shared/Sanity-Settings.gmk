@@ -1,0 +1,241 @@
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# @(#)Sanity-Settings.gmk	1.23 10/03/23
+#
+# WARNING: This file is shared with other workspaces.
+#
+
+#
+# Shared sanity settings file. Fills in the variable ALL_SETTINGS.
+#
+
+# On Windows in particular, it can happen that quotes get into the PATH
+#    variable. This is very bad, and must be caught early or you can
+#    see errors like: sh: -c: line 0: syntax error near unexpected token
+#
+ifneq ($(PATH), $(subst ",,$(PATH)))
+  dummy1:=$(error ERROR: PATH variable contains double quotes, fix your PATH.)
+endif
+ifneq ($(PATH), $(subst ',,$(PATH)))
+  dummy1:=$(error ERROR: PATH variable contains single quotes, fix your PATH.)
+endif
+
+# Used to add a heading to ALL_SETTINGS
+define addHeading
+"\n$1:\n"
+endef
+
+# Used to add a line to ALL_SETTINGS for an optional value
+define addOptionalSetting
+" $1 = $($1)\n"
+endef
+
+# Used to add a line to ALL_SETTINGS for something that must have a value
+define addRequiredSetting
+$(if $($1)," $1 = $($1)\n",$(warning WARNING: $1 should not be empty [Sanity-Settings.gmk]))
+endef
+
+# Used to add a line to ALL_SETTINGS for something that must have a value
+define addRequiredVersionSetting
+$(if $($1)," $1 = $($1) [requires at least $(REQUIRED_$1)]\n",$(warning WARNING: $1 should not be empty [Sanity-Settings.gmk]))
+endef
+
+# Used to add a series of lines to ALL_SETTINGS
+define addAltSetting
+" $1 = $($1)\n    ALT_$1 = $(ALT_$1)\n"
+endef
+
+# Variable that contains a string of all information
+
+ALL_SETTINGS+=$(call addHeading,"Bootstrap Settings")
+ALL_SETTINGS+=$(call addAltSetting,BOOTDIR)
+ALL_SETTINGS+=$(call addRequiredVersionSetting,BOOT_VER)
+ALL_SETTINGS+=$(call addAltSetting,MINIMUM_JDK_VERSION)
+ALL_SETTINGS+=$(call addAltSetting,OUTPUTDIR)
+ALL_SETTINGS+=$(call addRequiredSetting,ABS_OUTPUTDIR)
+
+
+ALL_SETTINGS+=$(call addHeading,"Build Tool Settings")
+ALL_SETTINGS+=$(call addAltSetting,SLASH_JAVA)
+ALL_SETTINGS+=$(call addRequiredSetting,VARIANT)
+ALL_SETTINGS+=$(call addAltSetting,JDK_DEVTOOLS_DIR)
+ALL_SETTINGS+=$(call addAltSetting,UNIXCOMMAND_PATH)
+ALL_SETTINGS+=$(call addAltSetting,COMPILER_PATH)
+ALL_SETTINGS+=$(call addAltSetting,DEVTOOLS_PATH)
+ifeq ($(PLATFORM),linux)
+  ALL_SETTINGS+=$(call addAltSetting,UNIXCCS_PATH)
+  ALL_SETTINGS+=$(call addAltSetting,USRBIN_PATH)
+  ALL_SETTINGS+=$(call addAltSetting,GCC29_COMPILER_PATH)
+endif
+ifeq ($(PLATFORM),solaris)
+  ALL_SETTINGS+=$(call addAltSetting,UNIXCCS_PATH)
+  ALL_SETTINGS+=$(call addAltSetting,GCC_COMPILER_PATH)
+endif
+ifeq ($(PLATFORM),windows)
+  ALL_SETTINGS+=$(call addAltSetting,MSVCRT_DLL_PATH)
+  ifeq ($(ARCH_DATA_MODEL), 32)
+    ALL_SETTINGS+=$(call addAltSetting,MSVCR71_DLL_PATH)
+  endif
+  ALL_SETTINGS+=$(call addAltSetting,MSDEVTOOLS_PATH)
+else
+  ALL_SETTINGS+=$(call addAltSetting,MOTIF_DIR)
+endif
+ifeq ($(PLATFORM),solaris)
+  ALL_SETTINGS+=$(call addAltSetting,ODBCDIR)
+endif
+ALL_SETTINGS+=$(call addOptionalSetting,COMPILER_NAME)
+ALL_SETTINGS+=$(call addOptionalSetting,COMPILER_VERSION)
+ALL_SETTINGS+=$(call addRequiredVersionSetting,CC_VER)
+ifeq ($(PLATFORM),solaris)
+  ifeq ($(ARCH_DATA_MODEL), 32)
+    ALL_SETTINGS+=$(call addRequiredVersionSetting,GCC_VER)
+  endif
+endif
+ALL_SETTINGS+=$(call addRequiredVersionSetting,ZIP_VER)
+ALL_SETTINGS+=$(call addRequiredVersionSetting,UNZIP_VER)
+ifeq ($(PLATFORM),windows)
+  ALL_SETTINGS+=$(call addRequiredVersionSetting,LINK_VER)
+endif
+ALL_SETTINGS+=$(call addRequiredSetting,PATH)
+ALL_SETTINGS+=$(call addRequiredSetting,TEMPDIR)
+
+
+ALL_SETTINGS+=$(call addHeading,"Build Directives")
+ALL_SETTINGS+=$(call addOptionalSetting,USE_ONLY_BOOTDIR_TOOLS)
+ALL_SETTINGS+=$(call addOptionalSetting,USE_HOTSPOT_INTERPRETER_MODE)
+ALL_SETTINGS+=$(call addOptionalSetting,PEDANTIC)
+ALL_SETTINGS+=$(call addOptionalSetting,DEV_ONLY)
+ALL_SETTINGS+=$(call addOptionalSetting,J2RE_ONLY)
+ALL_SETTINGS+=$(call addOptionalSetting,NO_DOCS)
+ALL_SETTINGS+=$(call addOptionalSetting,NO_IMAGES)
+ALL_SETTINGS+=$(call addOptionalSetting,TOOLS_ONLY)
+ALL_SETTINGS+=$(call addOptionalSetting,INSANE)
+ALL_SETTINGS+=$(call addRequiredSetting,PARALLEL_COMPILES)
+ALL_SETTINGS+=$(call addAltSetting,PARALLEL_COMPILE_JOBS)
+ALL_SETTINGS+=$(call addOptionalSetting,FASTDEBUG)
+ALL_SETTINGS+=$(call addRequiredSetting,COMPILER_WARNINGS_FATAL)
+ALL_SETTINGS+=$(call addOptionalSetting,COMPILER_WARNING_LEVEL)
+ALL_SETTINGS+=$(call addRequiredSetting,INCREMENTAL_BUILD)
+ALL_SETTINGS+=$(call addOptionalSetting,CC_HIGHEST_OPT)
+ALL_SETTINGS+=$(call addOptionalSetting,CC_HIGHER_OPT)
+ALL_SETTINGS+=$(call addOptionalSetting,CC_LOWER_OPT)
+ALL_SETTINGS+=$(call addOptionalSetting,CXXFLAGS)
+ALL_SETTINGS+=$(call addOptionalSetting,CFLAGS)
+ALL_SETTINGS+=$(call addOptionalSetting,JAVA_BOOT)
+ALL_SETTINGS+=$(call addOptionalSetting,JAVAC_BOOT)
+ALL_SETTINGS+=$(call addOptionalSetting,JAR_BOOT)
+ALL_SETTINGS+=$(call addOptionalSetting,JAVAH_BOOT)
+ALL_SETTINGS+=$(call addOptionalSetting,JAVA)
+ALL_SETTINGS+=$(call addOptionalSetting,JAVAC)
+ALL_SETTINGS+=$(call addOptionalSetting,JAR)
+ALL_SETTINGS+=$(call addOptionalSetting,JAVAH)
+
+
+ALL_SETTINGS+=$(call addHeading,"Build Platform Settings")
+ALL_SETTINGS+=$(call addRequiredSetting,USER)
+ALL_SETTINGS+=$(call addRequiredSetting,PLATFORM)
+ALL_SETTINGS+=$(call addRequiredSetting,ARCH)
+ALL_SETTINGS+=$(call addRequiredSetting,LIBARCH)
+ALL_SETTINGS+=$(call addRequiredSetting,ARCH_FAMILY)
+ALL_SETTINGS+=$(call addRequiredSetting,ARCH_DATA_MODEL)
+ALL_SETTINGS+=$(call addRequiredSetting,ARCHPROP)
+ifeq ($(PLATFORM),windows)
+  ALL_SETTINGS+=$(call addRequiredSetting,PROCESSOR_ARCHITECTURE)
+  ALL_SETTINGS+=$(call addRequiredSetting,PROCESSOR_IDENTIFIER)
+  ALL_SETTINGS+=$(call addRequiredSetting,WINDOWS_VERSION)
+  ALL_SETTINGS+=$(call addRequiredSetting,WINDOWS_NT_VERSION_STRING)
+  ifdef USING_CYGWIN
+    ALL_SETTINGS+=$(call addRequiredSetting,USING_CYGWIN)
+    ALL_SETTINGS+=$(call addRequiredVersionSetting,CYGWIN_VER)
+    ALL_SETTINGS+=$(call addRequiredSetting,CYGPATH_CMD)
+  else
+    ALL_SETTINGS+=$(call addRequiredVersionSetting,MKS_VER)
+    ALL_SETTINGS+=$(call addOptionalSetting,DOSNAME_CMD)
+  endif
+endif
+ifeq ($(PLATFORM),linux)
+  ALL_SETTINGS+=$(call addRequiredSetting,LINUX_VERSION)
+  ifneq ($(ARCH), ia64)
+    ALL_SETTINGS+=$(call addRequiredSetting,ALSA_VERSION)
+  endif
+endif
+ALL_SETTINGS+=$(call addRequiredVersionSetting,OS_VERSION)
+ALL_SETTINGS+=$(call addRequiredSetting,OS_NAME)
+ALL_SETTINGS+=$(call addRequiredSetting,TEMP_FREE_SPACE)
+ALL_SETTINGS+=$(call addRequiredSetting,FREE_SPACE)
+ALL_SETTINGS+=$(call addRequiredSetting,MB_OF_MEMORY)
+
+
+ALL_SETTINGS+=$(call addHeading,"GNU Make Settings")
+ALL_SETTINGS+=$(call addRequiredSetting,MAKE)
+ALL_SETTINGS+=$(call addRequiredVersionSetting,MAKE_VER)
+ALL_SETTINGS+=$(call addOptionalSetting,MAKECMDGOALS)
+ALL_SETTINGS+=$(call addOptionalSetting,MAKEFLAGS)
+ALL_SETTINGS+=$(call addRequiredSetting,SHELL)
+
+
+ALL_SETTINGS+=$(call addHeading,"Target Build Versions")
+ALL_SETTINGS+=$(call addRequiredSetting,JDK_VERSION)
+ALL_SETTINGS+=$(call addOptionalSetting,MILESTONE)
+ALL_SETTINGS+=$(call addOptionalSetting,RELEASE)
+ALL_SETTINGS+=$(call addRequiredSetting,FULL_VERSION)
+ALL_SETTINGS+=$(call addOptionalSetting,BUILD_NUMBER)
+
+
+ALL_SETTINGS+=$(call addHeading,"External File/Binary Locations")
+ALL_SETTINGS+=$(call addRequiredSetting,USRJDKINSTANCES_PATH)
+ALL_SETTINGS+=$(call addAltSetting,JDK_IMPORT_PATH)
+ALL_SETTINGS+=$(call addAltSetting,HOTSPOT_DOCS_IMPORT_PATH)
+ALL_SETTINGS+=$(call addAltSetting,HOTSPOT_IMPORT_PATH)
+ifeq ($(ARCH_DATA_MODEL), 32)
+  ALL_SETTINGS+=$(call addAltSetting,HOTSPOT_CLIENT_PATH)
+endif
+ALL_SETTINGS+=$(call addAltSetting,HOTSPOT_SERVER_PATH)
+ifeq ($(PLATFORM),windows)
+  ALL_SETTINGS+=$(call addAltSetting,HOTSPOT_LIB_PATH)
+  ALL_SETTINGS+=$(call addRequiredSetting,DXSDK_VER)
+  ALL_SETTINGS+=$(call addAltSetting,DXSDK_PATH)
+  ALL_SETTINGS+=$(call addAltSetting,DXSDK_INCLUDE_PATH)
+  ALL_SETTINGS+=$(call addAltSetting,DXSDK_LIB_PATH)
+  ifeq ($(ARCH_DATA_MODEL), 32)
+    ALL_SETTINGS+=$(call addAltSetting,UNICOWS_DLL_PATH)
+    ALL_SETTINGS+=$(call addAltSetting,UNICOWS_LIB_PATH)
+  endif
+  ALL_SETTINGS+=$(call addAltSetting,DEPLOY_MSSDK)
+  ALL_SETTINGS+=$(call addAltSetting,WSCRIPT)
+  ALL_SETTINGS+=$(call addAltSetting,MSICERT)
+endif
+ALL_SETTINGS+=$(call addAltSetting,CACERTS_FILE)
+ALL_SETTINGS+=$(call addAltSetting,MOZILLA_HEADERS_PATH)
+ifneq ($(PLATFORM),windows)
+  ALL_SETTINGS+=$(call addAltSetting,CUPS_HEADERS_PATH)
+endif
+  
+  
+ALL_SETTINGS+=$(call addHeading,"Previous JDK Settings")
+ALL_SETTINGS+=$(call addAltSetting,PREVIOUS_RELEASE_PATH)
+ALL_SETTINGS+=$(call addAltSetting,PREVIOUS_JDK_VERSION)
+ALL_SETTINGS+=$(call addAltSetting,PREVIOUS_JDK_FILE)
+ALL_SETTINGS+=$(call addAltSetting,PREVIOUS_JRE_FILE)
+
+
+ifdef MASTER_ROOT
+  ALL_SETTINGS+=$(call addHeading,"Control Workspace Settings")
+  ALL_SETTINGS+=$(call addAltSetting,CONTROL_MASTER)
+  ALL_SETTINGS+=$(call addAltSetting,HOTSPOT_MASTER)
+  ALL_SETTINGS+=$(call addAltSetting,MOTIF_MASTER)
+  ALL_SETTINGS+=$(call addAltSetting,J2SE_MASTER)
+  ALL_SETTINGS+=$(call addAltSetting,INSTALL_MASTER)
+  ALL_SETTINGS+=$(call addAltSetting,DEPLOY_MASTER)
+  
+  ALL_SETTINGS+=$(call addAltSetting,CONTROL_TOPDIR)
+  ALL_SETTINGS+=$(call addAltSetting,HOTSPOT_TOPDIR)
+  ALL_SETTINGS+=$(call addAltSetting,MOTIF_TOPDIR)
+  ALL_SETTINGS+=$(call addAltSetting,J2SE_TOPDIR)
+  ALL_SETTINGS+=$(call addAltSetting,INSTALL_TOPDIR)
+  ALL_SETTINGS+=$(call addAltSetting,DEPLOY_TOPDIR)
+  ALL_SETTINGS+=$(call addAltSetting,COPYRIGHT_YEAR)
+endif
+

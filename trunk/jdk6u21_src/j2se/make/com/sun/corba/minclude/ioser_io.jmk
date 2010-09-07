@@ -1,0 +1,6 @@
+IOSER_IO_java = \
+	$(TARGDIR)com/sun/corba/se/internal/io/ObjectStreamClass.java \
+	$(TARGDIR)com/sun/corba/se/internal/io/IIOPInputStream.java \
+	$(TARGDIR)com/sun/corba/se/internal/io/IIOPOutputStream.java \
+	$(TARGDIR)com/sun/corba/se/internal/io/LibraryManager.java 
+	

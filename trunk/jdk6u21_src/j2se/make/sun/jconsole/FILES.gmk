@@ -1,0 +1,28 @@
+#
+# @(#)FILES.gmk	1.14 10/04/06
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# Files that just need cp.
+#
+
+MANIFEST = $(TARGDIR)sun/tools/jconsole/manifest
+
+PNG_FILES = \
+	$(TARGDIR)sun/tools/jconsole/resources/collapse-winlf.png \
+	$(TARGDIR)sun/tools/jconsole/resources/connected16.png \
+	$(TARGDIR)sun/tools/jconsole/resources/connected24.png \
+	$(TARGDIR)sun/tools/jconsole/resources/disconnected16.png \
+	$(TARGDIR)sun/tools/jconsole/resources/disconnected24.png \
+	$(TARGDIR)sun/tools/jconsole/resources/expand-winlf.png \
+	$(TARGDIR)sun/tools/jconsole/resources/masthead-left.png \
+	$(TARGDIR)sun/tools/jconsole/resources/masthead-right.png \
+	$(TARGDIR)sun/tools/jconsole/resources/about-OracleLogo.png
+
+GIF_FILES = \
+	$(TARGDIR)sun/tools/jconsole/resources/mbean.gif \
+	$(TARGDIR)sun/tools/jconsole/resources/mbeanserverdelegate.gif \
+	$(TARGDIR)sun/tools/jconsole/resources/xobject.gif

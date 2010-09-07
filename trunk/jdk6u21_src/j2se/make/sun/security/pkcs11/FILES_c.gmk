@@ -1,0 +1,23 @@
+#
+# @(#)FILES_c.gmk	1.5 10/03/23
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+FILES_c = \
+	$(CTARGDIR)j2secmod.c \
+	$(CTARGDIR)j2secmod_md.c \
+	$(CTARGDIR)p11_convert.c \
+	$(CTARGDIR)p11_crypt.c \
+	$(CTARGDIR)p11_digest.c \
+	$(CTARGDIR)p11_dual.c \
+	$(CTARGDIR)p11_general.c \
+	$(CTARGDIR)p11_keymgmt.c \
+	$(CTARGDIR)p11_mutex.c \
+	$(CTARGDIR)p11_objmgmt.c \
+	$(CTARGDIR)p11_sessmgmt.c \
+	$(CTARGDIR)p11_sign.c \
+	$(CTARGDIR)p11_util.c \
+	$(CTARGDIR)p11_md.c
+

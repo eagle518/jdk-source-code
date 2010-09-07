@@ -1,0 +1,62 @@
+#
+# @(#)FILES.gmk	1.11 10/03/23
+# 
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+DEMO_java = \
+  $(DEMODST_SRC)AquaMetalTheme.java \
+  $(DEMODST_SRC)BigContrastMetalTheme.java \
+  $(DEMODST_SRC)ContrastMetalTheme.java \
+  $(DEMODST_SRC)DemoMetalTheme.java \
+  $(DEMODST_SRC)GreenMetalTheme.java \
+  $(DEMODST_SRC)KhakiMetalTheme.java \
+  $(DEMODST_SRC)MetalThemeMenu.java \
+  $(DEMODST_SRC)Metalworks.java \
+  $(DEMODST_SRC)MetalworksDocumentFrame.java \
+  $(DEMODST_SRC)MetalworksFrame.java \
+  $(DEMODST_SRC)MetalworksHelp.java \
+  $(DEMODST_SRC)MetalworksInBox.java \
+  $(DEMODST_SRC)MetalworksPrefs.java \
+  $(DEMODST_SRC)PropertiesMetalTheme.java \
+  $(DEMODST_SRC)UISwitchListener.java \
+
+
+DEMO_class = \
+  $(DEMODST_CLASS)/AquaMetalTheme.class \
+  $(DEMODST_CLASS)/BigContrastMetalTheme.class \
+  $(DEMODST_CLASS)/ContrastMetalTheme.class \
+  $(DEMODST_CLASS)/DemoMetalTheme.class \
+  $(DEMODST_CLASS)/GreenMetalTheme.class \
+  $(DEMODST_CLASS)/KhakiMetalTheme.class \
+  $(DEMODST_CLASS)/MetalThemeMenu.class \
+  $(DEMODST_CLASS)/Metalworks.class \
+  $(DEMODST_CLASS)/MetalworksDocumentFrame.class \
+  $(DEMODST_CLASS)/MetalworksFrame.class \
+  $(DEMODST_CLASS)/MetalworksHelp.class \
+  $(DEMODST_CLASS)/MetalworksInBox.class \
+  $(DEMODST_CLASS)/MetalworksPrefs.class \
+  $(DEMODST_CLASS)/PropertiesMetalTheme.class \
+  $(DEMODST_CLASS)/UISwitchListener.class \
+
+
+DEMO_dirs = \
+  $(DEMODST) \
+  $(DEMODST)/resources \
+  $(DEMODST)/resources/HelpFiles \
+
+
+DEMO_other = \
+  $(DEMODST)/resources/HelpFiles/back.gif \
+  $(DEMODST)/resources/HelpFiles/credits.html \
+  $(DEMODST)/resources/HelpFiles/duke.gif \
+  $(DEMODST)/resources/HelpFiles/javalogo.gif \
+  $(DEMODST)/resources/HelpFiles/metal.html \
+  $(DEMODST)/resources/HelpFiles/metalworks.html \
+  $(DEMODST)/resources/HelpFiles/swing.html \
+  $(DEMODST)/resources/HelpFiles/toc.html \
+  $(DEMODST)/resources/MyTheme.theme \
+  $(DEMODST)/README.txt \
+
+

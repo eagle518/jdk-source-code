@@ -1,0 +1,14 @@
+#
+# Files for logging implementation
+#
+
+# The following files are generated from the .mc files that describe system exceptions:
+com_sun_corba_se_impl_logging_java = \
+	$(TARGDIR)com/sun/corba/se/impl/logging/ActivationSystemException.java \
+	$(TARGDIR)com/sun/corba/se/impl/logging/IORSystemException.java \
+	$(TARGDIR)com/sun/corba/se/impl/logging/InterceptorsSystemException.java \
+	$(TARGDIR)com/sun/corba/se/impl/logging/NamingSystemException.java \
+	$(TARGDIR)com/sun/corba/se/impl/logging/OMGSystemException.java \
+	$(TARGDIR)com/sun/corba/se/impl/logging/ORBUtilSystemException.java \
+	$(TARGDIR)com/sun/corba/se/impl/logging/POASystemException.java \
+	$(TARGDIR)com/sun/corba/se/impl/logging/UtilSystemException.java 

@@ -1,0 +1,68 @@
+#
+# @(#)Demo.gmk	1.3 10/03/23 16:59:11
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# Template Makefile for scripting demo
+#
+#    Usage: (in subdirectory)
+#        DEMO_NAME=name
+#        FILES_classes=names of class files needed
+#        include ../Demo.gmk
+#
+#    Subdirectory has name "$(DEMO_NAME)".
+#    All source located at src/*/demo/scripting/$(DEMO_NAME)
+#
+
+BUILDDIR = ../../..
+PRODUCT = com/sun/demo/scripting
+LIBRARY = $(DEMO_NAME)
+
+# Absolute path to demo destination area
+ABS_DEMODESTDIR=$(ABS_OUTPUTDIR)/demo/scripting/$(DEMO_NAME)
+
+# Source directories
+DEMO_DIR=$(SHARE_SRC)/demo/scripting/$(DEMO_NAME)
+SRCDIR=$(DEMO_DIR)/src
+JAVA_SOURCES=$(FILES_classes:%.class=$(SRCDIR)/%.java)
+
+include $(BUILDDIR)/common/Defs.gmk
+
+# Keep classes in temporary area
+CLASSES_DIR=$(TEMPDIR)/$(DEMO_NAME)/classes
+
+# Path to jar file for this demo
+JAR_FILE=$(ABS_DEMODESTDIR)/$(DEMO_NAME).jar
+
+# All rules for this demo
+all: $(JAR_FILE) demo_src_dir_layout
+
+# Build the jar file
+$(JAR_FILE): $(JAVA_SOURCES)
+	$(RM) $@
+	$(RM) -r $(CLASSES_DIR)
+	$(MKDIR) -p $(CLASSES_DIR)
+	$(JAVAC) -cp $(ABS_OUTPUTDIR)/classes -d $(CLASSES_DIR) $(JAVA_SOURCES)
+	$(CP) -r $(SRCDIR)/META-INF $(CLASSES_DIR)
+	$(CP) -r $(SRCDIR)/resources $(CLASSES_DIR)
+	$(FIND) $(CLASSES_DIR) -type 'd' -name SCCS -prune -exec $(RM) -r {} \;
+	$(MKDIR) -p $(@D)
+	$(CD) $(CLASSES_DIR); $(ABS_JAR) cvf $@ .
+	@$(CD) $(CLASSES_DIR); $(java-vm-cleanup)
+
+demo_src_dir_layout:
+	$(RM) -r $(ABS_DEMODESTDIR)/src
+	$(MKDIR) -p $(ABS_DEMODESTDIR)/src/META-INF
+	$(CP) -r $(SRCDIR) $(ABS_DEMODESTDIR)
+	$(FIND) $(ABS_DEMODESTDIR) -type 'd' -name SCCS -prune -exec $(RM) -r {} \;
+	$(RM) -r $(ABS_DEMODESTDIR)/README.txt
+	$(CP) $(DEMO_DIR)/README.txt $(ABS_DEMODESTDIR)/README.txt
+	$(RM) -r $(ABS_DEMODESTDIR)/build.xml
+	$(CP) $(DEMO_DIR)/build.xml $(ABS_DEMODESTDIR)/build.xml
+
+clean::
+	$(RM) -r $(CLASSES_DIR)
+	$(RM) -r $(ABS_DEMODESTDIR)

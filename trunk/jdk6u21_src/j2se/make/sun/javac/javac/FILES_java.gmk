@@ -1,0 +1,29 @@
+# Specify Main.java explicitly, because Launcher.java (in the same directory)
+# is not to be built for the product
+#
+FILES_java  = $(TARGDIR)com/sun/tools/javac/Main.java
+FILES_java += $(TARGDIR)com/sun/tools/javadoc/DocCommentScanner.java
+
+# Use the AUTO_FILES_JAVA_DIRS to specify the rest of files, 
+# but do it here in FILES_java.gmk because this file 
+# is reused in make/sun/javac/recompile/newjavac/Makefile
+#
+AUTO_FILES_JAVA_DIRS  = com/sun/tools/javac/api
+AUTO_FILES_JAVA_DIRS += com/sun/tools/javac/code
+AUTO_FILES_JAVA_DIRS += com/sun/tools/javac/comp
+AUTO_FILES_JAVA_DIRS += com/sun/tools/javac/jvm
+AUTO_FILES_JAVA_DIRS += com/sun/tools/javac/main
+AUTO_FILES_JAVA_DIRS += com/sun/tools/javac/model
+AUTO_FILES_JAVA_DIRS += com/sun/tools/javac/parser
+AUTO_FILES_JAVA_DIRS += com/sun/tools/javac/processing
+AUTO_FILES_JAVA_DIRS += com/sun/tools/javac/sym
+AUTO_FILES_JAVA_DIRS += com/sun/tools/javac/tree
+AUTO_FILES_JAVA_DIRS += com/sun/tools/javac/util
+AUTO_FILES_JAVA_DIRS += com/sun/tools/javac/zip
+AUTO_FILES_JAVA_DIRS += javax/annotation/processing
+AUTO_FILES_JAVA_DIRS += javax/lang/model
+AUTO_FILES_JAVA_DIRS += javax/lang/model/element
+AUTO_FILES_JAVA_DIRS += javax/lang/model/type
+AUTO_FILES_JAVA_DIRS += javax/lang/model/util
+AUTO_FILES_JAVA_DIRS += com/sun/source/tree
+AUTO_FILES_JAVA_DIRS += com/sun/source/util 

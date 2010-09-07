@@ -1,0 +1,9 @@
+#
+# @(#)org_omg_Messaging.jmk	1.4 02/09/19
+#
+# Messaging IDL Generated Files
+#
+
+Messaging_java = \
+	$(TARGDIR)org/omg/Messaging/SYNC_WITH_TRANSPORT.java \
+	$(TARGDIR)org/omg/Messaging/SyncScopeHelper.java

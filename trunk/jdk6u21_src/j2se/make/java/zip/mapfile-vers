@@ -1,0 +1,65 @@
+#
+#ident  "@(#)mapfile-vers 1.17     05/04/15 SMI"
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+#
+# This software is the proprietary information of Oracle.
+# Use is subject to license terms.
+#
+
+# Define public interface.
+
+SUNWprivate_1.1 {
+	global:
+		Java_java_util_jar_JarFile_getMetaInfEntryNames;
+		Java_java_util_zip_Adler32_update;
+		Java_java_util_zip_Adler32_updateBytes;
+		Java_java_util_zip_CRC32_update;
+		Java_java_util_zip_CRC32_updateBytes;
+		Java_java_util_zip_Deflater_deflateBytes;
+		Java_java_util_zip_Deflater_end;
+		Java_java_util_zip_Deflater_getAdler;
+		Java_java_util_zip_Deflater_getBytesRead;
+		Java_java_util_zip_Deflater_getBytesWritten;
+		Java_java_util_zip_Deflater_init;
+		Java_java_util_zip_Deflater_initIDs;
+		Java_java_util_zip_Deflater_reset;
+		Java_java_util_zip_Deflater_setDictionary;
+		Java_java_util_zip_Inflater_end;
+		Java_java_util_zip_Inflater_getAdler;
+		Java_java_util_zip_Inflater_getBytesRead;
+		Java_java_util_zip_Inflater_getBytesWritten;
+		Java_java_util_zip_Inflater_inflateBytes;
+		Java_java_util_zip_Inflater_init;
+		Java_java_util_zip_Inflater_initIDs;
+		Java_java_util_zip_Inflater_reset;
+		Java_java_util_zip_Inflater_setDictionary;
+		Java_java_util_zip_ZipEntry_initFields;
+		Java_java_util_zip_ZipEntry_initIDs;
+		Java_java_util_zip_ZipFile_close;
+		Java_java_util_zip_ZipFile_freeEntry;
+		Java_java_util_zip_ZipFile_getCSize;
+		Java_java_util_zip_ZipFile_getEntry;
+		Java_java_util_zip_ZipFile_getMethod;
+		Java_java_util_zip_ZipFile_getNextEntry;
+		Java_java_util_zip_ZipFile_getSize;
+		Java_java_util_zip_ZipFile_getZipMessage;
+		Java_java_util_zip_ZipFile_getTotal;
+		Java_java_util_zip_ZipFile_initIDs;
+		Java_java_util_zip_ZipFile_open;
+		Java_java_util_zip_ZipFile_read;
+
+		ZIP_Close;
+		ZIP_CRC32;
+		ZIP_FindEntry;
+		ZIP_GetEntry;
+		ZIP_GetNextEntry;
+		ZIP_Lock;
+		ZIP_Open;
+		ZIP_Read;
+		ZIP_ReadEntry;
+		ZIP_Unlock;
+
+	local:
+		*;
+};

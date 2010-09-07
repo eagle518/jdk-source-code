@@ -1,0 +1,29 @@
+#
+# @(#)mapfile-i586	1.4 10/03/23
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# Specify what global symbols we export.  Note that we're not really
+# interested in declaring a version, simply scoping the file is sufficient.
+#
+
+{
+	global:
+		main;		# Provides basic adb symbol offsets
+		environ;	# Public symbols and required by Java run time
+		_environ;
+		__environ_lock;
+		___Argv;	# The following are private, but as they are
+		_start;		# exported from ctr1/crtn, the clever hacker
+		_init;		# might know about them.  However note, that
+		_fini;		# their use is strictly not supported.
+		_lib_version;
+#		_mcount;
+		__fsr;
+		__fsr_init_value;
+		__longdouble_used;
+
+	local:
+		*;
+};

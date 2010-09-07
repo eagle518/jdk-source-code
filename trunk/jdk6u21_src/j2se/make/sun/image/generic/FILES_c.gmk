@@ -1,0 +1,74 @@
+#
+# @(#)FILES_c.gmk	1.8 03/07/12
+#
+IMAGE_AFFINE_FILES = \
+	mlib_ImageAffine_NN.c \
+	mlib_ImageAffine_NN_Bit.c \
+	mlib_ImageAffine_BC_S32.c \
+	mlib_ImageAffine_BC_D64.c \
+	mlib_ImageAffine_BC_F32.c \
+	mlib_ImageAffine_BL_S32.c \
+	mlib_ImageAffine_BL_D64.c \
+	mlib_ImageAffine_BL_F32.c \
+	mlib_c_ImageAffine_NN.c \
+	mlib_c_ImageAffine_BL.c \
+	mlib_c_ImageAffine_BL_S16.c \
+	mlib_c_ImageAffine_BL_U16.c \
+	mlib_c_ImageAffine_BC.c \
+	mlib_c_ImageAffine_BC_S16.c \
+	mlib_c_ImageAffine_BC_U16.c \
+	mlib_c_ImageAffineIndex_BC.c \
+	mlib_c_ImageAffineIndex_BL.c \
+	mlib_ImageAffineEdge.c \
+	mlib_ImageScanPoly.c \
+	mlib_ImageColorTrue2Index.c \
+	mlib_ImageDivTables.c \
+	mlib_c_ImageThresh1_U8.c \
+	mlib_ImageFilters.c \
+
+IMAGE_LOOKUP_FILES = \
+	mlib_c_ImageLookUp_f.c \
+	mlib_ImageLookUp_64.c \
+	mlib_ImageLookUp_Bit.c \
+	mlib_c_ImageCopy.c \
+
+IMAGE_CONV_FILES = \
+	mlib_ImageConv_16ext.c \
+	mlib_ImageConv_u16ext.c \
+	mlib_ImageConvMxN_ext.c \
+	mlib_ImageConvMxN_Fp.c \
+	mlib_ImageConv_8ext.c \
+	mlib_c_ImageConv_f.c \
+	mlib_ImageClipping.c \
+	mlib_c_ImageConvCopyEdge.c \
+	mlib_c_ImageConvClearEdge.c \
+	mlib_ImageConv_8nw.c \
+	mlib_ImageConv_16nw.c \
+	mlib_ImageConv_u16nw.c \
+	mlib_ImageConv_32nw.c \
+	mlib_ImageConv_F32nw.c \
+	mlib_ImageConv_D64nw.c \
+	mlib_ImageConv2x2_f.c \
+	mlib_ImageConvClearEdge_Fp.c \
+	mlib_ImageConvCopyEdge_Bit.c \
+	mlib_ImageConvClearEdge_Bit.c \
+	mlib_ImageCopy_Bit.c \
+	mlib_c_ImageConvVersion.c \
+
+
+SHARE_SYS_FILES = \
+	mlib_sys.c  \
+	mlib_ImageUtils.c \
+
+
+FILES_c = \
+	mlib_ImageAffine.c \
+	mlib_ImageCreate.c \
+	mlib_c_ImageLookUp.c \
+	mlib_ImageConvMxN.c \
+	mlib_ImageConvKernelConvert.c \
+	$(IMAGE_AFFINE_FILES) \
+	$(IMAGE_LOOKUP_FILES) \
+	$(IMAGE_CONV_FILES) \
+	$(SHARE_SYS_FILES) \
+

@@ -1,0 +1,135 @@
+#
+# @(#)FILES_c.gmk	1.13 08/01/30
+#
+FILES_c_shared = \
+        $(TARGDIR)autogrid.c \
+        $(TARGDIR)ghints.c \
+        $(TARGDIR)glyph.c \
+        $(TARGDIR)hstrat97.c \
+        $(TARGDIR)t2ksc.c \
+        $(TARGDIR)scoder.c \
+        $(TARGDIR)shapet.c \
+        $(TARGDIR)t1.c \
+	$(TARGDIR)t1hint.c \
+        $(TARGDIR)t2k.c \
+        $(TARGDIR)t2kstrm.c \
+        $(TARGDIR)truetype.c \
+        $(TARGDIR)tsimem.c \
+        $(TARGDIR)util.c \
+        $(TARGDIR)t2ksbit.c  \
+        $(TARGDIR)FixMulDiv.c \
+        $(TARGDIR)Fnt.c \
+        $(TARGDIR)FntDebug.c \
+        $(TARGDIR)FntInit.c \
+        $(TARGDIR)FntRare.c \
+        $(TARGDIR)FntUtilities.c \
+        $(TARGDIR)FontMath.c \
+        $(TARGDIR)GlyphOutline.c \
+        $(TARGDIR)HintGlyph.c \
+        $(TARGDIR)HintIO.c \
+        $(TARGDIR)HintTran.c \
+        $(TARGDIR)InterpreterGlue.c \
+        $(TARGDIR)PinkGlue.c \
+        $(TARGDIR)TTHintFont.c \
+        $(TARGDIR)HintScan.c \
+        $(TARGDIR)sc.c \
+        $(TARGDIR)Orient.c \
+        $(TARGDIR)OrientDB.c \
+        $(TARGDIR)jbidi.c \
+        $(TARGDIR)ubidi.c \
+        $(TARGDIR)ubidiln.c \
+        $(TARGDIR)uchardir.c \
+        $(TARGDIR)DrawGlyphList.c \
+        $(TARGDIR)scalerMethods.c
+
+FILES_cpp_shared = \
+        $(TARGDIR)CursiveAttachmentSubtables.cpp \
+        $(TARGDIR)ExtensionSubtables.cpp \
+        $(TARGDIR)MPreFixups.cpp \
+        $(TARGDIR)HanLayoutEngine.cpp \
+        $(TARGDIR)LEFontInstance.cpp \
+        $(TARGDIR)ContextualGlyphSubstProc.cpp \
+        $(TARGDIR)IndicRearrangementProcessor.cpp \
+        $(TARGDIR)LigatureSubstProc.cpp \
+        $(TARGDIR)LookupTables.cpp \
+        $(TARGDIR)MorphTables.cpp \
+        $(TARGDIR)NonContextualGlyphSubstProc.cpp \
+        $(TARGDIR)SegmentArrayProcessor.cpp \
+        $(TARGDIR)SegmentSingleProcessor.cpp \
+        $(TARGDIR)SimpleArrayProcessor.cpp \
+        $(TARGDIR)SingleTableProcessor.cpp \
+        $(TARGDIR)StateTableProcessor.cpp \
+        $(TARGDIR)SubtableProcessor.cpp \
+        $(TARGDIR)TrimmedArrayProcessor.cpp \
+        $(TARGDIR)AlternateSubstSubtables.cpp \
+        $(TARGDIR)AnchorTables.cpp \
+        $(TARGDIR)CanonData.cpp \
+        $(TARGDIR)CanonShaping.cpp \
+        $(TARGDIR)ClassDefinitionTables.cpp \
+        $(TARGDIR)ContextualSubstSubtables.cpp \
+        $(TARGDIR)CoverageTables.cpp \
+        $(TARGDIR)DeviceTables.cpp \
+        $(TARGDIR)Features.cpp \
+        $(TARGDIR)GDEFMarkFilter.cpp \
+        $(TARGDIR)GlyphDefinitionTables.cpp \
+        $(TARGDIR)GlyphIterator.cpp \
+        $(TARGDIR)GlyphLookupTables.cpp \
+        $(TARGDIR)GlyphPositionAdjustments.cpp \
+        $(TARGDIR)GlyphPosnLookupProc.cpp \
+        $(TARGDIR)GlyphPositioningTables.cpp \
+        $(TARGDIR)GlyphSubstLookupProc.cpp \
+        $(TARGDIR)GlyphSubstitutionTables.cpp \
+        $(TARGDIR)HebrewLigatureData.cpp \
+        $(TARGDIR)HebrewShaping.cpp \
+        $(TARGDIR)IndicClassTables.cpp \
+        $(TARGDIR)IndicReordering.cpp \
+        $(TARGDIR)KernTable.cpp \
+        $(TARGDIR)KhmerLayoutEngine.cpp \
+        $(TARGDIR)KhmerReordering.cpp \
+        $(TARGDIR)LEGlyphStorage.cpp \
+        $(TARGDIR)LEInsertionList.cpp \
+        $(TARGDIR)LigatureSubstSubtables.cpp \
+        $(TARGDIR)LookupProcessor.cpp \
+        $(TARGDIR)Lookups.cpp \
+        $(TARGDIR)MarkArrays.cpp \
+        $(TARGDIR)MarkToBasePosnSubtables.cpp \
+        $(TARGDIR)MarkToLigaturePosnSubtables.cpp \
+        $(TARGDIR)MarkToMarkPosnSubtables.cpp \
+        $(TARGDIR)MirroredCharData.cpp \
+        $(TARGDIR)MultipleSubstSubtables.cpp \
+        $(TARGDIR)OpenTypeUtilities.cpp \
+        $(TARGDIR)PairPositioningSubtables.cpp \
+        $(TARGDIR)ScriptAndLanguage.cpp \
+        $(TARGDIR)ShapingTypeData.cpp \
+        $(TARGDIR)SinglePositioningSubtables.cpp \
+        $(TARGDIR)SingleSubstitutionSubtables.cpp \
+        $(TARGDIR)SubstitutionLookups.cpp \
+        $(TARGDIR)ThaiShaping.cpp \
+        $(TARGDIR)ThaiStateTables.cpp \
+        $(TARGDIR)ValueRecords.cpp \
+        $(TARGDIR)ArabicLayoutEngine.cpp \
+        $(TARGDIR)ArabicShaping.cpp \
+        $(TARGDIR)GXLayoutEngine.cpp \
+        $(TARGDIR)IndicLayoutEngine.cpp \
+        $(TARGDIR)LayoutEngine.cpp \
+        $(TARGDIR)SunLayoutEngine.cpp \
+        $(TARGDIR)OpenTypeLayoutEngine.cpp \
+        $(TARGDIR)ThaiLayoutEngine.cpp \
+        $(TARGDIR)ScriptAndLanguageTags.cpp \
+        $(TARGDIR)FontInstanceAdapter.cpp \
+        $(TARGDIR)GeneralPath.cpp \
+        $(TARGDIR)t2kScalerMethods.cpp
+
+
+ifeq ($(PLATFORM),windows)
+FILES_c_platform = fontpath.c \
+                   lcdglyph.c
+FILES_cpp_platform =
+else
+FILES_c_platform = $(TARGDIR)X11FontScaler.c \
+                   $(TARGDIR)X11TextRenderer.c
+FILES_cpp_platform =
+endif
+
+FILES_c = $(FILES_c_shared)  $(FILES_c_platform)
+FILES_cpp = $(FILES_cpp_shared) $(FILES_cpp_platform)

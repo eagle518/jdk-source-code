@@ -1,0 +1,6 @@
+#
+# @(#)FILES_java.gmk	1.3 04/03/11
+#
+FILES_java = \
+	$(TARGDIR)com/sun/rowset/DataSetImpl.java \
+	$(TARGDIR)com/sun/rowset/QueryObjectGeneratorImpl.java

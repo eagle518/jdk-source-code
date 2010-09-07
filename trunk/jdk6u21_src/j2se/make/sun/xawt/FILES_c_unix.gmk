@@ -1,0 +1,68 @@
+#
+# @(#)FILES_c_unix.gmk	1.38 10/03/23
+# 
+# Copyright (c) 2007, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+
+# @(#)sun_pr.cmk @(#)sun_dcpr.cmk	1.8 98/01/09
+
+#
+# include rules
+#
+
+FILES_c = \
+	$(TARGDIR)XlibWrapper.c \
+	$(TARGDIR)XWindow.c \
+	$(TARGDIR)XToolkit.c \
+	$(TARGDIR)X11Color.c \
+	$(TARGDIR)X11SurfaceData.c \
+	$(TARGDIR)awt_GraphicsEnv.c \
+	$(TARGDIR)awt_InputMethod.c \
+	$(TARGDIR)robot_common.c \
+	$(TARGDIR)awt_Robot.c \
+        $(TARGDIR)list.c \
+        $(TARGDIR)multiVis.c \
+	$(TARGDIR)initIDs.c \
+	$(TARGDIR)awt_util.c \
+	$(TARGDIR)awt_Desktop.c \
+	$(TARGDIR)awt_UNIXToolkit.c \
+	$(TARGDIR)X11FontScaler_md.c \
+	$(TARGDIR)X11TextRenderer_md.c \
+	$(TARGDIR)fontpath.c \
+	$(TARGDIR)awt_Insets.c \
+	$(TARGDIR)awt_Event.c \
+	$(TARGDIR)X11Renderer.c \
+	$(TARGDIR)X11PMBlitLoops.c \
+	$(TARGDIR)X11CachingSurfaceManager.c  \
+	$(TARGDIR)OGLBlitLoops.c \
+	$(TARGDIR)OGLBufImgOps.c \
+	$(TARGDIR)OGLContext.c \
+	$(TARGDIR)OGLFuncs.c \
+	$(TARGDIR)OGLMaskBlit.c \
+	$(TARGDIR)OGLMaskFill.c \
+	$(TARGDIR)OGLPaints.c \
+	$(TARGDIR)OGLRenderQueue.c \
+	$(TARGDIR)OGLRenderer.c \
+	$(TARGDIR)OGLSurfaceData.c \
+	$(TARGDIR)OGLTextRenderer.c \
+	$(TARGDIR)OGLVertexCache.c \
+	$(TARGDIR)GLXGraphicsConfig.c \
+	$(TARGDIR)GLXSurfaceData.c \
+	$(TARGDIR)AccelGlyphCache.c \
+	$(TARGDIR)awt_Font.c \
+	$(TARGDIR)multi_font.c \
+	$(TARGDIR)awt_AWTEvent.c \
+	$(TARGDIR)awt_DrawingSurface.c \
+	$(TARGDIR)jawt.c \
+	$(TARGDIR)CUPSfuncs.c \
+	$(TARGDIR)debug_assert.c \
+	$(TARGDIR)debug_mem.c \
+	$(TARGDIR)debug_trace.c \
+	$(TARGDIR)debug_util.c \
+	$(TARGDIR)awt_Plugin.c \
+	$(TARGDIR)gtk2_interface.c \
+        $(TARGDIR)swing_GTKNativeEngine.c \
+        $(TARGDIR)swing_GTKNativeStyle.c \
+    $(TARGDIR)rect.c

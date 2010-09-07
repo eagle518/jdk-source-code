@@ -1,0 +1,39 @@
+# @(#)com_sun_corba_se_spi_ior.jmk	1.6 04/06/03
+
+com_sun_corba_se_spi_ior_java = \
+	$(TARGDIR)com/sun/corba/se/spi/ior/EncapsulationFactoryBase.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/IOR.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/IORFactory.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/IORFactories.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/IORTemplate.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/IORTemplateList.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/Identifiable.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/IdentifiableBase.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/IdentifiableContainerBase.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/IdentifiableFactory.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/IdentifiableFactoryFinder.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/MakeImmutable.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/ObjectAdapterId.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/ObjectId.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/ObjectKey.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/ObjectKeyFactory.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/ObjectKeyTemplate.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/TaggedComponent.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/TaggedComponentBase.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/TaggedComponentFactoryFinder.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/TaggedProfile.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/TaggedProfileTemplate.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/TaggedProfileTemplateBase.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/WriteContents.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/Writeable.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/iiop/AlternateIIOPAddressComponent.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/iiop/CodeSetsComponent.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/iiop/JavaCodebaseComponent.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/iiop/MaxStreamFormatVersionComponent.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/iiop/RequestPartitioningComponent.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/iiop/ORBTypeComponent.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/iiop/GIOPVersion.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/iiop/IIOPAddress.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/iiop/IIOPFactories.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/iiop/IIOPProfile.java \
+	$(TARGDIR)com/sun/corba/se/spi/ior/iiop/IIOPProfileTemplate.java

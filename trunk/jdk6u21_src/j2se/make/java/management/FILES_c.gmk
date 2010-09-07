@@ -1,0 +1,25 @@
+#
+# @(#)FILES_c.gmk	1.13 10/03/23
+# 
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# @(#)FILES_c.gmk	1.13 10/03/23
+#
+FILES_c = \
+	ClassLoadingImpl.c \
+	FileSystemImpl.c \
+	Flag.c \
+	GarbageCollectorImpl.c \
+	GcInfoBuilder.c \
+	HotSpotDiagnostic.c \
+	HotspotThread.c \
+	MemoryImpl.c \
+	MemoryManagerImpl.c \
+	MemoryPoolImpl.c \
+	ThreadImpl.c \
+	VMManagementImpl.c \
+	management.c
+

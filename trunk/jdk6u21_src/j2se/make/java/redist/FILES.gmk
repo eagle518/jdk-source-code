@@ -1,0 +1,33 @@
+#
+# @(#)FILES.gmk	1.9 03/12/11
+#
+# List of lucida font files that we redistribute.
+#
+
+SHARED_FONTFILES =					\
+	$(LIBDIR)/fonts/LucidaTypewriterRegular.ttf	\
+	$(LIBDIR)/fonts/LucidaTypewriterBold.ttf        \
+	$(LIBDIR)/fonts/LucidaBrightRegular.ttf         \
+	$(LIBDIR)/fonts/LucidaBrightDemiBold.ttf        \
+	$(LIBDIR)/fonts/LucidaBrightItalic.ttf          \
+	$(LIBDIR)/fonts/LucidaBrightDemiItalic.ttf	\
+	$(LIBDIR)/fonts/LucidaSansRegular.ttf       	\
+	$(LIBDIR)/fonts/LucidaSansDemiBold.ttf       	\
+
+ifeq ($(PLATFORM), linux)
+
+# The oblique versions of the font are derived from the base versions
+# and since 2D can do this derivation on the fly at run time there is no
+# need to redistribute the fonts. An exception to this is on Linux.
+# The reason is that the Lucidas are specified in the font.properties files
+# on Linux, and so AWT/Motif components expect to be able to ask the Xserver
+# for these oblique fonts, but the Xserver cannot do the same derivation as
+# 2D can.
+
+OBLIQUE_FONTFILES =                                             \
+	$(LIBDIR)/oblique-fonts/LucidaTypewriterOblique.ttf     \
+	$(LIBDIR)/oblique-fonts/LucidaTypewriterBoldOblique.ttf \
+	$(LIBDIR)/oblique-fonts/LucidaSansOblique.ttf       	\
+	$(LIBDIR)/oblique-fonts/LucidaSansDemiOblique.ttf       \
+
+endif

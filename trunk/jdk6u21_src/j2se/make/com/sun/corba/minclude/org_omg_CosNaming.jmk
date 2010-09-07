@@ -1,0 +1,65 @@
+#
+# @(#)org_omg_CosNaming.jmk	1.17 03/11/17
+#
+
+NS_GENERATED_java = \
+	$(TARGDIR)org/omg/CosNaming/IstringHelper.java \
+	$(TARGDIR)org/omg/CosNaming/Binding.java \
+	$(TARGDIR)org/omg/CosNaming/BindingHelper.java \
+	$(TARGDIR)org/omg/CosNaming/BindingHolder.java \
+	$(TARGDIR)org/omg/CosNaming/BindingIterator.java \
+	$(TARGDIR)org/omg/CosNaming/BindingIteratorPOA.java \
+	$(TARGDIR)org/omg/CosNaming/BindingIteratorOperations.java \
+	$(TARGDIR)org/omg/CosNaming/BindingIteratorHelper.java \
+	$(TARGDIR)org/omg/CosNaming/BindingIteratorHolder.java \
+	$(TARGDIR)org/omg/CosNaming/_BindingIteratorStub.java \
+	$(TARGDIR)org/omg/CosNaming/BindingListHelper.java \
+	$(TARGDIR)org/omg/CosNaming/BindingListHolder.java \
+	$(TARGDIR)org/omg/CosNaming/BindingType.java \
+	$(TARGDIR)org/omg/CosNaming/BindingTypeHelper.java \
+	$(TARGDIR)org/omg/CosNaming/BindingTypeHolder.java \
+	$(TARGDIR)org/omg/CosNaming/NameComponent.java \
+	$(TARGDIR)org/omg/CosNaming/NameComponentHelper.java \
+	$(TARGDIR)org/omg/CosNaming/NameComponentHolder.java \
+	$(TARGDIR)org/omg/CosNaming/NameHelper.java \
+	$(TARGDIR)org/omg/CosNaming/NameHolder.java \
+	$(TARGDIR)org/omg/CosNaming/NamingContext.java \
+	$(TARGDIR)org/omg/CosNaming/NamingContextHelper.java \
+	$(TARGDIR)org/omg/CosNaming/NamingContextHolder.java \
+	$(TARGDIR)org/omg/CosNaming/_NamingContextStub.java \
+	$(TARGDIR)org/omg/CosNaming/NamingContextPackage/AlreadyBound.java \
+	$(TARGDIR)org/omg/CosNaming/NamingContextPackage/AlreadyBoundHelper.java \
+	$(TARGDIR)org/omg/CosNaming/NamingContextPackage/AlreadyBoundHolder.java \
+	$(TARGDIR)org/omg/CosNaming/NamingContextPackage/CannotProceed.java \
+	$(TARGDIR)org/omg/CosNaming/NamingContextPackage/CannotProceedHelper.java \
+	$(TARGDIR)org/omg/CosNaming/NamingContextPackage/CannotProceedHolder.java \
+	$(TARGDIR)org/omg/CosNaming/NamingContextPackage/InvalidName.java \
+	$(TARGDIR)org/omg/CosNaming/NamingContextPackage/InvalidNameHelper.java \
+	$(TARGDIR)org/omg/CosNaming/NamingContextPackage/InvalidNameHolder.java \
+	$(TARGDIR)org/omg/CosNaming/NamingContextPackage/NotEmpty.java \
+	$(TARGDIR)org/omg/CosNaming/NamingContextPackage/NotEmptyHelper.java \
+	$(TARGDIR)org/omg/CosNaming/NamingContextPackage/NotEmptyHolder.java \
+	$(TARGDIR)org/omg/CosNaming/NamingContextPackage/NotFound.java \
+	$(TARGDIR)org/omg/CosNaming/NamingContextPackage/NotFoundHelper.java \
+	$(TARGDIR)org/omg/CosNaming/NamingContextPackage/NotFoundHolder.java \
+	$(TARGDIR)org/omg/CosNaming/NamingContextPackage/NotFoundReason.java \
+	$(TARGDIR)org/omg/CosNaming/NamingContextPackage/NotFoundReasonHelper.java \
+	$(TARGDIR)org/omg/CosNaming/NamingContextPackage/NotFoundReasonHolder.java \
+	$(TARGDIR)org/omg/CosNaming/NamingContextPOA.java \
+	$(TARGDIR)org/omg/CosNaming/NamingContextExt.java \
+	$(TARGDIR)org/omg/CosNaming/NamingContextExtOperations.java \
+	$(TARGDIR)org/omg/CosNaming/NamingContextExtHelper.java \
+	$(TARGDIR)org/omg/CosNaming/NamingContextExtHolder.java \
+	$(TARGDIR)org/omg/CosNaming/NamingContextExtPOA.java \
+	$(TARGDIR)org/omg/CosNaming/_NamingContextExtStub.java \
+	$(TARGDIR)org/omg/CosNaming/NamingContextExtPackage/AddressHelper.java \
+	$(TARGDIR)org/omg/CosNaming/NamingContextExtPackage/InvalidAddress.java \
+	$(TARGDIR)org/omg/CosNaming/NamingContextExtPackage/InvalidAddressHelper.java \
+	$(TARGDIR)org/omg/CosNaming/NamingContextExtPackage/InvalidAddressHolder.java \
+	$(TARGDIR)org/omg/CosNaming/NamingContextExtPackage/StringNameHelper.java \
+	$(TARGDIR)org/omg/CosNaming/NamingContextExtPackage/URLStringHelper.java 
+
+
+LEGACY_FILES_java = \
+	$(TARGDIR)org/omg/CosNaming/_NamingContextImplBase.java \
+	$(TARGDIR)org/omg/CosNaming/_BindingIteratorImplBase.java 

@@ -1,0 +1,21 @@
+#
+# @(#)FILES.gmk	1.4	02/09/19
+#
+# JavaSound.
+#
+
+FILES_java = \
+	$(TARGDIR)JavaSoundApplet.java \
+	$(TARGDIR)JavaSound.java \
+	$(TARGDIR)MidiSynth.java \
+	$(TARGDIR)CapturePlayback.java \
+	$(TARGDIR)ControlContext.java \
+	$(TARGDIR)Groove.java \
+	$(TARGDIR)TempoDial.java \
+	$(TARGDIR)Juke.java \
+	$(TARGDIR)Runner.java
+
+FILES_dirs = \
+        $(TARGDIR) \
+        $(DEMODST) \
+        $(SRCDST)

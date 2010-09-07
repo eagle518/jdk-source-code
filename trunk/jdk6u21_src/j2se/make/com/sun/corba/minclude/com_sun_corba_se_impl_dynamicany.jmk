@@ -1,0 +1,19 @@
+#
+# Files for DynamicAny implementation 
+#
+
+com_sun_corba_se_impl_dynamicany_java = \
+	$(TARGDIR)com/sun/corba/se/impl/dynamicany/DynAnyBasicImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/dynamicany/DynAnyCollectionImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/dynamicany/DynAnyComplexImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/dynamicany/DynAnyConstructedImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/dynamicany/DynAnyFactoryImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/dynamicany/DynAnyImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/dynamicany/DynAnyUtil.java \
+	$(TARGDIR)com/sun/corba/se/impl/dynamicany/DynArrayImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/dynamicany/DynEnumImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/dynamicany/DynFixedImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/dynamicany/DynSequenceImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/dynamicany/DynStructImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/dynamicany/DynUnionImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/dynamicany/DynValueImpl.java

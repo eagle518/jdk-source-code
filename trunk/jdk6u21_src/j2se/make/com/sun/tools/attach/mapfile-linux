@@ -1,0 +1,27 @@
+#
+#ident	"@(#)mapfile-linux	1.6 10/04/01"
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+#
+# This software is the proprietary information of Oracle.
+# Use is subject to license terms.
+#
+
+# Define public interface.
+
+SUNWprivate_1.1 {
+	global:
+	    Java_sun_tools_attach_LinuxVirtualMachine_checkPermissions;
+	    Java_sun_tools_attach_LinuxVirtualMachine_close;
+	    Java_sun_tools_attach_LinuxVirtualMachine_connect;
+	    Java_sun_tools_attach_LinuxVirtualMachine_getLinuxThreadsManager;
+	    Java_sun_tools_attach_LinuxVirtualMachine_isLinuxThreads;
+	    Java_sun_tools_attach_LinuxVirtualMachine_open;
+	    Java_sun_tools_attach_LinuxVirtualMachine_sendQuitTo;
+            Java_sun_tools_attach_LinuxVirtualMachine_sendQuitToChildrenOf;
+	    Java_sun_tools_attach_LinuxVirtualMachine_socket;
+	    Java_sun_tools_attach_LinuxVirtualMachine_read;
+	    Java_sun_tools_attach_LinuxVirtualMachine_write;
+	local:
+		*;
+};

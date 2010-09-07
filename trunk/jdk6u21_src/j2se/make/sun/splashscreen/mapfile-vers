@@ -1,0 +1,30 @@
+#
+#ident	"@(#)mapfile-vers	1.6	10/04/01 SMI"
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+#
+# This software is the proprietary information of Oracle.
+# Use is subject to license terms.
+#
+
+# Define public interface.
+
+SUNWprivate_1.1 {
+	global:
+		Java_java_awt_SplashScreen__1update;
+		Java_java_awt_SplashScreen__1isVisible;
+		Java_java_awt_SplashScreen__1getBounds;
+		Java_java_awt_SplashScreen__1getInstance;
+		Java_java_awt_SplashScreen__1close;
+                Java_java_awt_SplashScreen__1getImageFileName;
+                Java_java_awt_SplashScreen__1getImageJarName;
+                Java_java_awt_SplashScreen__1setImageData;
+
+		SplashLoadMemory;
+		SplashLoadFile;
+		SplashInit;
+		SplashClose;
+                SplashSetFileJarName;
+	local:
+		*;
+};

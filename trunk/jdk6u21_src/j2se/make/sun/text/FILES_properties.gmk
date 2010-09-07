@@ -1,0 +1,55 @@
+#
+# @(#)FILES_properties.gmk	1.9 10/03/23
+# 
+# Copyright (c) 2007, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+FILES_compiled_properties = \
+        sun/util/resources/LocaleNames_ar.properties \
+        sun/util/resources/LocaleNames_hi.properties \
+        sun/util/resources/LocaleNames_iw.properties \
+        sun/util/resources/LocaleNames_ja.properties \
+        sun/util/resources/LocaleNames_ko.properties \
+        sun/util/resources/LocaleNames_th.properties \
+        sun/util/resources/LocaleNames_vi.properties \
+        sun/util/resources/LocaleNames_zh.properties \
+        sun/util/resources/LocaleNames_zh_SG.properties \
+        sun/util/resources/LocaleNames_zh_TW.properties \
+	\
+        sun/util/resources/CalendarData_ar.properties \
+        sun/util/resources/CalendarData_hi.properties \
+        sun/util/resources/CalendarData_iw.properties \
+        sun/util/resources/CalendarData_ja.properties \
+        sun/util/resources/CalendarData_ko.properties \
+        sun/util/resources/CalendarData_th.properties \
+        sun/util/resources/CalendarData_vi.properties \
+        sun/util/resources/CalendarData_zh.properties \
+	\
+        sun/util/resources/CurrencyNames_ar_AE.properties \
+        sun/util/resources/CurrencyNames_ar_BH.properties \
+        sun/util/resources/CurrencyNames_ar_DZ.properties \
+        sun/util/resources/CurrencyNames_ar_EG.properties \
+        sun/util/resources/CurrencyNames_ar_IQ.properties \
+        sun/util/resources/CurrencyNames_ar_JO.properties \
+        sun/util/resources/CurrencyNames_ar_KW.properties \
+        sun/util/resources/CurrencyNames_ar_LB.properties \
+        sun/util/resources/CurrencyNames_ar_LY.properties \
+        sun/util/resources/CurrencyNames_ar_MA.properties \
+        sun/util/resources/CurrencyNames_ar_OM.properties \
+        sun/util/resources/CurrencyNames_ar_QA.properties \
+        sun/util/resources/CurrencyNames_ar_SA.properties \
+        sun/util/resources/CurrencyNames_ar_SD.properties \
+        sun/util/resources/CurrencyNames_ar_SY.properties \
+        sun/util/resources/CurrencyNames_ar_TN.properties \
+        sun/util/resources/CurrencyNames_ar_YE.properties \
+        sun/util/resources/CurrencyNames_hi_IN.properties \
+        sun/util/resources/CurrencyNames_iw_IL.properties \
+        sun/util/resources/CurrencyNames_ja_JP.properties \
+        sun/util/resources/CurrencyNames_ko_KR.properties \
+        sun/util/resources/CurrencyNames_th_TH.properties \
+        sun/util/resources/CurrencyNames_vi_VN.properties \
+        sun/util/resources/CurrencyNames_zh_CN.properties \
+        sun/util/resources/CurrencyNames_zh_HK.properties \
+        sun/util/resources/CurrencyNames_zh_SG.properties \
+        sun/util/resources/CurrencyNames_zh_TW.properties

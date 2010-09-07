@@ -1,0 +1,36 @@
+#
+# @(#)FILES.gmk	1.15 10/03/23
+# 
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+DEMO_java = \
+  $(DEMODST_SRC)ElementTreePanel.java \
+  $(DEMODST_SRC)Notepad.java \
+
+
+DEMO_class = \
+  $(DEMODST_CLASS)/ElementTreePanel.class \
+  $(DEMODST_CLASS)/Notepad.class \
+
+
+DEMO_dirs = \
+  $(DEMODST) \
+  $(DEMODST)/resources \
+
+
+DEMO_other = \
+  $(DEMODST)/README.txt \
+  $(DEMODST)/resources/copy.gif \
+  $(DEMODST)/resources/cut.gif \
+  $(DEMODST)/resources/new.gif \
+  $(DEMODST)/resources/Notepad.properties \
+  $(DEMODST)/resources/Notepad_fr.properties \
+  $(DEMODST)/resources/Notepad_sv.properties \
+  $(DEMODST)/resources/Notepad_zh_CN.properties \
+  $(DEMODST)/resources/open.gif \
+  $(DEMODST)/resources/paste.gif \
+  $(DEMODST)/resources/save.gif \
+
+

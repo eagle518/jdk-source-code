@@ -1,0 +1,60 @@
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+# @(#)Compiler-sun.gmk	1.10 10/04/01
+#
+# WARNING: This file is shared with other workspaces.
+#
+
+#
+# Solaris Studio Compiler settings
+#
+
+COMPILER_NAME=Solaris Studio
+
+# Solaris Studio Compiler settings specific to Solaris
+ifeq ($(PLATFORM), solaris)
+  COMPILER_VERSION=SS11
+  REQUIRED_CC_VER=5.8
+  CC             = $(COMPILER_PATH)cc
+  CPP            = $(COMPILER_PATH)cc -E
+  CXX            = $(COMPILER_PATH)CC
+  LINT           = $(COMPILER_PATH)lint
+  # Option used to create a shared library
+  SHARED_LIBRARY_FLAG = -G
+  # But gcc is still needed no matter what on 32bit
+  ifeq ($(ARCH_DATA_MODEL), 32)
+    REQUIRED_GCC_VER = 2.95
+    GCC =$(GCC_COMPILER_PATH)gcc
+    _GCC_VER :=$(shell $(GCC) -dumpversion 2>&1 )
+    GCC_VER  :=$(call GetVersion,"$(_GCC_VER)")
+  endif
+endif
+
+# Solaris Studio Compiler settings specific to Linux
+ifeq ($(PLATFORM), linux)
+  # This has not been tested
+  COMPILER_VERSION=SS11
+  REQUIRED_CC_VER=5.8
+  CC             = $(COMPILER_PATH)cc
+  CPP            = $(COMPILER_PATH)cc -E
+  CXX            = $(COMPILER_PATH)CC
+  LINT           = $(COMPILER_PATH)lint
+  # statically link libstdc++ before C++ ABI is stablized on Linux
+  STATIC_CXX     = true
+  ifeq ($(STATIC_CXX),true)
+    # CC always dynamically links libstdc++, even we use "-Wl,-Bstatic -lstdc++"
+    # We need to use cc to statically link the C++ runtime.
+    CXX            = $(COMPILER_PATH)cc
+  else
+    CXX            = $(COMPILER_PATH)CC
+  endif
+  # Option used to create a shared library
+  SHARED_LIBRARY_FLAG = -G
+endif
+
+# Get compiler version
+_CC_VER :=$(shell $(CC) -V 2>&1 | $(HEAD) -n 1)
+CC_VER  :=$(call GetVersion,"$(_CC_VER)")
+

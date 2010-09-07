@@ -1,0 +1,26 @@
+# 
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+
+PROPERTY_FILES = \
+	$(PKGDIR)/internal/impl/msg/DatatypeMessages.properties \
+	$(PKGDIR)/internal/impl/msg/DOMMessages.properties \
+	$(PKGDIR)/internal/impl/msg/JAXPValidationMessages.properties \
+	$(PKGDIR)/internal/impl/msg/SAXMessages.properties \
+	$(PKGDIR)/internal/impl/msg/XIncludeMessages.properties \
+ 	$(PKGDIR)/internal/impl/msg/XMLMessages.properties \
+	$(PKGDIR)/internal/impl/msg/XMLSchemaMessages.properties \
+	$(PKGDIR)/internal/impl/msg/XMLSerializerMessages.properties \
+	$(PKGDIR)/internal/impl/msg/XPointerMessages.properties \
+	$(PKGDIR)/internal/impl/xpath/regex/message.properties \
+	$(PKGDIR)/internal/impl/xpath/regex/message_fr.properties \
+	$(PKGDIR)/internal/impl/xpath/regex/message_ja.properties
+
+
+#
+# TODO: files like resolver dtd,xsd,rng
+#
+# MISC_FILES = \
+#	$(CLASSDESTDIR)/com/sun/xml/xsom/impl/parser/datatypes.xsd	\

@@ -1,0 +1,74 @@
+#
+# @(#)Demo.gmk	1.11 10/03/23
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+#
+# Template Makefile for java.lang.management demo
+#
+#    Usage: (in subdirectory)
+#        DEMO_NAME=name
+#        FILES_classes=names of class files needed
+#        include ../Demo.gmk
+#
+#    Subdirectory has name "$(DEMO_NAME)".
+#    All source located at src/*/demo/management/$(DEMO_NAME)
+#
+
+BUILDDIR = ../../..
+PRODUCT = sun/demo/management
+LIBRARY = $(DEMO_NAME)
+
+# Absolute path to demo destination area
+ABS_DEMODESTDIR=$(ABS_OUTPUTDIR)/demo/management/$(DEMO_NAME)
+ABS_DEMODESTSRCDIR=$(ABS_DEMODESTDIR)/src
+
+# Source directories
+SRCDIR=$(SHARE_SRC)/demo/management/$(DEMO_NAME)
+JAVA_SOURCES=$(FILES_classes:%.class=$(SRCDIR)/%.java)
+
+include $(BUILDDIR)/common/Defs.gmk
+
+# Keep classes in temporary area
+CLASSES_DIR=$(TEMPDIR)/$(DEMO_NAME)/classes
+INSTALL_FILES=$(RESOURCE_files:%=$(CLASSES_DIR)/%) \
+	      $(RESOURCE_files:%=$(ABS_DEMODESTSRCDIR)/%)
+
+# Path to jar file for this demo
+JAR_FILE=$(ABS_DEMODESTDIR)/$(DEMO_NAME).jar
+
+# All rules for this demo
+all: demo_src_dir_layout build $(INSTALL_FILES) $(JAR_FILE)
+
+# Build the jar file
+build:  $(JAVA_SOURCES)
+	$(RM) $(JAR_FILE)
+	$(RM) -r $(CLASSES_DIR)
+	$(MKDIR) -p $(CLASSES_DIR)
+	$(JAVAC) -d $(CLASSES_DIR) $(JAVA_SOURCES)
+	$(ECHO) "Main-Class: $(MAIN_CLASS_NAME)" > $(CLASSES_DIR)/manifest
+
+$(CLASSES_DIR)/META-INF/services/%: $(SRCDIR)/META-INF/services/%
+	$(install-file)
+
+$(ABS_DEMODESTSRCDIR)/META-INF/services/%: $(SRCDIR)/META-INF/services/%
+	$(install-file)
+
+$(JAR_FILE): 
+	$(prep-target)
+	$(ECHO) "Main-Class: $(MAIN_CLASS_NAME)" > $(CLASSES_DIR)/manifest
+	$(JAR) cvfm $@ $(CLASSES_DIR)/manifest -C $(CLASSES_DIR) . $(JAR_JFLAGS)
+	@$(java-vm-cleanup)
+
+demo_src_dir_layout:
+	$(RM) -r $(ABS_DEMODESTSRCDIR)
+	$(MKDIR) -p $(ABS_DEMODESTSRCDIR)
+	$(CP) $(SRCDIR)/*.* $(ABS_DEMODESTSRCDIR)
+	$(RM) -r $(ABS_DEMODESTDIR)/README.txt
+	$(MV) $(ABS_DEMODESTSRCDIR)/README.txt $(ABS_DEMODESTDIR)/README.txt
+
+clean::
+	$(RM) -r $(CLASSES_DIR)
+	$(RM) -r $(ABS_DEMODESTDIR)

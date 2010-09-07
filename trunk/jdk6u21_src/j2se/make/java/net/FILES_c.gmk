@@ -1,0 +1,28 @@
+#
+# @(#)FILES_c.gmk	1.23 10/03/23
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+FILES_c = \
+	$(CTARGDIR)DatagramPacket.c \
+	$(CTARGDIR)InetAddress.c \
+	$(CTARGDIR)Inet4Address.c \
+	$(CTARGDIR)Inet6Address.c \
+	$(CTARGDIR)NetworkInterface.c \
+	$(CTARGDIR)InetAddressImplFactory.c \
+	$(CTARGDIR)Inet4AddressImpl.c \
+	$(CTARGDIR)Inet6AddressImpl.c \
+	$(CTARGDIR)PlainDatagramSocketImpl.c \
+	$(CTARGDIR)PlainSocketImpl.c \
+	$(CTARGDIR)SocketInputStream.c \
+	$(CTARGDIR)SocketOutputStream.c \
+	$(CTARGDIR)net_util.c \
+	$(CTARGDIR)net_util_md.c \
+	$(CTARGDIR)ResolverConfigurationImpl.c \
+	DefaultProxySelector.c
+
+ifeq ($(PLATFORM), linux)
+    FILES_c += $(CTARGDIR)linux_close.c
+endif

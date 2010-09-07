@@ -1,0 +1,23 @@
+com_sun_corba_se_impl_presentation_rmi_java = \
+	$(TARGDIR)com/sun/corba/se/impl/presentation/rmi/DynamicAccessPermission.java \
+	$(TARGDIR)com/sun/corba/se/impl/presentation/rmi/DynamicMethodMarshallerImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/presentation/rmi/DynamicStubImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/presentation/rmi/ExceptionHandler.java \
+	$(TARGDIR)com/sun/corba/se/impl/presentation/rmi/ExceptionHandlerImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/presentation/rmi/IDLNameTranslatorImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/presentation/rmi/IDLType.java \
+	$(TARGDIR)com/sun/corba/se/impl/presentation/rmi/IDLTypeException.java \
+	$(TARGDIR)com/sun/corba/se/impl/presentation/rmi/IDLTypesUtil.java \
+	$(TARGDIR)com/sun/corba/se/impl/presentation/rmi/InvocationHandlerFactoryImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/presentation/rmi/PresentationManagerImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/presentation/rmi/ReflectiveTie.java \
+	$(TARGDIR)com/sun/corba/se/impl/presentation/rmi/StubConnectImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/presentation/rmi/StubFactoryBase.java \
+	$(TARGDIR)com/sun/corba/se/impl/presentation/rmi/StubFactoryDynamicBase.java \
+	$(TARGDIR)com/sun/corba/se/impl/presentation/rmi/StubFactoryFactoryBase.java \
+	$(TARGDIR)com/sun/corba/se/impl/presentation/rmi/StubFactoryFactoryDynamicBase.java \
+	$(TARGDIR)com/sun/corba/se/impl/presentation/rmi/StubFactoryFactoryProxyImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/presentation/rmi/StubFactoryFactoryStaticImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/presentation/rmi/StubFactoryProxyImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/presentation/rmi/StubFactoryStaticImpl.java \
+	$(TARGDIR)com/sun/corba/se/impl/presentation/rmi/StubInvocationHandlerImpl.java

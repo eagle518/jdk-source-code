@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="default" basedir="../../../.." xmlns:j2seproject3="http://www.netbeans.org/ns/j2se-project/3">
+    <target name="-do-compile" depends="init,deps-jar,-pre-pre-compile,-pre-compile" if="have.sources">
+        <j2seproject3:javac>
+            <customize>
+                <patternset includes="myTest/**,com/sun/tools/javadoc/DocCommentScanner.java,java/util/Service.java,java/util/ServiceConfigurationError.java,javax/annotation/**,javax/tools/**,javax/lang/model/**,com/sun/source/**,com/sun/tools/javac/**"
+                excludes="**/package-info.java,com/sun/tools/javac/resources/**"/>
+                
+            </customize>
+        </j2seproject3:javac>
+        <copy todir="${build.classes.dir}">
+            <fileset dir="${src.classes.dir}" excludes="${build.classes.excludes}"/>
+        </copy>
+    </target>
+    <target name="-do-clean" depends="init">
+        <delete dir="${build.classes.dir}"/>
+        <delete dir="${dist.dir}"/>
+    </target>
+</project>

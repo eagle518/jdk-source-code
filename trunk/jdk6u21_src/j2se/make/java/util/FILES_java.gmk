@@ -1,0 +1,23 @@
+#
+# @(#)FILES_java.gmk	1.4 10/03/30
+# 
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+# ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+#
+
+FILES_java = \
+        $(TARGDIR)sun/util/resources/LocaleData.java \
+        $(TARGDIR)sun/util/resources/OpenListResourceBundle.java \
+        $(TARGDIR)sun/util/resources/LocaleNamesBundle.java \
+        $(TARGDIR)sun/util/resources/TimeZoneNamesBundle.java \
+        $(TARGDIR)sun/util/resources/TimeZoneNames.java \
+        $(TARGDIR)sun/util/resources/TimeZoneNames_de.java \
+        $(TARGDIR)sun/util/resources/TimeZoneNames_en.java \
+        $(TARGDIR)sun/util/resources/TimeZoneNames_en_CA.java \
+        $(TARGDIR)sun/util/resources/TimeZoneNames_en_GB.java \
+        $(TARGDIR)sun/util/resources/TimeZoneNames_en_IE.java \
+        $(TARGDIR)sun/util/resources/TimeZoneNames_es.java \
+        $(TARGDIR)sun/util/resources/TimeZoneNames_fr.java \
+        $(TARGDIR)sun/util/resources/TimeZoneNames_it.java \
+        $(TARGDIR)sun/util/resources/TimeZoneNames_pt_BR.java \
+        $(TARGDIR)sun/util/resources/TimeZoneNames_sv.java

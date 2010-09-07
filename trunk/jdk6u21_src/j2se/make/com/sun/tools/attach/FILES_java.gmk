@@ -1,0 +1,36 @@
+#
+# @(#)FILES_java.gmk	1.4 10/03/23
+#
+# Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+#  ORACLE PROPRIETARY/CONFIDENTIAL.  Use is subject to license terms.
+#
+FILES_java = \
+	$(TARGDIR)com/sun/tools/attach/AgentLoadException.java \
+	$(TARGDIR)com/sun/tools/attach/AgentInitializationException.java \
+	$(TARGDIR)com/sun/tools/attach/AttachPermission.java \
+	$(TARHDIR)com/sun/tools/attach/AttachNotSupportedException.java \
+	$(TARGDIR)com/sun/tools/attach/VirtualMachine.java \
+	$(TARGDIR)com/sun/tools/attach/VirtualMachineDescriptor.java \
+	$(TARGDIR)com/sun/tools/attach/spi/AttachProvider.java \
+	$(TARGDIR)sun/tools/attach/HotSpotAttachProvider.java \
+	$(TARGDIR)sun/tools/attach/HotSpotVirtualMachine.java 
+	
+ifeq ($(PLATFORM), solaris)
+FILES_java += \
+	$(TARGDIR)/sun/tools/attach/SolarisAttachProvider.java
+endif
+
+ifeq ($(PLATFORM), linux)
+FILES_java += \
+	$(TARGDIR)/sun/tools/attach/LinuxAttachProvider.java
+endif
+
+#
+# Files that need to be copied
+#
+SERVICEDIR = $(CLASSBINDIR)/META-INF/services
+                                                                                                
+FILES_copy = \
+	$(SERVICEDIR)/com.sun.tools.attach.spi.AttachProvider
+
+
