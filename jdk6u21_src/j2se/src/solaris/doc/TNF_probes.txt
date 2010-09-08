@@ -1,0 +1,45 @@
+Probe name	Desc string				Args			Files
+
+prog_start	program started			-			src/solaris/bin/java.c
+prog_end	program exiting			long:exit_status	src/solaris/bin/java.c
+prog_end	program exiting via sysExit	long:exit_status	src/solaris/java/runtime/system_md.c
+
+These time the entry and exit to main(), and the call to exit().  
+Unfortunately, there are direct calls to exit() elsewhere in the
+code.  Sigh.
+
+
+JVM_start	JVM started			-			src/solaris/java/javai/javai.c
+
+java_main() called.
+
+
+JIT_start	start JIT compilation		-			src/jit/share/JIT.c
+JIT_end		exiting JIT compilation		long:NOT_COMPILABLE	src/jit/share/JIT.c
+						long:code_length
+						long:CompiledCodeLength
+
+These time each compilation, recording the # of bytecodes input and #
+bytes of compiled code output.
+
+
+GC_start	starting GC			-			src/share/java/runtime/gcimpl.c
+GC_end		ending GC			-			src/share/java/runtime/gcimpl.c
+
+These measure time to run GC.
+
+
+GC_suspend_start	suspending threads for GC	long:ActiveThreadCount	src/share/java/runtime/gcimpl.c
+GC_suspend_end		threads suspended for GC	-			src/share/java/runtime/gcimpl.c
+
+GC_resume_start		resuming threads after GC	long:ActiveThreadCount	src/share/java/runtime/gcimpl.c
+GC_resume_end		threads resumed after GC	-			src/share/java/runtime/gcimpl.c
+
+These measure the time it takes to suspend and resume threads prior to
+starting and after finishing GC (and how many threads).
+
+GC_safepoint_start	advancing threads to safe points -			src/share/java/runtime/gcimpl.c
+GC_safepoint_end	threads advanced to safe points -			src/share/java/runtime/gcimpl.c
+
+These measure how long it takes to advance threads to safe points
+prior to GC.  
