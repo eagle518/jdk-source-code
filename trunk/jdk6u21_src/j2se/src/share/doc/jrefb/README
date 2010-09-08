@@ -1,0 +1,26 @@
+                              README
+
+             Java(TM) Platform, Standard Edition for Business
+                        Runtime Environment
+                             Version 6
+
+
+The Java(TM) Platform, Standard Edition for Business Runtime Environment
+(JRE(TM) FB), excluding the JavaFX(TM) runtime, contains the Java virtual 
+machine, runtime class libraries, and Java application launcher that are 
+necessary to run programs written in the Java programming language. It is
+not a development environment and does not contain development tools such
+as compilers or debuggers. For development tools, see the Java SE 
+Development Kit for Business(JDK(TM) FB).
+
+All distributions of the JRE FB with your Programs are subject to the terms 
+of the JRE FB Software License Agreement.
+
+Once Licensed Solution Providers have developed an application using the 
+JDK FB, they can ship it with the JRE FB so their end-users can have a 
+Java SE for Business platform on which to run their software.
+
+
+----------------------------------------------------------------------------
+Copyright (c) 2010, Oracle and/or its affiliates. All rights reserved.
+

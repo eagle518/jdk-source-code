@@ -1,0 +1,347 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <title>Native Platform Toolkit</title>
+</head>
+<body>
+<h1 style="text-align: center;">Native Platform Toolkit (NPT) Concept Document <br>
+</h1>
+<h1 style="text-align: center;"> Draft: WARNING: May Not Reflect Actual Implementation<br>
+</h1>
+<br>
+<h2>Problem Statement</h2>
+Internal to the J2SE, anyone developing JNI code, or interfacing Java
+to native code, has run
+into the problem of implementing something in pure native code that is
+completely different between platforms, or represents a significant
+amount of code that ultimately isn't shared by anyone else. You either
+end up with lots of ugly '#ifdef' code that is hard to read and
+understand, or you duplicate the first platform's source and create
+separate copies for every platform, src/solaris/*, src/windows/*, etc.
+Many of these basic native code
+functions are trivial when looking at one native platform, but somewhat
+convoluted when dealing with multiple native platforms.&nbsp; Making
+things worse, the same code is more often than not copied from one
+native library to the next native library.&nbsp; This copy of native
+code is error prone and increases the maintenance burden unnecessarily.<br>
+<br>
+In addition, certain native code libraries such as agent libraries
+could benefit from sharing some basic native functionality such as:<br>
+<ul>
+  <li>Better memory management functionality</li>
+  <li>A common native logging interface</li>
+  <li>Common error handling or stderr message printing<br>
+  </li>
+  <li>Native UTF-8 conversion functions (e.g. UTF-8 &lt;-&gt; Platform
+Encoding)</li>
+  <li>Common hash table functionality<br>
+  </li>
+  <li>etc.</li>
+</ul>
+Sometimes this functionality can be obtained by calling JNI functions
+or making calls into Java code, but not only is this inefficient at
+times, it isn't possible for many native libraries.&nbsp; To call JNI
+or Java, you need a live JVM, and many native libraries (like the JVMTI
+agent libraries) need this functionality before the JVM is fully
+initialized.<br>
+<br>
+Sometimes this functionality is provided by platform specific
+libraries, but they often differ in their interfaces.<br>
+<br>
+Sometimes the basic functionality just doesn't exist in a way that can
+be used in a MT-safe and isolated way.<br>
+<h2>Proposed Solution</h2>
+Create a native library (libnpt.so or npt.dll) and a native interface
+to that library that gives JNI and Java native code users some helpful
+functionality in a clean platform neutral way. This would be kept
+internal to the J2SE and it's many
+native libraries.&nbsp; Exposing this library in any public way should
+not be considered at this time. However, demos using it should be able
+to selectively re-use some of the sources of this library, and so some
+of the sources in this library will be made available in the demos for
+the J2SE, but not used in the demos as a shared library.<br>
+<br>
+Comments are always welcome..<span style="font-weight: bold;"><br>
+</span>
+<h2><span style="font-weight: bold;"></span>Requirements</h2>
+<ul>
+  <li>Must be easily extensible, always compatible from release to
+release</li>
+  <li>Library must be dynamically accessable (e.g. dlopen)<br>
+  </li>
+  <li>Call overhead should be minimal, good performance is expected
+from all these interfaces</li>
+  <li>Should leverage the native platform functionality whenever
+possible</li>
+  <li>Code written to NPT should be platform independent, easy to dlopen<br>
+  </li>
+  <li>Use of NPT should be allowed from C++ or C, similar to JNI and
+JVMTI
+interfaces</li>
+  <li>Must allow for multiple users of the library</li>
+  <li>All interfaces must be MT safe</li>
+  <li>All code must be compiler warning free, linted where possible,
+and fully prototyped</li>
+  <li>Should be easy to add another interface for sharing</li>
+  <li>The debug version of the library should do full argument
+consistent checking</li>
+  <li>This library should only have system library dependencies, e.g.
+libc</li>
+  <li>These functions should NOT require a running JVM, they are pure
+native code interfaces, however the jni.h typedefs and macros will be
+used:<br>
+  </li>
+  <ul>
+    <li>All functions and function pointers should use JNICALL from
+jni.h for the safest calling mechanism<br>
+    </li>
+  </ul>
+  <ul>
+    <li>Should use the basic typedefs for Java types from jni.h, where
+possible<br>
+    </li>
+  </ul>
+</ul>
+<h2>Interface Details</h2>
+The include file "npt.h" should provide some macros or inline functions
+that can be used to easily get the library loaded and the interface
+returned (this library loading is highly platform specific and error
+prone, we need to make this easier).&nbsp; <br>
+<br>
+The library itself should just have just two major extern interfaces
+visible, something like:<br>
+&nbsp;&nbsp;&nbsp; <br>
+<code>&nbsp;&nbsp;&nbsp; JNIEXPORT void
+JNICALL nptInitialize(NptEnv **pnpt, char *npt_version, char *options);<br>
+&nbsp;&nbsp;&nbsp; JNIEXPORT void&nbsp;&nbsp;
+JNICALL&nbsp; nptTerminate(NptEnv *npt, char *options);<br>
+</code><br>
+But the #include file "npt.h" should also provide macros or inline
+functions&nbsp; such as&nbsp; NPT_INITIALIZE() which
+automatically loads the "npt" native library, get the address of
+nptInitialize() in the library, and returns the NptEnv* by calling
+through this pointer.&nbsp;&nbsp; All very platform specific and error
+prone code.&nbsp;&nbsp; Need to experiment on this...<br>
+<br>
+Where options are needed, options will be provided as character
+strings, this provides for maximum extensibility and compatibility. The
+overhead for parsing these small strings is minimal.<br>
+<code></code>
+<h3>Proposed Example Usage</h3>
+<code>#include "npt.h"<br>
+<br>
+int<br>
+main(void) {<br>
+&nbsp;&nbsp;&nbsp; nptLibrary *nptLib;<br>
+&nbsp;&nbsp;&nbsp; NptEnv *npt;<br>
+<br>
+&nbsp;&nbsp;&nbsp; NPT_INITIALIZE(&npt, NPT_VERSION_STRING,
+start_up_options);<br>
+<br>
+&nbsp;&nbsp;&nbsp; if ( npt != NULL ) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int new_len;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; char output[64];<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; new_len =
+npt-&gt;utf8ToPlatform("some utf-8 byte array", 21, &amp;output, 64);<br>
+&nbsp;&nbsp;&nbsp; } else {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(stderr, "NPT
+interface not available\n");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; exit(1)<br>
+&nbsp;&nbsp;&nbsp; }<br>
+<br>
+&nbsp;&nbsp;&nbsp; NPT_TERMINATE(npt, shutdown_options);<br>
+&nbsp;&nbsp;&nbsp; return 0;<br>
+}</code><br>
+<br>
+<h3>Compatibility and Extensibility</h3>
+The user should never know the size of the NptEnv or any of the objects
+returned by this interface (struct LogInst, struct HeapInst, etc.). The field offsets
+in these structs must never change so that older code compiled to an
+older interface will continue to work. The version string is a simple
+"major.minor.micro" version number and the runtime version of the
+library must be able to support the "major.minor" version of this
+library for the initialization to be successful. This should be checked
+at initialization automatically.<br>
+<br>
+<h3>UTF-8 Related</h3>
+Here are a few possible UTF related interfaces (fields in NptEnv):<code><br>
+<br>
+<br>
+/* UTF-8 to and from Platform encoding */<br>
+int JNICALL (*utf8ToPlatform)(struct UtfInst *ui, jbyte *utf8, int len, char *output, int
+outputMaxLen);<br>
+int JNICALL (*utf8FromPlatform)(struct UtfInst *ui, char *str, int len, <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+jbyte *output, int outputMaxLen);<br>
+<br>
+/* UTF-8 to Unicode, Unicode to UTF-8 Modified or Standard */<br>
+int&nbsp; JNICALL (*utf8ToUtf16)(struct UtfInst *ui, jbyte *utf8, int len, jchar *output,
+int outputMaxLen);<br>
+int&nbsp; JNICALL (*utf16ToUtf8m)(struct UtfInst *ui, jchar *utf16, int len, <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+jbyte *output, int outputMaxLen);<br>
+int&nbsp; JNICALL (*utf16ToUtf8s)(struct UtfInst *ui, jchar *utf16, int len, <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+jbyte *output, int outputMaxLen);<br>
+<br>
+/* UTF-8 Standard to UTF-8 Modified */<br>
+int&nbsp; JNICALL (*utf8sToUtf8mLength)(struct UtfInst *ui, jbyte *string, int length);<br>
+void JNICALL (*utf8sToUtf8m)(struct UtfInst *ui, jbyte *string, int length, <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+jbyte *new_string, int new_length);<br>
+<br>
+/* UTF-8 Modified to UTF-8 Standard */<br>
+int&nbsp; JNICALL (*utf8mToUtf8sLength)(struct UtfInst *ui, jbyte *string, int length);<br>
+void JNICALL (*utf8mToUtf8s)(struct UtfInst *ui, jbyte *string, int length, <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+jbyte *new_string, int new_length);</code><br>
+<br>
+<h3>Heap Management</h3>
+One of the more dangerous parts of writing native code is the handling
+of the heap, too much Java programming usually causes JNI programmers
+to be sloppy :^). The use of malloc() and free(), and all it's
+relations
+continues to be an error prone activity, sometimes causing failures in
+code that is completely unrelated to the buggy code, or causing memory
+leaks that can be hard to track down.&nbsp; Performance is also an
+issue with managing the memory used by the various native code
+libraries.&nbsp; Performance wise, too many
+malloc() calls can slow down the agent code, and sometimes slow down
+the Java Virtual Machine, which could also be using malloc().&nbsp;
+Providing a way to create multiple heap instances, and also do
+allocations from blocks or chunks of memory, then&nbsp; specific
+individual free()'s
+could be replaced with a global free of the entire heap or the blocks.<br>
+<br>
+These are the kinds of Heap interfaces I was thinking about:<code><br>
+<br>
+/* Create a new heap, or delete the entire heap (managed and unmanaged)<br>
+&nbsp;*&nbsp;&nbsp; example HeapInitialize options:
+"init=4096,incr=1024,limit=0x00ffffff,zap=yes,watch=full"<br>
+&nbsp;*&nbsp;&nbsp; example heapTerminate options: "verify=yes,zap=no"<br>
+&nbsp;*&nbsp;&nbsp; Environment variables could be used to dynamically
+add to these options.<br>
+&nbsp;*/<br>
+</code><code>struct HeapInst* JNICALL (*heapInitialize)(char *options);</code><code></code><br>
+<code>void&nbsp;&nbsp;&nbsp;&nbsp; JNICALL (*heapTerminate)(struct HeapInst *heap,
+char *options);<br>
+<br>
+/* Allocate memory from a specific heap, individually managed or
+unmanaged<br>
+&nbsp;*&nbsp;&nbsp; (Unmanaged means less overhead and tracking, you
+can't realloc or <br>
+&nbsp;*&nbsp;&nbsp;&nbsp; or indivdually free these pieces of memory)<br>
+&nbsp;*/<br>
+</code><code>const void * JNICALL (*heapAlloc)(struct HeapInst* heap, int
+size);<br>
+</code><code>void *&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JNICALL
+(*heapAllocManaged)(</code><code>struct HeapInst* heap, </code><code>int
+size);<br>
+</code><code>void *&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JNICALL
+(*heapReallocManaged)(</code><code>struct HeapInst* heap, </code><code>void
+*ptr, int size);</code><code><br>
+void *&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JNICALL
+(*heapFreeManaged)(</code><code>struct HeapInst* heap, </code><code>void *ptr);</code><br>
+<br>
+Often simple agent libraries only need to allocate incremental amounts
+of space that is never freed until it's time to report or terminate,
+using the above interfaces a single call to heapTerminate() is all that is
+needed.&nbsp; Various protection code can be added internally and the
+options could be used to turn on tracing or logging of the calls and
+the status of the heaps.<br>
+<br>
+Macros could be provided for dynamic stack allocated space, e.g.
+NptHeapLocalAlloc() and NptHeapLocalFree(), that could use the Solaris
+alloca() when available, or use heapAllocManaged() and
+heapFreeManaged() when alloca() functionality wasn't available. e.g.<br>
+<br>
+<code>#ifndef solaris<br>
+&nbsp;&nbsp;&nbsp; #define NptHeapLocalAlloc(heap, size)&nbsp;&nbsp;
+heapAllocManaged(heap, size)<br>
+&nbsp;&nbsp;&nbsp; #define NptHeapLocalFree(heap,
+ptr)&nbsp;&nbsp;&nbsp;&nbsp; heapFreeManaged(heap, ptr)<br>
+#else<br>
+&nbsp;&nbsp;&nbsp; #define </code><code>NptHeapLocalAlloc(heap,
+size)&nbsp;&nbsp; ((void*)alloca(size))<br>
+&nbsp;&nbsp;&nbsp; #define NptHeapLocalFree(heap, ptr)</code><br>
+<code>#endif<br>
+</code>
+<h3>Native Logging</h3>
+Logging events or tracing executed code in the native world is a bit
+tricky. Synchronization in a pure native world is very different from
+platform to platform, and every native library that has logging or
+tracing sends their log to a separate file or place. There is little
+consistency right now in the available logging and tracing on the
+native side.&nbsp; If we could generate the standard ULF (Uniform
+Logging Format) and somehow merge these logs (maybe even with the Java
+logging), t seems like this would be a good thing. But we need a common
+interface. And maybe the synchronization is unnecessary if we can
+design the interface correctly, I'd prefer to not have any
+synchronization in it.<br>
+<br>
+<code>struct LogInst*;<br>
+<br>
+/* Initialize or terminate a logging session */<br>
+</code><code>struct LogInst* JNICALL (*InitializeLog)(char *options);<br>
+</code><code>struct LogInst* JNICALL (*TerminateLog)(char *options);</code><br>
+<code><br>
+/* Uniform Logging Format Entry (ULF)<br>
+&nbsp;*&nbsp;&nbsp;&nbsp; </code><code>"[#|Date&amp;Time&amp;Zone|LogLevel|ProductName|ModuleID<br>
+&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code><code>|OptionalKey1=Value1;</code><code>OptionalKeyN=ValueN|MessageID:MessageText|#]\n"<br>
+&nbsp;*/</code><code><br>
+</code><code>struct LogInst* JNICALL (*Log)(</code><code>struct LogInst *log,
+int level, const char *module,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const char *optional, const
+char *messageID, const char *message);<br>
+<br>
+</code>This hasn't been fully thought out yet. It's possible the VM
+itself could use this library. However, I don't think that's a big
+issue since the VM developers always copy their libjvm.so into a j2se
+install area, if libnpt is there, it should just work.<br>
+<h3>Error Messages</h3>
+Error messages from native code to stderr (or sometimes stdout) is
+rare, but usually inconsistent. I haven't any proposal here yet, but
+this seems like a potential area where we could benefit from more
+consistentcy and sharing.<br>
+Something I noticed with the JNI calls that start up a JavaVM is that
+it has some kind of stderr/stdout re-direction option, something I
+suspect is slightly broken when you consider the native libraries doing
+arbitrary printf's or fprintf's to stderr.<br>
+Another issue I've seen is that most classnames printed out to
+stderr/stdout messages are UTF-8 bytes, yet printf/fprintf really are
+expecting the default platform encoding, this seems to be an I18n issue
+that could be fixed by localizing the error messages here somehow.<br>
+If you add in the Modified UTF-8 vs. Standard UTF-8 complications, this
+is a bit of a mess.<br>
+Linux gets away with it because their default encoding is UTF-8,&nbsp;
+Solaris and Windows seem like they have some problems here.<br>
+The Logging messages would have the same issue here with encodings.<br>
+<h3>Hash Lookup Table</h3>
+Functions like hsearch(3C) on Solaris are old and not MT-safe, we sure
+could use some functionality in this area.<br>
+It seems like everybody has implemented their own native code hash
+table logic. :^(<br>
+<h3>Dictionary</h3>
+Using the above Hash Lookup Table, we could create a shared dictionary
+mechanism.<br>
+I know it's hard to get a bunch of engineers to agree on the interface,
+but I'd rather re-use something like this than spend months getting it
+right and then maintaining all the code.<br>
+<br>
+<h3>Platform Specific</h3>
+Things like getting the current directory, definitions of 'errno', etc.<br>
+<br>
+Just browsing the src/windows and src/solaris directory trees in the
+J2SE workspace should yield a long list of functions that needed to be
+completely different between Windows and Solaris, and you will likely
+find multiple copies of the same basic coding.<br>
+<br>
+--------------------<br>
+Last edited on 10/05/04<br>
+<br>
+<br>
+</body>
+</html>
