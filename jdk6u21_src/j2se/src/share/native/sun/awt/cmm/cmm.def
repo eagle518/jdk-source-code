@@ -1,0 +1,78 @@
+;
+; @(#)cmm.def	1.6 98/09/15
+;
+; Copyright 1997 by Sun Microsystems, Inc.,
+; 901 San Antonio Road, Palo Alto, California, 94303, U.S.A.
+; All rights reserved.
+;
+; This software is the confidential and proprietary information
+; of Sun Microsystems, Inc. ("Confidential Information").  You
+; shall not disclose such Confidential Information and shall use
+; it only in accordance with the terms of the license agreement
+; you entered into with Sun.
+;
+
+;*********************************************************************
+;	Contains:	Module definition file for the JavaCMM
+;
+;				Created by acr, October 16, 1997
+;
+;	Written by:	The Kodak CMS MS Windows Team
+;
+;	Copyright:	(C) 1997 by Eastman Kodak Company, all rights reserved.
+;
+;	Macintosh
+;	Change History (most recent first):
+;
+;	Windows Revision Level:
+;
+;	SCCS Revision:
+;		@(#)cmm.def	1.5	11/03/97
+;
+;	To Do:
+;**********************************************************************
+
+
+;**********************************************************************
+;**********************************************************************
+;**********************************************************************
+;*** COPYRIGHT (c) Eastman Kodak Company, 1997                      ***
+;*** As  an unpublished  work pursuant to Title 17 of the United    ***
+;*** States Code.  All rights reserved.                             ***
+;**********************************************************************
+;**********************************************************************
+;**********************************************************************
+;LIBRARY		cmm
+
+DESCRIPTION	'KODAK DIGITAL SCIENCE ICC Profile API for Java'
+
+
+
+VERSION		0.0
+
+
+
+; CODE		PRELOAD MOVEABLE DISCARDABLE
+
+; DATA		PRELOAD MULTIPLE
+
+
+
+EXPORTS
+
+	Java_sun_awt_color_CMM_cmmLoadProfile		@121	
+	Java_sun_awt_color_CMM_cmmGetProfileSize	@122
+	Java_sun_awt_color_CMM_cmmGetProfileData	@123
+	Java_sun_awt_color_CMM_cmmGetTagData		@124
+	Java_sun_awt_color_CMM_cmmGetTagSize		@125
+	Java_sun_awt_color_CMM_cmmSetTagData		@126
+	Java_sun_awt_color_CMM_cmmGetTransform		@127
+	Java_sun_awt_color_CMM_cmmGetNumComponents	@128
+	Java_sun_awt_color_CMM_cmmCombineTransforms	@129
+	Java_sun_awt_color_CMM_cmmColorConvert		@130
+	Java_sun_awt_color_CMM_cmmInit			@131
+	Java_sun_awt_color_CMM_cmmTerminate		@132
+	Java_sun_awt_color_CMM_cmmCullICC_1Profiles	@133
+	Java_sun_awt_color_CMM_cmmFindICC_1Profiles	@134
+
+
